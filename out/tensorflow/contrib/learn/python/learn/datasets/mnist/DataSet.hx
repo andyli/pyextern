@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.datasets.mnist;
 @:pythonImport("tensorflow.contrib.learn.python.learn.datasets.mnist", "DataSet") extern class DataSet {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,7 +38,12 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct a DataSet.
+		Construct a DataSet. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use alternatives such as official/mnist/dataset.py from tensorflow/models.
+		
 		one_hot arg is used only if fake_data is true.  `dtype` can be either
 		`uint8` to leave the input as `[0, 255]`, or `float32` to rescale into
 		`[0, 1]`.  Seed arg provides for convenient deterministic testing.
@@ -46,7 +51,12 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 	@:native("__init__")
 	public function ___init__(images:Dynamic, labels:Dynamic, ?fake_data:Dynamic, ?one_hot:Dynamic, ?dtype:Dynamic, ?reshape:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		Construct a DataSet.
+		Construct a DataSet. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use alternatives such as official/mnist/dataset.py from tensorflow/models.
+		
 		one_hot arg is used only if fake_data is true.  `dtype` can be either
 		`uint8` to leave the input as `[0, 255]`, or `float32` to rescale into
 		`[0, 1]`.  Seed arg provides for convenient deterministic testing.
@@ -58,7 +68,7 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,7 +119,7 @@ package tensorflow.contrib.learn.python.learn.datasets.mnist;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

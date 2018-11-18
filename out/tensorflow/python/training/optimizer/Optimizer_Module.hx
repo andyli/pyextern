@@ -26,12 +26,10 @@ package tensorflow.python.training.optimizer;
 		The processor of v.
 	**/
 	static public function _get_processor(v:Dynamic):Dynamic;
-	/**
-		Returns the ResourceVariable responsible for v, or v if not necessary.
-	**/
-	static public function _get_variable_for(v:Dynamic):Dynamic;
 	static public function _var_key(_var:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	static public function get_filtered_grad_fn(grad_fn:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

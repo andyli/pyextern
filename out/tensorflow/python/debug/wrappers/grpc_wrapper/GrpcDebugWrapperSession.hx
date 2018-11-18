@@ -1,8 +1,8 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.wrappers.grpc_wrapper;
 @:pythonImport("tensorflow.python.debug.wrappers.grpc_wrapper", "GrpcDebugWrapperSession") extern class GrpcDebugWrapperSession {
-	static public var _GRPC_URL_PREFIX : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -47,7 +47,7 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 		  sess: The TensorFlow `Session` object being wrapped.
 		  grpc_debug_server_addresses: (`str` or `list` of `str`) Single or a list
 		    of the gRPC debug server addresses, in the format of
-		    <host:port>, without the "grpc://" prefix. For example:
+		    <host:port>, with or without the "grpc://" prefix. For example:
 		      "localhost:7000",
 		      ["localhost:7000", "192.168.0.2:8000"]
 		  watch_fn: (`Callable`) A Callable that can be used to define per-run
@@ -71,7 +71,7 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 		  sess: The TensorFlow `Session` object being wrapped.
 		  grpc_debug_server_addresses: (`str` or `list` of `str`) Single or a list
 		    of the gRPC debug server addresses, in the format of
-		    <host:port>, without the "grpc://" prefix. For example:
+		    <host:port>, with or without the "grpc://" prefix. For example:
 		      "localhost:7000",
 		      ["localhost:7000", "192.168.0.2:8000"]
 		  watch_fn: (`Callable`) A Callable that can be used to define per-run
@@ -93,7 +93,7 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -144,7 +144,7 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -178,6 +178,19 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 	public function _decorate_run_options_for_profile(run_options:Dynamic):Dynamic;
 	public function _is_disabled_thread():Dynamic;
 	/**
+		Indicates whether disk usage is reset after each Session.run.
+		
+		Subclasses that clean up the disk usage after every run should
+		override this protected method.
+		
+		Returns:
+		  (`bool`) Whether the disk usage amount is reset to zero after
+		    each Session.run.
+	**/
+	public function _is_disk_usage_reset_each_run():Dynamic;
+	public function _make_callable_from_options(callable_options:Dynamic):Dynamic;
+	public function _normalize_grpc_url(address:Dynamic):Dynamic;
+	/**
 		Get the debug_urls, and node/op whitelists for the current run() call.
 		
 		Args:
@@ -198,10 +211,13 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 	**/
 	public var graph : Dynamic;
 	public var graph_def : Dynamic;
+	public function increment_run_call_count():Dynamic;
 	/**
 		See doc of BaseDebugWrapperSession.invoke_node_stepper.
 	**/
 	public function invoke_node_stepper(node_stepper:Dynamic, ?restore_variable_values_on_exit:Dynamic):Dynamic;
+	public function list_devices(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function make_callable(fetches:Dynamic, ?feed_list:Dynamic, ?accept_options:Dynamic):Dynamic;
 	/**
 		See doc of BaseDebugWrapperSession.on_run_end.
 	**/
@@ -237,6 +253,7 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 		    this `Session.run()` call.
 	**/
 	public function prepare_run_debug_urls(fetches:Dynamic, feed_dict:Dynamic):Dynamic;
+	public function reset(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper around Session.run() that inserts tensor watch options.
 		
@@ -245,17 +262,29 @@ package tensorflow.python.debug.wrappers.grpc_wrapper;
 		  feed_dict: Same as the `feed_dict` arg to regular `Session.run()`.
 		  options: Same as the `options` arg to regular `Session.run()`.
 		  run_metadata: Same as the `run_metadata` arg to regular `Session.run()`.
+		  callable_runner: A `callable` returned by `Session.make_callable()`.
+		    If not `None`, `fetches` and `feed_dict` must both be `None`.
+		    Mutually exclusive with `callable_options`.
+		  callable_runner_args: An optional list of arguments to `callable_runner`
+		    or for `callable_options`.
+		  callable_options: An instance of `config_pb2.CallableOptions`, to be
+		    used with `Session._make_callable_from_options()`. Mutually exclusive
+		    with `callable_runner`.
 		
 		Returns:
 		  Simply forwards the output of the wrapped `Session.run()` call.
 		
 		Raises:
-		  ValueError: On invalid `OnRunStartAction` value.
+		  ValueError: On invalid `OnRunStartAction` value. Or if `callable_runner`
+		    is not `None` and either or both of `fetches` and `feed_dict` is `None`.
 	**/
-	public function run(fetches:Dynamic, ?feed_dict:Dynamic, ?options:Dynamic, ?run_metadata:Dynamic):Dynamic;
+	public function run(fetches:Dynamic, ?feed_dict:Dynamic, ?options:Dynamic, ?run_metadata:Dynamic, ?callable_runner:Dynamic, ?callable_runner_args:Dynamic, ?callable_options:Dynamic):Dynamic;
+	public var run_call_count : Dynamic;
+	public function run_step_fn(step_fn:Dynamic):Dynamic;
 	/**
 		The TensorFlow process to which this session will connect.
 	**/
 	public var sess_str : Dynamic;
 	public var session : Dynamic;
+	public function should_stop():Dynamic;
 }

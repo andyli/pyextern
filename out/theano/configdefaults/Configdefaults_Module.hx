@@ -34,6 +34,8 @@ package theano.configdefaults;
 	static public var SUPPORTED_DNN_CONV_ALGO_BWD_DATA : Dynamic;
 	static public var SUPPORTED_DNN_CONV_ALGO_BWD_FILTER : Dynamic;
 	static public var SUPPORTED_DNN_CONV_ALGO_FWD : Dynamic;
+	static public var SUPPORTED_DNN_CONV_ALGO_RUNTIME : Dynamic;
+	static public var SUPPORTED_DNN_CONV_PRECISION : Dynamic;
 	static public function StrParam(_default:Dynamic, ?is_valid:Dynamic, ?allow_override:Dynamic):Dynamic;
 	static public var THEANO_FLAGS_DICT : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -52,6 +54,7 @@ package theano.configdefaults;
 		exit code.
 	**/
 	static public function call_subprocess_Popen(command:Dynamic, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function check_mkl_openmp():Dynamic;
 	static public var compiledir_format_dict : Dynamic;
 	static public var compiledir_format_keys : Dynamic;
 	static public var config : Dynamic;
@@ -65,16 +68,21 @@ package theano.configdefaults;
 	static public function default_compiledir():Dynamic;
 	static public var default_compiledir_format : Dynamic;
 	static public function default_compiledirname():Dynamic;
-	static public function default_cuda_root():Dynamic;
-	static public function default_dnn_path(suffix:Dynamic):Dynamic;
+	static public function default_cuda_include():Dynamic;
+	static public function default_dnn_base_path():Dynamic;
+	static public function default_dnn_bin_path():Dynamic;
+	static public function default_dnn_inc_path():Dynamic;
+	static public function default_dnn_lib_path():Dynamic;
 	static public var default_openmp : Dynamic;
+	static public function deprecated_gpuarray_sync(val:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function filter_base_compiledir(path:Dynamic):Dynamic;
 	static public function filter_compiledir(path:Dynamic):Dynamic;
-	static public function filter_nvcc_flags(s:Dynamic):Dynamic;
+	static public function filter_mode(val:Dynamic):Dynamic;
 	static public function filter_vm_lazy(val:Dynamic):Dynamic;
 	static public function floatX_convert(s:Dynamic):Dynamic;
 	static public var gcc_version_str : Dynamic;
+	static public function get_cuda_root():Dynamic;
 	/**
 		Return location of the user's home directory.
 	**/
@@ -130,16 +138,6 @@ package theano.configdefaults;
 	**/
 	static public function safe_no_dnn_workmem_bwd(workmem:Dynamic):Dynamic;
 	/**
-		Make sure the user is not attempting to use `config.home`.
-		
-		This config option was removed in Thenao 0.5 since it was redundant with
-		`config.base_compiledir`. This filter function ensures people who were
-		setting the location of their compilation directory through `config.home`
-		switch to `config.basecompiledir` instead, by raising an error when
-		`config.home` is used.
-	**/
-	static public function safe_no_home(home:Dynamic):Dynamic;
-	/**
 		Return a safe shorter version of platform.platform().
 		
 		The old default Theano compiledir used platform.platform in
@@ -183,6 +181,10 @@ package theano.configdefaults;
 		If the information don't fit that pattern, we do not modify platform.
 	**/
 	static public function short_platform(?r:Dynamic, ?p:Dynamic):Dynamic;
+	/**
+		Take version as a dot-separated string, return a tuple of int
+	**/
+	static public function split_version(version:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	static public function try_blas_flag(flags:Dynamic):Dynamic;
 	@:native("var")

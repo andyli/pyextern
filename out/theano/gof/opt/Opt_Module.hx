@@ -59,7 +59,7 @@ package theano.gof.opt;
 	static public var config : Dynamic;
 	/**
 		Copies the stack trace from one or more tensor variables to
-		one or more tensor variables.
+		one or more tensor variables and returns the destination variables.
 		
 		Parameters
 		----------
@@ -81,6 +81,17 @@ package theano.gof.opt;
 		Uses the TopoOptimizer from the input nodes to output nodes of the graph.
 	**/
 	static public function in2out(?local_opts:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Contextmanager that copies the stack trace from one or more variable nodes to all
+		variable nodes constructed in the body. new_nodes is the list of all the newly created
+		variable nodes inside an optimization that is managed by graph.nodes_constructed().
+		
+		Parameters
+		----------
+		from_var
+		    Variable node or a list of variable nodes to copy stack traces from.
+	**/
+	static public function inherit_stack_trace(from_var:Dynamic):Dynamic;
 	/**
 		Decorator for FromFunctionOptimizer.
 	**/

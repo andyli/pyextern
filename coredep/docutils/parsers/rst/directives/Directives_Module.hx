@@ -49,6 +49,10 @@ package docutils.parsers.rst.directives;
 	**/
 	static public function encoding(argument:Dynamic):Dynamic;
 	/**
+		Return a string with escape-backslashes converted to nulls.
+	**/
+	static public function escape2null(text:Dynamic):Dynamic;
+	/**
 		Check for a valid flag option (no argument) and return ``None``.
 		(Directive option conversion function.)
 		
@@ -127,6 +131,11 @@ package docutils.parsers.rst.directives;
 	**/
 	static public function single_char_or_whitespace_or_unicode(argument:Dynamic):Dynamic;
 	/**
+		Split `text` on escaped whitespace (null+space or null+newline).
+		Return a list of strings.
+	**/
+	static public function split_escaped_whitespace(text:Dynamic):Dynamic;
+	/**
 		Return the argument text, unchanged.
 		(Directive option conversion function.)
 		
@@ -141,6 +150,11 @@ package docutils.parsers.rst.directives;
 	**/
 	static public function unchanged_required(argument:Dynamic):Dynamic;
 	/**
+		Return a string with nulls removed or restored to backslashes.
+		Backslash-escaped spaces are also removed.
+	**/
+	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic, ?respect_whitespace:Dynamic):Dynamic;
+	/**
 		Convert a Unicode character code to a Unicode character.
 		(Directive option conversion function.)
 		
@@ -153,7 +167,7 @@ package docutils.parsers.rst.directives;
 	static public function unicode_code(code:Dynamic):Dynamic;
 	static public var unicode_pattern : Dynamic;
 	/**
-		Return the URI argument with whitespace removed.
+		Return the URI argument with unescaped whitespace removed.
 		(Directive option conversion function.)
 		
 		Raise ``ValueError`` if no argument is found.

@@ -32,7 +32,8 @@ package scipy.stats._stats_mstats_common;
 		    correlation coefficient
 		pvalue : float
 		    two-sided p-value for a hypothesis test whose null hypothesis is
-		    that the slope is zero.
+		    that the slope is zero, using Wald Test with t-distribution of
+		    the test statistic.
 		stderr : float
 		    Standard error of the estimated gradient.
 		
@@ -55,7 +56,7 @@ package scipy.stats._stats_mstats_common;
 		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
-		('r-squared:', 0.080402268539028335)
+		r-squared: 0.08040226853902833
 		
 		Plot the data along with the fitted line
 		

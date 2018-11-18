@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_bases;
 @:pythonImport("matplotlib.backend_bases", "NavigationToolbar2") extern class NavigationToolbar2 {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.backend_bases;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.backend_bases;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -132,7 +132,7 @@ package matplotlib.backend_bases;
 	public function _switch_on_zoom_mode(event:Dynamic):Dynamic;
 	/**
 		Update the viewlim and position from the view and
-		position stack for each axes
+		position stack for each axes.
 	**/
 	public function _update_view():Dynamic;
 	/**
@@ -140,28 +140,29 @@ package matplotlib.backend_bases;
 	**/
 	public function back(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		the drag callback in pan/zoom mode
+		Callback for dragging in pan/zoom mode.
 	**/
 	public function drag_pan(event:Dynamic):Dynamic;
 	/**
-		the drag callback in zoom mode
+		Callback for dragging in zoom mode.
 	**/
 	public function drag_zoom(event:Dynamic):Dynamic;
 	/**
-		Redraw the canvases, update the locators
+		Redraw the canvases, update the locators.
 	**/
 	public function draw():Dynamic;
 	/**
-		Draw a rectangle rubberband to indicate zoom limits
+		Draw a rectangle rubberband to indicate zoom limits.
+		
+		Note that it is not guaranteed that ``x0 <= x1`` and ``y0 <= y1``.
 	**/
 	public function draw_rubberband(event:Dynamic, x0:Dynamic, y0:Dynamic, x1:Dynamic, y1:Dynamic):Dynamic;
-	public function dynamic_update():Dynamic;
 	/**
-		Move forward in the view lim stack
+		Move forward in the view lim stack.
 	**/
 	public function forward(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Restore the original view
+		Restore the original view.
 	**/
 	public function home(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function mouse_move(event:Dynamic):Dynamic;
@@ -170,61 +171,65 @@ package matplotlib.backend_bases;
 	**/
 	public function pan(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Called whenver a mouse button is pressed.
+		Called whenever a mouse button is pressed.
 	**/
 	public function press(event:Dynamic):Dynamic;
 	/**
-		the press mouse button in pan/zoom mode callback
+		Callback for mouse button press in pan/zoom mode.
 	**/
 	public function press_pan(event:Dynamic):Dynamic;
 	/**
-		the press mouse button in zoom to rect mode callback
+		Callback for mouse button press in zoom to rect mode.
 	**/
 	public function press_zoom(event:Dynamic):Dynamic;
 	/**
-		push the current view limits and position onto the stack
+		Push the current view limits and position onto the stack.
 	**/
 	public function push_current():Dynamic;
 	/**
-		this will be called whenever mouse button is released
+		Callback for mouse button release.
 	**/
 	public function release(event:Dynamic):Dynamic;
 	/**
-		the release mouse button callback in pan/zoom mode
+		Callback for mouse button release in pan/zoom mode.
 	**/
 	public function release_pan(event:Dynamic):Dynamic;
 	/**
-		the release mouse button callback in zoom to rect mode
+		Callback for mouse button release in zoom to rect mode.
 	**/
 	public function release_zoom(event:Dynamic):Dynamic;
 	/**
-		Remove the rubberband
+		Remove the rubberband.
 	**/
 	public function remove_rubberband():Dynamic;
 	/**
-		Save the current figure
+		Save the current figure.
 	**/
 	public function save_figure(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Set the current cursor to one of the :class:`Cursors`
-		enums values
+		Set the current cursor to one of the :class:`Cursors` enums values.
+		
+		If required by the backend, this method should trigger an update in
+		the backend event loop after the cursor is set, as this method may be
+		called e.g. before a long-running task during which the GUI is not
+		updated.
 	**/
 	public function set_cursor(cursor:Dynamic):Dynamic;
 	/**
-		Enable or disable back/forward button
+		Enable or disable the back/forward button.
 	**/
 	public function set_history_buttons():Dynamic;
 	/**
-		Display a message on toolbar or in status bar
+		Display a message on toolbar or in status bar.
 	**/
 	public function set_message(s:Dynamic):Dynamic;
 	static public var toolitems : Dynamic;
 	/**
-		Reset the axes stack
+		Reset the axes stack.
 	**/
 	public function update():Dynamic;
 	/**
-		Activate zoom to rect mode
+		Activate zoom to rect mode.
 	**/
 	public function zoom(?args:python.VarArgs<Dynamic>):Dynamic;
 }

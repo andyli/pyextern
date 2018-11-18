@@ -9,6 +9,5 @@ package torch.nn.parallel.replicate;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _buffers(network:Dynamic):Dynamic;
-	static public function replicate(network:Dynamic, devices:Dynamic):Dynamic;
+	static public function replicate(network:Dynamic, devices:Dynamic, ?detach:Dynamic):Dynamic;
 }

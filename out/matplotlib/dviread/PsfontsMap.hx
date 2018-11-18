@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.dviread;
 @:pythonImport("matplotlib.dviread", "PsfontsMap") extern class PsfontsMap {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package matplotlib.dviread;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(filename:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(filename:Dynamic):Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -66,10 +66,7 @@ package matplotlib.dviread;
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
-	/**
-		Create and return a new object.  See help(type) for accurate signature.
-	**/
-	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, filename:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -104,14 +101,11 @@ package matplotlib.dviread;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _filename : Dynamic;
 	public var _font : Dynamic;
 	/**
-		Parse each line into words.
-	**/
-	public function _parse(file:Dynamic):Dynamic;
-	/**
-		Register a font described by "words".
+		Parse the font mapping file.
 		
 		The format is, AFAIK: texname fontname [effects and filenames]
 		Effects are PostScript snippets like ".177 SlantFont",
@@ -123,5 +117,5 @@ package matplotlib.dviread;
 		There is some difference between <foo.pfb and <<bar.pfb in
 		subsetting, but I have no example of << in my TeX installation.
 	**/
-	public function _register(words:Dynamic):Dynamic;
+	public function _parse(file:Dynamic):Dynamic;
 }

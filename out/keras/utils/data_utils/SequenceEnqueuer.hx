@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.utils.data_utils;
 @:pythonImport("keras.utils.data_utils", "SequenceEnqueuer") extern class SequenceEnqueuer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package keras.utils.data_utils;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(sequence:Dynamic, ?use_multiprocessing:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(sequence:Dynamic, ?use_multiprocessing:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,26 @@ package keras.utils.data_utils;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Get the Pool initializer for multiprocessing.
+		
+		# Returns
+		    Function, a Function to initialize the pool
+	**/
+	public function _get_executor_init(workers:Dynamic):Dynamic;
+	/**
+		Submits request to the executor and queue the `Future` objects.
+	**/
+	public function _run():Dynamic;
+	/**
+		Send current Iterable to all workers.
+	**/
+	public function _send_sequence():Dynamic;
 	/**
 		Creates a generator to extract data from the queue.
 		
@@ -120,21 +135,21 @@ package keras.utils.data_utils;
 	public function get():Dynamic;
 	public function is_running():Dynamic;
 	/**
-		Starts the handler's workers.
+		Start the handler's workers.
 		
 		# Arguments
 		    workers: number of worker threads
 		    max_queue_size: queue size
-		        (when full, threads could block on `put()`).
+		        (when full, workers could block on `put()`)
 	**/
 	public function start(?workers:Dynamic, ?max_queue_size:Dynamic):Dynamic;
 	/**
-		Stop running threads and wait for them to exit, if necessary.
+		Stops running threads and wait for them to exit, if necessary.
 		
-		Should be called by the same thread which called start().
+		Should be called by the same thread which called `start()`.
 		
 		# Arguments
-		    timeout: maximum time to wait on thread.join()
+		    timeout: maximum time to wait on `thread.join()`
 	**/
 	public function stop(?timeout:Dynamic):Dynamic;
 }

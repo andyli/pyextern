@@ -131,8 +131,8 @@ package scipy.interpolate._cubic;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -145,8 +145,10 @@ package scipy.interpolate._cubic;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -169,7 +171,7 @@ package scipy.interpolate._cubic;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
@@ -209,6 +211,34 @@ package scipy.interpolate._cubic;
 		x : (M,) or (M, K) ndarray
 		    The solution to the system a x = b.  Returned shape depends on the
 		    shape of `b`.
+		
+		Examples
+		--------
+		Solve the banded system a x = b, where::
+		
+		        [5  2 -1  0  0]       [0]
+		        [1  4  2 -1  0]       [1]
+		    a = [0  1  3  2 -1]   b = [2]
+		        [0  0  1  2  2]       [2]
+		        [0  0  0  1  1]       [3]
+		
+		There is one nonzero diagonal below the main diagonal (l = 1), and
+		two above (u = 2).  The diagonal banded form of the matrix is::
+		
+		         [*  * -1 -1 -1]
+		    ab = [*  2  2  2  2]
+		         [5  4  3  2  1]
+		         [1  1  1  1  *]
+		
+		>>> from scipy.linalg import solve_banded
+		>>> ab = np.array([[0,  0, -1, -1, -1],
+		...                [0,  2,  2,  2,  2],
+		...                [5,  4,  3,  2,  1],
+		...                [1,  1,  1,  1,  0]])
+		>>> b = np.array([0, 1, 2, 2, 3])
+		>>> x = solve_banded((1, 2), ab, b)
+		>>> x
+		array([-2.37288136,  3.93220339, -4.        ,  4.3559322 , -1.3559322 ])
 	**/
 	static public function solve_banded(l_and_u:Dynamic, ab:Dynamic, b:Dynamic, ?overwrite_ab:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var string_types : Dynamic;

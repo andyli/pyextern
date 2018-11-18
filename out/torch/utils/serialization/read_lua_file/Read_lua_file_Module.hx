@@ -16,6 +16,7 @@ package torch.utils.serialization.read_lua_file;
 	static public var TYPE_TABLE : Dynamic;
 	static public var TYPE_TORCH : Dynamic;
 	static public function Transpose_reader(reader:Dynamic, version:Dynamic):Dynamic;
+	static public function VolumetricAveragePooling_reader(reader:Dynamic, version:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

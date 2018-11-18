@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.summary.writer.writer;
 @:pythonImport("tensorflow.python.summary.writer.writer", "FileWriter") extern class FileWriter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -14,9 +14,17 @@ package tensorflow.python.summary.writer.writer;
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
+		Make usable with "with" statement.
+	**/
+	public function __enter__():Dynamic;
+	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
+	/**
+		Make usable with "with" statement.
+	**/
+	public function __exit__(unused_type:Dynamic, unused_value:Dynamic, unused_traceback:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -38,9 +46,9 @@ package tensorflow.python.summary.writer.writer;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Creates a `FileWriter` and an event file.
+		Creates a `FileWriter`, optionally shared within the given session.
 		
-		On construction the summary writer creates a new event file in `logdir`.
+		Typically, constructing a file writer creates a new event file in `logdir`.
 		This event file will contain `Event` protocol buffers constructed when you
 		call one of the following functions: `add_summary()`, `add_session_log()`,
 		`add_event()`, or `add_graph()`.
@@ -60,13 +68,16 @@ package tensorflow.python.summary.writer.writer;
 		writer = tf.summary.FileWriter(<some-directory>, sess.graph)
 		```
 		
-		The other arguments to the constructor control the asynchronous writes to
-		the event file:
-		
-		*  `flush_secs`: How often, in seconds, to flush the added summaries
-		   and events to disk.
-		*  `max_queue`: Maximum number of summaries or events pending to be
-		   written to disk before one of the 'add' calls block.
+		The `session` argument to the constructor makes the returned `FileWriter` a
+		compatibility layer over new graph-based summaries (`tf.contrib.summary`).
+		Crucially, this means the underlying writer resource and events file will
+		be shared with any other `FileWriter` using the same `session` and `logdir`,
+		and with any `tf.contrib.summary.SummaryWriter` in this session using the
+		the same shared resource name (which by default scoped to the logdir). If
+		no such resource exists, one will be created using the remaining arguments
+		to this constructor, but if one already exists those arguments are ignored.
+		In either case, ops will be added to `session.graph` to control the
+		underlying file writer resource. See `tf.contrib.summary` for more details.
 		
 		Args:
 		  logdir: A string. Directory where event file will be written.
@@ -77,13 +88,22 @@ package tensorflow.python.summary.writer.writer;
 		  graph_def: DEPRECATED: Use the `graph` argument instead.
 		  filename_suffix: A string. Every event file's name is suffixed with
 		    `suffix`.
+		  session: A `tf.Session` object. See details above.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		`FileWriter` is not compatible with eager execution. To write TensorBoard
+		summaries under eager execution, use `tf.contrib.summary` instead.
+		@end_compatibility
 	**/
 	@:native("__init__")
-	public function ___init__(logdir:Dynamic, ?graph:Dynamic, ?max_queue:Dynamic, ?flush_secs:Dynamic, ?graph_def:Dynamic, ?filename_suffix:Dynamic):Dynamic;
+	public function ___init__(logdir:Dynamic, ?graph:Dynamic, ?max_queue:Dynamic, ?flush_secs:Dynamic, ?graph_def:Dynamic, ?filename_suffix:Dynamic, ?session:Dynamic):Dynamic;
 	/**
-		Creates a `FileWriter` and an event file.
+		Creates a `FileWriter`, optionally shared within the given session.
 		
-		On construction the summary writer creates a new event file in `logdir`.
+		Typically, constructing a file writer creates a new event file in `logdir`.
 		This event file will contain `Event` protocol buffers constructed when you
 		call one of the following functions: `add_summary()`, `add_session_log()`,
 		`add_event()`, or `add_graph()`.
@@ -103,13 +123,16 @@ package tensorflow.python.summary.writer.writer;
 		writer = tf.summary.FileWriter(<some-directory>, sess.graph)
 		```
 		
-		The other arguments to the constructor control the asynchronous writes to
-		the event file:
-		
-		*  `flush_secs`: How often, in seconds, to flush the added summaries
-		   and events to disk.
-		*  `max_queue`: Maximum number of summaries or events pending to be
-		   written to disk before one of the 'add' calls block.
+		The `session` argument to the constructor makes the returned `FileWriter` a
+		compatibility layer over new graph-based summaries (`tf.contrib.summary`).
+		Crucially, this means the underlying writer resource and events file will
+		be shared with any other `FileWriter` using the same `session` and `logdir`,
+		and with any `tf.contrib.summary.SummaryWriter` in this session using the
+		the same shared resource name (which by default scoped to the logdir). If
+		no such resource exists, one will be created using the remaining arguments
+		to this constructor, but if one already exists those arguments are ignored.
+		In either case, ops will be added to `session.graph` to control the
+		underlying file writer resource. See `tf.contrib.summary` for more details.
 		
 		Args:
 		  logdir: A string. Directory where event file will be written.
@@ -120,15 +143,24 @@ package tensorflow.python.summary.writer.writer;
 		  graph_def: DEPRECATED: Use the `graph` argument instead.
 		  filename_suffix: A string. Every event file's name is suffixed with
 		    `suffix`.
+		  session: A `tf.Session` object. See details above.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		`FileWriter` is not compatible with eager execution. To write TensorBoard
+		summaries under eager execution, use `tf.contrib.summary` instead.
+		@end_compatibility
 	**/
-	public function new(logdir:Dynamic, ?graph:Dynamic, ?max_queue:Dynamic, ?flush_secs:Dynamic, ?graph_def:Dynamic, ?filename_suffix:Dynamic):Void;
+	public function new(logdir:Dynamic, ?graph:Dynamic, ?max_queue:Dynamic, ?flush_secs:Dynamic, ?graph_def:Dynamic, ?filename_suffix:Dynamic, ?session:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -179,13 +211,15 @@ package tensorflow.python.summary.writer.writer;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _add_event(event:Dynamic, step:Dynamic):Dynamic;
 	public function _add_graph_def(graph_def:Dynamic, ?global_step:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public function _write_plugin_assets(graph:Dynamic):Dynamic;
 	/**
 		Adds an event to the event file.
@@ -258,8 +292,8 @@ package tensorflow.python.summary.writer.writer;
 		and adds it to the event file.
 		
 		You can pass the result of evaluating any summary op, using
-		@{tf.Session.run} or
-		@{tf.Tensor.eval}, to this
+		`tf.Session.run` or
+		`tf.Tensor.eval`, to this
 		function. Alternatively, you can pass a `tf.Summary` protocol
 		buffer that you populate with your own data. The latter is
 		commonly done to report evaluation results in event files.

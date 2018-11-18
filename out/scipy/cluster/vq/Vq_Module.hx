@@ -76,16 +76,7 @@ package scipy.cluster.vq;
 	**/
 	static public function _kmeans(obs:Dynamic, guess:Dynamic, ?thresh:Dynamic):Dynamic;
 	/**
-		"raw" version of kmeans2. Do not use directly.
-		
-		Run k-means with a given initial codebook.
-	**/
-	static public function _kmeans2(data:Dynamic, code:Dynamic, niter:Dynamic, nc:Dynamic, missing:Dynamic):Dynamic;
-	/**
 		Pick k points at random in data (one row = one observation).
-		
-		This is done by taking the k first values of a random permutation of 1..N
-		where N is the number of observation.
 		
 		Parameters
 		----------
@@ -121,29 +112,298 @@ package scipy.cluster.vq;
 		Print a warning when called.
 	**/
 	static public function _missing_warn():Dynamic;
-	/**
-		Python version of vq algorithm for rank 1 only.
-		
-		Parameters
-		----------
-		obs : ndarray
-		    Expects a rank 1 array. Each item is one observation.
-		code_book : ndarray
-		    Code book to use. Same format than obs. Should rank 1 too.
-		
-		Returns
-		-------
-		code : ndarray
-		    code[i] gives the label of the ith obversation, that its code is
-		    code_book[code[i]].
-		mind_dist : ndarray
-		    min_dist[i] gives the distance between the ith observation and its
-		    corresponding code.
-	**/
-	static public function _py_vq_1d(obs:Dynamic, code_book:Dynamic):Dynamic;
 	static public var _valid_init_meth : Dynamic;
 	static public var _valid_miss_meth : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Compute distance between each pair of the two collections of inputs.
+		
+		See Notes for common calling conventions.
+		
+		Parameters
+		----------
+		XA : ndarray
+		    An :math:`m_A` by :math:`n` array of :math:`m_A`
+		    original observations in an :math:`n`-dimensional space.
+		    Inputs are converted to float type.
+		XB : ndarray
+		    An :math:`m_B` by :math:`n` array of :math:`m_B`
+		    original observations in an :math:`n`-dimensional space.
+		    Inputs are converted to float type.
+		metric : str or callable, optional
+		    The distance metric to use.  If a string, the distance function can be
+		    'braycurtis', 'canberra', 'chebyshev', 'cityblock', 'correlation',
+		    'cosine', 'dice', 'euclidean', 'hamming', 'jaccard', 'kulsinski',
+		    'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto', 'russellrao',
+		    'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
+		    'wminkowski', 'yule'.
+		*args : tuple. Deprecated.
+		    Additional arguments should be passed as keyword arguments
+		**kwargs : dict, optional
+		    Extra arguments to `metric`: refer to each metric documentation for a
+		    list of all possible arguments.
+		
+		    Some possible arguments:
+		
+		    p : scalar
+		    The p-norm to apply for Minkowski, weighted and unweighted.
+		    Default: 2.
+		
+		    w : ndarray
+		    The weight vector for metrics that support weights (e.g., Minkowski).
+		
+		    V : ndarray
+		    The variance vector for standardized Euclidean.
+		    Default: var(vstack([XA, XB]), axis=0, ddof=1)
+		
+		    VI : ndarray
+		    The inverse of the covariance matrix for Mahalanobis.
+		    Default: inv(cov(vstack([XA, XB].T))).T
+		
+		    out : ndarray
+		    The output array
+		    If not None, the distance matrix Y is stored in this array.
+		    Note: metric independent, it will become a regular keyword arg in a
+		    future scipy version
+		
+		Returns
+		-------
+		Y : ndarray
+		    A :math:`m_A` by :math:`m_B` distance matrix is returned.
+		    For each :math:`i` and :math:`j`, the metric
+		    ``dist(u=XA[i], v=XB[j])`` is computed and stored in the
+		    :math:`ij` th entry.
+		
+		Raises
+		------
+		ValueError
+		    An exception is thrown if `XA` and `XB` do not have
+		    the same number of columns.
+		
+		Notes
+		-----
+		The following are common calling conventions:
+		
+		1. ``Y = cdist(XA, XB, 'euclidean')``
+		
+		   Computes the distance between :math:`m` points using
+		   Euclidean distance (2-norm) as the distance metric between the
+		   points. The points are arranged as :math:`m`
+		   :math:`n`-dimensional row vectors in the matrix X.
+		
+		2. ``Y = cdist(XA, XB, 'minkowski', p=2.)``
+		
+		   Computes the distances using the Minkowski distance
+		   :math:`||u-v||_p` (:math:`p`-norm) where :math:`p \geq 1`.
+		
+		3. ``Y = cdist(XA, XB, 'cityblock')``
+		
+		   Computes the city block or Manhattan distance between the
+		   points.
+		
+		4. ``Y = cdist(XA, XB, 'seuclidean', V=None)``
+		
+		   Computes the standardized Euclidean distance. The standardized
+		   Euclidean distance between two n-vectors ``u`` and ``v`` is
+		
+		   .. math::
+		
+		      \sqrt{\sum {(u_i-v_i)^2 / V[x_i]}}.
+		
+		   V is the variance vector; V[i] is the variance computed over all
+		   the i'th components of the points. If not passed, it is
+		   automatically computed.
+		
+		5. ``Y = cdist(XA, XB, 'sqeuclidean')``
+		
+		   Computes the squared Euclidean distance :math:`||u-v||_2^2` between
+		   the vectors.
+		
+		6. ``Y = cdist(XA, XB, 'cosine')``
+		
+		   Computes the cosine distance between vectors u and v,
+		
+		   .. math::
+		
+		      1 - \frac{u \cdot v}
+		               {{||u||}_2 {||v||}_2}
+		
+		   where :math:`||*||_2` is the 2-norm of its argument ``*``, and
+		   :math:`u \cdot v` is the dot product of :math:`u` and :math:`v`.
+		
+		7. ``Y = cdist(XA, XB, 'correlation')``
+		
+		   Computes the correlation distance between vectors u and v. This is
+		
+		   .. math::
+		
+		      1 - \frac{(u - \bar{u}) \cdot (v - \bar{v})}
+		               {{||(u - \bar{u})||}_2 {||(v - \bar{v})||}_2}
+		
+		   where :math:`\bar{v}` is the mean of the elements of vector v,
+		   and :math:`x \cdot y` is the dot product of :math:`x` and :math:`y`.
+		
+		
+		8. ``Y = cdist(XA, XB, 'hamming')``
+		
+		   Computes the normalized Hamming distance, or the proportion of
+		   those vector elements between two n-vectors ``u`` and ``v``
+		   which disagree. To save memory, the matrix ``X`` can be of type
+		   boolean.
+		
+		9. ``Y = cdist(XA, XB, 'jaccard')``
+		
+		   Computes the Jaccard distance between the points. Given two
+		   vectors, ``u`` and ``v``, the Jaccard distance is the
+		   proportion of those elements ``u[i]`` and ``v[i]`` that
+		   disagree where at least one of them is non-zero.
+		
+		10. ``Y = cdist(XA, XB, 'chebyshev')``
+		
+		   Computes the Chebyshev distance between the points. The
+		   Chebyshev distance between two n-vectors ``u`` and ``v`` is the
+		   maximum norm-1 distance between their respective elements. More
+		   precisely, the distance is given by
+		
+		   .. math::
+		
+		      d(u,v) = \max_i {|u_i-v_i|}.
+		
+		11. ``Y = cdist(XA, XB, 'canberra')``
+		
+		   Computes the Canberra distance between the points. The
+		   Canberra distance between two points ``u`` and ``v`` is
+		
+		   .. math::
+		
+		     d(u,v) = \sum_i \frac{|u_i-v_i|}
+		                          {|u_i|+|v_i|}.
+		
+		12. ``Y = cdist(XA, XB, 'braycurtis')``
+		
+		   Computes the Bray-Curtis distance between the points. The
+		   Bray-Curtis distance between two points ``u`` and ``v`` is
+		
+		
+		   .. math::
+		
+		        d(u,v) = \frac{\sum_i (|u_i-v_i|)}
+		                      {\sum_i (|u_i+v_i|)}
+		
+		13. ``Y = cdist(XA, XB, 'mahalanobis', VI=None)``
+		
+		   Computes the Mahalanobis distance between the points. The
+		   Mahalanobis distance between two points ``u`` and ``v`` is
+		   :math:`\sqrt{(u-v)(1/V)(u-v)^T}` where :math:`(1/V)` (the ``VI``
+		   variable) is the inverse covariance. If ``VI`` is not None,
+		   ``VI`` will be used as the inverse covariance matrix.
+		
+		14. ``Y = cdist(XA, XB, 'yule')``
+		
+		   Computes the Yule distance between the boolean
+		   vectors. (see `yule` function documentation)
+		
+		15. ``Y = cdist(XA, XB, 'matching')``
+		
+		   Synonym for 'hamming'.
+		
+		16. ``Y = cdist(XA, XB, 'dice')``
+		
+		   Computes the Dice distance between the boolean vectors. (see
+		   `dice` function documentation)
+		
+		17. ``Y = cdist(XA, XB, 'kulsinski')``
+		
+		   Computes the Kulsinski distance between the boolean
+		   vectors. (see `kulsinski` function documentation)
+		
+		18. ``Y = cdist(XA, XB, 'rogerstanimoto')``
+		
+		   Computes the Rogers-Tanimoto distance between the boolean
+		   vectors. (see `rogerstanimoto` function documentation)
+		
+		19. ``Y = cdist(XA, XB, 'russellrao')``
+		
+		   Computes the Russell-Rao distance between the boolean
+		   vectors. (see `russellrao` function documentation)
+		
+		20. ``Y = cdist(XA, XB, 'sokalmichener')``
+		
+		   Computes the Sokal-Michener distance between the boolean
+		   vectors. (see `sokalmichener` function documentation)
+		
+		21. ``Y = cdist(XA, XB, 'sokalsneath')``
+		
+		   Computes the Sokal-Sneath distance between the vectors. (see
+		   `sokalsneath` function documentation)
+		
+		
+		22. ``Y = cdist(XA, XB, 'wminkowski', p=2., w=w)``
+		
+		   Computes the weighted Minkowski distance between the
+		   vectors. (see `wminkowski` function documentation)
+		
+		23. ``Y = cdist(XA, XB, f)``
+		
+		   Computes the distance between all pairs of vectors in X
+		   using the user supplied 2-arity function f. For example,
+		   Euclidean distance between the vectors could be computed
+		   as follows::
+		
+		     dm = cdist(XA, XB, lambda u, v: np.sqrt(((u-v)**2).sum()))
+		
+		   Note that you should avoid passing a reference to one of
+		   the distance functions defined in this library. For example,::
+		
+		     dm = cdist(XA, XB, sokalsneath)
+		
+		   would calculate the pair-wise distances between the vectors in
+		   X using the Python function `sokalsneath`. This would result in
+		   sokalsneath being called :math:`{n \choose 2}` times, which
+		   is inefficient. Instead, the optimized C version is more
+		   efficient, and we call it using the following syntax::
+		
+		     dm = cdist(XA, XB, 'sokalsneath')
+		
+		Examples
+		--------
+		Find the Euclidean distances between four 2-D coordinates:
+		
+		>>> from scipy.spatial import distance
+		>>> coords = [(35.0456, -85.2672),
+		...           (35.1174, -89.9711),
+		...           (35.9728, -83.9422),
+		...           (36.1667, -86.7833)]
+		>>> distance.cdist(coords, coords, 'euclidean')
+		array([[ 0.    ,  4.7044,  1.6172,  1.8856],
+		       [ 4.7044,  0.    ,  6.0893,  3.3561],
+		       [ 1.6172,  6.0893,  0.    ,  2.8477],
+		       [ 1.8856,  3.3561,  2.8477,  0.    ]])
+		
+		
+		Find the Manhattan distance from a 3-D point to the corners of the unit
+		cube:
+		
+		>>> a = np.array([[0, 0, 0],
+		...               [0, 0, 1],
+		...               [0, 1, 0],
+		...               [0, 1, 1],
+		...               [1, 0, 0],
+		...               [1, 0, 1],
+		...               [1, 1, 0],
+		...               [1, 1, 1]])
+		>>> b = np.array([[ 0.1,  0.2,  0.4]])
+		>>> distance.cdist(a, b, 'cityblock')
+		array([[ 0.7],
+		       [ 0.9],
+		       [ 1.3],
+		       [ 1.5],
+		       [ 1.5],
+		       [ 1.7],
+		       [ 2.1],
+		       [ 2.3]])
+	**/
+	static public function cdist(XA:Dynamic, XB:Dynamic, ?metric:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Performs k-means on a set of observation vectors forming k clusters.
@@ -215,6 +475,7 @@ package scipy.cluster.vq;
 		--------
 		>>> from numpy import array
 		>>> from scipy.cluster.vq import vq, kmeans, whiten
+		>>> import matplotlib.pyplot as plt
 		>>> features  = array([[ 1.9,2.3],
 		...                    [ 1.5,2.5],
 		...                    [ 0.8,0.6],
@@ -237,6 +498,22 @@ package scipy.cluster.vq;
 		(array([[ 2.3110306 ,  2.86287398],    # random
 		       [ 1.32544402,  0.65607529],
 		       [ 0.40782893,  2.02786907]]), 0.5196582527686241)
+		
+		>>> # Create 50 datapoints in two clusters a and b
+		>>> pts = 50
+		>>> a = np.random.multivariate_normal([0, 0], [[4, 1], [1, 4]], size=pts)
+		>>> b = np.random.multivariate_normal([30, 10],
+		...                                   [[10, 2], [2, 1]],
+		...                                   size=pts)
+		>>> features = np.concatenate((a, b))
+		>>> # Whiten data
+		>>> whitened = whiten(features)
+		>>> # Find 2 clusters in the data
+		>>> codebook, distortion = kmeans(whitened, 2)
+		>>> # Plot whitened data and cluster centers in red
+		>>> plt.scatter(whitened[:, 0], whitened[:, 1])
+		>>> plt.scatter(codebook[:, 0], codebook[:, 1], c='r')
+		>>> plt.show()
 	**/
 	static public function kmeans(obs:Dynamic, k_or_guess:Dynamic, ?iter:Dynamic, ?thresh:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -257,7 +534,7 @@ package scipy.cluster.vq;
 		    'matrix', or if a ndarray is given instead, it is
 		    interpreted as initial cluster to use instead.
 		iter : int, optional
-		    Number of iterations of the k-means algrithm to run. Note
+		    Number of iterations of the k-means algorithm to run. Note
 		    that this differs in meaning from the iters parameter to
 		    the kmeans function.
 		thresh : float, optional
@@ -336,41 +613,46 @@ package scipy.cluster.vq;
 	**/
 	static public function py_vq(obs:Dynamic, code_book:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
-		2nd Python version of vq algorithm.
+		`py_vq2` is deprecated, use `py_vq` instead!
 		
-		The algorithm simply computes the euclidian distance between each
-		observation and every frame in the code_book/
+		Python version of vq algorithm.
 		
-		Parameters
-		----------
-		obs : ndarray
-		    Expect a rank 2 array. Each row is one observation.
-		code_book : ndarray
-		    Code book to use. Same format than obs. Should have same number of
-		    features (eg columns) than obs.
-		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
-		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		    Default: True
+		   The algorithm computes the euclidian distance between each
+		   observation and every frame in the code_book.
 		
-		Returns
-		-------
-		code : ndarray
-		    code[i] gives the label of the ith obversation, that its code is
-		    code_book[code[i]].
-		mind_dist : ndarray
-		    min_dist[i] gives the distance between the ith observation and its
-		    corresponding code.
+		   Parameters
+		   ----------
+		   obs : ndarray
+		       Expects a rank 2 array. Each row is one observation.
+		   code_book : ndarray
+		       Code book to use. Same format than obs. Should have same number of
+		       features (eg columns) than obs.
+		   check_finite : bool, optional
+		       Whether to check that the input matrices contain only finite numbers.
+		       Disabling may give a performance gain, but may result in problems
+		       (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		       Default: True
 		
-		Notes
-		-----
-		This could be faster when number of codebooks is small, but it
-		becomes a real memory hog when codebook is large. It requires
-		N by M by O storage where N=number of obs, M = number of
-		features, and O = number of codes.
+		   Returns
+		   -------
+		   code : ndarray
+		       code[i] gives the label of the ith obversation, that its code is
+		       code_book[code[i]].
+		   mind_dist : ndarray
+		       min_dist[i] gives the distance between the ith observation and its
+		       corresponding code.
+		
+		   Notes
+		   -----
+		   This function is slower than the C version but works for
+		   all input types.  If the inputs have the wrong types for the
+		   C versions of the function, this one is called as a last resort.
+		
+		   It is about 20 times slower than the C version.
+		
+		   
 	**/
-	static public function py_vq2(obs:Dynamic, code_book:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function py_vq2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Assign codes from a code book to observations.
 		

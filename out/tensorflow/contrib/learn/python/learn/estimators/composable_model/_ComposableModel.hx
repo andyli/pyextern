@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 @:pythonImport("tensorflow.contrib.learn.python.learn.estimators.composable_model", "_ComposableModel") extern class _ComposableModel {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,7 +38,11 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Common initialization for all _ComposableModel objects.
+		Common initialization for all _ComposableModel objects. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use model_fns in tf.estimator.
 		
 		Args:
 		  num_label_columns: The number of label columns.
@@ -56,7 +60,11 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 	@:native("__init__")
 	public function ___init__(num_label_columns:Dynamic, optimizer:Dynamic, gradient_clip_norm:Dynamic, num_ps_replicas:Dynamic, scope:Dynamic, ?trainable:Dynamic):Dynamic;
 	/**
-		Common initialization for all _ComposableModel objects.
+		Common initialization for all _ComposableModel objects. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use model_fns in tf.estimator.
 		
 		Args:
 		  num_label_columns: The number of label columns.
@@ -78,7 +86,7 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -129,7 +137,7 @@ package tensorflow.contrib.learn.python.learn.estimators.composable_model;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

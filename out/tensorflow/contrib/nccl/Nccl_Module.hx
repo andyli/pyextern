@@ -71,19 +71,31 @@ package tensorflow.contrib.nccl;
 	**/
 	static public function all_sum(tensors:Dynamic):Dynamic;
 	/**
-		Returns a list of tensors on `dst_devices`, each with value `tensor`.
-		
-		The computation is done with a broadcast nccl operation, so if only some of
-		the returned tensors and src_tensor are evaluated then the computation will
-		hang.
+		Returns a tensor that can be efficiently transferred to other devices.
 		
 		Args:
-		  src_tensor: The tensor to send; must be assigned to a GPU device.
-		  dst_devices: The GPU devices to receive the sent tensor.
+		  tensor: The tensor to send; must be assigned to a GPU device.
 		
 		Returns:
-		  List of tensors, each with the value of `src_tensor`, which the device
-		  of tensor i is `dst_devices[i]`.
+		  A tensor with the value of `src_tensor`, which can be used as input to
+		  ops on other GPU devices.
 	**/
-	static public function broadcast(src_tensor:Dynamic, dst_devices:Dynamic):Dynamic;
+	static public function broadcast(tensor:Dynamic):Dynamic;
+	/**
+		Returns a tensor with the reduce sum across `tensors`.
+		
+		The computation is done with a reduce operation, so only one tensor is
+		returned.
+		
+		Args:
+		  tensors: The input tensors across which to sum; must be assigned
+		    to GPU devices.
+		
+		Returns:
+		  A tensor containing the sum of the input tensors.
+		
+		Raises:
+		  LookupError: If context is not currently using a GPU device.
+	**/
+	static public function reduce_sum(tensors:Dynamic):Dynamic;
 }

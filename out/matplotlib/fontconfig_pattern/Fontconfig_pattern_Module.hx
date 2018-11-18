@@ -9,8 +9,6 @@ package matplotlib.fontconfig_pattern;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
 	/**
 		Return the string obtained by replacing the leftmost non-overlapping occurrences of pattern in string by the replacement repl.
 	**/
@@ -26,13 +24,30 @@ package matplotlib.fontconfig_pattern;
 	**/
 	static public function generate_fontconfig_pattern(d:Dynamic):Dynamic;
 	/**
+		Least-recently-used cache decorator.
+		
+		If *maxsize* is set to None, the LRU features are disabled and the cache
+		can grow without bound.
+		
+		If *typed* is True, arguments of different types will be cached separately.
+		For example, f(3.0) and f(3) will be treated as distinct calls with
+		distinct results.
+		
+		Arguments to the cached function must be hashable.
+		
+		View the cache statistics named tuple (hits, misses, maxsize, currsize)
+		with f.cache_info().  Clear the cache and statistics with f.cache_clear().
+		Access the underlying function with f.__wrapped__.
+		
+		See:  http://en.wikipedia.org/wiki/Cache_algorithms#Least_Recently_Used
+	**/
+	static public function lru_cache(?maxsize:Dynamic, ?typed:Dynamic):Dynamic;
+	/**
 		Parse the given fontconfig *pattern* and return a dictionary
 		of key/value pairs useful for initializing a
 		:class:`font_manager.FontProperties` object.
 	**/
 	static public function parse_fontconfig_pattern(pattern:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
-	static public var unicode_literals : Dynamic;
 	/**
 		Return the string obtained by replacing the leftmost non-overlapping occurrences of pattern in string by the replacement repl.
 	**/

@@ -9,7 +9,7 @@ package matplotlib.colors;
 		*autoscale_None(value)*.
 	**/
 	public function __call__(value:Dynamic, ?clip:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,48 +46,56 @@ package matplotlib.colors;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		*boundaries*
-		    a monotonically increasing sequence
-		*ncolors*
-		    number of colors in the colormap to be used
+		Parameters
+		----------
+		boundaries : array-like
+		    Monotonically increasing sequence of boundaries
+		ncolors : int
+		    Number of colors in the colormap to be used
+		clip : bool, optional
+		    If clip is ``True``, out of range values are mapped to 0 if they
+		    are below ``boundaries[0]`` or mapped to ncolors - 1 if they are
+		    above ``boundaries[-1]``.
 		
-		If::
+		    If clip is ``False``, out of range values are mapped to -1 if
+		    they are below ``boundaries[0]`` or mapped to ncolors if they are
+		    above ``boundaries[-1]``. These are then converted to valid indices
+		    by :meth:`Colormap.__call__`.
 		
-		    b[i] <= v < b[i+1]
+		Notes
+		-----
+		*boundaries* defines the edges of bins, and data falling within a bin
+		is mapped to the color with the same index.
 		
-		then v is mapped to color j;
-		as i varies from 0 to len(boundaries)-2,
-		j goes from 0 to ncolors-1.
-		
-		Out-of-range values are mapped
-		to -1 if low and ncolors if high; these are converted
-		to valid indices by
-		:meth:`Colormap.__call__` .
-		If clip == True, out-of-range values
-		are mapped to 0 if low and ncolors-1 if high.
+		If the number of bins doesn't equal *ncolors*, the color is chosen
+		by linear interpolation of the bin number onto color numbers.
 	**/
 	@:native("__init__")
 	public function ___init__(boundaries:Dynamic, ncolors:Dynamic, ?clip:Dynamic):Dynamic;
 	/**
-		*boundaries*
-		    a monotonically increasing sequence
-		*ncolors*
-		    number of colors in the colormap to be used
+		Parameters
+		----------
+		boundaries : array-like
+		    Monotonically increasing sequence of boundaries
+		ncolors : int
+		    Number of colors in the colormap to be used
+		clip : bool, optional
+		    If clip is ``True``, out of range values are mapped to 0 if they
+		    are below ``boundaries[0]`` or mapped to ncolors - 1 if they are
+		    above ``boundaries[-1]``.
 		
-		If::
+		    If clip is ``False``, out of range values are mapped to -1 if
+		    they are below ``boundaries[0]`` or mapped to ncolors if they are
+		    above ``boundaries[-1]``. These are then converted to valid indices
+		    by :meth:`Colormap.__call__`.
 		
-		    b[i] <= v < b[i+1]
+		Notes
+		-----
+		*boundaries* defines the edges of bins, and data falling within a bin
+		is mapped to the color with the same index.
 		
-		then v is mapped to color j;
-		as i varies from 0 to len(boundaries)-2,
-		j goes from 0 to ncolors-1.
-		
-		Out-of-range values are mapped
-		to -1 if low and ncolors if high; these are converted
-		to valid indices by
-		:meth:`Colormap.__call__` .
-		If clip == True, out-of-range values
-		are mapped to 0 if low and ncolors-1 if high.
+		If the number of bins doesn't equal *ncolors*, the color is chosen
+		by linear interpolation of the bin number onto color numbers.
 	**/
 	public function new(boundaries:Dynamic, ncolors:Dynamic, ?clip:Dynamic):Void;
 	/**
@@ -96,7 +104,7 @@ package matplotlib.colors;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -147,7 +155,7 @@ package matplotlib.colors;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -157,9 +165,16 @@ package matplotlib.colors;
 	**/
 	public function autoscale(A:Dynamic):Dynamic;
 	/**
-		autoscale only None-valued vmin or vmax
+		autoscale only None-valued vmin or vmax.
 	**/
 	public function autoscale_None(A:Dynamic):Dynamic;
+	/**
+		Raises
+		------
+		ValueError
+		    BoundaryNorm is not invertible, so calling this method will always
+		    raise an error
+	**/
 	public function inverse(value:Dynamic):Dynamic;
 	/**
 		Homogenize the input *value* for easy and efficient normalization.
@@ -169,7 +184,7 @@ package matplotlib.colors;
 		Returns *result*, *is_scalar*, where *result* is a
 		masked array matching *value*.  Float dtypes are preserved;
 		integer types with two bytes or smaller are converted to
-		np.float32, and larger types are converted to np.float.
+		np.float32, and larger types are converted to np.float64.
 		Preserving float32 when possible, and using in-place operations,
 		can greatly improve speed for large arrays.
 		

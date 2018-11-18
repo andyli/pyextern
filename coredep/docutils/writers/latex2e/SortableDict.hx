@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.latex2e;
 @:pythonImport("docutils.writers.latex2e", "SortableDict") extern class SortableDict {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if D has a key k, else False.
 	**/
@@ -61,7 +61,7 @@ package docutils.writers.latex2e;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -123,7 +123,7 @@ package docutils.writers.latex2e;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

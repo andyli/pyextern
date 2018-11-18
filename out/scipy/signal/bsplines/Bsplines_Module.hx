@@ -56,8 +56,8 @@ package scipy.signal.bsplines;
 		Returns
 		-------
 		add : ndarray or scalar
-		    The sum of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    The sum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -101,7 +101,8 @@ package scipy.signal.bsplines;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -174,6 +175,7 @@ package scipy.signal.bsplines;
 		-------
 		angle : ndarray
 		    Array of angles in radians, in the range ``[-pi, pi]``.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -275,7 +277,15 @@ package scipy.signal.bsplines;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -385,9 +395,9 @@ package scipy.signal.bsplines;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -422,7 +432,7 @@ package scipy.signal.bsplines;
 		
 		Returns
 		-------
-		val : int, ndarray
+		val : int, float, ndarray
 		    The total number of combinations.
 		
 		See Also
@@ -472,6 +482,7 @@ package scipy.signal.bsplines;
 		-------
 		y : ndarray
 		    The corresponding cosine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -575,8 +586,9 @@ package scipy.signal.bsplines;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -655,6 +667,7 @@ package scipy.signal.bsplines;
 		-------
 		y : ndarray or scalar
 		    The floor of each element in `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -680,9 +693,56 @@ package scipy.signal.bsplines;
 		
 		Gamma function.
 		
+		.. math::
+		
+		      \Gamma(z) = \int_0^\infty x^{z-1} e^{-x} dx = (z - 1)!
+		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
 		n!`` for natural number *n*.
+		
+		Parameters
+		----------
+		z : float or complex array_like
+		
+		Returns
+		-------
+		float or complex
+		    The value(s) of gamma(z)
+		
+		Examples
+		--------
+		>>> from scipy.special import gamma, factorial
+		
+		>>> gamma([0, 0.5, 1, 5])
+		array([         inf,   1.77245385,   1.        ,  24.        ])
+		
+		>>> z = 2.5 + 1j
+		>>> gamma(z)
+		(0.77476210455108352+0.70763120437959293j)
+		>>> gamma(z+1), z*gamma(z)  # Recurrence property
+		((1.2292740569981171+2.5438401155000685j),
+		 (1.2292740569981158+2.5438401155000658j))
+		
+		>>> gamma(0.5)**2  # gamma(0.5) = sqrt(pi)
+		3.1415926535897927
+		
+		Plot gamma(x) for real x
+		
+		>>> x = np.linspace(-3.5, 5.5, 2251)
+		>>> y = gamma(x)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, y, 'b', alpha=0.6, label='gamma(x)')
+		>>> k = np.arange(1, 7)
+		>>> plt.plot(k, factorial(k-1), 'k*', alpha=0.6,
+		...          label='(x-1)!, x = 1, 2, ...')
+		>>> plt.xlim(-3.5, 5.5)
+		>>> plt.ylim(-10, 25)
+		>>> plt.grid()
+		>>> plt.xlabel('x')
+		>>> plt.legend(loc='lower right')
+		>>> plt.show()
 	**/
 	static public function gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -715,8 +775,10 @@ package scipy.signal.bsplines;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		
 		See Also
@@ -726,14 +788,14 @@ package scipy.signal.bsplines;
 		Examples
 		--------
 		>>> np.greater([4,2],[2,2])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		If the inputs are ndarrays, then np.greater is equivalent to '>'.
 		
 		>>> a = np.array([4,2])
 		>>> b = np.array([2,2])
 		>>> a > b
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function greater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -762,7 +824,9 @@ package scipy.signal.bsplines;
 		Returns
 		-------
 		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -771,7 +835,7 @@ package scipy.signal.bsplines;
 		Examples
 		--------
 		>>> np.greater_equal([4, 2, 1], [2, 2, 2])
-		array([ True, True, False], dtype=bool)
+		array([ True, True, False])
 	**/
 	static public function greater_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -799,8 +863,10 @@ package scipy.signal.bsplines;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -809,7 +875,7 @@ package scipy.signal.bsplines;
 		Examples
 		--------
 		>>> np.less([1, 2], [2, 2])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function less(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -837,8 +903,10 @@ package scipy.signal.bsplines;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -847,7 +915,7 @@ package scipy.signal.bsplines;
 		Examples
 		--------
 		>>> np.less_equal([4, 2, 1], [2, 2, 2])
-		array([False,  True,  True], dtype=bool)
+		array([False,  True,  True])
 	**/
 	static public function less_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -876,6 +944,7 @@ package scipy.signal.bsplines;
 		y : ndarray or bool
 		    Boolean result with the same shape as `x1` and `x2` of the logical
 		    AND operation on corresponding elements of `x1` and `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -887,11 +956,11 @@ package scipy.signal.bsplines;
 		>>> np.logical_and(True, False)
 		False
 		>>> np.logical_and([True, False], [False, False])
-		array([False, False], dtype=bool)
+		array([False, False])
 		
 		>>> x = np.arange(5)
 		>>> np.logical_and(x>1, x<4)
-		array([False, False,  True,  True, False], dtype=bool)
+		array([False, False,  True,  True, False])
 	**/
 	static public function logical_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var pi : Dynamic;
@@ -914,12 +983,12 @@ package scipy.signal.bsplines;
 		
 		    The length of `condlist` must correspond to that of `funclist`.
 		    If one extra function is given, i.e. if
-		    ``len(funclist) - len(condlist) == 1``, then that extra function
+		    ``len(funclist) == len(condlist) + 1``, then that extra function
 		    is the default value, used wherever all conditions are false.
 		funclist : list of callables, f(x,*args,**kw), or scalars
 		    Each function is evaluated over `x` wherever its corresponding
-		    condition is True.  It should take an array as input and give an array
-		    or a scalar value as output.  If, instead of a callable,
+		    condition is True.  It should take a 1d array as input and give an 1d
+		    array or a scalar value as output.  If, instead of a callable,
 		    a scalar is provided then a constant function (``lambda x: scalar``) is
 		    assumed.
 		args : tuple, optional
@@ -1057,6 +1126,7 @@ package scipy.signal.bsplines;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1109,7 +1179,7 @@ package scipy.signal.bsplines;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -1136,6 +1206,7 @@ package scipy.signal.bsplines;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1171,7 +1242,7 @@ package scipy.signal.bsplines;
 		Parameters
 		----------
 		x : array_like
-		  Input array.
+		    Input array.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -1187,7 +1258,8 @@ package scipy.signal.bsplines;
 		Returns
 		-------
 		y : ndarray
-		  The corresponding tangent values.
+		    The corresponding tangent values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -1225,14 +1297,15 @@ package scipy.signal.bsplines;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1242,17 +1315,16 @@ package scipy.signal.bsplines;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))
@@ -1300,11 +1372,10 @@ package scipy.signal.bsplines;
 		
 		See Also
 		--------
-		ones_like : Return an array of ones with shape and type of input.
 		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		zeros : Return a new array setting values to zero.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
 		
 		Examples
 		--------
@@ -1317,7 +1388,7 @@ package scipy.signal.bsplines;
 		array([[0, 0, 0],
 		       [0, 0, 0]])
 		
-		>>> y = np.arange(3, dtype=np.float)
+		>>> y = np.arange(3, dtype=float)
 		>>> y
 		array([ 0.,  1.,  2.])
 		>>> np.zeros_like(y)

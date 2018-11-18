@@ -62,9 +62,14 @@ package numpy.core._internal;
 	**/
 	static public function _getfield_is_safe(oldtype:Dynamic, newtype:Dynamic, offset:Dynamic):Dynamic;
 	static public function _getintp_ctype():Dynamic;
+	static public function _is_from_ctypes(obj:Dynamic):Dynamic;
 	static public function _lcm(a:Dynamic, b:Dynamic):Dynamic;
 	static public function _makenames_list(adict:Dynamic, align:Dynamic):Dynamic;
 	static public var _nbo : Dynamic;
+	/**
+		Given a datatype and an order object, return a new names tuple, with the
+		order indicated
+	**/
 	static public function _newnames(datatype:Dynamic, order:Dynamic):Dynamic;
 	static public var _pep3118_native_map : Dynamic;
 	static public var _pep3118_native_typechars : Dynamic;
@@ -152,7 +157,15 @@ package numpy.core._internal;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----

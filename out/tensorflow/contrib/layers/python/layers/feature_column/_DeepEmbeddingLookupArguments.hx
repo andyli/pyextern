@@ -5,7 +5,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -136,7 +136,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -149,7 +149,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 	/**
 		Return a new _DeepEmbeddingLookupArguments object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		Alias for field number 4

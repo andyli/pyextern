@@ -15,7 +15,6 @@ package theano.tensor.basic;
 	static public var __spec__ : Dynamic;
 	static public function _allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic):Dynamic;
 	static public var _arange : Dynamic;
-	static public function _argmax(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return `x`, transformed into a `TensorType`.
 		
@@ -1028,6 +1027,8 @@ package theano.tensor.basic;
 	static public function btensor3(?name:Dynamic):Dynamic;
 	static public function btensor4(?name:Dynamic):Dynamic;
 	static public function btensor5(?name:Dynamic):Dynamic;
+	static public function btensor6(?name:Dynamic):Dynamic;
+	static public function btensor7(?name:Dynamic):Dynamic;
 	static public function bvector(?name:Dynamic):Dynamic;
 	/**
 		Symbolically cast `x` to a Tensor of type `dtype`.
@@ -1088,6 +1089,20 @@ package theano.tensor.basic;
 		Works for all dtypes, but mostly useful when a and b are int.
 	**/
 	static public function ceil_intdiv(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Check axes, normalize and convert them to a Python list of integers.
+		Return an empty list if argument is None.
+		
+		Parameters
+		----------
+		x: Tensor variable
+		axis = Integer, tuple or list of integers
+		
+		Returns
+		-------
+		axis: list of integers
+	**/
+	static public function check_and_normalize_axes(x:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Return True iff x and y are equal.
 		
@@ -1433,8 +1448,6 @@ package theano.tensor.basic;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	static public function conj(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function constant(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public var constant_cache : Dynamic;
 	/**
 		Return a symbolic `Constant` with value `x`.
 		
@@ -1444,8 +1457,19 @@ package theano.tensor.basic;
 		    `x` could not be converted to a numpy.ndarray.
 		ValueError
 		    `x` could not be expanded to have ndim dimensions.
+		
+		Note
+		----
+		We create a small cache of frequently used constant.
+		This speed up the Merge optimization for big graph.
+		We want to cache all scalar to don't merge as frequently constants.
+		But we don't want to cache too much stuff.
+		So we cache integer with dtype [u]int and float where the value is
+		between -10 and 10.
+		We cache all broadcast pattern for scalar.
 	**/
-	static public function constant_or_value(x:Dynamic, rtype:Dynamic, ?name:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function constant(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public var constant_cache : Dynamic;
 	/**
 		Add `f` to :doc:`oplist`.
 		
@@ -1548,11 +1572,46 @@ package theano.tensor.basic;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	static public function cosh(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Calculate the covariance matrix.
+		Covariance indicates the level to which two variables vary together.
+		If we examine N-dimensional samples, :math:`m = [x_1, x_2, ... x_N]^T`,
+		then the covariance matrix element :math:`C_{ij}` is the covariance of
+		:math:`x_i` and :math:`x_j`. The element :math:`C_{ii}` is the variance
+		of :math:`x_i`. Code and docstring ported from numpy.
+		----------
+		m : array_like
+		    A 2-D array containing multiple variables and observations.
+		    Each row of `m` represents a variable, and each column is
+		    observations of all those variables.
+		y : array_like, optional
+		    An additional set of variables and observations. `y` has the same form
+		    as that of `m`.
+		rowvar : bool, optional
+		    If `rowvar` is True (default), then each row represents a
+		    variable, with observations in the columns. Otherwise, the relationship
+		    is transposed: each column represents a variable, while the rows
+		    contain observations.
+		bias : bool, optional
+		    Default normalization (False) is by ``(N - 1)``, where ``N`` is the
+		    number of observations given (unbiased estimate). If `bias` is True, then
+		    normalization is by ``N``. These values can be overridden by using the
+		    keyword ``ddof``.
+		ddof : int, optional
+		    If not ``None`` the default value implied by `bias` is overridden.
+		    The default value is ``None``.
+		Returns
+		-------
+		out : The covariance matrix of the variables.
+	**/
+	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):Dynamic;
 	static public function crow(?name:Dynamic):Dynamic;
 	static public function cscalar(?name:Dynamic):Dynamic;
 	static public function ctensor3(?name:Dynamic):Dynamic;
 	static public function ctensor4(?name:Dynamic):Dynamic;
 	static public function ctensor5(?name:Dynamic):Dynamic;
+	static public function ctensor6(?name:Dynamic):Dynamic;
+	static public function ctensor7(?name:Dynamic):Dynamic;
 	static public function cvector(?name:Dynamic):Dynamic;
 	static public function dcol(?name:Dynamic):Dynamic;
 	static public function dcols(?names:python.VarArgs<Dynamic>):Dynamic;
@@ -1605,7 +1664,43 @@ package theano.tensor.basic;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	static public function deg2rad(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		A helper function for two ops: `theano.tensor.ExtractDiag` and
+		`theano.tensor.AllocDiag`. The name `diag` is meant to keep it consistent
+		with numpy. It both accepts tensor vector and tensor matrix.
+		While the passed tensor variable `v` has `v.ndim>=2`, it builds a
+		`ExtractDiag` instance, and returns a vector with its entries equal to
+		`v`'s main diagonal; otherwise if `v.ndim` is `1`, it builds an `AllocDiag`
+		instance, and returns a matrix with `v` at its k-th diaogonal.
+		
+		Parameters
+		----------
+		v : symbolic tensor
+		k : int
+		    offset
+		
+		Returns
+		-------
+		tensor : symbolic tensor
+	**/
 	static public function diag(v:Dynamic, ?k:Dynamic):Dynamic;
+	/**
+		A helper function for `theano.tensor.ExtractDiag`. It accepts tensor with
+		`ndim >= 2` as input. The name `diagonal` is just meant to keep it
+		consistent with numpy.
+		
+		Parameters
+		----------
+		a : symbolic tensor
+		offset : int
+		    offset
+		axis1 : int
+		axis2 : int
+		
+		Returns
+		-------
+		tensor : symbolic tensor
+	**/
 	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
 	static public var discrete_dtypes : Dynamic;
 	/**
@@ -1665,6 +1760,10 @@ package theano.tensor.basic;
 	static public function dtensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function dtensor5(?name:Dynamic):Dynamic;
 	static public function dtensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function dtensor6(?name:Dynamic):Dynamic;
+	static public function dtensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function dtensor7(?name:Dynamic):Dynamic;
+	static public function dtensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function dvector(?name:Dynamic):Dynamic;
 	static public function dvectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -2205,15 +2304,17 @@ package theano.tensor.basic;
 		    x : theano.tensor.var.TensorVariable
 		        the variable that should be reshaped.
 		
-		    outdim : int
+		    ndim : int
 		        the number of dimensions of the returned variable
-		
+		        Default 1.
+		    outdim : int
+		        DEPRECATED synonym for ndim
 		Returns
 		-------
 		theano.tensor.var.TensorVariable
 		    the flattend variable with dimensionality of outdim
 	**/
-	static public function flatten(x:Dynamic, ?outdim:Dynamic):Dynamic;
+	static public function flatten(x:Dynamic, ?ndim:Dynamic, ?outdim:Dynamic):Dynamic;
 	static public var float16_atol : Dynamic;
 	static public var float16_rtol : Dynamic;
 	static public var float32_atol : Dynamic;
@@ -2331,6 +2432,10 @@ package theano.tensor.basic;
 	static public function ftensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function ftensor5(?name:Dynamic):Dynamic;
 	static public function ftensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ftensor6(?name:Dynamic):Dynamic;
+	static public function ftensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ftensor7(?name:Dynamic):Dynamic;
+	static public function ftensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function fvector(?name:Dynamic):Dynamic;
 	static public function fvectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -2604,6 +2709,100 @@ package theano.tensor.basic;
 		second.
 	**/
 	static public function horizontal_stack(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Modified Bessel function of the first kind of order 0.
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function i0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Modified Bessel function of the first kind of order 1.
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function i1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function icol(?name:Dynamic):Dynamic;
 	static public function icols(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function identity_like(x:Dynamic):Dynamic;
@@ -2656,6 +2855,8 @@ package theano.tensor.basic;
 	static public function imag(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function imatrices(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function imatrix(?name:Dynamic):Dynamic;
+	static public function int32(?name:Dynamic):Dynamic;
+	static public function int32_t(?name:Dynamic):Dynamic;
 	/**
 		elementwise [floor] division (inverse of multiplication)
 		
@@ -2838,7 +3039,7 @@ package theano.tensor.basic;
 		    the comparison result of var's dim
 		    and the expected outdim.
 	**/
-	static public function is_flat(_var:Dynamic, ?outdim:Dynamic):Dynamic;
+	static public function is_flat(_var:Dynamic, ?ndim:Dynamic, ?outdim:Dynamic):Dynamic;
 	static public function iscalar(?name:Dynamic):Dynamic;
 	static public function iscalars(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -3016,10 +3217,61 @@ package theano.tensor.basic;
 	static public function itensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function itensor5(?name:Dynamic):Dynamic;
 	static public function itensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function itensor6(?name:Dynamic):Dynamic;
+	static public function itensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function itensor7(?name:Dynamic):Dynamic;
+	static public function itensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Modified Bessel function of the first kind of order v (real).
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function iv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function ivector(?name:Dynamic):Dynamic;
 	static public function ivectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Bessel function of the 0'th kind
+		Bessel function of the first kind of order 0.
 		
 		Generalizes a scalar op to tensors.
 		
@@ -3066,7 +3318,7 @@ package theano.tensor.basic;
 	**/
 	static public function j0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Bessel function of the 1'th kind
+		Bessel function of the first kind of order 1.
 		
 		Generalizes a scalar op to tensors.
 		
@@ -3138,6 +3390,53 @@ package theano.tensor.basic;
 	**/
 	static public function join(axis:Dynamic, ?tensors_list:python.VarArgs<Dynamic>):Dynamic;
 	static public function join_(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Bessel function of the first kind of order v (real).
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function jv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the [elementwise] largest of a variable number of arguments.
 		
@@ -3440,6 +3739,10 @@ package theano.tensor.basic;
 	static public function ltensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function ltensor5(?name:Dynamic):Dynamic;
 	static public function ltensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ltensor6(?name:Dynamic):Dynamic;
+	static public function ltensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ltensor7(?name:Dynamic):Dynamic;
+	static public function ltensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function lvector(?name:Dynamic):Dynamic;
 	static public function lvectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -5180,6 +5483,30 @@ package theano.tensor.basic;
 	**/
 	static public function tensor5(?name:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function tensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Return a symbolic 6-D variable.
+		
+		Parameters
+		----------
+		dtype: numeric type
+		    None means to use theano.config.floatX.
+		name
+		    A name to attach to this variable.
+	**/
+	static public function tensor6(?name:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function tensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Return a symbolic 7-D variable.
+		
+		Parameters
+		----------
+		dtype: numeric type
+		    None means to use theano.config.floatX.
+		name
+		    A name to attach to this variable.
+	**/
+	static public function tensor7(?name:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function tensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function tensor_copy(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function tensor_from_scalar(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -5340,6 +5667,53 @@ package theano.tensor.basic;
 		    in other words ``T[i,j] == 1`` for ``i <= j + k``, 0 otherwise.
 	**/
 	static public function tri(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		second derivative of the log gamma function
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function tri_gamma(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Lower triangle of an array.
 		
@@ -5593,6 +5967,8 @@ package theano.tensor.basic;
 	static public function wtensor3(?name:Dynamic):Dynamic;
 	static public function wtensor4(?name:Dynamic):Dynamic;
 	static public function wtensor5(?name:Dynamic):Dynamic;
+	static public function wtensor6(?name:Dynamic):Dynamic;
+	static public function wtensor7(?name:Dynamic):Dynamic;
 	static public function wvector(?name:Dynamic):Dynamic;
 	/**
 		bitwise a ^ b
@@ -5668,5 +6044,7 @@ package theano.tensor.basic;
 	static public function ztensor3(?name:Dynamic):Dynamic;
 	static public function ztensor4(?name:Dynamic):Dynamic;
 	static public function ztensor5(?name:Dynamic):Dynamic;
+	static public function ztensor6(?name:Dynamic):Dynamic;
+	static public function ztensor7(?name:Dynamic):Dynamic;
 	static public function zvector(?name:Dynamic):Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.font_manager;
 @:pythonImport("matplotlib.font_manager", "FontManager") extern class FontManager {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.font_manager;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,12 +103,20 @@ package matplotlib.font_manager;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __version__ : Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _findfont_cached(prop:Dynamic, fontext:Dynamic, directory:Dynamic, fallback_to_default:Dynamic, rebuild_if_missing:Dynamic, rc_params:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The afmfiles function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var afmfiles : Dynamic;
 	/**
 		Search the font list for the font that most closely matches
 		the :class:`FontProperties` *prop*.
@@ -191,15 +199,25 @@ package matplotlib.font_manager;
 	/**
 		Returns a match score between *weight1* and *weight2*.
 		
-		The result is the absolute value of the difference between the
-		CSS numeric values of *weight1* and *weight2*, normalized
-		between 0.0 and 1.0.
+		The result is 0.0 if both weight1 and weight 2 are given as strings
+		and have the same value.
+		
+		Otherwise, the result is the absolute value of the difference between
+		the CSS numeric values of *weight1* and *weight2*, normalized between
+		0.05 and 1.0.
 	**/
 	public function score_weight(weight1:Dynamic, weight2:Dynamic):Dynamic;
 	/**
 		Set the default font weight.  The initial value is 'normal'.
 	**/
 	public function set_default_weight(weight:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The ttffiles function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var ttffiles : Dynamic;
 	/**
 		Update the font dictionary with new font files.
 		Currently not implemented.

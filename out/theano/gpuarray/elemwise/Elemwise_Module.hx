@@ -26,7 +26,6 @@ package theano.gpuarray.elemwise;
 	**/
 	static public function as_gpuarray_variable(x:Dynamic, context_name:Dynamic):Dynamic;
 	static public var complex_types : Dynamic;
-	static public var config : Dynamic;
 	static public var division : Dynamic;
 	/**
 		dtype_to_typecode(dtype)
@@ -48,6 +47,13 @@ package theano.gpuarray.elemwise;
 		Infer the context name to use from the inputs given
 	**/
 	static public function infer_context_name(?vars:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Return the function name to load data.
+		
+		This should be used like this::
+		
+		    code = '%s(ival)' % (load_w(input_type),)
+	**/
 	static public function load_w(dtype:Dynamic):Dynamic;
 	static public function make_argument(v:Dynamic, name:Dynamic):Dynamic;
 	/**
@@ -59,5 +65,12 @@ package theano.gpuarray.elemwise;
 		Don't accept complex, otherwise call upgrade_to_float().
 	**/
 	static public function upgrade_to_float_no_complex(?types:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Return the function name to write data.
+		
+		This should be used like this::
+		
+		    code = 'res = %s(oval)' % (write_w(output_type),)
+	**/
 	static public function write_w(dtype:Dynamic):Dynamic;
 }

@@ -2,7 +2,16 @@
 package torch.autograd._functions.tensor;
 @:pythonImport("torch.autograd._functions.tensor", "Type") extern class Type {
 	public function __call__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Function metaclass.
+		
+		This metaclass sets up the following properties:
+		    _is_legacy: True if forward is not defined as a static method.
+		    _backward_cls: The Function class corresponding to the differentiated
+		        version of this function (which is generated on the fly by this
+		        metaclass).
+	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, attrs:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,18 +51,18 @@ package torch.autograd._functions.tensor;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(dest_type:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(dest_type:Dynamic):Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,36 +113,52 @@ package torch.autograd._functions.tensor;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _backward_cls(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _do_backward(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _do_forward(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _is_legacy : Dynamic;
+	public var _is_tracing : Dynamic;
 	static public function _register_hook(backward_hooks:Dynamic, hook:Dynamic):Dynamic;
 	public function _register_hook_dict(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function apply(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Defines a formula for differentiating the operation.
 		
-		This function is to be overriden by all subclasses.
+		This function is to be overridden by all subclasses.
 		
-		All arguments are tensors. It has to accept exactly as many arguments,
-		as many outputs did :func:`forward` return, and it should return as
-		many tensors, as there were inputs to :func:`forward`. Each argument
-		is the gradient w.r.t the given output, and each returned value should
-		be the gradient w.r.t. the corresponding input.
+		It must accept a context :attr:`ctx` as the first argument, followed by
+		as many outputs did :func:`forward` return, and it should return as many
+		tensors, as there were inputs to :func:`forward`. Each argument is the
+		gradient w.r.t the given output, and each returned value should be the
+		gradient w.r.t. the corresponding input.
+		
+		The context can be used to retrieve tensors saved during the forward
+		pass. It also has an attribute :attr:`ctx.needs_input_grad` as a tuple
+		of booleans representing whether each input needs gradient. E.g.,
+		:func:`backward` will have ``ctx.needs_input_grad[0] = True`` if the
+		first input to :func:`forward` needs gradient computated w.r.t. the
+		output.
 	**/
-	public function backward(grad_output:Dynamic):Dynamic;
+	static public function backward(ctx:Dynamic, grad_output:Dynamic):Dynamic;
 	public var dirty_tensors : Dynamic;
 	/**
 		Performs the operation.
 		
-		This function is to be overriden by all subclasses.
+		This function is to be overridden by all subclasses.
 		
-		It can take and return an arbitrary number of tensors.
+		It must accept a context ctx as the first argument, followed by any
+		number of arguments (tensors or other types).
+		
+		The context can be used to store tensors that can be then retrieved
+		during the backward pass.
 	**/
-	public function forward(i:Dynamic):Dynamic;
+	static public function forward(ctx:Dynamic, i:Dynamic, dest_type:Dynamic):Dynamic;
+	static public var is_traceable : Dynamic;
 	/**
 		Marks given tensors as modified in an in-place operation.
 		
@@ -141,8 +166,8 @@ package torch.autograd._functions.tensor;
 		:func:`forward` **method, and all arguments should be inputs.**
 		
 		Every tensor that's been modified in-place in a call to :func:`forward`
-		should be given to this function, to ensure correcness of our checks.
-		It doesn't matter wheter the function is called before or after
+		should be given to this function, to ensure correctness of our checks.
+		It doesn't matter whether the function is called before or after
 		modification.
 	**/
 	public function mark_dirty(?args:python.VarArgs<Dynamic>):Dynamic;
@@ -160,30 +185,11 @@ package torch.autograd._functions.tensor;
 		This is used e.g. for indices returned from a max :class:`Function`.
 	**/
 	public function mark_non_differentiable(?args:python.VarArgs<Dynamic>):Dynamic;
-	/**
-		Marks that given pairs of distinct tensors are sharing storage.
-		
-		**This should be called at most once, only from inside the**
-		:func:`forward` **method, and all arguments should be pairs of
-		(input, output).**
-		
-		If some of the outputs are going to be tensors sharing storage with
-		some of the inputs, all pairs of (input_arg, output_arg) should be
-		given to this function, to ensure correctness checking of in-place
-		modification. The only exception is when an output is exactly the same
-		tensor as input (e.g. in-place ops). In such case it's easy to conclude
-		that they're sharing data, so we don't require specifying such
-		dependencies.
-		
-		This function is not needed in most functions. It's primarily used in
-		indexing and transpose ops.
-	**/
 	public function mark_shared_storage(?pairs:python.VarArgs<Dynamic>):Dynamic;
+	public var metadata : Dynamic;
 	public var needs_input_grad : Dynamic;
+	public var next_functions : Dynamic;
 	public var non_differentiable : Dynamic;
-	public var num_inputs : Dynamic;
-	public var num_outputs : Dynamic;
-	public var previous_functions : Dynamic;
 	public function register_hook(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var requires_grad : Dynamic;
 	/**
@@ -193,14 +199,13 @@ package torch.autograd._functions.tensor;
 		:func:`forward` **method.**
 		
 		Later, saved tensors can be accessed through the :attr:`saved_tensors`
-		attribute. Before returning them to the user, a check is made, to
-		ensure they weren't used in any in-place operation that modified
-		their content.
+		attribute. Before returning them to the user, a check is made to ensure
+		they weren't used in any in-place operation that modified their content.
 		
 		Arguments can also be ``None``.
 	**/
 	public function save_for_backward(?tensors:python.VarArgs<Dynamic>):Dynamic;
 	public var saved_tensors : Dynamic;
-	public var shared_pairs : Dynamic;
+	public var saved_variables : Dynamic;
 	public var to_save : Dynamic;
 }

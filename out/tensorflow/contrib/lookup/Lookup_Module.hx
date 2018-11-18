@@ -22,10 +22,21 @@ package tensorflow.contrib.lookup;
 		Any lookup of an out-of-vocabulary token will return a bucket ID based on its
 		hash if `num_oov_buckets` is greater than zero. Otherwise it is assigned the
 		`default_value`.
-		The bucket ID range is `[vocabulary size, vocabulary size + num_oov_buckets]`.
+		The bucket ID range is
+		`[vocabulary size, vocabulary size + num_oov_buckets - 1]`.
 		
 		The underlying table must be initialized by calling
 		`tf.tables_initializer.run()` or `table.init.run()` once.
+		
+		To specify multi-column vocabulary files, use key_column_index and
+		value_column_index and delimiter.
+		
+		- TextFileIndex.LINE_NUMBER means use the line number starting from zero,
+		  expects data type int64.
+		- TextFileIndex.WHOLE_LINE means use the whole line content, expects data
+		  type string.
+		- A value >=0 means use the index (starting at zero) of the split line based
+		  on `delimiter`.
 		
 		Sample Usages:
 		
@@ -39,7 +50,7 @@ package tensorflow.contrib.lookup;
 		
 		```python
 		features = tf.constant(["emerson", "lake", "and", "palmer"])
-		table = tf.contrib.lookup.index_table_from_file(
+		table = tf.lookup.index_table_from_file(
 		    vocabulary_file="test.txt", num_oov_buckets=1)
 		ids = table.lookup(features)
 		...
@@ -49,7 +60,7 @@ package tensorflow.contrib.lookup;
 		```
 		
 		Args:
-		  vocabulary_file: The vocabulary filename.
+		  vocabulary_file: The vocabulary filename, may be a constant scalar `Tensor`.
 		  num_oov_buckets: The number of out-of-vocabulary buckets.
 		  vocab_size: Number of the elements in the vocabulary, if known.
 		  default_value: The value to use for out-of-vocabulary feature values.
@@ -58,6 +69,11 @@ package tensorflow.contrib.lookup;
 		    assignation of out-of-vocabulary buckets.
 		  key_dtype: The `key` data type.
 		  name: A name for this op (optional).
+		  key_column_index: The column index from the text file to get the `key`
+		    values from. The default is to use the whole line content.
+		  value_column_index: The column index from the text file to get the `value`
+		    values from. The default is to use the line number, starting from zero.
+		  delimiter: The delimiter to separate fields in a line.
 		
 		Returns:
 		  The lookup table to map a `key_dtype` `Tensor` to index `int64` `Tensor`.
@@ -67,7 +83,7 @@ package tensorflow.contrib.lookup;
 		  ValueError: If `num_oov_buckets` is negative or `vocab_size` is not greater
 		    than zero.
 	**/
-	static public function index_table_from_file(?vocabulary_file:Dynamic, ?num_oov_buckets:Dynamic, ?vocab_size:Dynamic, ?default_value:Dynamic, ?hasher_spec:Dynamic, ?key_dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function index_table_from_file(?vocabulary_file:Dynamic, ?num_oov_buckets:Dynamic, ?vocab_size:Dynamic, ?default_value:Dynamic, ?hasher_spec:Dynamic, ?key_dtype:Dynamic, ?name:Dynamic, ?key_column_index:Dynamic, ?value_column_index:Dynamic, ?delimiter:Dynamic):Dynamic;
 	/**
 		Returns a lookup table that converts a string tensor into int64 IDs.
 		
@@ -79,7 +95,7 @@ package tensorflow.contrib.lookup;
 		Any lookup of an out-of-vocabulary token will return a bucket ID based on its
 		hash if `num_oov_buckets` is greater than zero. Otherwise it is assigned the
 		`default_value`.
-		The bucket ID range is `[mapping size, mapping size + num_oov_buckets]`.
+		The bucket ID range is `[mapping size, mapping size + num_oov_buckets - 1]`.
 		
 		The underlying table must be initialized by calling
 		`tf.tables_initializer.run()` or `table.init.run()` once.
@@ -90,7 +106,7 @@ package tensorflow.contrib.lookup;
 		Sample Usages:
 		
 		```python
-		mapping_strings = t.constant(["emerson", "lake", "palmer"])
+		mapping_strings = tf.constant(["emerson", "lake", "palmer"])
 		table = tf.contrib.lookup.index_table_from_tensor(
 		    mapping=mapping_strings, num_oov_buckets=1, default_value=-1)
 		features = tf.constant(["emerson", "lake", "and", "palmer"])
@@ -98,7 +114,7 @@ package tensorflow.contrib.lookup;
 		...
 		tf.tables_initializer().run()
 		
-		ids.eval()  ==> [0, 1, 4, 2]
+		ids.eval()  ==> [0, 1, 3, 2]
 		```
 		
 		Args:
@@ -141,7 +157,7 @@ package tensorflow.contrib.lookup;
 		For example:
 		
 		```python
-		mapping_string = t.constant(["emerson", "lake", "palmer")
+		mapping_string = tf.constant(["emerson", "lake", "palmer"])
 		indices = tf.constant([1, 5], tf.int64)
 		values = tf.contrib.lookup.index_to_string(
 		    indices, mapping=mapping_string, default_value="UNKNOWN")
@@ -177,6 +193,16 @@ package tensorflow.contrib.lookup;
 		The underlying table must be initialized by calling
 		`tf.tables_initializer.run()` or `table.init.run()` once.
 		
+		To specify multi-column vocabulary files, use key_column_index and
+		value_column_index and delimiter.
+		
+		- TextFileIndex.LINE_NUMBER means use the line number starting from zero,
+		  expects data type int64.
+		- TextFileIndex.WHOLE_LINE means use the whole line content, expects data
+		  type string.
+		- A value >=0 means use the index (starting at zero) of the split line based
+		  on `delimiter`.
+		
 		Sample Usages:
 		
 		If we have a vocabulary file "test.txt" with the following content:
@@ -189,7 +215,7 @@ package tensorflow.contrib.lookup;
 		
 		```python
 		indices = tf.constant([1, 5], tf.int64)
-		table = tf.contrib.lookup.index_to_string_table_from_file(
+		table = tf.lookup.index_to_string_table_from_file(
 		    vocabulary_file="test.txt", default_value="UNKNOWN")
 		values = table.lookup(indices)
 		...
@@ -199,10 +225,15 @@ package tensorflow.contrib.lookup;
 		```
 		
 		Args:
-		  vocabulary_file: The vocabulary filename.
+		  vocabulary_file: The vocabulary filename, may be a constant scalar `Tensor`.
 		  vocab_size: Number of the elements in the vocabulary, if known.
 		  default_value: The value to use for out-of-vocabulary indices.
 		  name: A name for this op (optional).
+		  key_column_index: The column index from the text file to get the `key`
+		    values from. The default is to use the line number, starting from zero.
+		  value_column_index: The column index from the text file to get the `value`
+		    values from. The default is to use the whole line content.
+		  delimiter: The delimiter to separate fields in a line.
 		
 		Returns:
 		  The lookup table to map a string values associated to a given index `int64`
@@ -212,7 +243,7 @@ package tensorflow.contrib.lookup;
 		  ValueError: when `vocabulary_file` is empty.
 		  ValueError: when `vocab_size` is invalid.
 	**/
-	static public function index_to_string_table_from_file(vocabulary_file:Dynamic, ?vocab_size:Dynamic, ?default_value:Dynamic, ?name:Dynamic):Dynamic;
+	static public function index_to_string_table_from_file(vocabulary_file:Dynamic, ?vocab_size:Dynamic, ?default_value:Dynamic, ?name:Dynamic, ?key_column_index:Dynamic, ?value_column_index:Dynamic, ?delimiter:Dynamic):Dynamic;
 	/**
 		Returns a lookup table that maps a `Tensor` of indices into strings.
 		
@@ -233,7 +264,7 @@ package tensorflow.contrib.lookup;
 		Sample Usages:
 		
 		```python
-		mapping_string = t.constant(["emerson", "lake", "palmer")
+		mapping_string = tf.constant(["emerson", "lake", "palmer"])
 		indices = tf.constant([1, 5], tf.int64)
 		table = tf.contrib.lookup.index_to_string_table_from_tensor(
 		    mapping_string, default_value="UNKNOWN")

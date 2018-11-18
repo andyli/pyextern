@@ -24,6 +24,27 @@ package pandas.core.tools.timedeltas;
 	**/
 	static public function _validate_timedelta_unit(arg:Dynamic):Dynamic;
 	/**
+		Convert an ndarray to an array of timedeltas. If errors == 'coerce',
+		coerce non-convertible objects to NaT. Otherwise, raise.
+	**/
+	static public function array_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Convert an incoming object to a timedelta64 if possible
+		
+		Handle these types of objects:
+		    - timedelta/Timedelta
+		    - timedelta64
+		    - an offset
+		    - np.int64 (with unit providing a possible modifier)
+		    - None/NaT
+		
+		Return an ns based int64
+		
+		# kludgy here until we have a timedelta scalar
+		# handle the numpy < 1.7 case
+	**/
+	static public function convert_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
@@ -116,6 +137,8 @@ package pandas.core.tools.timedeltas;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -164,6 +187,11 @@ package pandas.core.tools.timedeltas;
 		>>> pd.to_timedelta(np.arange(5), unit='d')
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 }

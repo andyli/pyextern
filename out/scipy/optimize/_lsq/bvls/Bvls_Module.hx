@@ -41,12 +41,19 @@ package scipy.optimize._lsq.bvls;
 		    as zero if they are smaller than `rcond` times the largest singular
 		    value of `a`.
 		
+		    .. versionchanged:: 1.14.0
+		       If not set, a FutureWarning is given. The previous default
+		       of ``-1`` will use the machine precision as `rcond` parameter,
+		       the new default will use the machine precision times `max(M, N)`.
+		       To silence the warning and use the new default, use ``rcond=None``,
+		       to keep using the old behavior, use ``rcond=-1``.
+		
 		Returns
 		-------
 		x : {(N,), (N, K)} ndarray
 		    Least-squares solution. If `b` is two-dimensional,
 		    the solutions are in the `K` columns of `x`.
-		residuals : {(), (1,), (K,)} ndarray
+		residuals : {(1,), (K,), (0,)} ndarray
 		    Sums of residuals; squared Euclidean 2-norm for each column in
 		    ``b - a*x``.
 		    If the rank of `a` is < N or M <= N, this is an empty array.
@@ -86,7 +93,7 @@ package scipy.optimize._lsq.bvls;
 		       [ 2.,  1.],
 		       [ 3.,  1.]])
 		
-		>>> m, c = np.linalg.lstsq(A, y)[0]
+		>>> m, c = np.linalg.lstsq(A, y, rcond=None)[0]
 		>>> print(m, c)
 		1.0 -0.95
 		
@@ -119,6 +126,9 @@ package scipy.optimize._lsq.bvls;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will

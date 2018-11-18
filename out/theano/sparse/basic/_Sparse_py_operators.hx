@@ -5,8 +5,8 @@ package theano.sparse.basic;
 		Return aliased transpose of self (read-only)
 	**/
 	public var T : Dynamic;
-	public function __add__(right:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __add__(left:Dynamic, right:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -18,7 +18,7 @@ package theano.sparse.basic;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	public function __dot__(right:Dynamic):Dynamic;
+	static public function __dot__(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Return self==value.
 	**/
@@ -59,7 +59,7 @@ package theano.sparse.basic;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -69,7 +69,7 @@ package theano.sparse.basic;
 	**/
 	public function __lt__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
-	public function __mul__(right:Dynamic):Dynamic;
+	static public function __mul__(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Return self!=value.
 	**/
@@ -79,8 +79,8 @@ package theano.sparse.basic;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function __radd__(left:Dynamic):Dynamic;
-	public function __rdot__(left:Dynamic):Dynamic;
+	static public function __radd__(right:Dynamic, left:Dynamic):Dynamic;
+	static public function __rdot__(right:Dynamic, left:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -93,8 +93,8 @@ package theano.sparse.basic;
 		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
-	public function __rmul__(right:Dynamic):Dynamic;
-	public function __rsub__(left:Dynamic):Dynamic;
+	static public function __rmul__(left:Dynamic, right:Dynamic):Dynamic;
+	static public function __rsub__(right:Dynamic, left:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -108,7 +108,7 @@ package theano.sparse.basic;
 		Return str(self).
 	**/
 	public function __str__():Dynamic;
-	public function __sub__(right:Dynamic):Dynamic;
+	static public function __sub__(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -117,7 +117,7 @@ package theano.sparse.basic;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -128,5 +128,5 @@ package theano.sparse.basic;
 	public var shape : Dynamic;
 	public var size : Dynamic;
 	public function toarray():Dynamic;
-	public function zeros_like():Dynamic;
+	static public function zeros_like(model:Dynamic):Dynamic;
 }

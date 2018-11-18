@@ -10,6 +10,107 @@ package tensorflow.python.training.learning_rate_decay;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Applies cosine decay to the learning rate.
+		
+		See [Loshchilov & Hutter, ICLR2016], SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a cosine decay function
+		to a provided initial learning rate.  It requires a `global_step` value to
+		compute the decayed learning rate.  You can just pass a TensorFlow variable
+		that you increment at each training step.
+		
+		The function returns the decayed learning rate.  It is computed as:
+		```python
+		global_step = min(global_step, decay_steps)
+		cosine_decay = 0.5 * (1 + cos(pi * global_step / decay_steps))
+		decayed = (1 - alpha) * cosine_decay + alpha
+		decayed_learning_rate = learning_rate * decayed
+		```
+		
+		Example usage:
+		```python
+		decay_steps = 1000
+		lr_decayed = cosine_decay(learning_rate, global_step, decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  alpha: A scalar `float32` or `float64` Tensor or a Python number.
+		    Minimum learning rate value as a fraction of learning_rate.
+		  name: String. Optional name of the operation.  Defaults to 'CosineDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function cosine_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies cosine decay with restarts to the learning rate.
+		
+		See [Loshchilov & Hutter, ICLR2016], SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a cosine decay function with
+		restarts to a provided initial learning rate.  It requires a `global_step`
+		value to compute the decayed learning rate.  You can just pass a TensorFlow
+		variable that you increment at each training step.
+		
+		The function returns the decayed learning rate while taking into account
+		possible warm restarts. The learning rate multiplier first decays
+		from 1 to `alpha` for `first_decay_steps` steps. Then, a warm
+		restart is performed. Each new warm restart runs for `t_mul` times more steps
+		and with `m_mul` times smaller initial learning rate.
+		
+		Example usage:
+		```python
+		first_decay_steps = 1000
+		lr_decayed = cosine_decay_restarts(learning_rate, global_step,
+		                                   first_decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  first_decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  t_mul: A scalar `float32` or `float64` `Tensor` or a Python number.
+		    Used to derive the number of iterations in the i-th period
+		  m_mul: A scalar `float32` or `float64` `Tensor` or a Python number.
+		    Used to derive the initial learning rate of the i-th period:
+		  alpha: A scalar `float32` or `float64` Tensor or a Python number.
+		    Minimum learning rate value as a fraction of the learning_rate.
+		  name: String. Optional name of the operation.  Defaults to 'SGDRDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function cosine_decay_restarts(learning_rate:Dynamic, global_step:Dynamic, first_decay_steps:Dynamic, ?t_mul:Dynamic, ?m_mul:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Applies exponential decay to the learning rate.
@@ -64,6 +165,12 @@ package tensorflow.python.training.learning_rate_decay;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function exponential_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -78,7 +185,15 @@ package tensorflow.python.training.learning_rate_decay;
 		The function returns the decayed learning rate.  It is computed as:
 		
 		```python
-		decayed_learning_rate = learning_rate / (1 + decay_rate * t)
+		decayed_learning_rate = learning_rate / (1 + decay_rate * global_step /
+		decay_step)
+		```
+		
+		or, if `staircase` is `True`, as:
+		
+		```python
+		decayed_learning_rate = learning_rate / (1 + decay_rate * floor(global_step /
+		decay_step))
 		```
 		
 		Example: decay 1/t with a rate of 0.5:
@@ -87,8 +202,10 @@ package tensorflow.python.training.learning_rate_decay;
 		...
 		global_step = tf.Variable(0, trainable=False)
 		learning_rate = 0.1
-		k = 0.5
-		learning_rate = tf.train.inverse_time_decay(learning_rate, global_step, k)
+		decay_steps = 1.0
+		decay_rate = 0.5
+		learning_rate = tf.train.inverse_time_decay(learning_rate, global_step,
+		decay_steps, decay_rate)
 		
 		# Passing global_step to minimize() will increment it at each step.
 		learning_step = (
@@ -115,8 +232,75 @@ package tensorflow.python.training.learning_rate_decay;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function inverse_time_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies linear cosine decay to the learning rate.
+		
+		See [Bello et al., ICML2017] Neural Optimizer Search with RL.
+		https://arxiv.org/abs/1709.07417
+		
+		For the idea of warm starts here controlled by `num_periods`,
+		see [Loshchilov & Hutter, ICLR2016] SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		Note that linear cosine decay is more aggressive than cosine decay and
+		larger initial learning rates can typically be used.
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a linear cosine decay function
+		to a provided initial learning rate.  It requires a `global_step` value to
+		compute the decayed learning rate.  You can just pass a TensorFlow variable
+		that you increment at each training step.
+		
+		The function returns the decayed learning rate.  It is computed as:
+		```python
+		global_step = min(global_step, decay_steps)
+		linear_decay = (decay_steps - global_step) / decay_steps)
+		cosine_decay = 0.5 * (
+		    1 + cos(pi * 2 * num_periods * global_step / decay_steps))
+		decayed = (alpha + linear_decay) * cosine_decay + beta
+		decayed_learning_rate = learning_rate * decayed
+		```
+		
+		Example usage:
+		```python
+		decay_steps = 1000
+		lr_decayed = linear_cosine_decay(learning_rate, global_step, decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  num_periods: Number of periods in the cosine part of the decay.
+		    See computation above.
+		  alpha: See computation above.
+		  beta: See computation above.
+		  name: String.  Optional name of the operation.  Defaults to
+		    'LinearCosineDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function linear_cosine_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?num_periods:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Applies natural exponential decay to the initial learning rate.
 		
@@ -129,7 +313,15 @@ package tensorflow.python.training.learning_rate_decay;
 		The function returns the decayed learning rate.  It is computed as:
 		
 		```python
-		decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)
+		decayed_learning_rate = learning_rate * exp(-decay_rate * global_step /
+		decay_step)
+		```
+		
+		or, if `staircase` is `True`, as:
+		
+		```python
+		decayed_learning_rate = learning_rate * exp(-decay_rate * floor(global_step /
+		decay_step))
 		```
 		
 		Example: decay exponentially with a base of 0.96:
@@ -138,8 +330,10 @@ package tensorflow.python.training.learning_rate_decay;
 		...
 		global_step = tf.Variable(0, trainable=False)
 		learning_rate = 0.1
+		decay_steps = 5
 		k = 0.5
-		learning_rate = tf.train.exponential_time_decay(learning_rate, global_step, k)
+		learning_rate = tf.train.natural_exp_decay(learning_rate, global_step,
+		                                           decay_steps, k)
 		
 		# Passing global_step to minimize() will increment it at each step.
 		learning_step = (
@@ -166,13 +360,86 @@ package tensorflow.python.training.learning_rate_decay;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function natural_exp_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Applies noisy linear cosine decay to the learning rate.
+		
+		See [Bello et al., ICML2017] Neural Optimizer Search with RL.
+		https://arxiv.org/abs/1709.07417
+		
+		For the idea of warm starts here controlled by `num_periods`,
+		see [Loshchilov & Hutter, ICLR2016] SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		Note that linear cosine decay is more aggressive than cosine decay and
+		larger initial learning rates can typically be used.
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a noisy linear
+		cosine decay function to a provided initial learning rate.
+		It requires a `global_step` value to compute the decayed learning rate.
+		You can just pass a TensorFlow variable that you increment at each
+		training step.
+		
+		The function returns the decayed learning rate.  It is computed as:
+		```python
+		global_step = min(global_step, decay_steps)
+		linear_decay = (decay_steps - global_step) / decay_steps)
+		cosine_decay = 0.5 * (
+		    1 + cos(pi * 2 * num_periods * global_step / decay_steps))
+		decayed = (alpha + linear_decay + eps_t) * cosine_decay + beta
+		decayed_learning_rate = learning_rate * decayed
+		```
+		where eps_t is 0-centered gaussian noise with variance
+		initial_variance / (1 + global_step) ** variance_decay
+		
+		Example usage:
+		```python
+		decay_steps = 1000
+		lr_decayed = noisy_linear_cosine_decay(
+		  learning_rate, global_step, decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  initial_variance: initial variance for the noise. See computation above.
+		  variance_decay: decay for the noise's variance. See computation above.
+		  num_periods: Number of periods in the cosine part of the decay.
+		    See computation above.
+		  alpha: See computation above.
+		  beta: See computation above.
+		  name: String.  Optional name of the operation.  Defaults to
+		    'NoisyLinearCosineDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function noisy_linear_cosine_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?initial_variance:Dynamic, ?variance_decay:Dynamic, ?num_periods:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Piecewise constant from boundaries and interval values.
 		
-		Example: use a learning rate that's 1.0 for the first 100000 steps, 0.5
-		  for steps 100001 to 110000, and 0.1 for any additional steps.
+		Example: use a learning rate that's 1.0 for the first 100001 steps, 0.5
+		  for the next 10000 steps, and 0.1 for any additional steps.
 		
 		```python
 		global_step = tf.Variable(0, trainable=False)
@@ -188,7 +455,7 @@ package tensorflow.python.training.learning_rate_decay;
 		    `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`.
 		  boundaries: A list of `Tensor`s or `int`s or `float`s with strictly
 		    increasing entries, and with all elements having the same type as `x`.
-		  values: A list of `Tensor`s or float`s or `int`s that specifies the values
+		  values: A list of `Tensor`s or `float`s or `int`s that specifies the values
 		    for the intervals defined by `boundaries`. It should have one more element
 		    than `boundaries`, and all elements should have the same type.
 		  name: A string. Optional name of the operation. Defaults to
@@ -200,8 +467,15 @@ package tensorflow.python.training.learning_rate_decay;
 		  and values[-1] when `x > boundaries[-1]`.
 		
 		Raises:
-		  ValueError: if types of `x` and `buondaries` do not match, or types of all
-		      `values` do not match.
+		  ValueError: if types of `x` and `boundaries` do not match, or types of all
+		      `values` do not match or
+		      the number of elements in the lists does not match.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function piecewise_constant(x:Dynamic, boundaries:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -275,7 +549,14 @@ package tensorflow.python.training.learning_rate_decay;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function polynomial_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?end_learning_rate:Dynamic, ?power:Dynamic, ?cycle:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

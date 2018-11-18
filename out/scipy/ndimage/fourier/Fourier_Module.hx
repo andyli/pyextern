@@ -42,9 +42,8 @@ package scipy.ndimage.fourier;
 		
 		Returns
 		-------
-		fourier_ellipsoid : ndarray or None
-		    The filtered input. If `output` is given as a parameter, None is
-		    returned.
+		fourier_ellipsoid : ndarray
+		    The filtered input.
 		
 		Notes
 		-----
@@ -94,9 +93,8 @@ package scipy.ndimage.fourier;
 		
 		Returns
 		-------
-		fourier_gaussian : ndarray or None
-		    The filtered input. If `output` is given as a parameter, None is
-		    returned.
+		fourier_gaussian : ndarray
+		    The filtered input.
 		
 		Examples
 		--------
@@ -141,9 +139,8 @@ package scipy.ndimage.fourier;
 		
 		Returns
 		-------
-		fourier_shift : ndarray or None
-		    The shifted input. If `output` is given as a parameter, None is
-		    returned.
+		fourier_shift : ndarray
+		    The shifted input.
 		
 		Examples
 		--------
@@ -189,9 +186,8 @@ package scipy.ndimage.fourier;
 		
 		Returns
 		-------
-		fourier_uniform : ndarray or None
-		    The filtered input. If `output` is given as a parameter, None is
-		    returned.
+		fourier_uniform : ndarray
+		    The filtered input.
 		
 		Examples
 		--------

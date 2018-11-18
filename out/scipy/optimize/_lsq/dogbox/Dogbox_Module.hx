@@ -22,6 +22,12 @@ package scipy.optimize._lsq.dogbox;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -193,7 +199,10 @@ package scipy.optimize._lsq.dogbox;
 		    needed.
 		show : bool, optional
 		    Print iterations logs if ``show=True``.
+		x0 : array_like, shape (n,), optional
+		    Initial guess of x, if None zeros are used.
 		
+		    .. versionadded:: 1.0.0
 		Returns
 		-------
 		x : ndarray of float
@@ -201,7 +210,8 @@ package scipy.optimize._lsq.dogbox;
 		istop : int
 		    istop gives the reason for stopping::
 		
-		      istop   = 0 means x=0 is a solution.
+		      istop   = 0 means x=0 is a solution.  If x0 was given, then x=x0 is a
+		                  solution.
 		              = 1 means x is an approximate solution to A*x = B,
 		                  according to atol and btol.
 		              = 2 means x approximately solves the least-squares problem
@@ -239,8 +249,61 @@ package scipy.optimize._lsq.dogbox;
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
 		       http://arxiv.org/abs/1006.0758
 		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lsmr
+		>>> A = csc_matrix([[1., 0.], [1., 1.], [0., 1.]], dtype=float)
+		
+		The first example has the trivial solution `[0, 0]`
+		
+		>>> b = np.array([0., 0., 0.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		0
+		>>> x
+		array([ 0.,  0.])
+		
+		The stopping code `istop=0` returned indicates that a vector of zeros was
+		found as a solution. The returned solution `x` indeed contains `[0., 0.]`.
+		The next example has a non-trivial solution:
+		
+		>>> b = np.array([1., 0., -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		1
+		>>> x
+		array([ 1., -1.])
+		>>> itn
+		1
+		>>> normr
+		4.440892098500627e-16
+		
+		As indicated by `istop=1`, `lsmr` found a solution obeying the tolerance
+		limits. The given solution `[1., -1.]` obviously solves the equation. The
+		remaining return values include information about the number of iterations
+		(`itn=1`) and the remaining difference of left and right side of the solved
+		equation.
+		The final example demonstrates the behavior in the case where there is no
+		solution for the equation:
+		
+		>>> b = np.array([1., 0.01, -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		2
+		>>> x
+		array([ 1.00333333, -0.99666667])
+		>>> A.dot(x)-b
+		array([ 0.00333333, -0.00333333,  0.00333333])
+		>>> normr
+		0.005773502691896255
+		
+		`istop` indicates that the system is inconsistent and thus `x` is rather an
+		approximate solution to the corresponding least-squares problem. `normr`
+		contains the minimal distance that was found.
 	**/
-	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic):Dynamic;
+	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		Compute LinearOperator to use in LSMR by dogbox algorithm.
 		
@@ -273,12 +336,19 @@ package scipy.optimize._lsq.dogbox;
 		    as zero if they are smaller than `rcond` times the largest singular
 		    value of `a`.
 		
+		    .. versionchanged:: 1.14.0
+		       If not set, a FutureWarning is given. The previous default
+		       of ``-1`` will use the machine precision as `rcond` parameter,
+		       the new default will use the machine precision times `max(M, N)`.
+		       To silence the warning and use the new default, use ``rcond=None``,
+		       to keep using the old behavior, use ``rcond=-1``.
+		
 		Returns
 		-------
 		x : {(N,), (N, K)} ndarray
 		    Least-squares solution. If `b` is two-dimensional,
 		    the solutions are in the `K` columns of `x`.
-		residuals : {(), (1,), (K,)} ndarray
+		residuals : {(1,), (K,), (0,)} ndarray
 		    Sums of residuals; squared Euclidean 2-norm for each column in
 		    ``b - a*x``.
 		    If the rank of `a` is < N or M <= N, this is an empty array.
@@ -318,7 +388,7 @@ package scipy.optimize._lsq.dogbox;
 		       [ 2.,  1.],
 		       [ 3.,  1.]])
 		
-		>>> m, c = np.linalg.lstsq(A, y)[0]
+		>>> m, c = np.linalg.lstsq(A, y, rcond=None)[0]
 		>>> print(m, c)
 		1.0 -0.95
 		
@@ -364,6 +434,9 @@ package scipy.optimize._lsq.dogbox;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will

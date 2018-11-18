@@ -12,6 +12,19 @@ package scipy.sparse.sputils;
 	static public var __spec__ : Dynamic;
 	static public var _upcast_memo : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Unpack keyword arguments for reshape function.
+		
+		This is useful because keyword arguments after star arguments are not
+		allowed in Python 2, but star keyword arguments are. This function unpacks
+		'order' and 'copy' from the star keyword arguments (with defaults) and
+		throws an error for any remaining.
+	**/
+	static public function check_reshape_kwargs(kwargs:Dynamic):Dynamic;
+	/**
+		Imitate numpy.matrix handling of shape arguments
+	**/
+	static public function check_shape(args:Dynamic, ?current_shape:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Down-cast index array to np.intp dtype if it is of a larger dtype.
@@ -66,9 +79,10 @@ package scipy.sparse.sputils;
 	static public function issequence(t:Dynamic):Dynamic;
 	/**
 		Is x a valid 2-tuple of dimensions?
-		    
+		
+		If nonneg, also checks that the dimensions are non-negative.
 	**/
-	static public function isshape(x:Dynamic):Dynamic;
+	static public function isshape(x:Dynamic, ?nonneg:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var supported_dtypes : Dynamic;
 	static public function to_native(A:Dynamic):Dynamic;

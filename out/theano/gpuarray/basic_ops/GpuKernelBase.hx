@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.basic_ops;
 @:pythonImport("theano.gpuarray.basic_ops", "GpuKernelBase") extern class GpuKernelBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package theano.gpuarray.basic_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,12 +103,11 @@ package theano.gpuarray.basic_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _generate_kernel_bin(k:Dynamic, ctx:Dynamic):Dynamic;
 	public function _generate_kernel_cleanup(k:Dynamic):Dynamic;
 	public function _generate_kernel_code(k:Dynamic):Dynamic;
 	public function _generate_kernel_init(k:Dynamic, fail:Dynamic, ctx:Dynamic):Dynamic;
@@ -122,6 +121,9 @@ package theano.gpuarray.basic_ops;
 	public function c_init_code_struct(node:Dynamic, name:Dynamic, sub:Dynamic):Dynamic;
 	public function c_support_code_apply(node:Dynamic, name:Dynamic):Dynamic;
 	public function c_support_code_struct(node:Dynamic, name:Dynamic):Dynamic;
+	public function get_gpu_context(node:Dynamic):Dynamic;
+	public function get_gpu_context_c_name(params_c_name:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	/**
 		This is the method to override. This should return an iterable
 		of Kernel objects that describe the kernels this op will need.
@@ -129,8 +131,7 @@ package theano.gpuarray.basic_ops;
 	public function gpu_kernels(node:Dynamic, name:Dynamic):Dynamic;
 	/**
 		If you override :meth:`c_code_cache_version_apply`, call this
-		method to have the version of the kernel support code and
-		device.
+		method to have the version of the kernel support code.
 		
 		Parameters
 		----------

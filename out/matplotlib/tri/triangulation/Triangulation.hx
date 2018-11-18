@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.tri.triangulation;
 @:pythonImport("matplotlib.tri.triangulation", "Triangulation") extern class Triangulation {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.tri.triangulation;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,27 +103,32 @@ package matplotlib.tri.triangulation;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
 		Calculate plane equation coefficients for all unmasked triangles from
-		the point (x,y) coordinates and specified z-array of shape (npoints).
-		Returned array has shape (npoints,3) and allows z-value at (x,y)
+		the point (x, y) coordinates and specified z-array of shape (npoints).
+		The returned array has shape (npoints, 3) and allows z-value at (x, y)
 		position in triangle tri to be calculated using
-		z = array[tri,0]*x + array[tri,1]*y + array[tri,2].
+		``z = array[tri, 0] * x  + array[tri, 1] * y + array[tri, 2]``.
 	**/
 	public function calculate_plane_coefficients(z:Dynamic):Dynamic;
 	/**
-		Return integer array of shape (nedges,2) containing all edges of
+		Return integer array of shape (nedges, 2) containing all edges of
 		non-masked triangles.
 		
-		Each edge is the start point index and end point index.  Each
-		edge (start,end and end,start) appears only once.
+		Each row defines an edge by it's start point index and end point
+		index.  Each edge appears only once, i.e. for an edge between points
+		*i*  and *j*, there will only be either *(i, j)* or *(j, i)*.
 	**/
 	public var edges : Dynamic;
+	/**
+		Return the underlying C++ Triangulation object, creating it
+		if necessary.
+	**/
 	public function get_cpp_triangulation():Dynamic;
 	/**
 		Return a Triangulation object from the args and kwargs, and
@@ -147,7 +152,7 @@ package matplotlib.tri.triangulation;
 	**/
 	public function get_trifinder():Dynamic;
 	/**
-		Return integer array of shape (ntri,3) containing neighbor
+		Return integer array of shape (ntri, 3) containing neighbor
 		triangles.
 		
 		For each triangle, the indices of the three triangles that

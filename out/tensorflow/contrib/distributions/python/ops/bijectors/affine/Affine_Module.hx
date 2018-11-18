@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.distributions.python.ops.bijectors.affine;
 @:pythonImport("tensorflow.contrib.distributions.python.ops.bijectors.affine") extern class Affine_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,5 +10,15 @@ package tensorflow.contrib.distributions.python.ops.bijectors.affine;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	/**
+		Convenience to convert to `Tensor` or leave as `None`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
+	**/
+	static public function _as_tensor(x:Dynamic, name:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
 }

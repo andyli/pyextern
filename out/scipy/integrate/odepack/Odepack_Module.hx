@@ -22,24 +22,32 @@ package scipy.integrate.odepack;
 	/**
 		Integrate a system of ordinary differential equations.
 		
+		.. note:: For new code, use `scipy.integrate.solve_ivp` to solve a
+		          differential equation.
+		
 		Solve a system of ordinary differential equations using lsoda from the
 		FORTRAN library odepack.
 		
 		Solves the initial value problem for stiff or non-stiff systems
 		of first order ode-s::
 		
-		    dy/dt = func(y, t0, ...)
+		    dy/dt = func(y, t, ...)  [or func(t, y, ...)]
 		
 		where y can be a vector.
 		
-		*Note*: The first two arguments of ``func(y, t0, ...)`` are in the
-		opposite order of the arguments in the system definition function used
-		by the `scipy.integrate.ode` class.
+		.. note:: By default, the required order of the first two arguments of
+		          `func` are in the opposite order of the arguments in the system
+		          definition function used by the `scipy.integrate.ode` class and
+		          the function `scipy.integrate.solve_ivp`.  To use a function with
+		          the signature ``func(t, y, ...)``, the argument `tfirst` must be
+		          set to ``True``.
 		
 		Parameters
 		----------
-		func : callable(y, t0, ...)
-		    Computes the derivative of y at t0.
+		func : callable(y, t, ...) or callable(t, y, ...)
+		    Computes the derivative of y at t.
+		    If the signature is ``callable(t, y, ...)``, then the argument
+		    `tfirst` must be set ``True``.
 		y0 : array
 		    Initial condition on y (can be a vector).
 		t : array
@@ -47,8 +55,10 @@ package scipy.integrate.odepack;
 		    value point should be the first element of this sequence.
 		args : tuple, optional
 		    Extra arguments to pass to function.
-		Dfun : callable(y, t0, ...)
+		Dfun : callable(y, t, ...) or callable(t, y, ...)
 		    Gradient (Jacobian) of `func`.
+		    If the signature is ``callable(t, y, ...)``, then the argument
+		    `tfirst` must be set ``True``.
 		col_deriv : bool, optional
 		    True if `Dfun` defines derivatives down columns (faster),
 		    otherwise `Dfun` should define derivatives across rows.
@@ -56,6 +66,11 @@ package scipy.integrate.odepack;
 		    True if to return a dictionary of optional outputs as the second output
 		printmessg : bool, optional
 		    Whether to print the convergence message
+		tfirst: bool, optional
+		    If True, the first two arguments of `func` (and `Dfun`, if given)
+		    must ``t, y`` instead of the default ``y, t``.
+		
+		    .. versionadded:: 1.1.0
 		
 		Returns
 		-------
@@ -134,6 +149,7 @@ package scipy.integrate.odepack;
 		
 		See Also
 		--------
+		solve_ivp : Solve an initial value problem for a system of ODEs.
 		ode : a more object-oriented integrator based on VODE.
 		quad : for finding the area under a curve.
 		
@@ -167,12 +183,12 @@ package scipy.integrate.odepack;
 		>>> c = 5.0
 		
 		For initial conditions, we assume the pendulum is nearly vertical
-		with `theta(0)` = `pi` - 0.1, and it initially at rest, so
+		with `theta(0)` = `pi` - 0.1, and is initially at rest, so
 		`omega(0)` = 0.  Then the vector of initial conditions is
 		
 		>>> y0 = [np.pi - 0.1, 0.0]
 		
-		We generate a solution 101 evenly spaced samples in the interval
+		We will generate a solution at 101 evenly spaced samples in the interval
 		0 <= `t` <= 10.  So our array of times is:
 		
 		>>> t = np.linspace(0, 10, 101)
@@ -196,6 +212,6 @@ package scipy.integrate.odepack;
 		>>> plt.grid()
 		>>> plt.show()
 	**/
-	static public function odeint(func:Dynamic, y0:Dynamic, t:Dynamic, ?args:Dynamic, ?Dfun:Dynamic, ?col_deriv:Dynamic, ?full_output:Dynamic, ?ml:Dynamic, ?mu:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?tcrit:Dynamic, ?h0:Dynamic, ?hmax:Dynamic, ?hmin:Dynamic, ?ixpr:Dynamic, ?mxstep:Dynamic, ?mxhnil:Dynamic, ?mxordn:Dynamic, ?mxords:Dynamic, ?printmessg:Dynamic):Dynamic;
+	static public function odeint(func:Dynamic, y0:Dynamic, t:Dynamic, ?args:Dynamic, ?Dfun:Dynamic, ?col_deriv:Dynamic, ?full_output:Dynamic, ?ml:Dynamic, ?mu:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?tcrit:Dynamic, ?h0:Dynamic, ?hmax:Dynamic, ?hmin:Dynamic, ?ixpr:Dynamic, ?mxstep:Dynamic, ?mxhnil:Dynamic, ?mxordn:Dynamic, ?mxords:Dynamic, ?printmessg:Dynamic, ?tfirst:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

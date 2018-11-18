@@ -12,6 +12,7 @@ package keras.backend.common;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Cast a Numpy array to the default Keras float type.
 		
@@ -37,9 +38,9 @@ package keras.backend.common;
 		```
 	**/
 	static public function cast_to_floatx(x:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
-		Returns the value of the fuzz
-		factor used in numeric expressions.
+		Returns the value of the fuzz factor used in numeric expressions.
 		
 		# Returns
 		    A float.
@@ -47,7 +48,7 @@ package keras.backend.common;
 		# Example
 		```python
 		    >>> keras.backend.epsilon()
-		    1e-08
+		    1e-07
 		```
 	**/
 	static public function epsilon():Dynamic;
@@ -86,8 +87,30 @@ package keras.backend.common;
 	**/
 	static public function image_dim_ordering():Dynamic;
 	/**
-		Sets the value of the fuzz
-		factor used in numeric expressions.
+		Checks that the value correspond to a valid data format.
+		
+		# Arguments
+		    value: String or None. `'channels_first'` or `'channels_last'`.
+		
+		# Returns
+		    A string, either `'channels_first'` or `'channels_last'`
+		
+		# Example
+		```python
+		    >>> from keras import backend as K
+		    >>> K.normalize_data_format(None)
+		    'channels_first'
+		    >>> K.normalize_data_format('channels_last')
+		    'channels_last'
+		```
+		
+		# Raises
+		    ValueError: if `value` or the global `data_format` invalid.
+	**/
+	static public function normalize_data_format(value:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
+	/**
+		Sets the value of the fuzz factor used in numeric expressions.
 		
 		# Arguments
 		    e: float. New value of epsilon.
@@ -96,7 +119,7 @@ package keras.backend.common;
 		```python
 		    >>> from keras import backend as K
 		    >>> K.epsilon()
-		    1e-08
+		    1e-07
 		    >>> K.set_epsilon(1e-05)
 		    >>> K.epsilon()
 		    1e-05

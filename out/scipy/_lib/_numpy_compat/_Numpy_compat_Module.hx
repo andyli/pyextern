@@ -44,17 +44,6 @@ package scipy._lib._numpy_compat;
 	static public function _assert_warns(warning_class:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Fail unless an exception of class exception_class and with message that
-		matches expected_regexp is thrown by callable when invoked with arguments
-		args and keyword arguments kwargs.
-		Name of this function adheres to Python 3.2+ reference, but should work in
-		all versions down to 2.6.
-		Notes
-		-----
-		.. versionadded:: 1.8.0
-	**/
-	static public function assert_raises_regex(exception_class:Dynamic, expected_regexp:Dynamic, ?callable_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Broadcast an array to a new shape.
 		
 		Parameters
@@ -94,11 +83,6 @@ package scipy._lib._numpy_compat;
 	**/
 	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
 	static public var division : Dynamic;
-	/**
-		Import nose only when needed.
-		    
-	**/
-	static public function import_nose():Dynamic;
 	/**
 		Evaluate a polynomial specified by its roots at points x.
 		
@@ -179,10 +163,11 @@ package scipy._lib._numpy_compat;
 		Find the unique elements of an array.
 		
 		Returns the sorted unique elements of an array. There are three optional
-		outputs in addition to the unique elements: the indices of the input array
-		that give the unique values, the indices of the unique array that
-		reconstruct the input array, and the number of times each unique value
-		comes up in the input array.
+		outputs in addition to the unique elements:
+		
+		* the indices of the input array that give the unique values
+		* the indices of the unique array that reconstruct the input array
+		* the number of times each unique value comes up in the input array
 		
 		Parameters
 		----------
@@ -198,16 +183,18 @@ package scipy._lib._numpy_compat;
 		return_counts : bool, optional
 		    If True, also return the number of times each unique item appears
 		    in `ar`.
+		
 		    .. versionadded:: 1.9.0
+		
 		axis : int or None, optional
-		    The axis to operate on. If None, `ar` will be flattened beforehand.
-		    Otherwise, duplicate items will be removed along the provided axis,
-		    with all the other axes belonging to the each of the unique elements.
-		    Object arrays or structured arrays that contain objects are not
-		    supported if the `axis` kwarg is used.
+		    The axis to operate on. If None, `ar` will be flattened. If an integer,
+		    the subarrays indexed by the given axis will be flattened and treated
+		    as the elements of a 1-D array with the dimension of the given axis,
+		    see the notes for more details.  Object arrays or structured arrays
+		    that contain objects are not supported if the `axis` kwarg is used. The
+		    default is None.
+		
 		    .. versionadded:: 1.13.0
-		
-		
 		
 		Returns
 		-------
@@ -222,12 +209,24 @@ package scipy._lib._numpy_compat;
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
+		
 		    .. versionadded:: 1.9.0
 		
 		See Also
 		--------
 		numpy.lib.arraysetops : Module with a number of other functions for
 		                        performing set operations on arrays.
+		
+		Notes
+		-----
+		When an axis is specified the subarrays indexed by the axis are sorted.
+		This is done by making the specified axis the first dimension of the array
+		and then flattening the subarrays in C order. The flattened subarrays are
+		then viewed as a structured type with each element given a label, with the
+		effect that we end up with a 1-D array of structured types that can be
+		treated in the same way as any other 1-D array. The result is that the
+		flattened subarrays are sorted in lexicographic order starting with the
+		first element.
 		
 		Examples
 		--------
@@ -268,4 +267,14 @@ package scipy._lib._numpy_compat;
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
 	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Decorator factory to apply update_wrapper() to a wrapper function
+		
+		Returns a decorator that invokes update_wrapper() with the decorated
+		function as the wrapper argument and the arguments to wraps() as the
+		remaining arguments. Default arguments are as for update_wrapper().
+		This is a convenience function to simplify applying partial() to
+		update_wrapper().
+	**/
+	static public function wraps(wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
 }

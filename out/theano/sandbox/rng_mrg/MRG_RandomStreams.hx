@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.sandbox.rng_mrg;
 @:pythonImport("theano.sandbox.rng_mrg", "MRG_RandomStreams") extern class MRG_RandomStreams {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package theano.sandbox.rng_mrg;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?seed:Dynamic, ?use_cuda:Dynamic):Dynamic;
+	public function ___init__(?seed:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?seed:Dynamic, ?use_cuda:Dynamic):Void;
+	public function new(?seed:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,12 +103,12 @@ package theano.sandbox.rng_mrg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function binomial(?size:Dynamic, ?n:Dynamic, ?p:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic):Dynamic;
+	public function binomial(?size:Dynamic, ?n:Dynamic, ?p:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sample `size` times from a multinomial distribution defined by
 		probabilities `p`, and returns the indices of the sampled elements.
@@ -148,7 +148,7 @@ package theano.sandbox.rng_mrg;
 		
 		-Only replace=False is implemented for now.
 	**/
-	public function choice(?size:Dynamic, ?a:Dynamic, ?replace:Dynamic, ?p:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic):Dynamic;
+	public function choice(?size:Dynamic, ?a:Dynamic, ?replace:Dynamic, ?p:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize a matrix in which each row is a MRG stream state,
 		and they are spaced by 2**72 samples.
@@ -178,23 +178,38 @@ package theano.sandbox.rng_mrg;
 		sum to 1. passing pvals = [[-2., 2.]] will result in
 		sampling [[0, 0]]
 	**/
-	public function multinomial(?size:Dynamic, ?n:Dynamic, ?pvals:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic):Dynamic;
-	public function multinomial_wo_replacement(?size:Dynamic, ?n:Dynamic, ?pvals:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic):Dynamic;
+	public function multinomial(?size:Dynamic, ?n:Dynamic, ?pvals:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function multinomial_wo_replacement(?size:Dynamic, ?n:Dynamic, ?pvals:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function n_streams(size:Dynamic):Dynamic;
 	/**
+		Sample a tensor of values from a normal distribution.
+		
 		Parameters
 		----------
-		size
-		    Can be a list of integers or Theano variables (ex: the shape
-		    of another Theano Variable).
-		dtype
-		    The output data type. If dtype is not specified, it will be
-		    inferred from the dtype of low and high, but will be at
-		    least as precise as floatX.
-		nstreams
-		    Number of streams.
+		size : int_vector_like
+		    Array dimensions for the output tensor.
+		avg : float_like, optional
+		    The mean value for the truncated normal to sample from (defaults to 0.0).
+		std : float_like, optional
+		    The standard deviation for the truncated normal to sample from (defaults to 1.0).
+		truncate : bool, optional
+		    Truncates the normal distribution at 2 standard deviations if True (defaults to False).
+		    When this flag is set, the standard deviation of the result will be less than the one specified.
+		ndim : int, optional
+		    The number of dimensions for the output tensor (defaults to None).
+		    This argument is necessary if the size argument is ambiguous on the number of dimensions.
+		dtype : str, optional
+		    The data-type for the output tensor. If not specified,
+		    the dtype is inferred from avg and std, but it is at least as precise as floatX.
+		kwargs
+		    Other keyword arguments for random number generation (see uniform).
+		
+		Returns
+		-------
+		samples : TensorVariable
+		    A Theano tensor of samples randomly drawn from a normal distribution.
 	**/
-	public function normal(size:Dynamic, ?avg:Dynamic, ?std:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic):Dynamic;
+	public function normal(size:Dynamic, ?avg:Dynamic, ?std:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic, ?truncate:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function pretty_return(node_rstate:Dynamic, new_rstate:Dynamic, sample:Dynamic, size:Dynamic, nstreams:Dynamic):Dynamic;
 	/**
 		Re-initialize each random stream.
@@ -211,6 +226,36 @@ package theano.sandbox.rng_mrg;
 	**/
 	public function seed(?seed:Dynamic):Dynamic;
 	public function set_rstate(seed:Dynamic):Dynamic;
+	/**
+		Sample a tensor of values from a symmetrically truncated normal distribution.
+		
+		Parameters
+		----------
+		size : int_vector_like
+		    Array dimensions for the output tensor.
+		avg : float_like, optional
+		    The mean value for the truncated normal to sample from (defaults to 0.0).
+		std : float_like, optional
+		    The standard deviation for the truncated normal to sample from (defaults to 1.0).
+		ndim : int, optional
+		    The number of dimensions for the output tensor (defaults to None).
+		    This argument is necessary if the size argument is ambiguous on the number of dimensions.
+		dtype : str, optional
+		    The data-type for the output tensor. If not specified,
+		    the dtype is inferred from avg and std, but it is at least as precise as floatX.
+		kwargs
+		    Other keyword arguments for random number generation (see uniform).
+		
+		Returns
+		-------
+		samples : TensorVariable
+		    A Theano tensor of samples randomly drawn from a truncated normal distribution.
+		
+		See Also
+		--------
+		normal
+	**/
+	public function truncated_normal(size:Dynamic, ?avg:Dynamic, ?std:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sample a tensor of given size whose element from a uniform
 		distribution between low and high.
@@ -236,6 +281,6 @@ package theano.sandbox.rng_mrg;
 		    inferred from the dtype of low and high, but will be at
 		    least as precise as floatX.
 	**/
-	public function uniform(size:Dynamic, ?low:Dynamic, ?high:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic):Dynamic;
+	public function uniform(size:Dynamic, ?low:Dynamic, ?high:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?nstreams:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function updates():Dynamic;
 }

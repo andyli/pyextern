@@ -96,8 +96,10 @@ class Main {
 				return;
 			}
 		}
-		if (!Inspect.ismodule(module))
-			throw "not module: " + module;
+		if (!Inspect.ismodule(module)) {
+			Sys.println("not module: " + module);
+			return;
+		}
 
 		if (moduleName == null) {
 			moduleName = module.__spec__.name;

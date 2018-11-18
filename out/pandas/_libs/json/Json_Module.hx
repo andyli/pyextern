@@ -17,11 +17,11 @@ package pandas._libs.json;
 	**/
 	static public function dump(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Converts arbitrary object recursivly into JSON. Use ensure_ascii=false to output UTF-8. Pass in double_precision to alter the maximum digit precision of doubles. Set encode_html_chars=True to encode < > & as unicode escape sequences.
+		Converts arbitrary object recursively into JSON. Use ensure_ascii=false to output UTF-8. Pass in double_precision to alter the maximum digit precision of doubles. Set encode_html_chars=True to encode < > & as unicode escape sequences.
 	**/
 	static public function dumps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Converts arbitrary object recursivly into JSON. Use ensure_ascii=false to output UTF-8. Pass in double_precision to alter the maximum digit precision of doubles. Set encode_html_chars=True to encode < > & as unicode escape sequences.
+		Converts arbitrary object recursively into JSON. Use ensure_ascii=false to output UTF-8. Pass in double_precision to alter the maximum digit precision of doubles. Set encode_html_chars=True to encode < > & as unicode escape sequences.
 	**/
 	static public function encode(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

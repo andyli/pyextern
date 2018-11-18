@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.training.python.training.tuner;
 @:pythonImport("tensorflow.contrib.training.python.training.tuner", "Tuner") extern class Tuner {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.contrib.training.python.training.tuner;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -74,7 +74,7 @@ package tensorflow.contrib.training.python.training.tuner;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -117,7 +117,7 @@ package tensorflow.contrib.training.python.training.tuner;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -126,7 +126,6 @@ package tensorflow.contrib.training.python.training.tuner;
 		Switch to the next trial. (experimental)
 		
 		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
-		
 		
 		Ask the tuning service for a new trial for hyper-parameters tuning.
 		
@@ -141,7 +140,6 @@ package tensorflow.contrib.training.python.training.tuner;
 		Creates an Experiment by calling `experiment_fn` and executes it. (experimental)
 		
 		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
-		
 		
 		It creates a `RunConfig`, which captures the current execution environment
 		configuration and retrieves the hyper-parameters for current trial from the

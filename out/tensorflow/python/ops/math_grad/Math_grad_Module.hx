@@ -6,15 +6,32 @@ package tensorflow.python.ops.math_grad;
 		Returns grad * -1/sqrt(1-x^2).
 	**/
 	static public function _AcosGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns grad * 1/sinh(y).
+	**/
+	static public function _AcoshGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for Add.
+	**/
 	static public function _AddGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Copies the gradient to all inputs.
 	**/
 	static public function _AddNGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Returns -grad / (Im(x) + iRe(x))
+	**/
+	static public function _AngleGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _ArgMaxGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _ArgMinGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Returns grad * 1/sqrt(1-x^2).
 	**/
 	static public function _AsinGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns grad * 1/cosh(y).
+	**/
+	static public function _AsinhGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns grad * x / (x^2 + y^2), grad * -y / (x^2 + y^2).
 	**/
@@ -24,9 +41,21 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _AtanGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Returns grad * 1/ (1 - x^2).
+	**/
+	static public function _AtanhGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Returns the gradient of x and y given the gradient of x * y.
 	**/
 	static public function _BatchMatMul(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Compute gradient of bessel_i0e(x) with respect to its argument.
+	**/
+	static public function _BesselI0eGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Compute gradient of bessel_i1e(x) with respect to its argument.
+	**/
+	static public function _BesselI1eGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns gradient of betainc(a, b, x) with respect to x.
 	**/
@@ -49,6 +78,10 @@ package tensorflow.python.ops.math_grad;
 		Returns grad * -sin(x).
 	**/
 	static public function _CosGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns grad * sinh(x).
+	**/
+	static public function _CoshGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _CrossGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _CumprodGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _CumsumGrad(op:Dynamic, grad:Dynamic):Dynamic;
@@ -60,6 +93,10 @@ package tensorflow.python.ops.math_grad;
 		The gradient for the Div operator.
 	**/
 	static public function _DivGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		DivNoNan op gradient.
+	**/
+	static public function _DivNoNanGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns grad * 2/sqrt(pi) * exp(-x**2).
 	**/
@@ -82,11 +119,23 @@ package tensorflow.python.ops.math_grad;
 	static public function _FloorDivGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
 	static public function _FloorGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
 	/**
-		Returns gradient of igamma(a, x) with respect to x.
+		Returns grad * (1, -floor(x/y)).
+	**/
+	static public function _FloorModGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Helper function for unsorted segment ops. Gathers params for
+		positive segment ids and gathers 0 for inputs with negative segment id.
+		Also returns the clipped indices and a boolean mask with the same shape
+		as ids where a positive id is masked as true. With this, the latter two
+		can be passed as arguments to this function to reuse them.
+	**/
+	static public function _GatherDropNegatives(params:Dynamic, ids:Dynamic, ?zero_clipped_indices:Dynamic, ?is_positive:Dynamic):Dynamic;
+	/**
+		Returns gradient of igamma(a, x) with respect to a and x.
 	**/
 	static public function _IgammaGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Returns gradient of igammac(a, x) = 1 - igamma(a, x) w.r.t. x.
+		Returns gradient of igammac(a, x) = 1 - igamma(a, x) w.r.t. a and x.
 	**/
 	static public function _IgammacGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
@@ -195,14 +244,15 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _SegmentMinGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Gradient for SegmentMin and (unsorted) SegmentMax. They share similar code.
+		Gradient for SegmentMin and SegmentMax. 
 	**/
-	static public function _SegmentMinOrMaxGrad(op:Dynamic, grad:Dynamic, is_sorted:Dynamic):Dynamic;
+	static public function _SegmentMinOrMaxGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for SegmentSum.
 	**/
 	static public function _SegmentSumGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _SelectGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _ShapesFullySpecifiedAndEqual(x:Dynamic, y:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns grad * sigmoid(x) * (1 - sigmoid(x)).
 	**/
@@ -217,6 +267,10 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _SinGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Returns grad * cosh(x).
+	**/
+	static public function _SinhGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Gradient for SparseMatMul.
 	**/
 	static public function _SparseMatMulGrad(op:Dynamic, grad:Dynamic):Dynamic;
@@ -225,13 +279,25 @@ package tensorflow.python.ops.math_grad;
 	**/
 	static public function _SparseSegmentMeanGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Gradient for SparseSegmentMeanWithNumSegments.
+	**/
+	static public function _SparseSegmentMeanWithNumSegmentsGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Gradient for SparseSegmentSqrtN.
 	**/
 	static public function _SparseSegmentSqrtNGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Gradient for SparseSegmentSqrtNWithNumSegments.
+	**/
+	static public function _SparseSegmentSqrtNWithNumSegmentsGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		Gradient for SparseSegmentSum.
 	**/
 	static public function _SparseSegmentSumGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for SparseSegmentSumWithNumSegments.
+	**/
+	static public function _SparseSegmentSumWithNumSegmentsGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _SqrtGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _SqrtGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _SquareGrad(op:Dynamic, grad:Dynamic):Dynamic;
@@ -239,6 +305,9 @@ package tensorflow.python.ops.math_grad;
 		Returns the gradient for (x-y)^2.
 	**/
 	static public function _SquaredDifferenceGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for Sub.
+	**/
 	static public function _SubGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for Sum.
@@ -254,11 +323,46 @@ package tensorflow.python.ops.math_grad;
 	static public function _TanhGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _TanhGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _TruncateDivGrad(_:Dynamic, unused_grad:Dynamic):Dynamic;
+	/**
+		Gradient for UnsortedSegmentMax. 
+	**/
 	static public function _UnsortedSegmentMaxGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
-		Gradient for SegmentSum.
+		Gradient for UnsortedSegmentMin. 
+	**/
+	static public function _UnsortedSegmentMinGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for UnsortedSegmentMin and UnsortedSegmentMax. 
+	**/
+	static public function _UnsortedSegmentMinOrMaxGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for UnsortedSegmentProd.
+		The gradient can be expressed for each segment by dividing the segment's
+		product by each element of the segment input tensor, but this approach can't
+		deal with zeros in the input.
+		Unlike reduce_prod we can't use cumsum here as individual segments may have
+		a different number of elements. Therefore we consider three cases:
+		1) A segment input contains no zeros and we can safely divide by the input
+		   tensor.
+		2) A segment contains exactly one zero. Then the gradient of each input of
+		   the segment is zero except for the 0-input, there the gradient is
+		   the product of the remaining segment entries.
+		3) A segment contains at least two zeros. The gradient is zero for all
+		   segment inputs.
+	**/
+	static public function _UnsortedSegmentProdGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for UnsortedSegmentSum.
 	**/
 	static public function _UnsortedSegmentSumGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns gradient of xdivy(x, y) with respect to x and y.
+	**/
+	static public function _XDivyGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns gradient of xlogy(x, y) with respect to x and y.
+	**/
+	static public function _XLogyGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Returns gradient of zeta(x, q) with respect to x and q.
 	**/

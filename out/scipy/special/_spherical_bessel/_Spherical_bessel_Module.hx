@@ -91,7 +91,7 @@ package scipy.special._spherical_bessel;
 		The derivative is computed using the relations [2]_,
 		
 		.. math::
-		    i_n' = i_{n-1} - \frac{n + 1}{2} i_n.
+		    i_n' = i_{n-1} - \frac{n + 1}{z} i_n.
 		
 		    i_1' = i_0
 		
@@ -137,9 +137,9 @@ package scipy.special._spherical_bessel;
 		The derivative is computed using the relations [3]_,
 		
 		.. math::
-		    j_n' = j_{n-1} - \frac{n + 1}{2} j_n.
+		    j_n'(z) = j_{n-1}(z) - \frac{n + 1}{z} j_n(z).
 		
-		    j_0' = -j_1
+		    j_0'(z) = -j_1(z)
 		
 		
 		.. versionadded:: 0.18.0
@@ -182,7 +182,7 @@ package scipy.special._spherical_bessel;
 		The derivative is computed using the relations [2]_,
 		
 		.. math::
-		    k_n' = -k_{n-1} - \frac{n + 1}{2} k_n.
+		    k_n' = -k_{n-1} - \frac{n + 1}{z} k_n.
 		
 		    k_0' = -k_1
 		
@@ -227,7 +227,7 @@ package scipy.special._spherical_bessel;
 		The derivative is computed using the relations [3]_,
 		
 		.. math::
-		    y_n' = y_{n-1} - \frac{n + 1}{2} y_n.
+		    y_n' = y_{n-1} - \frac{n + 1}{z} y_n.
 		
 		    y_0' = -y_1
 		

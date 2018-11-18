@@ -3,8 +3,6 @@ package keras.backend.theano_backend;
 @:pythonImport("keras.backend.theano_backend") extern class Theano_backend_Module {
 	static public var NAME_SCOPE_STACK : Dynamic;
 	static public function T_softsign(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var _EPSILON : Dynamic;
-	static public var _FLOATX : Dynamic;
 	static public var _LEARNING_PHASE : Dynamic;
 	static public var _UID_PREFIXES : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -31,6 +29,8 @@ package keras.backend.theano_backend;
 	static public function _postprocess_conv2d_output(conv_out:Dynamic, x:Dynamic, padding:Dynamic, kernel_shape:Dynamic, strides:Dynamic, data_format:Dynamic):Dynamic;
 	static public function _postprocess_conv3d_output(conv_out:Dynamic, x:Dynamic, padding:Dynamic, kernel_shape:Dynamic, strides:Dynamic, data_format:Dynamic):Dynamic;
 	static public function _prepare_name(name:Dynamic, _default:Dynamic):Dynamic;
+	static public function _preprocess_conv2d_depthwise_filter_shape(filter_shape:Dynamic, data_format:Dynamic):Dynamic;
+	static public function _preprocess_conv2d_depthwise_kernel(kernel:Dynamic, kernel_shape:Dynamic, data_format:Dynamic):Dynamic;
 	static public function _preprocess_conv2d_filter_shape(filter_shape:Dynamic, data_format:Dynamic):Dynamic;
 	static public function _preprocess_conv2d_image_shape(image_shape:Dynamic, data_format:Dynamic):Dynamic;
 	static public function _preprocess_conv2d_input(x:Dynamic, data_format:Dynamic):Dynamic;
@@ -40,7 +40,9 @@ package keras.backend.theano_backend;
 	static public function _preprocess_conv3d_kernel(kernel:Dynamic, data_format:Dynamic):Dynamic;
 	static public function _preprocess_conv3d_volume_shape(volume_shape:Dynamic, data_format:Dynamic):Dynamic;
 	static public function _preprocess_padding(padding:Dynamic):Dynamic;
+	static public function _set_keras_shape_for_reduction(x:Dynamic, y:Dynamic, axis:Dynamic, keepdims:Dynamic):Dynamic;
 	static public function abs(x:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Bitwise reduction (logical AND).
 		    
@@ -117,13 +119,13 @@ package keras.backend.theano_backend;
 		Apply batch normalization on x given mean, var, beta and gamma.
 		    
 	**/
-	static public function batch_normalization(x:Dynamic, mean:Dynamic, _var:Dynamic, beta:Dynamic, gamma:Dynamic, ?epsilon:Dynamic):Dynamic;
+	static public function batch_normalization(x:Dynamic, mean:Dynamic, _var:Dynamic, beta:Dynamic, gamma:Dynamic, ?axis:Dynamic, ?epsilon:Dynamic):Dynamic;
 	static public function batch_set_value(tuples:Dynamic):Dynamic;
 	static public function bias_add(x:Dynamic, bias:Dynamic, ?data_format:Dynamic):Dynamic;
-	static public function binary_crossentropy(output:Dynamic, target:Dynamic, ?from_logits:Dynamic):Dynamic;
+	static public function binary_crossentropy(target:Dynamic, output:Dynamic, ?from_logits:Dynamic):Dynamic;
 	@:native("cast")
 	static public function _cast(x:Dynamic, dtype:Dynamic):Dynamic;
-	static public function categorical_crossentropy(output:Dynamic, target:Dynamic, ?from_logits:Dynamic):Dynamic;
+	static public function categorical_crossentropy(target:Dynamic, output:Dynamic, ?from_logits:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function clip(x:Dynamic, min_value:Dynamic, max_value:Dynamic):Dynamic;
 	static public function concatenate(tensors:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic):Dynamic;
@@ -188,12 +190,13 @@ package keras.backend.theano_backend;
 		    padding: string, "same" or "valid".
 		    data_format: "channels_last" or "channels_first".
 		        Whether to use Theano or TensorFlow data format
-		    in inputs/kernels/outputs.
+		        in inputs/kernels/outputs.
+		    dilation_rate: tuple of 2 integers.
 		
 		# Raises
 		    ValueError: if using an even kernel size with padding 'same'.
 	**/
-	static public function conv2d_transpose(x:Dynamic, kernel:Dynamic, output_shape:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic):Dynamic;
+	static public function conv2d_transpose(x:Dynamic, kernel:Dynamic, output_shape:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic):Dynamic;
 	/**
 		3D convolution.
 		
@@ -273,7 +276,26 @@ package keras.backend.theano_backend;
 		    A tensor of the cumulative sum of values of `x` along `axis`.
 	**/
 	static public function cumsum(x:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		2D convolution with separable filters.
+		
+		# Arguments
+		    x: input tensor
+		    depthwise_kernel: convolution kernel for the depthwise convolution.
+		    strides: strides tuple (length 2).
+		    padding: string, `"same"` or `"valid"`.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
+		    dilation_rate: tuple of integers,
+		        dilation rates for the separable convolution.
+		
+		# Returns
+		    Output tensor.
+		
+		# Raises
+		    ValueError: if `data_format` is neither `"channels_last"` or `"channels_first"`.
+	**/
 	static public function depthwise_conv2d(x:Dynamic, depthwise_kernel:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public function dot(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Sets entries in `x` to zero at random,
@@ -297,6 +319,19 @@ package keras.backend.theano_backend;
 		    alpha: scalar
 	**/
 	static public function elu(x:Dynamic, ?alpha:Dynamic):Dynamic;
+	/**
+		Returns the value of the fuzz factor used in numeric expressions.
+		
+		# Returns
+		    A float.
+		
+		# Example
+		```python
+		    >>> keras.backend.epsilon()
+		    1e-07
+		```
+	**/
+	static public function epsilon():Dynamic;
 	static public function equal(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Returns the value of a tensor.
@@ -380,11 +415,11 @@ package keras.backend.theano_backend;
 		    An integer.
 		
 		# Example
-		```
+		```python
 		    >>> keras.backend.get_uid('dense')
-		    >>> 1
+		    1
 		    >>> keras.backend.get_uid('dense')
-		    >>> 2
+		    2
 		```
 	**/
 	static public function get_uid(?prefix:Dynamic):Dynamic;
@@ -418,24 +453,49 @@ package keras.backend.theano_backend;
 		
 		# Arguments
 		    x: The input tensor.
+		    name: String, name for the variable to create.
 		
 		# Returns
 		    A tensor of the same shape, type and content.
 	**/
-	static public function identity(x:Dynamic):Dynamic;
+	static public function identity(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns the default image data format convention ('channels_first' or 'channels_last').
+		This function corresponds to an if statement, returning (and evaluating)
+		inputs in the ``then_branch`` if ``condition`` evaluates to True or
+		inputs in the ``else_branch`` if ``condition`` evalutates to False.
 		
-		# Returns
-		    A string, either `'channels_first'` or `'channels_last'`
+		:type condition: scalar like
+		:param condition:
+		    ``condition`` should be a tensor scalar representing the condition.
+		    If it evaluates to 0 it corresponds to False, anything else stands
+		    for True.
 		
-		# Example
-		```python
-		    >>> keras.backend.image_data_format()
-		    'channels_first'
-		```
+		:type then_branch: list of theano expressions/ theano expression
+		:param then_branch:
+		    A single theano variable or a list of theano variables that the
+		    function should return as the output if ``condition`` evaluates to
+		    true. The number of variables should match those in the
+		    ``else_branch``, and there should be a one to one correspondance
+		    (type wise) with the tensors provided in the else branch
+		
+		:type else_branch: list of theano expressions/ theano expressions
+		:param else_branch:
+		    A single theano variable or a list of theano variables that the
+		    function should return as the output if ``condition`` evaluates to
+		    false. The number of variables should match those in the then branch,
+		    and there should be a one to one correspondace (type wise) with the
+		    tensors provided in the then branch.
+		
+		:return:
+		    A list of theano variables or a single variable (depending on the
+		    nature of the ``then_branch`` and ``else_branch``). More exactly if
+		    ``then_branch`` and ``else_branch`` is a tensor, then
+		    the return variable will be just a single variable, otherwise a
+		    list. The value returns correspond either to the values in the
+		    ``then_branch`` or in the ``else_branch`` depending on the value of
+		    ``cond``.
 	**/
-	static public function image_data_format():Dynamic;
+	static public function ifelse(condition:Dynamic, then_branch:Dynamic, else_branch:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Legacy getter for `image_data_format`.
 		
@@ -489,35 +549,56 @@ package keras.backend.theano_backend;
 	/**
 		Returns whether `x` is a Keras tensor.
 		
+		A "Keras tensor" is a tensor that was returned by a Keras layer,
+		(`Layer` class) or by `Input`.
+		
 		# Arguments
-		    x: a potential tensor.
+		    x: A candidate tensor.
 		
 		# Returns
-		    A boolean: whether the argument is a Keras tensor.
+		    A boolean: Whether the argument is a Keras tensor.
 		
 		# Raises
-		    ValueError: in case `x` is not a symbolic tensor.
+		    ValueError: In case `x` is not a symbolic tensor.
 		
 		# Examples
 		```python
 		    >>> from keras import backend as K
+		    >>> from keras.layers import Input, Dense
 		    >>> np_var = numpy.array([1, 2])
 		    >>> K.is_keras_tensor(np_var) # A numpy array is not a symbolic tensor.
 		    ValueError
-		    >>> k_var = theano.shared(value=np.array([1,2,3]))
-		    >>> K.is_keras_tensor(k_var) # A variable created directly from tensorflow/theano is not a Keras tensor.
+		    >>> k_var = tf.placeholder('float32', shape=(1,1))
+		    >>> K.is_keras_tensor(k_var) # A variable indirectly created outside of keras is not a Keras tensor.
 		    False
 		    >>> keras_var = K.variable(np_var)
-		    >>> K.is_keras_tensor(keras_var) # A variable created with the keras backend is a Keras tensor.
-		    True
+		    >>> K.is_keras_tensor(keras_var)  # A variable created with the keras backend is not a Keras tensor.
+		    False
 		    >>> keras_placeholder = K.placeholder(shape=(2, 4, 5))
-		    >>> K.is_keras_tensor(keras_placeholder)  # A placeholder is a Keras tensor.
+		    >>> K.is_keras_tensor(keras_placeholder)  # A placeholder is not a Keras tensor.
+		    False
+		    >>> keras_input = Input([10])
+		    >>> K.is_keras_tensor(keras_input) # An Input is a Keras tensor.
+		    True
+		    >>> keras_layer_output = Dense(10)(keras_input)
+		    >>> K.is_keras_tensor(keras_layer_output) # Any Keras layer output is a Keras tensor.
 		    True
 		```
 	**/
 	static public function is_keras_tensor(x:Dynamic):Dynamic;
+	/**
+		Returns whether `x` is a placeholder.
+		
+		# Arguments
+		    x: A candidate placeholder.
+		
+		# Returns
+		    Boolean.
+	**/
+	static public function is_placeholder(x:Dynamic):Dynamic;
 	static public function is_sparse(tensor:Dynamic):Dynamic;
-	static public function l2_normalize(x:Dynamic, axis:Dynamic, ?epsilon:Dynamic):Dynamic;
+	static public function is_tensor(x:Dynamic):Dynamic;
+	static public function l2_normalize(x:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function learning_phase():Dynamic;
 	static public function less(x:Dynamic, y:Dynamic):Dynamic;
 	static public function less_equal(x:Dynamic, y:Dynamic):Dynamic;
@@ -573,6 +654,28 @@ package keras.backend.theano_backend;
 		    
 	**/
 	static public function normalize_batch_in_training(x:Dynamic, gamma:Dynamic, beta:Dynamic, reduction_axes:Dynamic, ?epsilon:Dynamic):Dynamic;
+	/**
+		Checks that the value correspond to a valid data format.
+		
+		# Arguments
+		    value: String or None. `'channels_first'` or `'channels_last'`.
+		
+		# Returns
+		    A string, either `'channels_first'` or `'channels_last'`
+		
+		# Example
+		```python
+		    >>> from keras import backend as K
+		    >>> K.normalize_data_format(None)
+		    'channels_first'
+		    >>> K.normalize_data_format('channels_last')
+		    'channels_last'
+		```
+		
+		# Raises
+		    ValueError: if `value` or the global `data_format` invalid.
+	**/
+	static public function normalize_data_format(value:Dynamic):Dynamic;
 	static public function not_equal(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Input: nD integer tensor of shape (batch_size, dim1, dim2, ... dim(n-1))
@@ -586,7 +689,7 @@ package keras.backend.theano_backend;
 	**/
 	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	static public function ones_like(x:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
-	static public function pattern_broadcast(x:Dynamic, broatcastable:Dynamic):Dynamic;
+	static public function pattern_broadcast(x:Dynamic, broadcastable:Dynamic):Dynamic;
 	/**
 		Transpose dimensions.
 		
@@ -602,6 +705,7 @@ package keras.backend.theano_backend;
 	static public function pool2d(x:Dynamic, pool_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?pool_mode:Dynamic):Dynamic;
 	static public function pool3d(x:Dynamic, pool_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?pool_mode:Dynamic):Dynamic;
 	static public function pow(x:Dynamic, a:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Print the message and the tensor when evaluated and return the same
 		tensor.
@@ -619,6 +723,12 @@ package keras.backend.theano_backend;
 	**/
 	static public function py_all(iterable:Dynamic):Dynamic;
 	/**
+		Return True if bool(x) is True for any x in the iterable.
+		
+		If the iterable is empty, return False.
+	**/
+	static public function py_any(iterable:Dynamic):Dynamic;
+	/**
 		Return the sum of a 'start' value (default: 0) plus an iterable of numbers
 		
 		When the iterable is empty, return the start value.
@@ -631,7 +741,7 @@ package keras.backend.theano_backend;
 	static public function random_normal_variable(shape:Dynamic, mean:Dynamic, scale:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	static public function random_uniform(shape:Dynamic, ?minval:Dynamic, ?maxval:Dynamic, ?dtype:Dynamic, ?seed:Dynamic):Dynamic;
 	static public function random_uniform_variable(shape:Dynamic, low:Dynamic, high:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
-	static public function relu(x:Dynamic, ?alpha:Dynamic, ?max_value:Dynamic):Dynamic;
+	static public function relu(x:Dynamic, ?alpha:Dynamic, ?max_value:Dynamic, ?threshold:Dynamic):Dynamic;
 	/**
 		Repeat a 2D tensor.
 		
@@ -655,7 +765,7 @@ package keras.backend.theano_backend;
 		by a factor of (height_factor, width_factor). Both factors should be
 		positive integers.
 	**/
-	static public function resize_images(X:Dynamic, height_factor:Dynamic, width_factor:Dynamic, data_format:Dynamic):Dynamic;
+	static public function resize_images(x:Dynamic, height_factor:Dynamic, width_factor:Dynamic, data_format:Dynamic, ?interpolation:Dynamic):Dynamic;
 	/**
 		Resize the volume contained in a 5D tensor of shape
 		- [batch, channels, depth, height, width] (for 'channels_first' data_format)
@@ -663,7 +773,7 @@ package keras.backend.theano_backend;
 		by a factor of (depth_factor, height_factor, width_factor).
 		Both factors should be positive integers.
 	**/
-	static public function resize_volumes(X:Dynamic, depth_factor:Dynamic, height_factor:Dynamic, width_factor:Dynamic, data_format:Dynamic):Dynamic;
+	static public function resize_volumes(x:Dynamic, depth_factor:Dynamic, height_factor:Dynamic, width_factor:Dynamic, data_format:Dynamic):Dynamic;
 	/**
 		Reverse a tensor along the specified axes
 		    
@@ -673,40 +783,81 @@ package keras.backend.theano_backend;
 		Iterates over the time dimension of a tensor.
 		
 		# Arguments
-		    inputs: tensor of temporal data of shape (samples, time, ...)
-		        (at least 3D).
 		    step_function:
 		        Parameters:
-		            inputs: tensor with shape (samples, ...) (no time dimension),
+		            inputs: Tensor with shape (samples, ...) (no time dimension),
 		                representing input for the batch of samples at a certain
 		                time step.
-		            states: list of tensors.
+		            states: List of tensors.
 		        Returns:
-		            outputs: tensor with shape (samples, ...) (no time dimension),
-		            new_states: list of tensors, same length and shapes
+		            outputs: Tensor with shape (samples, ...) (no time dimension),
+		            new_states: List of tensors, same length and shapes
 		                as 'states'.
-		    initial_states: tensor with shape (samples, ...) (no time dimension),
+		    inputs: Tensor of temporal data of shape (samples, time, ...)
+		        (at least 3D).
+		    initial_states: Tensor with shape (samples, ...) (no time dimension),
 		        containing the initial values for the states used in
 		        the step function.
-		    go_backwards: boolean. If True, do the iteration over the time
+		    go_backwards: Boolean. If True, do the iteration over the time
 		        dimension in reverse order and return the reversed sequence.
-		    mask: binary tensor with shape (samples, time),
+		    mask: Binary tensor with shape (samples, time),
 		        with a zero for every element that is masked.
-		    constants: a list of constant values passed at each step.
-		    unroll: whether to unroll the RNN or to use a symbolic loop (`while_loop` or `scan` depending on backend).
-		    input_length: must be specified if using `unroll`.
+		    constants: A list of constant values passed at each step.
+		    unroll: Whether to unroll the RNN or to use a symbolic loop
+		        (`while_loop` or `scan` depending on backend).
+		    input_length: Static number of timesteps in the input.
+		        Must be specified if using `unroll`.
 		
 		# Returns
 		    A tuple (last_output, outputs, new_states).
-		        last_output: the latest output of the rnn, of shape (samples, ...)
-		        outputs: tensor with shape (samples, time, ...) where each
-		            entry outputs[s, t] is the output of the step function
-		            at time t for sample s.
-		        new_states: list of tensors, latest states returned by
-		            the step function, of shape (samples, ...).
+		
+		    last_output: The latest output of the rnn, of shape `(samples, ...)`
+		    outputs: Tensor with shape `(samples, time, ...)` where each
+		        entry `outputs[s, t]` is the output of the step function
+		        at time `t` for sample `s`.
+		    new_states: List of tensors, latest states returned by
+		        the step function, of shape `(samples, ...)`.
 	**/
 	static public function rnn(step_function:Dynamic, inputs:Dynamic, initial_states:Dynamic, ?go_backwards:Dynamic, ?mask:Dynamic, ?constants:Dynamic, ?unroll:Dynamic, ?input_length:Dynamic):Dynamic;
 	static public function round(x:Dynamic):Dynamic;
+	/**
+		1D convolution with separable filters.
+		
+		# Arguments
+		    x: input tensor
+		    depthwise_kernel: convolution kernel for the depthwise convolution.
+		    pointwise_kernel: kernel for the 1x1 convolution.
+		    strides: strides integer.
+		    padding: string, `"same"` or `"valid"`.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
+		    dilation_rate: integer dilation rate.
+		
+		# Returns
+		    Output tensor.
+		
+		# Raises
+		    ValueError: if `data_format` is neither `"channels_last"` or `"channels_first"`.
+	**/
+	static public function separable_conv1d(x:Dynamic, depthwise_kernel:Dynamic, pointwise_kernel:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic):Dynamic;
+	/**
+		2D convolution with separable filters.
+		
+		# Arguments
+		    x: input tensor
+		    depthwise_kernel: convolution kernel for the depthwise convolution.
+		    pointwise_kernel: kernel for the 1x1 convolution.
+		    strides: strides tuple (length 2).
+		    padding: string, `"same"` or `"valid"`.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
+		    dilation_rate: tuple of integers,
+		        dilation rates for the separable convolution.
+		
+		# Returns
+		    Output tensor.
+		
+		# Raises
+		    ValueError: if `data_format` is neither `"channels_last"` or `"channels_first"`.
+	**/
 	static public function separable_conv2d(x:Dynamic, depthwise_kernel:Dynamic, pointwise_kernel:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic):Dynamic;
 	/**
 		Legacy setter for `image_data_format`.
@@ -740,10 +891,11 @@ package keras.backend.theano_backend;
 	static public function sigmoid(x:Dynamic):Dynamic;
 	static public function sign(x:Dynamic):Dynamic;
 	static public function sin(x:Dynamic):Dynamic;
-	static public function softmax(x:Dynamic):Dynamic;
+	static public function slice(x:Dynamic, start:Dynamic, size:Dynamic):Dynamic;
+	static public function softmax(x:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function softplus(x:Dynamic):Dynamic;
 	static public function softsign(x:Dynamic):Dynamic;
-	static public function sparse_categorical_crossentropy(output:Dynamic, target:Dynamic, ?from_logits:Dynamic):Dynamic;
+	static public function sparse_categorical_crossentropy(target:Dynamic, output:Dynamic, ?from_logits:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Pad the 2nd and 3rd dimensions of a 4D tensor
 		with "padding[0]" and "padding[1]" (resp.) zeros left and right.
@@ -764,8 +916,15 @@ package keras.backend.theano_backend;
 	static public function stack(x:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function std(x:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		Returns `variables` but with zero gradient with respect to every other
-		variables.
+		Returns `variables` but with zero gradient w.r.t. every other variable.
+		
+		# Arguments
+		    variables: tensor or list of tensors to consider constant with respect
+		        to any other variable.
+		
+		# Returns
+		    A single tensor or a list of tensors (depending on the passed argument)
+		        that has constant gradient with respect to any other variable.
 	**/
 	static public function stop_gradient(variables:Dynamic):Dynamic;
 	/**
@@ -801,6 +960,40 @@ package keras.backend.theano_backend;
 	static public function tile(x:Dynamic, n:Dynamic):Dynamic;
 	static public function to_dense(tensor:Dynamic):Dynamic;
 	static public function transpose(x:Dynamic):Dynamic;
+	/**
+		Converts a tuple or a list to the correct `data_format`.
+		
+		It does so by switching the positions of its elements.
+		
+		# Arguments
+		    shape: Tuple or list, often representing shape,
+		        corresponding to `'channels_last'`.
+		    target_format: A string, either `'channels_first'` or `'channels_last'`.
+		    spatial_axes: A tuple of integers.
+		        Correspond to the indexes of the spatial axes.
+		        For example, if you pass a shape
+		        representing (batch_size, timesteps, rows, cols, channels),
+		        then `spatial_axes=(2, 3)`.
+		
+		# Returns
+		    A tuple or list, with the elements permuted according
+		    to `target_format`.
+		
+		# Example
+		```python
+		    >>> from keras.utils.generic_utils import transpose_shape
+		    >>> transpose_shape((16, 128, 128, 32),'channels_first', spatial_axes=(1, 2))
+		    (16, 32, 128, 128)
+		    >>> transpose_shape((16, 128, 128, 32), 'channels_last', spatial_axes=(1, 2))
+		    (16, 128, 128, 32)
+		    >>> transpose_shape((128, 128, 32), 'channels_first', spatial_axes=(0, 1))
+		    (32, 128, 128)
+		```
+		
+		# Raises
+		    ValueError: if `value` or the global `data_format` invalid.
+	**/
+	static public function transpose_shape(shape:Dynamic, target_format:Dynamic, spatial_axes:Dynamic):Dynamic;
 	static public function truncated_normal(shape:Dynamic, ?mean:Dynamic, ?stddev:Dynamic, ?dtype:Dynamic, ?seed:Dynamic):Dynamic;
 	static public function update(x:Dynamic, new_x:Dynamic):Dynamic;
 	static public function update_add(x:Dynamic, increment:Dynamic):Dynamic;
@@ -814,11 +1007,13 @@ package keras.backend.theano_backend;
 		    value: Numpy array, initial value of the tensor.
 		    dtype: Tensor type.
 		    name: Optional name string for the tensor.
+		    constraint: Optional projection function to be
+		        applied to the variable after an optimizer update.
 		
 		# Returns
 		    A variable instance (with Keras metadata included).
 	**/
-	static public function variable(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function variable(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?constraint:Dynamic):Dynamic;
 	/**
 		Instantiates an all-zeros variable.
 		    

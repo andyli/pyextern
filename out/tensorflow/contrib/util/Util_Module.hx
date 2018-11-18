@@ -27,6 +27,8 @@ package tensorflow.contrib.util;
 		
 		Args:
 		  tensor: The Tensor to be evaluated.
+		  partial: If True, the returned numpy array is allowed to have partially
+		    evaluated values. Values that can't be evaluated will be None.
 		
 		Returns:
 		  A numpy ndarray containing the constant value of the given `tensor`,
@@ -35,7 +37,7 @@ package tensorflow.contrib.util;
 		Raises:
 		  TypeError: if tensor is not an ops.Tensor.
 	**/
-	static public function constant_value(tensor:Dynamic):Dynamic;
+	static public function constant_value(tensor:Dynamic, ?partial:Dynamic):Dynamic;
 	/**
 		Create a numpy ndarray from a tensor.
 		
@@ -61,10 +63,13 @@ package tensorflow.contrib.util;
 		  verify_shape:   Boolean that enables verification of a shape of values.
 		
 		Returns:
-		  A TensorProto. Depending on the type, it may contain data in the
+		  A `TensorProto`. Depending on the type, it may contain data in the
 		  "tensor_content" attribute, which is not directly useful to Python programs.
 		  To access the values you should convert the proto back to a numpy ndarray
-		  with tensor_util.MakeNdarray(proto).
+		  with `tf.make_ndarray(proto)`.
+		
+		  If `values` is a `TensorProto`, it is immediately returned; `dtype` and
+		  `shape` are ignored.
 		
 		Raises:
 		  TypeError:  if unsupported types are provided.

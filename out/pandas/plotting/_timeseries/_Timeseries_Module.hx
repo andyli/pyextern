@@ -13,6 +13,7 @@ package pandas.plotting._timeseries;
 		Initialize axes for time-series plotting
 	**/
 	static public function _decorate_axes(ax:Dynamic, freq:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _format_coord(freq:Dynamic, t:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Get the freq attribute of the ax object if set.
 		Also checks shared axes (eg when using secondary yaxis, sharex=True
@@ -67,17 +68,5 @@ package pandas.plotting._timeseries;
 		result - unicode object on py2, str on py3. Always Unicode.
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
-	/**
-		Plots a Series on the given Matplotlib axes or the current axes
-		
-		Parameters
-		----------
-		axes : Axes
-		series : Series
-		
-		Notes
-		_____
-		Supports same kwargs as Axes.plot
-	**/
 	static public function tsplot(series:Dynamic, plotf:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -19,7 +19,7 @@ package tensorflow.contrib.solvers.python.ops.lanczos;
 		
 		  A * B =  A[:, :-1] * diag(alpha) + A[:, 1:] * diag(beta)
 		
-		If  adjoint_b is True, computes A * B[:-1, :]' as follows
+		If adjoint_b is True, computes A * B[:-1, :]' as follows
 		
 		  A * B[:-1, :]' =
 		    A * diag(alpha) + [zeros(m,1), A[:, :-1] * diag(beta[:-1])]
@@ -86,6 +86,6 @@ package tensorflow.contrib.solvers.python.ops.lanczos;
 		    alpha: A rank-1 `Tensor` of type `operator.dtype` and shape `[k]`.
 		    beta: A rank-1 `Tensor` of type `operator.dtype` and shape `[k]`.
 	**/
-	static public function lanczos_bidiag(operator:Dynamic, k:Dynamic, ?orthogonalize:Dynamic, ?starting_vector:Dynamic, ?name:Dynamic):Dynamic;
+	static public function lanczos_bidiag(_operator:Dynamic, k:Dynamic, ?orthogonalize:Dynamic, ?starting_vector:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

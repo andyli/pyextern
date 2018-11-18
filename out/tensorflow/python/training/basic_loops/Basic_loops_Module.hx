@@ -34,4 +34,5 @@ package tensorflow.python.training.basic_loops;
 	static public function basic_train_loop(supervisor:Dynamic, train_step_fn:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, ?master:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

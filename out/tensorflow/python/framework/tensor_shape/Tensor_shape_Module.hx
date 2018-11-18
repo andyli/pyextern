@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework.tensor_shape;
 @:pythonImport("tensorflow.python.framework.tensor_shape") extern class Tensor_shape_Module {
+	static public var _SCALAR_SHAPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,7 +14,7 @@ package tensorflow.python.framework.tensor_shape;
 	/**
 		Converts the given value to a Dimension.
 		
-		A Dimenson input will be returned unmodified.
+		A Dimension input will be returned unmodified.
 		An input of `None` will be converted to an unknown Dimension.
 		An integer input will be converted to a Dimension with that value.
 		
@@ -45,6 +46,7 @@ package tensorflow.python.framework.tensor_shape;
 		Returns a shape representing a scalar.
 	**/
 	static public function scalar():Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns an unknown TensorShape, optionally with a known rank.
 		

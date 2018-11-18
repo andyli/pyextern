@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.stats._multivariate;
 @:pythonImport("scipy.stats._multivariate", "multivariate_normal_frozen") extern class Multivariate_normal_frozen {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,6 +55,15 @@ package scipy.stats._multivariate;
 		    If None (or np.random), the global np.random state is used.
 		    If integer, it is used to seed the local RandomState instance
 		    Default is None.
+		maxpts: integer, optional
+		    The maximum number of points to use for integration of the
+		    cumulative distribution function (default `1000000*dim`)
+		abseps: float, optional
+		    Absolute error tolerance for the cumulative distribution function
+		    (default 1e-5)
+		releps: float, optional
+		    Relative error tolerance for the cumulative distribution function
+		    (default 1e-5)
 		
 		Examples
 		--------
@@ -69,7 +78,7 @@ package scipy.stats._multivariate;
 		array([[1.]])
 	**/
 	@:native("__init__")
-	public function ___init__(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic):Dynamic;
+	public function ___init__(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic, ?maxpts:Dynamic, ?abseps:Dynamic, ?releps:Dynamic):Dynamic;
 	/**
 		Create a frozen multivariate normal distribution.
 		
@@ -88,6 +97,15 @@ package scipy.stats._multivariate;
 		    If None (or np.random), the global np.random state is used.
 		    If integer, it is used to seed the local RandomState instance
 		    Default is None.
+		maxpts: integer, optional
+		    The maximum number of points to use for integration of the
+		    cumulative distribution function (default `1000000*dim`)
+		abseps: float, optional
+		    Absolute error tolerance for the cumulative distribution function
+		    (default 1e-5)
+		releps: float, optional
+		    Relative error tolerance for the cumulative distribution function
+		    (default 1e-5)
 		
 		Examples
 		--------
@@ -101,14 +119,14 @@ package scipy.stats._multivariate;
 		>>> r.cov
 		array([[1.]])
 	**/
-	public function new(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic):Void;
+	public function new(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic, ?maxpts:Dynamic, ?abseps:Dynamic, ?releps:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -159,11 +177,39 @@ package scipy.stats._multivariate;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Multivariate normal cumulative distribution function.
+		
+		Parameters
+		----------
+		x : array_like
+		    Quantiles, with the last axis of `x` denoting the components.
+		
+		maxpts: integer, optional
+		    The maximum number of points to use for integration
+		    (default `1000000*dim`)
+		abseps: float, optional
+		    Absolute error tolerance (default 1e-5)
+		releps: float, optional
+		    Relative error tolerance (default 1e-5)
+		
+		Returns
+		-------
+		cdf : ndarray or scalar
+		    Cumulative distribution function evaluated at `x`
+		
+		Notes
+		-----
+		See class definition for a detailed description of parameters.
+		
+		.. versionadded:: 1.0.0
+	**/
+	public function cdf(x:Dynamic):Dynamic;
 	/**
 		Computes the differential entropy of the multivariate normal.
 		
@@ -173,6 +219,34 @@ package scipy.stats._multivariate;
 		    Entropy of the multivariate normal distribution
 	**/
 	public function entropy():Dynamic;
+	/**
+		Log of the multivariate normal cumulative distribution function.
+		
+		Parameters
+		----------
+		x : array_like
+		    Quantiles, with the last axis of `x` denoting the components.
+		
+		maxpts: integer, optional
+		    The maximum number of points to use for integration
+		    (default `1000000*dim`)
+		abseps: float, optional
+		    Absolute error tolerance (default 1e-5)
+		releps: float, optional
+		    Relative error tolerance (default 1e-5)
+		
+		Returns
+		-------
+		cdf : ndarray or scalar
+		    Log of the cumulative distribution function evaluated at `x`
+		
+		Notes
+		-----
+		See class definition for a detailed description of parameters.
+		
+		.. versionadded:: 1.0.0
+	**/
+	public function logcdf(x:Dynamic):Dynamic;
 	/**
 		Log of the multivariate normal probability density function.
 		
@@ -184,7 +258,7 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		pdf : ndarray
+		pdf : ndarray or scalar
 		    Log of the probability density function evaluated at `x`
 		
 		Notes
@@ -203,7 +277,7 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		pdf : ndarray
+		pdf : ndarray or scalar
 		    Probability density function evaluated at `x`
 		
 		Notes

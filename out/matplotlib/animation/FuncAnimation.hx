@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.animation;
 @:pythonImport("matplotlib.animation", "FuncAnimation") extern class FuncAnimation {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.animation;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.animation;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -134,89 +134,103 @@ package matplotlib.animation;
 	public function _step(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _stop(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Creates a new sequence of frame information.
+		Return a new sequence of frame information.
 	**/
 	public function new_frame_seq():Dynamic;
 	/**
-		Creates a new sequence of saved/cached frame information.
+		Return a new sequence of saved/cached frame information.
 	**/
 	public function new_saved_frame_seq():Dynamic;
 	/**
-		Saves a movie file by drawing every frame.
+		Save the animation as a movie file by drawing every frame.
 		
 		Parameters
 		----------
 		
 		filename : str
-		    The output filename, e.g., :file:`mymovie.mp4`
+		    The output filename, e.g., :file:`mymovie.mp4`.
 		
 		writer : :class:`MovieWriter` or str, optional
 		    A `MovieWriter` instance to use or a key that identifies a
-		    class to use, such as 'ffmpeg' or 'mencoder'. If `None`,
-		    defaults to ``rcParams['animation.writer']``
+		    class to use, such as 'ffmpeg'. If ``None``, defaults to
+		    :rc:`animation.writer` = 'ffmpeg'.
 		
 		fps : number, optional
-		   frames per second in the movie. Defaults to None,
-		   which will use the animation's specified interval to set
-		   the frames per second.
+		   Frames per second in the movie. Defaults to ``None``, which will use
+		   the animation's specified interval to set the frames per second.
 		
 		dpi : number, optional
-		   Controls the dots per inch for the movie frames.  This
-		   combined with the figure's size in inches controls the size of
-		   the movie.  If None, defaults to ``rcparam['savefig.dpi']``
+		   Controls the dots per inch for the movie frames.  This combined with
+		   the figure's size in inches controls the size of the movie.  If
+		   ``None``, defaults to :rc:`savefig.dpi`.
 		
 		codec : str, optional
-		   The video codec to be used. Not all codecs are supported by
-		   a given :class:`MovieWriter`. If `None`,
-		   default to ``rcParams['animation.codec']``
+		   The video codec to be used. Not all codecs are supported
+		   by a given :class:`MovieWriter`. If ``None``, default to
+		   :rc:`animation.codec` = 'h264'.
 		
 		bitrate : number, optional
-		   Specifies the number of bits used per second in the
-		   compressed movie, in kilobits per second. A higher number
-		   means a higher quality movie, but at the cost of increased
-		   file size. If `None`, defaults to
-		   ``rcParam['animation.bitrate']``
+		   Specifies the number of bits used per second in the compressed
+		   movie, in kilobits per second. A higher number means a higher
+		   quality movie, but at the cost of increased file size. If ``None``,
+		   defaults to :rc:`animation.bitrate` = -1.
 		
 		extra_args : list, optional
-		   List of extra string arguments to be passed to the
-		   underlying movie utility. If `None`, defaults to
-		   ``rcParams['animation.extra_args']``
+		   List of extra string arguments to be passed to the underlying movie
+		   utility. If ``None``, defaults to :rc:`animation.extra_args`.
 		
-		metadata : dict, optional
+		metadata : Dict[str, str], optional
 		   Dictionary of keys and values for metadata to include in
 		   the output file. Some keys that may be of use include:
 		   title, artist, genre, subject, copyright, srcform, comment.
 		
 		extra_anim : list, optional
-		   Additional `Animation` objects that should be included in
-		   the saved movie file. These need to be from the same
-		   `matplotlib.Figure` instance. Also, animation frames will
-		   just be simply combined, so there should be a 1:1
-		   correspondence between the frames from the different
-		   animations.
+		   Additional `Animation` objects that should be included
+		   in the saved movie file. These need to be from the same
+		   `matplotlib.figure.Figure` instance. Also, animation frames will
+		   just be simply combined, so there should be a 1:1 correspondence
+		   between the frames from the different animations.
 		
 		savefig_kwargs : dict, optional
 		   Is a dictionary containing keyword arguments to be passed
-		   on to the 'savefig' command which is called repeatedly to
+		   on to the `savefig` command which is called repeatedly to
 		   save the individual frames.
 		
 		Notes
 		-----
-		fps, codec, bitrate, extra_args, metadata are used to
-		construct a :class:`MovieWriter` instance and can only be
-		passed if `writer` is a string.  If they are passed as
-		non-`None` and ``writer`` is a :class:`MovieWriter`, a
-		`RuntimeError` will be raised.
+		*fps*, *codec*, *bitrate*, *extra_args* and *metadata* are used to
+		construct a `.MovieWriter` instance and can only be passed if
+		*writer* is a string.  If they are passed as non-*None* and *writer*
+		is a `.MovieWriter`, a `RuntimeError` will be raised.
 	**/
 	public function save(filename:Dynamic, ?writer:Dynamic, ?fps:Dynamic, ?dpi:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic, ?extra_anim:Dynamic, ?savefig_kwargs:Dynamic):Dynamic;
 	/**
-		Returns animation as an HTML5 video tag.
+		Convert the animation to an HTML5 ``<video>`` tag.
 		
 		This saves the animation as an h264 video, encoded in base64
 		directly into the HTML5 video tag. This respects the rc parameters
 		for the writer as well as the bitrate. This also makes use of the
 		``interval`` to control the speed, and uses the ``repeat``
 		parameter to decide whether to loop.
+		
+		Parameters
+		----------
+		embed_limit : float, optional
+		    Limit, in MB, of the returned animation. No animation is created
+		    if the limit is exceeded.
+		    Defaults to :rc:`animation.embed_limit` = 20.0.
+		
+		Returns
+		-------
+		video_tag : str
+		    An HTML5 video tag with the animation embedded as base64 encoded
+		    h264 video.
+		    If the *embed_limit* is exceeded, this returns the string
+		    "Video too large to embed."
 	**/
-	public function to_html5_video():Dynamic;
+	public function to_html5_video(?embed_limit:Dynamic):String;
+	/**
+		Generate HTML representation of the animation
+	**/
+	public function to_jshtml(?fps:Dynamic, ?embed_frames:Dynamic, ?default_mode:Dynamic):Dynamic;
 }

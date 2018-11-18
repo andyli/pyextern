@@ -71,6 +71,8 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -79,7 +81,7 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Evaluate a model loaded from a checkpoint. (deprecated)
@@ -133,7 +135,11 @@ package tensorflow.contrib.learn.python.learn.graph_actions;
 	**/
 	static public function evaluate(graph:Dynamic, output_dir:Dynamic, checkpoint_path:Dynamic, eval_dict:Dynamic, ?update_op:Dynamic, ?global_step_tensor:Dynamic, ?supervisor_master:Dynamic, ?log_every_steps:Dynamic, ?feed_fn:Dynamic, ?max_steps:Dynamic):Dynamic;
 	/**
-		Returns single SummaryWriter per logdir in current run.
+		Returns single SummaryWriter per logdir in current run. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use `SummaryWriterCache.get` directly.
 		
 		Args:
 		  logdir: str, folder to write summaries.

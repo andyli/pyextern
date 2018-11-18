@@ -90,12 +90,22 @@ package scipy.stats.kde;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -183,8 +193,9 @@ package scipy.stats.kde;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -264,6 +275,7 @@ package scipy.stats.kde;
 		    as NaN. Default is False (no sign information).
 		
 		    .. versionadded:: 0.16.0
+		
 		Returns
 		-------
 		res : ndarray
@@ -450,6 +462,7 @@ package scipy.stats.kde;
 		-------
 		y : ndarray
 		    The bases in `x1` raised to the exponents in `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -575,10 +588,9 @@ package scipy.stats.kde;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -681,11 +693,11 @@ package scipy.stats.kde;
 		Notes
 		-----
 		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
+		copying the data. If you want an error to be raised when the data is copied,
 		you should assign the new shape to the shape attribute of the array::
 		
 		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
+		 # A transpose makes the array non-contiguous
 		 >>> b = a.T
 		 # Taking a view makes it possible to modify the shape without modifying
 		 # the initial object.
@@ -738,7 +750,7 @@ package scipy.stats.kde;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -765,6 +777,7 @@ package scipy.stats.kde;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -875,8 +888,12 @@ package scipy.stats.kde;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		initial : scalar, optional
+		    Starting value for the sum. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -923,8 +940,13 @@ package scipy.stats.kde;
 		
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
+		
+		You can also start the sum with a value other than zero:
+		
+		>>> np.sum([10], initial=5)
+		15
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Permute the dimensions of an array.
 		
@@ -977,14 +999,15 @@ package scipy.stats.kde;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -994,17 +1017,16 @@ package scipy.stats.kde;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

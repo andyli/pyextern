@@ -189,6 +189,8 @@ package numpy.lib.arraypad;
 		arbitrarily shaped ndarray.
 	**/
 	static public function _arange_ndarray(arr:Dynamic, shape:Dynamic, axis:Dynamic, ?reverse:Dynamic):numpy.Ndarray;
+	static public function _do_append(arr:Dynamic, pad_chunk:Dynamic, axis:Dynamic):Dynamic;
+	static public function _do_prepend(arr:Dynamic, pad_chunk:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Private function which does some checks and normalizes the possibly
 		much simpler representations of 'pad_width', 'stat_length',
@@ -478,6 +480,18 @@ package numpy.lib.arraypad;
 	**/
 	static public function _round_ifneeded(arr:Dynamic, dtype:Dynamic):Dynamic;
 	/**
+		Construct a slice tuple the length of shape, with sl at the specified axis
+	**/
+	static public function _slice_at_axis(shape:Dynamic, sl:Dynamic, axis:Dynamic):Dynamic;
+	/**
+		Construct a slice tuple to take the first n elements along axis 
+	**/
+	static public function _slice_first(shape:Dynamic, n:Dynamic, axis:Dynamic):Dynamic;
+	/**
+		Construct a slice tuple to take the last n elements along axis 
+	**/
+	static public function _slice_last(shape:Dynamic, n:Dynamic, axis:Dynamic):Dynamic;
+	/**
 		Private function which does some checks and reformats pad_width and
 		stat_length using _normalize_shape.
 		
@@ -603,7 +617,7 @@ package numpy.lib.arraypad;
 		reflect_type : {'even', 'odd'}, optional
 		    Used in 'reflect', and 'symmetric'.  The 'even' style is the
 		    default with an unaltered reflection around the edge value.  For
-		    the 'odd' style, the extented part of the array is created by
+		    the 'odd' style, the extended part of the array is created by
 		    subtracting the reflected values from two times the edge value.
 		
 		Returns
@@ -625,7 +639,7 @@ package numpy.lib.arraypad;
 		length to the vector argument with padded values replaced. It has the
 		following signature::
 		
-		    padding_func(vector, iaxis_pad_width, iaxis, **kwargs)
+		    padding_func(vector, iaxis_pad_width, iaxis, kwargs)
 		
 		where
 		
@@ -639,32 +653,32 @@ package numpy.lib.arraypad;
 		        the end of vector.
 		    iaxis : int
 		        The axis currently being calculated.
-		    kwargs : misc
+		    kwargs : dict
 		        Any keyword arguments the function requires.
 		
 		Examples
 		--------
 		>>> a = [1, 2, 3, 4, 5]
-		>>> np.lib.pad(a, (2,3), 'constant', constant_values=(4, 6))
+		>>> np.pad(a, (2,3), 'constant', constant_values=(4, 6))
 		array([4, 4, 1, 2, 3, 4, 5, 6, 6, 6])
 		
-		>>> np.lib.pad(a, (2, 3), 'edge')
+		>>> np.pad(a, (2, 3), 'edge')
 		array([1, 1, 1, 2, 3, 4, 5, 5, 5, 5])
 		
-		>>> np.lib.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))
+		>>> np.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))
 		array([ 5,  3,  1,  2,  3,  4,  5,  2, -1, -4])
 		
-		>>> np.lib.pad(a, (2,), 'maximum')
+		>>> np.pad(a, (2,), 'maximum')
 		array([5, 5, 1, 2, 3, 4, 5, 5, 5])
 		
-		>>> np.lib.pad(a, (2,), 'mean')
+		>>> np.pad(a, (2,), 'mean')
 		array([3, 3, 1, 2, 3, 4, 5, 3, 3])
 		
-		>>> np.lib.pad(a, (2,), 'median')
+		>>> np.pad(a, (2,), 'median')
 		array([3, 3, 1, 2, 3, 4, 5, 3, 3])
 		
 		>>> a = [[1, 2], [3, 4]]
-		>>> np.lib.pad(a, ((3, 2), (2, 3)), 'minimum')
+		>>> np.pad(a, ((3, 2), (2, 3)), 'minimum')
 		array([[1, 1, 1, 2, 1, 1, 1],
 		       [1, 1, 1, 2, 1, 1, 1],
 		       [1, 1, 1, 2, 1, 1, 1],
@@ -674,36 +688,42 @@ package numpy.lib.arraypad;
 		       [1, 1, 1, 2, 1, 1, 1]])
 		
 		>>> a = [1, 2, 3, 4, 5]
-		>>> np.lib.pad(a, (2, 3), 'reflect')
+		>>> np.pad(a, (2, 3), 'reflect')
 		array([3, 2, 1, 2, 3, 4, 5, 4, 3, 2])
 		
-		>>> np.lib.pad(a, (2, 3), 'reflect', reflect_type='odd')
+		>>> np.pad(a, (2, 3), 'reflect', reflect_type='odd')
 		array([-1,  0,  1,  2,  3,  4,  5,  6,  7,  8])
 		
-		>>> np.lib.pad(a, (2, 3), 'symmetric')
+		>>> np.pad(a, (2, 3), 'symmetric')
 		array([2, 1, 1, 2, 3, 4, 5, 5, 4, 3])
 		
-		>>> np.lib.pad(a, (2, 3), 'symmetric', reflect_type='odd')
+		>>> np.pad(a, (2, 3), 'symmetric', reflect_type='odd')
 		array([0, 1, 1, 2, 3, 4, 5, 5, 6, 7])
 		
-		>>> np.lib.pad(a, (2, 3), 'wrap')
+		>>> np.pad(a, (2, 3), 'wrap')
 		array([4, 5, 1, 2, 3, 4, 5, 1, 2, 3])
 		
-		>>> def padwithtens(vector, pad_width, iaxis, kwargs):
-		...     vector[:pad_width[0]] = 10
-		...     vector[-pad_width[1]:] = 10
+		>>> def pad_with(vector, pad_width, iaxis, kwargs):
+		...     pad_value = kwargs.get('padder', 10)
+		...     vector[:pad_width[0]] = pad_value
+		...     vector[-pad_width[1]:] = pad_value
 		...     return vector
-		
 		>>> a = np.arange(6)
 		>>> a = a.reshape((2, 3))
-		
-		>>> np.lib.pad(a, 2, padwithtens)
+		>>> np.pad(a, 2, pad_with)
 		array([[10, 10, 10, 10, 10, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10],
 		       [10, 10,  0,  1,  2, 10, 10],
 		       [10, 10,  3,  4,  5, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10]])
+		>>> np.pad(a, 2, pad_with, padder=100)
+		array([[100, 100, 100, 100, 100, 100, 100],
+		       [100, 100, 100, 100, 100, 100, 100],
+		       [100, 100,   0,   1,   2, 100, 100],
+		       [100, 100,   3,   4,   5, 100, 100],
+		       [100, 100, 100, 100, 100, 100, 100],
+		       [100, 100, 100, 100, 100, 100, 100]])
 	**/
 	static public function pad(array:Dynamic, pad_width:Dynamic, mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	static public var print_function : Dynamic;

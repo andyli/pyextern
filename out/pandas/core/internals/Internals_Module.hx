@@ -24,6 +24,35 @@ package pandas.core.internals;
 		Merge blocks having same dtype, exclude non-consolidating blocks
 	**/
 	static public function _consolidate(blocks:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           labels=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		_ensure_index_from_sequences
+	**/
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -83,7 +112,7 @@ package pandas.core.internals;
 		-------
 		True if we can fill using this fill_value
 	**/
-	static public function _is_na_compat(arr:Dynamic, ?fill_value:Dynamic):Dynamic;
+	static public function _isna_compat(arr:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public function _maybe_compare(a:Dynamic, b:Dynamic, op:Dynamic):Dynamic;
 	/**
 		array must be SparseSeries or SparseArray 
@@ -94,23 +123,31 @@ package pandas.core.internals;
 		return an array of blocks that potentially have different dtypes 
 	**/
 	static public function _multi_blockify(tuples:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public var _np_version_under1p9 : Dynamic;
 	static public function _preprocess_slice_or_indexer(slice_or_indexer:Dynamic, length:Dynamic, allow_fill:Dynamic):Dynamic;
 	/**
-		Return a new block, try to preserve dtype if possible.
+		Return a new ndarray, try to preserve dtype if possible.
 		
 		Parameters
 		----------
 		v : `values`, updated in-place (array like)
 		m : `mask`, applies to both sides (array like)
 		n : `new values` either scalar or an array like aligned with `values`
+		
+		Returns
+		-------
+		values : ndarray with updated values
+		    this *may* be a copy of the original
+		
+		See Also
+		--------
+		ndarray.putmask
 	**/
 	static public function _putmask_smart(v:Dynamic, m:Dynamic, n:Dynamic):Dynamic;
 	/**
 		If possible, reshape `arr` to have shape `new_shape`,
 		with a couple of exceptions (see gh-13012):
 		
-		1) If `arr` is a Categorical or Index, `arr` will be
+		1) If `arr` is a ExtensionArray or Index, `arr` will be
 		   returned as is.
 		2) If `arr` is a Series, the `_values` attribute will
 		   be reshaped and returned.
@@ -176,6 +213,33 @@ package pandas.core.internals;
 	**/
 	static public function astype_nansafe(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
+		Validate that value and indexer are the same length.
+		
+		An special-case is allowed for when the indexer is a boolean array
+		and the number of true values equals the length of ``value``. In
+		this case, no exception is raised.
+		
+		Parameters
+		----------
+		indexer : sequence
+		    The key for the setitem
+		value : array-like
+		    The value for the setitem
+		values : array-like
+		    The values being set into
+		
+		Returns
+		-------
+		None
+		
+		Raises
+		------
+		ValueError
+		    When the indexer is an ndarray or list and the lengths don't
+		    match.
+	**/
+	static public function check_setitem_lengths(indexer:Dynamic, value:Dynamic, values:Dynamic):Dynamic;
+	/**
 		Combine multiple concatenation plans into one.
 		
 		existing_plan is updated in-place.
@@ -220,6 +284,19 @@ package pandas.core.internals;
 	static public function find_common_type(types:Dynamic):Dynamic;
 	static public function form_blocks(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
 	/**
+		Find the appropriate Block subclass to use for the given values and dtype.
+		
+		Parameters
+		----------
+		values : ndarray-like
+		dtype : numpy or pandas dtype
+		
+		Returns
+		-------
+		cls : class, subclass of Block
+	**/
+	static public function get_block_type(values:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
 		Return dtype and N/A values to use when concatenating specified units.
 		
 		Returned N/A value may be None which means there was no casting involved.
@@ -244,6 +321,18 @@ package pandas.core.internals;
 	**/
 	static public function get_mgr_concatenation_plan(mgr:Dynamic, indexers:Dynamic):Dynamic;
 	/**
+		interpret the dtype from a scalar or array. This is a convenience
+		routines to infer dtype from a scalar or an array
+		
+		Parameters
+		----------
+		pandas_dtype : bool, default False
+		    whether to infer dtype including pandas extension types.
+		    If False, scalar/array belongs to pandas extension types is inferred as
+		    object
+	**/
+	static public function infer_dtype_from(val:Dynamic, ?pandas_dtype:Dynamic):Dynamic;
+	/**
 		interpret the dtype from a scalar
 		
 		Parameters
@@ -254,6 +343,36 @@ package pandas.core.internals;
 		    object
 	**/
 	static public function infer_dtype_from_scalar(val:Dynamic, ?pandas_dtype:Dynamic):Dynamic;
+	/**
+		Check whether the provided array or dtype is of a boolean dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Examples
+		--------
+		>>> is_bool_dtype(str)
+		False
+		>>> is_bool_dtype(int)
+		False
+		>>> is_bool_dtype(bool)
+		True
+		>>> is_bool_dtype(np.bool)
+		True
+		>>> is_bool_dtype(np.array(['a', 'b']))
+		False
+		>>> is_bool_dtype(pd.Series([1, 2]))
+		False
+		>>> is_bool_dtype(np.array([True, False]))
+		True
+	**/
+	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether an array-like is a Categorical instance.
 		
@@ -473,6 +592,28 @@ package pandas.core.internals;
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
 	/**
+		Check if an object is a pandas extension array type.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		
+		Returns
+		-------
+		bool
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether an array-like is of a pandas extension class instance.
 		
 		Extension classes include categoricals, pandas sparse objects (i.e.
@@ -625,10 +766,6 @@ package pandas.core.internals;
 		but guard against passing a non-scalar 
 	**/
 	static public function is_null_datelike_scalar(other:Dynamic):Dynamic;
-	/**
-		we have a null slice 
-	**/
-	static public function is_null_slice(obj:Dynamic):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a numeric dtype.
 		
@@ -784,6 +921,7 @@ package pandas.core.internals;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -838,42 +976,121 @@ package pandas.core.internals;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Check if the join units consist of blocks of uniform type that can
+		be concatenated using Block.concat_same_type instead of the generic
+		concatenate_join_units (which uses `_concat._concat_compat`).
+	**/
+	static public function is_uniform_join_units(join_units:Dynamic):Dynamic;
+	static public function is_uniform_reindex(join_units:Dynamic):Dynamic;
+	/**
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	/**
 		If two indices overlap, add suffixes to overlapping entries.
 		
 		If corresponding suffix is empty, the entry is simply converted to string.
 	**/
 	static public function items_overlap_with_suffix(left:Dynamic, lsuffix:Dynamic, right:Dynamic, rsuffix:Dynamic):Dynamic;
-	/**
-		return the length of a single non-tuple indexer which could be a slice
-		    
-	**/
-	static public function length_of_indexer(indexer:Dynamic, ?target:Dynamic):Dynamic;
 	static public function make_block(values:Dynamic, placement:Dynamic, ?klass:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
 	/**
-		if we have negative indicies, translate to postive here
-		if have indicies that are out-of-bounds, raise an IndexError
+		Attempt to convert indices into valid, positive indices.
+		
+		If we have negative indices, translate to positive here.
+		If we have indices that are out-of-bounds, raise an IndexError.
+		
+		Parameters
+		----------
+		indices : array-like
+		    The array of indices that we are to convert.
+		n : int
+		    The number of elements in the array that we are indexing.
+		
+		Returns
+		-------
+		valid_indices : array-like
+		    An array-like of positive indices that correspond to the ones
+		    that were passed in initially to this function.
+		
+		Raises
+		------
+		IndexError : one of the converted indices either exceeded the number
+		    of elements (specified by `n`) OR was still negative.
 	**/
 	static public function maybe_convert_indices(indices:Dynamic, n:Dynamic):Dynamic;
 	/**
@@ -881,27 +1098,38 @@ package pandas.core.internals;
 	**/
 	static public function maybe_convert_objects(values:Dynamic, ?convert_dates:Dynamic, ?convert_numeric:Dynamic, ?convert_timedeltas:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Convert a python scalar to the appropriate numpy dtype if possible
-		This avoids numpy directly converting according to platform preferences
-	**/
-	static public function maybe_convert_scalar(values:Dynamic):Dynamic;
-	/**
-		Convert string-like and string-like array to convert object dtype.
-		This is to avoid numpy to handle the array as str dtype.
-	**/
-	static public function maybe_convert_string_to_object(values:Dynamic):Dynamic;
-	/**
 		try to cast to the specified dtype (e.g. convert back to bool/int
 		or could be an astype of float64->float32
 	**/
 	static public function maybe_downcast_to_dtype(result:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		Try to infer an object's dtype, for use in arithmetic ops
+		
+		Uses `element.dtype` if that's available.
+		Objects implementing the iterator protocol are cast to a NumPy array,
+		and from there the array's type is used.
+		
+		Parameters
+		----------
+		element : object
+		    Possibly has a `.dtype` attribute, and possibly the iterator
+		    protocol.
+		
+		Returns
+		-------
+		tipo : type
+		
+		Examples
+		--------
+		>>> from collections import namedtuple
+		>>> Foo = namedtuple("Foo", "dtype")
+		>>> maybe_infer_dtype_type(Foo(np.dtype("i8")))
+		numpy.int64
+	**/
+	static public function maybe_infer_dtype_type(element:Dynamic):Dynamic;
 	static public function maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
-		coerce to a categorical if a series is given 
-	**/
-	static public function maybe_to_categorical(array:Dynamic):Dynamic;
-	/**
-		provide explict type promotion and coercion
+		provide explicit type promotion and coercion
 		
 		Parameters
 		----------
@@ -911,6 +1139,80 @@ package pandas.core.internals;
 		copy : if True always make a copy even if no upcast is required
 	**/
 	static public function maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
+		
+		See Also
+		--------
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
+	**/
+	static public function notna(obj:Dynamic):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.

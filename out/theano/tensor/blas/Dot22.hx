@@ -100,7 +100,7 @@ package theano.tensor.blas;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -150,7 +150,7 @@ package theano.tensor.blas;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -190,10 +190,10 @@ package theano.tensor.blas;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	static public var begin_switch_typenum : Dynamic;
 	public function build_gemm_call():Dynamic;
 	public function build_gemm_version():Dynamic;
@@ -492,7 +492,7 @@ package theano.tensor.blas;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -555,6 +555,7 @@ package theano.tensor.blas;
 	static public var case_float_gemm : Dynamic;
 	static public var check_ab_double_or_float : Dynamic;
 	static public var check_dims : Dynamic;
+	static public var check_input : Dynamic;
 	static public var check_strides : Dynamic;
 	static public var check_xyz_double_or_float : Dynamic;
 	static public var check_xyz_rank2 : Dynamic;
@@ -571,6 +572,7 @@ package theano.tensor.blas;
 	public function do_constant_folding(node:Dynamic):Dynamic;
 	static public var encode_strides_in_unit : Dynamic;
 	static public var end_switch_typenum : Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	public function infer_shape(node:Dynamic, input_shapes:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
@@ -660,7 +662,7 @@ package theano.tensor.blas;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

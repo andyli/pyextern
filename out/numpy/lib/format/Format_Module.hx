@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.lib.format;
 @:pythonImport("numpy.lib.format") extern class Format_Module {
+	static public var ARRAY_ALIGN : Dynamic;
 	static public var BUFFER_SIZE : Dynamic;
 	static public var MAGIC_LEN : Dynamic;
 	static public var MAGIC_PREFIX : Dynamic;

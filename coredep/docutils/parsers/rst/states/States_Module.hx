@@ -35,12 +35,17 @@ package docutils.parsers.rst.states;
 		Return a case- and whitespace-normalized name.
 	**/
 	static public function normalize_name(name:Dynamic):Dynamic;
+	/**
+		Split `text` on escaped whitespace (null+space or null+newline).
+		Return a list of strings.
+	**/
+	static public function split_escaped_whitespace(text:Dynamic):Dynamic;
 	static public var state_classes : Dynamic;
 	/**
 		Return a string with nulls removed or restored to backslashes.
 		Backslash-escaped spaces are also removed.
 	**/
-	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic):Dynamic;
+	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic, ?respect_whitespace:Dynamic):Dynamic;
 	/**
 		Return a whitespace-normalized name.
 	**/

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gof.opt;
 @:pythonImport("theano.gof.opt", "GraphToGPULocalOptGroup") extern class GraphToGPULocalOptGroup {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package theano.gof.opt;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package theano.gof.opt;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -113,7 +113,7 @@ package theano.gof.opt;
 		fgraph, this is the place to do it.
 	**/
 	public function add_requirements(fgraph:Dynamic):Dynamic;
-	public function merge_profile(prof2:Dynamic):Dynamic;
+	static public function merge_profile(prof1:Dynamic, prof2:Dynamic):Dynamic;
 	static public function print_profile(stream:Dynamic, prof:Dynamic, ?level:Dynamic):Dynamic;
 	public function print_summary(?stream:Dynamic, ?level:Dynamic, ?depth:Dynamic):Dynamic;
 	/**

@@ -52,112 +52,20 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct Multivariate Normal distribution on `R^k`.
+		DEPRECATED FUNCTION
 		
-		The `batch_shape` is the broadcast shape between `loc` and `scale`
-		arguments.
-		
-		The `event_shape` is given by last dimension of the matrix implied by
-		`scale`. The last dimension of `loc` (if provided) must broadcast with this.
-		
-		Recall that `covariance = scale @ scale.T`. A (non-batch) `scale` matrix is:
-		
-		```none
-		scale = diag(scale_diag + scale_identity_multiplier * ones(k))
-		```
-		
-		where:
-		
-		* `scale_diag.shape = [k]`, and,
-		* `scale_identity_multiplier.shape = []`.
-		
-		Additional leading dimensions (if any) will index batches.
-		
-		If both `scale_diag` and `scale_identity_multiplier` are `None`, then
-		`scale` is the Identity matrix.
-		
-		Args:
-		  loc: Floating-point `Tensor`. If this is set to `None`, `loc` is
-		    implicitly `0`. When specified, may have shape `[B1, ..., Bb, k]` where
-		    `b >= 0` and `k` is the event size.
-		  scale_diag: Non-zero, floating-point `Tensor` representing a diagonal
-		    matrix added to `scale`. May have shape `[B1, ..., Bb, k]`, `b >= 0`,
-		    and characterizes `b`-batches of `k x k` diagonal matrices added to
-		    `scale`. When both `scale_identity_multiplier` and `scale_diag` are
-		    `None` then `scale` is the `Identity`.
-		  scale_identity_multiplier: Non-zero, floating-point `Tensor` representing
-		    a scaled-identity-matrix added to `scale`. May have shape
-		    `[B1, ..., Bb]`, `b >= 0`, and characterizes `b`-batches of scaled
-		    `k x k` identity matrices added to `scale`. When both
-		    `scale_identity_multiplier` and `scale_diag` are `None` then `scale` is
-		    the `Identity`.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`,
-		    statistics (e.g., mean, mode, variance) use the value "`NaN`" to
-		    indicate the result is undefined. When `False`, an exception is raised
-		    if one or more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  ValueError: if at most `scale_identity_multiplier` is specified.
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
 	@:native("__init__")
 	public function ___init__(loc:Dynamic, scale_diag:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct Multivariate Normal distribution on `R^k`.
+		DEPRECATED FUNCTION
 		
-		The `batch_shape` is the broadcast shape between `loc` and `scale`
-		arguments.
-		
-		The `event_shape` is given by last dimension of the matrix implied by
-		`scale`. The last dimension of `loc` (if provided) must broadcast with this.
-		
-		Recall that `covariance = scale @ scale.T`. A (non-batch) `scale` matrix is:
-		
-		```none
-		scale = diag(scale_diag + scale_identity_multiplier * ones(k))
-		```
-		
-		where:
-		
-		* `scale_diag.shape = [k]`, and,
-		* `scale_identity_multiplier.shape = []`.
-		
-		Additional leading dimensions (if any) will index batches.
-		
-		If both `scale_diag` and `scale_identity_multiplier` are `None`, then
-		`scale` is the Identity matrix.
-		
-		Args:
-		  loc: Floating-point `Tensor`. If this is set to `None`, `loc` is
-		    implicitly `0`. When specified, may have shape `[B1, ..., Bb, k]` where
-		    `b >= 0` and `k` is the event size.
-		  scale_diag: Non-zero, floating-point `Tensor` representing a diagonal
-		    matrix added to `scale`. May have shape `[B1, ..., Bb, k]`, `b >= 0`,
-		    and characterizes `b`-batches of `k x k` diagonal matrices added to
-		    `scale`. When both `scale_identity_multiplier` and `scale_diag` are
-		    `None` then `scale` is the `Identity`.
-		  scale_identity_multiplier: Non-zero, floating-point `Tensor` representing
-		    a scaled-identity-matrix added to `scale`. May have shape
-		    `[B1, ..., Bb]`, `b >= 0`, and characterizes `b`-batches of scaled
-		    `k x k` identity matrices added to `scale`. When both
-		    `scale_identity_multiplier` and `scale_diag` are `None` then `scale` is
-		    the `Identity`.
-		  validate_args: Python `bool`, default `False`. When `True` distribution
-		    parameters are checked for validity despite possibly degrading runtime
-		    performance. When `False` invalid inputs may silently render incorrect
-		    outputs.
-		  allow_nan_stats: Python `bool`, default `True`. When `True`,
-		    statistics (e.g., mean, mode, variance) use the value "`NaN`" to
-		    indicate the result is undefined. When `False`, an exception is raised
-		    if one or more of the statistic's batch members are undefined.
-		  name: Python `str` name prefixed to Ops created by this class.
-		
-		Raises:
-		  ValueError: if at most `scale_identity_multiplier` is specified.
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 	**/
 	public function new(loc:Dynamic, scale_diag:Dynamic, ?validate_args:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Void;
 	/**
@@ -166,7 +74,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -217,7 +125,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -238,6 +146,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 	public function _call_survival_function(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _cdf(y:Dynamic):Dynamic;
 	public function _covariance():Dynamic;
+	public function _cross_entropy(other:Dynamic):Dynamic;
 	public function _entropy():Dynamic;
 	public function _event_shape():Dynamic;
 	public function _event_shape_tensor():Dynamic;
@@ -246,9 +155,18 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 	**/
 	public function _expand_sample_shape_to_vector(x:Dynamic, name:Dynamic):Dynamic;
 	/**
+		Finish computation of log_prob on one element of the inverse image.
+	**/
+	public function _finish_log_prob_for_one_fiber(y:Dynamic, x:Dynamic, ildj:Dynamic, event_ndims:Dynamic):Dynamic;
+	/**
+		Finish computation of prob on one element of the inverse image.
+	**/
+	public function _finish_prob_for_one_fiber(y:Dynamic, x:Dynamic, ildj:Dynamic, event_ndims:Dynamic):Dynamic;
+	/**
 		Implementation for `is_scalar_batch` and `is_scalar_event`.
 	**/
 	public function _is_scalar_helper(static_shape:Dynamic, dynamic_shape_fn:Dynamic):Dynamic;
+	public function _kl_divergence(other:Dynamic):Dynamic;
 	public function _log_cdf(y:Dynamic):Dynamic;
 	/**
 		`value` is a batch vector with compatible shape if `value` is a `Tensor` whose
@@ -266,6 +184,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 	**/
 	public function _log_prob(x:Dynamic):Dynamic;
 	public function _log_survival_function(y:Dynamic):Dynamic;
+	public function _maybe_get_static_event_ndims():Dynamic;
 	/**
 		Helper which rolls left event_dims left or right event_dims right.
 	**/
@@ -281,6 +200,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 	**/
 	public function _name_scope(?name:Dynamic, ?values:Dynamic):Dynamic;
 	static public function _param_shapes(sample_shape:Dynamic):Dynamic;
+	public var _parameters : Dynamic;
 	/**
 		`value` is a batch vector with compatible shape if `value` is a `Tensor` whose
 		shape can be broadcast up to either:
@@ -304,6 +224,8 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 	public function _set_sample_static_shape(x:Dynamic, sample_shape:Dynamic):Dynamic;
 	public function _stddev():Dynamic;
 	public function _survival_function(y:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public function _variance():Dynamic;
 	/**
 		Python `bool` describing behavior when a stat is undefined.
@@ -360,7 +282,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  cdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -412,7 +334,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		length-`k'` vector.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  covariance: Floating-point `Tensor` with shape `[B1, ..., Bn, k', k']`
@@ -420,6 +342,29 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		    `k' = reduce_prod(self.event_shape)`.
 	**/
 	public function covariance(?name:Dynamic):Dynamic;
+	/**
+		Computes the (Shannon) cross entropy.
+		
+		Denote this distribution (`self`) by `P` and the `other` distribution by
+		`Q`. Assuming `P, Q` are absolutely continuous with respect to
+		one another and permit densities `p(x) dr(x)` and `q(x) dr(x)`, (Shanon)
+		cross entropy is defined as:
+		
+		```none
+		H[P, Q] = E_p[-log q(X)] = -int_F p(x) log q(x) dr(x)
+		```
+		
+		where `F` denotes the support of the random variable `X ~ P`.
+		
+		Args:
+		  other: `tfp.distributions.Distribution` instance.
+		  name: Python `str` prepended to names of ops created by this function.
+		
+		Returns:
+		  cross_entropy: `self.dtype` `Tensor` with shape `[B1, ..., Bn]`
+		    representing `n` different calculations of (Shanon) cross entropy.
+	**/
+	public function cross_entropy(other:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Base distribution, p(x).
 	**/
@@ -455,7 +400,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		Indicates that `batch_shape == []`.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  is_scalar_batch: `bool` scalar `Tensor`.
@@ -465,12 +410,38 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		Indicates that `event_shape == []`.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  is_scalar_event: `bool` scalar `Tensor`.
 	**/
 	public function is_scalar_event(?name:Dynamic):Dynamic;
+	/**
+		Computes the Kullback--Leibler divergence.
+		
+		Denote this distribution (`self`) by `p` and the `other` distribution by
+		`q`. Assuming `p, q` are absolutely continuous with respect to reference
+		measure `r`, the KL divergence is defined as:
+		
+		```none
+		KL[p, q] = E_p[log(p(X)/q(X))]
+		         = -int_F p(x) log q(x) dr(x) + int_F p(x) log p(x) dr(x)
+		         = H[p, q] - H[p]
+		```
+		
+		where `F` denotes the support of the random variable `X ~ p`, `H[., .]`
+		denotes (Shanon) cross entropy, and `H[.]` denotes (Shanon) entropy.
+		
+		Args:
+		  other: `tfp.distributions.Distribution` instance.
+		  name: Python `str` prepended to names of ops created by this function.
+		
+		Returns:
+		  kl_divergence: `self.dtype` `Tensor` with shape `[B1, ..., Bn]`
+		    representing `n` different calculations of the Kullback-Leibler
+		    divergence.
+	**/
+	public function kl_divergence(other:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		The `loc` `Tensor` in `Y = scale @ X + loc`.
 	**/
@@ -490,7 +461,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  logcdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -518,7 +489,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  log_prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -541,7 +512,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
@@ -625,7 +596,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -643,7 +614,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  quantile: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -693,7 +664,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		denotes expectation, and `stddev.shape = batch_shape + event_shape`.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  stddev: Floating-point `Tensor` with shape identical to
@@ -713,7 +684,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
@@ -737,7 +708,7 @@ package tensorflow.contrib.distributions.python.ops.mvn_diag;
 		denotes expectation, and `Var.shape = batch_shape + event_shape`.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  variance: Floating-point `Tensor` with shape identical to

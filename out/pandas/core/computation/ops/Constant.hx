@@ -12,7 +12,7 @@ package pandas.core.computation.ops;
 		Call self as a function.
 	**/
 	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -63,7 +63,7 @@ package pandas.core.computation.ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +119,7 @@ package pandas.core.computation.ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __unicode__():Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -128,7 +128,7 @@ package pandas.core.computation.ops;
 	public function _resolve_name():Dynamic;
 	public function evaluate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var is_datetime : Dynamic;
-	public var isscalar : Dynamic;
+	public var is_scalar : Dynamic;
 	public var local_name : Dynamic;
 	public var name : Dynamic;
 	public var ndim : Dynamic;

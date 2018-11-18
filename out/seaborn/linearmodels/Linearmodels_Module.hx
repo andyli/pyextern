@@ -24,8 +24,8 @@ package seaborn.linearmodels;
 		creating.
 		
 		There are a number of mutually exclusive options for estimating the
-		regression model: ``order``, ``logistic``, ``lowess``, ``robust``, and
-		``logx``. See the parameter docs for more information on these options.    
+		regression model. See the :ref:`tutorial <regression_tutorial>` for more
+		information.    
 		
 		The parameters to this function span most of the options in
 		:class:`FacetGrid`, although there may be occasional cases where you will
@@ -42,22 +42,22 @@ package seaborn.linearmodels;
 		    Variables that define subsets of the data, which will be drawn on
 		    separate facets in the grid. See the ``*_order`` parameters to control
 		    the order of levels of this variable.
-		palette : seaborn color palette or dict, optional
+		palette : palette name, list, or dict, optional
 		    Colors to use for the different levels of the ``hue`` variable. Should
 		    be something that can be interpreted by :func:`color_palette`, or a
 		    dictionary mapping hue levels to matplotlib colors.    
 		col_wrap : int, optional
 		    "Wrap" the column variable at this width, so that the column facets
 		    span multiple rows. Incompatible with a ``row`` facet.    
-		size : scalar, optional
+		height : scalar, optional
 		    Height (in inches) of each facet. See also: ``aspect``.    
 		aspect : scalar, optional
-		    Aspect ratio of each facet, so that ``aspect * size`` gives the width
+		    Aspect ratio of each facet, so that ``aspect * height`` gives the width
 		    of each facet in inches.    
 		markers : matplotlib marker code or list of marker codes, optional
 		    Markers for the scatterplot. If a list, each marker in the list will be
 		    used for each level of the ``hue`` variable.
-		share{x,y} : bool, optional
+		share{x,y} : bool, 'col', or 'row' optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
 		{hue,col,row}_order : lists, optional
@@ -85,8 +85,8 @@ package seaborn.linearmodels;
 		x_ci : "ci", "sd", int in [0, 100] or None, optional
 		    Size of the confidence interval used when plotting a central tendency
 		    for discrete values of ``x``. If ``"ci"``, defer to the value of the
-		    ``ci`` parameter. If ``"sd"``, skip bootstrappig and show the standard
-		    deviation of the observations in each bin.    
+		    ``ci`` parameter. If ``"sd"``, skip bootstrapping and show the
+		    standard deviation of the observations in each bin.    
 		scatter : bool, optional
 		    If ``True``, draw a scatterplot with the underlying observations (or
 		    the ``x_estimator`` values).    
@@ -158,18 +158,9 @@ package seaborn.linearmodels;
 		Notes
 		-----
 		
-		Understanding the difference between :func:`regplot` and :func:`lmplot` can
-		be a bit tricky. In fact, they are closely related, as :func:`lmplot` uses
-		:func:`regplot` internally and takes most of its parameters. However,
-		:func:`regplot` is an axes-level function, so it draws directly onto an
-		axes (either the currently active axes or the one provided by the ``ax``
-		parameter), while :func:`lmplot` is a figure-level function and creates its
-		own figure, which is managed through a :class:`FacetGrid`. This has a few
-		consequences, namely that :func:`regplot` can happily coexist in a figure
-		with other kinds of plots and will follow the global matplotlib color
-		cycle. In contrast, :func:`lmplot` needs to occupy an entire figure, and
-		the size and color cycle are controlled through function parameters,
-		ignoring the global defaults.    
+		The :func:`regplot` and :func:`lmplot` functions are closely related, but
+		the former is an axes-level function while the latter is a figure-level
+		function that combines :func:`regplot` and :class:`FacetGrid`.    
 		
 		Examples
 		--------
@@ -228,13 +219,13 @@ package seaborn.linearmodels;
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", col="smoker", data=tips)
 		
-		Change the size and aspect ratio of the facets:
+		Change the height and aspect ratio of the facets:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="size", y="total_bill", hue="day", col="day",
-		    ...                data=tips, aspect=.4, x_jitter=.1)
+		    ...                data=tips, height=6, aspect=.4, x_jitter=.1)
 		
 		Wrap the levels of the column variable into multiple rows:
 		
@@ -242,7 +233,7 @@ package seaborn.linearmodels;
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", col="day", hue="day",
-		    ...                data=tips, col_wrap=2, size=3)
+		    ...                data=tips, col_wrap=2, height=3)
 		
 		Condition on two variables to make a full grid:
 		
@@ -250,7 +241,7 @@ package seaborn.linearmodels;
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", row="sex", col="time",
-		    ...                data=tips, size=3)
+		    ...                data=tips, height=3)
 		
 		Use methods on the returned :class:`FacetGrid` instance to further tweak
 		the plot:
@@ -259,20 +250,20 @@ package seaborn.linearmodels;
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", row="sex", col="time",
-		    ...                data=tips, size=3)
+		    ...                data=tips, height=3)
 		    >>> g = (g.set_axis_labels("Total bill (US Dollars)", "Tip")
 		    ...       .set(xlim=(0, 60), ylim=(0, 12),
 		    ...            xticks=[10, 30, 50], yticks=[2, 6, 10])
 		    ...       .fig.subplots_adjust(wspace=.02))
 	**/
-	static public function lmplot(x:Dynamic, y:Dynamic, data:Dynamic, ?hue:Dynamic, ?col:Dynamic, ?row:Dynamic, ?palette:Dynamic, ?col_wrap:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?markers:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?hue_order:Dynamic, ?col_order:Dynamic, ?row_order:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?x_estimator:Dynamic, ?x_bins:Dynamic, ?x_ci:Dynamic, ?scatter:Dynamic, ?fit_reg:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?logistic:Dynamic, ?lowess:Dynamic, ?robust:Dynamic, ?logx:Dynamic, ?x_partial:Dynamic, ?y_partial:Dynamic, ?truncate:Dynamic, ?x_jitter:Dynamic, ?y_jitter:Dynamic, ?scatter_kws:Dynamic, ?line_kws:Dynamic):Dynamic;
+	static public function lmplot(x:Dynamic, y:Dynamic, data:Dynamic, ?hue:Dynamic, ?col:Dynamic, ?row:Dynamic, ?palette:Dynamic, ?col_wrap:Dynamic, ?height:Dynamic, ?aspect:Dynamic, ?markers:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?hue_order:Dynamic, ?col_order:Dynamic, ?row_order:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?x_estimator:Dynamic, ?x_bins:Dynamic, ?x_ci:Dynamic, ?scatter:Dynamic, ?fit_reg:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?logistic:Dynamic, ?lowess:Dynamic, ?robust:Dynamic, ?logx:Dynamic, ?x_partial:Dynamic, ?y_partial:Dynamic, ?truncate:Dynamic, ?x_jitter:Dynamic, ?y_jitter:Dynamic, ?scatter_kws:Dynamic, ?line_kws:Dynamic, ?size:Dynamic):Dynamic;
 	static public var msg : Dynamic;
 	/**
 		Plot data and a linear regression model fit.
 		
 		There are a number of mutually exclusive options for estimating the
-		regression model: ``order``, ``logistic``, ``lowess``, ``robust``, and
-		``logx``. See the parameter docs for more information on these options.    
+		regression model. See the :ref:`tutorial <regression_tutorial>` for more
+		information.    
 		
 		Parameters
 		----------
@@ -299,8 +290,8 @@ package seaborn.linearmodels;
 		x_ci : "ci", "sd", int in [0, 100] or None, optional
 		    Size of the confidence interval used when plotting a central tendency
 		    for discrete values of ``x``. If ``"ci"``, defer to the value of the
-		    ``ci`` parameter. If ``"sd"``, skip bootstrappig and show the standard
-		    deviation of the observations in each bin.    
+		    ``ci`` parameter. If ``"sd"``, skip bootstrapping and show the
+		    standard deviation of the observations in each bin.    
 		scatter : bool, optional
 		    If ``True``, draw a scatterplot with the underlying observations (or
 		    the ``x_estimator`` values).    
@@ -390,18 +381,9 @@ package seaborn.linearmodels;
 		Notes
 		-----
 		
-		Understanding the difference between :func:`regplot` and :func:`lmplot` can
-		be a bit tricky. In fact, they are closely related, as :func:`lmplot` uses
-		:func:`regplot` internally and takes most of its parameters. However,
-		:func:`regplot` is an axes-level function, so it draws directly onto an
-		axes (either the currently active axes or the one provided by the ``ax``
-		parameter), while :func:`lmplot` is a figure-level function and creates its
-		own figure, which is managed through a :class:`FacetGrid`. This has a few
-		consequences, namely that :func:`regplot` can happily coexist in a figure
-		with other kinds of plots and will follow the global matplotlib color
-		cycle. In contrast, :func:`lmplot` needs to occupy an entire figure, and
-		the size and color cycle are controlled through function parameters,
-		ignoring the global defaults.    
+		The :func:`regplot` and :func:`lmplot` functions are closely related, but
+		the former is an axes-level function while the latter is a figure-level
+		function that combines :func:`regplot` and :class:`FacetGrid`.    
 		
 		
 		It's also easy to combine combine :func:`regplot` and :class:`JointGrid` or

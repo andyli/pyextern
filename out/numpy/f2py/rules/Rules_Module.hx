@@ -30,6 +30,7 @@ package numpy.f2py.rules;
 	**/
 	static public function errmess(text:Dynamic):Dynamic;
 	static public var f2py_version : Dynamic;
+	static public var generationtime : Dynamic;
 	static public function gentitle(name:Dynamic):Dynamic;
 	static public function getargs2(rout:Dynamic):Dynamic;
 	static public function hascallstatement(rout:Dynamic):Dynamic;

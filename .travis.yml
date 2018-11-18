@@ -1,7 +1,7 @@
 language: haxe
 
 haxe:
-  - "3.4.2"
+  - "3.4.7"
   - development
 
 env:
@@ -27,7 +27,9 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda install psutil
+  - conda config --add channels anaconda
   - conda config --add channels conda-forge
+  - conda config --add channels pytorch
   - conda create -q --name pyextern --file $REQUIREMENTS python=3.6
   - source activate pyextern
   - conda env export

@@ -23,6 +23,10 @@ package tensorflow.contrib.layers.python.layers.embedding_ops;
 	**/
 	static public function _prune_invalid_ids(sparse_ids:Dynamic, sparse_weights:Dynamic):Dynamic;
 	/**
+		Prune invalid weights (< 0) from the input ids and weights.
+	**/
+	static public function _prune_invalid_weights(sparse_ids:Dynamic, sparse_weights:Dynamic):Dynamic;
+	/**
 		Looks up embeddings using parameter hashing for each value in `values`.
 		
 		This method looks up selected embedding dimensions if `sampled_candidates` is
@@ -171,6 +175,9 @@ package tensorflow.contrib.layers.python.layers.embedding_ops;
 		    `PartitionedVariable`. Shape `[index, d1, d2, ...]`.
 		  ids: A one-dimensional `Tensor` with type `int32` or `int64` containing
 		    the ids to be looked up in `params`. Shape `[ids1, ids2, ...]`.
+		  partition_strategy: A string specifying the partitioning strategy, relevant
+		    if `len(params) > 1`. Currently `"div"` and `"mod"` are supported. Default
+		    is `"mod"`.
 		  name: A name for this operation (optional).
 		
 		Returns:
@@ -180,7 +187,7 @@ package tensorflow.contrib.layers.python.layers.embedding_ops;
 		Raises:
 		  ValueError: If `params` is empty.
 	**/
-	static public function embedding_lookup_unique(params:Dynamic, ids:Dynamic, ?name:Dynamic):Dynamic;
+	static public function embedding_lookup_unique(params:Dynamic, ids:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Lookup embedding results, accounting for invalid IDs and empty features.

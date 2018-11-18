@@ -11,6 +11,21 @@ package tensorflow.contrib.rnn;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Get static input batch size if available, with fallback to the dynamic one.
+		
+		Args:
+		  flat_input: An iterable of time major input Tensors of shape
+		    `[max_time, batch_size, ...]`.
+		  All inputs should have compatible batch sizes.
+		
+		Returns:
+		  The batch size in Python integer if available, or a scalar Tensor otherwise.
+		
+		Raises:
+		  ValueError: if there is any input with an invalid shape.
+	**/
+	static public function best_effort_input_batch_size(flat_input:Dynamic):Dynamic;
+	/**
 		Creates a dynamic bidirectional recurrent neural network.
 		
 		Stacks several bidirectional rnn layers. The combined forward and backward
@@ -42,12 +57,19 @@ package tensorflow.contrib.rnn;
 		    and can be run in parallel, will be.  This parameter trades off
 		    time for space.  Values >> 1 use more memory but take less time,
 		    while smaller values use less memory but computations take longer.
+		  time_major: The shape format of the inputs and outputs Tensors. If true,
+		    these Tensors must be shaped [max_time, batch_size, depth]. If false,
+		    these Tensors must be shaped [batch_size, max_time, depth]. Using
+		    time_major = True is a bit more efficient because it avoids transposes at
+		    the beginning and end of the RNN calculation. However, most TensorFlow
+		    data is batch-major, so by default this function accepts input and emits
+		    output in batch-major form.
 		  scope: VariableScope for the created subgraph; defaults to None.
 		
 		Returns:
 		  A tuple (outputs, output_state_fw, output_state_bw) where:
 		    outputs: Output `Tensor` shaped:
-		      `batch_size, max_time, layers_output]`. Where layers_output
+		      `[batch_size, max_time, layers_output]`. Where layers_output
 		      are depth-concatenated forward and backward outputs.
 		    output_states_fw is the final states, one tensor per layer,
 		      of the forward rnn.
@@ -58,7 +80,7 @@ package tensorflow.contrib.rnn;
 		  TypeError: If `cell_fw` or `cell_bw` is not an instance of `RNNCell`.
 		  ValueError: If inputs is `None`.
 	**/
-	static public function stack_bidirectional_dynamic_rnn(cells_fw:Dynamic, cells_bw:Dynamic, inputs:Dynamic, ?initial_states_fw:Dynamic, ?initial_states_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?parallel_iterations:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function stack_bidirectional_dynamic_rnn(cells_fw:Dynamic, cells_bw:Dynamic, inputs:Dynamic, ?initial_states_fw:Dynamic, ?initial_states_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?parallel_iterations:Dynamic, ?time_major:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Creates a bidirectional recurrent neural network.
 		
@@ -235,4 +257,17 @@ package tensorflow.contrib.rnn;
 		   type of `state_name` does not match that of `cell.state_size`.
 	**/
 	static public function static_state_saving_rnn(cell:Dynamic, inputs:Dynamic, state_saver:Dynamic, state_name:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Transposes the batch and time dimensions of a Tensor.
+		
+		If the input tensor has rank < 2 it returns the original tensor. Retains as
+		much of the static shape information as possible.
+		
+		Args:
+		  x: A Tensor.
+		
+		Returns:
+		  x transposed along the first two dimensions.
+	**/
+	static public function transpose_batch_time(x:Dynamic):Dynamic;
 }

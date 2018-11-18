@@ -1,7 +1,9 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.layers.python.layers.layers;
 @:pythonImport("tensorflow.contrib.layers.python.layers.layers") extern class Layers_Module {
+	static public var DATA_FORMAT_NCDHW : Dynamic;
 	static public var DATA_FORMAT_NCHW : Dynamic;
+	static public var DATA_FORMAT_NDHWC : Dynamic;
 	static public var DATA_FORMAT_NHWC : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -35,16 +37,18 @@ package tensorflow.contrib.layers.python.layers.layers;
 		
 		Can be used as a normalizer function for conv2d and fully_connected.
 		
-		Note: When is_training is True the moving_mean and moving_variance need to be
-		updated, by default the update_ops are placed in `tf.GraphKeys.UPDATE_OPS` so
-		they need to be added as a dependency to the `train_op`, example:
+		Note: when training, the moving_mean and moving_variance need to be updated.
+		By default the update ops are placed in `tf.GraphKeys.UPDATE_OPS`, so they
+		need to be added as a dependency to the `train_op`. For example:
 		
+		```python
 		  update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 		  with tf.control_dependencies(update_ops):
 		    train_op = optimizer.minimize(loss)
+		```
 		
 		One can set updates_collections=None to force the updates in place, but that
-		can have speed penalty, especially in distributed settings.
+		can have a speed penalty, especially in distributed settings.
 		
 		Args:
 		  inputs: A tensor with 2 or more dimensions, where the first dimension has
@@ -66,6 +70,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    maintain a linear activation.
 		  param_initializers: Optional initializers for beta, gamma, moving mean and
 		    moving variance.
+		  param_regularizers: Optional regularizer for beta and gamma.
 		  updates_collections: Collections to collect the update ops for computation.
 		    The updates_ops need to be executed with the train_op.
 		    If None, a control dependency would be added to make sure the updates are
@@ -94,7 +99,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  ValueError: If the rank of `inputs` is neither 2 or 4.
 		  ValueError: If rank or `C` dimension of `inputs` is undefined.
 	**/
-	static public function _fused_batch_norm(inputs:Dynamic, ?decay:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?epsilon:Dynamic, ?activation_fn:Dynamic, ?param_initializers:Dynamic, ?updates_collections:Dynamic, ?is_training:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?data_format:Dynamic, ?zero_debias_moving_mean:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function _fused_batch_norm(inputs:Dynamic, ?decay:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?epsilon:Dynamic, ?activation_fn:Dynamic, ?param_initializers:Dynamic, ?param_regularizers:Dynamic, ?updates_collections:Dynamic, ?is_training:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?data_format:Dynamic, ?zero_debias_moving_mean:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Flattens inner dimensions of `inputs`, returns a Tensor with `new_rank`.
 		
@@ -113,7 +118,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  output_collections: Collection to which the outputs will be added.
 		  scope: Optional scope for `name_scope`.
 		Returns:
-		  A `Tensor` or `SparseTensor` conataining the same values as `inputs`, but
+		  A `Tensor` or `SparseTensor` containing the same values as `inputs`, but
 		  with innermost dimensions flattened to obtain rank `new_rank`.
 		
 		Raises:
@@ -123,7 +128,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 	/**
 		Getter that uses model_variable for compatibility with core layers.
 	**/
-	static public function _model_variable_getter(getter:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?rename:Dynamic, ?use_resource:Dynamic, ?_:python.KwArgs<Dynamic>):Dynamic;
+	static public function _model_variable_getter(getter:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?rename:Dynamic, ?use_resource:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic, ?_:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Python gradient helper function for scale_gradient function below.
 	**/
@@ -175,6 +180,33 @@ package tensorflow.contrib.layers.python.layers.layers;
 	**/
 	static public function avg_pool2d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
+		Adds a 3D average pooling op.
+		
+		It is assumed that the pooling is done per image but not in batch or channels.
+		
+		Args:
+		  inputs: A 5-D tensor of shape `[batch_size, depth, height, width, channels]`
+		    if `data_format` is `NDHWC`, and `[batch_size, channels, depth, height,
+		    width]` if `data_format` is `NCDHW`.
+		  kernel_size: A list of length 3: [kernel_depth, kernel_height, kernel_width]
+		    of the pooling kernel over which the op is computed. Can be an int if both
+		    values are the same.
+		  stride: A list of length 3: [stride_depth, stride_height, stride_width].
+		    Can be an int if both strides are the same. Note that presently
+		    both strides must have the same value.
+		  padding: The padding method, either 'VALID' or 'SAME'.
+		  data_format: A string. `NDHWC` (default) and `NCDHW` are supported.
+		  outputs_collections: The collections to which the outputs are added.
+		  scope: Optional scope for name_scope.
+		
+		Returns:
+		  A `Tensor` representing the results of the pooling operation.
+		
+		Raises:
+		  ValueError: If `data_format` is neither `NDHWC` nor `NCDHW`.
+	**/
+	static public function avg_pool3d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
 		Adds a Batch Normalization layer from http://arxiv.org/abs/1502.03167.
 		
 		  "Batch Normalization: Accelerating Deep Network Training by Reducing
@@ -182,7 +214,12 @@ package tensorflow.contrib.layers.python.layers.layers;
 		
 		  Sergey Ioffe, Christian Szegedy
 		
-		Can be used as a normalizer function for conv2d and fully_connected.
+		Can be used as a normalizer function for conv2d and fully_connected. The
+		normalization is over all but the last dimension if `data_format` is `NHWC`
+		and all but the second dimension if `data_format` is `NCHW`.  In case of a 2D
+		tensor this corresponds to the batch dimension, while in case of a 4D tensor
+		this
+		corresponds to the batch and space dimensions.
 		
 		Note: when training, the moving_mean and moving_variance need to be updated.
 		By default the update ops are placed in `tf.GraphKeys.UPDATE_OPS`, so they
@@ -238,7 +275,8 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    then the batch normalization uses weighted mean and
 		    variance. (This can be used to correct for bias in training
 		    example selection.)
-		  fused:  Use nn.fused_batch_norm if True, nn.batch_normalization otherwise.
+		  fused: if `None` or `True`, use a faster, fused implementation if possible.
+		    If `False`, use the system recommended implementation.
 		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
 		  zero_debias_moving_mean: Use zero_debias for moving_mean. It creates a new
 		    pair of variables 'moving_mean/biased' and 'moving_mean/local_step'.
@@ -256,18 +294,27 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    and should be neither too small (which would add noise) nor too large
 		    (which would give stale estimates). Note that `decay` is still applied
 		    to get the means and variances for inference.
+		  adjustment: A function taking the `Tensor` containing the (dynamic) shape of
+		    the input tensor and returning a pair (scale, bias) to apply to the
+		    normalized values (before gamma and beta), only during training. For
+		    example,
+		      `adjustment = lambda shape: (
+		        tf.random_uniform(shape[-1:], 0.93, 1.07),
+		        tf.random_uniform(shape[-1:], -0.1, 0.1))`
+		    will scale the normalized value by up to 7% up or down, then shift the
+		    result by up to 0.1 (with independent scaling and bias for each feature
+		    but shared across all examples), and finally apply gamma and/or beta. If
+		    `None`, no adjustment is applied.
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
 		
 		Raises:
-		  ValueError: If `batch_weights` is not None and `fused` is True.
-		  ValueError: If `param_regularizers` is not None and `fused` is True.
 		  ValueError: If `data_format` is neither `NHWC` nor `NCHW`.
 		  ValueError: If the rank of `inputs` is undefined.
 		  ValueError: If rank or channels dimension of `inputs` is undefined.
 	**/
-	static public function batch_norm(inputs:Dynamic, ?decay:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?epsilon:Dynamic, ?activation_fn:Dynamic, ?param_initializers:Dynamic, ?param_regularizers:Dynamic, ?updates_collections:Dynamic, ?is_training:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?batch_weights:Dynamic, ?fused:Dynamic, ?data_format:Dynamic, ?zero_debias_moving_mean:Dynamic, ?scope:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_decay:Dynamic):Dynamic;
+	static public function batch_norm(inputs:Dynamic, ?decay:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?epsilon:Dynamic, ?activation_fn:Dynamic, ?param_initializers:Dynamic, ?param_regularizers:Dynamic, ?updates_collections:Dynamic, ?is_training:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?batch_weights:Dynamic, ?fused:Dynamic, ?data_format:Dynamic, ?zero_debias_moving_mean:Dynamic, ?scope:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_decay:Dynamic, ?adjustment:Dynamic):Dynamic;
 	/**
 		Adds a bias to the inputs.
 		
@@ -325,7 +372,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    with "NC".
 		  num_outputs: Integer, the number of output filters.
 		  kernel_size: A sequence of N positive integers specifying the spatial
-		    dimensions of of the filters.  Can be a single integer to specify the same
+		    dimensions of the filters.  Can be a single integer to specify the same
 		    value for all spatial dimensions.
 		  stride: A sequence of N positive integers specifying the stride at which to
 		    compute output.  Can be a single integer to specify the same value for all
@@ -361,6 +408,84 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
 		  scope: Optional scope for `variable_scope`.
+		  conv_dims: Optional convolution dimensionality, when set it would use the
+		    corresponding convolution (e.g. 2 for Conv 2D, 3 for Conv 3D, ..). When
+		    leaved to None it would select the convolution dimensionality based on
+		    the input rank (i.e. Conv ND, with N = input_rank - 2).
+		
+		Returns:
+		  A tensor representing the output of the operation.
+		
+		Raises:
+		  ValueError: If `data_format` is invalid.
+		  ValueError: Both 'rate' and `stride` are not uniformly 1.
+	**/
+	static public function conv1d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds an N-D convolution followed by an optional batch_norm layer.
+		
+		It is required that 1 <= N <= 3.
+		
+		`convolution` creates a variable called `weights`, representing the
+		convolutional kernel, that is convolved (actually cross-correlated) with the
+		`inputs` to produce a `Tensor` of activations. If a `normalizer_fn` is
+		provided (such as `batch_norm`), it is then applied. Otherwise, if
+		`normalizer_fn` is None and a `biases_initializer` is provided then a `biases`
+		variable would be created and added the activations. Finally, if
+		`activation_fn` is not `None`, it is applied to the activations as well.
+		
+		Performs atrous convolution with input stride/dilation rate equal to `rate`
+		if a value > 1 for any dimension of `rate` is specified.  In this case
+		`stride` values != 1 are not supported.
+		
+		Args:
+		  inputs: A Tensor of rank N+2 of shape
+		    `[batch_size] + input_spatial_shape + [in_channels]` if data_format does
+		    not start with "NC" (default), or
+		    `[batch_size, in_channels] + input_spatial_shape` if data_format starts
+		    with "NC".
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A sequence of N positive integers specifying the spatial
+		    dimensions of the filters.  Can be a single integer to specify the same
+		    value for all spatial dimensions.
+		  stride: A sequence of N positive integers specifying the stride at which to
+		    compute output.  Can be a single integer to specify the same value for all
+		    spatial dimensions.  Specifying any `stride` value != 1 is incompatible
+		    with specifying any `rate` value != 1.
+		  padding: One of `"VALID"` or `"SAME"`.
+		  data_format: A string or None.  Specifies whether the channel dimension of
+		    the `input` and output is the last dimension (default, or if `data_format`
+		    does not start with "NC"), or the second dimension (if `data_format`
+		    starts with "NC").  For N=1, the valid values are "NWC" (default) and
+		    "NCW".  For N=2, the valid values are "NHWC" (default) and "NCHW".
+		    For N=3, the valid values are "NDHWC" (default) and "NCDHW".
+		  rate: A sequence of N positive integers specifying the dilation rate to use
+		    for atrous convolution.  Can be a single integer to specify the same
+		    value for all spatial dimensions.  Specifying any `rate` value != 1 is
+		    incompatible with specifying any `stride` value != 1.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
+		    `biases_regularizer` are ignored and `biases` are not created nor added.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
+		  weights_initializer: An initializer for the weights.
+		  weights_regularizer: Optional regularizer for the weights.
+		  biases_initializer: An initializer for the biases. If None skip biases.
+		  biases_regularizer: Optional regularizer for the biases.
+		  reuse: Whether or not the layer and its variables should be reused. To be
+		    able to reuse the layer scope must be given.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional scope for `variable_scope`.
+		  conv_dims: Optional convolution dimensionality, when set it would use the
+		    corresponding convolution (e.g. 2 for Conv 2D, 3 for Conv 3D, ..). When
+		    leaved to None it would select the convolution dimensionality based on
+		    the input rank (i.e. Conv ND, with N = input_rank - 2).
 		
 		Returns:
 		  A tensor representing the output of the operation.
@@ -488,7 +613,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    with "NC".
 		  num_outputs: Integer, the number of output filters.
 		  kernel_size: A sequence of N positive integers specifying the spatial
-		    dimensions of of the filters.  Can be a single integer to specify the same
+		    dimensions of the filters.  Can be a single integer to specify the same
 		    value for all spatial dimensions.
 		  stride: A sequence of N positive integers specifying the stride at which to
 		    compute output.  Can be a single integer to specify the same value for all
@@ -524,6 +649,10 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
 		  scope: Optional scope for `variable_scope`.
+		  conv_dims: Optional convolution dimensionality, when set it would use the
+		    corresponding convolution (e.g. 2 for Conv 2D, 3 for Conv 3D, ..). When
+		    leaved to None it would select the convolution dimensionality based on
+		    the input rank (i.e. Conv ND, with N = input_rank - 2).
 		
 		Returns:
 		  A tensor representing the output of the operation.
@@ -532,7 +661,51 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  ValueError: If `data_format` is invalid.
 		  ValueError: Both 'rate' and `stride` are not uniformly 1.
 	**/
-	static public function convolution(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function conv3d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a convolution3d_transpose with an optional batch normalization layer.
+		
+		The function creates a variable called `weights`, representing the
+		kernel, that is convolved with the input. If `batch_norm_params` is `None`, a
+		second variable called 'biases' is added to the result of the operation.
+		Args:
+		  inputs: A 5-D `Tensor` of type `float` and shape
+		    `[batch, depth, height, width, in_channels]` for `NDHWC` data format or
+		    `[batch, in_channels, depth, height, width]` for `NCDHW` data format.
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A list of length 3 holding the [kernel_depth, kernel_height,
+		    kernel_width] of the filters. Can be an int if both values are the same.
+		  stride: A list of length 3: [stride_depth, stride_height, stride_width].
+		    Can be an int if both strides are the same.  Note that presently
+		    both strides must have the same value.
+		  padding: One of 'VALID' or 'SAME'.
+		  data_format: A string. `NDHWC` (default) and `NCDHW` are supported.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
+		    `biases_regularizer` are ignored and `biases` are not created nor added.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
+		  weights_initializer: An initializer for the weights.
+		  weights_regularizer: Optional regularizer for the weights.
+		  biases_initializer: An initializer for the biases. If None skip biases.
+		  biases_regularizer: Optional regularizer for the biases.
+		  reuse: Whether or not the layer and its variables should be reused. To be
+		    able to reuse the layer scope must be given.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: Whether or not the variables should be trainable or not.
+		  scope: Optional scope for variable_scope.
+		Returns:
+		  A tensor representing the output of the operation.
+		Raises:
+		  ValueError: If 'kernel_size' is not a list of length 3.
+		  ValueError: If `data_format` is neither `NDHWC` nor `NCDHW`.
+		  ValueError: If `C` dimension of `inputs` is None.
+	**/
+	static public function conv3d_transpose(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Adds an N-D convolution followed by an optional batch_norm layer.
 		
@@ -558,7 +731,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    with "NC".
 		  num_outputs: Integer, the number of output filters.
 		  kernel_size: A sequence of N positive integers specifying the spatial
-		    dimensions of of the filters.  Can be a single integer to specify the same
+		    dimensions of the filters.  Can be a single integer to specify the same
 		    value for all spatial dimensions.
 		  stride: A sequence of N positive integers specifying the stride at which to
 		    compute output.  Can be a single integer to specify the same value for all
@@ -594,6 +767,158 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
 		  scope: Optional scope for `variable_scope`.
+		  conv_dims: Optional convolution dimensionality, when set it would use the
+		    corresponding convolution (e.g. 2 for Conv 2D, 3 for Conv 3D, ..). When
+		    leaved to None it would select the convolution dimensionality based on
+		    the input rank (i.e. Conv ND, with N = input_rank - 2).
+		
+		Returns:
+		  A tensor representing the output of the operation.
+		
+		Raises:
+		  ValueError: If `data_format` is invalid.
+		  ValueError: Both 'rate' and `stride` are not uniformly 1.
+	**/
+	static public function convolution(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic, ?conv_dims:Dynamic):Dynamic;
+	/**
+		Adds an N-D convolution followed by an optional batch_norm layer.
+		
+		It is required that 1 <= N <= 3.
+		
+		`convolution` creates a variable called `weights`, representing the
+		convolutional kernel, that is convolved (actually cross-correlated) with the
+		`inputs` to produce a `Tensor` of activations. If a `normalizer_fn` is
+		provided (such as `batch_norm`), it is then applied. Otherwise, if
+		`normalizer_fn` is None and a `biases_initializer` is provided then a `biases`
+		variable would be created and added the activations. Finally, if
+		`activation_fn` is not `None`, it is applied to the activations as well.
+		
+		Performs atrous convolution with input stride/dilation rate equal to `rate`
+		if a value > 1 for any dimension of `rate` is specified.  In this case
+		`stride` values != 1 are not supported.
+		
+		Args:
+		  inputs: A Tensor of rank N+2 of shape
+		    `[batch_size] + input_spatial_shape + [in_channels]` if data_format does
+		    not start with "NC" (default), or
+		    `[batch_size, in_channels] + input_spatial_shape` if data_format starts
+		    with "NC".
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A sequence of N positive integers specifying the spatial
+		    dimensions of the filters.  Can be a single integer to specify the same
+		    value for all spatial dimensions.
+		  stride: A sequence of N positive integers specifying the stride at which to
+		    compute output.  Can be a single integer to specify the same value for all
+		    spatial dimensions.  Specifying any `stride` value != 1 is incompatible
+		    with specifying any `rate` value != 1.
+		  padding: One of `"VALID"` or `"SAME"`.
+		  data_format: A string or None.  Specifies whether the channel dimension of
+		    the `input` and output is the last dimension (default, or if `data_format`
+		    does not start with "NC"), or the second dimension (if `data_format`
+		    starts with "NC").  For N=1, the valid values are "NWC" (default) and
+		    "NCW".  For N=2, the valid values are "NHWC" (default) and "NCHW".
+		    For N=3, the valid values are "NDHWC" (default) and "NCDHW".
+		  rate: A sequence of N positive integers specifying the dilation rate to use
+		    for atrous convolution.  Can be a single integer to specify the same
+		    value for all spatial dimensions.  Specifying any `rate` value != 1 is
+		    incompatible with specifying any `stride` value != 1.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
+		    `biases_regularizer` are ignored and `biases` are not created nor added.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
+		  weights_initializer: An initializer for the weights.
+		  weights_regularizer: Optional regularizer for the weights.
+		  biases_initializer: An initializer for the biases. If None skip biases.
+		  biases_regularizer: Optional regularizer for the biases.
+		  reuse: Whether or not the layer and its variables should be reused. To be
+		    able to reuse the layer scope must be given.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional scope for `variable_scope`.
+		  conv_dims: Optional convolution dimensionality, when set it would use the
+		    corresponding convolution (e.g. 2 for Conv 2D, 3 for Conv 3D, ..). When
+		    leaved to None it would select the convolution dimensionality based on
+		    the input rank (i.e. Conv ND, with N = input_rank - 2).
+		
+		Returns:
+		  A tensor representing the output of the operation.
+		
+		Raises:
+		  ValueError: If `data_format` is invalid.
+		  ValueError: Both 'rate' and `stride` are not uniformly 1.
+	**/
+	static public function convolution1d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds an N-D convolution followed by an optional batch_norm layer.
+		
+		It is required that 1 <= N <= 3.
+		
+		`convolution` creates a variable called `weights`, representing the
+		convolutional kernel, that is convolved (actually cross-correlated) with the
+		`inputs` to produce a `Tensor` of activations. If a `normalizer_fn` is
+		provided (such as `batch_norm`), it is then applied. Otherwise, if
+		`normalizer_fn` is None and a `biases_initializer` is provided then a `biases`
+		variable would be created and added the activations. Finally, if
+		`activation_fn` is not `None`, it is applied to the activations as well.
+		
+		Performs atrous convolution with input stride/dilation rate equal to `rate`
+		if a value > 1 for any dimension of `rate` is specified.  In this case
+		`stride` values != 1 are not supported.
+		
+		Args:
+		  inputs: A Tensor of rank N+2 of shape
+		    `[batch_size] + input_spatial_shape + [in_channels]` if data_format does
+		    not start with "NC" (default), or
+		    `[batch_size, in_channels] + input_spatial_shape` if data_format starts
+		    with "NC".
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A sequence of N positive integers specifying the spatial
+		    dimensions of the filters.  Can be a single integer to specify the same
+		    value for all spatial dimensions.
+		  stride: A sequence of N positive integers specifying the stride at which to
+		    compute output.  Can be a single integer to specify the same value for all
+		    spatial dimensions.  Specifying any `stride` value != 1 is incompatible
+		    with specifying any `rate` value != 1.
+		  padding: One of `"VALID"` or `"SAME"`.
+		  data_format: A string or None.  Specifies whether the channel dimension of
+		    the `input` and output is the last dimension (default, or if `data_format`
+		    does not start with "NC"), or the second dimension (if `data_format`
+		    starts with "NC").  For N=1, the valid values are "NWC" (default) and
+		    "NCW".  For N=2, the valid values are "NHWC" (default) and "NCHW".
+		    For N=3, the valid values are "NDHWC" (default) and "NCDHW".
+		  rate: A sequence of N positive integers specifying the dilation rate to use
+		    for atrous convolution.  Can be a single integer to specify the same
+		    value for all spatial dimensions.  Specifying any `rate` value != 1 is
+		    incompatible with specifying any `stride` value != 1.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
+		    `biases_regularizer` are ignored and `biases` are not created nor added.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
+		  weights_initializer: An initializer for the weights.
+		  weights_regularizer: Optional regularizer for the weights.
+		  biases_initializer: An initializer for the biases. If None skip biases.
+		  biases_regularizer: Optional regularizer for the biases.
+		  reuse: Whether or not the layer and its variables should be reused. To be
+		    able to reuse the layer scope must be given.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional scope for `variable_scope`.
+		  conv_dims: Optional convolution dimensionality, when set it would use the
+		    corresponding convolution (e.g. 2 for Conv 2D, 3 for Conv 3D, ..). When
+		    leaved to None it would select the convolution dimensionality based on
+		    the input rank (i.e. Conv ND, with N = input_rank - 2).
 		
 		Returns:
 		  A tensor representing the output of the operation.
@@ -696,6 +1021,138 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  ValueError: If `C` dimension of `inputs` is None.
 	**/
 	static public function convolution2d_transpose(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds an N-D convolution followed by an optional batch_norm layer.
+		
+		It is required that 1 <= N <= 3.
+		
+		`convolution` creates a variable called `weights`, representing the
+		convolutional kernel, that is convolved (actually cross-correlated) with the
+		`inputs` to produce a `Tensor` of activations. If a `normalizer_fn` is
+		provided (such as `batch_norm`), it is then applied. Otherwise, if
+		`normalizer_fn` is None and a `biases_initializer` is provided then a `biases`
+		variable would be created and added the activations. Finally, if
+		`activation_fn` is not `None`, it is applied to the activations as well.
+		
+		Performs atrous convolution with input stride/dilation rate equal to `rate`
+		if a value > 1 for any dimension of `rate` is specified.  In this case
+		`stride` values != 1 are not supported.
+		
+		Args:
+		  inputs: A Tensor of rank N+2 of shape
+		    `[batch_size] + input_spatial_shape + [in_channels]` if data_format does
+		    not start with "NC" (default), or
+		    `[batch_size, in_channels] + input_spatial_shape` if data_format starts
+		    with "NC".
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A sequence of N positive integers specifying the spatial
+		    dimensions of the filters.  Can be a single integer to specify the same
+		    value for all spatial dimensions.
+		  stride: A sequence of N positive integers specifying the stride at which to
+		    compute output.  Can be a single integer to specify the same value for all
+		    spatial dimensions.  Specifying any `stride` value != 1 is incompatible
+		    with specifying any `rate` value != 1.
+		  padding: One of `"VALID"` or `"SAME"`.
+		  data_format: A string or None.  Specifies whether the channel dimension of
+		    the `input` and output is the last dimension (default, or if `data_format`
+		    does not start with "NC"), or the second dimension (if `data_format`
+		    starts with "NC").  For N=1, the valid values are "NWC" (default) and
+		    "NCW".  For N=2, the valid values are "NHWC" (default) and "NCHW".
+		    For N=3, the valid values are "NDHWC" (default) and "NCDHW".
+		  rate: A sequence of N positive integers specifying the dilation rate to use
+		    for atrous convolution.  Can be a single integer to specify the same
+		    value for all spatial dimensions.  Specifying any `rate` value != 1 is
+		    incompatible with specifying any `stride` value != 1.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
+		    `biases_regularizer` are ignored and `biases` are not created nor added.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
+		  weights_initializer: An initializer for the weights.
+		  weights_regularizer: Optional regularizer for the weights.
+		  biases_initializer: An initializer for the biases. If None skip biases.
+		  biases_regularizer: Optional regularizer for the biases.
+		  reuse: Whether or not the layer and its variables should be reused. To be
+		    able to reuse the layer scope must be given.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  scope: Optional scope for `variable_scope`.
+		  conv_dims: Optional convolution dimensionality, when set it would use the
+		    corresponding convolution (e.g. 2 for Conv 2D, 3 for Conv 3D, ..). When
+		    leaved to None it would select the convolution dimensionality based on
+		    the input rank (i.e. Conv ND, with N = input_rank - 2).
+		
+		Returns:
+		  A tensor representing the output of the operation.
+		
+		Raises:
+		  ValueError: If `data_format` is invalid.
+		  ValueError: Both 'rate' and `stride` are not uniformly 1.
+	**/
+	static public function convolution3d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a convolution3d_transpose with an optional batch normalization layer.
+		
+		The function creates a variable called `weights`, representing the
+		kernel, that is convolved with the input. If `batch_norm_params` is `None`, a
+		second variable called 'biases' is added to the result of the operation.
+		Args:
+		  inputs: A 5-D `Tensor` of type `float` and shape
+		    `[batch, depth, height, width, in_channels]` for `NDHWC` data format or
+		    `[batch, in_channels, depth, height, width]` for `NCDHW` data format.
+		  num_outputs: Integer, the number of output filters.
+		  kernel_size: A list of length 3 holding the [kernel_depth, kernel_height,
+		    kernel_width] of the filters. Can be an int if both values are the same.
+		  stride: A list of length 3: [stride_depth, stride_height, stride_width].
+		    Can be an int if both strides are the same.  Note that presently
+		    both strides must have the same value.
+		  padding: One of 'VALID' or 'SAME'.
+		  data_format: A string. `NDHWC` (default) and `NCDHW` are supported.
+		  activation_fn: Activation function. The default value is a ReLU function.
+		    Explicitly set it to None to skip it and maintain a linear activation.
+		  normalizer_fn: Normalization function to use instead of `biases`. If
+		    `normalizer_fn` is provided then `biases_initializer` and
+		    `biases_regularizer` are ignored and `biases` are not created nor added.
+		    default set to None for no normalizer function
+		  normalizer_params: Normalization function parameters.
+		  weights_initializer: An initializer for the weights.
+		  weights_regularizer: Optional regularizer for the weights.
+		  biases_initializer: An initializer for the biases. If None skip biases.
+		  biases_regularizer: Optional regularizer for the biases.
+		  reuse: Whether or not the layer and its variables should be reused. To be
+		    able to reuse the layer scope must be given.
+		  variables_collections: Optional list of collections for all the variables or
+		    a dictionary containing a different list of collection per variable.
+		  outputs_collections: Collection to add the outputs.
+		  trainable: Whether or not the variables should be trainable or not.
+		  scope: Optional scope for variable_scope.
+		Returns:
+		  A tensor representing the output of the operation.
+		Raises:
+		  ValueError: If 'kernel_size' is not a list of length 3.
+		  ValueError: If `data_format` is neither `NDHWC` nor `NCDHW`.
+		  ValueError: If `C` dimension of `inputs` is None.
+	**/
+	static public function convolution3d_transpose(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Converts a dense tensor into a sparse tensor.
+		
+		An example use would be to convert dense labels to sparse ones
+		so that they can be fed to the ctc_loss.
+		
+		Args:
+		   tensor: An `int` `Tensor` to be converted to a `Sparse`.
+		   eos_token: An integer.
+		     It is part of the target label that signifies the end of a sentence.
+		   outputs_collections: Collection to add the outputs.
+		   scope: Optional scope for name_scope.
+	**/
+	static public function dense_to_sparse(tensor:Dynamic, ?eos_token:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Returns a dropout op applied to the input.
@@ -715,11 +1172,13 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    Otherwise, inputs is returned.
 		  outputs_collections: Collection to add the outputs.
 		  scope: Optional scope for name_scope.
+		  seed: A Python integer. Used to create random seeds. See
+		    `tf.set_random_seed` for behavior.
 		
 		Returns:
 		  A tensor representing the output of the operation.
 	**/
-	static public function dropout(inputs:Dynamic, ?keep_prob:Dynamic, ?noise_shape:Dynamic, ?is_training:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function dropout(inputs:Dynamic, ?keep_prob:Dynamic, ?noise_shape:Dynamic, ?is_training:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic, ?seed:Dynamic):Dynamic;
 	static public function elu(inputs:Dynamic, num_outputs:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Flattens the input while maintaining the batch_size.
@@ -783,17 +1242,114 @@ package tensorflow.contrib.layers.python.layers.layers;
 	**/
 	static public function fully_connected(inputs:Dynamic, num_outputs:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Adds a Layer Normalization layer from https://arxiv.org/abs/1607.06450.
+		Functional interface for GDN layer.
+		
+		Based on the papers:
+		
+		  "Density Modeling of Images using a Generalized Normalization
+		  Transformation"
+		  Johannes Ballé, Valero Laparra, Eero P. Simoncelli
+		  https://arxiv.org/abs/1511.06281
+		
+		  "End-to-end Optimized Image Compression"
+		  Johannes Ballé, Valero Laparra, Eero P. Simoncelli
+		  https://arxiv.org/abs/1611.01704
+		
+		Implements an activation function that is essentially a multivariate
+		generalization of a particular sigmoid-type function:
+		
+		```
+		y[i] = x[i] / sqrt(beta[i] + sum_j(gamma[j, i] * x[j]))
+		```
+		
+		where `i` and `j` run over channels. This implementation never sums across
+		spatial dimensions. It is similar to local response normalization, but much
+		more flexible, as `beta` and `gamma` are trainable parameters.
+		
+		Args:
+		  inputs: Tensor input.
+		  inverse: If `False` (default), compute GDN response. If `True`, compute IGDN
+		    response (one step of fixed point iteration to invert GDN; the division
+		    is replaced by multiplication).
+		  beta_min: Lower bound for beta, to prevent numerical error from causing
+		    square root of zero or negative values.
+		  gamma_init: The gamma matrix will be initialized as the identity matrix
+		    multiplied with this value. If set to zero, the layer is effectively
+		    initialized to the identity operation, since beta is initialized as one.
+		    A good default setting is somewhere between 0 and 0.5.
+		  reparam_offset: Offset added to the reparameterization of beta and gamma.
+		    The reparameterization of beta and gamma as their square roots lets the
+		    training slow down when their values are close to zero, which is desirable
+		    as small values in the denominator can lead to a situation where gradient
+		    noise on beta/gamma leads to extreme amounts of noise in the GDN
+		    activations. However, without the offset, we would get zero gradients if
+		    any elements of beta or gamma were exactly zero, and thus the training
+		    could get stuck. To prevent this, we add this small constant. The default
+		    value was empirically determined as a good starting point. Making it
+		    bigger potentially leads to more gradient noise on the activations, making
+		    it too small may lead to numerical precision issues.
+		  data_format: Format of input tensor. Currently supports `'channels_first'`
+		    and `'channels_last'`.
+		  activity_regularizer: Regularizer function for the output.
+		  trainable: Boolean, if `True`, also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		  name: String, the name of the layer. Layers with the same name will
+		    share weights, but to avoid mistakes we require `reuse=True` in such
+		    cases.
+		  reuse: Boolean, whether to reuse the weights of a previous layer by the same
+		    name.
+		
+		Returns:
+		  Output tensor.
+	**/
+	static public function gdn(inputs:Dynamic, ?inverse:Dynamic, ?beta_min:Dynamic, ?gamma_init:Dynamic, ?reparam_offset:Dynamic, ?data_format:Dynamic, ?activity_regularizer:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic):Dynamic;
+	/**
+		Convert a batch of images into a batch of sequences.
+		
+		Args:
+		  inputs: a (num_images, height, width, depth) tensor
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
+		  outputs_collections: The collections to which the outputs are added.
+		  scope: Optional scope for name_scope.
+		
+		Raises:
+		   ValueError: If `data_format` is not either NCHW or NHWC.
+		
+		Returns:
+		  (width, num_images*height, depth) sequence tensor
+	**/
+	static public function images_to_sequence(inputs:Dynamic, ?data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a Layer Normalization layer.
+		
+		Based on the paper:
 		
 		  "Layer Normalization"
 		
 		  Jimmy Lei Ba, Jamie Ryan Kiros, Geoffrey E. Hinton
 		
+		  https://arxiv.org/abs/1607.06450.
+		
 		Can be used as a normalizer function for conv2d and fully_connected.
 		
+		Given a tensor `inputs` of rank `R`, moments are calculated and normalization
+		is performed over axes `begin_norm_axis ... R - 1`.  Scaling and centering,
+		if requested, is performed over axes `begin_params_axis .. R - 1`.
+		
+		By default, `begin_norm_axis = 1` and `begin_params_axis = -1`,
+		meaning that normalization is performed over all but the first axis
+		(the `HWC` if `inputs` is `NHWC`), while the `beta` and `gamma` trainable
+		parameters are calculated for the rightmost axis (the `C` if `inputs` is
+		`NHWC`).  Scaling and recentering is performed via broadcast of the
+		`beta` and `gamma` parameters with the normalized tensor.
+		
+		The shapes of `beta` and `gamma` are `inputs.shape[begin_params_axis:]`,
+		and this part of the inputs' shape must be fully defined.
+		
 		Args:
-		  inputs: A tensor with 2 or more dimensions. The normalization
-		          occurs over all but the first dimension.
+		  inputs: A tensor having rank `R`. The normalization is performed over
+		    axes `begin_norm_axis ... R - 1` and centering and scaling parameters
+		    are calculated over `begin_params_axis ... R - 1`.
 		  center: If True, add offset of `beta` to normalized tensor. If False, `beta`
 		    is ignored.
 		  scale: If True, multiply by `gamma`. If False, `gamma` is
@@ -807,15 +1363,24 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  outputs_collections: Collections to add the outputs.
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
+		  begin_norm_axis: The first normalization dimension: normalization will be
+		    performed along dimensions `begin_norm_axis : rank(inputs)`
+		  begin_params_axis: The first parameter (beta, gamma) dimension: scale
+		    and centering parameters will have dimensions
+		    `begin_params_axis : rank(inputs)` and will be broadcast with the
+		    normalized inputs accordingly.
 		  scope: Optional scope for `variable_scope`.
 		
 		Returns:
-		  A `Tensor` representing the output of the operation.
+		  A `Tensor` representing the output of the operation, having the same
+		  shape and dtype as `inputs`.
 		
 		Raises:
-		  ValueError: If rank or last dimension of `inputs` is undefined.
+		  ValueError: If the rank of `inputs` is not known at graph build time,
+		    or if `inputs.shape[begin_params_axis:]` is not fully defined at
+		    graph build time.
 	**/
-	static public function layer_norm(inputs:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?activation_fn:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function layer_norm(inputs:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?activation_fn:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?begin_norm_axis:Dynamic, ?begin_params_axis:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Adds the parameters for a fully connected layer and returns the output.
 		
@@ -824,16 +1389,16 @@ package tensorflow.contrib.layers.python.layers.layers;
 		`activation_fn` is `None`, the result of `y = w * x + b` is
 		returned.
 		
-		If `x` has shape [\\\(\\text{dim}_0, \\text{dim}_1, ..., \\text{dim}_n\\\)]
-		with more than 2 dimensions (\\\(n > 1\\\)), then we repeat the matrix
+		If `x` has shape [\\(\text{dim}_0, \text{dim}_1, ..., \text{dim}_n\\)]
+		with more than 2 dimensions (\\(n > 1\\)), then we repeat the matrix
 		multiply along the first dimensions. The result r is a tensor of shape
-		[\\\(\\text{dim}_0, ..., \\text{dim}_{n-1},\\\) `num_output_units`],
-		where \\\( r_{i_0, ..., i_{n-1}, k} =
-		\\sum_{0 \\leq j < \\text{dim}_n} x_{i_0, ... i_{n-1}, j} \cdot w_{j, k}\\\).
+		[\\(\text{dim}_0, ..., \text{dim}_{n-1},\\) `num_output_units`],
+		where \\( r_{i_0, ..., i_{n-1}, k} =
+		\sum_{0 \leq j < \text{dim}_n} x_{i_0, ... i_{n-1}, j} \cdot w_{j, k}\\).
 		This is accomplished by reshaping `x` to 2-D
-		[\\\(\\text{dim}_0 \\cdot ... \\cdot \\text{dim}_{n-1}, \\text{dim}_n\\\)]
+		[\\(\text{dim}_0 \cdot ... \cdot \text{dim}_{n-1}, \text{dim}_n\\)]
 		before the matrix multiply and afterwards reshaping it to
-		[\\\(\\text{dim}_0, ..., \\text{dim}_{n-1},\\\) `num_output_units`].
+		[\\(\text{dim}_0, ..., \text{dim}_{n-1},\\) `num_output_units`].
 		
 		This op creates `w` and optionally `b`. Bias (`b`) can be disabled by setting
 		`bias_init` to `None`.
@@ -916,6 +1481,61 @@ package tensorflow.contrib.layers.python.layers.layers;
 	**/
 	static public function max_pool2d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
+		Adds a 3D Max Pooling op.
+		
+		It is assumed that the pooling is done per image but not in batch or channels.
+		
+		Args:
+		  inputs: A 5-D tensor of shape `[batch_size, depth, height, width, channels]`
+		    if `data_format` is `NDHWC`, and `[batch_size, channels, depth, height,
+		    width]` if `data_format` is `NCDHW`.
+		  kernel_size: A list of length 3: [kernel_depth, kernel_height, kernel_width]
+		    of the pooling kernel over which the op is computed. Can be an int if both
+		    values are the same.
+		  stride: A list of length 3: [stride_depth, stride_height, stride_width].
+		    Can be an int if both strides are the same. Note that presently
+		    both strides must have the same value.
+		  padding: The padding method, either 'VALID' or 'SAME'.
+		  data_format: A string. `NDHWC` (default) and `NCDHW` are supported.
+		  outputs_collections: The collections to which the outputs are added.
+		  scope: Optional scope for name_scope.
+		
+		Returns:
+		  A `Tensor` representing the results of the pooling operation.
+		
+		Raises:
+		  ValueError: If `data_format` is neither `NDHWC` nor `NCDHW`.
+		  ValueError: If 'kernel_size' is not a 3-D list
+	**/
+	static public function max_pool3d(inputs:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Adds a maxout op from https://arxiv.org/abs/1302.4389
+		
+		"Maxout Networks" Ian J. Goodfellow, David Warde-Farley, Mehdi Mirza, Aaron
+		Courville,
+		 Yoshua Bengio
+		
+		Usually the operation is performed in the filter/channel dimension. This can
+		also be
+		used after fully-connected layers to reduce number of features.
+		
+		Arguments:
+		  inputs: Tensor input
+		  num_units: Specifies how many features will remain after maxout
+		    in the `axis` dimension (usually channel).
+		    This must be a factor of number of features.
+		  axis: The dimension where max pooling will be performed. Default is the
+		  last dimension.
+		  scope: Optional scope for variable_scope.
+		
+		Returns:
+		  A `Tensor` representing the results of the pooling operation.
+		
+		Raises:
+		  ValueError: if num_units is not multiple of number of features.
+	**/
+	static public function maxout(inputs:Dynamic, num_units:Dynamic, ?axis:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
 		Transform numeric labels into onehot_labels using `tf.one_hot`.
 		
 		Args:
@@ -930,6 +1550,37 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  One-hot encoding of the labels.
 	**/
 	static public function one_hot_encoding(labels:Dynamic, num_classes:Dynamic, ?on_value:Dynamic, ?off_value:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Project into the Poincare ball with norm <= 1.0 - epsilon.
+		
+		https://en.wikipedia.org/wiki/Poincare_ball_model
+		
+		Used in
+		Poincare Embeddings for Learning Hierarchical Representations
+		Maximilian Nickel, Douwe Kiela
+		https://arxiv.org/pdf/1705.08039.pdf
+		
+		For a 1-D tensor with `axis = 0`, computes
+		
+		              (x * (1 - epsilon)) / ||x||     if ||x|| > 1 - epsilon
+		    output =
+		               x                              otherwise
+		
+		For `x` with more dimensions, independently normalizes each 1-D slice along
+		dimension `axis`.
+		
+		Args:
+		  x: A `Tensor`.
+		  axis: Axis along which to normalize.  A scalar or a vector of
+		    integers.
+		  epsilon: A small deviation from the edge of the unit sphere for numerical
+		    stability.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  A `Tensor` with the same shape as `x`.
+	**/
+	static public function poincare_normalize(x:Dynamic, ?axis:Dynamic, ?epsilon:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Adds a pooling op.
 		
@@ -1024,6 +1675,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  stride: A list of length 2: [stride_height, stride_width], specifying the
 		    depthwise convolution stride. Can be an int if both strides are the same.
 		  padding: One of 'VALID' or 'SAME'.
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
 		  rate: A list of length 2: [rate_height, rate_width], specifying the dilation
 		    rates for atrous convolution. Can be an int if both rates are the same.
 		    If any value is larger than one, then both stride values need to be one.
@@ -1034,7 +1686,9 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
 		    default set to None for no normalizer function
 		  normalizer_params: Normalization function parameters.
-		  weights_initializer: An initializer for the weights.
+		  weights_initializer: An initializer for the depthwise weights.
+		  pointwise_initializer: An initializer for the pointwise weights.
+		    default set to None, means use weights_initializer.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
@@ -1048,8 +1702,10 @@ package tensorflow.contrib.layers.python.layers.layers;
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
+		Raises:
+		  ValueError: If `data_format` is invalid.
 	**/
-	static public function separable_conv2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function separable_conv2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?pointwise_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Adds a depth-separable 2D convolution with optional batch_norm layer.
 		
@@ -1073,6 +1729,7 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  stride: A list of length 2: [stride_height, stride_width], specifying the
 		    depthwise convolution stride. Can be an int if both strides are the same.
 		  padding: One of 'VALID' or 'SAME'.
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
 		  rate: A list of length 2: [rate_height, rate_width], specifying the dilation
 		    rates for atrous convolution. Can be an int if both rates are the same.
 		    If any value is larger than one, then both stride values need to be one.
@@ -1083,7 +1740,9 @@ package tensorflow.contrib.layers.python.layers.layers;
 		    `biases_regularizer` are ignored and `biases` are not created nor added.
 		    default set to None for no normalizer function
 		  normalizer_params: Normalization function parameters.
-		  weights_initializer: An initializer for the weights.
+		  weights_initializer: An initializer for the depthwise weights.
+		  pointwise_initializer: An initializer for the pointwise weights.
+		    default set to None, means use weights_initializer.
 		  weights_regularizer: Optional regularizer for the weights.
 		  biases_initializer: An initializer for the biases. If None skip biases.
 		  biases_regularizer: Optional regularizer for the biases.
@@ -1097,8 +1756,25 @@ package tensorflow.contrib.layers.python.layers.layers;
 		
 		Returns:
 		  A `Tensor` representing the output of the operation.
+		Raises:
+		  ValueError: If `data_format` is invalid.
 	**/
-	static public function separable_convolution2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function separable_convolution2d(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, ?depth_multiplier:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?rate:Dynamic, ?activation_fn:Dynamic, ?normalizer_fn:Dynamic, ?normalizer_params:Dynamic, ?weights_initializer:Dynamic, ?pointwise_initializer:Dynamic, ?weights_regularizer:Dynamic, ?biases_initializer:Dynamic, ?biases_regularizer:Dynamic, ?reuse:Dynamic, ?variables_collections:Dynamic, ?outputs_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Convert a batch of sequences into a batch of images.
+		
+		Args:
+		  inputs: (num_steps, num_batches, depth) sequence tensor
+		  height: the height of the images
+		  output_data_format: Format of output tensor.
+		    Currently supports `'channels_first'` and `'channels_last'`.
+		  outputs_collections: The collections to which the outputs are added.
+		  scope: Optional scope for name_scope.
+		
+		Returns:
+		  A tensor representing the output of the operation.
+	**/
+	static public function sequence_to_images(inputs:Dynamic, height:Dynamic, ?output_data_format:Dynamic, ?outputs_collections:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Performs softmax on Nth dimension of N-dimensional logit tensor.
 		
@@ -1113,6 +1789,38 @@ package tensorflow.contrib.layers.python.layers.layers;
 		  A `Tensor` with same shape and type as logits.
 	**/
 	static public function softmax(logits:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Computes the spatial softmax of a convolutional feature map.
+		
+		First computes the softmax over the spatial extent of each channel of a
+		convolutional feature map. Then computes the expected 2D position of the
+		points of maximal activation for each channel, resulting in a set of
+		feature keypoints [x1, y1, ... xN, yN] for all N channels.
+		
+		Read more here:
+		"Learning visual feature spaces for robotic manipulation with
+		deep spatial autoencoders." Finn et al., http://arxiv.org/abs/1509.06113.
+		
+		Args:
+		  features: A `Tensor` of size [batch_size, W, H, num_channels]; the
+		    convolutional feature map.
+		  temperature: Softmax temperature (optional). If None, a learnable
+		    temperature is created.
+		  name: A name for this operation (optional).
+		  variables_collections: Collections for the temperature variable.
+		  trainable: If `True` also add variables to the graph collection
+		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		  data_format: A string. `NHWC` (default) and `NCHW` are supported.
+		Returns:
+		  feature_keypoints: A `Tensor` with size [batch_size, num_channels * 2];
+		    the expected 2D locations of each channel's feature keypoint (normalized
+		    to the range (-1,1)). The inner dimension is arranged as
+		    [x1, y1, ... xN, yN].
+		Raises:
+		  ValueError: If unexpected data_format specified.
+		  ValueError: If num_channels dimension is unspecified.
+	**/
+	static public function spatial_softmax(features:Dynamic, ?temperature:Dynamic, ?name:Dynamic, ?variables_collections:Dynamic, ?trainable:Dynamic, ?data_format:Dynamic):Dynamic;
 	/**
 		Builds a stack of layers by applying layer repeatedly using stack_args.
 		

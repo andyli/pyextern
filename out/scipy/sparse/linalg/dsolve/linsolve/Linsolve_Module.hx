@@ -74,9 +74,9 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -84,50 +84,6 @@ package scipy.sparse.linalg.dsolve.linsolve;
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	/**
-		empty(shape, dtype=float, order='C')
-		
-		Return a new array of given shape and type, without initializing entries.
-		
-		Parameters
-		----------
-		shape : int or tuple of int
-		    Shape of the empty array
-		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
-		    Whether to store multi-dimensional data in row-major
-		    (C-style) or column-major (Fortran-style) order in
-		    memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
-		    order.  Object arrays will be initialized to None.
-		
-		See Also
-		--------
-		empty_like, zeros, ones
-		
-		Notes
-		-----
-		`empty`, unlike `zeros`, does not set the array values to zero,
-		and may therefore be marginally faster.  On the other hand, it requires
-		the user to manually set all the values in the array, and should be
-		used with caution.
-		
-		Examples
-		--------
-		>>> np.empty([2, 2])
-		array([[ -9.74499359e+001,   6.69583040e-309],
-		       [  2.13182611e-314,   3.06959433e-309]])         #random
-		
-		>>> np.empty([2, 2], dtype=int)
-		array([[-1073741821, -1067949133],
-		       [  496041986,    19249760]])                     #random
-	**/
-	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a function for solving a sparse linear system, with A pre-factorized.
 		
@@ -154,186 +110,84 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		array([ 1., -2., -2.])
 	**/
 	static public function factorized(A:Dynamic):haxe.Constraints.Function;
-	static public function isspmatrix(x:Dynamic):Dynamic;
-	static public function isspmatrix_csc(x:Dynamic):Dynamic;
-	static public function isspmatrix_csr(x:Dynamic):Dynamic;
-	static public var noScikit : Dynamic;
 	/**
-		Return the indices of the elements that are non-zero.
-		
-		Returns a tuple of arrays, one for each dimension of `a`,
-		containing the indices of the non-zero elements in that
-		dimension. The values in `a` are always tested and returned in
-		row-major, C-style order. The corresponding non-zero
-		values can be obtained with::
-		
-		    a[nonzero(a)]
-		
-		To group the indices by element, rather than dimension, use::
-		
-		    transpose(nonzero(a))
-		
-		The result of this is always a 2-D array, with a row for
-		each non-zero element.
+		Is x of a sparse matrix type?
 		
 		Parameters
 		----------
-		a : array_like
-		    Input array.
+		x
+		    object to check for being a sparse matrix
 		
 		Returns
 		-------
-		tuple_of_arrays : tuple
-		    Indices of elements that are non-zero.
-		
-		See Also
-		--------
-		flatnonzero :
-		    Return indices that are non-zero in the flattened version of the input
-		    array.
-		ndarray.nonzero :
-		    Equivalent ndarray method.
-		count_nonzero :
-		    Counts the number of non-zero elements in the input array.
-		
-		Examples
-		--------
-		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
-		>>> x
-		array([[1, 0, 0],
-		       [0, 2, 0],
-		       [1, 1, 0]])
-		>>> np.nonzero(x)
-		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
-		
-		>>> x[np.nonzero(x)]
-		array([ 1.,  1.,  1.])
-		>>> np.transpose(np.nonzero(x))
-		array([[0, 0],
-		       [1, 1],
-		       [2, 2]])
-		
-		A common use for ``nonzero`` is to find the indices of an array, where
-		a condition is True.  Given an array `a`, the condition `a` > 3 is a
-		boolean array and since False is interpreted as 0, np.nonzero(a > 3)
-		yields the indices of the `a` where the condition is true.
-		
-		>>> a = np.array([[1,2,3],[4,5,6],[7,8,9]])
-		>>> a > 3
-		array([[False, False, False],
-		       [ True,  True,  True],
-		       [ True,  True,  True]], dtype=bool)
-		>>> np.nonzero(a > 3)
-		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
-		
-		The ``nonzero`` method of the boolean array can also be called.
-		
-		>>> (a > 3).nonzero()
-		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
-	**/
-	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
-	static public var print_function : Dynamic;
-	/**
-		Return a contiguous flattened array.
-		
-		A 1-D array, containing the elements of the input, is returned.  A copy is
-		made only if needed.
-		
-		As of NumPy 1.10, the returned array will have the same type as the input
-		array. (for example, a masked array will be returned for a masked array
-		input)
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.  The elements in `a` are read in the order specified by
-		    `order`, and packed as a 1-D array.
-		order : {'C','F', 'A', 'K'}, optional
-		
-		    The elements of `a` are read using this index order. 'C' means
-		    to index the elements in row-major, C-style order,
-		    with the last axis index changing fastest, back to the first
-		    axis index changing slowest.  'F' means to index the elements
-		    in column-major, Fortran-style order, with the
-		    first index changing fastest, and the last index changing
-		    slowest. Note that the 'C' and 'F' options take no account of
-		    the memory layout of the underlying array, and only refer to
-		    the order of axis indexing.  'A' means to read the elements in
-		    Fortran-like index order if `a` is Fortran *contiguous* in
-		    memory, C-like order otherwise.  'K' means to read the
-		    elements in the order they occur in memory, except for
-		    reversing the data when strides are negative.  By default, 'C'
-		    index order is used.
-		
-		Returns
-		-------
-		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
-		
-		See Also
-		--------
-		ndarray.flat : 1-D iterator over an array.
-		ndarray.flatten : 1-D array copy of the elements of an array
-		                  in row-major order.
-		ndarray.reshape : Change the shape of an array without changing its data.
+		bool
+		    True if x is a sparse matrix, False otherwise
 		
 		Notes
 		-----
-		In row-major, C-style order, in two dimensions, the row index
-		varies the slowest, and the column index the quickest.  This can
-		be generalized to multiple dimensions, where row-major order
-		implies that the index along the first axis varies slowest, and
-		the index along the last quickest.  The opposite holds for
-		column-major, Fortran-style index ordering.
-		
-		When a view is desired in as many cases as possible, ``arr.reshape(-1)``
-		may be preferable.
+		issparse and isspmatrix are aliases for the same function.
 		
 		Examples
 		--------
-		It is equivalent to ``reshape(-1, order=order)``.
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
 		
-		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print(np.ravel(x))
-		[1 2 3 4 5 6]
-		
-		>>> print(x.reshape(-1))
-		[1 2 3 4 5 6]
-		
-		>>> print(np.ravel(x, order='F'))
-		[1 4 2 5 3 6]
-		
-		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
-		
-		>>> print(np.ravel(x.T))
-		[1 4 2 5 3 6]
-		>>> print(np.ravel(x.T, order='A'))
-		[1 2 3 4 5 6]
-		
-		When ``order`` is 'K', it will preserve orderings that are neither 'C'
-		nor 'F', but won't reverse axes:
-		
-		>>> a = np.arange(3)[::-1]; a
-		array([2, 1, 0])
-		>>> a.ravel(order='C')
-		array([2, 1, 0])
-		>>> a.ravel(order='K')
-		array([2, 1, 0])
-		
-		>>> a = np.arange(12).reshape(2,3,2).swapaxes(1,2); a
-		array([[[ 0,  2,  4],
-		        [ 1,  3,  5]],
-		       [[ 6,  8, 10],
-		        [ 7,  9, 11]]])
-		>>> a.ravel(order='C')
-		array([ 0,  2,  4,  1,  3,  5,  6,  8, 10,  7,  9, 11])
-		>>> a.ravel(order='K')
-		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
 	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function isspmatrix(x:Dynamic):Dynamic;
+	/**
+		Is x of csc_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csc matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csc matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csc_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csr_matrix([[5]]))
+		False
+	**/
+	static public function isspmatrix_csc(x:Dynamic):Dynamic;
+	/**
+		Is x of csr_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csr matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csr matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix_csr
+		>>> isspmatrix_csr(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csr(csc_matrix([[5]]))
+		False
+	**/
+	static public function isspmatrix_csr(x:Dynamic):Dynamic;
+	static public var noScikit : Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Compute an incomplete LU decomposition for a sparse, square matrix.
 		
@@ -373,6 +227,20 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		increase `fill_factor` AND decrease `drop_tol`.
 		
 		This function uses the SuperLU library.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import spilu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = spilu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
 	static public function spilu(A:Dynamic, ?drop_tol:Dynamic, ?fill_factor:Dynamic, ?drop_rule:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
@@ -394,8 +262,6 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		diag_pivot_thresh : float, optional
 		    Threshold used for a diagonal entry to be an acceptable pivot.
 		    See SuperLU user's guide for details [1]_
-		drop_tol : float, optional
-		    (deprecated) No effect.
 		relax : int, optional
 		    Expert option for customizing the degree of relaxing supernodes.
 		    See SuperLU user's guide for details [1]_
@@ -425,8 +291,22 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		References
 		----------
 		.. [1] SuperLU http://crd.lbl.gov/~xiaoye/SuperLU/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import splu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = splu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
-	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?drop_tol:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
+	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
 		Solve the sparse linear system Ax=b, where b may be a vector or a matrix.
 		
@@ -463,6 +343,16 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		resulting X is dense, the construction of this sparse result will be
 		relatively expensive.  In that case, consider converting A to a dense
 		matrix and using scipy.linalg.solve or its variants.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import spsolve
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> B = csc_matrix([[2, 0], [-1, 0], [2, 0]], dtype=float)
+		>>> x = spsolve(A, B)
+		>>> np.allclose(A.dot(x).todense(), B.todense())
+		True
 	**/
 	static public function spsolve(A:Dynamic, b:Dynamic, ?permc_spec:Dynamic, ?use_umfpack:Dynamic):Dynamic;
 	/**
@@ -484,6 +374,8 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		overwrite_b : bool, optional
 		    Allow overwriting data in `b`.
 		    Enabling gives a performance gain. Default is False.
+		    If `overwrite_b` is True, it should be ensured that
+		    `b` has an appropriate dtype to be able to store the result.
 		
 		Returns
 		-------
@@ -500,6 +392,16 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		Notes
 		-----
 		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.linalg import spsolve_triangular
+		>>> A = csr_matrix([[3, 0, 0], [1, -1, 0], [2, 0, 1]], dtype=float)
+		>>> B = np.array([[2, 0], [-1, 0], [2, 0]], dtype=float)
+		>>> x = spsolve_triangular(A, B)
+		>>> np.allclose(A.dot(x), B)
+		True
 	**/
 	static public function spsolve_triangular(A:Dynamic, b:Dynamic, ?lower:Dynamic, ?overwrite_A:Dynamic, ?overwrite_b:Dynamic):Dynamic;
 	static public var useUmfpack : Dynamic;
@@ -511,6 +413,10 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		useUmfpack : bool, optional
 		    Use UMFPACK over SuperLU. Has effect only if scikits.umfpack is
 		    installed. Default: True
+		assumeSortedIndices : bool, optional
+		    Allow UMFPACK to skip the step of sorting indices for a CSR/CSC matrix.
+		    Has effect only if useUmfpack is True and scikits.umfpack is installed.
+		    Default: False
 		
 		Notes
 		-----

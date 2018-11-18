@@ -13,4 +13,5 @@ package tensorflow.python.ops.distributions.laplace;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

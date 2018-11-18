@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.nn.backends.thnn;
 @:pythonImport("torch.nn.backends.thnn", "THNNFunctionBackend") extern class THNNFunctionBackend {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__():Dynamic;
 	public function __deepcopy__(memo:Dynamic):Dynamic;
 	/**
@@ -55,7 +55,7 @@ package torch.nn.backends.thnn;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -106,7 +106,7 @@ package torch.nn.backends.thnn;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

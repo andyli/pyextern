@@ -25,7 +25,7 @@ package theano.gpuarray.subtensor;
 		                          eval_points=eval_points)
 	**/
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
-	public function _HideC__hide():Dynamic;
+	static public function _HideC__hide(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: return some or all output[s] of `make_node`.
 		
@@ -101,7 +101,7 @@ package theano.gpuarray.subtensor;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -151,13 +151,12 @@ package theano.gpuarray.subtensor;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _f16_ok : Dynamic;
-	public function _generate_kernel_bin(k:Dynamic, ctx:Dynamic):Dynamic;
 	public function _generate_kernel_cleanup(k:Dynamic):Dynamic;
 	public function _generate_kernel_code(k:Dynamic):Dynamic;
 	public function _generate_kernel_init(k:Dynamic, fail:Dynamic, ctx:Dynamic):Dynamic;
@@ -199,10 +198,10 @@ package theano.gpuarray.subtensor;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	public function c_cleanup_code_struct(node:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Required: return the C implementation of an Op.
@@ -258,8 +257,8 @@ package theano.gpuarray.subtensor;
 	**/
 	public function c_code_cache_version():Dynamic;
 	public function c_code_cache_version_apply(node:Dynamic):Dynamic;
-	public function c_code_cleanup():Dynamic;
-	public function c_compile_args():Dynamic;
+	static public function c_code_cleanup(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: Return a list of header search paths required by code
 		returned by this class.
@@ -300,13 +299,13 @@ package theano.gpuarray.subtensor;
 		    Subclass does not implement this method.
 	**/
 	public function c_headers():Dynamic;
-	public function c_init_code():Dynamic;
-	public function c_init_code_apply():Dynamic;
+	static public function c_init_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function c_init_code_struct(node:Dynamic, name:Dynamic, sub:Dynamic):Dynamic;
-	public function c_lib_dirs():Dynamic;
-	public function c_libraries():Dynamic;
-	public function c_no_compile_args():Dynamic;
-	public function c_support_code():Dynamic;
+	static public function c_lib_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_libraries(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_no_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function c_support_code_apply(node:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Optional: return utility code for use by an `Op` that will be
@@ -336,6 +335,8 @@ package theano.gpuarray.subtensor;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function get_gpu_context(node:Dynamic):Dynamic;
+	public function get_gpu_context_c_name(params_c_name:Dynamic):Dynamic;
 	public function get_params(node:Dynamic):Dynamic;
 	/**
 		This is the method to override. This should return an iterable
@@ -344,8 +345,7 @@ package theano.gpuarray.subtensor;
 	public function gpu_kernels(node:Dynamic, nodename:Dynamic):Dynamic;
 	/**
 		If you override :meth:`c_code_cache_version_apply`, call this
-		method to have the version of the kernel support code and
-		device.
+		method to have the version of the kernel support code.
 		
 		Parameters
 		----------
@@ -435,7 +435,7 @@ package theano.gpuarray.subtensor;
 		MethodNotDefined
 		    The subclass does not override this method.
 	**/
-	public function perform(node:Dynamic, inp:Dynamic, out:Dynamic, ctx:Dynamic):Dynamic;
+	public function perform(node:Dynamic, inp:Dynamic, out:Dynamic, params:Dynamic):Dynamic;
 	/**
 		Make any special modifications that the Op needs before doing
 		make_thunk().
@@ -443,7 +443,7 @@ package theano.gpuarray.subtensor;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

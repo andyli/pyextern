@@ -10,7 +10,6 @@ package theano.sandbox.rng_mrg;
 	static public var MASK12 : Dynamic;
 	static public var MASK13 : Dynamic;
 	static public var MASK2 : Dynamic;
-	static public var MRG_RNGs : Dynamic;
 	static public var MULT2 : Dynamic;
 	static public var NORM : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -21,22 +20,28 @@ package theano.sandbox.rng_mrg;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public function as_cuda_ndarray_variable(x:Dynamic):Dynamic;
 	/**
-		This will attempt to convert `x` into a variable on the GPU.
-		
-		It can take either a value of another variable.  If `x` is already
-		suitable, it will be returned as-is.
+		Canonicalise inputs to get valid output sizes for Theano tensors.
 		
 		Parameters
 		----------
-		x
-		    Object to convert
-		context_name : str or None
-		    target context name for the result
+		size : int_vector_like
+		    Some variable that could serve as the shape for a Theano tensor.
+		    This can be an int, a tuple of ints, a list of ints
+		    or a Theano Variable with similar properties.
+		
+		Returns
+		-------
+		size_var : int_vector
+		    A one-dimensional Theano variable encapsulating the given size.
+		
+		Raises
+		------
+		ValueError
+		    If this method can not build a valid size from the input.
 	**/
-	static public function as_gpuarray_variable(x:Dynamic, context_name:Dynamic):Dynamic;
+	static public function _check_size(size:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Return `x`, transformed into a `TensorType`.
 		
@@ -65,59 +70,13 @@ package theano.sandbox.rng_mrg;
 		    If `x` cannot be converted to a TensorType Variable.
 	**/
 	static public function as_tensor_variable(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic):Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	/**
 		Symbolically cast `x` to a Tensor of type `dtype`.
 	**/
 	@:native("cast")
 	static public function _cast(x:Dynamic, dtype:Dynamic):Dynamic;
 	static public var config : Dynamic;
-	/**
-		cosine of a
-		
-		Generalizes a scalar op to tensors.
-		
-		All the inputs must have the same number of dimensions. When the
-		Op is performed, for each dimension, each input's size for that
-		dimension must be the same. As a special case, it can also be 1
-		but only if the input's broadcastable flag is True for that
-		dimension. In that case, the tensor is (virtually) replicated
-		along that dimension to match the size of the others.
-		
-		The dtypes of the outputs mirror those of the scalar Op that is
-		being generalized to tensors. In particular, if the calculations
-		for an output are done inplace on an input, the output type must
-		be the same as the corresponding input type (see the doc of
-		scalar.ScalarOp to get help about controlling the output type)
-		
-		Parameters
-		----------
-		scalar_op
-		    An instance of a subclass of scalar.ScalarOp which works uniquely
-		    on scalars.
-		inplace_pattern
-		    A dictionary that maps the index of an output to the
-		    index of an input so the output is calculated inplace using
-		    the input's storage. (Just like destroymap, but without the lists.)
-		nfunc_spec
-		    Either None or a tuple of three elements,
-		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
-		    implements this operation, takes nin inputs and nout outputs.
-		    Note that nin cannot always be inferred from the scalar op's
-		    own nin field because that value is sometimes 0 (meaning a
-		    variable number of inputs), whereas the numpy function may
-		    not have varargs.
-		
-		Note
-		----
-		| Elemwise(add) represents + on tensors (x + y)
-		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
-		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
-		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
-		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
-		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
-		| Elemwise(log)(rand(3, 4, 5))
-	**/
-	static public function cos(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public function ff_2p134(rstate:Dynamic):Dynamic;
 	static public function ff_2p72(rstate:Dynamic):Dynamic;
@@ -300,89 +259,11 @@ package theano.sandbox.rng_mrg;
 		    return 60 * 256).
 	**/
 	static public function guess_n_streams(size:Dynamic, ?warn:Dynamic):Dynamic;
-	static public function host_from_gpua(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Infer the context name to use from the inputs given
-	**/
-	static public function infer_context_name(?vars:python.VarArgs<Dynamic>):Dynamic;
+	static public function int_t(?name:Dynamic):Dynamic;
 	static public var integer_types : Dynamic;
-	/**
-		Convenience function to concatenate `TensorType`s along the given axis.
-		
-		This function will not add the op in the graph when it is not useful.
-		For example, in the case that the list of tensors to be concatenated
-		is one, it will just return the tensor.
-		
-		Parameters
-		----------
-		tensors : list of tensors (or list-like)
-		    A list of tensors to be concatenated along the given axis.
-		    The shapes of the tensors to be concatenated must be all
-		    identical, except in the dimension (`axis`) on which they are to
-		    be joined.
-		axis : int (symbolic or literal)
-		    On which dimension should the tensors be joined?  The `axis`
-		    must be a valid index into the shape of the tensors to be
-		    concatenated.
-		    The `axis` parameter may either be an integer or an object that
-		    can be converted to a scalar using `as_scalar`(`axis`). In the
-		    former case, the axis is fixed at construction, while in the
-		    latter it may vary over time depending on the value of the
-		    `axis` variable.
-	**/
-	static public function join(axis:Dynamic, ?tensors_list:python.VarArgs<Dynamic>):Dynamic;
-	static public var local_gpua_mrg : Dynamic;
-	static public function local_gpua_mrg_graph(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public function local_optimizer(tracks:Dynamic, ?inplace:Dynamic, ?requirements:Dynamic):Dynamic;
-	/**
-		base e logarithm of a
-		
-		Generalizes a scalar op to tensors.
-		
-		All the inputs must have the same number of dimensions. When the
-		Op is performed, for each dimension, each input's size for that
-		dimension must be the same. As a special case, it can also be 1
-		but only if the input's broadcastable flag is True for that
-		dimension. In that case, the tensor is (virtually) replicated
-		along that dimension to match the size of the others.
-		
-		The dtypes of the outputs mirror those of the scalar Op that is
-		being generalized to tensors. In particular, if the calculations
-		for an output are done inplace on an input, the output type must
-		be the same as the corresponding input type (see the doc of
-		scalar.ScalarOp to get help about controlling the output type)
-		
-		Parameters
-		----------
-		scalar_op
-		    An instance of a subclass of scalar.ScalarOp which works uniquely
-		    on scalars.
-		inplace_pattern
-		    A dictionary that maps the index of an output to the
-		    index of an input so the output is calculated inplace using
-		    the input's storage. (Just like destroymap, but without the lists.)
-		nfunc_spec
-		    Either None or a tuple of three elements,
-		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
-		    implements this operation, takes nin inputs and nout outputs.
-		    Note that nin cannot always be inferred from the scalar op's
-		    own nin field because that value is sometimes 0 (meaning a
-		    variable number of inputs), whereas the numpy function may
-		    not have varargs.
-		
-		Note
-		----
-		| Elemwise(add) represents + on tensors (x + y)
-		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
-		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
-		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
-		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
-		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
-		| Elemwise(log)(rand(3, 4, 5))
-	**/
-	static public function log(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function matVecModM(A:Dynamic, s:Dynamic, m:Dynamic):Dynamic;
-	static public function mrg_next_value(rstate:Dynamic, new_rstate:Dynamic):Dynamic;
+	static public function mrg_next_value(rstate:Dynamic, new_rstate:Dynamic, NORM:Dynamic, mask:Dynamic, offset:Dynamic):Dynamic;
 	static public var mrg_random_make_inplace : Dynamic;
 	/**
 		Multiply the first half of v by A with a modulo of m1 and the second half
@@ -397,36 +278,6 @@ package theano.sandbox.rng_mrg;
 	static public var np_int32_vals : Dynamic;
 	static public var optdb : Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Computes the product along the given axis(es) of a tensor `input`.
-		
-		When axis is None (the default value), the product is performed
-		over the flattened tensor.
-		
-		For full documentation see ``tensor.elemwise.Prod``.
-		
-		Parameters
-		----------
-		keepdims: bool
-		    If this is set to True, the axes which are reduced are left in
-		    the result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original tensor.
-	**/
-	static public function prod(input:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?keepdims:Dynamic, ?acc_dtype:Dynamic, ?no_zeros_in_input:Dynamic):Dynamic;
-	static public function register_gpua(?tags:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Decorator for the new GraphToGPU optimizer.
-		Takes an extra parameter(Op) compared to register_opt decorator.
-		
-		Parameters
-		----------
-		tracks : List of Op class Or Op instance or None
-		    The Node's Op to which optimization is being applied.
-		
-		tags : String
-		    The optimization tag to which the optimizer will be registered.
-	**/
-	static public function register_opt2(tracks:Dynamic, ?tags:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a SharedVariable Variable, initialized with a copy or
 		reference of `value`.
@@ -463,98 +314,24 @@ package theano.sandbox.rng_mrg;
 	**/
 	static public function shared(value:Dynamic, ?name:Dynamic, ?strict:Dynamic, ?allow_downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		sine of a
+		Consider the gradient of this variable undefined.
 		
-		Generalizes a scalar op to tensors.
+		This will generate an error message if its gradient is taken.
 		
-		All the inputs must have the same number of dimensions. When the
-		Op is performed, for each dimension, each input's size for that
-		dimension must be the same. As a special case, it can also be 1
-		but only if the input's broadcastable flag is True for that
-		dimension. In that case, the tensor is (virtually) replicated
-		along that dimension to match the size of the others.
-		
-		The dtypes of the outputs mirror those of the scalar Op that is
-		being generalized to tensors. In particular, if the calculations
-		for an output are done inplace on an input, the output type must
-		be the same as the corresponding input type (see the doc of
-		scalar.ScalarOp to get help about controlling the output type)
+		The expression itself is unaffected, but when its gradient is
+		computed, or the gradient of another expression that this
+		expression is a subexpression of, an error message will be generated
+		specifying such gradient is not defined.
 		
 		Parameters
 		----------
-		scalar_op
-		    An instance of a subclass of scalar.ScalarOp which works uniquely
-		    on scalars.
-		inplace_pattern
-		    A dictionary that maps the index of an output to the
-		    index of an input so the output is calculated inplace using
-		    the input's storage. (Just like destroymap, but without the lists.)
-		nfunc_spec
-		    Either None or a tuple of three elements,
-		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
-		    implements this operation, takes nin inputs and nout outputs.
-		    Note that nin cannot always be inferred from the scalar op's
-		    own nin field because that value is sometimes 0 (meaning a
-		    variable number of inputs), whereas the numpy function may
-		    not have varargs.
+		x: :class:`~theano.gof.graph.Variable`
+		    A Theano expression whose gradient should be undefined.
 		
-		Note
-		----
-		| Elemwise(add) represents + on tensors (x + y)
-		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
-		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
-		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
-		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
-		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
-		| Elemwise(log)(rand(3, 4, 5))
+		Returns
+		-------
+		:class:`~theano.gof.graph.Variable`
+		    An expression equivalent to ``x``, with its gradient undefined.
 	**/
-	static public function sin(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		square root of a
-		
-		Generalizes a scalar op to tensors.
-		
-		All the inputs must have the same number of dimensions. When the
-		Op is performed, for each dimension, each input's size for that
-		dimension must be the same. As a special case, it can also be 1
-		but only if the input's broadcastable flag is True for that
-		dimension. In that case, the tensor is (virtually) replicated
-		along that dimension to match the size of the others.
-		
-		The dtypes of the outputs mirror those of the scalar Op that is
-		being generalized to tensors. In particular, if the calculations
-		for an output are done inplace on an input, the output type must
-		be the same as the corresponding input type (see the doc of
-		scalar.ScalarOp to get help about controlling the output type)
-		
-		Parameters
-		----------
-		scalar_op
-		    An instance of a subclass of scalar.ScalarOp which works uniquely
-		    on scalars.
-		inplace_pattern
-		    A dictionary that maps the index of an output to the
-		    index of an input so the output is calculated inplace using
-		    the input's storage. (Just like destroymap, but without the lists.)
-		nfunc_spec
-		    Either None or a tuple of three elements,
-		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
-		    implements this operation, takes nin inputs and nout outputs.
-		    Note that nin cannot always be inferred from the scalar op's
-		    own nin field because that value is sometimes 0 (meaning a
-		    variable number of inputs), whereas the numpy function may
-		    not have varargs.
-		
-		Note
-		----
-		| Elemwise(add) represents + on tensors (x + y)
-		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
-		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
-		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
-		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
-		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
-		| Elemwise(log)(rand(3, 4, 5))
-	**/
-	static public function sqrt(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function write_w(dtype:Dynamic):Dynamic;
+	static public function undefined_grad(x:Dynamic):Dynamic;
 }

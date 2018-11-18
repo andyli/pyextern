@@ -8,13 +8,6 @@ package pandas._libs.reshape;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
-	static public var float16 : Dynamic;
-	static public var float32 : Dynamic;
-	static public var float64 : Dynamic;
-	static public var int16 : Dynamic;
-	static public var int32 : Dynamic;
-	static public var int64 : Dynamic;
-	static public var int8 : Dynamic;
 	/**
 		transform long sorted_values to wide new_values
 		

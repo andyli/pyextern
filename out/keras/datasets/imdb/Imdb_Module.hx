@@ -13,15 +13,16 @@ package keras.datasets.imdb;
 		Removes sequences that exceed the maximum length.
 		
 		# Arguments
-		    maxlen: int, maximum length
-		    seq: list of lists where each sublist is a sequence
-		    label: list where each element is an integer
+		    maxlen: Int, maximum length of the output sequences.
+		    seq: List of lists, where each sublist is a sequence.
+		    label: List where each element is an integer.
 		
 		# Returns
 		    new_seq, new_label: shortened lists for `seq` and `label`.
 	**/
 	static public function _remove_long_seq(maxlen:Dynamic, seq:Dynamic, label:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Downloads a file from a URL if it not already in the cache.
 		
@@ -64,7 +65,7 @@ package keras.datasets.imdb;
 	**/
 	static public function get_file(fname:Dynamic, origin:Dynamic, ?untar:Dynamic, ?md5_hash:Dynamic, ?file_hash:Dynamic, ?cache_subdir:Dynamic, ?hash_algorithm:Dynamic, ?extract:Dynamic, ?archive_format:Dynamic, ?cache_dir:Dynamic):Dynamic;
 	/**
-		Retrieves the dictionary mapping word indices back to words.
+		Retrieves the dictionary mapping words to word indices.
 		
 		# Arguments
 		    path: where to cache the data (relative to `~/.keras/dataset`).
@@ -83,7 +84,7 @@ package keras.datasets.imdb;
 		        the most frequent words are kept
 		    skip_top: skip the top N most frequently occurring words
 		        (which may not be informative).
-		    maxlen: truncate sequences after this length.
+		    maxlen: sequences longer than this will be filtered out.
 		    seed: random seed for sample shuffling.
 		    start_char: The start of a sequence will be marked with this character.
 		        Set to 1 because 0 is usually the padding character.
@@ -105,4 +106,5 @@ package keras.datasets.imdb;
 		have simply been skipped.
 	**/
 	static public function load_data(?path:Dynamic, ?num_words:Dynamic, ?skip_top:Dynamic, ?maxlen:Dynamic, ?seed:Dynamic, ?start_char:Dynamic, ?oov_char:Dynamic, ?index_from:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var print_function : Dynamic;
 }

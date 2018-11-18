@@ -15,7 +15,7 @@ package tensorflow.contrib.kernel_methods.python.mappers.random_fourier_features
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -60,11 +60,11 @@ package tensorflow.contrib.kernel_methods.python.mappers.random_fourier_features
 		  stddev: The standard deviation of the Gaussian kernel to be approximated.
 		    The error of the classifier trained using this approximation is very
 		    sensitive to this parameter.
-		  seed: An integer used to initialize the parameters (`Omega` and `b`) of
-		    the mapper. For repeatable sequences across different invocations of the
-		    mapper object (for instance, to ensure consistent mapping both at
-		    training and eval/inference if these happen in different invocations),
-		    set this to the same integer.
+		  seed: An integer used to initialize the parameters (\\(\Omega\\) and
+		    \\(b\\)) of the mapper. For repeatable sequences across different
+		    invocations of the mapper object (for instance, to ensure consistent
+		    mapping both at training and eval/inference if these happen in
+		    different invocations), set this to the same integer.
 		  name: name for the mapper object.
 	**/
 	@:native("__init__")
@@ -78,11 +78,11 @@ package tensorflow.contrib.kernel_methods.python.mappers.random_fourier_features
 		  stddev: The standard deviation of the Gaussian kernel to be approximated.
 		    The error of the classifier trained using this approximation is very
 		    sensitive to this parameter.
-		  seed: An integer used to initialize the parameters (`Omega` and `b`) of
-		    the mapper. For repeatable sequences across different invocations of the
-		    mapper object (for instance, to ensure consistent mapping both at
-		    training and eval/inference if these happen in different invocations),
-		    set this to the same integer.
+		  seed: An integer used to initialize the parameters (\\(\Omega\\) and
+		    \\(b\\)) of the mapper. For repeatable sequences across different
+		    invocations of the mapper object (for instance, to ensure consistent
+		    mapping both at training and eval/inference if these happen in
+		    different invocations), set this to the same integer.
 		  name: name for the mapper object.
 	**/
 	public function new(input_dim:Dynamic, output_dim:Dynamic, ?stddev:Dynamic, ?seed:Dynamic, ?name:Dynamic):Void;
@@ -92,7 +92,7 @@ package tensorflow.contrib.kernel_methods.python.mappers.random_fourier_features
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -114,7 +114,7 @@ package tensorflow.contrib.kernel_methods.python.mappers.random_fourier_features
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -157,7 +157,7 @@ package tensorflow.contrib.kernel_methods.python.mappers.random_fourier_features
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

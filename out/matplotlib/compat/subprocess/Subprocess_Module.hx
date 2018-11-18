@@ -12,7 +12,7 @@ package matplotlib.compat.subprocess;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	/**
 		Run command with arguments and return its output.
 		
@@ -46,5 +46,54 @@ package matplotlib.compat.subprocess;
 		string and the return value will be a string rather than bytes.
 	**/
 	static public function check_output(?popenargs:python.VarArgs<Dynamic>, ?timeout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var print_function : Dynamic;
+	/**
+		Used to display deprecation in a standard way.
+		
+		Parameters
+		----------
+		since : str
+		    The release at which this API became deprecated.
+		
+		message : str, optional
+		    Override the default deprecation message.  The format
+		    specifier `%(name)s` may be used for the name of the function,
+		    and `%(alternative)s` may be used in the deprecation message
+		    to insert the name of an alternative to the deprecated
+		    function.  `%(obj_type)s` may be used to insert a friendly name
+		    for the type of object being deprecated.
+		
+		name : str, optional
+		    The name of the deprecated object.
+		
+		alternative : str, optional
+		    An alternative API that the user may use in place of the deprecated
+		    API.  The deprecation warning will tell the user about this alternative
+		    if provided.
+		
+		pending : bool, optional
+		    If True, uses a PendingDeprecationWarning instead of a
+		    DeprecationWarning.  Cannot be used together with *removal*.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
+		
+		obj_type : str, optional
+		    The object type being deprecated.
+		
+		addendum : str, optional
+		    Additional text appended directly to the final message.
+		
+		Examples
+		--------
+		
+		    Basic example::
+		
+		        # To warn of the deprecation of "matplotlib.name_of_module"
+		        warn_deprecated('1.4.0', name='matplotlib.name_of_module',
+		                        obj_type='module')
+	**/
+	static public function warn_deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic, ?addendum:Dynamic, ?removal:Dynamic):Dynamic;
 }

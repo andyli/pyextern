@@ -9,5 +9,7 @@ package tensorflow.python.saved_model.builder;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
 }

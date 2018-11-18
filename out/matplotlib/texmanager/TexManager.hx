@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.texmanager;
 @:pythonImport("matplotlib.texmanager", "TexManager") extern class TexManager {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.texmanager;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,31 +103,26 @@ package matplotlib.texmanager;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var _dvipng_hack_alpha : Dynamic;
-	/**
-		On windows, changing directories can be complicated by the presence of
-		multiple drives. get_shell_cmd deals with this issue.
-	**/
-	public function _get_shell_cmd(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _rc_cache : Dynamic;
 	static public var _rc_cache_keys : Dynamic;
 	static public var _re_vbox : Dynamic;
+	public function _run_checked_subprocess(command:Dynamic, tex:Dynamic):Dynamic;
 	static public var cachedir : Dynamic;
 	static public var cursive : Dynamic;
 	static public var font_families : Dynamic;
 	static public var font_family : Dynamic;
 	static public var font_info : Dynamic;
 	/**
-		returns a filename based on a hash of the string, fontsize, and dpi
+		Return a filename based on a hash of the string, fontsize, and dpi.
 	**/
 	public function get_basefile(tex:Dynamic, fontsize:Dynamic, ?dpi:Dynamic):Dynamic;
 	/**
-		returns a string containing user additions to the tex preamble
+		Return a string containing user additions to the tex preamble.
 	**/
 	public function get_custom_preamble():Dynamic;
 	/**
@@ -135,72 +130,89 @@ package matplotlib.texmanager;
 	**/
 	public function get_font_config():Dynamic;
 	/**
-		returns a string containing font configuration for the tex preamble
+		Return a string containing font configuration for the tex preamble.
 	**/
 	public function get_font_preamble():Dynamic;
 	/**
-		returns the alpha channel
+		Return the alpha channel.
 	**/
 	public function get_grey(tex:Dynamic, ?fontsize:Dynamic, ?dpi:Dynamic):Dynamic;
 	/**
-		returns a list containing the postscript bounding box for latex's
-		rendering of the tex string
+		.. deprecated:: 2.2
+		    The get_ps_bbox function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
+		Return a list of PS bboxes for latex's rendering of the tex string.
 	**/
 	public function get_ps_bbox(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	/**
-		Returns latex's rendering of the tex string as an rgba array
+		Return latex's rendering of the tex string as an rgba array.
 	**/
 	public function get_rgba(tex:Dynamic, ?fontsize:Dynamic, ?dpi:Dynamic, ?rgb:Dynamic):Dynamic;
 	/**
-		return width, heigth and descent of the text.
+		Return width, height and descent of the text.
 	**/
 	public function get_text_width_height_descent(tex:Dynamic, fontsize:Dynamic, ?renderer:Dynamic):Dynamic;
 	static public var grey_arrayd : Dynamic;
 	/**
-		generates a dvi file containing latex's layout of tex string
+		Generate a dvi file containing latex's layout of tex string.
 		
-		returns the file name
+		Return the file name.
 	**/
 	public function make_dvi(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	/**
-		generates a dvi file containing latex's layout of tex
-		string. It calls make_tex_preview() method and store the size
-		information (width, height, descent) in a separte file.
+		Generate a dvi file containing latex's layout of tex string.
 		
-		returns the file name
+		It calls make_tex_preview() method and store the size information
+		(width, height, descent) in a separate file.
+		
+		Return the file name.
 	**/
 	public function make_dvi_preview(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	/**
-		generates a png file containing latex's rendering of tex string
+		Generate a png file containing latex's rendering of tex string.
 		
-		returns the filename
+		Return the file name.
 	**/
 	public function make_png(tex:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
 	/**
-		generates a postscript file containing latex's rendering of tex string
+		.. deprecated:: 2.2
+		    The make_ps function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
 		
-		returns the file name
+		Generate a postscript file containing latex's rendering of tex string.
+		
+		Return the file name.
 	**/
 	public function make_ps(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	/**
-		Generate a tex file to render the tex string at a specific font size
+		Generate a tex file to render the tex string at a specific font size.
 		
-		returns the file name
+		Return the file name.
 	**/
 	public function make_tex(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	/**
-		Generate a tex file to render the tex string at a specific
-		font size.  It uses the preview.sty to determin the dimension
-		(width, height, descent) of the output.
+		Generate a tex file to render the tex string at a specific font size.
 		
-		returns the file name
+		It uses the preview.sty to determine the dimension (width, height,
+		descent) of the output.
+		
+		Return the file name.
 	**/
 	public function make_tex_preview(tex:Dynamic, fontsize:Dynamic):Dynamic;
 	static public var monospace : Dynamic;
-	static public var oldcache : Dynamic;
-	static public var oldpath : Dynamic;
-	static public var postscriptd : Dynamic;
-	static public var pscnt : Dynamic;
+	/**
+		.. deprecated:: 2.2
+		    The <lambda> function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
+		\ 
+	**/
+	public var postscriptd : Dynamic;
+	/**
+		.. deprecated:: 2.2
+		    The <lambda> function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
+		\ 
+	**/
+	public var pscnt : Dynamic;
 	static public var rgba_arrayd : Dynamic;
 	static public var sans_serif : Dynamic;
 	static public var serif : Dynamic;

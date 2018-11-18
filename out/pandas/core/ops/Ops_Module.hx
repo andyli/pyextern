@@ -9,6 +9,8 @@ package pandas.core.ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _add_example_FRAME : Dynamic;
+	static public var _agg_doc_PANEL : Dynamic;
 	/**
 		convert rhs to meet lhs dims if input is list, tuple or np.ndarray 
 	**/
@@ -18,93 +20,247 @@ package pandas.core.ops;
 	**/
 	static public function _align_method_SERIES(left:Dynamic, right:Dynamic, ?align_asobject:Dynamic):Dynamic;
 	static public var _arith_doc_FRAME : Dynamic;
-	static public function _arith_method_FRAME(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function _arith_method_PANEL(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?fill_zeros:Dynamic, ?default_axis:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _arith_method_FRAME(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
+	static public function _arith_method_PANEL(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
 	/**
 		Wrapper function for Series arithmetic operations, to avoid
 		code duplication.
 	**/
-	static public function _arith_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?fill_zeros:Dynamic, ?default_axis:Dynamic, ?construct_result:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _arith_method_SERIES(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
 	/**
 		Wrapper function for Series arithmetic operations, to avoid
 		code duplication.
 	**/
-	static public function _bool_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic):Dynamic;
-	static public function _comp_method_FRAME(func:Dynamic, name:Dynamic, str_rep:Dynamic, ?masker:Dynamic):Dynamic;
+	static public function _arith_method_SPARSE_ARRAY(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
+	/**
+		Wrapper function for Series arithmetic operations, to avoid
+		code duplication.
+	**/
+	static public function _arith_method_SPARSE_SERIES(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
+	/**
+		Wrapper function for Series arithmetic operations, to avoid
+		code duplication.
+	**/
+	static public function _bool_method_SERIES(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
+	/**
+		For SparseSeries operation, coerce to float64 if the result is expected
+		to have NaN or inf values
+		
+		Parameters
+		----------
+		left : SparseArray
+		right : SparseArray
+		opname : str
+		
+		Returns
+		-------
+		left : SparseArray
+		right : SparseArray
+	**/
+	static public function _cast_sparse_series_op(left:Dynamic, right:Dynamic, opname:Dynamic):Dynamic;
+	/**
+		Apply binary operator `func` to self, other using alignment and fill
+		conventions determined by the fill_value, axis, level, and try_cast kwargs.
+		
+		Parameters
+		----------
+		self : DataFrame
+		other : Series
+		func : binary operator
+		fill_value : object, default None
+		axis : {0, 1, 'columns', 'index', None}, default None
+		level : int or None, default None
+		try_cast : bool, default True
+		
+		Returns
+		-------
+		result : DataFrame
+	**/
+	static public function _combine_series_frame(self:Dynamic, other:Dynamic, func:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic):pandas.DataFrame;
+	static public function _comp_method_FRAME(cls:Dynamic, func:Dynamic, special:Dynamic):Dynamic;
 	static public function _comp_method_OBJECT_ARRAY(op:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
-	static public function _comp_method_PANEL(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?masker:Dynamic):Dynamic;
+	static public function _comp_method_PANEL(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
 	/**
 		Wrapper function for Series arithmetic operations, to avoid
 		code duplication.
 	**/
-	static public function _comp_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?masker:Dynamic):Dynamic;
+	static public function _comp_method_SERIES(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
 	/**
 		divmod returns a tuple of like indexed series instead of a single series.
 		    
 	**/
 	static public function _construct_divmod_result(left:Dynamic, result:Dynamic, index:Dynamic, name:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		If the raw op result has a non-None name (e.g. it is an Index object) and
+		the name argument is None, then passing name to the constructor will
+		not be enough; we still need to override the name attribute.
+	**/
 	static public function _construct_result(left:Dynamic, result:Dynamic, index:Dynamic, name:Dynamic, dtype:Dynamic):Dynamic;
-	static public function _create_methods(arith_method:Dynamic, comp_method:Dynamic, bool_method:Dynamic, use_numexpr:Dynamic, ?special:Dynamic, ?default_axis:Dynamic, ?have_divmod:Dynamic):Dynamic;
+	static public function _create_methods(cls:Dynamic, arith_method:Dynamic, comp_method:Dynamic, bool_method:Dynamic, ?special:Dynamic):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _flex_comp_method_FRAME(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?masker:Dynamic):Dynamic;
+	static public function _flex_comp_method_FRAME(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
 	static public var _flex_doc_FRAME : Dynamic;
+	static public var _flex_doc_PANEL : Dynamic;
 	static public var _flex_doc_SERIES : Dynamic;
-	static public function _flex_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _flex_method_PANEL(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
+	static public function _flex_method_SERIES(cls:Dynamic, op:Dynamic, special:Dynamic):Dynamic;
+	/**
+		Find the keyword arguments to pass to numexpr for the given operation.
+		
+		Parameters
+		----------
+		name : str
+		
+		Returns
+		-------
+		eval_kwargs : dict
+		
+		Examples
+		--------
+		>>> _gen_eval_kwargs("__add__")
+		{}
+		
+		>>> _gen_eval_kwargs("rtruediv")
+		{"reversed": True, "truediv": True}
+	**/
+	static public function _gen_eval_kwargs(name:Dynamic):Dynamic;
+	/**
+		Find the appropriate fill value to use when filling in undefined values
+		in the results of the given operation caused by operating on
+		(generally dividing by) zero.
+		
+		Parameters
+		----------
+		name : str
+		
+		Returns
+		-------
+		fill_value : {None, np.nan, np.inf}
+	**/
+	static public function _gen_fill_zeros(name:Dynamic):Dynamic;
+	/**
+		Only DataFrame cares about default_axis, specifically:
+		special methods have default_axis=None and flex methods
+		have default_axis='columns'.
+		
+		Parameters
+		----------
+		name : str
+		
+		Returns
+		-------
+		default_axis: str or None
+	**/
+	static public function _get_frame_op_default_axis(name:Dynamic):Dynamic;
+	/**
+		Find the appropriate operation-wrappers to use when defining flex/special
+		arithmetic, boolean, and comparison operations with the given class.
+		
+		Parameters
+		----------
+		cls : class
+		
+		Returns
+		-------
+		arith_flex : function or None
+		comp_flex : function or None
+		arith_special : function
+		comp_special : function
+		bool_special : function
+		
+		Notes
+		-----
+		None is only returned for SparseArray
+	**/
+	static public function _get_method_wrappers(cls:Dynamic):Dynamic;
+	/**
+		Find the name to attach to this method according to conventions
+		for special and non-special methods.
+		
+		Parameters
+		----------
+		op : binary operator
+		special : bool
+		
+		Returns
+		-------
+		op_name : str
+	**/
+	static public function _get_op_name(op:Dynamic, special:Dynamic):Dynamic;
+	/**
+		Find the operation string, if any, to pass to numexpr for this
+		operation.
+		
+		Parameters
+		----------
+		op : binary operator
+		cls : class
+		
+		Returns
+		-------
+		op_str : string or None
+	**/
+	static public function _get_opstr(op:Dynamic, cls:Dynamic):Dynamic;
+	/**
+		Make the appropriate substitutions for the given operation and class-typ
+		into either _flex_doc_SERIES or _flex_doc_FRAME to return the docstring
+		to attach to a generated method.
+		
+		Parameters
+		----------
+		op_name : str {'__add__', '__sub__', ... '__eq__', '__ne__', ...}
+		typ : str {series, 'dataframe']}
+		
+		Returns
+		-------
+		doc : str
+	**/
+	static public function _make_flex_doc(op_name:Dynamic, typ:Dynamic):String;
+	/**
+		Try to find a name to attach to the result of an operation between
+		a and b.  If only one of these has a `name` attribute, return that
+		name.  Otherwise return a consensus name if they match of None if
+		they have different names.
+		
+		Parameters
+		----------
+		a : object
+		b : object
+		
+		Returns
+		-------
+		name : str or None
+		
+		See also
+		--------
+		pandas.core.common._consensus_name_attr
+	**/
 	static public function _maybe_match_name(a:Dynamic, b:Dynamic):Dynamic;
 	static public var _op_descriptions : Dynamic;
 	static public var _op_names : Dynamic;
-	/**
-		return my values or the object if we are say an ndarray 
-	**/
-	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sparse_series_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic):Dynamic;
+	static public var _sub_example_FRAME : Dynamic;
 	/**
 		Adds the full suite of flex arithmetic methods (``pow``, ``mul``, ``add``)
 		to the class.
 		
 		Parameters
 		----------
-		flex_arith_method : function
-		    factory for special arithmetic methods, with op string:
-		    f(op, name, str_rep, default_axis=None, fill_zeros=None, **eval_kwargs)
-		flex_comp_method : function, optional,
-		    factory for rich comparison - signature: f(op, name, str_rep)
-		use_numexpr : bool, default True
-		    whether to accelerate with numexpr, defaults to True
-		force : bool, default False
-		    if False, checks whether function is defined **on ``cls.__dict__``**
-		    before defining if True, always defines functions on class base
-		select : iterable of strings (optional)
-		    if passed, only sets functions with names in select
-		exclude : iterable of strings (optional)
-		    if passed, will not set functions with names in exclude
+		cls : class
+		    flex methods will be defined and pinned to this class
 	**/
-	static public function add_flex_arithmetic_methods(cls:Dynamic, flex_arith_method:Dynamic, ?flex_comp_method:Dynamic, ?flex_bool_method:Dynamic, ?use_numexpr:Dynamic, ?force:Dynamic, ?select:Dynamic, ?exclude:Dynamic):Dynamic;
-	static public function add_methods(cls:Dynamic, new_methods:Dynamic, force:Dynamic, select:Dynamic, exclude:Dynamic):Dynamic;
+	static public function add_flex_arithmetic_methods(cls:Dynamic):Dynamic;
+	static public function add_methods(cls:Dynamic, new_methods:Dynamic):Dynamic;
 	/**
 		Adds the full suite of special arithmetic methods (``__add__``,
 		``__sub__``, etc.) to the class.
 		
 		Parameters
 		----------
-		arith_method : function (optional)
-		    factory for special arithmetic methods, with op string:
-		    f(op, name, str_rep, default_axis=None, fill_zeros=None, **eval_kwargs)
-		comp_method : function, optional,
-		    factory for rich comparison - signature: f(op, name, str_rep)
-		use_numexpr : bool, default True
-		    whether to accelerate with numexpr, defaults to True
-		force : bool, default False
-		    if False, checks whether function is defined **on ``cls.__dict__``**
-		    before defining if True, always defines functions on class base
-		select : iterable of strings (optional)
-		    if passed, only sets functions with names in select
-		exclude : iterable of strings (optional)
-		    if passed, will not set functions with names in exclude
-		have_divmod : bool, (optional)
-		    should a divmod method be added? this method is special because it
-		    returns a tuple of cls instead of a single element of type cls
+		cls : class
+		    special methods will be defined and pinned to this class
 	**/
-	static public function add_special_arithmetic_methods(cls:Dynamic, ?arith_method:Dynamic, ?comp_method:Dynamic, ?bool_method:Dynamic, ?use_numexpr:Dynamic, ?force:Dynamic, ?select:Dynamic, ?exclude:Dynamic, ?have_divmod:Dynamic):Dynamic;
+	static public function add_special_arithmetic_methods(cls:Dynamic):Dynamic;
 	/**
 		Bind a method to class, python 2 and python 3 compatible.
 		
@@ -124,7 +280,63 @@ package pandas.core.ops;
 		None
 	**/
 	static public function bind_method(cls:Dynamic, name:Dynamic, func:Dynamic):Dynamic;
+	/**
+		Transform any list-like object in a 1-dimensional numpy array of object
+		dtype.
+		
+		Parameters
+		----------
+		values : any iterable which has a len()
+		
+		Raises
+		------
+		TypeError
+		    * If `values` does not have a len()
+		
+		Returns
+		-------
+		1-dimensional numpy array of dtype object
+	**/
+	static public function construct_1d_object_array_from_listlike(values:Dynamic):Dynamic;
+	/**
+		Wrap Series left in the given index_class to delegate the operation op
+		to the index implementation.  DatetimeIndex and TimedeltaIndex perform
+		type checking, timezone handling, overflow checks, etc.
+		
+		Parameters
+		----------
+		op : binary operator (operator.add, operator.sub, ...)
+		left : Series
+		right : object
+		index_class : DatetimeIndex or TimedeltaIndex
+		
+		Returns
+		-------
+		result : object, usually DatetimeIndex, TimedeltaIndex, or Series
+	**/
+	static public function dispatch_to_index_op(op:Dynamic, left:Dynamic, right:Dynamic, index_class:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		If a non-None fill_value is given, replace null entries in left and right
+		with this value, but only in positions where _one_ of left/right is null,
+		not both.
+		
+		Parameters
+		----------
+		left : array-like
+		right : array-like
+		fill_value : object
+		
+		Returns
+		-------
+		left : array-like
+		right : array-like
+		
+		Notes
+		-----
+		Makes copies if fill_value is not None
+	**/
+	static public function fill_binop(left:Dynamic, right:Dynamic, fill_value:Dynamic):Dynamic;
 	/**
 		Find a common data type among the given dtypes.
 		
@@ -141,9 +353,21 @@ package pandas.core.ops;
 		numpy.find_common_type
 	**/
 	static public function find_common_type(types:Dynamic):Dynamic;
-	static public var frame_flex_funcs : Dynamic;
-	static public var frame_special_funcs : Dynamic;
-	static public var iNaT : Dynamic;
+	/**
+		Find the appropriate name to pin to an operation result.  This result
+		should always be either an Index or a Series.
+		
+		Parameters
+		----------
+		left : {Series, Index}
+		right : object
+		
+		Returns
+		-------
+		name : object
+		    Usually a string
+	**/
+	static public function get_op_result_name(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
 		
@@ -302,43 +526,6 @@ package pandas.core.ops;
 	**/
 	static public function is_datetimelike_v_numeric(a:Dynamic, b:Dynamic):Dynamic;
 	/**
-		Check whether an array-like is a datetime array-like with a timezone
-		component in its dtype.
-		
-		Parameters
-		----------
-		arr : array-like
-		    The array-like to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like is a datetime array-like with
-		          a timezone component in its dtype.
-		
-		Examples
-		--------
-		>>> is_datetimetz([1, 2, 3])
-		False
-		
-		Although the following examples are both DatetimeIndex objects,
-		the first one returns False because it has no timezone component
-		unlike the second one, which returns True.
-		
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3]))
-		False
-		>>> is_datetimetz(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
-		True
-		
-		The object need not be a DatetimeIndex object. It just needs to have
-		a dtype which has a timezone component.
-		
-		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
-		>>> s = pd.Series([], dtype=dtype)
-		>>> is_datetimetz(s)
-		True
-	**/
-	static public function is_datetimetz(arr:Dynamic):Dynamic;
-	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
@@ -447,6 +634,7 @@ package pandas.core.ops;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -472,28 +660,112 @@ package pandas.core.ops;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
-	static public var k : Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
+	static public var key : Dynamic;
+	/**
+		Return a binary method that always raises a TypeError.
+		
+		Parameters
+		----------
+		name : str
+		
+		Returns
+		-------
+		invalid_op : function
+	**/
+	static public function make_invalid_op(name:Dynamic):Dynamic;
+	/**
+		Apply the function `op` to only non-null points in x and y.
+		
+		Parameters
+		----------
+		x : array-like
+		y : array-like
+		op : binary operation
+		allowed_types : class or tuple of classes
+		
+		Returns
+		-------
+		result : ndarray[bool]
+	**/
+	static public function mask_cmp_op(x:Dynamic, y:Dynamic, op:Dynamic, allowed_types:Dynamic):Dynamic;
 	/**
 		A safe version of putmask that potentially upcasts the result
 		
@@ -547,27 +819,90 @@ package pandas.core.ops;
 	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : boolean inverse of pandas.notnull
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
 	**/
-	static public function notnull(obj:Dynamic):Dynamic;
-	static public var panel_special_funcs : Dynamic;
+	static public function notna(obj:Dynamic):Dynamic;
+	static public function radd(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rand_(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rdiv(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rdivmod(left:Dynamic, right:Dynamic):Dynamic;
 	static public var reverse_op : Dynamic;
-	static public var series_flex_funcs : Dynamic;
-	static public var series_special_funcs : Dynamic;
+	static public function rfloordiv(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rmod(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rmul(left:Dynamic, right:Dynamic):Dynamic;
+	static public function ror_(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rpow(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rsub(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rtruediv(left:Dynamic, right:Dynamic):Dynamic;
+	static public function rxor(left:Dynamic, right:Dynamic):Dynamic;
 }

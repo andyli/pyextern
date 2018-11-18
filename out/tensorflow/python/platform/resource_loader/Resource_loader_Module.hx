@@ -9,7 +9,8 @@ package tensorflow.python.platform.resource_loader;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Get a direct path to the data files colocated with the script.
 		
@@ -56,8 +57,10 @@ package tensorflow.python.platform.resource_loader;
 		  IOError: If the path is not found, or the resource can't be opened.
 	**/
 	static public function load_resource(path:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Readahead files not implemented; simply returns given path.
 	**/
 	static public function readahead_file_path(path:Dynamic, ?readahead:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

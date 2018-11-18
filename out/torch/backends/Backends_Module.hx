@@ -10,4 +10,6 @@ package torch.backends;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var cuda : Dynamic;
+	static public var cudnn : Dynamic;
 }

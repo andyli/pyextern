@@ -9,7 +9,7 @@ package keras.layers;
 		`Input()` is used to instantiate a Keras tensor.
 		
 		A Keras tensor is a tensor object from the underlying backend
-		(Theano or TensorFlow), which we augment with certain
+		(Theano, TensorFlow or CNTK), which we augment with certain
 		attributes that allow us to build a Keras model
 		just by knowing the inputs and outputs of the model.
 		
@@ -18,9 +18,9 @@ package keras.layers;
 		`model = Model(input=[a, b], output=c)`
 		
 		The added Keras attributes are:
-		    ._keras_shape: Integer shape tuple propagated
+		    `_keras_shape`: Integer shape tuple propagated
 		        via Keras-side shape inference.
-		    ._keras_history: Last layer applied to the tensor.
+		    `_keras_history`: Last layer applied to the tensor.
 		        the entire layer graph is retrievable from that layer,
 		        recursively.
 		
@@ -48,12 +48,12 @@ package keras.layers;
 		
 		# Example
 		
-		    ```python
-		    # this is a logistic regression in Keras
-		    x = Input(shape=(32,))
-		    y = Dense(16, activation='softmax')(x)
-		    model = Model(x, y)
-		    ```
+		```python
+		# this is a logistic regression in Keras
+		x = Input(shape=(32,))
+		y = Dense(16, activation='softmax')(x)
+		model = Model(x, y)
+		```
 	**/
 	static public function Input(?shape:Dynamic, ?batch_shape:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?sparse:Dynamic, ?tensor:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -75,6 +75,21 @@ package keras.layers;
 		
 		# Returns
 		    A tensor, the sum of the inputs.
+		
+		# Examples
+		
+		```python
+		    import keras
+		
+		    input1 = keras.layers.Input(shape=(16,))
+		    x1 = keras.layers.Dense(8, activation='relu')(input1)
+		    input2 = keras.layers.Input(shape=(32,))
+		    x2 = keras.layers.Dense(8, activation='relu')(input2)
+		    added = keras.layers.add([x1, x2])
+		
+		    out = keras.layers.Dense(4)(added)
+		    model = keras.models.Model(inputs=[input1, input2], outputs=out)
+		```
 	**/
 	static public function add(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -185,37 +200,16 @@ package keras.layers;
 	**/
 	static public function maximum(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Functional merge, to apply to Keras tensors (NOT layers).
-		Returns a Keras tensor.
-		# Example
-		```python
-		tensor_a = Input(shape=(32,))
-		tensor_b = Input(shape=(32,))
-		merged_tensor = merge([tensor_a, tensor_b], mode='concat', concat_axis=1)
-		```
+		Functional interface to the `Minimum` layer.
+		
 		# Arguments
-		    mode: String or lambda/function. If string, must be one
-		        of: 'sum', 'mul', 'concat', 'ave', 'cos', 'dot', 'max'.
-		        If lambda/function, it should take as input a list of tensors
-		        and return a single tensor.
-		    concat_axis: Integer, axis to use in mode `concat`.
-		    dot_axes: Integer or tuple of integers,
-		        axes to use in mode `dot` or `cos`.
-		    output_shape: Shape tuple (tuple of integers), or lambda/function
-		        to compute output_shape (only if merge mode is a lambda/function).
-		        If the latter case, it should take as input a list of shape tuples
-		        (1:1 mapping to input tensors) and return a single shape tuple,
-		        including the batch size
-		        (same convention as the `compute_output_shape` method of layers).
-		    node_indices: Optional list of integers containing
-		        the output node index for each input layer
-		        (in case some input layers have multiple output nodes).
-		        will default to an array of 0s if not provided.
-		    tensor_indices: Optional list of indices of output tensors
-		        to consider for merging
-		        (in case some input layer node returns multiple tensors).
+		    inputs: A list of input tensors (at least 2).
+		    **kwargs: Standard layer keyword arguments.
+		
+		# Returns
+		    A tensor, the element-wise minimum of the inputs.
 	**/
-	static public function merge(inputs:Dynamic, ?mode:Dynamic, ?concat_axis:Dynamic, ?dot_axes:Dynamic, ?output_shape:Dynamic, ?output_mask:Dynamic, ?arguments:Dynamic, ?name:Dynamic):Dynamic;
+	static public function minimum(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Functional interface to the `Multiply` layer.
 		
@@ -228,6 +222,31 @@ package keras.layers;
 	**/
 	static public function multiply(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Returns a new subclass of tuple with named fields.
+		
+		>>> Point = namedtuple('Point', ['x', 'y'])
+		>>> Point.__doc__                   # docstring for the new class
+		'Point(x, y)'
+		>>> p = Point(11, y=22)             # instantiate with positional args or keywords
+		>>> p[0] + p[1]                     # indexable like a plain tuple
+		33
+		>>> x, y = p                        # unpack like a regular tuple
+		>>> x, y
+		(11, 22)
+		>>> p.x + p.y                       # fields also accessible by name
+		33
+		>>> d = p._asdict()                 # convert to a dictionary
+		>>> d['x']
+		11
+		>>> Point(**d)                      # convert from a dictionary
+		Point(x=11, y=22)
+		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
+		Point(x=100, y=22)
+	**/
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
+	static public function object_list_uid(object_list:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
+	/**
 		Serialize a layer.
 		
 		# Arguments
@@ -237,4 +256,81 @@ package keras.layers;
 		    dictionary with config.
 	**/
 	static public function serialize(layer:Dynamic):Dynamic;
+	/**
+		Functional interface to the `Subtract` layer.
+		
+		# Arguments
+		    inputs: A list of input tensors (exactly 2).
+		    **kwargs: Standard layer keyword arguments.
+		
+		# Returns
+		    A tensor, the difference of the inputs.
+		
+		# Examples
+		
+		```python
+		    import keras
+		
+		    input1 = keras.layers.Input(shape=(16,))
+		    x1 = keras.layers.Dense(8, activation='relu')(input1)
+		    input2 = keras.layers.Input(shape=(32,))
+		    x2 = keras.layers.Dense(8, activation='relu')(input2)
+		    subtracted = keras.layers.subtract([x1, x2])
+		
+		    out = keras.layers.Dense(4)(subtracted)
+		    model = keras.models.Model(inputs=[input1, input2], outputs=out)
+		```
+	**/
+	static public function subtract(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Normalizes a list/tensor into a list.
+		
+		If a tensor is passed, we return
+		a list of size 1 containing the tensor.
+		
+		# Arguments
+		    x: target object to be normalized.
+		    allow_tuple: If False and x is a tuple,
+		        it will be converted into a list
+		        with a single element (the tuple).
+		        Else converts the tuple to a list.
+		
+		# Returns
+		    A list.
+	**/
+	static public function to_list(x:Dynamic, ?allow_tuple:Dynamic):Dynamic;
+	/**
+		Converts a tuple or a list to the correct `data_format`.
+		
+		It does so by switching the positions of its elements.
+		
+		# Arguments
+		    shape: Tuple or list, often representing shape,
+		        corresponding to `'channels_last'`.
+		    target_format: A string, either `'channels_first'` or `'channels_last'`.
+		    spatial_axes: A tuple of integers.
+		        Correspond to the indexes of the spatial axes.
+		        For example, if you pass a shape
+		        representing (batch_size, timesteps, rows, cols, channels),
+		        then `spatial_axes=(2, 3)`.
+		
+		# Returns
+		    A tuple or list, with the elements permuted according
+		    to `target_format`.
+		
+		# Example
+		```python
+		    >>> from keras.utils.generic_utils import transpose_shape
+		    >>> transpose_shape((16, 128, 128, 32),'channels_first', spatial_axes=(1, 2))
+		    (16, 32, 128, 128)
+		    >>> transpose_shape((16, 128, 128, 32), 'channels_last', spatial_axes=(1, 2))
+		    (16, 128, 128, 32)
+		    >>> transpose_shape((128, 128, 32), 'channels_first', spatial_axes=(0, 1))
+		    (32, 128, 128)
+		```
+		
+		# Raises
+		    ValueError: if `value` or the global `data_format` invalid.
+	**/
+	static public function transpose_shape(shape:Dynamic, target_format:Dynamic, spatial_axes:Dynamic):Dynamic;
 }

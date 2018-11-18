@@ -19,7 +19,7 @@ package numpy.lib.index_tricks;
 		--------
 		numpy.all : Equivalent function; see for details.
 	**/
-	static public function alltrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function alltrue(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arange([start,] stop[, step,], dtype=None)
 		
@@ -46,7 +46,8 @@ package numpy.lib.index_tricks;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -132,7 +133,15 @@ package numpy.lib.index_tricks;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -298,9 +307,9 @@ package numpy.lib.index_tricks;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -421,7 +430,7 @@ package numpy.lib.index_tricks;
 		
 		And use it to set the diagonal of an array of zeros to 1:
 		
-		>>> a = np.zeros((2, 2, 2), dtype=np.int)
+		>>> a = np.zeros((2, 2, 2), dtype=int)
 		>>> a[d3] = 1
 		>>> a
 		array([[[1, 0],
@@ -449,7 +458,7 @@ package numpy.lib.index_tricks;
 	**/
 	static public function diag_indices_from(arr:Dynamic):Dynamic;
 	/**
-		Calculate the n-th discrete difference along given axis.
+		Calculate the n-th discrete difference along the given axis.
 		
 		The first difference is given by ``out[n] = a[n+1] - a[n]`` along
 		the given axis, higher differences are calculated by using `diff`
@@ -460,16 +469,21 @@ package numpy.lib.index_tricks;
 		a : array_like
 		    Input array
 		n : int, optional
-		    The number of times values are differenced.
+		    The number of times values are differenced. If zero, the input
+		    is returned as-is.
 		axis : int, optional
-		    The axis along which the difference is taken, default is the last axis.
+		    The axis along which the difference is taken, default is the
+		    last axis.
 		
 		Returns
 		-------
 		diff : ndarray
 		    The n-th differences. The shape of the output is the same as `a`
 		    except along `axis` where the dimension is smaller by `n`. The
-		    type of the output is the same as that of the input.
+		    type of the output is the same as the type of the difference
+		    between any two elements of `a`. This is the same as the type of
+		    `a` in most cases. A notable exception is `datetime64`, which
+		    results in a `timedelta64` output array.
 		
 		See Also
 		--------
@@ -477,13 +491,13 @@ package numpy.lib.index_tricks;
 		
 		Notes
 		-----
-		For boolean arrays, the preservation of type means that the result
-		will contain `False` when consecutive elements are the same and
-		`True` when they differ.
+		Type is preserved for boolean arrays, so the result will contain
+		`False` when consecutive elements are the same and `True` when they
+		differ.
 		
-		For unsigned integer arrays, the results will also be unsigned. This should
-		not be surprising, as the result is consistent with calculating the
-		difference directly:
+		For unsigned integer arrays, the results will also be unsigned. This
+		should not be surprising, as the result is consistent with
+		calculating the difference directly:
 		
 		>>> u8_arr = np.array([1, 0], dtype=np.uint8)
 		>>> np.diff(u8_arr)
@@ -491,8 +505,8 @@ package numpy.lib.index_tricks;
 		>>> u8_arr[1,...] - u8_arr[0,...]
 		array(255, np.uint8)
 		
-		If this is not desirable, then the array should be cast to a larger integer
-		type first:
+		If this is not desirable, then the array should be cast to a larger
+		integer type first:
 		
 		>>> i16_arr = u8_arr.astype(np.int16)
 		>>> np.diff(i16_arr)
@@ -512,6 +526,10 @@ package numpy.lib.index_tricks;
 		       [5, 1, 2]])
 		>>> np.diff(x, axis=0)
 		array([[-1,  2,  0, -2]])
+		
+		>>> x = np.arange('1066-10-13', '1066-10-16', dtype=np.datetime64)
+		>>> np.diff(x)
+		array([1, 1], dtype='timedelta64[D]')
 	**/
 	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
@@ -632,7 +650,7 @@ package numpy.lib.index_tricks;
 		
 		Examples
 		--------
-		>>> np.find_common_type([], [np.int64, np.float32, np.complex])
+		>>> np.find_common_type([], [np.int64, np.float32, complex])
 		dtype('complex128')
 		>>> np.find_common_type([np.int64, np.float32], [])
 		dtype('float64')
@@ -648,7 +666,7 @@ package numpy.lib.index_tricks;
 		Complex is of a different type, so it up-casts the float in the
 		`array_types` argument:
 		
-		>>> np.find_common_type([np.float32], [np.complex])
+		>>> np.find_common_type([np.float32], [complex])
 		dtype('complex128')
 		
 		Type specifier strings are convertible to dtypes and can therefore
@@ -678,7 +696,7 @@ package numpy.lib.index_tricks;
 		
 		Examples
 		--------
-		>>> np.issubdtype('S1', str)
+		>>> np.issubdtype('S1', np.string_)
 		True
 		>>> np.issubdtype(np.float64, np.float32)
 		False
@@ -781,6 +799,36 @@ package numpy.lib.index_tricks;
 		array([-1. , -0.5,  0. ,  0.5,  1. ])
 	**/
 	static public var mgrid : Dynamic;
+	/**
+		Return the number of dimensions of an array.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.  If it is not already an ndarray, a conversion is
+		    attempted.
+		
+		Returns
+		-------
+		number_of_dimensions : int
+		    The number of dimensions in `a`.  Scalars are zero-dimensional.
+		
+		See Also
+		--------
+		ndarray.ndim : equivalent method
+		shape : dimensions of array
+		ndarray.shape : dimensions of array
+		
+		Examples
+		--------
+		>>> np.ndim([[1,2,3],[4,5,6]])
+		2
+		>>> np.ndim(np.array([[1,2,3],[4,5,6]]))
+		2
+		>>> np.ndim(1)
+		0
+	**/
+	static public function ndim(a:Dynamic):Int;
 	/**
 		`nd_grid` instance which returns an open multi-dimensional "meshgrid".
 		

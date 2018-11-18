@@ -47,23 +47,6 @@ package pandas.core.computation.align;
 	static public function _result_type_many(?arrays_and_dtypes:python.VarArgs<Dynamic>):Dynamic;
 	static public function _zip_axes_from_type(typ:Dynamic, new_axes:Dynamic):Dynamic;
 	/**
-		Flatten an arbitrarily nested sequence.
-		
-		Parameters
-		----------
-		l : sequence
-		    The non string sequence to flatten
-		
-		Notes
-		-----
-		This doesn't consider strings sequences.
-		
-		Returns
-		-------
-		flattened : generator
-	**/
-	static public function flatten(l:Dynamic):python.NativeIterable<Dynamic>;
-	/**
 		Decorator factory to apply update_wrapper() to a wrapper function
 		
 		Returns a decorator that invokes update_wrapper() with the decorated

@@ -15,36 +15,21 @@ package matplotlib.text;
 		the text before the rotation is calculated.
 	**/
 	static public function _get_textbox(text:Dynamic, renderer:Dynamic):Dynamic;
+	static public var _log : Dynamic;
 	/**
-		Return an override dict.  See :func:`~pyplot.text' docstring for info
+		Return an override dict.  See `~pyplot.text' docstring for info.
 	**/
 	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Temporarily inserts newlines to the text if the wrap option is enabled.
+		    
 	**/
 	static public function _wrap_text(textobj:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
-		Decorator for Artist.draw method. Provides routines
-		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependant renderer attributes or making
-		other setup function calls, such as starting and flushing a mixed-mode
-		renderer.
-	**/
-	static public function allow_rasterization(draw:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	/**
-		Return the text angle as float. The returned
-		angle is between 0 and 360 deg.
+		Return the text angle as float between 0 and 360 degrees.
 		
 		*rotation* may be 'horizontal', 'vertical', or a numeric value in degrees.
 	**/
 	static public function get_rotation(rotation:Dynamic):Dynamic;
-	/**
-		Return True if *obj* looks like a string
-	**/
-	static public function is_string_like(obj:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

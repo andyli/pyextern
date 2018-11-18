@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.integrate._ode;
 @:pythonImport("scipy.integrate._ode", "complex_ode") extern class Complex_ode {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package scipy.integrate._ode;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package scipy.integrate._ode;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -111,9 +111,118 @@ package scipy.integrate._ode;
 	public function _wrap(t:Dynamic, y:Dynamic, ?f_args:python.VarArgs<Dynamic>):Dynamic;
 	public function _wrap_jac(t:Dynamic, y:Dynamic, ?jac_args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Find y=y(t), set y as an initial condition, and return y.
+		Extracts the return code for the integration to enable better control
+		if the integration fails.
+		
+		In general, a return code > 0 implies success while a return code < 0
+		implies failure.
+		
+		Notes
+		-----
+		This section describes possible return codes and their meaning, for available
+		integrators that can be selected by `set_integrator` method.
+		
+		"vode"
+		
+		===========  =======
+		Return Code  Message
+		===========  =======
+		2            Integration successful.
+		-1           Excess work done on this call. (Perhaps wrong MF.)
+		-2           Excess accuracy requested. (Tolerances too small.)
+		-3           Illegal input detected. (See printed message.)
+		-4           Repeated error test failures. (Check all input.)
+		-5           Repeated convergence failures. (Perhaps bad Jacobian
+		             supplied or wrong choice of MF or tolerances.)
+		-6           Error weight became zero during problem. (Solution
+		             component i vanished, and ATOL or ATOL(i) = 0.)
+		===========  =======
+		
+		"zvode"
+		
+		===========  =======
+		Return Code  Message
+		===========  =======
+		2            Integration successful.
+		-1           Excess work done on this call. (Perhaps wrong MF.)
+		-2           Excess accuracy requested. (Tolerances too small.)
+		-3           Illegal input detected. (See printed message.)
+		-4           Repeated error test failures. (Check all input.)
+		-5           Repeated convergence failures. (Perhaps bad Jacobian
+		             supplied or wrong choice of MF or tolerances.)
+		-6           Error weight became zero during problem. (Solution
+		             component i vanished, and ATOL or ATOL(i) = 0.)
+		===========  =======
+		
+		"dopri5"
+		
+		===========  =======
+		Return Code  Message
+		===========  =======
+		1            Integration successful.
+		2            Integration successful (interrupted by solout).
+		-1           Input is not consistent.
+		-2           Larger nsteps is needed.
+		-3           Step size becomes too small.
+		-4           Problem is probably stiff (interrupted).
+		===========  =======
+		
+		"dop853"
+		
+		===========  =======
+		Return Code  Message
+		===========  =======
+		1            Integration successful.
+		2            Integration successful (interrupted by solout).
+		-1           Input is not consistent.
+		-2           Larger nsteps is needed.
+		-3           Step size becomes too small.
+		-4           Problem is probably stiff (interrupted).
+		===========  =======
+		
+		"lsoda"
+		
+		===========  =======
+		Return Code  Message
+		===========  =======
+		2            Integration successful.
+		-1           Excess work done on this call (perhaps wrong Dfun type).
+		-2           Excess accuracy requested (tolerances too small).
+		-3           Illegal input detected (internal error).
+		-4           Repeated error test failures (internal error).
+		-5           Repeated convergence failures (perhaps bad Jacobian or tolerances).
+		-6           Error weight became zero during problem.
+		-7           Internal workspace insufficient to finish (internal error).
+		===========  =======
 	**/
-	public function integrate(t:Dynamic, ?step:Dynamic, ?relax:Dynamic):Dynamic;
+	public function get_return_code():Dynamic;
+	/**
+		Find y=y(t), set y as an initial condition, and return y.
+		
+		Parameters
+		----------
+		t : float
+		    The endpoint of the integration step.
+		step : bool
+		    If True, and if the integrator supports the step method,
+		    then perform a single integration step and return.
+		    This parameter is provided in order to expose internals of
+		    the implementation, and should not be changed from its default
+		    value in most cases.
+		relax : bool
+		    If True and if the integrator supports the run_relax method,
+		    then integrate until t_1 >= t and return. ``relax`` is not
+		    referenced if ``step=True``.
+		    This parameter is provided in order to expose internals of
+		    the implementation, and should not be changed from its default
+		    value in most cases.
+		
+		Returns
+		-------
+		y : float
+		    The integrated value at t
+	**/
+	public function integrate(t:Dynamic, ?step:Dynamic, ?relax:Dynamic):Float;
 	/**
 		Set extra parameters for user-supplied function f.
 	**/

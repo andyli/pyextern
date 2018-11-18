@@ -5,7 +5,7 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -95,9 +95,13 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of ExportStrategy(name, export_fn)
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.estimator.train_and_evaluate, and use tf.estimator.Exporter.
 	**/
-	static public function __new__(_cls:Dynamic, name:Dynamic, export_fn:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, name:Dynamic, export_fn:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -136,7 +140,7 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -149,7 +153,7 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 	/**
 		Return a new ExportStrategy object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
@@ -187,4 +191,8 @@ package tensorflow.contrib.learn.python.learn.export_strategy;
 		Alias for field number 0
 	**/
 	public var name : Dynamic;
+	/**
+		Alias for field number 2
+	**/
+	public var strip_default_attrs : Dynamic;
 }

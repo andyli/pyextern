@@ -5,7 +5,7 @@ package scipy._lib._ccallback;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -64,7 +64,7 @@ package scipy._lib._ccallback;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -132,7 +132,7 @@ package scipy._lib._ccallback;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _parse_callback(obj:Dynamic, ?user_data:Dynamic, ?signature:Dynamic):Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value

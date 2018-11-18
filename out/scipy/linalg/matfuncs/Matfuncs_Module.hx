@@ -58,6 +58,8 @@ package scipy.linalg.matfuncs;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -80,6 +82,7 @@ package scipy.linalg.matfuncs;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -133,8 +136,15 @@ package scipy.linalg.matfuncs;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The minimum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
 		
 		Returns
 		-------
@@ -181,16 +191,29 @@ package scipy.linalg.matfuncs;
 		>>> np.amax(a, axis=1)   # Maxima along the second axis
 		array([1, 3])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amax(b)
 		nan
 		>>> np.nanmax(b)
 		4.0
+		
+		You can use an initial value to compute the maximum of an empty slice, or
+		to initialize it to a different value:
+		
+		>>> np.max([[-50], [10]], axis=-1, initial=0)
+		array([ 0, 10])
+		
+		Notice that the initial value is used as one of the elements for which the
+		maximum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		>>> np.max([5], initial=6)
+		6
+		>>> max([5], default=6)
+		5
 	**/
-	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	@:native("cast")
-	static public var _cast : Dynamic;
+	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -219,6 +242,7 @@ package scipy.linalg.matfuncs;
 		-------
 		y : ndarray
 		    The complex conjugate of `x`, with same dtype as `y`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -352,12 +376,22 @@ package scipy.linalg.matfuncs;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -422,142 +456,7 @@ package scipy.linalg.matfuncs;
 		499128
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Solve an ordinary or generalized eigenvalue problem of a square matrix.
-		
-		Find eigenvalues w and right or left eigenvectors of a general matrix::
-		
-		    a   vr[:,i] = w[i]        b   vr[:,i]
-		    a.H vl[:,i] = w[i].conj() b.H vl[:,i]
-		
-		where ``.H`` is the Hermitian conjugation.
-		
-		Parameters
-		----------
-		a : (M, M) array_like
-		    A complex or real matrix whose eigenvalues and eigenvectors
-		    will be computed.
-		b : (M, M) array_like, optional
-		    Right-hand side matrix in a generalized eigenvalue problem.
-		    Default is None, identity matrix is assumed.
-		left : bool, optional
-		    Whether to calculate and return left eigenvectors.  Default is False.
-		right : bool, optional
-		    Whether to calculate and return right eigenvectors.  Default is True.
-		overwrite_a : bool, optional
-		    Whether to overwrite `a`; may improve performance.  Default is False.
-		overwrite_b : bool, optional
-		    Whether to overwrite `b`; may improve performance.  Default is False.
-		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
-		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		homogeneous_eigvals : bool, optional
-		    If True, return the eigenvalues in homogeneous coordinates.
-		    In this case ``w`` is a (2, M) array so that::
-		
-		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
-		
-		    Default is False.
-		
-		Returns
-		-------
-		w : (M,) or (2, M) double or complex ndarray
-		    The eigenvalues, each repeated according to its
-		    multiplicity. The shape is (M,) unless
-		    ``homogeneous_eigvals=True``.
-		vl : (M, M) double or complex ndarray
-		    The normalized left eigenvector corresponding to the eigenvalue
-		    ``w[i]`` is the column vl[:,i]. Only returned if ``left=True``.
-		vr : (M, M) double or complex ndarray
-		    The normalized right eigenvector corresponding to the eigenvalue
-		    ``w[i]`` is the column ``vr[:,i]``.  Only returned if ``right=True``.
-		
-		Raises
-		------
-		LinAlgError
-		    If eigenvalue computation does not converge.
-		
-		See Also
-		--------
-		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
-	**/
-	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	static public var eps : Dynamic;
-	/**
-		exp(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
-		
-		Calculate the exponential of all elements in the input array.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input values.
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
-		
-		Returns
-		-------
-		out : ndarray
-		    Output array, element-wise exponential of `x`.
-		
-		See Also
-		--------
-		expm1 : Calculate ``exp(x) - 1`` for all elements in the array.
-		exp2  : Calculate ``2**x`` for all elements in the array.
-		
-		Notes
-		-----
-		The irrational number ``e`` is also known as Euler's number.  It is
-		approximately 2.718281, and is the base of the natural logarithm,
-		``ln`` (this means that, if :math:`x = \ln y = \log_e y`,
-		then :math:`e^x = y`. For real input, ``exp(x)`` is always positive.
-		
-		For complex arguments, ``x = a + ib``, we can write
-		:math:`e^x = e^a e^{ib}`.  The first term, :math:`e^a`, is already
-		known (it is the real argument, described above).  The second term,
-		:math:`e^{ib}`, is :math:`\cos b + i \sin b`, a function with
-		magnitude 1 and a periodic phase.
-		
-		References
-		----------
-		.. [1] Wikipedia, "Exponential function",
-		       http://en.wikipedia.org/wiki/Exponential_function
-		.. [2] M. Abramovitz and I. A. Stegun, "Handbook of Mathematical Functions
-		       with Formulas, Graphs, and Mathematical Tables," Dover, 1964, p. 69,
-		       http://www.math.sfu.ca/~cbm/aands/page_69.htm
-		
-		Examples
-		--------
-		Plot the magnitude and phase of ``exp(x)`` in the complex plane:
-		
-		>>> import matplotlib.pyplot as plt
-		
-		>>> x = np.linspace(-2*np.pi, 2*np.pi, 100)
-		>>> xx = x + 1j * x[:, np.newaxis] # a + ib over complex plane
-		>>> out = np.exp(xx)
-		
-		>>> plt.subplot(121)
-		>>> plt.imshow(np.abs(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='gray')
-		>>> plt.title('Magnitude of exp(x)')
-		
-		>>> plt.subplot(122)
-		>>> plt.imshow(np.angle(out),
-		...            extent=[-2*np.pi, 2*np.pi, -2*np.pi, 2*np.pi], cmap='hsv')
-		>>> plt.title('Phase (angle) of exp(x)')
-		>>> plt.show()
-	**/
-	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compute the matrix exponential using Pade approximation.
 		
@@ -599,43 +498,7 @@ package scipy.linalg.matfuncs;
 		array([[ 0.42645930+1.89217551j, -2.13721484-0.97811252j],
 		       [ 1.06860742+0.48905626j, -1.71075555+0.91406299j]])
 	**/
-	static public function expm(A:Dynamic, ?q:Dynamic):Dynamic;
-	/**
-		`expm2` is deprecated, use `expm` instead!
-		
-		
-		Compute the matrix exponential using eigenvalue decomposition.
-		
-		Parameters
-		----------
-		A : (N, N) array_like
-		    Matrix to be exponentiated
-		
-		Returns
-		-------
-		expm2 : (N, N) ndarray
-		    Matrix exponential of `A`
-	**/
-	static public function expm2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`expm3` is deprecated, use `expm` instead!
-		
-		
-		Compute the matrix exponential using Taylor series.
-		
-		Parameters
-		----------
-		A : (N, N) array_like
-		    Matrix to be exponentiated
-		q : int
-		    Order of the Taylor series used is `q-1`
-		
-		Returns
-		-------
-		expm3 : (N, N) ndarray
-		    Matrix exponential of `A`
-	**/
-	static public function expm3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function expm(A:Dynamic):Dynamic;
 	/**
 		Relative condition number of the matrix exponential in the Frobenius norm.
 		
@@ -665,6 +528,14 @@ package scipy.linalg.matfuncs;
 		--------
 		expm : Compute the exponential of a matrix.
 		expm_frechet : Compute the Frechet derivative of the matrix exponential.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import expm_cond
+		>>> A = np.array([[-0.3, 0.2, 0.6], [0.6, 0.3, -0.1], [-0.7, 1.2, 0.9]])
+		>>> k = expm_cond(A)
+		>>> k
+		1.7787805864469866
 	**/
 	static public function expm_cond(A:Dynamic, ?check_finite:Dynamic):Float;
 	/**
@@ -910,15 +781,9 @@ package scipy.linalg.matfuncs;
 		Returns
 		-------
 		y : ndarray, bool
-		    For scalar input, the result is a new boolean with value True
-		    if the input is finite; otherwise the value is False (input is
-		    either positive infinity, negative infinity or Not a Number).
-		
-		    For array input, the result is a boolean array with the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is finite; otherwise the values
-		    are False (element is either positive infinity, negative infinity
-		    or Not a Number).
+		    True where ``x`` is not positive infinity, negative infinity,
+		    or NaN; false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -949,7 +814,7 @@ package scipy.linalg.matfuncs;
 		>>> np.isfinite(np.NINF)
 		False
 		>>> np.isfinite([np.log(-1.),1.,np.log(0)])
-		array([False,  True, False], dtype=bool)
+		array([False,  True, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -985,6 +850,7 @@ package scipy.linalg.matfuncs;
 		y : bool or ndarray of bool
 		    Boolean result with the same shape as `x` of the NOT operation
 		    on elements of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -995,11 +861,11 @@ package scipy.linalg.matfuncs;
 		>>> np.logical_not(3)
 		False
 		>>> np.logical_not([True, False, 0, 1])
-		array([False,  True,  True, False], dtype=bool)
+		array([False,  True,  True, False])
 		
 		>>> x = np.arange(5)
 		>>> np.logical_not(x<3)
-		array([False, False, False,  True,  True], dtype=bool)
+		array([False, False, False,  True,  True])
 	**/
 	static public function logical_not(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1179,7 +1045,7 @@ package scipy.linalg.matfuncs;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a contiguous flattened array.
 		
@@ -1215,10 +1081,9 @@ package scipy.linalg.matfuncs;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -1290,24 +1155,47 @@ package scipy.linalg.matfuncs;
 		Parameters
 		----------
 		T : (M, M) array_like
-		    Real Schur form of the original matrix
+		    Real Schur form of the original array
 		Z : (M, M) array_like
 		    Schur transformation matrix
 		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
+		    Whether to check that the input arrays contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
 		
 		Returns
 		-------
 		T : (M, M) ndarray
-		    Complex Schur form of the original matrix
+		    Complex Schur form of the original array
 		Z : (M, M) ndarray
 		    Schur transformation matrix corresponding to the complex form
 		
-		See also
+		See Also
 		--------
-		schur : Schur decompose a matrix
+		schur : Schur decomposition of an array
+		
+		Examples
+		--------
+		>>> from scipy.linalg import schur, rsf2csf
+		>>> A = np.array([[0, 2, 2], [0, 1, 2], [1, 0, 1]])
+		>>> T, Z = schur(A)
+		>>> T
+		array([[ 2.65896708,  1.42440458, -1.92933439],
+		       [ 0.        , -0.32948354, -0.49063704],
+		       [ 0.        ,  1.31178921, -0.32948354]])
+		>>> Z
+		array([[0.72711591, -0.60156188, 0.33079564],
+		       [0.52839428, 0.79801892, 0.28976765],
+		       [0.43829436, 0.03590414, -0.89811411]])
+		>>> T2 , Z2 = rsf2csf(T, Z)
+		>>> T2
+		array([[2.65896708+0.j, -1.64592781+0.743164187j, -1.21516887+1.00660462j],
+		       [0.+0.j , -0.32948354+8.02254558e-01j, -0.82115218-2.77555756e-17j],
+		       [0.+0.j , 0.+0.j, -0.32948354-0.802254558j]])
+		>>> Z2
+		array([[0.72711591+0.j,  0.28220393-0.31385693j,  0.51319638-0.17258824j],
+		       [0.52839428+0.j,  0.24720268+0.41635578j, -0.68079517-0.15118243j],
+		       [0.43829436+0.j, -0.76618703+0.01873251j, -0.03063006+0.46857912j]])
 	**/
 	static public function rsf2csf(T:Dynamic, Z:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -1376,6 +1264,35 @@ package scipy.linalg.matfuncs;
 		See also
 		--------
 		rsf2csf : Convert real Schur form to complex Schur form
+		
+		Examples
+		--------
+		>>> from scipy.linalg import schur, eigvals
+		>>> A = np.array([[0, 2, 2], [0, 1, 2], [1, 0, 1]])
+		>>> T, Z = schur(A)
+		>>> T
+		array([[ 2.65896708,  1.42440458, -1.92933439],
+		       [ 0.        , -0.32948354, -0.49063704],
+		       [ 0.        ,  1.31178921, -0.32948354]])
+		>>> Z
+		array([[0.72711591, -0.60156188, 0.33079564],
+		       [0.52839428, 0.79801892, 0.28976765],
+		       [0.43829436, 0.03590414, -0.89811411]])
+		
+		>>> T2, Z2 = schur(A, output='complex')
+		>>> T2
+		array([[ 2.65896708, -1.22839825+1.32378589j,  0.42590089+1.51937378j],
+		       [ 0.        , -0.32948354+0.80225456j, -0.59877807+0.56192146j],
+		       [ 0.        ,  0.                    , -0.32948354-0.80225456j]])
+		>>> eigvals(T2)
+		array([2.65896708, -0.32948354+0.80225456j, -0.32948354-0.80225456j])
+		
+		An arbitrary custom eig-sorting condition, having positive imaginary part, 
+		which is satisfied by only one eigenvalue
+		
+		>>> T3, Z3, sdim = schur(A, output='complex', sort=lambda x: x.imag > 0)
+		>>> sdim
+		1
 	**/
 	static public function schur(a:Dynamic, ?output:Dynamic, ?lwork:Dynamic, ?overwrite_a:Dynamic, ?sort:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -1394,7 +1311,7 @@ package scipy.linalg.matfuncs;
 		Parameters
 		----------
 		x : array_like
-		  Input values.
+		    Input values.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -1410,7 +1327,8 @@ package scipy.linalg.matfuncs;
 		Returns
 		-------
 		y : ndarray
-		  The sign of `x`.
+		    The sign of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -1572,8 +1490,8 @@ package scipy.linalg.matfuncs;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -1586,8 +1504,10 @@ package scipy.linalg.matfuncs;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -1610,65 +1530,10 @@ package scipy.linalg.matfuncs;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
-	/**
-		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
-		
-		Return the positive square-root of an array, element-wise.
-		
-		Parameters
-		----------
-		x : array_like
-		    The values whose square-roots are required.
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
-		
-		Returns
-		-------
-		y : ndarray
-		    An array of the same shape as `x`, containing the positive
-		    square-root of each element in `x`.  If any element in `x` is
-		    complex, a complex array is returned (and the square-roots of
-		    negative reals are calculated).  If all of the elements in `x`
-		    are real, so is `y`, with negative elements returning ``nan``.
-		    If `out` was provided, `y` is a reference to it.
-		
-		See Also
-		--------
-		lib.scimath.sqrt
-		    A version which returns complex numbers when given negative reals.
-		
-		Notes
-		-----
-		*sqrt* has--consistent with common convention--as its branch cut the
-		real "interval" [`-inf`, 0), and is continuous from above on it.
-		A branch cut is a curve in the complex plane across which a given
-		complex function fails to be continuous.
-		
-		Examples
-		--------
-		>>> np.sqrt([1,4,9])
-		array([ 1.,  2.,  3.])
-		
-		>>> np.sqrt([4, -1, -3+4J])
-		array([ 2.+0.j,  0.+1.j,  1.+2.j])
-		
-		>>> np.sqrt([4, -1, numpy.inf])
-		array([  2.,  NaN,  Inf])
-	**/
-	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Matrix square root.
 		
@@ -1715,21 +1580,21 @@ package scipy.linalg.matfuncs;
 	/**
 		Singular Value Decomposition.
 		
-		Factorizes the matrix a into two unitary matrices U and Vh, and
-		a 1-D array s of singular values (real, non-negative) such that
-		``a == U*S*Vh``, where S is a suitably shaped matrix of zeros with
-		main diagonal s.
+		Factorizes the matrix `a` into two unitary matrices ``U`` and ``Vh``, and
+		a 1-D array ``s`` of singular values (real, non-negative) such that
+		``a == U @ S @ Vh``, where ``S`` is a suitably shaped matrix of zeros with
+		main diagonal ``s``.
 		
 		Parameters
 		----------
 		a : (M, N) array_like
 		    Matrix to decompose.
 		full_matrices : bool, optional
-		    If True, `U` and `Vh` are of shape ``(M,M)``, ``(N,N)``.
-		    If False, the shapes are ``(M,K)`` and ``(K,N)``, where
-		    ``K = min(M,N)``.
+		    If True (default), `U` and `Vh` are of shape ``(M, M)``, ``(N, N)``.
+		    If False, the shapes are ``(M, K)`` and ``(K, N)``, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether to compute also `U` and `Vh` in addition to `s`.
+		    Whether to compute also ``U`` and ``Vh`` in addition to ``s``.
 		    Default is True.
 		overwrite_a : bool, optional
 		    Whether to overwrite `a`; may improve performance.
@@ -1750,15 +1615,15 @@ package scipy.linalg.matfuncs;
 		-------
 		U : ndarray
 		    Unitary matrix having left singular vectors as columns.
-		    Of shape ``(M,M)`` or ``(M,K)``, depending on `full_matrices`.
+		    Of shape ``(M, M)`` or ``(M, K)``, depending on `full_matrices`.
 		s : ndarray
 		    The singular values, sorted in non-increasing order.
 		    Of shape (K,), with ``K = min(M, N)``.
 		Vh : ndarray
 		    Unitary matrix having right singular vectors as rows.
-		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
+		    Of shape ``(N, N)`` or ``(K, N)`` depending on `full_matrices`.
 		
-		For ``compute_uv=False``, only `s` is returned.
+		For ``compute_uv=False``, only ``s`` is returned.
 		
 		Raises
 		------
@@ -1773,15 +1638,28 @@ package scipy.linalg.matfuncs;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6) + 1.j*np.random.randn(9, 6)
+		>>> m, n = 9, 6
+		>>> a = np.random.randn(m, n) + 1.j*np.random.randn(m, n)
 		>>> U, s, Vh = linalg.svd(a)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 9), (6, 6), (6,))
+		>>> U.shape,  s.shape, Vh.shape
+		((9, 9), (6,), (6, 6))
+		
+		Reconstruct the original matrix from the decomposition:
+		
+		>>> sigma = np.zeros((m, n))
+		>>> for i in range(min(m, n)):
+		...     sigma[i, i] = s[i]
+		>>> a1 = np.dot(U, np.dot(sigma, Vh))
+		>>> np.allclose(a, a1)
+		True
+		
+		Alternatively, use ``full_matrices=False`` (notice that the shape of
+		``U`` is then ``(m, n)`` instead of ``(m, m)``):
 		
 		>>> U, s, Vh = linalg.svd(a, full_matrices=False)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = linalg.diagsvd(s, 6, 6)
+		>>> U.shape, s.shape, Vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> S = np.diag(s)
 		>>> np.allclose(a, np.dot(U, np.dot(S, Vh)))
 		True
 		

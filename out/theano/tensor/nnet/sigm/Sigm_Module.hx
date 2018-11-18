@@ -38,7 +38,7 @@ package theano.tensor.nnet.sigm;
 	static public var config : Dynamic;
 	/**
 		Copies the stack trace from one or more tensor variables to
-		one or more tensor variables.
+		one or more tensor variables and returns the destination variables.
 		
 		Parameters
 		----------
@@ -204,7 +204,7 @@ package theano.tensor.nnet.sigm;
 		               (scrabble, 'x'))
 		    
 		
-		This instance does: Elemwise{log,no_inplace}(Elemwise{sub,no_inplace}(y subject to <function _is_1 at 0x7fa749f17ae8>, sigmoid(x))) -> Elemwise{neg,no_inplace}(softplus(x))
+		This instance does: Elemwise{log,no_inplace}(Elemwise{sub,no_inplace}(y subject to <function _is_1 at 0x13d66af28>, sigmoid(x))) -> Elemwise{neg,no_inplace}(softplus(x))
 	**/
 	static public var log1msigm_to_softplus : Dynamic;
 	/**

@@ -2,6 +2,10 @@
 package tensorflow.contrib.memory_stats.python.ops.memory_stats_ops;
 @:pythonImport("tensorflow.contrib.memory_stats.python.ops.memory_stats_ops") extern class Memory_stats_ops_Module {
 	/**
+		Generates an op that computes the current memory of a device.
+	**/
+	static public function BytesInUse():Dynamic;
+	/**
 		Generates an op that measures the total memory (in bytes) of a device.
 	**/
 	static public function BytesLimit():Dynamic;

@@ -1,12 +1,16 @@
 /* This file is generated, do not edit! */
 package pandas._libs.window;
 @:pythonImport("pandas._libs.window") extern class Window_Module {
-	static public var NIL : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_FixedWindowIndexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_MockFixedWindowIndexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_VariableWindowIndexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_WindowIndexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -57,9 +61,6 @@ package pandas._libs.window;
 		y : ndarray
 	**/
 	static public function ewmcov(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var float16 : Dynamic;
-	static public var float32 : Dynamic;
-	static public var float64 : Dynamic;
 	/**
 		return the correct window indexer for the computation
 		
@@ -88,14 +89,7 @@ package pandas._libs.window;
 		tuple of 1d int64 ndarrays of the offsets & data about the window
 	**/
 	static public function get_window_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var int16 : Dynamic;
-	static public var int32 : Dynamic;
-	static public var int64 : Dynamic;
-	static public var int8 : Dynamic;
-	/**
-		random() -> x in the interval [0, 1).
-	**/
-	static public function random(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var interpolation_types : Dynamic;
 	static public function roll_count(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_generic(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_kurt(args:haxe.extern.Rest<Dynamic>):Dynamic;

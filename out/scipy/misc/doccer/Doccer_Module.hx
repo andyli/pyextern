@@ -46,6 +46,13 @@ package scipy.misc.doccer;
 	**/
 	static public function docformat(docstring:Dynamic, ?docdict:Dynamic):String;
 	/**
+		This decorator replaces the decorated function's docstring
+		with the docstring from corresponding method in `cls`.
+		It extends the 'Notes' section of that docstring to include
+		the given `notes`.
+	**/
+	static public function extend_notes_in_docstring(cls:Dynamic, notes:Dynamic):Dynamic;
+	/**
 		Return docstring decorator using docdict variable dictionary
 		
 		Parameters
@@ -125,6 +132,13 @@ package scipy.misc.doccer;
 	**/
 	static public function inherit_docstring_from(cls:Dynamic):haxe.Constraints.Function;
 	static public var print_function : Dynamic;
+	/**
+		This decorator replaces the decorated function's docstring
+		with the docstring from corresponding method in `cls`.
+		It replaces the 'Notes' section of that docstring with
+		the given `notes`.
+	**/
+	static public function replace_notes_in_docstring(cls:Dynamic, notes:Dynamic):Dynamic;
 	/**
 		Unindent all strings in a docdict 
 	**/

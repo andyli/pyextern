@@ -97,7 +97,7 @@ package scipy.io.arff.arffread;
 		Examples
 		--------
 		>>> from scipy.io import arff
-		>>> from cStringIO import StringIO
+		>>> from io import StringIO
 		>>> content = """
 		... @relation foo
 		... @attribute width  numeric

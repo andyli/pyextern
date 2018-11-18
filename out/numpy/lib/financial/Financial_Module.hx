@@ -191,6 +191,8 @@ package numpy.lib.financial;
 		that gives a net present value of 0.0; for a more complete explanation,
 		see Notes below.
 		
+		:class:`decimal.Decimal` type is not supported.
+		
 		Parameters
 		----------
 		values : array_like, shape(N,)
@@ -266,6 +268,8 @@ package numpy.lib.financial;
 	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Float;
 	/**
 		Compute the number of periodic payments.
+		
+		:class:`decimal.Decimal` type is not supported.
 		
 		Parameters
 		----------
@@ -560,10 +564,10 @@ package numpy.lib.financial;
 		    Future value
 		when : {{'begin', 1}, {'end', 0}}, {string, int}, optional
 		    When payments are due ('begin' (1) or 'end' (0))
-		guess : float, optional
-		    Starting guess for solving the rate of interest
-		tol : float, optional
-		    Required tolerance for the solution
+		guess : Number, optional
+		    Starting guess for solving the rate of interest, default 0.1
+		tol : Number, optional
+		    Required tolerance for the solution, default 1e-6
 		maxiter : int, optional
 		    Maximum iterations in finding the solution
 		

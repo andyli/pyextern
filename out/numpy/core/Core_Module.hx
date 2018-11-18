@@ -49,12 +49,13 @@ package numpy.core;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
-	static public function _numpy_tester():Dynamic;
 	static public function _ufunc_reconstruct(module:Dynamic, name:Dynamic):Dynamic;
 	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
+		
+		``np.abs`` is a shorthand for this function.
 		
 		Parameters
 		----------
@@ -78,6 +79,7 @@ package numpy.core;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -107,6 +109,8 @@ package numpy.core;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -129,6 +133,7 @@ package numpy.core;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -180,8 +185,8 @@ package numpy.core;
 		Returns
 		-------
 		add : ndarray or scalar
-		    The sum of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    The sum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -257,7 +262,7 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -283,7 +288,7 @@ package numpy.core;
 		False
 		
 		>>> np.all([[True,False],[True,True]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.all([-1, 4, 5])
 		True
@@ -294,7 +299,7 @@ package numpy.core;
 		>>> o=np.array([False])
 		>>> z=np.all([-1, 4, 5], out=o)
 		>>> id(z), id(o), z                             # doctest: +SKIP
-		(28293632, 28293632, array([ True], dtype=bool))
+		(28293632, 28293632, array([ True]))
 	**/
 	static public function all(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
@@ -331,7 +336,7 @@ package numpy.core;
 		
 		See Also
 		--------
-		isclose, all, any
+		isclose, all, any, equal
 		
 		Notes
 		-----
@@ -341,8 +346,13 @@ package numpy.core;
 		 absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))
 		
 		The above equation is not symmetric in `a` and `b`, so that
-		`allclose(a, b)` might be different from `allclose(b, a)` in
+		``allclose(a, b)`` might be different from ``allclose(b, a)`` in
 		some rare cases.
+		
+		The comparison of `a` and `b` uses standard broadcasting, which
+		means that `a` and `b` need not have the same shape in order for
+		``allclose(a, b)`` to evaluate to True.  The same is true for
+		`equal` but not `array_equal`.
 		
 		Examples
 		--------
@@ -365,7 +375,7 @@ package numpy.core;
 		--------
 		numpy.all : Equivalent function; see for details.
 	**/
-	static public function alltrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function alltrue(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the maximum of an array or maximum along an axis.
 		
@@ -394,8 +404,15 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The minimum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
 		
 		Returns
 		-------
@@ -442,14 +459,29 @@ package numpy.core;
 		>>> np.amax(a, axis=1)   # Maxima along the second axis
 		array([1, 3])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amax(b)
 		nan
 		>>> np.nanmax(b)
 		4.0
+		
+		You can use an initial value to compute the maximum of an empty slice, or
+		to initialize it to a different value:
+		
+		>>> np.max([[-50], [10]], axis=-1, initial=0)
+		array([ 0, 10])
+		
+		Notice that the initial value is used as one of the elements for which the
+		maximum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		>>> np.max([5], initial=6)
+		6
+		>>> max([5], default=6)
+		5
 	**/
-	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Return the minimum of an array or minimum along an axis.
 		
@@ -478,8 +510,14 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The maximum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -526,14 +564,28 @@ package numpy.core;
 		>>> np.amin(a, axis=1)   # Minima along the second axis
 		array([0, 2])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amin(b)
 		nan
 		>>> np.nanmin(b)
 		0.0
+		
+		>>> np.min([[-50], [10]], axis=-1, initial=0)
+		array([-50,   0])
+		
+		Notice that the initial value is used as one of the elements for which the
+		minimum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		Notice that this isn't the same as Python's ``default`` argument.
+		
+		>>> np.min([6], initial=5)
+		5
+		>>> min([6], default=5)
+		6
 	**/
-	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Test whether any array element along a given axis evaluates to True.
 		
@@ -568,7 +620,7 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -594,7 +646,7 @@ package numpy.core;
 		True
 		
 		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.any([-1, 0, 5])
 		True
@@ -605,7 +657,7 @@ package numpy.core;
 		>>> o=np.array([False])
 		>>> z=np.any([-1, 4, 5], out=o)
 		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
+		(array([ True]), array([ True]))
 		>>> # Check now that z is a reference to o
 		>>> z is o
 		True
@@ -639,7 +691,8 @@ package numpy.core;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -700,9 +753,8 @@ package numpy.core;
 		-------
 		angle : ndarray
 		    The angle of the ray intersecting the unit circle at the given
-		    `x`-coordinate in radians [0, pi]. If `x` is a scalar then a
-		    scalar is returned, otherwise an array of the same shape as `x`
-		    is returned.
+		    `x`-coordinate in radians [0, pi].
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -770,6 +822,7 @@ package numpy.core;
 		-------
 		arccosh : ndarray
 		    Array of the same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -830,8 +883,8 @@ package numpy.core;
 		-------
 		angle : ndarray
 		    The inverse sine of each element in `x`, in radians and in the
-		    closed interval ``[-pi/2, pi/2]``.  If `x` is a scalar, a scalar
-		    is returned, otherwise an array.
+		    closed interval ``[-pi/2, pi/2]``.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -892,8 +945,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
-		    Array of of the same shape as `x`.
+		out : ndarray or scalar
+		    Array of the same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -948,10 +1002,10 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Out has the same shape as `x`.  Its real part is in
 		    ``[-pi/2, pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``).
-		    It is a scalar if `x` is a scalar.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1040,6 +1094,7 @@ package numpy.core;
 		-------
 		angle : ndarray
 		    Array of angles in radians, in the range ``[-pi, pi]``.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -1111,8 +1166,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Array of the same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1191,11 +1247,19 @@ package numpy.core;
 		>>> np.argmax(a, axis=1)
 		array([2, 2])
 		
+		Indexes of the maximal elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argmax(a, axis=None), a.shape)
+		>>> ind
+		(1, 2)
+		>>> a[ind]
+		5
+		
 		>>> b = np.arange(6)
 		>>> b[1] = 5
 		>>> b
 		array([0, 5, 2, 3, 4, 5])
-		>>> np.argmax(b) # Only the first occurrence is returned.
+		>>> np.argmax(b)  # Only the first occurrence is returned.
 		1
 	**/
 	static public function argmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -1243,11 +1307,19 @@ package numpy.core;
 		>>> np.argmin(a, axis=1)
 		array([0, 0])
 		
+		Indices of the minimum elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argmin(a, axis=None), a.shape)
+		>>> ind
+		(0, 0)
+		>>> a[ind]
+		0
+		
 		>>> b = np.arange(6)
 		>>> b[4] = 0
 		>>> b
 		array([0, 1, 2, 3, 0, 5])
-		>>> np.argmin(b) # Only the first occurrence is returned.
+		>>> np.argmin(b)  # Only the first occurrence is returned.
 		0
 	**/
 	static public function argmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -1286,7 +1358,9 @@ package numpy.core;
 		-------
 		index_array : ndarray, int
 		    Array of indices that partition `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a partitioned `a`.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a partitioned `a`.
+		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
+		    yields the partitioned `a`, irrespective of dimensionality.
 		
 		See Also
 		--------
@@ -1327,7 +1401,7 @@ package numpy.core;
 		axis : int or None, optional
 		    Axis along which to sort.  The default is -1 (the last axis). If None,
 		    the flattened array is used.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -1341,6 +1415,8 @@ package numpy.core;
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
 		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
+		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
+		    yields the sorted `a`, irrespective of dimensionality.
 		
 		See Also
 		--------
@@ -1371,13 +1447,21 @@ package numpy.core;
 		array([[0, 3],
 		       [2, 2]])
 		
-		>>> np.argsort(x, axis=0)
+		>>> np.argsort(x, axis=0)  # sorts along first axis (down)
 		array([[0, 1],
 		       [1, 0]])
 		
-		>>> np.argsort(x, axis=1)
+		>>> np.argsort(x, axis=1)  # sorts along last axis (across)
 		array([[0, 1],
 		       [0, 1]])
+		
+		Indices of the sorted elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argsort(x, axis=None), x.shape)
+		>>> ind
+		(array([0, 1, 1, 0]), array([0, 0, 1, 1]))
+		>>> x[ind]  # same as np.sort(x, axis=None)
+		array([0, 2, 2, 3])
 		
 		Sorting with keys:
 		
@@ -1415,7 +1499,7 @@ package numpy.core;
 		``np.argwhere(a)`` is the same as ``np.transpose(np.nonzero(a))``.
 		
 		The output of ``argwhere`` is not suitable for indexing arrays.
-		For this purpose use ``where(a)`` instead.
+		For this purpose use ``nonzero(a)`` instead.
 		
 		Examples
 		--------
@@ -1548,7 +1632,15 @@ package numpy.core;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -1604,12 +1696,12 @@ package numpy.core;
 		
 		Parameters
 		----------
-		a : ndarray
+		a : array_like
 		    Input array.
 		max_line_width : int, optional
 		    The maximum number of columns the string should span. Newline
 		    characters splits the string appropriately after array elements.
-		precision : int, optional
+		precision : int or None, optional
 		    Floating point precision. Default is the current printing
 		    precision (usually 8), which can be altered using `set_printoptions`.
 		suppress_small : bool, optional
@@ -1618,40 +1710,81 @@ package numpy.core;
 		separator : str, optional
 		    Inserted between elements.
 		prefix : str, optional
-		    An array is typically printed as::
+		suffix: str, optional
+		    The length of the prefix and suffix strings are used to respectively
+		    align and wrap the output. An array is typically printed as::
 		
-		      'prefix(' + array2string(a) + ')'
+		      prefix + array2string(a) + suffix
 		
-		    The length of the prefix string is used to align the
-		    output correctly.
-		style : function, optional
-		    A function that accepts an ndarray and returns a string.  Used only
-		    when the shape of `a` is equal to ``()``, i.e. for 0-D arrays.
+		    The output is left-padded by the length of the prefix string, and
+		    wrapping is forced at the column ``max_line_width - len(suffix)``.
+		style : _NoValue, optional
+		    Has no effect, do not use.
+		
+		    .. deprecated:: 1.14.0
 		formatter : dict of callables, optional
 		    If not None, the keys should indicate the type(s) that the respective
 		    formatting function applies to.  Callables should return a string.
 		    Types that are not specified (by their corresponding keys) are handled
 		    by the default formatters.  Individual types for which a formatter
-		    can be set are::
+		    can be set are:
 		
-		        - 'bool'
-		        - 'int'
-		        - 'timedelta' : a `numpy.timedelta64`
-		        - 'datetime' : a `numpy.datetime64`
-		        - 'float'
-		        - 'longfloat' : 128-bit floats
-		        - 'complexfloat'
-		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
-		        - 'str' : all other strings
+		    - 'bool'
+		    - 'int'
+		    - 'timedelta' : a `numpy.timedelta64`
+		    - 'datetime' : a `numpy.datetime64`
+		    - 'float'
+		    - 'longfloat' : 128-bit floats
+		    - 'complexfloat'
+		    - 'longcomplexfloat' : composed of two 128-bit floats
+		    - 'void' : type `numpy.void`
+		    - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		    - 'str' : all other strings
 		
-		    Other keys that can be used to set a group of types at once are::
+		    Other keys that can be used to set a group of types at once are:
 		
-		        - 'all' : sets all types
-		        - 'int_kind' : sets 'int'
-		        - 'float_kind' : sets 'float' and 'longfloat'
-		        - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
-		        - 'str_kind' : sets 'str' and 'numpystr'
+		    - 'all' : sets all types
+		    - 'int_kind' : sets 'int'
+		    - 'float_kind' : sets 'float' and 'longfloat'
+		    - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
+		    - 'str_kind' : sets 'str' and 'numpystr'
+		threshold : int, optional
+		    Total number of array elements which trigger summarization
+		    rather than full repr.
+		edgeitems : int, optional
+		    Number of array items in summary at beginning and end of
+		    each dimension.
+		sign : string, either '-', '+', or ' ', optional
+		    Controls printing of the sign of floating-point types. If '+', always
+		    print the sign of positive values. If ' ', always prints a space
+		    (whitespace character) in the sign position of positive values.  If
+		    '-', omit the sign character of positive values.
+		floatmode : str, optional
+		    Controls the interpretation of the `precision` option for
+		    floating-point types. Can take the following values:
+		
+		    - 'fixed': Always print exactly `precision` fractional digits,
+		      even if this would print more or fewer digits than
+		      necessary to specify the value uniquely.
+		    - 'unique': Print the minimum number of fractional digits necessary
+		      to represent each value uniquely. Different elements may
+		      have a different number of digits.  The value of the
+		      `precision` option is ignored.
+		    - 'maxprec': Print at most `precision` fractional digits, but if
+		      an element can be uniquely represented with fewer digits
+		      only print it with that many.
+		    - 'maxprec_equal': Print at most `precision` fractional digits,
+		      but if every element in the array can be uniquely
+		      represented with an equal number of fewer digits, use that
+		      many digits for all elements.
+		legacy : string or `False`, optional
+		    If set to the string `'1.13'` enables 1.13 legacy printing mode. This
+		    approximates numpy 1.13 print output by including a space in the sign
+		    position of floats and different behavior for 0d arrays. If set to
+		    `False`, disables legacy mode. Unrecognized strings will be ignored
+		    with a warning for forward compatibility.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -1691,7 +1824,7 @@ package numpy.core;
 		>>> np.array2string(x, formatter={'int':lambda x: hex(x)})
 		'[0x0L 0x1L 0x2L]'
 	**/
-	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):String;
+	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?sign:Dynamic, ?floatmode:Dynamic, ?suffix:Dynamic, ?kwarg:python.KwArgs<Dynamic>):String;
 	/**
 		True if two arrays have the same shape and elements, False otherwise.
 		
@@ -1876,7 +2009,7 @@ package numpy.core;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -1940,9 +2073,9 @@ package numpy.core;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -2175,60 +2308,6 @@ package numpy.core;
 	**/
 	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):String;
 	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
-	/**
 		Return the binary representation of the input number as a string.
 		
 		For negative numbers, if width is not given, a minus sign is added to the
@@ -2325,8 +2404,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -2357,7 +2437,7 @@ package numpy.core;
 		>>> np.bitwise_and(np.array([2,5,255]), np.array([3,14,16]))
 		array([ 2,  4, 16])
 		>>> np.bitwise_and([True, True], [False, True])
-		array([False,  True], dtype=bool)
+		array([False,  True])
 	**/
 	static public function bitwise_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2394,8 +2474,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -2448,7 +2529,7 @@ package numpy.core;
 		Booleans are accepted as well:
 		
 		>>> np.invert(array([True, False]))
-		array([False,  True], dtype=bool)
+		array([False,  True])
 	**/
 	static public function bitwise_not(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2478,8 +2559,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -2515,7 +2597,7 @@ package numpy.core;
 		...               np.array([4, 4, 4, 2147483647L], dtype=np.int32))
 		array([         6,          5,        255, 2147483647])
 		>>> np.bitwise_or([True, True], [False, True])
-		array([ True,  True], dtype=bool)
+		array([ True,  True])
 	**/
 	static public function bitwise_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2545,8 +2627,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -2575,7 +2658,7 @@ package numpy.core;
 		>>> np.bitwise_xor([31,3], [5,6])
 		array([26,  5])
 		>>> np.bitwise_xor([True, True], [False, True])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function bitwise_xor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2877,7 +2960,7 @@ package numpy.core;
 	**/
 	static public function busday_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		can_cast(from, totype, casting = 'safe')
+		can_cast(from_, to, casting='safe')
 		
 		Returns True if cast between data types can occur according to the
 		casting rule.  If from is a scalar or array scalar, also returns
@@ -2886,9 +2969,9 @@ package numpy.core;
 		
 		Parameters
 		----------
-		from : dtype, dtype specifier, scalar, or array
+		from_ : dtype, dtype specifier, scalar, or array
 		    Data type, scalar, or array to cast from.
-		totype : dtype or dtype specifier
+		to : dtype or dtype specifier
 		    Data type to cast to.
 		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
 		    Controls what kind of data casting may occur.
@@ -2923,9 +3006,9 @@ package numpy.core;
 		
 		>>> np.can_cast(np.int32, np.int64)
 		True
-		>>> np.can_cast(np.float64, np.complex)
+		>>> np.can_cast(np.float64, complex)
 		True
-		>>> np.can_cast(np.complex, np.float)
+		>>> np.can_cast(complex, float)
 		False
 		
 		>>> np.can_cast('i8', 'f8')
@@ -3013,6 +3096,7 @@ package numpy.core;
 		    An array of the same shape as `x`, containing the cube
 		    cube-root of each element in `x`.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		
 		Examples
@@ -3049,6 +3133,7 @@ package numpy.core;
 		-------
 		y : ndarray or scalar
 		    The ceiling of each element in `x`, with `float` dtype.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -3293,7 +3378,7 @@ package numpy.core;
 	**/
 	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -3303,7 +3388,12 @@ package numpy.core;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -3343,6 +3433,8 @@ package numpy.core;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -3393,6 +3485,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The complex conjugate of `x`, with same dtype as `y`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -3433,6 +3526,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The complex conjugate of `x`, with same dtype as `y`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -3560,8 +3654,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    The values of `x1` with the sign of `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Examples
 		--------
@@ -3579,7 +3674,7 @@ package numpy.core;
 	**/
 	static public function copysign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		copyto(dst, src, casting='same_kind', where=None)
+		copyto(dst, src, casting='same_kind', where=True)
 		
 		Copies values from one array to another, broadcasting as necessary.
 		
@@ -3697,6 +3792,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The corresponding cosine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -3750,8 +3846,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array of same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -3987,12 +4084,11 @@ package numpy.core;
 	/**
 		Return the cumulative product over the given axis.
 		
-		
 		See Also
 		--------
 		cumprod : equivalent function; see for details.
 	**/
-	static public function cumproduct(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function cumproduct(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the cumulative sum of the elements along a given axis.
 		
@@ -4056,7 +4152,101 @@ package numpy.core;
 		       [ 4,  9, 15]])
 	**/
 	static public function cumsum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		datetime_as_string(arr, unit=None, timezone='naive', casting='same_kind')
+		
+		Convert an array of datetimes into an array of strings.
+		
+		Parameters
+		----------
+		arr : array_like of datetime64
+		    The array of UTC timestamps to format.
+		unit : str
+		    One of None, 'auto', or a :ref:`datetime unit <arrays.dtypes.dateunits>`.
+		timezone : {'naive', 'UTC', 'local'} or tzinfo
+		    Timezone information to use when displaying the datetime. If 'UTC', end
+		    with a Z to indicate UTC time. If 'local', convert to the local timezone
+		    first, and suffix with a +-#### timezone offset. If a tzinfo object,
+		    then do as with 'local', but use the specified timezone.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}
+		    Casting to allow when changing between datetime units.
+		
+		Returns
+		-------
+		str_arr : ndarray
+		    An array of strings the same shape as `arr`.
+		
+		Examples
+		--------
+		>>> d = np.arange('2002-10-27T04:30', 4*60, 60, dtype='M8[m]')
+		>>> d
+		array(['2002-10-27T04:30', '2002-10-27T05:30', '2002-10-27T06:30',
+		       '2002-10-27T07:30'], dtype='datetime64[m]')
+		
+		Setting the timezone to UTC shows the same information, but with a Z suffix
+		
+		>>> np.datetime_as_string(d, timezone='UTC')
+		array(['2002-10-27T04:30Z', '2002-10-27T05:30Z', '2002-10-27T06:30Z',
+		       '2002-10-27T07:30Z'], dtype='<U35')
+		
+		Note that we picked datetimes that cross a DST boundary. Passing in a
+		``pytz`` timezone object will print the appropriate offset
+		
+		>>> np.datetime_as_string(d, timezone=pytz.timezone('US/Eastern'))
+		array(['2002-10-27T00:30-0400', '2002-10-27T01:30-0400',
+		       '2002-10-27T01:30-0500', '2002-10-27T02:30-0500'], dtype='<U39')
+		
+		Passing in a unit will change the precision
+		
+		>>> np.datetime_as_string(d, unit='h')
+		array(['2002-10-27T04', '2002-10-27T05', '2002-10-27T06', '2002-10-27T07'],
+		      dtype='<U32')
+		>>> np.datetime_as_string(d, unit='s')
+		array(['2002-10-27T04:30:00', '2002-10-27T05:30:00', '2002-10-27T06:30:00',
+		       '2002-10-27T07:30:00'], dtype='<U38')
+		
+		'casting' can be used to specify whether precision can be changed
+		
+		>>> np.datetime_as_string(d, unit='h', casting='safe')
+		TypeError: Cannot create a datetime string as units 'h' from a NumPy
+		datetime with units 'm' according to the rule 'safe'
+	**/
 	static public function datetime_as_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		datetime_data(dtype, /)
+		
+		Get information about the step size of a date or time type.
+		
+		The returned tuple can be passed as the second argument of `datetime64` and
+		`timedelta64`.
+		
+		Parameters
+		----------
+		dtype : dtype
+		    The dtype object, which must be a `datetime64` or `timedelta64` type.
+		
+		Returns
+		-------
+		unit : str
+		    The :ref:`datetime unit <arrays.dtypes.dateunits>` on which this dtype
+		    is based.
+		count : int
+		    The number of base units in a step.
+		
+		Examples
+		--------
+		>>> dt_25s = np.dtype('timedelta64[25s]')
+		>>> np.datetime_data(dt_25s)
+		('s', 25)
+		>>> np.array(10, dt_25s).astype('timedelta64[s]')
+		array(250, dtype='timedelta64[s]')
+		
+		The result can be used to construct a datetime that uses the same units
+		as a timedelta::
+		
+		>>> np.datetime64('2010', np.datetime_data(dt_25s))
+		numpy.datetime64('2010-01-01T00:00:00','25s')
+	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		deg2rad(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
@@ -4083,6 +4273,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The corresponding angle in radians.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -4127,6 +4318,7 @@ package numpy.core;
 		y : ndarray of floats
 		    The corresponding degree values; if `out` was supplied this is a
 		    reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -4197,13 +4389,14 @@ package numpy.core;
 		Returns
 		-------
 		array_of_diagonals : ndarray
-		    If `a` is 2-D and not a matrix, a 1-D array of the same type as `a`
-		    containing the diagonal is returned. If `a` is a matrix, a 1-D
-		    array containing the diagonal is returned in order to maintain
-		    backward compatibility.  If the dimension of `a` is greater than
-		    two, then an array of diagonals is returned, "packed" from
-		    left-most dimension to right-most (e.g., if `a` is 3-D, then the
-		    diagonals are "packed" along rows).
+		    If `a` is 2-D, then a 1-D array containing the diagonal and of the
+		    same type as `a` is returned unless `a` is a `matrix`, in which case
+		    a 1-D array rather than a (2-D) `matrix` is returned in order to
+		    maintain backward compatibility.
+		    
+		    If ``a.ndim > 2``, then the dimensions specified by `axis1` and `axis2`
+		    are removed, and a new axis inserted at the end corresponding to the
+		    diagonal.
 		
 		Raises
 		------
@@ -4281,8 +4474,8 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
-		    Result is scalar if both inputs are scalar, ndarray otherwise.
+		out : ndarray or scalar
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -4347,8 +4540,10 @@ package numpy.core;
 		-------
 		out1 : ndarray
 		    Element-wise quotient resulting from floor division.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		out2 : ndarray
 		    Element-wise remainder from floor division.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -4366,12 +4561,22 @@ package numpy.core;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -4484,7 +4689,7 @@ package numpy.core;
 		    Controls if intermediate optimization should occur. No optimization
 		    will occur if False and True will default to the 'greedy' algorithm.
 		    Also accepts an explicit contraction list from the ``np.einsum_path``
-		    function. See ``np.einsum_path`` for more details. Default is False.
+		    function. See ``np.einsum_path`` for more details. Defaults to False.
 		
 		Returns
 		-------
@@ -4731,7 +4936,7 @@ package numpy.core;
 		--------
 		
 		We can begin with a chain dot example. In this case, it is optimal to
-		contract the ``b`` and ``c`` tensors first as reprsented by the first
+		contract the ``b`` and ``c`` tensors first as represented by the first
 		element of the path ``(1, 2)``. The resulting tensor is added to the end
 		of the contraction and the remaining contraction ``(0, 1)`` is then
 		completed.
@@ -4791,10 +4996,11 @@ package numpy.core;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -4807,7 +5013,11 @@ package numpy.core;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -4828,24 +5038,24 @@ package numpy.core;
 	**/
 	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		empty_like(a, dtype=None, order='K', subok=True)
+		empty_like(prototype, dtype=None, order='K', subok=True)
 		
 		Return a new array with the same shape and type as a given array.
 		
 		Parameters
 		----------
-		a : array_like
-		    The shape and data-type of `a` define these same attributes of the
-		    returned array.
+		prototype : array_like
+		    The shape and data-type of `prototype` define these same attributes
+		    of the returned array.
 		dtype : data-type, optional
 		    Overrides the data type of the result.
 		
 		    .. versionadded:: 1.6.0
 		order : {'C', 'F', 'A', or 'K'}, optional
 		    Overrides the memory layout of the result. 'C' means C-order,
-		    'F' means F-order, 'A' means 'F' if ``a`` is Fortran contiguous,
-		    'C' otherwise. 'K' means match the layout of ``a`` as closely
-		    as possible.
+		    'F' means F-order, 'A' means 'F' if ``prototype`` is Fortran
+		    contiguous, 'C' otherwise. 'K' means match the layout of ``prototype``
+		    as closely as possible.
 		
 		    .. versionadded:: 1.6.0
 		subok : bool, optional.
@@ -4857,15 +5067,14 @@ package numpy.core;
 		-------
 		out : ndarray
 		    Array of uninitialized (arbitrary) data with the same
-		    shape and type as `a`.
+		    shape and type as `prototype`.
 		
 		See Also
 		--------
 		ones_like : Return an array of ones with shape and type of input.
 		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		empty : Return a new uninitialized array.
-		ones : Return a new array setting values to one.
-		zeros : Return a new array setting values to zero.
 		
 		Notes
 		-----
@@ -4908,8 +5117,10 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray or bool
-		    Output array of bools, or a single bool if x1 and x2 are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -4918,13 +5129,13 @@ package numpy.core;
 		Examples
 		--------
 		>>> np.equal([0, 1, 3], np.arange(3))
-		array([ True,  True, False], dtype=bool)
+		array([ True,  True, False])
 		
 		What is compared are values, not types. So an int (1) and an array of
 		length one can evaluate as True:
 		
 		>>> np.equal(1, np.ones(1))
-		array([ True], dtype=bool)
+		array([ True])
 	**/
 	static public function equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var euler_gamma : Dynamic;
@@ -4951,8 +5162,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -5025,8 +5237,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Element-wise 2 to the power `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -5067,8 +5280,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Element-wise exponential minus one: ``out = exp(x) - 1``.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -5122,6 +5336,7 @@ package numpy.core;
 		-------
 		y : ndarray or scalar
 		    The absolute values of `x`, the returned values are always floats.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -5163,7 +5378,7 @@ package numpy.core;
 		
 		Examples
 		--------
-		>>> np.find_common_type([], [np.int64, np.float32, np.complex])
+		>>> np.find_common_type([], [np.int64, np.float32, complex])
 		dtype('complex128')
 		>>> np.find_common_type([np.int64, np.float32], [])
 		dtype('float64')
@@ -5179,7 +5394,7 @@ package numpy.core;
 		Complex is of a different type, so it up-casts the float in the
 		`array_types` argument:
 		
-		>>> np.find_common_type([np.float32], [np.complex])
+		>>> np.find_common_type([np.float32], [complex])
 		dtype('complex128')
 		
 		Type specifier strings are convertible to dtypes and can therefore
@@ -5192,12 +5407,12 @@ package numpy.core;
 	/**
 		Return indices that are non-zero in the flattened version of a.
 		
-		This is equivalent to a.ravel().nonzero()[0].
+		This is equivalent to np.nonzero(np.ravel(a))[0].
 		
 		Parameters
 		----------
-		a : ndarray
-		    Input array.
+		a : array_like
+		    Input data.
 		
 		Returns
 		-------
@@ -5261,6 +5476,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The bases in `x1` raised to the exponents in `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -5321,6 +5537,7 @@ package numpy.core;
 		-------
 		y : ndarray or scalar
 		    The floor of each element in `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -5369,7 +5586,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    y = floor(`x1`/`x2`)
-		
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -5419,8 +5636,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray or scalar
-		    The maximum of `x1` and `x2`, element-wise.  Returns scalar if
-		    both  `x1` and `x2` are scalars.
+		    The maximum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -5487,8 +5704,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray or scalar
-		    The minimum of `x1` and `x2`, element-wise.  Returns scalar if
-		    both  `x1` and `x2` are scalars.
+		    The minimum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -5536,9 +5753,9 @@ package numpy.core;
 		Parameters
 		----------
 		x1 : array_like
-		  Dividend.
+		    Dividend.
 		x2 : array_like
-		  Divisor.
+		    Divisor.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -5554,7 +5771,8 @@ package numpy.core;
 		Returns
 		-------
 		y : array_like
-		  The remainder of the division of `x1` by `x2`.
+		    The remainder of the division of `x1` by `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -5590,6 +5808,130 @@ package numpy.core;
 	**/
 	static public function fmod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Format a floating-point scalar as a decimal string in positional notation.
+		
+		Provides control over rounding, trimming and padding. Uses and assumes
+		IEEE unbiased rounding. Uses the "Dragon4" algorithm.
+		
+		Parameters
+		----------
+		x : python float or numpy floating scalar
+		    Value to format.
+		precision : non-negative integer or None, optional
+		    Maximum number of digits to print. May be None if `unique` is
+		    `True`, but must be an integer if unique is `False`.
+		unique : boolean, optional
+		    If `True`, use a digit-generation strategy which gives the shortest
+		    representation which uniquely identifies the floating-point number from
+		    other values of the same type, by judicious rounding. If `precision`
+		    was omitted, print out all necessary digits, otherwise digit generation
+		    is cut off after `precision` digits and the remaining value is rounded.
+		    If `False`, digits are generated as if printing an infinite-precision
+		    value and stopping after `precision` digits, rounding the remaining
+		    value.
+		fractional : boolean, optional
+		    If `True`, the cutoff of `precision` digits refers to the total number
+		    of digits after the decimal point, including leading zeros.
+		    If `False`, `precision` refers to the total number of significant
+		    digits, before or after the decimal point, ignoring leading zeros.
+		trim : one of 'k', '.', '0', '-', optional
+		    Controls post-processing trimming of trailing digits, as follows:
+		
+		    * 'k' : keep trailing zeros, keep decimal point (no trimming)
+		    * '.' : trim all trailing zeros, leave decimal point
+		    * '0' : trim all but the zero before the decimal point. Insert the
+		      zero if it is missing.
+		    * '-' : trim trailing zeros and any trailing decimal point
+		sign : boolean, optional
+		    Whether to show the sign for positive values.
+		pad_left : non-negative integer, optional
+		    Pad the left side of the string with whitespace until at least that
+		    many characters are to the left of the decimal point.
+		pad_right : non-negative integer, optional
+		    Pad the right side of the string with whitespace until at least that
+		    many characters are to the right of the decimal point.
+		
+		Returns
+		-------
+		rep : string
+		    The string representation of the floating point value
+		
+		See Also
+		--------
+		format_float_scientific
+		
+		Examples
+		--------
+		>>> np.format_float_positional(np.float32(np.pi))
+		'3.1415927'
+		>>> np.format_float_positional(np.float16(np.pi))
+		'3.14'
+		>>> np.format_float_positional(np.float16(0.3))
+		'0.3'
+		>>> np.format_float_positional(np.float16(0.3), unique=False, precision=10)
+		'0.3000488281'
+	**/
+	static public function format_float_positional(x:Dynamic, ?precision:Dynamic, ?unique:Dynamic, ?fractional:Dynamic, ?trim:Dynamic, ?sign:Dynamic, ?pad_left:Dynamic, ?pad_right:Dynamic):String;
+	/**
+		Format a floating-point scalar as a decimal string in scientific notation.
+		
+		Provides control over rounding, trimming and padding. Uses and assumes
+		IEEE unbiased rounding. Uses the "Dragon4" algorithm.
+		
+		Parameters
+		----------
+		x : python float or numpy floating scalar
+		    Value to format.
+		precision : non-negative integer or None, optional
+		    Maximum number of digits to print. May be None if `unique` is
+		    `True`, but must be an integer if unique is `False`.
+		unique : boolean, optional
+		    If `True`, use a digit-generation strategy which gives the shortest
+		    representation which uniquely identifies the floating-point number from
+		    other values of the same type, by judicious rounding. If `precision`
+		    was omitted, print all necessary digits, otherwise digit generation is
+		    cut off after `precision` digits and the remaining value is rounded.
+		    If `False`, digits are generated as if printing an infinite-precision
+		    value and stopping after `precision` digits, rounding the remaining
+		    value.
+		trim : one of 'k', '.', '0', '-', optional
+		    Controls post-processing trimming of trailing digits, as follows:
+		
+		    * 'k' : keep trailing zeros, keep decimal point (no trimming)
+		    * '.' : trim all trailing zeros, leave decimal point
+		    * '0' : trim all but the zero before the decimal point. Insert the
+		      zero if it is missing.
+		    * '-' : trim trailing zeros and any trailing decimal point
+		sign : boolean, optional
+		    Whether to show the sign for positive values.
+		pad_left : non-negative integer, optional
+		    Pad the left side of the string with whitespace until at least that
+		    many characters are to the left of the decimal point.
+		exp_digits : non-negative integer, optional
+		    Pad the exponent with zeros until it contains at least this many digits.
+		    If omitted, the exponent will be at least 2 digits.
+		
+		Returns
+		-------
+		rep : string
+		    The string representation of the floating point value
+		
+		See Also
+		--------
+		format_float_positional
+		
+		Examples
+		--------
+		>>> np.format_float_scientific(np.float32(np.pi))
+		'3.1415927e+00'
+		>>> s = np.float32(1.23e24)
+		>>> np.format_float_scientific(s, unique=False, precision=15)
+		'1.230000071797338e+24'
+		>>> np.format_float_scientific(s, exp_digits=4)
+		'1.23e+0024'
+	**/
+	static public function format_float_scientific(x:Dynamic, ?precision:Dynamic, ?unique:Dynamic, ?trim:Dynamic, ?sign:Dynamic, ?pad_left:Dynamic, ?exp_digits:Dynamic):String;
+	/**
 		frexp(x[, out1, out2], / [, out=(None, None)], *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Decompose the elements of x into mantissa and twos exponent.
@@ -5620,9 +5962,12 @@ package numpy.core;
 		
 		Returns
 		-------
-		(mantissa, exponent) : tuple of ndarrays, (float, int)
-		    `mantissa` is a float array with values between -1 and 1.
-		    `exponent` is an int array which represents the exponent of 2.
+		mantissa : ndarray
+		    Floating values between -1 and 1.
+		    This is a scalar if `x` is a scalar.
+		exponent : ndarray
+		    Integer exponents of 2.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -5679,6 +6024,11 @@ package numpy.core;
 		>>> np.frombuffer(s, dtype='S1', count=5, offset=6)
 		array(['w', 'o', 'r', 'l', 'd'],
 		      dtype='|S1')
+		
+		>>> np.frombuffer(b'\x01\x02', dtype=np.uint8)
+		array([1, 2], dtype=uint8)
+		>>> np.frombuffer(b'\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
+		array([1, 2, 3], dtype=uint8)
 	**/
 	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5796,7 +6146,7 @@ package numpy.core;
 		>>> np.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)
 		array([[ True, False, False],
 		       [False,  True, False],
-		       [False, False,  True]], dtype=bool)
+		       [False, False,  True]])
 		
 		>>> np.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)
 		array([[0, 1, 2],
@@ -5832,7 +6182,7 @@ package numpy.core;
 		Examples
 		--------
 		>>> iterable = (x*x for x in range(5))
-		>>> np.fromiter(iterable, np.float)
+		>>> np.fromiter(iterable, float)
 		array([  0.,   1.,   4.,   9.,  16.])
 	**/
 	static public function fromiter(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -5881,7 +6231,7 @@ package numpy.core;
 	/**
 		fromstring(string, dtype=float, count=-1, sep='')
 		
-		A new 1-D array initialized from raw binary or text data in a string.
+		A new 1-D array initialized from text data in a string.
 		
 		Parameters
 		----------
@@ -5895,11 +6245,13 @@ package numpy.core;
 		    negative (the default), the count will be determined from the
 		    length of the data.
 		sep : str, optional
-		    If not provided or, equivalently, the empty string, the data will
-		    be interpreted as binary data; otherwise, as ASCII text with
-		    decimal numbers.  Also in this latter case, this argument is
-		    interpreted as the string separating numbers in the data; extra
-		    whitespace between elements is also ignored.
+		    The string separating numbers in the data; extra whitespace between
+		    elements is also ignored.
+		
+		    .. deprecated:: 1.14
+		        If this argument is not provided, `fromstring` falls back on the
+		        behaviour of `frombuffer` after encoding unicode string inputs as
+		        either utf-8 (python 3), or the default encoding (python 2).
 		
 		Returns
 		-------
@@ -5918,14 +6270,10 @@ package numpy.core;
 		
 		Examples
 		--------
-		>>> np.fromstring('\x01\x02', dtype=np.uint8)
-		array([1, 2], dtype=uint8)
 		>>> np.fromstring('1 2', dtype=int, sep=' ')
 		array([1, 2])
 		>>> np.fromstring('1, 2', dtype=int, sep=',')
 		array([1, 2])
-		>>> np.fromstring('\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
-		array([1, 2, 3], dtype=uint8)
 	**/
 	static public function fromstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5951,13 +6299,10 @@ package numpy.core;
 		
 		See Also
 		--------
-		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		full_like : Fill an array with shape and type of input.
-		zeros : Return a new array setting values to zero.
-		ones : Return a new array setting values to one.
+		full_like : Return a new array with shape of input filled with value.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
 		
 		Examples
 		--------
@@ -5998,17 +6343,14 @@ package numpy.core;
 		
 		See Also
 		--------
-		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
 		empty_like : Return an empty array with shape and type of input.
-		zeros : Return a new array setting values to zero.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
-		full : Fill a new array.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
-		>>> x = np.arange(6, dtype=np.int)
+		>>> x = np.arange(6, dtype=int)
 		>>> np.full_like(x, 1)
 		array([1, 1, 1, 1, 1, 1])
 		>>> np.full_like(x, 0.1)
@@ -6023,6 +6365,36 @@ package numpy.core;
 		array([ 0.1,  0.1,  0.1,  0.1,  0.1,  0.1])
 	**/
 	static public function full_like(a:Dynamic, fill_value:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
+	/**
+		gcd(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Returns the greatest common divisor of ``|x1|`` and ``|x2|``
+		
+		Parameters
+		----------
+		x1, x2 : array_like, int
+		    Arrays of values
+		
+		Returns
+		-------
+		y : ndarray or scalar
+		    The greatest common divisor of the absolute value of the inputs
+		    This is a scalar if both `x1` and `x2` are scalars.
+		
+		See Also
+		--------
+		lcm : The lowest common multiple
+		
+		Examples
+		--------
+		>>> np.gcd(12, 20)
+		4
+		>>> np.gcd.reduce([15, 25, 35])
+		5
+		>>> np.gcd(np.arange(6), 20)
+		array([20,  1,  2,  1,  4,  5])
+	**/
+	static public function gcd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return numbers spaced evenly on a log scale (a geometric progression).
 		
@@ -6126,6 +6498,7 @@ package numpy.core;
 		      - nanstr : str
 		      - infstr : str
 		      - formatter : dict of callables
+		      - sign : str
 		
 		    For a full description of these options, see `set_printoptions`.
 		
@@ -6307,8 +6680,10 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		
 		See Also
@@ -6318,14 +6693,14 @@ package numpy.core;
 		Examples
 		--------
 		>>> np.greater([4,2],[2,2])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		If the inputs are ndarrays, then np.greater is equivalent to '>'.
 		
 		>>> a = np.array([4,2])
 		>>> b = np.array([2,2])
 		>>> a > b
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function greater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6354,7 +6729,9 @@ package numpy.core;
 		Returns
 		-------
 		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -6363,7 +6740,7 @@ package numpy.core;
 		Examples
 		--------
 		>>> np.greater_equal([4, 2, 1], [2, 2, 2])
-		array([ True, True, False], dtype=bool)
+		array([ True, True, False])
 	**/
 	static public function greater_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6399,8 +6776,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    The output array, element-wise Heaviside step function of `x1`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -6422,17 +6800,20 @@ package numpy.core;
 	/**
 		Stack arrays in sequence horizontally (column wise).
 		
-		Take a sequence of arrays and stack them horizontally to make
-		a single array. Rebuild arrays divided by `hsplit`.
+		This is equivalent to concatenation along the second axis, except for 1-D
+		arrays where it concatenates along the first axis. Rebuilds arrays divided
+		by `hsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    All arrays must have the same shape along all but the second axis.
+		    The arrays must have the same shape along all but the second axis,
+		    except 1-D arrays which can be any length.
 		
 		Returns
 		-------
@@ -6447,11 +6828,6 @@ package numpy.core;
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -6497,6 +6873,7 @@ package numpy.core;
 		-------
 		z : ndarray
 		    The hypotenuse of the triangle(s).
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Examples
 		--------
@@ -6708,8 +7085,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -6762,7 +7140,7 @@ package numpy.core;
 		Booleans are accepted as well:
 		
 		>>> np.invert(array([True, False]))
-		array([False,  True], dtype=bool)
+		array([False,  True])
 	**/
 	static public function invert(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6824,6 +7202,9 @@ package numpy.core;
 		`atol` are added together to compare against the absolute difference
 		between `a` and `b`.
 		
+		.. warning:: The default `atol` is not appropriate for comparing numbers
+		             that are much smaller than one (see Notes).
+		
 		Parameters
 		----------
 		a, b : array_like
@@ -6856,9 +7237,15 @@ package numpy.core;
 		
 		 absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))
 		
-		The above equation is not symmetric in `a` and `b`, so that
-		`isclose(a, b)` might be different from `isclose(b, a)` in
-		some rare cases.
+		Unlike the built-in `math.isclose`, the above equation is not symmetric
+		in `a` and `b` -- it assumes `b` is the reference value -- so that
+		`isclose(a, b)` might be different from `isclose(b, a)`. Furthermore,
+		the default value of atol is not zero, and is used to determine what
+		small values should be considered close to zero. The default value is
+		appropriate for expected values of order unity: if the expected values
+		are significantly smaller than one, it can result in false positives.
+		`atol` should be carefully selected for the use case at hand. A zero value
+		for `atol` will result in `False` if either `a` or `b` is zero.
 		
 		Examples
 		--------
@@ -6872,6 +7259,14 @@ package numpy.core;
 		array([True, False])
 		>>> np.isclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		array([True, True])
+		>>> np.isclose([1e-8, 1e-7], [0.0, 0.0])
+		array([ True, False], dtype=bool)
+		>>> np.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)
+		array([False, False], dtype=bool)
+		>>> np.isclose([1e-10, 1e-10], [1e-20, 0.0])
+		array([ True,  True], dtype=bool)
+		>>> np.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)
+		array([False,  True], dtype=bool)
 	**/
 	static public function isclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):python.NativeIterable<Dynamic>;
 	/**
@@ -6900,15 +7295,9 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray, bool
-		    For scalar input, the result is a new boolean with value True
-		    if the input is finite; otherwise the value is False (input is
-		    either positive infinity, negative infinity or Not a Number).
-		
-		    For array input, the result is a boolean array with the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is finite; otherwise the values
-		    are False (element is either positive infinity, negative infinity
-		    or Not a Number).
+		    True where ``x`` is not positive infinity, negative infinity,
+		    or NaN; false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -6939,7 +7328,7 @@ package numpy.core;
 		>>> np.isfinite(np.NINF)
 		False
 		>>> np.isfinite([np.log(-1.),1.,np.log(0)])
-		array([False,  True, False], dtype=bool)
+		array([False,  True, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -7034,18 +7423,8 @@ package numpy.core;
 		Returns
 		-------
 		y : bool (scalar) or boolean ndarray
-		    For scalar input, the result is a new boolean with value True if
-		    the input is positive or negative infinity; otherwise the value is
-		    False.
-		
-		    For array input, the result is a boolean array with the same shape
-		    as the input and the values are True where the corresponding
-		    element of the input is positive or negative infinity; elsewhere
-		    the values are False.  If a second argument was supplied the result
-		    is stored there.  If the type of that array is a numeric type the
-		    result is represented as zeros and ones, if the type is boolean
-		    then as False and True, respectively.  The return value `y` is then
-		    a reference to that array.
+		    True where ``x`` is positive or negative infinity, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -7069,7 +7448,7 @@ package numpy.core;
 		>>> np.isinf(np.NINF)
 		True
 		>>> np.isinf([np.inf, -np.inf, 1.0, np.nan])
-		array([ True,  True, False, False], dtype=bool)
+		array([ True,  True, False, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -7103,13 +7482,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray or bool
-		    For scalar input, the result is a new boolean with value True if
-		    the input is NaN; otherwise the value is False.
-		
-		    For array input, the result is a boolean array of the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is NaN; otherwise the values are
-		    False.
+		    True where ``x`` is NaN, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -7127,7 +7501,7 @@ package numpy.core;
 		>>> np.isnan(np.inf)
 		False
 		>>> np.isnan([np.log(-1.),1.,np.log(0)])
-		array([ True, False, False], dtype=bool)
+		array([ True, False, False])
 	**/
 	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7154,13 +7528,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray or bool
-		    For scalar input, the result is a new boolean with value True if
-		    the input is NaT; otherwise the value is False.
-		
-		    For array input, the result is a boolean array of the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is NaT; otherwise the values are
-		    False.
+		    True where ``x`` is NaT, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -7173,7 +7542,7 @@ package numpy.core;
 		>>> np.isnat(np.datetime64("2016-01-01"))
 		False
 		>>> np.isnat(np.array(["NaT", "2016-01-01"], dtype="datetime64[ns]"))
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function isnat(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7196,6 +7565,17 @@ package numpy.core;
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
+		True
+		>>> np.isscalar('numpy')
+		True
+		
+		NumPy supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> isscalar(Fraction(5, 17))
+		True
+		>>> from numbers import Number
+		>>> isscalar(Number())
 		True
 	**/
 	static public function isscalar(num:Dynamic):Bool;
@@ -7251,12 +7631,44 @@ package numpy.core;
 		
 		Examples
 		--------
-		>>> np.issubdtype('S1', str)
+		>>> np.issubdtype('S1', np.string_)
 		True
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
 	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
+	/**
+		lcm(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Returns the lowest common multiple of ``|x1|`` and ``|x2|``
+		
+		Parameters
+		----------
+		x1, x2 : array_like, int
+		    Arrays of values
+		
+		Returns
+		-------
+		y : ndarray or scalar
+		    The lowest common multiple of the absolute value of the inputs
+		    This is a scalar if both `x1` and `x2` are scalars.
+		
+		See Also
+		--------
+		gcd : The greatest common divisor
+		
+		Examples
+		--------
+		>>> np.lcm(12, 20)
+		60
+		>>> np.lcm.reduce([3, 12, 20])
+		60
+		>>> np.lcm.reduce([40, 12, 20])
+		120
+		>>> np.lcm(np.arange(6), 20)
+		array([ 0, 20, 20, 60, 20, 20])
+	**/
+	static public function lcm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ldexp(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -7287,6 +7699,7 @@ package numpy.core;
 		-------
 		y : ndarray or scalar
 		    The result of ``x1 * 2**x2``.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -7340,6 +7753,7 @@ package numpy.core;
 		-------
 		out : array of integer type
 		    Return `x1` with bits shifted `x2` times to the left.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -7385,8 +7799,10 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -7395,7 +7811,7 @@ package numpy.core;
 		Examples
 		--------
 		>>> np.less([1, 2], [2, 2])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function less(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7423,8 +7839,10 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -7433,13 +7851,13 @@ package numpy.core;
 		Examples
 		--------
 		>>> np.less_equal([4, 2, 1], [2, 2, 2])
-		array([False,  True,  True], dtype=bool)
+		array([False,  True,  True])
 	**/
 	static public function less_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		lexsort(keys, axis=-1)
 		
-		Perform an indirect sort using a sequence of keys.
+		Perform an indirect stable sort using a sequence of keys.
 		
 		Given multiple sorting keys, which can be interpreted as columns in a
 		spreadsheet, lexsort returns an array of integer indices that describes
@@ -7598,23 +8016,7 @@ package numpy.core;
 		load, save
 	**/
 	static public function load(file:Dynamic):Dynamic;
-	/**
-		Read and return an object from the given pickle data.
-		
-		The protocol version of the pickle is detected automatically, so no
-		protocol argument is needed.  Bytes past the pickled object's
-		representation are ignored.
-		
-		Optional keyword arguments are *fix_imports*, *encoding* and *errors*,
-		which are used to control compatibility support for pickle stream
-		generated by Python 2.  If *fix_imports* is True, pickle will try to
-		map the old Python 2 names to the new names used in Python 3.  The
-		*encoding* and *errors* tell pickle how to decode 8-bit string
-		instances pickled by Python 2; these default to 'ASCII' and 'strict',
-		respectively.  The *encoding* can be 'bytes' to read these 8-bit
-		string instances as bytes objects.
-	**/
-	static public function loads(data:Dynamic, ?fix_imports:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
+	static public function loads(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		log(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -7644,6 +8046,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The natural logarithm of `x`, element-wise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -7702,6 +8105,7 @@ package numpy.core;
 		y : ndarray
 		    The logarithm to the base 10 of `x`, element-wise. NaNs are
 		    returned where x is negative.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -7761,6 +8165,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    Natural logarithm of `1 + x`, element-wise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -7823,6 +8228,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    Base-2 logarithm of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -7887,6 +8293,7 @@ package numpy.core;
 		-------
 		result : ndarray
 		    Logarithm of ``exp(x1) + exp(x2)``.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -7938,6 +8345,7 @@ package numpy.core;
 		-------
 		result : ndarray
 		    Base-2 logarithm of ``2**x1 + 2**x2``.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -7984,6 +8392,7 @@ package numpy.core;
 		y : ndarray or bool
 		    Boolean result with the same shape as `x1` and `x2` of the logical
 		    AND operation on corresponding elements of `x1` and `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -7995,11 +8404,11 @@ package numpy.core;
 		>>> np.logical_and(True, False)
 		False
 		>>> np.logical_and([True, False], [False, False])
-		array([False, False], dtype=bool)
+		array([False, False])
 		
 		>>> x = np.arange(5)
 		>>> np.logical_and(x>1, x<4)
-		array([False, False,  True,  True, False], dtype=bool)
+		array([False, False,  True,  True, False])
 	**/
 	static public function logical_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -8028,6 +8437,7 @@ package numpy.core;
 		y : bool or ndarray of bool
 		    Boolean result with the same shape as `x` of the NOT operation
 		    on elements of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -8038,11 +8448,11 @@ package numpy.core;
 		>>> np.logical_not(3)
 		False
 		>>> np.logical_not([True, False, 0, 1])
-		array([False,  True,  True, False], dtype=bool)
+		array([False,  True,  True, False])
 		
 		>>> x = np.arange(5)
 		>>> np.logical_not(x<3)
-		array([False, False, False,  True,  True], dtype=bool)
+		array([False, False, False,  True,  True])
 	**/
 	static public function logical_not(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -8072,6 +8482,7 @@ package numpy.core;
 		y : ndarray or bool
 		    Boolean result with the same shape as `x1` and `x2` of the logical
 		    OR operation on elements of `x1` and `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -8083,11 +8494,11 @@ package numpy.core;
 		>>> np.logical_or(True, False)
 		True
 		>>> np.logical_or([True, False], [False, False])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> x = np.arange(5)
 		>>> np.logical_or(x < 1, x > 3)
-		array([ True, False, False, False,  True], dtype=bool)
+		array([ True, False, False, False,  True])
 	**/
 	static public function logical_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -8118,6 +8529,7 @@ package numpy.core;
 		    Boolean result of the logical XOR operation applied to the elements
 		    of `x1` and `x2`; the shape is determined by whether or not
 		    broadcasting of one or both arrays was required.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -8128,17 +8540,17 @@ package numpy.core;
 		>>> np.logical_xor(True, False)
 		True
 		>>> np.logical_xor([True, True, False, False], [True, False, True, False])
-		array([False,  True,  True, False], dtype=bool)
+		array([False,  True,  True, False])
 		
 		>>> x = np.arange(5)
 		>>> np.logical_xor(x < 1, x > 3)
-		array([ True, False, False, False,  True], dtype=bool)
+		array([ True, False, False, False,  True])
 		
 		Simple example showing support of broadcasting
 		
 		>>> np.logical_xor(0, np.eye(2))
 		array([[ True, False],
-		       [False,  True]], dtype=bool)
+		       [False,  True]])
 	**/
 	static public function logical_xor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -8367,8 +8779,15 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The minimum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
 		
 		Returns
 		-------
@@ -8415,14 +8834,29 @@ package numpy.core;
 		>>> np.amax(a, axis=1)   # Maxima along the second axis
 		array([1, 3])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amax(b)
 		nan
 		>>> np.nanmax(b)
 		4.0
+		
+		You can use an initial value to compute the maximum of an empty slice, or
+		to initialize it to a different value:
+		
+		>>> np.max([[-50], [10]], axis=-1, initial=0)
+		array([ 0, 10])
+		
+		Notice that the initial value is used as one of the elements for which the
+		maximum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		>>> np.max([5], initial=6)
+		6
+		>>> max([5], default=6)
+		5
 	**/
-	static public function max(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function max(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		maximum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -8455,8 +8889,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray or scalar
-		    The maximum of `x1` and `x2`, element-wise.  Returns scalar if
-		    both  `x1` and `x2` are scalars.
+		    The maximum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -8513,11 +8947,11 @@ package numpy.core;
 		
 		Examples
 		--------
-		>>> np.maximum_sctype(np.int)
+		>>> np.maximum_sctype(int)
 		<type 'numpy.int64'>
 		>>> np.maximum_sctype(np.uint8)
 		<type 'numpy.uint64'>
-		>>> np.maximum_sctype(np.complex)
+		>>> np.maximum_sctype(complex)
 		<type 'numpy.complex192'>
 		
 		>>> np.maximum_sctype(str)
@@ -8603,7 +9037,7 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `mean` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -8683,8 +9117,14 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The maximum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -8731,14 +9171,28 @@ package numpy.core;
 		>>> np.amin(a, axis=1)   # Minima along the second axis
 		array([0, 2])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amin(b)
 		nan
 		>>> np.nanmin(b)
 		0.0
+		
+		>>> np.min([[-50], [10]], axis=-1, initial=0)
+		array([-50,   0])
+		
+		Notice that the initial value is used as one of the elements for which the
+		minimum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		Notice that this isn't the same as Python's ``default`` argument.
+		
+		>>> np.min([6], initial=5)
+		5
+		>>> min([6], default=5)
+		6
 	**/
-	static public function min(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function min(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		min_scalar_type(a)
 		
@@ -8817,8 +9271,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray or scalar
-		    The minimum of `x1` and `x2`, element-wise.  Returns scalar if
-		    both  `x1` and `x2` are scalars.
+		    The minimum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -8861,8 +9315,18 @@ package numpy.core;
 		
 		Computes the remainder complementary to the `floor_divide` function.  It is
 		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
-		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
-		function.
+		as the divisor `x2`. The MATLAB function equivalent to ``np.remainder``
+		is ``mod``.
+		
+		.. warning::
+		
+		    This should not be confused with:
+		
+		    * Python 3.7's `math.remainder` and C's ``remainder``, which
+		      computes the IEEE remainder, which are the complement to
+		      ``round(x1 / x2)``.
+		    * The MATLAB ``rem`` function and or the C ``%`` operator which is the
+		      complement to ``int(x1 / x2)``.
 		
 		Parameters
 		----------
@@ -8886,13 +9350,13 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
-		    Returns a scalar if both  `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
 		divmod : Simultaneous floor division and remainder.
-		fmod : Equivalent of the Matlab(TM) ``rem`` function.
+		fmod : Equivalent of the MATLAB ``rem`` function.
 		divide, floor
 		
 		Notes
@@ -8936,8 +9400,10 @@ package numpy.core;
 		-------
 		y1 : ndarray
 		    Fractional part of `x`.
+		    This is a scalar if `x` is a scalar.
 		y2 : ndarray
 		    Integral part of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -8961,7 +9427,7 @@ package numpy.core;
 		
 		Other axes remain in their original order.
 		
-		.. versionadded::1.11.0
+		.. versionadded:: 1.11.0
 		
 		Parameters
 		----------
@@ -9029,7 +9495,8 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    both `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -9105,6 +9572,7 @@ package numpy.core;
 		-------
 		y : ndarray or scalar
 		    Returned array or scalar: `y = -x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -9112,6 +9580,64 @@ package numpy.core;
 		array([-1.,  1.])
 	**/
 	static public function negative(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Create nditers for use in nested loops
+		
+		Create a tuple of `nditer` objects which iterate in nested loops over
+		different axes of the op argument. The first iterator is used in the
+		outermost loop, the last in the innermost loop. Advancing one will change
+		the subsequent iterators to point at its new element.
+		
+		Parameters
+		----------
+		op : ndarray or sequence of array_like
+		    The array(s) to iterate over.
+		
+		axes : list of list of int
+		    Each item is used as an "op_axes" argument to an nditer
+		
+		flags, op_flags, op_dtypes, order, casting, buffersize (optional)
+		    See `nditer` parameters of the same name
+		
+		Returns
+		-------
+		iters : tuple of nditer
+		    An nditer for each item in `axes`, outermost first
+		
+		See Also
+		--------
+		nditer
+		
+		Examples
+		--------
+		
+		Basic usage. Note how y is the "flattened" version of
+		[a[:, 0, :], a[:, 1, 0], a[:, 2, :]] since we specified
+		the first iter's axes as [1]
+		
+		>>> a = np.arange(12).reshape(2, 3, 2)
+		>>> i, j = np.nested_iters(a, [[1], [0, 2]], flags=["multi_index"])
+		>>> for x in i:
+		...      print(i.multi_index)
+		...      for y in j:
+		...          print('', j.multi_index, y)
+		
+		(0,)
+		 (0, 0) 0
+		 (0, 1) 1
+		 (1, 0) 6
+		 (1, 1) 7
+		(1,)
+		 (0, 0) 2
+		 (0, 1) 3
+		 (1, 0) 8
+		 (1, 1) 9
+		(2,)
+		 (0, 0) 4
+		 (0, 1) 5
+		 (1, 0) 10
+		 (1, 1) 11
+	**/
 	static public function nested_iters(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var newaxis : Dynamic;
 	/**
@@ -9139,8 +9665,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    The next representable values of `x1` in the direction of `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Examples
 		--------
@@ -9148,7 +9675,7 @@ package numpy.core;
 		>>> np.nextafter(1, 2) == eps + 1
 		True
 		>>> np.nextafter([1, 2], [2, 1]) == [eps + 1, 2 - eps]
-		array([ True,  True], dtype=bool)
+		array([ True,  True])
 	**/
 	static public function nextafter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -9197,14 +9724,15 @@ package numpy.core;
 		       [0, 2, 0],
 		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
+		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 		
 		>>> x[np.nonzero(x)]
-		array([ 1.,  1.,  1.])
+		array([1, 2, 1, 1])
 		>>> np.transpose(np.nonzero(x))
 		array([[0, 0],
 		       [1, 1],
-		       [2, 2]])
+		       [2, 0],
+		       [2, 1])
 		
 		A common use for ``nonzero`` is to find the indices of an array, where
 		a condition is True.  Given an array `a`, the condition `a` > 3 is a
@@ -9215,7 +9743,7 @@ package numpy.core;
 		>>> a > 3
 		array([[False, False, False],
 		       [ True,  True,  True],
-		       [ True,  True,  True]], dtype=bool)
+		       [ True,  True,  True]])
 		>>> np.nonzero(a > 3)
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 		
@@ -9233,7 +9761,7 @@ package numpy.core;
 		Parameters
 		----------
 		x1, x2 : array_like
-		  Input arrays.
+		    Input arrays.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -9248,10 +9776,10 @@ package numpy.core;
 		
 		Returns
 		-------
-		not_equal : ndarray bool, scalar bool
-		  For each element in `x1, x2`, return True if `x1` is not equal
-		  to `x2` and False otherwise.
-		
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -9260,10 +9788,10 @@ package numpy.core;
 		Examples
 		--------
 		>>> np.not_equal([1.,2.], [1., 3.])
-		array([False,  True], dtype=bool)
+		array([False,  True])
 		>>> np.not_equal([1, 2], [[1, 3],[1, 4]])
 		array([[False,  True],
-		       [False,  True]], dtype=bool)
+		       [False,  True]])
 	**/
 	static public function not_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -9314,9 +9842,10 @@ package numpy.core;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -9325,14 +9854,18 @@ package numpy.core;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -9376,11 +9909,10 @@ package numpy.core;
 		
 		See Also
 		--------
-		zeros_like : Return an array of zeros with shape and type of input.
 		empty_like : Return an empty array with shape and type of input.
-		zeros : Return a new array setting values to zero.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
 		
 		Examples
 		--------
@@ -9393,7 +9925,7 @@ package numpy.core;
 		array([[1, 1, 1],
 		       [1, 1, 1]])
 		
-		>>> y = np.arange(3, dtype=np.float)
+		>>> y = np.arange(3, dtype=float)
 		>>> y
 		array([ 0.,  1.,  2.])
 		>>> np.ones_like(y)
@@ -9432,11 +9964,14 @@ package numpy.core;
 		
 		See also
 		--------
-		inner, einsum
+		inner
+		einsum : ``einsum('i,j->ij', a.ravel(), b.ravel())`` is the equivalent.
+		ufunc.outer : A generalization to N dimensions and other operations.
+		              ``np.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.
 		
 		References
 		----------
-		.. [1] : G. H. Golub and C. F. van Loan, *Matrix Computations*, 3rd
+		.. [1] : G. H. Golub and C. F. Van Loan, *Matrix Computations*, 3rd
 		         ed., Baltimore, MD, Johns Hopkins University Press, 1996,
 		         pg. 8.
 		
@@ -9495,7 +10030,7 @@ package numpy.core;
 		    Element index to partition by. The k-th value of the element
 		    will be in its final sorted position and all smaller elements
 		    will be moved before it and all equal or greater elements behind
-		    it. The order all elements in the partitions is undefined. If
+		    it. The order of all elements in the partitions is undefined. If
 		    provided with a sequence of k-th it will partition all elements
 		    indexed by k-th  of them into their sorted position at once.
 		axis : int or None, optional
@@ -9572,6 +10107,7 @@ package numpy.core;
 		-------
 		y : ndarray or scalar
 		    Returned array or scalar: `y = +x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -9610,6 +10146,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The bases in `x1` raised to the exponents in `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -9643,6 +10180,30 @@ package numpy.core;
 	**/
 	static public function power(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Context manager for setting print options.
+		
+		Set print options for the scope of the `with` block, and restore the old
+		options at the end. See `set_printoptions` for the full description of
+		available options.
+		
+		Examples
+		--------
+		
+		>>> with np.printoptions(precision=2):
+		...     print(np.array([2.0])) / 3
+		[0.67]
+		
+		The `as`-clause of the `with`-statement gives the current print options:
+		
+		>>> with np.printoptions(precision=2) as opts:
+		...      assert_equal(opts, np.get_printoptions())
+		
+		See Also
+		--------
+		set_printoptions, get_printoptions
+	**/
+	static public function printoptions(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the product of array elements over a given axis.
 		
@@ -9680,8 +10241,12 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `prod` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		initial : scalar, optional
+		    The starting value for this product. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -9700,7 +10265,7 @@ package numpy.core;
 		raised on overflow.  That means that, on a 32-bit platform:
 		
 		>>> x = np.array([536870910, 536870910, 536870910, 536870910])
-		>>> np.prod(x) #random
+		>>> np.prod(x)  # random
 		16
 		
 		The product of an empty array is the neutral element 1:
@@ -9736,10 +10301,15 @@ package numpy.core;
 		is the default platform integer:
 		
 		>>> x = np.array([1, 2, 3], dtype=np.int8)
-		>>> np.prod(x).dtype == np.int
+		>>> np.prod(x).dtype == int
 		True
+		
+		You can also start the product with a value other than one:
+		
+		>>> np.prod([1, 2], initial=5)
+		10
 	**/
-	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Return the product of array elements over a given axis.
 		
@@ -9747,7 +10317,7 @@ package numpy.core;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		promote_types(type1, type2)
 		
@@ -9755,7 +10325,7 @@ package numpy.core;
 		kind to which both ``type1`` and ``type2`` may be safely cast.
 		The returned data type is always in native byte order.
 		
-		This function is symmetric and associative.
+		This function is symmetric, but rarely associative.
 		
 		Parameters
 		----------
@@ -9796,6 +10366,14 @@ package numpy.core;
 		
 		>>> np.promote_types('i4', 'S8')
 		dtype('S11')
+		
+		An example of a non-associative case:
+		
+		>>> p = np.promote_types
+		>>> p('S', p('i1', 'u1'))
+		dtype('S6')
+		>>> p(p('S', 'i1'), 'u1')
+		dtype('S4')
 	**/
 	static public function promote_types(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -9807,13 +10385,30 @@ package numpy.core;
 		----------
 		a : array_like
 		    Input values.
-		axis : int, optional
+		axis : None or int or tuple of ints, optional
 		    Axis along which to find the peaks.  By default, flatten the
-		    array.
+		    array.  `axis` may be negative, in
+		    which case it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.15.0
+		
+		    If this is a tuple of ints, a reduction is performed on multiple
+		    axes, instead of a single axis or all the axes as before.
 		out : array_like
 		    Alternative output array in which to place the result. It must
 		    have the same shape and buffer length as the expected output,
 		    but the type of the output values will be cast if necessary.
+		
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `ptp` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-class' method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -9834,7 +10429,7 @@ package numpy.core;
 		>>> np.ptp(x, axis=1)
 		array([1, 1])
 	**/
-	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
+	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Replaces specified elements of an array with given values.
 		
@@ -9868,6 +10463,7 @@ package numpy.core;
 		See Also
 		--------
 		putmask, place
+		put_along_axis : Put elements by matching the array and the index arrays
 		
 		Examples
 		--------
@@ -9947,6 +10543,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The corresponding angle in degrees.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -9990,6 +10587,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The corresponding radian values.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -10014,47 +10612,21 @@ package numpy.core;
 	/**
 		Return the number of dimensions of an array.
 		
-		If `a` is not already an array, a conversion is attempted.
-		Scalars are zero dimensional.
-		
 		.. note::
 		    This function is deprecated in NumPy 1.9 to avoid confusion with
 		    `numpy.linalg.matrix_rank`. The ``ndim`` attribute or function
 		    should be used instead.
 		
-		Parameters
-		----------
-		a : array_like
-		    Array whose number of dimensions is desired. If `a` is not an array,
-		    a conversion is attempted.
-		
-		Returns
-		-------
-		number_of_dimensions : int
-		    The number of dimensions in the array.
-		
 		See Also
 		--------
-		ndim : equivalent function
-		ndarray.ndim : equivalent property
-		shape : dimensions of array
-		ndarray.shape : dimensions of array
+		ndim : equivalent non-deprecated function
 		
 		Notes
 		-----
 		In the old Numeric package, `rank` was the term used for the number of
 		dimensions, but in NumPy `ndim` is used instead.
-		
-		Examples
-		--------
-		>>> np.rank([1,2,3])
-		1
-		>>> np.rank(np.array([[1,2,3],[4,5,6]]))
-		2
-		>>> np.rank(1)
-		0
 	**/
-	static public function rank(a:Dynamic):Int;
+	static public function rank(a:Dynamic):Dynamic;
 	/**
 		Return a contiguous flattened array.
 		
@@ -10090,10 +10662,9 @@ package numpy.core;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -10183,6 +10754,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    Return array.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -10208,8 +10780,18 @@ package numpy.core;
 		
 		Computes the remainder complementary to the `floor_divide` function.  It is
 		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
-		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
-		function.
+		as the divisor `x2`. The MATLAB function equivalent to ``np.remainder``
+		is ``mod``.
+		
+		.. warning::
+		
+		    This should not be confused with:
+		
+		    * Python 3.7's `math.remainder` and C's ``remainder``, which
+		      computes the IEEE remainder, which are the complement to
+		      ``round(x1 / x2)``.
+		    * The MATLAB ``rem`` function and or the C ``%`` operator which is the
+		      complement to ``int(x1 / x2)``.
 		
 		Parameters
 		----------
@@ -10233,13 +10815,13 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
-		    Returns a scalar if both  `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
 		divmod : Simultaneous floor division and remainder.
-		fmod : Equivalent of the Matlab(TM) ``rem`` function.
+		fmod : Equivalent of the MATLAB ``rem`` function.
 		divide, floor
 		
 		Notes
@@ -10342,6 +10924,7 @@ package numpy.core;
 		  OWNDATA : False
 		  WRITEABLE : True
 		  ALIGNED : True
+		  WRITEBACKIFCOPY : False
 		  UPDATEIFCOPY : False
 		
 		>>> y = np.require(x, dtype=np.float32, requirements=['A', 'O', 'W', 'F'])
@@ -10351,6 +10934,7 @@ package numpy.core;
 		  OWNDATA : True
 		  WRITEABLE : True
 		  ALIGNED : True
+		  WRITEBACKIFCOPY : False
 		  UPDATEIFCOPY : False
 	**/
 	static public function require(a:Dynamic, ?dtype:Dynamic, ?requirements:Dynamic):Dynamic;
@@ -10394,11 +10978,11 @@ package numpy.core;
 		Notes
 		-----
 		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
+		copying the data. If you want an error to be raised when the data is copied,
 		you should assign the new shape to the shape attribute of the array::
 		
 		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
+		 # A transpose makes the array non-contiguous
 		 >>> b = a.T
 		 # Taking a view makes it possible to modify the shape without modifying
 		 # the initial object.
@@ -10586,6 +11170,7 @@ package numpy.core;
 		-------
 		out : ndarray, int
 		    Return `x1` with bits shifted `x2` times to the right.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -10631,6 +11216,7 @@ package numpy.core;
 		-------
 		out : ndarray or scalar
 		    Output array is same shape and type as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -10703,6 +11289,10 @@ package numpy.core;
 	static public function roll(a:Dynamic, shift:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Roll the specified axis backwards, until it lies in a given position.
+		
+		This function continues to be supported for backward compatibility, but you
+		should prefer `moveaxis`. The `moveaxis` function was added in NumPy
+		1.11.
 		
 		Parameters
 		----------
@@ -10785,7 +11375,7 @@ package numpy.core;
 		
 		Examples
 		--------
-		>>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
+		>>> for sctype in [np.int32, float, complex, np.string_, np.ndarray]:
 		...     print(np.sctype2char(sctype))
 		l
 		d
@@ -10809,6 +11399,15 @@ package numpy.core;
 		Find the indices into a sorted array `a` such that, if the
 		corresponding elements in `v` were inserted before the indices, the
 		order of `a` would be preserved.
+		
+		Assuming that `a` is sorted:
+		
+		======  ============================
+		`side`  returned index `i` satisfies
+		======  ============================
+		left    ``a[i-1] < v <= a[i]``
+		right   ``a[i-1] <= v < a[i]``
+		======  ============================
 		
 		Parameters
 		----------
@@ -10844,6 +11443,10 @@ package numpy.core;
 		
 		As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing
 		`nan` values. The enhanced sort order is documented in `sort`.
+		
+		This function is a faster version of the builtin python `bisect.bisect_left`
+		(``side='left'``) and `bisect.bisect_right` (``side='right'``) functions,
+		which is also vectorized in the `v` argument.
 		
 		Examples
 		--------
@@ -10905,8 +11508,10 @@ package numpy.core;
 		
 		Parameters
 		----------
-		precision : int, optional
+		precision : int or None, optional
 		    Number of digits of precision for floating point output (default 8).
+		    May be `None` if `floatmode` is not `fixed`, to print as many digits as
+		    necessary to uniquely specify the value.
 		threshold : int, optional
 		    Total number of array elements which trigger summarization
 		    rather than full repr (default 1000).
@@ -10917,38 +11522,72 @@ package numpy.core;
 		    The number of characters per line for the purpose of inserting
 		    line breaks (default 75).
 		suppress : bool, optional
-		    Whether or not suppress printing of small floating point values
-		    using scientific notation (default False).
+		    If True, always print floating point numbers using fixed point
+		    notation, in which case numbers equal to zero in the current precision
+		    will print as zero.  If False, then scientific notation is used when
+		    absolute value of the smallest number is < 1e-4 or the ratio of the
+		    maximum absolute value to the minimum is > 1e3. The default is False.
 		nanstr : str, optional
 		    String representation of floating point not-a-number (default nan).
 		infstr : str, optional
 		    String representation of floating point infinity (default inf).
+		sign : string, either '-', '+', or ' ', optional
+		    Controls printing of the sign of floating-point types. If '+', always
+		    print the sign of positive values. If ' ', always prints a space
+		    (whitespace character) in the sign position of positive values.  If
+		    '-', omit the sign character of positive values. (default '-')
 		formatter : dict of callables, optional
 		    If not None, the keys should indicate the type(s) that the respective
 		    formatting function applies to.  Callables should return a string.
 		    Types that are not specified (by their corresponding keys) are handled
 		    by the default formatters.  Individual types for which a formatter
-		    can be set are::
+		    can be set are:
 		
-		        - 'bool'
-		        - 'int'
-		        - 'timedelta' : a `numpy.timedelta64`
-		        - 'datetime' : a `numpy.datetime64`
-		        - 'float'
-		        - 'longfloat' : 128-bit floats
-		        - 'complexfloat'
-		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
-		        - 'object' : `np.object_` arrays
-		        - 'str' : all other strings
+		    - 'bool'
+		    - 'int'
+		    - 'timedelta' : a `numpy.timedelta64`
+		    - 'datetime' : a `numpy.datetime64`
+		    - 'float'
+		    - 'longfloat' : 128-bit floats
+		    - 'complexfloat'
+		    - 'longcomplexfloat' : composed of two 128-bit floats
+		    - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		    - 'object' : `np.object_` arrays
+		    - 'str' : all other strings
 		
-		    Other keys that can be used to set a group of types at once are::
+		    Other keys that can be used to set a group of types at once are:
 		
-		        - 'all' : sets all types
-		        - 'int_kind' : sets 'int'
-		        - 'float_kind' : sets 'float' and 'longfloat'
-		        - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
-		        - 'str_kind' : sets 'str' and 'numpystr'
+		    - 'all' : sets all types
+		    - 'int_kind' : sets 'int'
+		    - 'float_kind' : sets 'float' and 'longfloat'
+		    - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
+		    - 'str_kind' : sets 'str' and 'numpystr'
+		floatmode : str, optional
+		    Controls the interpretation of the `precision` option for
+		    floating-point types. Can take the following values:
+		
+		    * 'fixed': Always print exactly `precision` fractional digits,
+		            even if this would print more or fewer digits than
+		            necessary to specify the value uniquely.
+		    * 'unique': Print the minimum number of fractional digits necessary
+		            to represent each value uniquely. Different elements may
+		            have a different number of digits. The value of the
+		            `precision` option is ignored.
+		    * 'maxprec': Print at most `precision` fractional digits, but if
+		            an element can be uniquely represented with fewer digits
+		            only print it with that many.
+		    * 'maxprec_equal': Print at most `precision` fractional digits,
+		            but if every element in the array can be uniquely
+		            represented with an equal number of fewer digits, use that
+		            many digits for all elements.
+		legacy : string or `False`, optional
+		    If set to the string `'1.13'` enables 1.13 legacy printing mode. This
+		    approximates numpy 1.13 print output by including a space in the sign
+		    position of floats and different behavior for 0d arrays. If set to
+		    `False`, disables legacy mode. Unrecognized strings will be ignored
+		    with a warning for forward compatibility.
+		
+		    .. versionadded:: 1.14.0
 		
 		See Also
 		--------
@@ -10998,7 +11637,7 @@ package numpy.core;
 		... linewidth=75, nanstr='nan', precision=8,
 		... suppress=False, threshold=1000, formatter=None)
 	**/
-	static public function set_printoptions(?precision:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?linewidth:Dynamic, ?suppress:Dynamic, ?nanstr:Dynamic, ?infstr:Dynamic, ?formatter:Dynamic):Dynamic;
+	static public function set_printoptions(?precision:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?linewidth:Dynamic, ?suppress:Dynamic, ?nanstr:Dynamic, ?infstr:Dynamic, ?formatter:Dynamic, ?sign:Dynamic, ?floatmode:Dynamic, ?kwarg:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set a Python function to be used when pretty printing arrays.
 		
@@ -11098,7 +11737,7 @@ package numpy.core;
 		
 		Notes
 		-----
-		The floating-point exceptions are defined in the IEEE 754 standard [1]:
+		The floating-point exceptions are defined in the IEEE 754 standard [1]_:
 		
 		- Division by zero: infinite result obtained from finite numbers.
 		- Overflow: result too large to be expressed.
@@ -11116,7 +11755,8 @@ package numpy.core;
 		{'over': 'ignore', 'divide': 'ignore', 'invalid': 'ignore',
 		 'under': 'ignore'}
 		>>> np.seterr(**old_settings)  # reset to default
-		{'over': 'raise', 'divide': 'ignore', 'invalid': 'ignore', 'under': 'ignore'}
+		{'over': 'raise', 'divide': 'ignore', 'invalid': 'ignore',
+		 'under': 'ignore'}
 		
 		>>> np.int16(32000) * np.int16(3)
 		30464
@@ -11151,11 +11791,11 @@ package numpy.core;
 		    Function to call upon floating-point errors ('call'-mode) or
 		    object whose 'write' method is used to log such message ('log'-mode).
 		
-		    The call function takes two arguments. The first is a string describing the
-		    type of error (such as "divide by zero", "overflow", "underflow", or "invalid value"),
-		    and the second is the status flag.  The flag is a byte, whose four
-		    least-significant bits indicate the type of error, one of "divide", "over",
-		    "under", "invalid"::
+		    The call function takes two arguments. The first is a string describing
+		    the type of error (such as "divide by zero", "overflow", "underflow",
+		    or "invalid value"), and the second is the status flag.  The flag is a
+		    byte, whose four least-significant bits indicate the type of error, one
+		    of "divide", "over", "under", "invalid"::
 		
 		      [0 0 0 0 divide over under invalid]
 		
@@ -11364,7 +12004,7 @@ package numpy.core;
 		Parameters
 		----------
 		x : array_like
-		  Input values.
+		    Input values.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -11380,7 +12020,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray
-		  The sign of `x`.
+		    The sign of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -11423,13 +12064,14 @@ package numpy.core;
 		-------
 		result : ndarray of bool
 		    Output array, or reference to `out` if that was supplied.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
 		>>> np.signbit(-1.2)
 		True
 		>>> np.signbit(np.array([1, -2.3, 2.1]))
-		array([False,  True, False], dtype=bool)
+		array([False,  True, False])
 	**/
 	static public function signbit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -11457,6 +12099,7 @@ package numpy.core;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -11527,6 +12170,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The corresponding hyperbolic sine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -11600,9 +12244,9 @@ package numpy.core;
 		
 		See Also
 		--------
-		any : equivalent function
+		any : equivalent function; see for details.
 	**/
-	static public function sometrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sometrue(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a sorted copy of an array.
 		
@@ -11613,7 +12257,7 @@ package numpy.core;
 		axis : int or None, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm. Default is 'quicksort'.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -11643,13 +12287,13 @@ package numpy.core;
 		order. The three available algorithms have the following
 		properties:
 		
-		=========== ======= ============= ============ =======
-		   kind      speed   worst case    work space  stable
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
+		   kind      speed   worst case    work space   stable
+		=========== ======= ============= ============ ========
 		'quicksort'    1     O(n^2)            0          no
 		'mergesort'    2     O(n*log(n))      ~n/2        yes
 		'heapsort'     3     O(n*log(n))       0          no
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
 		
 		All the sort algorithms make temporary copies of the data when
 		sorting along any but the last axis.  Consequently, sorting along
@@ -11677,6 +12321,10 @@ package numpy.core;
 		quicksort has been changed to an introsort which will switch
 		heapsort when it does not make enough progress. This makes its
 		worst case O(n*log(n)).
+		
+		'stable' automatically choses the best stable sorting algorithm
+		for the data type being sorted. It is currently mapped to
+		merge sort.
 		
 		Examples
 		--------
@@ -11733,8 +12381,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : array_like
-		    The spacing of values of `x1`.
+		out : ndarray or scalar
+		    The spacing of values of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -11754,7 +12403,7 @@ package numpy.core;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -11781,6 +12430,7 @@ package numpy.core;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -11829,9 +12479,9 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Element-wise `x*x`, of the same shape and dtype as `x`.
-		    Returns scalar if `x` is a scalar.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -11908,6 +12558,10 @@ package numpy.core;
 		    Each array must have the same shape.
 		axis : int, optional
 		    The axis in the result array along which the input arrays are stacked.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what stack would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -11943,7 +12597,7 @@ package numpy.core;
 		       [2, 3],
 		       [3, 4]])
 	**/
-	static public function stack(arrays:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	static public function stack(arrays:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Compute the standard deviation along the specified axis.
 		
@@ -11983,7 +12637,7 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `std` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -12069,8 +12723,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray
-		    The difference of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    The difference of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -12125,8 +12779,12 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		initial : scalar, optional
+		    Starting value for the sum. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -12173,8 +12831,13 @@ package numpy.core;
 		
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
+		
+		You can also start the sum with a value other than zero:
+		
+		>>> np.sum([10], initial=5)
+		15
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):numpy.Ndarray;
 	/**
 		Interchange two axes of an array.
 		
@@ -12220,15 +12883,28 @@ package numpy.core;
 	/**
 		Take elements from an array along an axis.
 		
-		This function does the same thing as "fancy" indexing (indexing arrays
-		using arrays); however, it can be easier to use if you need elements
-		along a given axis.
+		When axis is not None, this function does the same thing as "fancy"
+		indexing (indexing arrays using arrays); however, it can be easier to use
+		if you need elements along a given axis. A call such as
+		``np.take(arr, indices, axis=3)`` is equivalent to
+		``arr[:,:,:,indices,...]``.
+		
+		Explained without fancy indexing, this is equivalent to the following use
+		of `ndindex`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of
+		indices::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    Nj = indices.shape
+		    for ii in ndindex(Ni):
+		        for jj in ndindex(Nj):
+		            for kk in ndindex(Nk):
+		                out[ii + jj + kk] = a[ii + (indices[jj],) + kk]
 		
 		Parameters
 		----------
-		a : array_like
+		a : array_like (Ni..., M, Nk...)
 		    The source array.
-		indices : array_like
+		indices : array_like (Nj...)
 		    The indices of the values to extract.
 		
 		    .. versionadded:: 1.8.0
@@ -12237,7 +12913,7 @@ package numpy.core;
 		axis : int, optional
 		    The axis over which to select values. By default, the flattened
 		    input array is used.
-		out : ndarray, optional
+		out : ndarray, optional (Ni..., Nj..., Nk...)
 		    If provided, the result will be placed in this array. It should
 		    be of the appropriate shape and dtype.
 		mode : {'raise', 'wrap', 'clip'}, optional
@@ -12253,13 +12929,31 @@ package numpy.core;
 		
 		Returns
 		-------
-		subarray : ndarray
+		out : ndarray (Ni..., Nj..., Nk...)
 		    The returned array has the same type as `a`.
 		
 		See Also
 		--------
 		compress : Take elements using a boolean mask
 		ndarray.take : equivalent method
+		take_along_axis : Take elements by matching the array and the index arrays
+		
+		Notes
+		-----
+		
+		By eliminating the inner loop in the description above, and using `s_` to
+		build simple slice objects, `take` can be expressed  in terms of applying
+		fancy indexing to each 1-d slice::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nj):
+		            out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]
+		
+		For this reason, it is equivalent to (but faster than) the following use
+		of `apply_along_axis`::
+		
+		    out = np.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)
 		
 		Examples
 		--------
@@ -12280,7 +12974,7 @@ package numpy.core;
 		array([[4, 3],
 		       [5, 7]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
+	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		tan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -12291,7 +12985,7 @@ package numpy.core;
 		Parameters
 		----------
 		x : array_like
-		  Input array.
+		    Input array.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -12307,7 +13001,8 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray
-		  The corresponding tangent values.
+		    The corresponding tangent values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -12365,6 +13060,7 @@ package numpy.core;
 		-------
 		y : ndarray
 		    The corresponding hyperbolic tangent values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -12470,7 +13166,7 @@ package numpy.core;
 		       [ True,  True],
 		       [ True,  True],
 		       [ True,  True],
-		       [ True,  True]], dtype=bool)
+		       [ True,  True]])
 		
 		An extended example taking advantage of the overloading of + and \*:
 		
@@ -12519,68 +13215,7 @@ package numpy.core;
 		array([acccbbdddd, aaaaacccccccbbbbbbdddddddd], dtype=object)
 	**/
 	static public function tensordot(a:Dynamic, b:Dynamic, ?axes:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?durations:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		Return the sum along diagonals of the array.
 		
@@ -12710,8 +13345,8 @@ package numpy.core;
 		
 		Returns
 		-------
-		out : ndarray
-		    Result is scalar if both inputs are scalar, ndarray otherwise.
+		out : ndarray or scalar
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -12771,6 +13406,7 @@ package numpy.core;
 		-------
 		y : ndarray or scalar
 		    The truncated value of each element in `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -12830,7 +13466,7 @@ package numpy.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `var` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -12948,23 +13584,25 @@ package numpy.core;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		
-		Take a sequence of arrays and stack them vertically to make a single
-		array. Rebuild arrays divided by `vsplit`.
+		This is equivalent to concatenation along the first axis after 1-D arrays
+		of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		`vsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    Tuple containing arrays to be stacked. The arrays must have the same
-		    shape along all but the first axis.
+		    The arrays must have the same shape along all but the first axis.
+		    1-D arrays must have the same length.
 		
 		Returns
 		-------
 		stacked : ndarray
-		    The array formed by stacking the given arrays.
+		    The array formed by stacking the given arrays, will be at least 2-D.
 		
 		See Also
 		--------
@@ -12974,11 +13612,6 @@ package numpy.core;
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -13063,7 +13696,7 @@ package numpy.core;
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
-		       [False,  True, False]], dtype=bool)
+		       [False,  True, False]])
 		>>> np.where(ix)
 		(array([1, 1, 2]), array([0, 1, 1]))
 	**/
@@ -13075,14 +13708,15 @@ package numpy.core;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -13092,17 +13726,16 @@ package numpy.core;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))
@@ -13150,11 +13783,10 @@ package numpy.core;
 		
 		See Also
 		--------
-		ones_like : Return an array of ones with shape and type of input.
 		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		zeros : Return a new array setting values to zero.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
 		
 		Examples
 		--------
@@ -13167,7 +13799,7 @@ package numpy.core;
 		array([[0, 0, 0],
 		       [0, 0, 0]])
 		
-		>>> y = np.arange(3, dtype=np.float)
+		>>> y = np.arange(3, dtype=float)
 		>>> y
 		array([ 0.,  1.,  2.])
 		>>> np.zeros_like(y)

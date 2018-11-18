@@ -4,10 +4,6 @@ package tensorflow.contrib.specs.python;
 	static public function Ap(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Bn(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Cl(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		2D LSTM with 3x3 pre-convolution.
-	**/
-	static public function Clstm2(n:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Cm(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Cr(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Cs(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
@@ -69,11 +65,6 @@ package tensorflow.contrib.specs.python;
 	**/
 	static public function Li(lo:Dynamic, hi:Dynamic):Dynamic;
 	static public function Lrn(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	static public function Lstm1(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	static public function Lstm1to0(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	static public function Lstm2(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	static public function Lstm2to0(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	static public function Lstm2to1(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Mp(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var NEGATIVE_INFINITY : Dynamic;
 	static public var NaN : Dynamic;
@@ -92,7 +83,6 @@ package tensorflow.contrib.specs.python;
 	static public function Sig(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Smax(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Squeeze(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	static public function Ssm(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Tanh(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function Transpose(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**

@@ -15,7 +15,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -62,9 +62,9 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		  time_major: Python bool.  Whether the tensors in `inputs` are time major.
 		    If `False` (default), they are assumed to be batch major.
 		  seed: The sampling seed.
-		  next_input_layer: (Optional) An instance of `tf.layers.Layer`, i.e.,
-		    `tf.layers.Dense`.  Optional layer to apply to the RNN output to create
-		    the next input.
+		  next_inputs_fn: (Optional) callable to apply to the RNN outputs to create
+		    the next input when sampling. If `None` (default), the RNN outputs will
+		    be used as the next inputs.
 		  auxiliary_inputs: An optional (structure of) auxiliary input tensors with
 		    a shape that matches `inputs` in all but (potentially) the final
 		    dimension. These tensors will be concatenated to the sampled output or
@@ -75,7 +75,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		  ValueError: if `sampling_probability` is not a scalar or vector.
 	**/
 	@:native("__init__")
-	public function ___init__(inputs:Dynamic, sequence_length:Dynamic, sampling_probability:Dynamic, ?time_major:Dynamic, ?seed:Dynamic, ?next_input_layer:Dynamic, ?auxiliary_inputs:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(inputs:Dynamic, sequence_length:Dynamic, sampling_probability:Dynamic, ?time_major:Dynamic, ?seed:Dynamic, ?next_inputs_fn:Dynamic, ?auxiliary_inputs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Initializer.
 		
@@ -87,9 +87,9 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		  time_major: Python bool.  Whether the tensors in `inputs` are time major.
 		    If `False` (default), they are assumed to be batch major.
 		  seed: The sampling seed.
-		  next_input_layer: (Optional) An instance of `tf.layers.Layer`, i.e.,
-		    `tf.layers.Dense`.  Optional layer to apply to the RNN output to create
-		    the next input.
+		  next_inputs_fn: (Optional) callable to apply to the RNN outputs to create
+		    the next input when sampling. If `None` (default), the RNN outputs will
+		    be used as the next inputs.
 		  auxiliary_inputs: An optional (structure of) auxiliary input tensors with
 		    a shape that matches `inputs` in all but (potentially) the final
 		    dimension. These tensors will be concatenated to the sampled output or
@@ -99,14 +99,14 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		Raises:
 		  ValueError: if `sampling_probability` is not a scalar or vector.
 	**/
-	public function new(inputs:Dynamic, sequence_length:Dynamic, sampling_probability:Dynamic, ?time_major:Dynamic, ?seed:Dynamic, ?next_input_layer:Dynamic, ?auxiliary_inputs:Dynamic, ?name:Dynamic):Void;
+	public function new(inputs:Dynamic, sequence_length:Dynamic, sampling_probability:Dynamic, ?time_major:Dynamic, ?seed:Dynamic, ?next_inputs_fn:Dynamic, ?auxiliary_inputs:Dynamic, ?name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -157,7 +157,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -176,6 +176,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		Returns `(initial_finished, initial_inputs)`.
 	**/
 	public function initialize(?name:Dynamic):Dynamic;
+	public var inputs : Dynamic;
 	/**
 		next_inputs_fn for TrainingHelper.
 	**/
@@ -184,4 +185,17 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		Returns `sample_ids`.
 	**/
 	public function sample(time:Dynamic, outputs:Dynamic, state:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		DType of tensor returned by `sample`.
+		
+		Returns a DType.
+	**/
+	public var sample_ids_dtype : Dynamic;
+	/**
+		Shape of tensor returned by `sample`, excluding the batch dimension.
+		
+		Returns a `TensorShape`.
+	**/
+	public var sample_ids_shape : Dynamic;
+	public var sequence_length : Dynamic;
 }

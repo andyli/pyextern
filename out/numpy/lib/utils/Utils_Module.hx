@@ -135,9 +135,9 @@ package numpy.lib.utils;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -328,9 +328,9 @@ package numpy.lib.utils;
 		
 		Examples
 		--------
-		>>> np.issubclass_(np.int32, np.int)
+		>>> np.issubclass_(np.int32, int)
 		True
-		>>> np.issubclass_(np.int32, np.float)
+		>>> np.issubclass_(np.int32, float)
 		False
 	**/
 	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Bool;
@@ -353,7 +353,7 @@ package numpy.lib.utils;
 		
 		Examples
 		--------
-		>>> np.issubdtype('S1', str)
+		>>> np.issubdtype('S1', np.string_)
 		True
 		>>> np.issubdtype(np.float64, np.float32)
 		False
@@ -380,16 +380,16 @@ package numpy.lib.utils;
 		--------
 		>>> np.issubsctype('S8', str)
 		True
-		>>> np.issubsctype(np.array([1]), np.int)
+		>>> np.issubsctype(np.array([1]), int)
 		True
-		>>> np.issubsctype(np.array([1]), np.float)
+		>>> np.issubsctype(np.array([1]), float)
 		False
 	**/
 	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Do a keyword search on docstrings.
 		
-		A list of of objects that matched the search is displayed,
+		A list of objects that matched the search is displayed,
 		sorted by relevance. All given keywords need to be found in the
 		docstring for it to be returned as a result, but the order does
 		not matter.

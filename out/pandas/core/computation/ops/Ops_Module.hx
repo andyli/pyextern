@@ -113,6 +113,7 @@ package pandas.core.computation.ops;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_term(obj:Dynamic):Dynamic;

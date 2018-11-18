@@ -9,9 +9,6 @@ package matplotlib.tri.triplot;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Draw a unstructured triangular grid as lines and/or markers.
 		
@@ -43,11 +40,6 @@ package matplotlib.tri.triplot;
 		
 		    - the lines plotted for triangles edges
 		    - the markers plotted for triangles nodes
-		
-		**Example:**
-		
-		    .. plot:: mpl_examples/pylab_examples/triplot_demo.py
 	**/
 	static public function triplot(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

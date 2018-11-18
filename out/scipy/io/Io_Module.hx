@@ -18,9 +18,9 @@ package scipy.io;
 		
 		Parameters
 		----------
-		file : str-like or file-like
-		    If a string-like object, file is the name of the file to read. If a
-		    file-like object, the data are read from it.
+		path_or_open_file : path-like or file-like
+		    If a file-like object, it is used as-is. Otherwise it is opened
+		    before reading.
 		
 		Returns
 		-------
@@ -36,15 +36,15 @@ package scipy.io;
 		    - integer for pointer/indices
 		    - exponential format for float values, and int format
 	**/
-	static public function hb_read(file:Dynamic):Dynamic;
+	static public function hb_read(path_or_open_file:Dynamic):Dynamic;
 	/**
 		Write HB-format file.
 		
 		Parameters
 		----------
-		file : str-like or file-like
-		    if a string-like object, file is the name of the file to read. If a
-		    file-like object, the data are read from it.
+		path_or_open_file : path-like or file-like
+		    If a file-like object, it is used as-is. Otherwise it is opened
+		    before writing.
 		m : sparse-matrix
 		    the sparse matrix to write
 		hb_info : HBInfo
@@ -63,7 +63,7 @@ package scipy.io;
 		    - integer for pointer/indices
 		    - exponential format for float values, and int format
 	**/
-	static public function hb_write(file:Dynamic, m:Dynamic, ?hb_info:Dynamic):Dynamic;
+	static public function hb_write(path_or_open_file:Dynamic, m:Dynamic, ?hb_info:Dynamic):Dynamic;
 	/**
 		Load MATLAB file.
 		
@@ -262,68 +262,7 @@ package scipy.io;
 		mio5.MatFile5Writer
 	**/
 	static public function savemat(file_name:Dynamic, mdict:Dynamic, ?appendmat:Dynamic, ?format:Dynamic, ?long_field_names:Dynamic, ?do_compression:Dynamic, ?oned_as:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		List variables inside a MATLAB file.
 		

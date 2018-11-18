@@ -1328,7 +1328,7 @@ package tensorflow.contrib.labeled_tensor;
 	/**
 		Slice out a subset of the tensor.
 		
-		This is an analogue of tf.slice.
+		This is an analog of tf.slice.
 		For example:
 		>>> tensor = tf.reshape(tf.range(0, 6), [3, 2])
 		>>> labeled_tensor = lt.LabeledTensor(tensor, ['a', ('b', ['foo', 'bar'])])

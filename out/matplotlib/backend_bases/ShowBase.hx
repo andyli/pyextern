@@ -1,16 +1,31 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_bases;
 @:pythonImport("matplotlib.backend_bases", "ShowBase") extern class ShowBase {
+	static public var FigureCanvas : Dynamic;
 	/**
-		Show all figures.  If *block* is not None, then
-		it is a boolean that overrides all other factors
-		determining whether show blocks by calling mainloop().
-		The other factors are:
-		it does not block if run inside ipython's "%pylab" mode
-		it does not block in interactive mode.
+		Helper class for pyplot mode, wraps everything up into a neat bundle
+		
+		Attributes
+		----------
+		canvas : :class:`FigureCanvasBase`
+		    The backend-specific canvas instance
+		
+		num : int or str
+		    The figure number
+		
+		key_press_handler_id : int
+		    The default key handler cid, when using the toolmanager.  Can be used
+		    to disable default key press handling ::
+		
+		        figure.canvas.mpl_disconnect(
+		            figure.canvas.manager.key_press_handler_id)
+	**/
+	static public function FigureManager(canvas:Dynamic, num:Dynamic):Dynamic;
+	/**
+		Call self as a function.
 	**/
 	public function __call__(?block:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -61,7 +76,7 @@ package matplotlib.backend_bases;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -112,10 +127,33 @@ package matplotlib.backend_bases;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function mainloop():Dynamic;
+	static public var backend_version : Dynamic;
+	static public function draw_if_interactive():Dynamic;
+	static public function export(cls:Dynamic):Dynamic;
+	static public var mainloop : Dynamic;
+	/**
+		Create a new figure manager instance.
+		        
+	**/
+	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Create a new figure manager instance for the given figure.
+		        
+	**/
+	static public function new_figure_manager_given_figure(num:Dynamic, figure:Dynamic):Dynamic;
+	static public var required_interactive_framework : Dynamic;
+	/**
+		Show all figures.
+		
+		`show` blocks by calling `mainloop` if *block* is ``True``, or if it
+		is ``None`` and we are neither in IPython's ``%pylab`` mode, nor in
+		`interactive` mode.
+	**/
+	static public function show(?block:Dynamic):Dynamic;
+	static public var trigger_manager_draw : Dynamic;
 }

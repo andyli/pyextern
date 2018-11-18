@@ -71,6 +71,10 @@ package scipy.fftpack.realtransforms;
 	static public function _get_dct_fun(type:Dynamic, dtype:Dynamic):Dynamic;
 	static public function _get_dst_fun(type:Dynamic, dtype:Dynamic):Dynamic;
 	static public function _get_norm_mode(normalize:Dynamic):Dynamic;
+	/**
+		Handle shape and axes arguments for dctn, idctn, dstn, idstn.
+	**/
+	static public function _init_nd_shape_and_axes(x:Dynamic, shape:Dynamic, axes:Dynamic):Dynamic;
 	static public function _raw_dct(x0:Dynamic, type:Dynamic, n:Dynamic, axis:Dynamic, nm:Dynamic, overwrite_x:Dynamic):Dynamic;
 	static public function _raw_dst(x0:Dynamic, type:Dynamic, n:Dynamic, axis:Dynamic, nm:Dynamic, overwrite_x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -184,6 +188,51 @@ package scipy.fftpack.realtransforms;
 		array([ 30.,  -8.,   6.,  -2.])
 	**/
 	static public function dct(x:Dynamic, ?type:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
+	/**
+		Return multidimensional Discrete Cosine Transform along the specified axes.
+		
+		Parameters
+		----------
+		x : array_like
+		    The input array.
+		type : {1, 2, 3}, optional
+		    Type of the DCT (see Notes). Default type is 2.
+		shape : tuple of ints, optional
+		    The shape of the result.  If both `shape` and `axes` (see below) are
+		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
+		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
+		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
+		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
+		    length ``shape[i]``.
+		axes : tuple or None, optional
+		    Axes along which the DCT is computed; the default is over all axes.
+		norm : {None, 'ortho'}, optional
+		    Normalization mode (see Notes). Default is None.
+		overwrite_x : bool, optional
+		    If True, the contents of `x` can be destroyed; the default is False.
+		
+		Returns
+		-------
+		y : ndarray of real
+		    The transformed input array.
+		
+		See Also
+		--------
+		idctn : Inverse multidimensional DCT
+		
+		Notes
+		-----
+		For full details of the DCT types and normalization modes, as well as
+		references, see `dct`.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import dctn, idctn
+		>>> y = np.random.randn(16, 16)
+		>>> np.allclose(y, idctn(dctn(y, norm='ortho'), norm='ortho'))
+		True
+	**/
+	static public function dctn(x:Dynamic, ?type:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the Discrete Sine Transform of arbitrary type sequence x.
@@ -274,6 +323,51 @@ package scipy.fftpack.realtransforms;
 	**/
 	static public function dst(x:Dynamic, ?type:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
+		Return multidimensional Discrete Sine Transform along the specified axes.
+		
+		Parameters
+		----------
+		x : array_like
+		    The input array.
+		type : {1, 2, 3}, optional
+		    Type of the DCT (see Notes). Default type is 2.
+		shape : tuple of ints, optional
+		    The shape of the result.  If both `shape` and `axes` (see below) are
+		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
+		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
+		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
+		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
+		    length ``shape[i]``.
+		axes : tuple or None, optional
+		    Axes along which the DCT is computed; the default is over all axes.
+		norm : {None, 'ortho'}, optional
+		    Normalization mode (see Notes). Default is None.
+		overwrite_x : bool, optional
+		    If True, the contents of `x` can be destroyed; the default is False.
+		
+		Returns
+		-------
+		y : ndarray of real
+		    The transformed input array.
+		
+		See Also
+		--------
+		idstn : Inverse multidimensional DST
+		
+		Notes
+		-----
+		For full details of the DST types and normalization modes, as well as
+		references, see `dst`.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import dstn, idstn
+		>>> y = np.random.randn(16, 16)
+		>>> np.allclose(y, idstn(dstn(y, norm='ortho'), norm='ortho'))
+		True
+	**/
+	static public function dstn(x:Dynamic, ?type:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
+	/**
 		Return the Inverse Discrete Cosine Transform of an arbitrary type sequence.
 		
 		Parameters
@@ -328,6 +422,51 @@ package scipy.fftpack.realtransforms;
 	**/
 	static public function idct(x:Dynamic, ?type:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
+		Return multidimensional Discrete Cosine Transform along the specified axes.
+		
+		Parameters
+		----------
+		x : array_like
+		    The input array.
+		type : {1, 2, 3}, optional
+		    Type of the DCT (see Notes). Default type is 2.
+		shape : tuple of ints, optional
+		    The shape of the result.  If both `shape` and `axes` (see below) are
+		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
+		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
+		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
+		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
+		    length ``shape[i]``.
+		axes : tuple or None, optional
+		    Axes along which the IDCT is computed; the default is over all axes.
+		norm : {None, 'ortho'}, optional
+		    Normalization mode (see Notes). Default is None.
+		overwrite_x : bool, optional
+		    If True, the contents of `x` can be destroyed; the default is False.
+		
+		Returns
+		-------
+		y : ndarray of real
+		    The transformed input array.
+		
+		See Also
+		--------
+		dctn : multidimensional DCT
+		
+		Notes
+		-----
+		For full details of the IDCT types and normalization modes, as well as
+		references, see `idct`.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import dctn, idctn
+		>>> y = np.random.randn(16, 16)
+		>>> np.allclose(y, idctn(dctn(y, norm='ortho'), norm='ortho'))
+		True
+	**/
+	static public function idctn(x:Dynamic, ?type:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
+	/**
 		Return the Inverse Discrete Sine Transform of an arbitrary type sequence.
 		
 		Parameters
@@ -368,5 +507,50 @@ package scipy.fftpack.realtransforms;
 		.. versionadded:: 0.11.0
 	**/
 	static public function idst(x:Dynamic, ?type:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
+	/**
+		Return multidimensional Discrete Sine Transform along the specified axes.
+		
+		Parameters
+		----------
+		x : array_like
+		    The input array.
+		type : {1, 2, 3}, optional
+		    Type of the DCT (see Notes). Default type is 2.
+		shape : tuple of ints, optional
+		    The shape of the result.  If both `shape` and `axes` (see below) are
+		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
+		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
+		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
+		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
+		    length ``shape[i]``.
+		axes : tuple or None, optional
+		    Axes along which the IDCT is computed; the default is over all axes.
+		norm : {None, 'ortho'}, optional
+		    Normalization mode (see Notes). Default is None.
+		overwrite_x : bool, optional
+		    If True, the contents of `x` can be destroyed; the default is False.
+		
+		Returns
+		-------
+		y : ndarray of real
+		    The transformed input array.
+		
+		See Also
+		--------
+		dctn : multidimensional DST
+		
+		Notes
+		-----
+		For full details of the IDST types and normalization modes, as well as
+		references, see `idst`.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import dstn, idstn
+		>>> y = np.random.randn(16, 16)
+		>>> np.allclose(y, idstn(dstn(y, norm='ortho'), norm='ortho'))
+		True
+	**/
+	static public function idstn(x:Dynamic, ?type:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?norm:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

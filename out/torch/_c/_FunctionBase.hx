@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch._c;
 @:pythonImport("torch._C", "_FunctionBase") extern class _FunctionBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -51,7 +51,7 @@ package torch._c;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -101,19 +101,20 @@ package torch._c;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _do_backward(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _do_forward(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _is_tracing : Dynamic;
 	public function _register_hook_dict(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function apply(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var dirty_tensors : Dynamic;
+	public var metadata : Dynamic;
 	public var needs_input_grad : Dynamic;
+	public var next_functions : Dynamic;
 	public var non_differentiable : Dynamic;
-	public var num_inputs : Dynamic;
-	public var num_outputs : Dynamic;
-	public var previous_functions : Dynamic;
 	public function register_hook(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var requires_grad : Dynamic;
 	public var saved_tensors : Dynamic;
-	public var shared_pairs : Dynamic;
+	public var saved_variables : Dynamic;
 	public var to_save : Dynamic;
 }

@@ -5,7 +5,7 @@ package tensorflow.python.debug.cli.readline_ui;
 	static public var CLI_PROMPT : Dynamic;
 	static public var ERROR_MESSAGE_PREFIX : Dynamic;
 	static public var INFO_MESSAGE_PREFIX : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,23 +46,27 @@ package tensorflow.python.debug.cli.readline_ui;
 		
 		Args:
 		  on_ui_exit: (`Callable`) the callback to be called when the UI exits.
+		  config: An instance of `cli_config.CLIConfig()` carrying user-facing
+		    configurations.
 	**/
 	@:native("__init__")
-	public function ___init__(?on_ui_exit:Dynamic):Dynamic;
+	public function ___init__(?on_ui_exit:Dynamic, ?config:Dynamic):Dynamic;
 	/**
 		Constructor of the base class.
 		
 		Args:
 		  on_ui_exit: (`Callable`) the callback to be called when the UI exits.
+		  config: An instance of `cli_config.CLIConfig()` carrying user-facing
+		    configurations.
 	**/
-	public function new(?on_ui_exit:Dynamic):Void;
+	public function new(?on_ui_exit:Dynamic, ?config:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -113,7 +117,7 @@ package tensorflow.python.debug.cli.readline_ui;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -140,6 +144,10 @@ package tensorflow.python.debug.cli.readline_ui;
 		    If text == "", returns "".
 	**/
 	public function _analyze_tab_complete_input(text:Dynamic):Dynamic;
+	/**
+		Command handler for the "config" command.
+	**/
+	public function _config_command_handler(args:Dynamic, ?screen_info:Dynamic):Dynamic;
 	/**
 		Dispatch user command.
 		
@@ -170,6 +178,10 @@ package tensorflow.python.debug.cli.readline_ui;
 	public function _parse_command(command:Dynamic):Dynamic;
 	public function _readline_complete(text:Dynamic, state:Dynamic):Dynamic;
 	public function _ui_loop():Dynamic;
+	/**
+		Obtain the CLIConfig of this `BaseUI` instance.
+	**/
+	public var config : Dynamic;
 	/**
 		A wrapper around CommandHandlerRegistry.register_command_handler().
 		

@@ -44,7 +44,7 @@ package matplotlib._image;
 	**/
 	static public function pcolor2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		resample(input_array, output_array, matrix, interpolation=NEAREST, alpha=1.0, norm=0, radius=1)
+		resample(input_array, output_array, matrix, interpolation=NEAREST, alpha=1.0, norm=False, radius=1)
 		
 		Resample input_array, blending it in-place into output_array, using an
 		affine transformation.
@@ -78,8 +78,8 @@ package matplotlib._image;
 		    The level of transparency to apply.  1.0 is completely opaque.
 		    0.0 is completely transparent.
 		
-		norm : float, optional
-		    The norm for the interpolation function.  Default is 0.
+		norm : bool, optional
+		    Whether to norm the interpolation function.  Default is `False`.
 		
 		radius: float, optional
 		    The radius of the kernel, if method is SINC, LANCZOS or BLACKMAN.

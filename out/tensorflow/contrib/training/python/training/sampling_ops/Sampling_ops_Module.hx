@@ -49,7 +49,7 @@ package tensorflow.contrib.training.python.training.sampling_ops;
 		```
 		
 		
-		A solution for a_i in terms of the other variabes is the following:
+		A solution for a_i in terms of the other variables is the following:
 		  ```a_i = (t_i / p_i) / max_i[t_i / p_i]```
 	**/
 	static public function _calculate_acceptance_probabilities(init_probs:Dynamic, target_probs:Dynamic):Dynamic;
@@ -128,7 +128,7 @@ package tensorflow.contrib.training.python.training.sampling_ops;
 		  tensors: List of tensors for data. All tensors are either one item or a
 		      batch, according to enqueue_many.
 		  labels: Tensor for label of data. Label is a single integer or a batch,
-		      depending on enqueue_many. It is not a one-hot vector.
+		      depending on `enqueue_many`. It is not a one-hot vector.
 		  target_probs: Target class proportions in batch. An object whose type has a
 		      registered Tensor conversion function.
 		  batch_size: Size of batch to be returned.
@@ -142,9 +142,10 @@ package tensorflow.contrib.training.python.training.sampling_ops;
 		      examples and for the final queue with the proper class proportions.
 		  name: Optional prefix for ops created by this function.
 		Raises:
-		  ValueError: enqueue_many is True and labels doesn't have a batch
-		      dimension, or if enqueue_many is False and labels isn't a scalar.
-		  ValueError: enqueue_many is True, and batch dimension on data and labels
+		  ValueError: If `tensors` isn't iterable.
+		  ValueError: `enqueue_many` is True and labels doesn't have a batch
+		      dimension, or if `enqueue_many` is False and labels isn't a scalar.
+		  ValueError: `enqueue_many` is True, and batch dimension on data and labels
 		      don't match.
 		  ValueError: if probs don't sum to one.
 		  ValueError: if a zero initial probability class has a nonzero target

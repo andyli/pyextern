@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework.sparse_tensor;
 @:pythonImport("tensorflow.python.framework.sparse_tensor", "SparseTensor") extern class SparseTensor {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -22,7 +22,7 @@ package tensorflow.python.framework.sparse_tensor;
 		  sp_indices: A `Tensor` of type `int64`.
 		    2-D.  `N x R` matrix with the indices of non-empty values in a
 		    SparseTensor, possibly not in canonical ordering.
-		  sp_values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		  sp_values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
 		    1-D.  `N` non-empty values corresponding to `sp_indices`.
 		  sp_shape: A `Tensor` of type `int64`.
 		    1-D.  Shape of the input SparseTensor.
@@ -32,9 +32,8 @@ package tensorflow.python.framework.sparse_tensor;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `sp_values`.
-		  1-D.  The `N` values that are operated on.
 	**/
-	public function __div__(y:Dynamic):Dynamic;
+	static public function __div__(sp_x:Dynamic, y:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
@@ -67,9 +66,6 @@ package tensorflow.python.framework.sparse_tensor;
 		  indices: A 2-D int64 tensor of shape `[N, ndims]`.
 		  values: A 1-D tensor of any type and shape `[N]`.
 		  dense_shape: A 1-D int64 tensor of shape `[ndims]`.
-		
-		Returns:
-		  A `SparseTensor`.
 	**/
 	@:native("__init__")
 	public function ___init__(indices:Dynamic, values:Dynamic, dense_shape:Dynamic):Dynamic;
@@ -80,9 +76,6 @@ package tensorflow.python.framework.sparse_tensor;
 		  indices: A 2-D int64 tensor of shape `[N, ndims]`.
 		  values: A 1-D tensor of any type and shape `[N]`.
 		  dense_shape: A 1-D int64 tensor of shape `[ndims]`.
-		
-		Returns:
-		  A `SparseTensor`.
 	**/
 	public function new(indices:Dynamic, values:Dynamic, dense_shape:Dynamic):Void;
 	/**
@@ -91,7 +84,7 @@ package tensorflow.python.framework.sparse_tensor;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,7 +108,7 @@ package tensorflow.python.framework.sparse_tensor;
 		  sp_indices: A `Tensor` of type `int64`.
 		    2-D.  `N x R` matrix with the indices of non-empty values in a
 		    SparseTensor, possibly not in canonical ordering.
-		  sp_values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int64`, `int32`, `uint8`, `uint16`, `int16`, `int8`, `complex64`, `complex128`, `qint8`, `quint8`, `qint32`, `half`.
+		  sp_values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
 		    1-D.  `N` non-empty values corresponding to `sp_indices`.
 		  sp_shape: A `Tensor` of type `int64`.
 		    1-D.  Shape of the input SparseTensor.
@@ -125,9 +118,8 @@ package tensorflow.python.framework.sparse_tensor;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `sp_values`.
-		  1-D.  The `N` values that are operated on.
 	**/
-	public function __mul__(y:Dynamic):Dynamic;
+	static public function __mul__(sp_x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Return self!=value.
 	**/
@@ -169,16 +161,25 @@ package tensorflow.python.framework.sparse_tensor;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Internal helper function for 'sp_t / dense_t'.
 	**/
-	public function __truediv__(y:Dynamic):Dynamic;
+	static public function __truediv__(sp_x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public function _override_operator(operator:Dynamic, func:Dynamic):Dynamic;
+	static public function _override_operator(_operator:Dynamic, func:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Returns a list of `Operation`s that consume this `SparseTensor`.
+		
+		Returns:
+		  A list of `Operation`s.
+	**/
+	public function consumers():Dynamic;
 	/**
 		A 1-D Tensor of int64 representing the shape of the dense tensor.
 	**/
@@ -200,7 +201,7 @@ package tensorflow.python.framework.sparse_tensor;
 		
 		Args:
 		  feed_dict: A dictionary that maps `Tensor` objects to feed values.
-		    See @{tf.Session.run} for a
+		    See `tf.Session.run` for a
 		    description of the valid feed values.
 		  session: (Optional.) The `Session` to be used to evaluate this sparse
 		    tensor. If none, the default session will be used.
@@ -233,6 +234,13 @@ package tensorflow.python.framework.sparse_tensor;
 		The `Operation` that produces `values` as an output.
 	**/
 	public var op : Dynamic;
+	/**
+		Get the `TensorShape` representing the shape of the dense tensor.
+		
+		Returns:
+		  A `TensorShape` object.
+	**/
+	public var shape : Dynamic;
 	/**
 		The non-zero values in the represented dense tensor.
 		

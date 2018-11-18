@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.io.harwell_boeing.hb;
 @:pythonImport("scipy.io.harwell_boeing.hb", "HBInfo") extern class HBInfo {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package scipy.io.harwell_boeing.hb;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package scipy.io.harwell_boeing.hb;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -134,7 +134,7 @@ package scipy.io.harwell_boeing.hb;
 	**/
 	static public function from_data(m:Dynamic, ?title:Dynamic, ?key:Dynamic, ?mxtype:Dynamic, ?fmt:Dynamic):Dynamic;
 	/**
-		Create a HBInfo instance from a file object containg a matrix in the
+		Create a HBInfo instance from a file object containing a matrix in the
 		HB format.
 		
 		Parameters

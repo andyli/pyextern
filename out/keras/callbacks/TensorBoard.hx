@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.callbacks;
 @:pythonImport("keras.callbacks", "TensorBoard") extern class TensorBoard {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package keras.callbacks;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic):Dynamic;
+	public function ___init__(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic, ?embeddings_data:Dynamic, ?update_freq:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic):Void;
+	public function new(?log_dir:Dynamic, ?histogram_freq:Dynamic, ?batch_size:Dynamic, ?write_graph:Dynamic, ?write_grads:Dynamic, ?write_images:Dynamic, ?embeddings_freq:Dynamic, ?embeddings_layer_names:Dynamic, ?embeddings_metadata:Dynamic, ?embeddings_data:Dynamic, ?update_freq:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,12 @@ package keras.callbacks;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _write_logs(logs:Dynamic, index:Dynamic):Dynamic;
 	public function on_batch_begin(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_batch_end(batch:Dynamic, ?logs:Dynamic):Dynamic;
 	public function on_epoch_begin(epoch:Dynamic, ?logs:Dynamic):Dynamic;

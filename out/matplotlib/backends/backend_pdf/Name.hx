@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_pdf;
 @:pythonImport("matplotlib.backends.backend_pdf", "Name") extern class Name {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -15,23 +15,23 @@ package matplotlib.backends.backend_pdf;
 	/**
 		Return self==value.
 	**/
-	public function __eq__(value:Dynamic):Dynamic;
+	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return self>=value.
+		Return a >= b.  Computed by @total_ordering from (not a < b).
 	**/
-	public function __ge__(value:Dynamic):Dynamic;
+	public function __ge__(other:Dynamic, ?NotImplemented:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		Return self>value.
+		Return a > b.  Computed by @total_ordering from (not a < b) and (a != b).
 	**/
-	public function __gt__(value:Dynamic):Dynamic;
+	public function __gt__(other:Dynamic, ?NotImplemented:Dynamic):Dynamic;
 	/**
 		Return hash(self).
 	**/
@@ -51,15 +51,15 @@ package matplotlib.backends.backend_pdf;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return self<=value.
+		Return a <= b.  Computed by @total_ordering from (a < b) or (a == b).
 	**/
-	public function __le__(value:Dynamic):Dynamic;
+	public function __le__(other:Dynamic, ?NotImplemented:Dynamic):Dynamic;
 	/**
 		Return self<value.
 	**/
-	public function __lt__(value:Dynamic):Dynamic;
+	public function __lt__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -103,7 +103,7 @@ package matplotlib.backends.backend_pdf;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _regex : Dynamic;
 	static public function hexify(match:Dynamic):Dynamic;
 	public var name : Dynamic;

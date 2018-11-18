@@ -87,6 +87,9 @@ package scipy.spatial._plotutils;
 		    Specifies the line width for polygon boundaries
 		line_alpha: float, optional
 		    Specifies the line alpha for polygon boundaries
+		point_size: float, optional
+		    Specifies the size of points
+		
 		
 		Returns
 		-------
@@ -100,6 +103,28 @@ package scipy.spatial._plotutils;
 		Notes
 		-----
 		Requires Matplotlib.
+		
+		Examples
+		--------
+		Set of point:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> points = np.random.rand(10,2) #random
+		
+		Voronoi diagram of the points:
+		
+		>>> from scipy.spatial import Voronoi, voronoi_plot_2d
+		>>> vor = Voronoi(points)
+		
+		using `voronoi_plot_2d` for visualisation:
+		
+		>>> fig = voronoi_plot_2d(vor)
+		
+		using `voronoi_plot_2d` for visualisation with enhancements:
+		
+		>>> fig = voronoi_plot_2d(vor, show_vertices=False, line_colors='orange',
+		...                 line_width=2, line_alpha=0.6, point_size=2)
+		>>> plt.show()
 	**/
 	static public function voronoi_plot_2d(vor:Dynamic, ?ax:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 }

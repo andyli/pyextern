@@ -9,91 +9,8 @@ package scipy.signal.windows;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Generic weighted sum of cosine terms window
-		
-		Parameters
-		----------
-		M : int
-		    Number of points in the output window
-		a : array_like
-		    Sequence of weighting coefficients. This uses the convention of being
-		    centered on the origin, so these will typically all be positive
-		    numbers, not alternating sign.
-		sym : bool, optional
-		    When True (default), generates a symmetric window, for use in filter
-		    design.
-		    When False, generates a periodic window, for use in spectral analysis.
-		
-		References
-		----------
-		.. [1] A. Nuttall, "Some windows with very good sidelobe behavior," IEEE
-		       Transactions on Acoustics, Speech, and Signal Processing, vol. 29,
-		       no. 1, pp. 84-91, Feb 1981. :doi:`10.1109/TASSP.1981.1163506`.
-		.. [2] Heinzel G. et al., "Spectrum and spectral density estimation by the
-		       Discrete Fourier transform (DFT), including a comprehensive list of
-		       window functions and some new flat-top windows", February 15, 2002
-		       https://holometer.fnal.gov/GH_FFT.pdf
-		
-		Examples
-		--------
-		Heinzel describes a flat-top window named "HFT90D" with formula: [2]_
-		
-		.. math::  w_j = 1 - 1.942604 \cos(z) + 1.340318 \cos(2z)
-		           - 0.440811 \cos(3z) + 0.043097 \cos(4z)
-		
-		where
-		
-		.. math::  z = \frac{2 \pi j}{N}, j = 0...N - 1
-		
-		Since this uses the convention of starting at the origin, to reproduce the
-		window, we need to convert every other coefficient to a positive number:
-		
-		>>> HFT90D = [1, 1.942604, 1.340318, 0.440811, 0.043097]
-		
-		The paper states that the highest sidelobe is at -90.2 dB.  Reproduce
-		Figure 42 by plotting the window and its frequency response, and confirm
-		the sidelobe level in red:
-		
-		>>> from scipy import signal
-		>>> from scipy.fftpack import fft, fftshift
-		>>> import matplotlib.pyplot as plt
-		
-		>>> window = signal._cos_win(1000, HFT90D, sym=False)
-		>>> plt.plot(window)
-		>>> plt.title("HFT90D window")
-		>>> plt.ylabel("Amplitude")
-		>>> plt.xlabel("Sample")
-		
-		>>> plt.figure()
-		>>> A = fft(window, 10000) / (len(window)/2.0)
-		>>> freq = np.linspace(-0.5, 0.5, len(A))
-		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
-		>>> plt.plot(freq, response)
-		>>> plt.axis([-50/1000, 50/1000, -140, 0])
-		>>> plt.title("Frequency response of the HFT90D window")
-		>>> plt.ylabel("Normalized magnitude [dB]")
-		>>> plt.xlabel("Normalized frequency [cycles per sample]")
-		>>> plt.axhline(-90.2, color='red')
-	**/
-	static public function _cos_win(M:Dynamic, a:Dynamic, ?sym:Dynamic):Dynamic;
-	/**
-		Extend window by 1 sample if needed for DFT-even symmetry
-	**/
-	static public function _extend(M:Dynamic, sym:Dynamic):Dynamic;
-	/**
-		Handle small or incorrect window lengths
-	**/
-	static public function _len_guards(M:Dynamic):Dynamic;
-	static public var _needs_param : Dynamic;
-	/**
-		Truncate window by 1 sample if needed for DFT-even symmetry
-	**/
-	static public function _truncate(w:Dynamic, needed:Dynamic):Dynamic;
-	static public var _win_equiv : Dynamic;
-	static public var _win_equiv_raw : Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Return a modified Bartlett-Hann window.
 		
@@ -569,7 +486,168 @@ package scipy.signal.windows;
 		>>> plt.show()
 	**/
 	static public function cosine(M:Dynamic, ?sym:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	/**
+		Compute the Discrete Prolate Spheroidal Sequences (DPSS).
+		
+		DPSS (or Slepian sequencies) are often used in multitaper power spectral
+		density estimation (see [1]_). The first window in the sequence can be
+		used to maximize the energy concentration in the main lobe, and is also
+		called the Slepian window.
+		
+		Parameters
+		----------
+		M : int
+		    Window length.
+		NW : float
+		    Standardized half bandwidth corresponding to ``2*NW = BW/f0 = BW*N*dt``
+		    where ``dt`` is taken as 1.
+		Kmax : int | None, optional
+		    Number of DPSS windows to return (orders ``0`` through ``Kmax-1``).
+		    If None (default), return only a single window of shape ``(M,)``
+		    instead of an array of windows of shape ``(Kmax, M)``.
+		sym : bool, optional
+		    When True (default), generates a symmetric window, for use in filter
+		    design.
+		    When False, generates a periodic window, for use in spectral analysis.
+		norm : {2, 'approximate', 'subsample'} | None, optional
+		    If 'approximate' or 'subsample', then the windows are normalized by the
+		    maximum, and a correction scale-factor for even-length windows
+		    is applied either using ``M**2/(M**2+NW)`` ("approximate") or
+		    a FFT-based subsample shift ("subsample"), see Notes for details.
+		    If None, then "approximate" is used when ``Kmax=None`` and 2 otherwise
+		    (which uses the l2 norm).
+		return_ratios : bool, optional
+		    If True, also return the concentration ratios in addition to the
+		    windows.
+		
+		Returns
+		-------
+		v : ndarray, shape (Kmax, N) or (N,)
+		    The DPSS windows. Will be 1D if `Kmax` is None.
+		r : ndarray, shape (Kmax,) or float, optional
+		    The concentration ratios for the windows. Only returned if
+		    `return_ratios` evaluates to True. Will be 0D if `Kmax` is None.
+		
+		Notes
+		-----
+		This computation uses the tridiagonal eigenvector formulation given
+		in [2]_.
+		
+		The default normalization for ``Kmax=None``, i.e. window-generation mode,
+		simply using the l-infinity norm would create a window with two unity
+		values, which creates slight normalization differences between even and odd
+		orders. The approximate correction of ``M**2/float(M**2+NW)`` for even
+		sample numbers is used to counteract this effect (see Examples below).
+		
+		For very long signals (e.g., 1e6 elements), it can be useful to compute
+		windows orders of magnitude shorter and use interpolation (e.g.,
+		`scipy.interpolate.interp1d`) to obtain tapers of length `M`,
+		but this in general will not preserve orthogonality between the tapers.
+		
+		.. versionadded:: 1.1
+		
+		References
+		----------
+		.. [1] Percival DB, Walden WT. Spectral Analysis for Physical Applications:
+		   Multitaper and Conventional Univariate Techniques.
+		   Cambridge University Press; 1993.
+		.. [2] Slepian, D. Prolate spheroidal wave functions, Fourier analysis, and
+		   uncertainty V: The discrete case. Bell System Technical Journal,
+		   Volume 57 (1978), 1371430.
+		.. [3] Kaiser, JF, Schafer RW. On the Use of the I0-Sinh Window for
+		   Spectrum Analysis. IEEE Transactions on Acoustics, Speech and
+		   Signal Processing. ASSP-28 (1): 105-107; 1980.
+		
+		Examples
+		--------
+		We can compare the window to `kaiser`, which was invented as an alternative
+		that was easier to calculate [3]_ (example adapted from
+		`here <https://ccrma.stanford.edu/~jos/sasp/Kaiser_DPSS_Windows_Compared.html>`_):
+		
+		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
+		>>> from scipy.signal import windows, freqz
+		>>> N = 51
+		>>> fig, axes = plt.subplots(3, 2, figsize=(5, 7))
+		>>> for ai, alpha in enumerate((1, 3, 5)):
+		...     win_dpss = windows.dpss(N, alpha)
+		...     beta = alpha*np.pi
+		...     win_kaiser = windows.kaiser(N, beta)
+		...     for win, c in ((win_dpss, 'k'), (win_kaiser, 'r')):
+		...         win /= win.sum()
+		...         axes[ai, 0].plot(win, color=c, lw=1.)
+		...         axes[ai, 0].set(xlim=[0, N-1], title=r'$\alpha$ = %s' % alpha,
+		...                         ylabel='Amplitude')
+		...         w, h = freqz(win)
+		...         axes[ai, 1].plot(w, 20 * np.log10(np.abs(h)), color=c, lw=1.)
+		...         axes[ai, 1].set(xlim=[0, np.pi],
+		...                         title=r'$\beta$ = %0.2f' % beta,
+		...                         ylabel='Magnitude (dB)')
+		>>> for ax in axes.ravel():
+		...     ax.grid(True)
+		>>> axes[2, 1].legend(['DPSS', 'Kaiser'])
+		>>> fig.tight_layout()
+		>>> plt.show()
+		
+		And here are examples of the first four windows, along with their
+		concentration ratios:
+		
+		>>> M = 512
+		>>> NW = 2.5
+		>>> win, eigvals = windows.dpss(M, NW, 4, return_ratios=True)
+		>>> fig, ax = plt.subplots(1)
+		>>> ax.plot(win.T, linewidth=1.)
+		>>> ax.set(xlim=[0, M-1], ylim=[-0.1, 0.1], xlabel='Samples',
+		...        title='DPSS, M=%d, NW=%0.1f' % (M, NW))
+		>>> ax.legend(['win[%d] (%0.4f)' % (ii, ratio)
+		...            for ii, ratio in enumerate(eigvals)])
+		>>> fig.tight_layout()
+		>>> plt.show()
+		
+		Using a standard :math:`l_{\infty}` norm would produce two unity values
+		for even `M`, but only one unity value for odd `M`. This produces uneven
+		window power that can be counteracted by the approximate correction
+		``M**2/float(M**2+NW)``, which can be selected by using
+		``norm='approximate'`` (which is the same as ``norm=None`` when
+		``Kmax=None``, as is the case here). Alternatively, the slower
+		``norm='subsample'`` can be used, which uses subsample shifting in the
+		frequency domain (FFT) to compute the correction:
+		
+		>>> Ms = np.arange(1, 41)
+		>>> factors = (50, 20, 10, 5, 2.0001)
+		>>> energy = np.empty((3, len(Ms), len(factors)))
+		>>> for mi, M in enumerate(Ms):
+		...     for fi, factor in enumerate(factors):
+		...         NW = M / float(factor)
+		...         # Corrected using empirical approximation (default)
+		...         win = windows.dpss(M, NW)
+		...         energy[0, mi, fi] = np.sum(win ** 2) / np.sqrt(M)
+		...         # Corrected using subsample shifting
+		...         win = windows.dpss(M, NW, norm='subsample')
+		...         energy[1, mi, fi] = np.sum(win ** 2) / np.sqrt(M)
+		...         # Uncorrected (using l-infinity norm)
+		...         win /= win.max()
+		...         energy[2, mi, fi] = np.sum(win ** 2) / np.sqrt(M)
+		>>> fig, ax = plt.subplots(1)
+		>>> hs = ax.plot(Ms, energy[2], '-o', markersize=4,
+		...              markeredgecolor='none')
+		>>> leg = [hs[-1]]
+		>>> for hi, hh in enumerate(hs):
+		...     h1 = ax.plot(Ms, energy[0, :, hi], '-o', markersize=4,
+		...                  color=hh.get_color(), markeredgecolor='none',
+		...                  alpha=0.66)
+		...     h2 = ax.plot(Ms, energy[1, :, hi], '-o', markersize=4,
+		...                  color=hh.get_color(), markeredgecolor='none',
+		...                  alpha=0.33)
+		...     if hi == len(hs) - 1:
+		...         leg.insert(0, h1[0])
+		...         leg.insert(0, h2[0])
+		>>> ax.set(xlabel='M (samples)', ylabel=r'Power / $\sqrt{M}$')
+		>>> ax.legend(leg, ['Uncorrected', r'Corrected: $\frac{M^2}{M^2+NW}$',
+		...                 'Corrected (subsample)'])
+		>>> fig.tight_layout()
+	**/
+	static public function dpss(M:Dynamic, NW:Dynamic, ?Kmax:Dynamic, ?sym:Dynamic, ?norm:Dynamic, ?return_ratios:Dynamic):Dynamic;
 	/**
 		Return an exponential (or Poisson) window.
 		
@@ -755,6 +833,74 @@ package scipy.signal.windows;
 	**/
 	static public function gaussian(M:Dynamic, std:Dynamic, ?sym:Dynamic):Dynamic;
 	/**
+		Generic weighted sum of cosine terms window
+		
+		Parameters
+		----------
+		M : int
+		    Number of points in the output window
+		a : array_like
+		    Sequence of weighting coefficients. This uses the convention of being
+		    centered on the origin, so these will typically all be positive
+		    numbers, not alternating sign.
+		sym : bool, optional
+		    When True (default), generates a symmetric window, for use in filter
+		    design.
+		    When False, generates a periodic window, for use in spectral analysis.
+		
+		References
+		----------
+		.. [1] A. Nuttall, "Some windows with very good sidelobe behavior," IEEE
+		       Transactions on Acoustics, Speech, and Signal Processing, vol. 29,
+		       no. 1, pp. 84-91, Feb 1981. :doi:`10.1109/TASSP.1981.1163506`.
+		.. [2] Heinzel G. et al., "Spectrum and spectral density estimation by the
+		       Discrete Fourier transform (DFT), including a comprehensive list of
+		       window functions and some new flat-top windows", February 15, 2002
+		       https://holometer.fnal.gov/GH_FFT.pdf
+		
+		Examples
+		--------
+		Heinzel describes a flat-top window named "HFT90D" with formula: [2]_
+		
+		.. math::  w_j = 1 - 1.942604 \cos(z) + 1.340318 \cos(2z)
+		           - 0.440811 \cos(3z) + 0.043097 \cos(4z)
+		
+		where
+		
+		.. math::  z = \frac{2 \pi j}{N}, j = 0...N - 1
+		
+		Since this uses the convention of starting at the origin, to reproduce the
+		window, we need to convert every other coefficient to a positive number:
+		
+		>>> HFT90D = [1, 1.942604, 1.340318, 0.440811, 0.043097]
+		
+		The paper states that the highest sidelobe is at -90.2 dB.  Reproduce
+		Figure 42 by plotting the window and its frequency response, and confirm
+		the sidelobe level in red:
+		
+		>>> from scipy.signal.windows import general_cosine
+		>>> from scipy.fftpack import fft, fftshift
+		>>> import matplotlib.pyplot as plt
+		
+		>>> window = general_cosine(1000, HFT90D, sym=False)
+		>>> plt.plot(window)
+		>>> plt.title("HFT90D window")
+		>>> plt.ylabel("Amplitude")
+		>>> plt.xlabel("Sample")
+		
+		>>> plt.figure()
+		>>> A = fft(window, 10000) / (len(window)/2.0)
+		>>> freq = np.linspace(-0.5, 0.5, len(A))
+		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
+		>>> plt.plot(freq, response)
+		>>> plt.axis([-50/1000, 50/1000, -140, 0])
+		>>> plt.title("Frequency response of the HFT90D window")
+		>>> plt.ylabel("Normalized magnitude [dB]")
+		>>> plt.xlabel("Normalized frequency [cycles per sample]")
+		>>> plt.axhline(-90.2, color='red')
+	**/
+	static public function general_cosine(M:Dynamic, a:Dynamic, ?sym:Dynamic):Dynamic;
+	/**
 		Return a window with a generalized Gaussian shape.
 		
 		Parameters
@@ -815,6 +961,93 @@ package scipy.signal.windows;
 	**/
 	static public function general_gaussian(M:Dynamic, p:Dynamic, sig:Dynamic, ?sym:Dynamic):Dynamic;
 	/**
+		Return a generalized Hamming window.
+		
+		The generalized Hamming window is constructed by multiplying a rectangular
+		window by one period of a cosine function [1]_.
+		
+		Parameters
+		----------
+		M : int
+		    Number of points in the output window. If zero or less, an empty
+		    array is returned.
+		alpha : float
+		    The window coefficient, :math:`\alpha`
+		sym : bool, optional
+		    When True (default), generates a symmetric window, for use in filter
+		    design.
+		    When False, generates a periodic window, for use in spectral analysis.
+		
+		Returns
+		-------
+		w : ndarray
+		    The window, with the maximum value normalized to 1 (though the value 1
+		    does not appear if `M` is even and `sym` is True).
+		
+		Notes
+		-----
+		The generalized Hamming window is defined as
+		
+		.. math:: w(n) = \alpha - \left(1 - \alpha\right) \cos\left(\frac{2\pi{n}}{M-1}\right)
+		          \qquad 0 \leq n \leq M-1
+		
+		Both the common Hamming window and Hann window are special cases of the
+		generalized Hamming window with :math:`\alpha` = 0.54 and :math:`\alpha` =
+		0.5, respectively [2]_.
+		
+		See Also
+		--------
+		hamming, hann
+		
+		Examples
+		--------
+		The Sentinel-1A/B Instrument Processing Facility uses generalized Hamming
+		windows in the processing of spaceborne Synthetic Aperture Radar (SAR)
+		data [3]_. The facility uses various values for the :math:`\alpha` parameter
+		based on operating mode of the SAR instrument. Some common :math:`\alpha`
+		values include 0.75, 0.7 and 0.52 [4]_. As an example, we plot these different
+		windows.
+		
+		>>> from scipy.signal.windows import general_hamming
+		>>> from scipy.fftpack import fft, fftshift
+		>>> import matplotlib.pyplot as plt
+		
+		>>> plt.figure()
+		>>> plt.title("Generalized Hamming Windows")
+		>>> plt.ylabel("Amplitude")
+		>>> plt.xlabel("Sample")
+		>>> spatial_plot = plt.axes()
+		
+		>>> plt.figure()
+		>>> plt.title("Frequency Responses")
+		>>> plt.ylabel("Normalized magnitude [dB]")
+		>>> plt.xlabel("Normalized frequency [cycles per sample]")
+		>>> freq_plot = plt.axes()
+		
+		>>> for alpha in [0.75, 0.7, 0.52]:
+		...     window = general_hamming(41, alpha)
+		...     spatial_plot.plot(window, label="{:.2f}".format(alpha))
+		...     A = fft(window, 2048) / (len(window)/2.0)
+		...     freq = np.linspace(-0.5, 0.5, len(A))
+		...     response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
+		...     freq_plot.plot(freq, response, label="{:.2f}".format(alpha))
+		>>> freq_plot.legend(loc="upper right")
+		>>> spatial_plot.legend(loc="upper right")
+		
+		References
+		----------
+		.. [1] DSPRelated, "Generalized Hamming Window Family",
+		       https://www.dsprelated.com/freebooks/sasp/Generalized_Hamming_Window_Family.html
+		.. [2] Wikipedia, "Window function",
+		       http://en.wikipedia.org/wiki/Window_function
+		.. [3] Riccardo Piantanida ESA, "Sentinel-1 Level 1 Detailed Algorithm
+		       Definition",
+		       https://sentinel.esa.int/documents/247904/1877131/Sentinel-1-Level-1-Detailed-Algorithm-Definition
+		.. [4] Matthieu Bourbigot ESA, "Sentinel-1 Product Definition",
+		       https://sentinel.esa.int/documents/247904/1877131/Sentinel-1-Product-Definition
+	**/
+	static public function general_hamming(M:Dynamic, alpha:Dynamic, ?sym:Dynamic):Dynamic;
+	/**
 		Return a window.
 		
 		Parameters
@@ -842,8 +1075,9 @@ package scipy.signal.windows;
 		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
 		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
 		    deviation), `general_gaussian` (needs power, width), `slepian`
-		    (needs width), `chebwin` (needs attenuation), `exponential`
-		    (needs decay scale), `tukey` (needs taper fraction)
+		    (needs width), `dpss` (needs normalized half-bandwidth),
+		    `chebwin` (needs attenuation), `exponential` (needs decay scale),
+		    `tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -1022,82 +1256,9 @@ package scipy.signal.windows;
 	**/
 	static public function hann(M:Dynamic, ?sym:Dynamic):Dynamic;
 	/**
-		Return a Hann window.
-		
-		The Hann window is a taper formed by using a raised cosine or sine-squared
-		with ends that touch zero.
-		
-		Parameters
-		----------
-		M : int
-		    Number of points in the output window. If zero or less, an empty
-		    array is returned.
-		sym : bool, optional
-		    When True (default), generates a symmetric window, for use in filter
-		    design.
-		    When False, generates a periodic window, for use in spectral analysis.
-		
-		Returns
-		-------
-		w : ndarray
-		    The window, with the maximum value normalized to 1 (though the value 1
-		    does not appear if `M` is even and `sym` is True).
-		
-		Notes
-		-----
-		The Hann window is defined as
-		
-		.. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{M-1}\right)
-		           \qquad 0 \leq n \leq M-1
-		
-		The window was named for Julius von Hann, an Austrian meteorologist. It is
-		also known as the Cosine Bell. It is sometimes erroneously referred to as
-		the "Hanning" window, from the use of "hann" as a verb in the original
-		paper and confusion with the very similar Hamming window.
-		
-		Most references to the Hann window come from the signal processing
-		literature, where it is used as one of many windowing functions for
-		smoothing values.  It is also known as an apodization (which means
-		"removing the foot", i.e. smoothing discontinuities at the beginning
-		and end of the sampled signal) or tapering function.
-		
-		References
-		----------
-		.. [1] Blackman, R.B. and Tukey, J.W., (1958) The measurement of power
-		       spectra, Dover Publications, New York.
-		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics",
-		       The University of Alberta Press, 1975, pp. 106-108.
-		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
-		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
-		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
-		
-		Examples
-		--------
-		Plot the window and its frequency response:
-		
-		>>> from scipy import signal
-		>>> from scipy.fftpack import fft, fftshift
-		>>> import matplotlib.pyplot as plt
-		
-		>>> window = signal.hann(51)
-		>>> plt.plot(window)
-		>>> plt.title("Hann window")
-		>>> plt.ylabel("Amplitude")
-		>>> plt.xlabel("Sample")
-		
-		>>> plt.figure()
-		>>> A = fft(window, 2048) / (len(window)/2.0)
-		>>> freq = np.linspace(-0.5, 0.5, len(A))
-		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
-		>>> plt.plot(freq, response)
-		>>> plt.axis([-0.5, 0.5, -120, 0])
-		>>> plt.title("Frequency response of the Hann window")
-		>>> plt.ylabel("Normalized magnitude [dB]")
-		>>> plt.xlabel("Normalized frequency [cycles per sample]")
+		`hanning` is deprecated, use `scipy.signal.windows.hann` instead!
 	**/
-	static public function hanning(M:Dynamic, ?sym:Dynamic):Dynamic;
-	static public var k : Dynamic;
+	static public function hanning(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a Kaiser window.
 		
@@ -1203,7 +1364,6 @@ package scipy.signal.windows;
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
 	static public function kaiser(M:Dynamic, beta:Dynamic, ?sym:Dynamic):Dynamic;
-	static public var key : Dynamic;
 	/**
 		Return a minimum 4-term Blackman-Harris window according to Nuttall.
 		
@@ -1309,12 +1469,16 @@ package scipy.signal.windows;
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
 	static public function parzen(M:Dynamic, ?sym:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Return a digital Slepian (DPSS) window.
 		
 		Used to maximize the energy concentration in the main lobe.  Also called
 		the digital prolate spheroidal sequence (DPSS).
+		
+		.. note:: Deprecated in SciPy 1.1.
+		          `slepian` will be removed in a future version of SciPy, it is
+		          replaced by `dpss`, which uses the standard definition of a
+		          digital Slepian window.
 		
 		Parameters
 		----------
@@ -1332,6 +1496,10 @@ package scipy.signal.windows;
 		-------
 		w : ndarray
 		    The window, with the maximum value always normalized to 1
+		
+		See Also
+		--------
+		dpss
 		
 		References
 		----------
@@ -1367,7 +1535,6 @@ package scipy.signal.windows;
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
 	static public function slepian(M:Dynamic, width:Dynamic, ?sym:Dynamic):Dynamic;
-	static public var string_types : Dynamic;
 	/**
 		Return a triangular window.
 		
@@ -1474,5 +1641,4 @@ package scipy.signal.windows;
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
 	static public function tukey(M:Dynamic, ?alpha:Dynamic, ?sym:Dynamic):Dynamic;
-	static public var v : Dynamic;
 }

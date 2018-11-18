@@ -9,9 +9,6 @@ package matplotlib.tri.tripcolor;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Create a pseudocolor plot of an unstructured triangular grid.
 		
@@ -40,7 +37,7 @@ package matplotlib.tri.tripcolor;
 		are defined at triangles. If there are the same number of points
 		and triangles in the triangulation it is assumed that color
 		values are defined at points; to force the use of color values at
-		triangles use the kwarg *facecolors*=C instead of just *C*.
+		triangles use the kwarg ``facecolors=C`` instead of just ``C``.
 		
 		*shading* may be 'flat' (the default) or 'gouraud'. If *shading*
 		is 'flat' and C values are defined at points, the color values
@@ -50,11 +47,6 @@ package matplotlib.tri.tripcolor;
 		
 		The remaining kwargs are the same as for
 		:meth:`~matplotlib.axes.Axes.pcolor`.
-		
-		**Example:**
-		
-		    .. plot:: mpl_examples/pylab_examples/tripcolor_demo.py
 	**/
-	static public function tripcolor(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var unicode_literals : Dynamic;
+	static public function tripcolor(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?alpha:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?shading:Dynamic, ?facecolors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

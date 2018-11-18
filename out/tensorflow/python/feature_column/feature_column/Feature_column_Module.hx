@@ -9,7 +9,18 @@ package tensorflow.python.feature_column.feature_column;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Adds a var to the list of weight_collections provided.
+		
+		Handles the case for partitioned and non-partitioned variables.
+		
+		Args:
+		  var: A variable or Partitioned Variable.
+		  weight_collections: List of collections to add variable to.
+	**/
+	static public function _add_to_collections(_var:Dynamic, weight_collections:Dynamic):Dynamic;
 	static public function _as_tuple(value:Dynamic):Dynamic;
+	static public function _assert_key_is_string(key:Dynamic):Dynamic;
 	static public function _assert_string_or_int(dtype:Dynamic, prefix:Dynamic):Dynamic;
 	/**
 		Returns default value as tuple if it's valid, otherwise raises errors.
@@ -39,10 +50,6 @@ package tensorflow.python.feature_column.feature_column;
 	**/
 	static public function _check_default_value(shape:Dynamic, default_value:Dynamic, dtype:Dynamic, key:Dynamic):Dynamic;
 	/**
-		Verifies feature_columns input.
-	**/
-	static public function _check_feature_columns(feature_columns:Dynamic):Dynamic;
-	/**
 		Returns shape if it's valid, raises error otherwise.
 	**/
 	static public function _check_shape(shape:Dynamic, key:Dynamic):Dynamic;
@@ -58,73 +65,80 @@ package tensorflow.python.feature_column.feature_column;
 	static public function _collect_leaf_level_keys(cross:Dynamic):Dynamic;
 	/**
 		Create a weighted sum of a categorical column for linear_model.
+		
+		Note to maintainer: As implementation details, the weighted sum is
+		implemented via embedding_lookup_sparse toward efficiency. Mathematically,
+		they are the same.
+		
+		To be specific, conceptually, categorical column can be treated as multi-hot
+		vector. Say:
+		
+		```python
+		  x = [0 0 1]  # categorical column input
+		  w = [a b c]  # weights
+		```
+		The weighted sum is `c` in this case, which is same as `w[2]`.
+		
+		Another example is
+		
+		```python
+		  x = [0 1 1]  # categorical column input
+		  w = [a b c]  # weights
+		```
+		The weighted sum is `b + c` in this case, which is same as `w[2] + w[3]`.
+		
+		For both cases, we can implement weighted sum via embedding_lookup with
+		sparse_combiner = "sum".
 	**/
-	static public function _create_categorical_column_weighted_sum(column:Dynamic, builder:Dynamic, units:Dynamic, sparse_combiner:Dynamic, weight_collections:Dynamic, trainable:Dynamic):Dynamic;
+	static public function _create_categorical_column_weighted_sum(column:Dynamic, builder:Dynamic, units:Dynamic, sparse_combiner:Dynamic, weight_collections:Dynamic, trainable:Dynamic, ?weight_var:Dynamic):Dynamic;
 	/**
 		Create a weighted sum of a dense column for linear_model.
 	**/
-	static public function _create_dense_column_weighted_sum(column:Dynamic, builder:Dynamic, units:Dynamic, weight_collections:Dynamic, trainable:Dynamic):Dynamic;
+	static public function _create_dense_column_weighted_sum(column:Dynamic, builder:Dynamic, units:Dynamic, weight_collections:Dynamic, trainable:Dynamic, ?weight_var:Dynamic):Dynamic;
 	/**
 		Returns a tuple with given shape and filled with value.
 	**/
 	static public function _create_tuple(shape:Dynamic, value:Dynamic):Dynamic;
 	/**
+		Creates a weighted sum for a dense/categorical column for linear_model.
+	**/
+	static public function _create_weighted_sum(column:Dynamic, builder:Dynamic, units:Dynamic, sparse_combiner:Dynamic, weight_collections:Dynamic, trainable:Dynamic, ?weight_var:Dynamic):Dynamic;
+	static public function _get_expanded_variable_list(variable:Dynamic):Dynamic;
+	static public function _get_graph_for_variable(_var:Dynamic):Dynamic;
+	/**
+		See input_layer. `scope` is a name or variable scope to use.
+	**/
+	static public function _internal_input_layer(features:Dynamic, feature_columns:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?cols_to_vars:Dynamic, ?scope:Dynamic, ?cols_to_output_tensors:Dynamic, ?from_template:Dynamic):Dynamic;
+	/**
 		Verifies compatibility of shape and default_value.
 	**/
 	static public function _is_shape_and_default_value_compatible(default_value:Dynamic, shape:Dynamic):Dynamic;
 	/**
-		Prune invalid IDs (< 0) from the input ids and weights.
-	**/
-	static public function _prune_invalid_ids(sparse_ids:Dynamic, sparse_weights:Dynamic):Dynamic;
-	/**
-		Lookup embedding results, accounting for invalid IDs and empty features.
+		Normalizes the `feature_columns` input.
 		
-		The partitioned embedding in `embedding_weights` must all be the same shape
-		except for the first dimension. The first dimension is allowed to vary as the
-		vocabulary size is not necessarily a multiple of `P`.  `embedding_weights`
-		may be a `PartitionedVariable` as returned by using `tf.get_variable()` with a
-		partitioner.
-		
-		Invalid IDs (< 0) are pruned from input IDs and weights, as well as any IDs
-		with non-positive weight. For an entry with no features, the embedding vector
-		for `default_id` is returned, or the 0-vector if `default_id` is not supplied.
-		
-		The ids and weights may be multi-dimensional. Embeddings are always aggregated
-		along the last dimension.
+		This method converts the `feature_columns` to list type as best as it can. In
+		addition, verifies the type and other parts of feature_columns, required by
+		downstream library.
 		
 		Args:
-		  embedding_weights:  A list of `P` float `Tensor`s or values representing
-		      partitioned embedding `Tensor`s.  Alternatively, a `PartitionedVariable`
-		      created by partitioning along dimension 0.  The total unpartitioned
-		      shape should be `[e_0, e_1, ..., e_m]`, where `e_0` represents the
-		      vocab size and `e_1, ..., e_m` are the embedding dimensions.
-		  sparse_ids: `SparseTensor` of shape `[d_0, d_1, ..., d_n]` containing the
-		      ids. `d_0` is typically batch size.
-		  sparse_weights: `SparseTensor` of same shape as `sparse_ids`, containing
-		      float weights corresponding to `sparse_ids`, or `None` if all weights
-		      are be assumed to be 1.0.
-		  combiner: A string specifying how to combine embedding results for each
-		      entry. Currently "mean", "sqrtn" and "sum" are supported, with "mean"
-		      the default.
-		  default_id: The id to use for an entry with no features.
-		  name: A name for this operation (optional).
-		  partition_strategy: A string specifying the partitioning strategy.
-		      Currently `"div"` and `"mod"` are supported. Default is `"div"`.
-		  max_norm: If not `None`, all embeddings are l2-normalized to max_norm before
-		      combining.
-		
+		  feature_columns: The raw feature columns, usually passed by users.
 		
 		Returns:
-		  Dense `Tensor` of shape `[d_0, d_1, ..., d_{n-1}, e_1, ..., e_m]`.
+		  The normalized feature column list.
 		
 		Raises:
-		  ValueError: if `embedding_weights` is empty.
+		  ValueError: for any invalid inputs, such as empty, duplicated names, etc.
 	**/
-	static public function _safe_embedding_lookup_sparse(embedding_weights:Dynamic, sparse_ids:Dynamic, ?sparse_weights:Dynamic, ?combiner:Dynamic, ?default_id:Dynamic, ?name:Dynamic, ?partition_strategy:Dynamic, ?max_norm:Dynamic):Dynamic;
+	static public function _normalize_feature_columns(feature_columns:Dynamic):Dynamic;
+	/**
+		Returns a [batch_size] Tensor with per-example sequence length.
+	**/
+	static public function _sequence_length_from_sparse_tensor(sp_tensor:Dynamic, ?num_elements:Dynamic):Dynamic;
 	/**
 		Returns moving offset for each dimension given shape.
 	**/
 	static public function _shape_offsets(shape:Dynamic):Dynamic;
+	static public function _strip_leading_slashes(name:Dynamic):Dynamic;
 	/**
 		Converts a `Tensor` to a `SparseTensor`, dropping ignore_value cells.
 		
@@ -142,7 +156,7 @@ package tensorflow.python.feature_column.feature_column;
 		Raises:
 		  ValueError: when `input_tensor`'s rank is `None`.
 	**/
-	static public function _to_sparse_input(input_tensor:Dynamic, ?ignore_value:Dynamic):Dynamic;
+	static public function _to_sparse_input_and_drop_ignore_values(input_tensor:Dynamic, ?ignore_value:Dynamic):Dynamic;
 	/**
 		Returns transformed features based on features columns passed in.
 		
@@ -187,15 +201,21 @@ package tensorflow.python.feature_column.feature_column;
 		`[1., 2.)`, and `[2., +inf)`.
 		
 		For example, if the inputs are
-		  `boundaries` = [0, 10, 100]
-		  input tensor = [[-5, 10000]
-		                  [150,   10]
-		                  [5,    100]]
+		
+		```python
+		boundaries = [0, 10, 100]
+		input tensor = [[-5, 10000]
+		                [150,   10]
+		                [5,    100]]
+		```
 		
 		then the output will be
-		  output = [[0, 3]
-		            [3, 2]
-		            [1, 3]]
+		
+		```python
+		output = [[0, 3]
+		          [3, 2]
+		          [1, 3]]
+		```
 		
 		Example:
 		
@@ -214,6 +234,7 @@ package tensorflow.python.feature_column.feature_column;
 		
 		`bucketized_column` can also be crossed with another categorical column using
 		`crossed_column`:
+		
 		```python
 		price = numeric_column('price')
 		# bucketized_column converts numerical feature to a categorical one.
@@ -244,12 +265,13 @@ package tensorflow.python.feature_column.feature_column;
 		
 		Use this when your sparse features are in string or integer format, and you
 		want to distribute your inputs into a finite number of buckets by hashing.
-		output_id = Hash(input_feature_string) % bucket_size
+		output_id = Hash(input_feature_string) % bucket_size for string type input.
+		For int type input, the value is converted to its string representation first
+		and then hashed by the same formula.
 		
 		For input dictionary `features`, `features[key]` is either `Tensor` or
 		`SparseTensor`. If `Tensor`, missing values can be represented by `-1` for int
-		and `''` for string. Note that these values are independent of the
-		`default_value` argument.
+		and `''` for string, which will be dropped by this feature column.
 		
 		Example:
 		
@@ -295,14 +317,14 @@ package tensorflow.python.feature_column.feature_column;
 		
 		For input dictionary `features`, `features[key]` is either `Tensor` or
 		`SparseTensor`. If `Tensor`, missing values can be represented by `-1` for int
-		and `''` for string. Note that these values are independent of the
-		`default_value` argument.
+		and `''` for string, which will be dropped by this feature column.
 		
 		In the following examples, each input in the range `[0, 1000000)` is assigned
 		the same value. All other inputs are assigned `default_value` 0. Note that a
 		literal 0 in inputs will result in the same default ID.
 		
 		Linear model:
+		
 		```python
 		video_id = categorical_column_with_identity(
 		    key='video_id', num_buckets=1000000, default_value=0)
@@ -312,6 +334,7 @@ package tensorflow.python.feature_column.feature_column;
 		```
 		
 		Embedding for a DNN model:
+		
 		```python
 		columns = [embedding_column(video_id, 9),...]
 		features = tf.parse_example(..., features=make_parse_example_spec(columns))
@@ -346,14 +369,14 @@ package tensorflow.python.feature_column.feature_column;
 		
 		For input dictionary `features`, `features[key]` is either `Tensor` or
 		`SparseTensor`. If `Tensor`, missing values can be represented by `-1` for int
-		and `''` for string. Note that these values are independent of the
-		`default_value` argument.
+		and `''` for string, which will be dropped by this feature column.
 		
 		Example with `num_oov_buckets`:
 		File '/us/states.txt' contains 50 lines, each with a 2-character U.S. state
 		abbreviation. All inputs with values in that file are assigned an ID 0-49,
 		corresponding to its line number. All other values are hashed and assigned an
 		ID 50-54.
+		
 		```python
 		states = categorical_column_with_vocabulary_file(
 		    key='states', vocabulary_file='/us/states.txt', vocabulary_size=50,
@@ -368,6 +391,7 @@ package tensorflow.python.feature_column.feature_column;
 		other 50 each have a 2-character U.S. state abbreviation. Both a literal 'XX'
 		in input, and other values missing from the file, will be assigned ID 0. All
 		others are assigned the corresponding line number 1-50.
+		
 		```python
 		states = categorical_column_with_vocabulary_file(
 		    key='states', vocabulary_file='/us/states.txt', vocabulary_size=51,
@@ -378,6 +402,7 @@ package tensorflow.python.feature_column.feature_column;
 		```
 		
 		And to make an embedding with either:
+		
 		```python
 		columns = [embedding_column(states, 3),...]
 		features = tf.parse_example(..., features=make_parse_example_spec(columns))
@@ -391,7 +416,7 @@ package tensorflow.python.feature_column.feature_column;
 		  vocabulary_file: The vocabulary file name.
 		  vocabulary_size: Number of the elements in the vocabulary. This must be no
 		    greater than length of `vocabulary_file`, if less than length, later
-		    values are ignored.
+		    values are ignored. If None, it is set to the length of `vocabulary_file`.
 		  num_oov_buckets: Non-negative integer, the number of out-of-vocabulary
 		    buckets. All out-of-vocabulary inputs will be assigned IDs in the range
 		    `[vocabulary_size, vocabulary_size+num_oov_buckets)` based on a hash of
@@ -406,33 +431,46 @@ package tensorflow.python.feature_column.feature_column;
 		  A `_CategoricalColumn` with a vocabulary file.
 		
 		Raises:
-		  ValueError: `vocabulary_file` is missing.
+		  ValueError: `vocabulary_file` is missing or cannot be opened.
 		  ValueError: `vocabulary_size` is missing or < 1.
-		  ValueError: `num_oov_buckets` is not a non-negative integer.
+		  ValueError: `num_oov_buckets` is a negative integer.
+		  ValueError: `num_oov_buckets` and `default_value` are both specified.
 		  ValueError: `dtype` is neither string nor integer.
 	**/
-	static public function categorical_column_with_vocabulary_file(key:Dynamic, vocabulary_file:Dynamic, vocabulary_size:Dynamic, ?num_oov_buckets:Dynamic, ?default_value:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function categorical_column_with_vocabulary_file(key:Dynamic, vocabulary_file:Dynamic, ?vocabulary_size:Dynamic, ?num_oov_buckets:Dynamic, ?default_value:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		A `_CategoricalColumn` with in-memory vocabulary.
 		
-		Logic for feature f is:
-		id = vocabulary_list.index_of(f) if f in vocabulary_list else default_value
-		
 		Use this when your inputs are in string or integer format, and you have an
 		in-memory vocabulary mapping each value to an integer ID. By default,
-		out-of-vocabulary values are ignored. Use `default_value` to specify how to
-		include out-of-vocabulary values.
+		out-of-vocabulary values are ignored. Use either (but not both) of
+		`num_oov_buckets` and `default_value` to specify how to include
+		out-of-vocabulary values.
 		
 		For input dictionary `features`, `features[key]` is either `Tensor` or
 		`SparseTensor`. If `Tensor`, missing values can be represented by `-1` for int
-		and `''` for string. Note that these values are independent of the
-		`default_value` argument.
+		and `''` for string, which will be dropped by this feature column.
 		
-		In the following examples, each input in `vocabulary_list` is assigned an ID
-		0-4 corresponding to its index (e.g., input 'B' produces output 2). All other
+		Example with `num_oov_buckets`:
+		In the following example, each input in `vocabulary_list` is assigned an ID
+		0-3 corresponding to its index (e.g., input 'B' produces output 2). All other
+		inputs are hashed and assigned an ID 4-5.
+		
+		```python
+		colors = categorical_column_with_vocabulary_list(
+		    key='colors', vocabulary_list=('R', 'G', 'B', 'Y'),
+		    num_oov_buckets=2)
+		columns = [colors, ...]
+		features = tf.parse_example(..., features=make_parse_example_spec(columns))
+		linear_prediction, _, _ = linear_model(features, columns)
+		```
+		
+		Example with `default_value`:
+		In the following example, each input in `vocabulary_list` is assigned an ID
+		0-4 corresponding to its index (e.g., input 'B' produces output 3). All other
 		inputs are assigned `default_value` 0.
 		
-		Linear model:
+		
 		```python
 		colors = categorical_column_with_vocabulary_list(
 		    key='colors', vocabulary_list=('X', 'R', 'G', 'B', 'Y'), default_value=0)
@@ -441,7 +479,8 @@ package tensorflow.python.feature_column.feature_column;
 		linear_prediction, _, _ = linear_model(features, columns)
 		```
 		
-		Embedding for a DNN model:
+		And to make an embedding with either:
+		
 		```python
 		columns = [embedding_column(colors, 3),...]
 		features = tf.parse_example(..., features=make_parse_example_spec(columns))
@@ -457,16 +496,25 @@ package tensorflow.python.feature_column.feature_column;
 		    Must be castable to `dtype`.
 		  dtype: The type of features. Only string and integer types are supported.
 		    If `None`, it will be inferred from `vocabulary_list`.
-		  default_value: The value to use for values not in `vocabulary_list`.
+		  default_value: The integer ID value to return for out-of-vocabulary feature
+		    values, defaults to `-1`. This can not be specified with a positive
+		    `num_oov_buckets`.
+		  num_oov_buckets: Non-negative integer, the number of out-of-vocabulary
+		    buckets. All out-of-vocabulary inputs will be assigned IDs in the range
+		    `[len(vocabulary_list), len(vocabulary_list)+num_oov_buckets)` based on a
+		    hash of the input value. A positive `num_oov_buckets` can not be specified
+		    with `default_value`.
 		
 		Returns:
 		  A `_CategoricalColumn` with in-memory vocabulary.
 		
 		Raises:
 		  ValueError: if `vocabulary_list` is empty, or contains duplicate keys.
+		  ValueError: `num_oov_buckets` is a negative integer.
+		  ValueError: `num_oov_buckets` and `default_value` are both specified.
 		  ValueError: if `dtype` is not integer or string.
 	**/
-	static public function categorical_column_with_vocabulary_list(key:Dynamic, vocabulary_list:Dynamic, ?dtype:Dynamic, ?default_value:Dynamic):Dynamic;
+	static public function categorical_column_with_vocabulary_list(key:Dynamic, vocabulary_list:Dynamic, ?dtype:Dynamic, ?default_value:Dynamic, ?num_oov_buckets:Dynamic):Dynamic;
 	/**
 		Returns a column for performing crosses of categorical features.
 		
@@ -475,22 +523,41 @@ package tensorflow.python.feature_column.feature_column;
 		  Hash(cartesian product of features) % `hash_bucket_size`
 		
 		For example, if the input features are:
-		* SparseTensor referred by first key: shape = [2, 2]
-		    [0, 0]: "a"
-		    [1, 0]: "b"
-		    [1, 1]: "c"
 		
-		* SparseTensor referred by second key: shape = [2, 1]
-		    [0, 0]: "d"
-		    [1, 0]: "e"
+		* SparseTensor referred by first key:
+		
+		  ```python
+		  shape = [2, 2]
+		  {
+		      [0, 0]: "a"
+		      [1, 0]: "b"
+		      [1, 1]: "c"
+		  }
+		  ```
+		
+		* SparseTensor referred by second key:
+		
+		  ```python
+		  shape = [2, 1]
+		  {
+		      [0, 0]: "d"
+		      [1, 0]: "e"
+		  }
+		  ```
 		
 		then crossed feature will look like:
-		    shape = [2, 2]
+		
+		```python
+		 shape = [2, 2]
+		{
 		    [0, 0]: Hash64("d", Hash64("a")) % hash_bucket_size
 		    [1, 0]: Hash64("e", Hash64("b")) % hash_bucket_size
 		    [1, 1]: Hash64("e", Hash64("c")) % hash_bucket_size
+		}
+		```
 		
 		Here is an example to create a linear model with crosses of string features:
+		
 		```python
 		keywords_x_doc_terms = crossed_column(['keywords', 'doc_terms'], 50K)
 		columns = [keywords_x_doc_terms, ...]
@@ -499,6 +566,7 @@ package tensorflow.python.feature_column.feature_column;
 		```
 		
 		You could also use vocabulary lookup before crossing:
+		
 		```python
 		keywords = categorical_column_with_vocabulary_file(
 		    'keywords', '/path/to/vocabulary/file', vocabulary_size=1K)
@@ -510,6 +578,7 @@ package tensorflow.python.feature_column.feature_column;
 		
 		If an input feature is of numeric type, you can use
 		`categorical_column_with_identity`, or `bucketized_column`, as in the example:
+		
 		```python
 		# vertical_id is an integer categorical feature.
 		vertical_id = categorical_column_with_identity('vertical_id', 10K)
@@ -524,6 +593,7 @@ package tensorflow.python.feature_column.feature_column;
 		
 		To use crossed column in DNN model, you need to add it in an embedding column
 		as in this example:
+		
 		```python
 		vertical_id_x_price = crossed_column([vertical_id, bucketized_price], 50K)
 		vertical_id_x_price_embedded = embedding_column(vertical_id_x_price, 10)
@@ -558,15 +628,36 @@ package tensorflow.python.feature_column.feature_column;
 		representation (e.g., to feed to a DNN).
 		
 		Inputs must be a `_CategoricalColumn` created by any of the
-		`categorical_column_*` function. Here is an example embedding of an identity
-		column for a DNN model:
+		`categorical_column_*` function. Here is an example of using
+		`embedding_column` with `DNNClassifier`:
 		
 		```python
 		video_id = categorical_column_with_identity(
 		    key='video_id', num_buckets=1000000, default_value=0)
 		columns = [embedding_column(video_id, 9),...]
-		features = tf.parse_example(..., features=make_parse_example_spec(columns))
-		dense_tensor = input_layer(features, columns)
+		
+		estimator = tf.estimator.DNNClassifier(feature_columns=columns, ...)
+		
+		label_column = ...
+		def input_fn():
+		  features = tf.parse_example(
+		      ..., features=make_parse_example_spec(columns + [label_column]))
+		  labels = features.pop(label_column.name)
+		  return features, labels
+		
+		estimator.train(input_fn=input_fn, steps=100)
+		```
+		
+		Here is an example using `embedding_column` with model_fn:
+		
+		```python
+		def model_fn(features, ...):
+		  video_id = categorical_column_with_identity(
+		      key='video_id', num_buckets=1000000, default_value=0)
+		  columns = [embedding_column(video_id, 9),...]
+		  dense_tensor = input_layer(features, columns)
+		  # Form DNN layers, calculate loss, and return EstimatorSpec.
+		  ...
 		```
 		
 		Args:
@@ -600,17 +691,24 @@ package tensorflow.python.feature_column.feature_column;
 		  ValueError: if exactly one of `ckpt_to_load_from` and `tensor_name_in_ckpt`
 		    is specified.
 		  ValueError: if `initializer` is specified and is not callable.
+		  RuntimeError: If eager execution is enabled.
 	**/
 	static public function embedding_column(categorical_column:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?initializer:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic, ?max_norm:Dynamic, ?trainable:Dynamic):Dynamic;
 	/**
 		Represents multi-hot representation of given categorical column.
 		
-		Used to wrap any `categorical_column_*` (e.g., to feed to DNN). Use
-		`embedding_column` if the inputs are sparse.
+		- For DNN model, `indicator_column` can be used to wrap any
+		  `categorical_column_*` (e.g., to feed to DNN). Consider to Use
+		  `embedding_column` if the number of buckets/unique(values) are large.
+		
+		- For Wide (aka linear) model, `indicator_column` is the internal
+		  representation for categorical column when passing categorical column
+		  directly (as any element in feature_columns) to `linear_model`. See
+		  `linear_model` for details.
 		
 		```python
-		name = indicator_column(categorical_column_with_vocabulary_list('name',
-		    ['bob', 'george', 'wanda'])
+		name = indicator_column(categorical_column_with_vocabulary_list(
+		    'name', ['bob', 'george', 'wanda'])
 		columns = [name, ...]
 		features = tf.parse_example(..., features=make_parse_example_spec(columns))
 		dense_tensor = input_layer(features, columns)
@@ -660,10 +758,22 @@ package tensorflow.python.feature_column.feature_column;
 		    `bucketized_column`, `indicator_column`. If you have categorical features,
 		    you can wrap them with an `embedding_column` or `indicator_column`.
 		  weight_collections: A list of collection names to which the Variable will be
-		    added. Note that, variables will also be added to collections
+		    added. Note that variables will also be added to collections
 		    `tf.GraphKeys.GLOBAL_VARIABLES` and `ops.GraphKeys.MODEL_VARIABLES`.
 		  trainable: If `True` also add the variable to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		  cols_to_vars: If not `None`, must be a dictionary that will be filled with a
+		    mapping from `_FeatureColumn` to list of `Variable`s.  For example, after
+		    the call, we might have cols_to_vars =
+		    {_EmbeddingColumn(
+		      categorical_column=_HashedCategoricalColumn(
+		        key='sparse_feature', hash_bucket_size=5, dtype=tf.string),
+		      dimension=10): [<tf.Variable 'some_variable:0' shape=(5, 10),
+		                      <tf.Variable 'some_variable:1' shape=(5, 10)]}
+		    If a column creates no variables, its value will be an empty list.
+		  cols_to_output_tensors: If not `None`, must be a dictionary that will be
+		    filled with a mapping from '_FeatureColumn' to the associated
+		    output `Tensor`s.
 		
 		Returns:
 		  A `Tensor` which represents input layer of a model. Its shape
@@ -673,7 +783,7 @@ package tensorflow.python.feature_column.feature_column;
 		Raises:
 		  ValueError: if an item in `feature_columns` is not a `_DenseColumn`.
 	**/
-	static public function input_layer(features:Dynamic, feature_columns:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
+	static public function input_layer(features:Dynamic, feature_columns:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?cols_to_vars:Dynamic, ?cols_to_output_tensors:Dynamic):Dynamic;
 	/**
 		Returns a linear prediction `Tensor` based on given `feature_columns`.
 		
@@ -682,10 +792,23 @@ package tensorflow.python.feature_column.feature_column;
 		prediction itself for linear regression problems.
 		
 		Note on supported columns: `linear_model` treats categorical columns as
-		`indicator_column`s while `input_layer` explicitly requires wrapping each
-		of them with an `embedding_column` or an `indicator_column`.
+		`indicator_column`s. To be specific, assume the input as `SparseTensor` looks
+		like:
 		
-		Example:
+		```python
+		  shape = [2, 2]
+		  {
+		      [0, 0]: "a"
+		      [1, 0]: "b"
+		      [1, 1]: "c"
+		  }
+		```
+		`linear_model` assigns weights for the presence of "a", "b", "c' implicitly,
+		just like `indicator_column`, while `input_layer` explicitly requires wrapping
+		each of categorical columns with an `embedding_column` or an
+		`indicator_column`.
+		
+		Example of usage:
 		
 		```python
 		price = numeric_column('price')
@@ -706,18 +829,62 @@ package tensorflow.python.feature_column.feature_column;
 		    to your model. All items should be instances of classes derived from
 		    `_FeatureColumn`s.
 		  units: An integer, dimensionality of the output space. Default value is 1.
-		  sparse_combiner: A string specifying how to reduce if a sparse column is
-		    multivalent. Currently "mean", "sqrtn" and "sum" are supported, with "sum"
-		    the default. "sqrtn" often achieves good accuracy, in particular with
-		    bag-of-words columns. It combines each sparse columns independently.
+		  sparse_combiner: A string specifying how to reduce if a categorical column
+		    is multivalent. Except `numeric_column`, almost all columns passed to
+		    `linear_model` are considered as categorical columns.  It combines each
+		    categorical column independently. Currently "mean", "sqrtn" and "sum" are
+		    supported, with "sum" the default for linear model. "sqrtn" often achieves
+		    good accuracy, in particular with bag-of-words columns.
 		      * "sum": do not normalize features in the column
 		      * "mean": do l1 normalization on features in the column
 		      * "sqrtn": do l2 normalization on features in the column
+		    For example, for two features represented as the categorical columns:
+		
+		    ```python
+		      # Feature 1
+		
+		      shape = [2, 2]
+		      {
+		          [0, 0]: "a"
+		          [0, 1]: "b"
+		          [1, 0]: "c"
+		      }
+		
+		      # Feature 2
+		
+		      shape = [2, 3]
+		      {
+		          [0, 0]: "d"
+		          [1, 0]: "e"
+		          [1, 1]: "f"
+		          [1, 2]: "g"
+		      }
+		    ```
+		    with `sparse_combiner` as "mean", the linear model outputs conceptly are:
+		    ```
+		      y_0 = 1.0 / 2.0 * ( w_a + w_ b) + w_c + b_0
+		      y_1 = w_d + 1.0 / 3.0 * ( w_e + w_ f + w_g) + b_1
+		    ```
+		    where `y_i` is the output, `b_i` is the bias, and `w_x` is the weight
+		    assigned to the presence of `x` in the input features.
 		  weight_collections: A list of collection names to which the Variable will be
 		    added. Note that, variables will also be added to collections
 		    `tf.GraphKeys.GLOBAL_VARIABLES` and `ops.GraphKeys.MODEL_VARIABLES`.
 		  trainable: If `True` also add the variable to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		  cols_to_vars: If not `None`, must be a dictionary that will be filled with a
+		    mapping from `_FeatureColumn` to associated list of `Variable`s.  For
+		    example, after the call, we might have cols_to_vars = {
+		      _NumericColumn(
+		        key='numeric_feature1', shape=(1,):
+		      [<tf.Variable 'linear_model/price2/weights:0' shape=(1, 1)>],
+		      'bias': [<tf.Variable 'linear_model/bias_weights:0' shape=(1,)>],
+		      _NumericColumn(
+		        key='numeric_feature2', shape=(2,)):
+		      [<tf.Variable 'linear_model/price1/weights:0' shape=(2, 1)>]}
+		    If a column creates no variables, its value will be an empty list. Note
+		    that cols_to_vars will also contain a string key 'bias' that maps to a
+		    list of Variables.
 		
 		Returns:
 		  A `Tensor` which represents predictions/logits of a linear model. Its shape
@@ -727,7 +894,7 @@ package tensorflow.python.feature_column.feature_column;
 		  ValueError: if an item in `feature_columns` is neither a `_DenseColumn`
 		    nor `_CategoricalColumn`.
 	**/
-	static public function linear_model(features:Dynamic, feature_columns:Dynamic, ?units:Dynamic, ?sparse_combiner:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic):Dynamic;
+	static public function linear_model(features:Dynamic, feature_columns:Dynamic, ?units:Dynamic, ?sparse_combiner:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?cols_to_vars:Dynamic):Dynamic;
 	/**
 		Creates parsing spec dictionary from input feature_columns.
 		
@@ -737,6 +904,7 @@ package tensorflow.python.feature_column.feature_column;
 		
 		```python
 		# Define features and transformations
+		feature_a = categorical_column_with_vocabulary_file(...)
 		feature_b = numeric_column(...)
 		feature_c_bucketized = bucketized_column(numeric_column("feature_c"), ...)
 		feature_a_x_feature_c = crossed_column(
@@ -750,11 +918,14 @@ package tensorflow.python.feature_column.feature_column;
 		```
 		
 		For the above example, make_parse_example_spec would return the dict:
+		
+		```python
 		{
-		  "feature_a": parsing_ops.VarLenFeature(tf.string),
-		  "feature_b": parsing_ops.FixedLenFeature([1], dtype=tf.float32),
-		  "feature_c": parsing_ops.FixedLenFeature([1], dtype=tf.float32)
+		    "feature_a": parsing_ops.VarLenFeature(tf.string),
+		    "feature_b": parsing_ops.FixedLenFeature([1], dtype=tf.float32),
+		    "feature_c": parsing_ops.FixedLenFeature([1], dtype=tf.float32)
 		}
+		```
 		
 		Args:
 		  feature_columns: An iterable containing all feature columns. All items
@@ -824,6 +995,105 @@ package tensorflow.python.feature_column.feature_column;
 	static public function numeric_column(key:Dynamic, ?shape:Dynamic, ?default_value:Dynamic, ?dtype:Dynamic, ?normalizer_fn:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
+		List of dense columns that convert from sparse, categorical input.
+		
+		This is similar to `embedding_column`, except that it produces a list of
+		embedding columns that share the same embedding weights.
+		
+		Use this when your inputs are sparse and of the same type (e.g. watched and
+		impression video IDs that share the same vocabulary), and you want to convert
+		them to a dense representation (e.g., to feed to a DNN).
+		
+		Inputs must be a list of categorical columns created by any of the
+		`categorical_column_*` function. They must all be of the same type and have
+		the same arguments except `key`. E.g. they can be
+		categorical_column_with_vocabulary_file with the same vocabulary_file. Some or
+		all columns could also be weighted_categorical_column.
+		
+		Here is an example embedding of two features for a DNNClassifier model:
+		
+		```python
+		watched_video_id = categorical_column_with_vocabulary_file(
+		    'watched_video_id', video_vocabulary_file, video_vocabulary_size)
+		impression_video_id = categorical_column_with_vocabulary_file(
+		    'impression_video_id', video_vocabulary_file, video_vocabulary_size)
+		columns = shared_embedding_columns(
+		    [watched_video_id, impression_video_id], dimension=10)
+		
+		estimator = tf.estimator.DNNClassifier(feature_columns=columns, ...)
+		
+		label_column = ...
+		def input_fn():
+		  features = tf.parse_example(
+		      ..., features=make_parse_example_spec(columns + [label_column]))
+		  labels = features.pop(label_column.name)
+		  return features, labels
+		
+		estimator.train(input_fn=input_fn, steps=100)
+		```
+		
+		Here is an example using `shared_embedding_columns` with model_fn:
+		
+		```python
+		def model_fn(features, ...):
+		  watched_video_id = categorical_column_with_vocabulary_file(
+		      'watched_video_id', video_vocabulary_file, video_vocabulary_size)
+		  impression_video_id = categorical_column_with_vocabulary_file(
+		      'impression_video_id', video_vocabulary_file, video_vocabulary_size)
+		  columns = shared_embedding_columns(
+		      [watched_video_id, impression_video_id], dimension=10)
+		  dense_tensor = input_layer(features, columns)
+		  # Form DNN layers, calculate loss, and return EstimatorSpec.
+		  ...
+		```
+		
+		Args:
+		  categorical_columns: List of categorical columns created by a
+		    `categorical_column_with_*` function. These columns produce the sparse IDs
+		    that are inputs to the embedding lookup. All columns must be of the same
+		    type and have the same arguments except `key`. E.g. they can be
+		    categorical_column_with_vocabulary_file with the same vocabulary_file.
+		    Some or all columns could also be weighted_categorical_column.
+		  dimension: An integer specifying dimension of the embedding, must be > 0.
+		  combiner: A string specifying how to reduce if there are multiple entries
+		    in a single row. Currently 'mean', 'sqrtn' and 'sum' are supported, with
+		    'mean' the default. 'sqrtn' often achieves good accuracy, in particular
+		    with bag-of-words columns. Each of this can be thought as example level
+		    normalizations on the column. For more information, see
+		    `tf.embedding_lookup_sparse`.
+		  initializer: A variable initializer function to be used in embedding
+		    variable initialization. If not specified, defaults to
+		    `tf.truncated_normal_initializer` with mean `0.0` and standard deviation
+		    `1/sqrt(dimension)`.
+		  shared_embedding_collection_name: Optional name of the collection where
+		    shared embedding weights are added. If not given, a reasonable name will
+		    be chosen based on the names of `categorical_columns`. This is also used
+		    in `variable_scope` when creating shared embedding weights.
+		  ckpt_to_load_from: String representing checkpoint name/pattern from which to
+		    restore column weights. Required if `tensor_name_in_ckpt` is not `None`.
+		  tensor_name_in_ckpt: Name of the `Tensor` in `ckpt_to_load_from` from
+		    which to restore the column weights. Required if `ckpt_to_load_from` is
+		    not `None`.
+		  max_norm: If not `None`, each embedding is clipped if its l2-norm is
+		    larger than this value, before combining.
+		  trainable: Whether or not the embedding is trainable. Default is True.
+		
+		Returns:
+		  A list of dense columns that converts from sparse input. The order of
+		  results follows the ordering of `categorical_columns`.
+		
+		Raises:
+		  ValueError: if `dimension` not > 0.
+		  ValueError: if any of the given `categorical_columns` is of different type
+		    or has different arguments than the others.
+		  ValueError: if exactly one of `ckpt_to_load_from` and `tensor_name_in_ckpt`
+		    is specified.
+		  ValueError: if `initializer` is specified and is not callable.
+		  RuntimeError: if eager execution is enabled.
+	**/
+	static public function shared_embedding_columns(categorical_columns:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?initializer:Dynamic, ?shared_embedding_collection_name:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic, ?max_norm:Dynamic, ?trainable:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Applies weight values to a `_CategoricalColumn`.
 		
 		Use this when each of your sparse inputs has both an ID and a value. For
@@ -834,6 +1104,8 @@ package tensorflow.python.feature_column.feature_column;
 		Example:
 		
 		Input `tf.Example` objects:
+		
+		```proto
 		[
 		  features {
 		    feature {
@@ -856,6 +1128,7 @@ package tensorflow.python.feature_column.feature_column;
 		    }
 		  }
 		]
+		```
 		
 		```python
 		categorical_column = categorical_column_with_hash_bucket(

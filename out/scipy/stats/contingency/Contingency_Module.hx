@@ -61,8 +61,8 @@ package scipy.stats.contingency;
 		Notes
 		-----
 		An often quoted guideline for the validity of this calculation is that
-		the test should be used only if the observed and expected frequency in
-		each cell is at least 5.
+		the test should be used only if the observed and expected frequencies
+		in each cell are at least 5.
 		
 		This is a test for the independence of different categories of a
 		population. The test is only meaningful when the dimension of

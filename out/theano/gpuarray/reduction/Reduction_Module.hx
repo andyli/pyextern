@@ -25,6 +25,7 @@ package theano.gpuarray.reduction;
 	**/
 	static public function as_gpuarray_variable(x:Dynamic, context_name:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	/**
 		Infer the context name to use from the inputs given
 	**/

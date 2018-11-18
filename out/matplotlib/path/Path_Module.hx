@@ -9,30 +9,11 @@ package matplotlib.path;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _define_deprecated_functions(ns:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The cleanup_path function was deprecated in version 1.3. Use path.Path.cleaned instead.
-		
-		cleanup_path(path, trans, remove_nans, clip_rect, snap_mode, stroke_width, simplify, return_curves, sketch)
+		Convert a sequence to a float array; if input was a masked array, masked
+		values are converted to nans.
 	**/
-	static public function cleanup_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The clip_path_to_rect function was deprecated in version 1.3. Use path.Path.clip_to_bbox instead.
-		
-		clip_path_to_rect(path, rect, inside)
-	**/
-	static public function clip_path_to_rect(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The convert_path_to_polygons function was deprecated in version 1.3. Use path.Path.to_polygons instead.
-		
-		convert_path_to_polygons(path, trans, width=0, height=0)
-	**/
-	static public function convert_path_to_polygons(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var division : Dynamic;
+	static public function _to_unmasked_float_array(x:Dynamic):Dynamic;
 	/**
 		Given a sequence of :class:`Path` objects,
 		:class:`~matplotlib.transforms.Transform` objects and offsets, as
@@ -60,13 +41,6 @@ package matplotlib.path;
 	**/
 	static public function get_path_collection_extents(master_transform:Dynamic, paths:Dynamic, transforms:Dynamic, offsets:Dynamic, offset_transform:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The get_path_extents function was deprecated in version 1.3. Use path.Path.get_extents instead.
-		
-		get_path_extents(path, trans)
-	**/
-	static public function get_path_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Given a sequence of :class:`Path` objects and optional
 		:class:`~matplotlib.transforms.Transform` objects, returns the
 		bounding box that encapsulates all of them.
@@ -79,42 +53,39 @@ package matplotlib.path;
 	**/
 	static public function get_paths_extents(paths:Dynamic, ?transforms:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The path_in_path function was deprecated in version 1.3. Use path.Path.contains_path instead.
+		Least-recently-used cache decorator.
 		
-		path_in_path(path_a, trans_a, path_b, trans_b)
-	**/
-	static public function path_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The path_intersects_path function was deprecated in version 1.3. Use path.Path.intersects_path instead.
+		If *maxsize* is set to None, the LRU features are disabled and the cache
+		can grow without bound.
 		
-		path_intersects_path(path1, path2, filled=False)
-	**/
-	static public function path_intersects_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The point_in_path function was deprecated in version 1.3. Use path.Path.contains_point instead.
+		If *typed* is True, arguments of different types will be cached separately.
+		For example, f(3.0) and f(3) will be treated as distinct calls with
+		distinct results.
 		
-		point_in_path(x, y, radius, path, trans)
-	**/
-	static public function point_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The point_in_path_collection function was deprecated in version 1.3. Use collection.Collection.contains instead.
+		Arguments to the cached function must be hashable.
 		
-		point_in_path_collection(x, y, radius, master_transform, paths, transforms, offsets, offset_trans, filled, offset_position)
-	**/
-	static public function point_in_path_collection(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The points_in_path function was deprecated in version 1.3. Use path.Path.contains_points instead.
+		View the cache statistics named tuple (hits, misses, maxsize, currsize)
+		with f.cache_info().  Clear the cache and statistics with f.cache_clear().
+		Access the underlying function with f.__wrapped__.
 		
-		points_in_path(points, radius, path, trans)
+		See:  http://en.wikipedia.org/wiki/Cache_algorithms#Least_Recently_Used
 	**/
-	static public function points_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var print_function : Dynamic;
+	static public function lru_cache(?maxsize:Dynamic, ?typed:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
+	/**
+		Resample an array with ``steps - 1`` points between original point pairs.
+		
+		Parameters
+		----------
+		a : array, shape (n, ...)
+		steps : int
+		
+		Returns
+		-------
+		array, shape ``((n - 1) * steps + 1, ...)``
+		
+		Along each column of *a*, ``(steps - 1)`` points are introduced between
+		each original values; the values are linearly interpolated.
+	**/
 	static public function simple_linear_interpolation(a:Dynamic, steps:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

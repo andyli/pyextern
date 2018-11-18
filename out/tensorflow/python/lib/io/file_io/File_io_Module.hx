@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.lib.io.file_io;
 @:pythonImport("tensorflow.python.lib.io.file_io") extern class File_io_Module {
+	static public var _DEFAULT_BLOCK_SIZE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -22,8 +23,10 @@ package tensorflow.python.lib.io.file_io;
 		Args:
 		  filename: string, pathname for a file
 		  contents: string, contents that need to be written to the file
+		  overwrite: boolean, if false it's an error for `filename` to be occupied by
+		      an existing file.
 	**/
-	static public function atomic_write_string_to_file(filename:Dynamic, contents:Dynamic):Dynamic;
+	static public function atomic_write_string_to_file(filename:Dynamic, contents:Dynamic, ?overwrite:Dynamic):Dynamic;
 	/**
 		Copies data from oldpath to newpath.
 		
@@ -74,6 +77,22 @@ package tensorflow.python.lib.io.file_io;
 	static public function delete_recursively(dirname:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
+		Get the crc32 of the passed file.
+		
+		The crc32 of a file can be used for error checking; two files with the same
+		crc32 are considered equivalent. Note that the entire file must be read
+		to produce the crc32.
+		
+		Args:
+		  filename: string, path to a file
+		  block_size: Integer, process the files by reading blocks of `block_size`
+		    bytes. Use -1 to read the file as once.
+		
+		Returns:
+		  hexadecimal as string, the crc32 of the passed file.
+	**/
+	static public function file_crc32(filename:Dynamic, ?block_size:Dynamic):Dynamic;
+	/**
 		Determines whether a path exists or not.
 		
 		Args:
@@ -87,6 +106,25 @@ package tensorflow.python.lib.io.file_io;
 		  errors.OpError: Propagates any errors reported by the FileSystem API.
 	**/
 	static public function file_exists(filename:Dynamic):Dynamic;
+	/**
+		Compare two files, returning True if they are the same, False otherwise.
+		
+		We check size first and return False quickly if the files are different sizes.
+		If they are the same size, we continue to generating a crc for the whole file.
+		
+		You might wonder: why not use Python's filecmp.cmp() instead? The answer is
+		that the builtin library is not robust to the many different filesystems
+		TensorFlow runs on, and so we here perform a similar comparison with
+		the more robust FileIO.
+		
+		Args:
+		  filename_a: string path to the first file.
+		  filename_b: string path to the second file.
+		
+		Returns:
+		  True if the files are the same, False otherwise.
+	**/
+	static public function filecmp(filename_a:Dynamic, filename_b:Dynamic):Dynamic;
 	/**
 		Returns a list of files that match the given pattern(s).
 		
@@ -161,8 +199,8 @@ package tensorflow.python.lib.io.file_io;
 		Args:
 		  oldname: string, pathname for a file
 		  newname: string, pathname to which the file needs to be moved
-		  overwrite: boolean, if false its an error for newpath to be occupied by an
-		      existing file.
+		  overwrite: boolean, if false it's an error for `newname` to be occupied by
+		      an existing file.
 		
 		Raises:
 		  errors.OpError: If the operation fails.
@@ -181,6 +219,7 @@ package tensorflow.python.lib.io.file_io;
 		  errors.OpError: If the operation fails.
 	**/
 	static public function stat(filename:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Recursive directory tree generator for directories.
 		

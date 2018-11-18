@@ -4,7 +4,7 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 	/**
 		A ProtocolMessage
 	**/
-	static public function BoolList(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function BoolList(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -12,7 +12,7 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 	/**
 		A ProtocolMessage
 	**/
-	static public function BytesList(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function BytesList(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -45,16 +45,16 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 	/**
 		A ProtocolMessage
 	**/
-	static public function FloatList(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FloatList(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var HPARAM_FIELD_NUMBER : Dynamic;
 	/**
 		A ProtocolMessage
 	**/
-	static public function HParamType(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function HParamType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -66,11 +66,11 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 	/**
 		A ProtocolMessage
 	**/
-	static public function HparamEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function HparamEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A ProtocolMessage
 	**/
-	static public function Int64List(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function Int64List(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -94,7 +94,7 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -154,7 +154,7 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -209,7 +209,7 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -265,7 +265,7 @@ package tensorflow.contrib.training.python.training.hparam_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/

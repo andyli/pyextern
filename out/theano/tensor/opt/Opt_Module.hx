@@ -49,7 +49,7 @@ package theano.tensor.opt;
 	static public var constant_folding : Dynamic;
 	/**
 		Copies the stack trace from one or more tensor variables to
-		one or more tensor variables.
+		one or more tensor variables and returns the destination variables.
 		
 		Parameters
 		----------
@@ -155,6 +155,12 @@ package theano.tensor.opt;
 	static public function in2out(?local_opts:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function inplace_elemwise_optimizer(fgraph:Dynamic):Dynamic;
 	static public var integer_types : Dynamic;
+	/**
+		Given two data types (as strings), check if converting to
+		type2 from type1 constitutes an upcast.
+		Differs from theano.scalar.upcast
+	**/
+	static public function is_an_upcast(type1:Dynamic, type2:Dynamic):Dynamic;
 	static public function is_dimshuffle_useless(new_order:Dynamic, input:Dynamic):Dynamic;
 	/**
 		Given two consecutive operations, check if they are the
@@ -471,10 +477,10 @@ package theano.tensor.opt;
 	static public var local_fill_to_alloc : Dynamic;
 	static public var local_flatten_lift : Dynamic;
 	static public var local_func_inv : Dynamic;
-	static public var local_grad_clip : Dynamic;
 	static public var local_grad_log_erfc_neg : Dynamic;
 	static public var local_greedy_distributor : Dynamic;
 	static public var local_incsubtensor_of_zeros : Dynamic;
+	static public var local_incsubtensor_of_zeros_to_setsubtensor : Dynamic;
 	static public var local_inplace_incsubtensor1 : Dynamic;
 	static public var local_inplace_setsubtensor : Dynamic;
 	static public var local_intdiv_by_one : Dynamic;
@@ -1200,6 +1206,8 @@ package theano.tensor.opt;
 	static public var local_useless_subtensor : Dynamic;
 	static public var local_useless_switch : Dynamic;
 	static public var local_useless_tile : Dynamic;
+	static public var local_useless_topk : Dynamic;
+	static public var local_view_op : Dynamic;
 	static public var local_zero_div : Dynamic;
 	/**
 		Convert python litterals to theano constants in subtensor arguments.

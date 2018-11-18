@@ -76,6 +76,10 @@ package scipy.special.cython_special;
 	static public function _shichi_pywrap(x0:Dynamic):Dynamic;
 	static public function _sici_pywrap(x0:Dynamic):Dynamic;
 	/**
+		See the documentation for scipy.special.agm
+	**/
+	static public function agm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		See the documentation for scipy.special.bdtr
 	**/
 	static public function bdtr(x0:Dynamic, x1:Dynamic, x2:Dynamic):Dynamic;
@@ -376,6 +380,10 @@ package scipy.special.cython_special;
 	**/
 	static public function gammaincinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		See the documentation for scipy.special.gammaln
+	**/
+	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		See the documentation for scipy.special.gammasgn
 	**/
 	static public function gammasgn(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -562,7 +570,7 @@ package scipy.special.cython_special;
 	/**
 		See the documentation for scipy.special.loggamma
 	**/
-	static public function loggamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function loggamma(x0:Dynamic):Dynamic;
 	/**
 		See the documentation for scipy.special.logit
 	**/
@@ -659,6 +667,10 @@ package scipy.special.cython_special;
 		See the documentation for scipy.special.obl_cv
 	**/
 	static public function obl_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		See the documentation for scipy.special.owens_t
+	**/
+	static public function owens_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		See the documentation for scipy.special.pdtr
 	**/

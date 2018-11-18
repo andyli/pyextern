@@ -78,6 +78,27 @@ package pandas.core.reshape.merge;
 	static public var _join_functions : Dynamic;
 	static public function _left_join_on_index(left_ax:Dynamic, right_ax:Dynamic, join_keys:Dynamic, ?sort:Dynamic):Dynamic;
 	static public var _merge_doc : Dynamic;
+	/**
+		Convert a set of codes for to a new set of categories
+		
+		Parameters
+		----------
+		codes : array
+		old_categories, new_categories : Index
+		
+		Returns
+		-------
+		new_codes : array
+		
+		Examples
+		--------
+		>>> old_cat = pd.Index(['b', 'a', 'c'])
+		>>> new_cat = pd.Index(['a', 'b'])
+		>>> codes = np.array([0, 1, 1, 2])
+		>>> _recode_for_categories(codes, old_cat, new_cat)
+		array([ 1,  0,  0, -1])
+	**/
+	static public function _recode_for_categories(codes:Dynamic, old_categories:Dynamic, new_categories:Dynamic):Dynamic;
 	static public function _right_outer_join(x:Dynamic, y:Dynamic, max_groups:Dynamic):Dynamic;
 	static public function _should_fill(lname:Dynamic, rname:Dynamic):Dynamic;
 	static public function _sort_labels(uniques:Dynamic, left:Dynamic, right:Dynamic):Dynamic;
@@ -93,7 +114,66 @@ package pandas.core.reshape.merge;
 		copy : bool
 	**/
 	static public function concatenate_block_managers(mgrs_indexers:Dynamic, axes:Dynamic, concat_axis:Dynamic, copy:Dynamic):Dynamic;
+	/**
+		Check if the object is array-like.
+		
+		For an object to be considered array-like, it must be list-like and
+		have a `dtype` attribute.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_array_like : bool
+		    Whether `obj` has array-like properties.
+		
+		Examples
+		--------
+		>>> is_array_like(np.array([1, 2, 3]))
+		True
+		>>> is_array_like(pd.Series(["a", "b"]))
+		True
+		>>> is_array_like(pd.Index(["2016-01-01"]))
+		True
+		>>> is_array_like([1, 2, 3])
+		False
+		>>> is_array_like(("a", "b"))
+		False
+	**/
+	static public function is_array_like(obj:Dynamic):Bool;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check whether the provided array or dtype is of a boolean dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of a boolean dtype.
+		
+		Examples
+		--------
+		>>> is_bool_dtype(str)
+		False
+		>>> is_bool_dtype(int)
+		False
+		>>> is_bool_dtype(bool)
+		True
+		>>> is_bool_dtype(np.bool)
+		True
+		>>> is_bool_dtype(np.array(['a', 'b']))
+		False
+		>>> is_bool_dtype(pd.Series([1, 2]))
+		False
+		>>> is_bool_dtype(np.array([True, False]))
+		True
+	**/
+	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the Categorical dtype.
 		
@@ -180,6 +260,44 @@ package pandas.core.reshape.merge;
 		True
 	**/
 	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like is a datetime-like array-like.
+		
+		Acceptable datetime-like objects are (but not limited to) datetime
+		indices, periodic indices, and timedelta indices.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a datetime-like array-like.
+		
+		Examples
+		--------
+		>>> is_datetimelike([1, 2, 3])
+		False
+		>>> is_datetimelike(pd.Index([1, 2, 3]))
+		False
+		>>> is_datetimelike(pd.DatetimeIndex([1, 2, 3]))
+		True
+		>>> is_datetimelike(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		>>> is_datetimelike(pd.PeriodIndex([], freq="A"))
+		True
+		>>> is_datetimelike(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetimelike(pd.Series([], dtype="timedelta64[ns]"))
+		True
+		>>>
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetimelike(s)
+		True
+	**/
+	static public function is_datetimelike(arr:Dynamic):Dynamic;
 	/**
 		Check if two dtypes are equal.
 		
@@ -451,16 +569,17 @@ package pandas.core.reshape.merge;
 		    * inner: use intersection of keys from both frames, similar to a SQL inner
 		      join; preserve the order of the left keys
 		on : label or list
-		    Field names to join on. Must be found in both DataFrames. If on is
-		    None and not merging on indexes, then it merges on the intersection of
-		    the columns by default.
+		    Column or index level names to join on. These must be found in both
+		    DataFrames. If `on` is None and not merging on indexes then this defaults
+		    to the intersection of the columns in both DataFrames.
 		left_on : label or list, or array-like
-		    Field names to join on in left DataFrame. Can be a vector or list of
-		    vectors of the length of the DataFrame to use a particular vector as
-		    the join key instead of columns
+		    Column or index level names to join on in the left DataFrame. Can also
+		    be an array or list of arrays of the length of the left DataFrame.
+		    These arrays are treated as if they are columns.
 		right_on : label or list, or array-like
-		    Field names to join on in right DataFrame or vector/list of vectors per
-		    left_on docs
+		    Column or index level names to join on in the right DataFrame. Can also
+		    be an array or list of arrays of the length of the right DataFrame.
+		    These arrays are treated as if they are columns.
 		left_index : boolean, default False
 		    Use the index from the left DataFrame as the join key(s). If it is a
 		    MultiIndex, the number of keys in the other DataFrame (either the index
@@ -486,7 +605,23 @@ package pandas.core.reshape.merge;
 		    "right_only" for observations whose merge key only appears in 'right'
 		    DataFrame, and "both" if the observation's merge key is found in both.
 		
-		    .. versionadded:: 0.17.0
+		validate : string, default None
+		    If specified, checks if merge is of specified type.
+		
+		    * "one_to_one" or "1:1": check if merge keys are unique in both
+		      left and right datasets.
+		    * "one_to_many" or "1:m": check if merge keys are unique in left
+		      dataset.
+		    * "many_to_one" or "m:1": check if merge keys are unique in right
+		      dataset.
+		    * "many_to_many" or "m:m": allowed, but does not result in checks.
+		
+		    .. versionadded:: 0.21.0
+		
+		Notes
+		-----
+		Support for specifying index levels as the `on`, `left_on`, and
+		`right_on` parameters was added in version 0.23.0
 		
 		Examples
 		--------
@@ -517,8 +652,9 @@ package pandas.core.reshape.merge;
 		--------
 		merge_ordered
 		merge_asof
+		DataFrame.join
 	**/
-	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):pandas.DataFrame;
+	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic, ?validate:Dynamic):pandas.DataFrame;
 	/**
 		Perform an asof merge. This is similar to a left-join except that we
 		match on nearest key rather than equal keys.
@@ -597,18 +733,22 @@ package pandas.core.reshape.merge;
 		
 		    .. versionadded:: 0.20.0
 		
+		
 		Returns
 		-------
 		merged : DataFrame
 		
 		Examples
 		--------
+		>>> left = pd.DataFrame({'a': [1, 5, 10], 'left_val': ['a', 'b', 'c']})
 		>>> left
 		    a left_val
 		0   1        a
 		1   5        b
 		2  10        c
 		
+		>>> right = pd.DataFrame({'a': [1, 2, 3, 6, 7],
+		...                       'right_val': [1, 2, 3, 6, 7]})
 		>>> right
 		   a  right_val
 		0  1          1
@@ -643,12 +783,15 @@ package pandas.core.reshape.merge;
 		
 		We can use indexed DataFrames as well.
 		
+		>>> left = pd.DataFrame({'left_val': ['a', 'b', 'c']}, index=[1, 5, 10])
 		>>> left
 		   left_val
 		1         a
 		5         b
 		10        c
 		
+		>>> right = pd.DataFrame({'right_val': [1, 2, 3, 6, 7]},
+		...                      index=[1, 2, 3, 6, 7])
 		>>> right
 		   right_val
 		1          1
@@ -696,7 +839,7 @@ package pandas.core.reshape.merge;
 		3 2016-05-25 13:30:00.048   GOOG  720.92       100  720.50  720.93
 		4 2016-05-25 13:30:00.048   AAPL   98.00       100     NaN     NaN
 		
-		We only asof within 2ms betwen the quote time and the trade time
+		We only asof within 2ms between the quote time and the trade time
 		
 		>>> pd.merge_asof(trades, quotes,
 		...                       on='time',
@@ -709,9 +852,9 @@ package pandas.core.reshape.merge;
 		3 2016-05-25 13:30:00.048   GOOG  720.92       100  720.50  720.93
 		4 2016-05-25 13:30:00.048   AAPL   98.00       100     NaN     NaN
 		
-		We only asof within 10ms betwen the quote time and the trade time
+		We only asof within 10ms between the quote time and the trade time
 		and we exclude exact matches on time. However *prior* data will
-		propogate forward
+		propagate forward
 		
 		>>> pd.merge_asof(trades, quotes,
 		...                       on='time',
@@ -721,8 +864,8 @@ package pandas.core.reshape.merge;
 		                     time ticker   price  quantity     bid     ask
 		0 2016-05-25 13:30:00.023   MSFT   51.95        75     NaN     NaN
 		1 2016-05-25 13:30:00.038   MSFT   51.95       155   51.97   51.98
-		2 2016-05-25 13:30:00.048   GOOG  720.77       100  720.50  720.93
-		3 2016-05-25 13:30:00.048   GOOG  720.92       100  720.50  720.93
+		2 2016-05-25 13:30:00.048   GOOG  720.77       100     NaN     NaN
+		3 2016-05-25 13:30:00.048   GOOG  720.92       100     NaN     NaN
 		4 2016-05-25 13:30:00.048   AAPL   98.00       100     NaN     NaN
 		
 		See also
@@ -779,20 +922,18 @@ package pandas.core.reshape.merge;
 		4   c       2     b
 		5   e       3     b
 		
-		>>> ordered_merge(A, B, fill_method='ffill', left_by='group')
-		   key  lvalue group  rvalue
-		0    a       1     a     NaN
-		1    b       1     a       1
-		2    c       2     a       2
-		3    d       2     a       3
-		4    e       3     a       3
-		5    f       3     a       4
-		6    a       1     b     NaN
-		7    b       1     b       1
-		8    c       2     b       2
-		9    d       2     b       3
-		10   e       3     b       3
-		11   f       3     b       4
+		>>> merge_ordered(A, B, fill_method='ffill', left_by='group')
+		  group key  lvalue  rvalue
+		0     a   a       1     NaN
+		1     a   b       1     1.0
+		2     a   c       2     2.0
+		3     a   d       2     3.0
+		4     a   e       3     3.0
+		5     b   a       1     NaN
+		6     b   b       1     1.0
+		7     b   c       2     2.0
+		8     b   d       2     3.0
+		9     b   e       3     3.0
 		
 		Returns
 		-------
@@ -812,12 +953,13 @@ package pandas.core.reshape.merge;
 		Parameters
 		----------
 		dtype : string / dtype
+		compat : boolean, default True
 		
 		Returns
 		-------
 		np.dtype or a pandas dtype
 	**/
-	static public function na_value_for_dtype(dtype:Dynamic):Dynamic;
+	static public function na_value_for_dtype(dtype:Dynamic, ?compat:Dynamic):Dynamic;
 	/**
 		Check whether the array or dtype should be converted to int64.
 		
@@ -851,79 +993,4 @@ package pandas.core.reshape.merge;
 		True
 	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Perform merge with optional filling/interpolation designed for ordered
-		data like time series data. Optionally perform group-wise merge (see
-		examples)
-		
-		Parameters
-		----------
-		left : DataFrame
-		right : DataFrame
-		on : label or list
-		    Field names to join on. Must be found in both DataFrames.
-		left_on : label or list, or array-like
-		    Field names to join on in left DataFrame. Can be a vector or list of
-		    vectors of the length of the DataFrame to use a particular vector as
-		    the join key instead of columns
-		right_on : label or list, or array-like
-		    Field names to join on in right DataFrame or vector/list of vectors per
-		    left_on docs
-		left_by : column name or list of column names
-		    Group left DataFrame by group columns and merge piece by piece with
-		    right DataFrame
-		right_by : column name or list of column names
-		    Group right DataFrame by group columns and merge piece by piece with
-		    left DataFrame
-		fill_method : {'ffill', None}, default None
-		    Interpolation method for data
-		suffixes : 2-length sequence (tuple, list, ...)
-		    Suffix to apply to overlapping column names in the left and right
-		    side, respectively
-		how : {'left', 'right', 'outer', 'inner'}, default 'outer'
-		    * left: use only keys from left frame (SQL: left outer join)
-		    * right: use only keys from right frame (SQL: right outer join)
-		    * outer: use union of keys from both frames (SQL: full outer join)
-		    * inner: use intersection of keys from both frames (SQL: inner join)
-		
-		    .. versionadded:: 0.19.0
-		
-		Examples
-		--------
-		>>> A                      >>> B
-		      key  lvalue group        key  rvalue
-		0   a       1     a        0     b       1
-		1   c       2     a        1     c       2
-		2   e       3     a        2     d       3
-		3   a       1     b
-		4   c       2     b
-		5   e       3     b
-		
-		>>> ordered_merge(A, B, fill_method='ffill', left_by='group')
-		   key  lvalue group  rvalue
-		0    a       1     a     NaN
-		1    b       1     a       1
-		2    c       2     a       2
-		3    d       2     a       3
-		4    e       3     a       3
-		5    f       3     a       4
-		6    a       1     b     NaN
-		7    b       1     b       1
-		8    c       2     b       2
-		9    d       2     b       3
-		10   e       3     b       3
-		11   f       3     b       4
-		
-		Returns
-		-------
-		merged : DataFrame
-		    The output type will the be same as 'left', if it is a subclass
-		    of DataFrame.
-		
-		See also
-		--------
-		merge
-		merge_asof
-	**/
-	static public function ordered_merge(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?fill_method:Dynamic, ?suffixes:Dynamic):pandas.DataFrame;
 }

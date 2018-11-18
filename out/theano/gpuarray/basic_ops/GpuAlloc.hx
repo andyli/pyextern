@@ -25,7 +25,7 @@ package theano.gpuarray.basic_ops;
 		                          eval_points=eval_points)
 	**/
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
-	public function _HideC__hide():Dynamic;
+	static public function _HideC__hide(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		If the alloc would be useless, this function returns val.
 		
@@ -82,7 +82,7 @@ package theano.gpuarray.basic_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -135,7 +135,7 @@ package theano.gpuarray.basic_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -176,11 +176,11 @@ package theano.gpuarray.basic_ops;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
-	public function c_cleanup_code_struct():Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
+	static public function c_cleanup_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Required: return the C implementation of an Op.
 		
@@ -235,9 +235,9 @@ package theano.gpuarray.basic_ops;
 	**/
 	public function c_code_cache_version():Dynamic;
 	public function c_code_cache_version_apply(node:Dynamic):Dynamic;
-	public function c_code_cleanup():Dynamic;
-	public function c_compile_args():Dynamic;
-	public function c_header_dirs():Dynamic;
+	static public function c_code_cleanup(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_header_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: Return a list of header files required by code returned by
 		this class.
@@ -258,15 +258,15 @@ package theano.gpuarray.basic_ops;
 		    Subclass does not implement this method.
 	**/
 	public function c_headers():Dynamic;
-	public function c_init_code():Dynamic;
-	public function c_init_code_apply():Dynamic;
-	public function c_init_code_struct():Dynamic;
-	public function c_lib_dirs():Dynamic;
-	public function c_libraries():Dynamic;
-	public function c_no_compile_args():Dynamic;
-	public function c_support_code():Dynamic;
-	public function c_support_code_apply():Dynamic;
-	public function c_support_code_struct():Dynamic;
+	static public function c_init_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_lib_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_libraries(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_no_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function connection_pattern(node:Dynamic):Dynamic;
 	static public var default_output : Dynamic;
 	/**
@@ -361,7 +361,7 @@ package theano.gpuarray.basic_ops;
 		MethodNotDefined
 		    The subclass does not override this method.
 	**/
-	public function perform(node:Dynamic, inputs:Dynamic, outs:Dynamic, ctx:Dynamic):Dynamic;
+	public function perform(node:Dynamic, inputs:Dynamic, outs:Dynamic, params:Dynamic):Dynamic;
 	/**
 		Make any special modifications that the Op needs before doing
 		make_thunk().
@@ -369,7 +369,7 @@ package theano.gpuarray.basic_ops;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

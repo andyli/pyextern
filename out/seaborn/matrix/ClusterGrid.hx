@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.matrix;
 @:pythonImport("seaborn.matrix", "ClusterGrid") extern class ClusterGrid {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package seaborn.matrix;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package seaborn.matrix;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -138,7 +138,7 @@ package seaborn.matrix;
 		    Title for the legend. The default reads from ``self._hue_var``.
 		label_order : list of labels, optional
 		    The order that the legend entries should appear in. The default
-		    reads from ``self.hue_names`` or sorts the keys in ``legend_data``.
+		    reads from ``self.hue_names``.
 		kwargs : key, value pairings
 		    Other keyword arguments are passed to the underlying legend methods
 		    on the Figure or Axes object.
@@ -221,11 +221,6 @@ package seaborn.matrix;
 		standardized : pandas.DataFrame
 		    Noramlized data with a mean of 0 and variance of 1 across the
 		    specified axis.
-		
-		>>> import numpy as np
-		>>> d = np.arange(5, 8, 0.5)
-		>>> ClusterGrid.standard_scale(d)
-		array([ 0. ,  0.2,  0.4,  0.6,  0.8,  1. ])
 	**/
 	static public function standard_scale(data2d:Dynamic, ?axis:Dynamic):Dynamic;
 	/**

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.units;
 @:pythonImport("matplotlib.units", "Registry") extern class Registry {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if D has a key k, else False.
 	**/
@@ -61,7 +61,7 @@ package matplotlib.units;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -123,7 +123,7 @@ package matplotlib.units;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -145,7 +145,8 @@ package matplotlib.units;
 	**/
 	public function get(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		get the converter interface instance for x, or None
+		Get the converter for data that has the same type as *x*. If no
+		converters are registered for *x*, returns ``None``.
 	**/
 	public function get_converter(x:Dynamic):Dynamic;
 	/**

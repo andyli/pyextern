@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.artist;
 @:pythonImport("matplotlib.artist", "ArtistInspector") extern class ArtistInspector {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,20 +38,18 @@ package matplotlib.artist;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize the artist inspector with an
-		:class:`~matplotlib.artist.Artist` or sequence of :class:`Artists`.
-		If a sequence is used, we assume it is a homogeneous sequence (all
-		:class:`Artists` are of the same type) and it is your responsibility
-		to make sure this is so.
+		Initialize the artist inspector with an `Artist` or an iterable of
+		`Artist`\s.  If an iterable is used, we assume it is a homogeneous
+		sequence (all `Artists` are of the same type) and it is your
+		responsibility to make sure this is so.
 	**/
 	@:native("__init__")
 	public function ___init__(o:Dynamic):Dynamic;
 	/**
-		Initialize the artist inspector with an
-		:class:`~matplotlib.artist.Artist` or sequence of :class:`Artists`.
-		If a sequence is used, we assume it is a homogeneous sequence (all
-		:class:`Artists` are of the same type) and it is your responsibility
-		to make sure this is so.
+		Initialize the artist inspector with an `Artist` or an iterable of
+		`Artist`\s.  If an iterable is used, we assume it is a homogeneous
+		sequence (all `Artists` are of the same type) and it is your
+		responsibility to make sure this is so.
 	**/
 	public function new(o:Dynamic):Void;
 	/**
@@ -60,7 +58,7 @@ package matplotlib.artist;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -111,7 +109,7 @@ package matplotlib.artist;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -122,6 +120,11 @@ package matplotlib.artist;
 	**/
 	public function _get_setters_and_targets():Dynamic;
 	static public var _get_valid_values_regex : Dynamic;
+	/**
+		Changes the full path to the public API path that is used
+		in sphinx. This is needed for links to work.
+	**/
+	public function _replace_path(source_class:Dynamic):Dynamic;
 	/**
 		return 'PROPNAME or alias' if *s* has an alias, else return
 		PROPNAME.
@@ -141,26 +144,13 @@ package matplotlib.artist;
 	**/
 	public function aliased_name_rest(s:Dynamic, target:Dynamic):Dynamic;
 	/**
-		Recursively find all :class:`matplotlib.artist.Artist`
-		instances contained in *self*.
-		
-		If *match* is not None, it can be
-		
-		  - function with signature ``boolean = match(artist)``
-		
-		  - class instance: e.g., :class:`~matplotlib.lines.Line2D`
-		
-		used to filter matches.
-	**/
-	public function findobj(?match:Dynamic):Dynamic;
-	/**
-		Get a dict mapping *fullname* -> *alias* for each *alias* in
-		the :class:`~matplotlib.artist.ArtistInspector`.
+		Get a dict mapping property fullnames to sets of aliases for each alias
+		in the :class:`~matplotlib.artist.ArtistInspector`.
 		
 		e.g., for lines::
 		
-		  {'markerfacecolor': 'mfc',
-		   'linewidth'      : 'lw',
+		  {'markerfacecolor': {'mfc'},
+		   'linewidth'      : {'lw'},
 		  }
 	**/
 	public function get_aliases():Dynamic;
@@ -173,7 +163,7 @@ package matplotlib.artist;
 		Get the legal arguments for the setter associated with *attr*.
 		
 		This is done by querying the docstring of the function *set_attr*
-		for a line that begins with ACCEPTS:
+		for a line that begins with "ACCEPTS" or ".. ACCEPTS":
 		
 		e.g., for a line linestyle, return
 		"[ ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'steps'`` | ``'None'``
@@ -190,8 +180,8 @@ package matplotlib.artist;
 	**/
 	public function pprint_getters():Dynamic;
 	/**
-		If *prop* is *None*, return a list of strings of all settable properies
-		and their valid values.
+		If *prop* is *None*, return a list of strings of all settable
+		properties and their valid values.
 		
 		If *prop* is not *None*, it is a valid property name and that
 		property will be returned as a string of property : valid
@@ -199,8 +189,8 @@ package matplotlib.artist;
 	**/
 	public function pprint_setters(?prop:Dynamic, ?leadingspace:Dynamic):Dynamic;
 	/**
-		If *prop* is *None*, return a list of strings of all settable properies
-		and their valid values.  Format the output for ReST
+		If *prop* is *None*, return a list of strings of all settable
+		properties and their valid values.  Format the output for ReST
 		
 		If *prop* is not *None*, it is a valid property name and that
 		property will be returned as a string of property : valid

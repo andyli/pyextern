@@ -30,6 +30,9 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  The output tensor, of rank 3.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function average_pooling1d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -56,6 +59,9 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function average_pooling2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -84,6 +90,9 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function average_pooling3d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -110,6 +119,9 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function avg_pool2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -137,6 +149,9 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function max_pool2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -159,6 +174,9 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  The output tensor, of rank 3.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function max_pooling1d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -185,6 +203,9 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function max_pooling2d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -213,7 +234,11 @@ package tensorflow.python.layers.pooling;
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
 	static public function max_pooling3d(inputs:Dynamic, pool_size:Dynamic, strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

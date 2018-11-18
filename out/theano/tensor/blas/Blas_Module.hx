@@ -44,6 +44,7 @@ package theano.tensor.blas;
 	static public function blas_header_version():Dynamic;
 	static public function blas_opt_inplace(fgraph:Dynamic):Dynamic;
 	static public var blas_optdb : Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public function check_init_y():Dynamic;
 	static public var config : Dynamic;
 	/**
@@ -78,7 +79,7 @@ package theano.tensor.blas;
 		     an Apply node.
 		:type used_ids: dict or None
 		:param used_ids: the id to use for some object, but maybe we only
-		     refered to it yet.
+		     referred to it yet.
 		
 		:returns: string if `file` == 'str', else file arg
 		
@@ -112,6 +113,17 @@ package theano.tensor.blas;
 		Uses the TopoOptimizer from the input nodes to output nodes of the graph.
 	**/
 	static public function in2out(?local_opts:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Contextmanager that copies the stack trace from one or more variable nodes to all
+		variable nodes constructed in the body. new_nodes is the list of all the newly created
+		variable nodes inside an optimization that is managed by graph.nodes_constructed().
+		
+		Parameters
+		----------
+		from_var
+		    Variable node or a list of variable nodes to copy stack traces from.
+	**/
+	static public function inherit_stack_trace(from_var:Dynamic):Dynamic;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
 	**/

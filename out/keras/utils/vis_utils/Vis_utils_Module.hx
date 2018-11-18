@@ -9,7 +9,12 @@ package keras.utils.vis_utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Raise errors if `pydot` or GraphViz unavailable.
+	**/
 	static public function _check_pydot():Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Convert a Keras model to dot format.
 		
@@ -40,5 +45,6 @@ package keras.utils.vis_utils;
 		        'LR' creates a horizontal plot.
 	**/
 	static public function plot_model(model:Dynamic, ?to_file:Dynamic, ?show_shapes:Dynamic, ?show_layer_names:Dynamic, ?rankdir:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public var pydot : Dynamic;
 }

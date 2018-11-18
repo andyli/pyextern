@@ -9,17 +9,13 @@ package matplotlib.spines;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
 		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependant renderer attributes or making
+		are useful for changing artist-dependent renderer attributes or making
 		other setup function calls, such as starting and flushing a mixed-mode
 		renderer.
 	**/
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

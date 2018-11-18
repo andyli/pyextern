@@ -41,11 +41,11 @@ package tensorflow.python.ops.ctc_ops;
 		
 		If `merge_repeated` is `True`, merge repeated classes in the output beams.
 		This means that if consecutive entries in a beam are the same,
-		only the first of these is emitted.  That is, when the top path
-		is `A B B B B`, the return value is:
+		only the first of these is emitted.  That is, when the sequence is
+		`A B B * B * B` (where '*' is the blank label), the return value is:
 		
 		  * `A B` if `merge_repeated = True`.
-		  * `A B B B B` if `merge_repeated = False`.
+		  * `A B B B` if `merge_repeated = False`.
 		
 		Args:
 		  inputs: 3-D `float` `Tensor`, size
@@ -64,7 +64,7 @@ package tensorflow.python.ops.ctc_ops;
 		      The rows store: [batch, time].
 		    `decoded[j].values`: Values vector, size `(total_decoded_outputs[j])`.
 		      The vector stores the decoded classes for beam j.
-		    `decoded[j].shape`: Shape vector, size `(2)`.
+		    `decoded[j].dense_shape`: Shape vector, size `(2)`.
 		      The shape values are: `[batch_size, max_decoded_length[j]]`.
 		  log_probability: A `float` matrix `(batch_size x top_paths)` containing
 		      sequence log-probabilities.
@@ -87,7 +87,7 @@ package tensorflow.python.ops.ctc_ops;
 		
 		Args:
 		  inputs: 3-D `float` `Tensor` sized
-		    `[max_time x batch_size x num_classes]`.  The logits.
+		    `[max_time, batch_size, num_classes]`.  The logits.
 		  sequence_length: 1-D `int32` vector containing sequence lengths,
 		    having size `[batch_size]`.
 		  merge_repeated: Boolean.  Default: True.
@@ -96,11 +96,11 @@ package tensorflow.python.ops.ctc_ops;
 		  A tuple `(decoded, neg_sum_logits)` where
 		  decoded: A single-element list. `decoded[0]`
 		    is an `SparseTensor` containing the decoded outputs s.t.:
-		    `decoded.indices`: Indices matrix `(total_decoded_outputs x 2)`.
+		    `decoded.indices`: Indices matrix `(total_decoded_outputs, 2)`.
 		      The rows store: `[batch, time]`.
 		    `decoded.values`: Values vector, size `(total_decoded_outputs)`.
 		      The vector stores the decoded classes.
-		    `decoded.shape`: Shape vector, size `(2)`.
+		    `decoded.dense_shape`: Shape vector, size `(2)`.
 		      The shape values are: `[batch_size, max_decoded_length]`
 		  neg_sum_logits: A `float` matrix `(batch_size x 1)` containing, for the
 		      sequence found, the negative of the sum of the greatest logit at each
@@ -113,8 +113,9 @@ package tensorflow.python.ops.ctc_ops;
 		This op implements the CTC loss as presented in the article:
 		
 		[A. Graves, S. Fernandez, F. Gomez, J. Schmidhuber.
-		Connectionist Temporal Classification: Labelling Unsegmented Sequence Data
-		with Recurrent Neural Networks. ICML 2006, Pittsburgh, USA, pp. 369-376.](http://www.cs.toronto.edu/~graves/icml_2006.pdf)
+		Connectionist Temporal Classification: Labeling Unsegmented Sequence Data
+		with Recurrent Neural Networks. ICML 2006, Pittsburgh, USA,
+		pp. 369-376.](http://www.cs.toronto.edu/~graves/icml_2006.pdf)
 		
 		Input requirements:
 		
@@ -184,9 +185,9 @@ package tensorflow.python.ops.ctc_ops;
 		    See `core/ops/ctc_ops.cc` for more details.
 		  inputs: 3-D `float` `Tensor`.
 		    If time_major == False, this will be a `Tensor` shaped:
-		      `[batch_size x max_time x num_classes]`.
+		      `[batch_size, max_time, num_classes]`.
 		    If time_major == True (default), this will be a `Tensor` shaped:
-		      `[max_time x batch_size x num_classes]`.
+		      `[max_time, batch_size, num_classes]`.
 		    The logits.
 		  sequence_length: 1-D `int32` vector, size `[batch_size]`.
 		    The sequence lengths.
@@ -196,15 +197,18 @@ package tensorflow.python.ops.ctc_ops;
 		  ignore_longer_outputs_than_inputs: Boolean. Default: False.
 		    If True, sequences with longer outputs than inputs will be ignored.
 		  time_major: The shape format of the `inputs` Tensors.
-		    If True, these `Tensors` must be shaped `[max_time, batch_size, num_classes]`.
-		    If False, these `Tensors` must be shaped `[batch_size, max_time, num_classes]`.
-		    Using `time_major = True` (default) is a bit more efficient because it avoids
-		    transposes at the beginning of the ctc_loss calculation.  However, most
-		    TensorFlow data is batch-major, so by this function also accepts inputs
-		    in batch-major form.
+		    If True, these `Tensors` must be shaped `[max_time, batch_size,
+		    num_classes]`.
+		    If False, these `Tensors` must be shaped `[batch_size, max_time,
+		    num_classes]`.
+		    Using `time_major = True` (default) is a bit more efficient because it
+		    avoids transposes at the beginning of the ctc_loss calculation.  However,
+		    most TensorFlow data is batch-major, so by this function also accepts
+		    inputs in batch-major form.
 		
 		Returns:
-		  A 1-D `float` `Tensor`, size `[batch]`, containing the negative log probabilities.
+		  A 1-D `float` `Tensor`, size `[batch]`, containing the negative log
+		    probabilities.
 		
 		Raises:
 		  TypeError: if labels is not a `SparseTensor`.
@@ -212,4 +216,5 @@ package tensorflow.python.ops.ctc_ops;
 	static public function ctc_loss(labels:Dynamic, inputs:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?time_major:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

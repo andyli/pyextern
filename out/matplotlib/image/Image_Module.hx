@@ -34,18 +34,18 @@ package matplotlib.image;
 		between `Figure.draw` and `Axes.draw`, but otherwise should not be
 		generally useful.
 	**/
-	static public function _draw_list_compositing_images(renderer:Dynamic, parent:Dynamic, dsu:Dynamic, ?suppress_composite:Dynamic):Dynamic;
+	static public function _draw_list_compositing_images(renderer:Dynamic, parent:Dynamic, artists:Dynamic, ?suppress_composite:Dynamic):Dynamic;
 	static public var _interpd_ : Dynamic;
+	static public var _log : Dynamic;
 	/**
 		Convert an RGB image to RGBA, as required by the image resample C++
 		extension.
 	**/
 	static public function _rgb_to_rgba(A:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
 		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependant renderer attributes or making
+		are useful for changing artist-dependent renderer attributes or making
 		other setup function calls, such as starting and flushing a mixed-mode
 		renderer.
 	**/
@@ -85,28 +85,36 @@ package matplotlib.image;
 		      in the output figure.
 	**/
 	static public function composite_images(images:Dynamic, renderer:Dynamic, ?magnification:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Read an image from a file into an array.
 		
-		*fname* may be a string path, a valid URL, or a Python
-		file-like object.  If using a file object, it must be opened in binary
-		mode.
+		Parameters
+		----------
+		fname : str or file-like
+		    The image file to read. This can be a filename, a URL or a Python
+		    file-like object opened in read-binary mode.
+		format : str, optional
+		    The image file format assumed for reading the data. If not
+		    given, the format is deduced from the filename.  If nothing can
+		    be deduced, PNG is tried.
 		
-		If *format* is provided, will try to read file of that type,
-		otherwise the format is deduced from the filename.  If nothing can
-		be deduced, PNG is tried.
+		Returns
+		-------
+		imagedata : :class:`numpy.array`
+		    The image data. The returned array has shape
 		
-		Return value is a :class:`numpy.array`.  For grayscale images, the
-		return array is MxN.  For RGB images, the return value is MxNx3.
-		For RGBA images the return value is MxNx4.
+		    - (M, N) for grayscale images.
+		    - (M, N, 3) for RGB images.
+		    - (M, N, 4) for RGBA images.
 		
-		matplotlib can only read PNGs natively, but if `PIL
-		<http://www.pythonware.com/products/pil/>`_ is installed, it will
-		use it to load the image and return an array (if possible) which
-		can be used with :func:`~matplotlib.pyplot.imshow`. Note, URL strings
-		may not be compatible with PIL. Check the PIL documentation for more
-		information.
+		Notes
+		-----
+		Matplotlib can only read PNGs natively. Further image formats are
+		supported via the optional dependency on Pillow. Note, URL strings
+		are not compatible with Pillow. Check the `Pillow documentation`_
+		for more information.
+		
+		.. _Pillow documentation: http://pillow.readthedocs.io/en/latest/
 	**/
 	static public function imread(fname:Dynamic, ?format:Dynamic):Dynamic;
 	/**
@@ -114,30 +122,33 @@ package matplotlib.image;
 		
 		The output formats available depend on the backend being used.
 		
-		Arguments:
-		  *fname*:
-		    A string containing a path to a filename, or a Python file-like object.
-		    If *format* is *None* and *fname* is a string, the output
-		    format is deduced from the extension of the filename.
-		  *arr*:
-		    An MxN (luminance), MxNx3 (RGB) or MxNx4 (RGBA) array.
-		Keyword arguments:
-		  *vmin* /*vmax*: [ None | scalar ]
+		Parameters
+		----------
+		fname : str or file-like
+		    The filename or a Python file-like object to store the image in.
+		    The necessary output format is inferred from the filename extension
+		    but may be explicitly overwritten using *format*.
+		arr : array-like
+		    The image data. The shape can be one of
+		    MxN (luminance), MxNx3 (RGB) or MxNx4 (RGBA).
+		vmin, vmax : scalar, optional
 		    *vmin* and *vmax* set the color scaling for the image by fixing the
 		    values that map to the colormap color limits. If either *vmin*
 		    or *vmax* is None, that limit is determined from the *arr*
 		    min/max value.
-		  *cmap*:
-		    cmap is a colors.Colormap instance, e.g., cm.jet.
-		    If None, default to the rc image.cmap value.
-		  *format*:
-		    One of the file extensions supported by the active
-		    backend.  Most backends support png, pdf, ps, eps and svg.
-		  *origin*
-		    [ 'upper' | 'lower' ] Indicates where the [0,0] index of
-		    the array is in the upper left or lower left corner of
-		    the axes. Defaults to the rc image.origin value.
-		  *dpi*
+		cmap : str or `~matplotlib.colors.Colormap`, optional
+		    A Colormap instance or registered colormap name. The colormap
+		    maps scalar data to colors. It is ignored for RGB(A) data.
+		    Defaults to :rc:`image.cmap` ('viridis').
+		format : str, optional
+		    The file format, e.g. 'png', 'pdf', 'svg', ... . If not given, the
+		    format is deduced form the filename extension in *fname*.
+		    See `.Figure.savefig` for details.
+		origin : {'upper', 'lower'}, optional
+		    Indicates whether the ``(0, 0)`` index of the array is in the upper
+		    left or lower left corner of the axes.  Defaults to :rc:`image.origin`
+		    ('upper').
+		dpi : int
 		    The DPI to store in the metadata of the file.  This does not affect the
 		    resolution of the output image.
 	**/
@@ -162,15 +173,24 @@ package matplotlib.image;
 	**/
 	static public function pcolor2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Load a PIL image and return it as a numpy array.  For grayscale
-		images, the return array is MxN.  For RGB images, the return value
-		is MxNx3.  For RGBA images the return value is MxNx4
+		Load a `PIL image`_ and return it as a numpy array.
+		
+		.. _PIL image: https://pillow.readthedocs.io/en/latest/reference/Image.html
+		
+		Returns
+		-------
+		numpy.array
+		
+		    The array shape depends on the image type:
+		
+		    - (M, N) for grayscale images.
+		    - (M, N, 3) for RGB images.
+		    - (M, N, 4) for RGBA images.
 	**/
 	static public function pil_to_array(pilImage:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	/**
-		resample(input_array, output_array, matrix, interpolation=NEAREST, alpha=1.0, norm=0, radius=1)
+		resample(input_array, output_array, matrix, interpolation=NEAREST, alpha=1.0, norm=False, radius=1)
 		
 		Resample input_array, blending it in-place into output_array, using an
 		affine transformation.
@@ -204,8 +224,8 @@ package matplotlib.image;
 		    The level of transparency to apply.  1.0 is completely opaque.
 		    0.0 is completely transparent.
 		
-		norm : float, optional
-		    The norm for the interpolation function.  Default is 0.
+		norm : bool, optional
+		    Whether to norm the interpolation function.  Default is `False`.
 		
 		radius: float, optional
 		    The radius of the kernel, if method is SINC, LANCZOS or BLACKMAN.
@@ -213,105 +233,37 @@ package matplotlib.image;
 	**/
 	static public function resample(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		make a thumbnail of image in *infile* with output filename
-		*thumbfile*.
+		Make a thumbnail of image in *infile* with output filename *thumbfile*.
 		
-		  *infile* the image file -- must be PNG or Pillow-readable if you
-		     have `Pillow <http://python-pillow.org/>`_ installed
+		See :doc:`/gallery/misc/image_thumbnail_sgskip`.
 		
-		  *thumbfile*
-		    the thumbnail filename
+		Parameters
+		----------
+		infile : str or file-like
+		    The image file -- must be PNG, Pillow-readable if you have `Pillow
+		    <http://python-pillow.org/>`_ installed.
 		
-		  *scale*
-		    the scale factor for the thumbnail
+		thumbfile : str or file-like
+		    The thumbnail filename.
 		
-		  *interpolation*
-		    the interpolation scheme used in the resampling
+		scale : float, optional
+		    The scale factor for the thumbnail.
 		
+		interpolation : str, optional
+		    The interpolation scheme used in the resampling. See the
+		    *interpolation* parameter of `~.Axes.imshow` for possible values.
 		
-		  *preview*
-		    if True, the default backend (presumably a user interface
-		    backend) will be used which will cause a figure to be raised
-		    if :func:`~matplotlib.pyplot.show` is called.  If it is False,
-		    a pure image backend will be used depending on the extension,
-		    'png'->FigureCanvasAgg, 'pdf'->FigureCanvasPdf,
-		    'svg'->FigureCanvasSVG
+		preview : bool, optional
+		    If True, the default backend (presumably a user interface
+		    backend) will be used which will cause a figure to be raised if
+		    `~matplotlib.pyplot.show` is called.  If it is False, the figure is
+		    created using `FigureCanvasBase` and the drawing backend is selected
+		    as `~matplotlib.figure.savefig` would normally do.
 		
-		
-		See examples/misc/image_thumbnail.py.
-		
-		.. htmlonly::
-		
-		    :ref:`misc-image_thumbnail`
-		
-		Return value is the figure instance containing the thumbnail
+		Returns
+		-------
+		figure : `~.figure.Figure`
+		    The figure instance containing the thumbnail.
 	**/
 	static public function thumbnail(infile:Dynamic, thumbfile:Dynamic, ?scale:Dynamic, ?interpolation:Dynamic, ?preview:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
-	/**
-		Open the URL url, which can be either a string or a Request object.
-		
-		*data* must be an object specifying additional data to be sent to
-		the server, or None if no such data is needed.  See Request for
-		details.
-		
-		urllib.request module uses HTTP/1.1 and includes a "Connection:close"
-		header in its HTTP requests.
-		
-		The optional *timeout* parameter specifies a timeout in seconds for
-		blocking operations like the connection attempt (if not specified, the
-		global default timeout setting will be used). This only works for HTTP,
-		HTTPS and FTP connections.
-		
-		If *context* is specified, it must be a ssl.SSLContext instance describing
-		the various SSL options. See HTTPSConnection for more details.
-		
-		The optional *cafile* and *capath* parameters specify a set of trusted CA
-		certificates for HTTPS requests. cafile should point to a single file
-		containing a bundle of CA certificates, whereas capath should point to a
-		directory of hashed certificate files. More information can be found in
-		ssl.SSLContext.load_verify_locations().
-		
-		The *cadefault* parameter is ignored.
-		
-		This function always returns an object which can work as a context
-		manager and has methods such as
-		
-		* geturl() - return the URL of the resource retrieved, commonly used to
-		  determine if a redirect was followed
-		
-		* info() - return the meta-information of the page, such as headers, in the
-		  form of an email.message_from_string() instance (see Quick Reference to
-		  HTTP Headers)
-		
-		* getcode() - return the HTTP status code of the response.  Raises URLError
-		  on errors.
-		
-		For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
-		object slightly modified. In addition to the three new methods above, the
-		msg attribute contains the same information as the reason attribute ---
-		the reason phrase returned by the server --- instead of the response
-		headers as it is specified in the documentation for HTTPResponse.
-		
-		For FTP, file, and data URLs and requests explicitly handled by legacy
-		URLopener and FancyURLopener classes, this function returns a
-		urllib.response.addinfourl object.
-		
-		Note that None may be returned if no handler handles the request (though
-		the default installed global OpenerDirector uses UnknownHandler to ensure
-		this never happens).
-		
-		In addition, if proxy settings are detected (for example, when a *_proxy
-		environment variable like http_proxy is set), ProxyHandler is default
-		installed and makes sure the requests are handled through the proxy.
-	**/
-	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
-	/**
-		Parse a URL into 6 components:
-		<scheme>://<netloc>/<path>;<params>?<query>#<fragment>
-		Return a 6-tuple: (scheme, netloc, path, params, query, fragment).
-		Note that we don't break the components up in smaller bits
-		(e.g. netloc is a single string) and we don't expand % escapes.
-	**/
-	static public function urlparse(url:Dynamic, ?scheme:Dynamic, ?allow_fragments:Dynamic):Dynamic;
 }

@@ -10,6 +10,10 @@ package tensorflow.python.ops.distributions.categorical;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Broadcasts the event or distribution parameters.
+	**/
+	static public function _broadcast_cat_event_and_params(event:Dynamic, params:Dynamic, base_dtype:Dynamic):Dynamic;
+	/**
 		Calculate the batched KL divergence KL(a || b) with a and b Categorical.
 		
 		Args:
@@ -25,4 +29,5 @@ package tensorflow.python.ops.distributions.categorical;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

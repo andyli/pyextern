@@ -15,7 +15,7 @@ package pandas.io.excel;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -37,6 +37,7 @@ package pandas.io.excel;
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __fspath__():Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -68,7 +69,7 @@ package pandas.io.excel;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +120,7 @@ package pandas.io.excel;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -129,13 +130,205 @@ package pandas.io.excel;
 	static public var _abc_negative_cache_version : Dynamic;
 	static public var _abc_registry : Dynamic;
 	/**
+		Convert ``alignment_dict`` to an openpyxl v2 Alignment object
+		Parameters
+		----------
+		alignment_dict : dict
+		    A dict with zero or more of the following keys (or their synonyms).
+		        'horizontal'
+		        'vertical'
+		        'text_rotation'
+		        'wrap_text'
+		        'shrink_to_fit'
+		        'indent'
+		Returns
+		-------
+		alignment : openpyxl.styles.Alignment
+	**/
+	static public function _convert_to_alignment(alignment_dict:Dynamic):Dynamic;
+	/**
+		Convert ``border_dict`` to an openpyxl v2 Border object
+		Parameters
+		----------
+		border_dict : dict
+		    A dict with zero or more of the following keys (or their synonyms).
+		        'left'
+		        'right'
+		        'top'
+		        'bottom'
+		        'diagonal'
+		        'diagonal_direction'
+		        'vertical'
+		        'horizontal'
+		        'diagonalUp' ('diagonalup')
+		        'diagonalDown' ('diagonaldown')
+		        'outline'
+		Returns
+		-------
+		border : openpyxl.styles.Border
+	**/
+	static public function _convert_to_border(border_dict:Dynamic):Dynamic;
+	/**
+		Convert ``color_spec`` to an openpyxl v2 Color object
+		Parameters
+		----------
+		color_spec : str, dict
+		    A 32-bit ARGB hex string, or a dict with zero or more of the
+		    following keys.
+		        'rgb'
+		        'indexed'
+		        'auto'
+		        'theme'
+		        'tint'
+		        'index'
+		        'type'
+		Returns
+		-------
+		color : openpyxl.styles.Color
+	**/
+	static public function _convert_to_color(color_spec:Dynamic):Dynamic;
+	/**
+		Convert ``fill_dict`` to an openpyxl v2 Fill object
+		Parameters
+		----------
+		fill_dict : dict
+		    A dict with one or more of the following keys (or their synonyms),
+		        'fill_type' ('patternType', 'patterntype')
+		        'start_color' ('fgColor', 'fgcolor')
+		        'end_color' ('bgColor', 'bgcolor')
+		    or one or more of the following keys (or their synonyms).
+		        'type' ('fill_type')
+		        'degree'
+		        'left'
+		        'right'
+		        'top'
+		        'bottom'
+		        'stop'
+		Returns
+		-------
+		fill : openpyxl.styles.Fill
+	**/
+	static public function _convert_to_fill(fill_dict:Dynamic):Dynamic;
+	/**
+		Convert ``font_dict`` to an openpyxl v2 Font object
+		Parameters
+		----------
+		font_dict : dict
+		    A dict with zero or more of the following keys (or their synonyms).
+		        'name'
+		        'size' ('sz')
+		        'bold' ('b')
+		        'italic' ('i')
+		        'underline' ('u')
+		        'strikethrough' ('strike')
+		        'color'
+		        'vertAlign' ('vertalign')
+		        'charset'
+		        'scheme'
+		        'family'
+		        'outline'
+		        'shadow'
+		        'condense'
+		Returns
+		-------
+		font : openpyxl.styles.Font
+	**/
+	static public function _convert_to_font(font_dict:Dynamic):Dynamic;
+	/**
+		Convert ``number_format_dict`` to an openpyxl v2.1.0 number format
+		initializer.
+		Parameters
+		----------
+		number_format_dict : dict
+		    A dict with zero or more of the following keys.
+		        'format_code' : str
+		Returns
+		-------
+		number_format : str
+	**/
+	static public function _convert_to_number_format(number_format_dict:Dynamic):Dynamic;
+	/**
+		Convert ``protection_dict`` to an openpyxl v2 Protection object.
+		Parameters
+		----------
+		protection_dict : dict
+		    A dict with zero or more of the following keys.
+		        'locked'
+		        'hidden'
+		Returns
+		-------
+	**/
+	static public function _convert_to_protection(protection_dict:Dynamic):Dynamic;
+	/**
+		Convert ``side_spec`` to an openpyxl v2 Side object
+		Parameters
+		----------
+		side_spec : str, dict
+		    A string specifying the border style, or a dict with zero or more
+		    of the following keys (or their synonyms).
+		        'style' ('border_style')
+		        'color'
+		Returns
+		-------
+		side : openpyxl.styles.Side
+	**/
+	static public function _convert_to_side(side_spec:Dynamic):Dynamic;
+	/**
+		Convert ``stop_seq`` to a list of openpyxl v2 Color objects,
+		suitable for initializing the ``GradientFill`` ``stop`` parameter.
+		Parameters
+		----------
+		stop_seq : iterable
+		    An iterable that yields objects suitable for consumption by
+		    ``_convert_to_color``.
+		Returns
+		-------
+		stop : list of openpyxl.styles.Color
+	**/
+	static public function _convert_to_stop(stop_seq:Dynamic):Dynamic;
+	/**
 		converts a style_dict to an openpyxl style object
 		Parameters
 		----------
 		style_dict: style dictionary to convert
 	**/
 	static public function _convert_to_style(style_dict:Dynamic):Dynamic;
+	/**
+		Convert a style_dict to a set of kwargs suitable for initializing
+		or updating-on-copy an openpyxl v2 style object
+		Parameters
+		----------
+		style_dict : dict
+		    A dict with zero or more of the following keys (or their synonyms).
+		        'font'
+		        'fill'
+		        'border' ('borders')
+		        'alignment'
+		        'number_format'
+		        'protection'
+		Returns
+		-------
+		style_kwargs : dict
+		    A dict with the same, normalized keys as ``style_dict`` but each
+		    value has been replaced with a native openpyxl style object of the
+		    appropriate class.
+	**/
+	static public function _convert_to_style_kwargs(style_dict:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public function _get_sheet_name(sheet_name:Dynamic):Dynamic;
+	/**
+		Convert numpy types to Python types for the Excel writers.
+		
+		Parameters
+		----------
+		val : object
+		    Value to be written into cells
+		
+		Returns
+		-------
+		Tuple with the first element being the converted value and the second
+		    being an optional format
+	**/
+	public function _value_with_fmt(val:Dynamic):Dynamic;
 	static public var book : Dynamic;
 	/**
 		checks that path's extension against the Writer's supported
@@ -148,7 +341,6 @@ package pandas.io.excel;
 	public function close():Dynamic;
 	static public var curr_sheet : Dynamic;
 	static public var engine : Dynamic;
-	static public var openpyxl_majorver : Dynamic;
 	static public var path : Dynamic;
 	/**
 		Save workbook to disk.
@@ -156,12 +348,12 @@ package pandas.io.excel;
 	public function save():Dynamic;
 	static public var supported_extensions : Dynamic;
 	/**
-		Write given formated cells into Excel an excel sheet
+		Write given formatted cells into Excel an excel sheet
 		
 		Parameters
 		----------
 		cells : generator
-		    cell of formated data to save to Excel sheet
+		    cell of formatted data to save to Excel sheet
 		sheet_name : string, default None
 		    Name of Excel sheet, if None, then use self.cur_sheet
 		startrow: upper left cell row to dump data frame

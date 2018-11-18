@@ -3,9 +3,22 @@ package tensorflow.python.ops.script_ops;
 @:pythonImport("tensorflow.python.ops.script_ops", "FuncRegistry") extern class FuncRegistry {
 	/**
 		Calls the registered function for `token` with args.
+		
+		Args:
+		  token: A key into this `FuncRegistry` identifying which function to call.
+		  device: Name of the device on which outputs of `token`'s corresponding
+		    operation should be placed. Used iff the function registered for `token`
+		    is an EagerPyFunc.
+		  args: The arguments to pass to the function registered for `token`.
+		
+		Returns:
+		  The output of the function registered for `token`.
+		
+		Raises:
+		  ValueError: if no function is registered for `token`.
 	**/
-	public function __call__(token:Dynamic, args:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __call__(token:Dynamic, device:Dynamic, args:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +69,7 @@ package tensorflow.python.ops.script_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +120,7 @@ package tensorflow.python.ops.script_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -119,14 +132,17 @@ package tensorflow.python.ops.script_ops;
 		components of a tensor have different lengths.  This is bad: ignoring the
 		padding is wrong for text data, and removing the padding is wrong for binary
 		data.  To avoid this bug, we redo the conversion using an object dtype.
+		Additionally, we convert unicode strings to (byte-)strings for
+		compatibility.
 		
 		Args:
 		  value: Value to convert to a numpy array.
+		  dtype: (Optional.) Desired NumPy type for the returned value.
 		
 		Returns:
 		  A numpy array.
 	**/
-	static public function _convert(value:Dynamic):Dynamic;
+	static public function _convert(value:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Returns a unique token.
 	**/

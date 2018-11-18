@@ -11,12 +11,17 @@ package pandas.api.types;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Effeciently infer the type of a passed val, or list-like
+		Efficiently infer the type of a passed val, or list-like
 		array of values. Return a string describing the type.
 		
 		Parameters
 		----------
 		value : scalar, list, ndarray, or pandas type
+		skipna : bool, default False
+		    Ignore NaN values when inferring the type. The default of ``False``
+		    will be deprecated in a later version of pandas.
+		
+		    .. versionadded:: 0.21.0
 		
 		Returns
 		-------
@@ -30,6 +35,7 @@ package pandas.api.types;
 		- integer
 		- mixed-integer
 		- mixed-integer-float
+		- decimal
 		- complex
 		- categorical
 		- boolean
@@ -58,6 +64,12 @@ package pandas.api.types;
 		>>> infer_dtype(['foo', 'bar'])
 		'string'
 		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=True)
+		'string'
+		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=False)
+		'mixed'
+		
 		>>> infer_dtype([b'foo', b'bar'])
 		'bytes'
 		
@@ -72,6 +84,9 @@ package pandas.api.types;
 		
 		>>> infer_dtype(['a', 1])
 		'mixed-integer'
+		
+		>>> infer_dtype([Decimal(1), Decimal(2.0)])
+		'decimal'
 		
 		>>> infer_dtype([True, False])
 		'boolean'
@@ -96,6 +111,35 @@ package pandas.api.types;
 	**/
 	static public function infer_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_any_int_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if the object is array-like.
+		
+		For an object to be considered array-like, it must be list-like and
+		have a `dtype` attribute.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_array_like : bool
+		    Whether `obj` has array-like properties.
+		
+		Examples
+		--------
+		>>> is_array_like(np.array([1, 2, 3]))
+		True
+		>>> is_array_like(pd.Series(["a", "b"]))
+		True
+		>>> is_array_like(pd.Index(["2016-01-01"]))
+		True
+		>>> is_array_like([1, 2, 3])
+		False
+		>>> is_array_like(("a", "b"))
+		False
+	**/
+	static public function is_array_like(obj:Dynamic):Bool;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
@@ -743,20 +787,37 @@ package pandas.api.types;
 	/**
 		Check if the object is a number.
 		
+		Returns True when the object is a number, and False if is not.
+		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : any type
+		    The object to check if is a number.
 		
 		Returns
 		-------
 		is_number : bool
 		    Whether `obj` is a number or not.
 		
+		See Also
+		--------
+		pandas.api.types.is_integer: checks a subgroup of numbers
+		
 		Examples
 		--------
-		>>> is_number(1)
+		>>> pd.api.types.is_number(1)
 		True
-		>>> is_number("foo")
+		>>> pd.api.types.is_number(7.15)
+		True
+		
+		Booleans are valid because they are int subclass.
+		
+		>>> pd.api.types.is_number(False)
+		True
+		
+		>>> pd.api.types.is_number("foo")
+		False
+		>>> pd.api.types.is_number("5")
 		False
 	**/
 	static public function is_number(obj:Dynamic):Bool;
@@ -923,6 +984,7 @@ package pandas.api.types;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_sequence(arr_or_dtype:Dynamic):Dynamic;
@@ -1046,6 +1108,8 @@ package pandas.api.types;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -1153,6 +1217,74 @@ package pandas.api.types;
 		    - sort_categories=True and Categoricals are ordered
 		ValueError
 		    Empty list of categoricals passed
+		
+		Notes
+		-----
+		
+		To learn more about categories, see `link
+		<http://pandas.pydata.org/pandas-docs/stable/categorical.html#unioning>`__
+		
+		Examples
+		--------
+		
+		>>> from pandas.api.types import union_categoricals
+		
+		If you want to combine categoricals that do not necessarily have
+		the same categories, `union_categoricals` will combine a list-like
+		of categoricals. The new categories will be the union of the
+		categories being combined.
+		
+		>>> a = pd.Categorical(["b", "c"])
+		>>> b = pd.Categorical(["a", "b"])
+		>>> union_categoricals([a, b])
+		[b, c, a, b]
+		Categories (3, object): [b, c, a]
+		
+		By default, the resulting categories will be ordered as they appear
+		in the `categories` of the data. If you want the categories to be
+		lexsorted, use `sort_categories=True` argument.
+		
+		>>> union_categoricals([a, b], sort_categories=True)
+		[b, c, a, b]
+		Categories (3, object): [a, b, c]
+		
+		`union_categoricals` also works with the case of combining two
+		categoricals of the same categories and order information (e.g. what
+		you could also `append` for).
+		
+		>>> a = pd.Categorical(["a", "b"], ordered=True)
+		>>> b = pd.Categorical(["a", "b", "a"], ordered=True)
+		>>> union_categoricals([a, b])
+		[a, b, a, b, a]
+		Categories (2, object): [a < b]
+		
+		Raises `TypeError` because the categories are ordered and not identical.
+		
+		>>> a = pd.Categorical(["a", "b"], ordered=True)
+		>>> b = pd.Categorical(["a", "b", "c"], ordered=True)
+		>>> union_categoricals([a, b])
+		TypeError: to union ordered Categoricals, all categories must be the same
+		
+		New in version 0.20.0
+		
+		Ordered categoricals with different categories or orderings can be
+		combined by using the `ignore_ordered=True` argument.
+		
+		>>> a = pd.Categorical(["a", "b", "c"], ordered=True)
+		>>> b = pd.Categorical(["c", "b", "a"], ordered=True)
+		>>> union_categoricals([a, b], ignore_order=True)
+		[a, b, c, c, b, a]
+		Categories (3, object): [a, b, c]
+		
+		`union_categoricals` also works with a `CategoricalIndex`, or `Series`
+		containing categorical data, but note that the resulting array will
+		always be a plain `Categorical`
+		
+		>>> a = pd.Series(["b", "c"], dtype='category')
+		>>> b = pd.Series(["a", "b"], dtype='category')
+		>>> union_categoricals([a, b])
+		[b, c, a, b]
+		Categories (3, object): [b, c, a]
 	**/
 	static public function union_categoricals(to_union:Dynamic, ?sort_categories:Dynamic, ?ignore_order:Dynamic):pandas.Categorical;
 }

@@ -15,7 +15,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -60,14 +60,19 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		    will be passed to the decoder input.
 		  start_tokens: `int32` vector shaped `[batch_size]`, the start tokens.
 		  end_token: `int32` scalar, the token that marks end of decoding.
-		  seed: The sampling seed.
+		  softmax_temperature: (Optional) `float32` scalar, value to divide the
+		    logits by before computing the softmax. Larger values (above 1.0) result
+		    in more random samples, while smaller values push the sampling
+		    distribution towards the argmax. Must be strictly greater than 0.
+		    Defaults to 1.0.
+		  seed: (Optional) The sampling seed.
 		
 		Raises:
 		  ValueError: if `start_tokens` is not a 1D tensor or `end_token` is not a
 		    scalar.
 	**/
 	@:native("__init__")
-	public function ___init__(embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, ?seed:Dynamic):Dynamic;
+	public function ___init__(embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, ?softmax_temperature:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Initializer.
 		
@@ -77,20 +82,25 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		    will be passed to the decoder input.
 		  start_tokens: `int32` vector shaped `[batch_size]`, the start tokens.
 		  end_token: `int32` scalar, the token that marks end of decoding.
-		  seed: The sampling seed.
+		  softmax_temperature: (Optional) `float32` scalar, value to divide the
+		    logits by before computing the softmax. Larger values (above 1.0) result
+		    in more random samples, while smaller values push the sampling
+		    distribution towards the argmax. Must be strictly greater than 0.
+		    Defaults to 1.0.
+		  seed: (Optional) The sampling seed.
 		
 		Raises:
 		  ValueError: if `start_tokens` is not a 1D tensor or `end_token` is not a
 		    scalar.
 	**/
-	public function new(embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, ?seed:Dynamic):Void;
+	public function new(embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, ?softmax_temperature:Dynamic, ?seed:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -141,7 +151,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -168,4 +178,16 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		sample for SampleEmbeddingHelper.
 	**/
 	public function sample(time:Dynamic, outputs:Dynamic, state:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		DType of tensor returned by `sample`.
+		
+		Returns a DType.
+	**/
+	public var sample_ids_dtype : Dynamic;
+	/**
+		Shape of tensor returned by `sample`, excluding the batch dimension.
+		
+		Returns a `TensorShape`.
+	**/
+	public var sample_ids_shape : Dynamic;
 }

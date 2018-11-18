@@ -17,7 +17,13 @@ package scipy.signal.ltisys;
 		Feedthrough matrix of the `StateSpace` system.
 	**/
 	public var D : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Adds two systems in the sense of frequency domain addition.
+	**/
+	public function __add__(other:Dynamic):Dynamic;
+	static public var __array_priority__ : Dynamic;
+	static public var __array_ufunc__ : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -68,7 +74,7 @@ package scipy.signal.ltisys;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -79,13 +85,33 @@ package scipy.signal.ltisys;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
+		Post-multiply another system or a scalar
+		
+		Handles multiplication of systems in the sense of a frequency domain
+		multiplication. That means, given two systems E1(s) and E2(s), their
+		multiplication, H(s) = E1(s) * E2(s), means that applying H(s) to U(s)
+		is equivalent to first applying E2(s), and then E1(s).
+		
+		Notes
+		-----
+		For SISO systems the order of system application does not matter.
+		However, for MIMO systems, where the two systems are matrices, the
+		order above ensures standard Matrix multiplication rules apply.
+	**/
+	public function __mul__(other:Dynamic):Dynamic;
+	/**
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
+		Negate the system (equivalent to pre-multiplying by -1).
+	**/
+	public function __neg__():Dynamic;
+	/**
 		Create new StateSpace object and settle inheritance.
 	**/
 	static public function __new__(cls:Dynamic, ?system:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function __radd__(other:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -99,6 +125,11 @@ package scipy.signal.ltisys;
 	**/
 	public function __repr__():Dynamic;
 	/**
+		Pre-multiply a scalar or matrix (but not StateSpace)
+	**/
+	public function __rmul__(other:Dynamic):Dynamic;
+	public function __rsub__(other:Dynamic):Dynamic;
+	/**
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
@@ -111,6 +142,7 @@ package scipy.signal.ltisys;
 		Return str(self).
 	**/
 	public function __str__():Dynamic;
+	public function __sub__(other:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -119,7 +151,11 @@ package scipy.signal.ltisys;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Divide by a scalar
+	**/
+	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -154,6 +190,7 @@ package scipy.signal.ltisys;
 		    `ZerosPolesGain` then this instance is returned.
 	**/
 	public function _as_zpk():Dynamic;
+	public function _check_binop_other(other:Dynamic):Dynamic;
 	/**
 		Copy the parameters of another `StateSpace` system.
 		
@@ -165,21 +202,9 @@ package scipy.signal.ltisys;
 	public function _copy(system:Dynamic):Dynamic;
 	public var _dt_dict : Dynamic;
 	/**
-		Denominator of the `TransferFunction` system.
-	**/
-	public var den : Dynamic;
-	/**
 		Return the sampling time of the system, `None` for `lti` systems.
 	**/
 	public var dt : Dynamic;
-	/**
-		Gain of the `ZerosPolesGain` system.
-	**/
-	public var gain : Dynamic;
-	/**
-		Numerator of the `TransferFunction` system.
-	**/
-	public var num : Dynamic;
 	/**
 		Poles of the system.
 	**/

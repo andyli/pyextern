@@ -13,44 +13,6 @@ package tensorflow.contrib.keras.api.keras.initializers;
 	static public function deserialize(config:Dynamic, ?custom_objects:Dynamic):Dynamic;
 	static public function get(identifier:Dynamic):Dynamic;
 	/**
-		Glorot normal initializer, also called Xavier normal initializer.
-		
-		It draws samples from a truncated normal distribution centered on 0
-		with `stddev = sqrt(2 / (fan_in + fan_out))`
-		where `fan_in` is the number of input units in the weight tensor
-		and `fan_out` is the number of output units in the weight tensor.
-		
-		Arguments:
-		    seed: A Python integer. Used to seed the random generator.
-		
-		Returns:
-		    An initializer.
-		
-		References:
-		    Glorot & Bengio, AISTATS 2010
-		    http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf
-	**/
-	static public function glorot_normal(?seed:Dynamic):Dynamic;
-	/**
-		Glorot uniform initializer, also called Xavier uniform initializer.
-		
-		It draws samples from a uniform distribution within [-limit, limit]
-		where `limit` is `sqrt(6 / (fan_in + fan_out))`
-		where `fan_in` is the number of input units in the weight tensor
-		and `fan_out` is the number of output units in the weight tensor.
-		
-		Arguments:
-		    seed: A Python integer. Used to seed the random generator.
-		
-		Returns:
-		    An initializer.
-		
-		References:
-		    Glorot & Bengio, AISTATS 2010
-		    http://jmlr.org/proceedings/papers/v9/glorot10a/glorot10a.pdf
-	**/
-	static public function glorot_uniform(?seed:Dynamic):Dynamic;
-	/**
 		He normal initializer.
 		
 		It draws samples from a truncated normal distribution centered on 0
@@ -84,6 +46,25 @@ package tensorflow.contrib.keras.api.keras.initializers;
 		    He et al., http://arxiv.org/abs/1502.01852
 	**/
 	static public function he_uniform(?seed:Dynamic):Dynamic;
+	/**
+		LeCun normal initializer.
+		
+		It draws samples from a truncated normal distribution centered on 0
+		with `stddev = sqrt(1 / fan_in)`
+		where `fan_in` is the number of input units in the weight tensor.
+		
+		Arguments:
+		    seed: A Python integer. Used to seed the random generator.
+		
+		Returns:
+		    An initializer.
+		
+		References:
+		    - [Self-Normalizing Neural Networks](https://arxiv.org/abs/1706.02515)
+		    - [Efficient
+		    Backprop](http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf)
+	**/
+	static public function lecun_normal(?seed:Dynamic):Dynamic;
 	/**
 		LeCun uniform initializer.
 		

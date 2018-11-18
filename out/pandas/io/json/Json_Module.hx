@@ -57,7 +57,7 @@ package pandas.io.json;
 	**/
 	static public function build_table_schema(data:Dynamic, ?index:Dynamic, ?primary_key:Dynamic, ?version:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
-		Converts arbitrary object recursivly into JSON. Use ensure_ascii=false to output UTF-8. Pass in double_precision to alter the maximum digit precision of doubles. Set encode_html_chars=True to encode < > & as unicode escape sequences.
+		Converts arbitrary object recursively into JSON. Use ensure_ascii=false to output UTF-8. Pass in double_precision to alter the maximum digit precision of doubles. Set encode_html_chars=True to encode < > & as unicode escape sequences.
 	**/
 	static public function dumps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -99,6 +99,16 @@ package pandas.io.json;
 		Examples
 		--------
 		
+		>>> from pandas.io.json import json_normalize
+		>>> data = [{'id': 1, 'name': {'first': 'Coleen', 'last': 'Volk'}},
+		...         {'name': {'given': 'Mose', 'family': 'Regner'}},
+		...         {'id': 2, 'name': 'Faye Raker'}]
+		>>> json_normalize(data)
+		    id        name name.family name.first name.given name.last
+		0  1.0         NaN         NaN     Coleen        NaN      Volk
+		1  NaN         NaN      Regner        NaN       Mose       NaN
+		2  2.0  Faye Raker         NaN        NaN        NaN       NaN
+		
 		>>> data = [{'state': 'Florida',
 		...          'shortname': 'FL',
 		...          'info': {
@@ -114,7 +124,6 @@ package pandas.io.json;
 		...          },
 		...          'counties': [{'name': 'Summit', 'population': 1234},
 		...                       {'name': 'Cuyahoga', 'population': 1337}]}]
-		>>> from pandas.io.json import json_normalize
 		>>> result = json_normalize(data, 'counties', ['state', 'shortname',
 		...                                           ['info', 'governor']])
 		>>> result
@@ -124,6 +133,12 @@ package pandas.io.json;
 		2  Palm Beach       60000    Rick Scott  Florida        FL
 		3      Summit        1234   John Kasich     Ohio        OH
 		4    Cuyahoga        1337   John Kasich     Ohio        OH
+		
+		>>> data = {'A': [1, 2]}
+		>>> json_normalize(data, 'A', record_prefix='Prefix.')
+		    Prefix.0
+		0          1
+		1          2
 	**/
 	static public function json_normalize(data:Dynamic, ?record_path:Dynamic, ?meta:Dynamic, ?meta_prefix:Dynamic, ?record_prefix:Dynamic, ?errors:Dynamic, ?sep:Dynamic):pandas.DataFrame;
 	/**
@@ -166,12 +181,15 @@ package pandas.io.json;
 		    * when ``typ == 'frame'``,
 		
 		      - allowed orients are ``{'split','records','index',
-		        'columns','values'}``
+		        'columns','values', 'table'}``
 		      - default is ``'columns'``
 		      - The DataFrame index must be unique for orients ``'index'`` and
 		        ``'columns'``.
 		      - The DataFrame columns must be unique for orients ``'index'``,
 		        ``'columns'``, and ``'records'``.
+		
+		    .. versionadded:: 0.23.0
+		       'table' as an allowed value for the ``orient`` argument
 		
 		typ : type of object to recover (series or frame), default 'frame'
 		dtype : boolean or dict, default True
@@ -218,9 +236,39 @@ package pandas.io.json;
 		
 		    .. versionadded:: 0.19.0
 		
+		chunksize: integer, default None
+		    Return JsonReader object for iteration.
+		    See the `line-delimted json docs
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-jsonl>`_
+		    for more information on ``chunksize``.
+		    This can only be passed if `lines=True`.
+		    If this is None, the file will be read into memory all at once.
+		
+		    .. versionadded:: 0.21.0
+		
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use
+		    gzip, bz2, zip or xz if path_or_buf is a string ending in
+		    '.gz', '.bz2', '.zip', or 'xz', respectively, and no decompression
+		    otherwise. If using 'zip', the ZIP file must contain only one data
+		    file to be read in. Set to None for no decompression.
+		
+		    .. versionadded:: 0.21.0
+		
 		Returns
 		-------
 		result : Series or DataFrame, depending on the value of `typ`.
+		
+		Notes
+		-----
+		Specific to ``orient='table'``, if a :class:`DataFrame` with a literal
+		:class:`Index` name of `index` gets written with :func:`to_json`, the
+		subsequent read operation will incorrectly set the :class:`Index` name to
+		``None``. This is because `index` is also used by :func:`DataFrame.to_json`
+		to denote a missing :class:`Index` name, and the subsequent
+		:func:`read_json` operation cannot distinguish between the two. The same
+		limitation is encountered with a :class:`MultiIndex` and any names
+		beginning with ``'level_'``.
 		
 		See Also
 		--------
@@ -274,6 +322,6 @@ package pandas.io.json;
 		    "data": [{"index": "row 1", "col 1": "a", "col 2": "b"},
 		            {"index": "row 2", "col 1": "c", "col 2": "d"}]}'
 	**/
-	static public function read_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?typ:Dynamic, ?dtype:Dynamic, ?convert_axes:Dynamic, ?convert_dates:Dynamic, ?keep_default_dates:Dynamic, ?numpy:Dynamic, ?precise_float:Dynamic, ?date_unit:Dynamic, ?encoding:Dynamic, ?lines:Dynamic):Dynamic;
-	static public function to_json(path_or_buf:Dynamic, obj:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic, ?lines:Dynamic):Dynamic;
+	static public function read_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?typ:Dynamic, ?dtype:Dynamic, ?convert_axes:Dynamic, ?convert_dates:Dynamic, ?keep_default_dates:Dynamic, ?numpy:Dynamic, ?precise_float:Dynamic, ?date_unit:Dynamic, ?encoding:Dynamic, ?lines:Dynamic, ?chunksize:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function to_json(path_or_buf:Dynamic, obj:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic, ?lines:Dynamic, ?compression:Dynamic, ?index:Dynamic):Dynamic;
 }

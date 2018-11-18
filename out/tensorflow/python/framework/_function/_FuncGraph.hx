@@ -5,7 +5,7 @@ package tensorflow.python.framework._function;
 		Context manager for `control_dependencies()`.
 	**/
 	static public function _ControlDependenciesController(graph:Dynamic, control_inputs:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -45,18 +45,18 @@ package tensorflow.python.framework._function;
 		Creates a new, empty Graph.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(name:Dynamic, capture_by_value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Creates a new, empty Graph.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(name:Dynamic, capture_by_value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,11 +107,15 @@ package tensorflow.python.framework._function;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Add device to stack manually, separate from a context manager.
+	**/
+	public function _add_device_to_stack(device_name_or_function:Dynamic, ?offset:Dynamic):Dynamic;
 	/**
 		Adds a function to the graph.
 		
@@ -128,6 +132,22 @@ package tensorflow.python.framework._function;
 	**/
 	public function _add_function(_function:Dynamic):Dynamic;
 	/**
+		Creates `Operations` in this graph for any new TF_Operations.
+		
+		This is useful for when TF_Operations are indirectly created by the C API
+		outside of the Operation constructor (e.g. by TF_ImportGraphDef,
+		TF_FinishWhile). This ensures there are corresponding Operations for all
+		TF_Operations in the underlying TF_Graph.
+		
+		Args:
+		  compute_devices: (Optional.) If True, device functions will be executed
+		    to compute the device properties of each new Operation.
+		
+		Returns:
+		  A list of the new `Operation` objects.
+	**/
+	public function _add_new_tf_operations(?compute_devices:Dynamic):Dynamic;
+	/**
 		Adds 'op' to the graph.
 		
 		Args:
@@ -138,6 +158,8 @@ package tensorflow.python.framework._function;
 		  ValueError: if the op.name or op._id are already used.
 	**/
 	public function _add_op(op:Dynamic):Dynamic;
+	public function _add_op_and_parents(op:Dynamic):Dynamic;
+	public function _add_tensor_and_parents(tensor:Dynamic):Dynamic;
 	/**
 		Applies the current device function stack to the given operation.
 	**/
@@ -146,7 +168,7 @@ package tensorflow.python.framework._function;
 		Returns a serialized `GraphDef` representation of this graph.
 		
 		The serialized `GraphDef` can be imported into another `Graph`
-		(using @{tf.import_graph_def}) or used with the
+		(using `tf.import_graph_def`) or used with the
 		[C++ Session API](../../../../api_docs/cc/index.md).
 		
 		This method is thread-safe.
@@ -202,6 +224,8 @@ package tensorflow.python.framework._function;
 		    strings to AttrValue protobufs.
 	**/
 	public function _attr_scope(attr_map:Dynamic):Dynamic;
+	public var _c_graph : Dynamic;
+	public function _capture_tensor_as_extra_input(tensor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Check if the graph is finalized.
 		
@@ -209,8 +233,13 @@ package tensorflow.python.framework._function;
 		  RuntimeError: If the graph finalized.
 	**/
 	public function _check_not_finalized():Dynamic;
+	public function _colocate_with_for_gradient(op:Dynamic, gradient_uid:Dynamic, ?ignore_existing:Dynamic):Dynamic;
 	/**
-		For an op that takes `input_tensors` as inputs, compute control inputs.
+		Return thread-local copy of colocation stack.
+	**/
+	public var _colocation_stack : Dynamic;
+	/**
+		For an op that takes `input_ops` as inputs, compute control inputs.
 		
 		The returned control dependencies should yield an execution that
 		is equivalent to adding all control inputs in
@@ -221,13 +250,49 @@ package tensorflow.python.framework._function;
 		the explicit approach redundant.
 		
 		Args:
-		  input_tensors: The direct data dependencies for an op to be created.
+		  input_ops: The data input ops for an op to be created.
 		
 		Returns:
 		  A list of control inputs for the op to be created.
 	**/
-	public function _control_dependencies_for_inputs(input_tensors:Dynamic):Dynamic;
+	public function _control_dependencies_for_inputs(input_ops:Dynamic):Dynamic;
+	public var _control_dependencies_stack : Dynamic;
+	/**
+		If this graph contains functions, copy them to `graph_def`.
+	**/
+	public function _copy_functions_to_graph_def(graph_def:Dynamic, starting_bytesize:Dynamic):Dynamic;
+	/**
+		Creates an `Operation` in this graph from the supplied TF_Operation.
+		
+		This method is like create_op() except the new Operation is constructed
+		using `c_op`. The returned Operation will have `c_op` as its _c_op
+		field. This is used to create Operation objects around TF_Operations created
+		indirectly by the C API (e.g. by TF_ImportGraphDef, TF_FinishWhile).
+		
+		This function does not call Operation._control_flow_post_processing or
+		Graph._control_dependencies_for_inputs (since the inputs may not be
+		available yet). The caller is responsible for calling these methods.
+		
+		Args:
+		  c_op: a wrapped TF_Operation
+		  compute_device: (Optional.) If True, device functions will be executed
+		    to compute the device property of the Operation.
+		
+		Returns:
+		  An `Operation` object.
+	**/
+	public function _create_op_from_tf_operation(c_op:Dynamic, ?compute_device:Dynamic):Dynamic;
+	/**
+		Common logic for creating an op in this graph.
+	**/
+	public function _create_op_helper(op:Dynamic, ?compute_device:Dynamic):Dynamic;
 	public function _current_control_dependencies():Dynamic;
+	public var _device_function_stack : Dynamic;
+	public var _device_functions_outer_to_inner : Dynamic;
+	/**
+		A stack to maintain distribution strategy context for each thread.
+	**/
+	public var _distribution_strategy_stack : Dynamic;
 	/**
 		Returns the current control flow context.
 		
@@ -244,6 +309,42 @@ package tensorflow.python.framework._function;
 		  The function def proto.
 	**/
 	public function _get_function(name:Dynamic):Dynamic;
+	/**
+		Returns the `OpDef` proto for `type`. `type` is a string.
+	**/
+	public function _get_op_def(type:Dynamic):Dynamic;
+	/**
+		Returns the `Operation` with the given `name`.
+		
+		This is a internal unsafe version of get_operation_by_name. It skips many
+		checks and does not have user friedly error messages but runs considerably
+		faster. This method may be called concurrently from multiple threads.
+		
+		Args:
+		  name: The name of the `Operation` to return.
+		
+		Returns:
+		  The `Operation` with the given `name`.
+		
+		Raises:
+		  KeyError: If `name` does not correspond to an operation in this graph.
+	**/
+	public function _get_operation_by_name_unsafe(name:Dynamic):Dynamic;
+	public function _get_operation_by_tf_operation(tf_oper:Dynamic):Dynamic;
+	/**
+		Returns the `Tensor` representing `tf_output`.
+		
+		Note that there is only one such `Tensor`, i.e. multiple calls to this
+		function with the same TF_Output value will always return the same `Tensor`
+		object.
+		
+		Args:
+		  tf_output: A wrapped `TF_Output` (the C API equivalent of `Tensor`).
+		
+		Returns:
+		  The `Tensor` that represents `tf_output`.
+	**/
+	public function _get_tensor_by_tf_output(tf_output:Dynamic):Dynamic;
 	/**
 		Tests whether 'name' is registered in this graph's function library.
 		
@@ -288,6 +389,17 @@ package tensorflow.python.framework._function;
 	public function _kernel_label_map(op_to_kernel_label_map:Dynamic):Dynamic;
 	public var _last_id : Dynamic;
 	/**
+		Return detailed error message about device conflict due to colocation.
+	**/
+	public function _make_colocation_conflict_message(op:Dynamic, colocation_op:Dynamic):Dynamic;
+	/**
+		Returns a lock to guard code that creates & mutates ops.
+		
+		See the comment for self._group_lock for more info.
+	**/
+	public function _mutation_lock():Dynamic;
+	public var _name_stack : Dynamic;
+	/**
 		Id for next Operation instance. Also increments the internal id.
 	**/
 	public function _next_id():Dynamic;
@@ -319,12 +431,34 @@ package tensorflow.python.framework._function;
 	**/
 	public function _record_op_seen_by_control_dependencies(op:Dynamic):Dynamic;
 	/**
+		Returns a lock to guard code for Session.run.
+		
+		See the comment for self._group_lock for more info.
+	**/
+	public function _session_run_lock():Dynamic;
+	/**
 		Sets the current control flow context.
 		
 		Args:
-		  context: a context object.
+		  ctx: a context object.
 	**/
-	public function _set_control_flow_context(context:Dynamic):Dynamic;
+	public function _set_control_flow_context(ctx:Dynamic):Dynamic;
+	/**
+		Return colocation stack metadata as a dictionary.
+	**/
+	public function _snapshot_colocation_stack_metadata():Dynamic;
+	/**
+		Return device function stack as a list of TraceableObjects.
+		
+		Returns:
+		  [traceable_stack.TraceableObject, ...] where each TraceableObject's .obj
+		  member is a displayable name for the user's argument to Graph.device, and
+		  the filename and lineno members point to the code location where
+		  Graph.device was called directly or indirectly by the user.
+	**/
+	public function _snapshot_device_function_stack_metadata():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Opposite of `finalize`. Internal interface.
 		
@@ -334,6 +468,8 @@ package tensorflow.python.framework._function;
 		that all sessions using a graph are closed before calling this method.
 	**/
 	public function _unsafe_unfinalize():Dynamic;
+	public function _variable_creator_scope(creator:Dynamic):Dynamic;
+	public var _variable_creator_stack : Dynamic;
 	/**
 		Stores `value` in the collection with the given `name`.
 		
@@ -369,9 +505,13 @@ package tensorflow.python.framework._function;
 		This method should be used if you want to create multiple graphs
 		in the same process. For convenience, a global default graph is
 		provided, and all ops will be added to this graph if you do not
-		create a new graph explicitly. Use this method with the `with` keyword
-		to specify that ops created within the scope of a block should be
-		added to this graph.
+		create a new graph explicitly.
+		
+		Use this method with the `with` keyword to specify that ops created within
+		the scope of a block should be added to this graph. In this case, once
+		the scope of the `with` is exited, the previous default graph is set again
+		as default. There is a stack, so it's ok to have multiple nested levels
+		of `as_default` calls.
 		
 		The default graph is a property of the current thread. If you
 		create a new thread, and wish to use the default graph in that
@@ -393,6 +533,9 @@ package tensorflow.python.framework._function;
 		  assert c.graph is g
 		```
 		
+		If eager execution is enabled ops created under this context manager will be
+		added to the graph instead of executed eagerly.
+		
 		Returns:
 		  A context manager for using this graph as the default graph.
 	**/
@@ -401,7 +544,7 @@ package tensorflow.python.framework._function;
 		Returns a serialized `GraphDef` representation of this graph.
 		
 		The serialized `GraphDef` can be imported into another `Graph`
-		(using @{tf.import_graph_def}) or used with the
+		(using `tf.import_graph_def`) or used with the
 		[C++ Session API](../../api_docs/cc/index.md).
 		
 		This method is thread-safe.
@@ -414,7 +557,8 @@ package tensorflow.python.framework._function;
 		    node with the inferred shapes of each of its outputs.
 		
 		Returns:
-		  A [`GraphDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto)
+		  A
+		  [`GraphDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto)
 		  protocol buffer.
 		
 		Raises:
@@ -456,6 +600,10 @@ package tensorflow.python.framework._function;
 	**/
 	public var building_function : Dynamic;
 	/**
+		Adds the given tensor to this graph and returns the captured tensor.
+	**/
+	public function capture(tensor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Clears all values in a collection.
 		
 		Args:
@@ -463,6 +611,10 @@ package tensorflow.python.framework._function;
 		    standard names for collections.
 	**/
 	public function clear_collection(name:Dynamic):Dynamic;
+	/**
+		Returns the names of the collections known to this graph.
+	**/
+	public var collections : Dynamic;
 	/**
 		Returns a context manager that specifies an op to colocate with.
 		
@@ -502,39 +654,10 @@ package tensorflow.python.framework._function;
 	/**
 		Returns a context manager that specifies the resource container to use.
 		
-		Stateful operations, such as variables and queues, can maintain their
-		states on devices so that they can be shared by multiple processes.
-		A resource container is a string name under which these stateful
-		operations are tracked. These resources can be released or cleared
-		with `tf.Session.reset()`.
-		
-		For example:
-		
-		```python
-		with g.container('experiment0'):
-		  # All stateful Operations constructed in this context will be placed
-		  # in resource container "experiment0".
-		  v1 = tf.Variable([1.0])
-		  v2 = tf.Variable([2.0])
-		  with g.container("experiment1"):
-		    # All stateful Operations constructed in this context will be
-		    # placed in resource container "experiment1".
-		    v3 = tf.Variable([3.0])
-		    q1 = tf.FIFOQueue(10, tf.float32)
-		  # All stateful Operations constructed in this context will be
-		  # be created in the "experiment0".
-		  v4 = tf.Variable([4.0])
-		  q1 = tf.FIFOQueue(20, tf.float32)
-		  with g.container(""):
-		    # All stateful Operations constructed in this context will be
-		    # be placed in the default resource container.
-		    v5 = tf.Variable([5.0])
-		    q3 = tf.FIFOQueue(30, tf.float32)
-		
-		# Resets container "experiment0", after which the state of v1, v2, v4, q1
-		# will become undefined (such as uninitialized).
-		tf.Session.reset(target, ["experiment0"])
-		```
+		Overridden from `tf.Graph` to update both the init_scope container
+		and the present inner container. This is necessary to make sure setting
+		containers applies correctly both to created variables and to stateful
+		ops.
 		
 		Args:
 		  container_name: container name string.
@@ -603,6 +726,22 @@ package tensorflow.python.framework._function;
 		    return tf.matmul(tensor, tensor)
 		```
 		
+		Also note that though execution of ops created under this scope will trigger
+		execution of the dependencies, the ops created under this scope might still
+		be pruned from a normal tensorflow graph. For example, in the following
+		snippet of code the dependencies are never executed:
+		
+		```python
+		  loss = model.loss()
+		  with tf.control_dependencies(dependencies):
+		    loss = loss + tf.constant(1)  # note: dependencies ignored in the
+		                                  # backward pass
+		  return tf.gradients(loss, model.variables)
+		```
+		
+		This is because evaluating the gradient graph does not require evaluating
+		the constant(1) op created in the forward pass.
+		
 		Args:
 		  control_inputs: A list of `Operation` or `Tensor` objects which
 		    must be executed or computed before running the operations
@@ -619,7 +758,11 @@ package tensorflow.python.framework._function;
 	**/
 	public function control_dependencies(control_inputs:Dynamic):Dynamic;
 	/**
-		Creates an `Operation` in this graph.
+		Creates an `Operation` in this graph. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		Shapes are always computed; don't use the compute_shapes as it has no effect.
 		
 		This is a low-level interface for creating an `Operation`. Most
 		programs will not call this method directly, and instead use the
@@ -644,8 +787,8 @@ package tensorflow.python.framework._function;
 		    proto).
 		  op_def: (Optional.) The `OpDef` proto that describes the `op_type` that
 		    the operation will have.
-		  compute_shapes: (Optional.) If True, shape inference will be performed
-		    to compute the shapes of the outputs.
+		  compute_shapes: (Optional.) Deprecated. Has no effect (shapes are always
+		    computed).
 		  compute_device: (Optional.) If True, device functions will be executed
 		    to compute the device property of the Operation.
 		
@@ -680,7 +823,7 @@ package tensorflow.python.framework._function;
 		For example:
 		
 		```python
-		with g.device('/gpu:0'):
+		with g.device('/device:GPU:0'):
 		  # All operations constructed in this context will be placed
 		  # on GPU 0.
 		  with g.device(None):
@@ -690,7 +833,7 @@ package tensorflow.python.framework._function;
 		# Defines a function from `Operation` to device string.
 		def matmul_on_gpu(n):
 		  if n.type == "MatMul":
-		    return "/gpu:0"
+		    return "/device:GPU:0"
 		  else:
 		    return "/cpu:0"
 		
@@ -709,7 +852,7 @@ package tensorflow.python.framework._function;
 		  device_name_or_function: The device name or function to use in
 		    the context.
 		
-		Returns:
+		Yields:
 		  A context manager that specifies the default device to use for newly
 		  created ops.
 	**/
@@ -720,7 +863,7 @@ package tensorflow.python.framework._function;
 		After calling `g.finalize()`, no new operations can be added to
 		`g`.  This method is used to ensure that no operations are added
 		to a graph when it is shared between multiple threads, for example
-		when using a @{tf.train.QueueRunner}.
+		when using a `tf.train.QueueRunner`.
 	**/
 	public function finalize():Dynamic;
 	/**
@@ -988,6 +1131,21 @@ package tensorflow.python.framework._function;
 	**/
 	public var seed : Dynamic;
 	/**
+		Make device, colocation and dependencies stacks thread-local.
+		
+		Device, colocation and dependencies stacks are not thread-local be default.
+		If multiple threads access them, then the state is shared.  This means that
+		one thread may affect the behavior of another thread.
+		
+		After this method is called, the stacks become thread-local.  If multiple
+		threads access them, then the state is not shared.  Each thread uses its own
+		value; a thread doesn't affect other threads by mutating such a stack.
+		
+		The initial value for every thread's stack is set to the current value
+		of the stack when `switch_to_thread_local()` was first called.
+	**/
+	public function switch_to_thread_local():Dynamic;
+	/**
 		Return a unique operation name for `name`.
 		
 		Note: You rarely need to call `unique_name()` directly.  Most of
@@ -1019,7 +1177,10 @@ package tensorflow.python.framework._function;
 		Returns a version number that increases as ops are added to the graph.
 		
 		Note that this is unrelated to the
-		@{tf.Graph.graph_def_versions}.
+		`tf.Graph.graph_def_versions`.
+		
+		Returns:
+		   An integer version that increases as ops are added to the graph.
 	**/
 	public var version : Dynamic;
 }

@@ -9,14 +9,17 @@ package tensorflow.python.estimator.inputs.inputs;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Returns input function that would feed dict of numpy arrays into the model.
 		
-		This returns a function outputting `features` and `target` based on the dict
-		of numpy arrays. The dict `features` has the same keys as the `x`.
+		This returns a function outputting `features` and `targets` based on the dict
+		of numpy arrays. The dict `features` has the same keys as the `x`. The dict
+		`targets` has the same keys as the `y` if `y` is a dict.
 		
 		Example:
+		
 		```python
 		age = np.arange(4) * 1.0
 		height = np.arange(32, 36)
@@ -29,8 +32,9 @@ package tensorflow.python.estimator.inputs.inputs;
 		```
 		
 		Args:
-		  x: dict of numpy array object.
-		  y: numpy array object. `None` if absent.
+		  x: numpy array object or dict of numpy array objects. If an array,
+		    the array will be treated as a single feature.
+		  y: numpy array object or dict of numpy array object. `None` if absent.
 		  batch_size: Integer, size of batches to return.
 		  num_epochs: Integer, number of epochs to iterate over data. If `None` will
 		    run forever.
@@ -42,12 +46,15 @@ package tensorflow.python.estimator.inputs.inputs;
 		    such as in prediction and evaluation mode, `num_threads` should be 1.
 		
 		Returns:
-		  Function, that has signature of ()->(dict of `features`, `target`)
+		  Function, that has signature of ()->(dict of `features`, `targets`)
 		
 		Raises:
 		  ValueError: if the shape of `y` mismatches the shape of values in `x` (i.e.,
 		    values in `x` have same shape).
-		  TypeError: `x` is not a dict or `shuffle` is not bool.
+		  ValueError: if duplicate keys are in both `x` and `y` when `y` is a dict.
+		  ValueError: if x or y is an empty dict.
+		  TypeError: `x` is not a dict or array.
+		  ValueError: if 'shuffle' is not provided or a bool.
 	**/
 	static public function numpy_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
 	/**
@@ -57,7 +64,7 @@ package tensorflow.python.estimator.inputs.inputs;
 		
 		Args:
 		  x: pandas `DataFrame` object.
-		  y: pandas `Series` object. `None` if absent.
+		  y: pandas `Series` object or `DataFrame`. `None` if absent.
 		  batch_size: int, size of batches to return.
 		  num_epochs: int, number of epochs to iterate over data. If not `None`,
 		    read attempts that would exceed this value will raise `OutOfRangeError`.
@@ -67,7 +74,8 @@ package tensorflow.python.estimator.inputs.inputs;
 		  num_threads: Integer, number of threads used for reading and enqueueing. In
 		    order to have predicted and repeatable order of reading and enqueueing,
 		    such as in prediction and evaluation mode, `num_threads` should be 1.
-		  target_column: str, name to give the target column `y`.
+		  target_column: str, name to give the target column `y`. This parameter
+		    is not used when `y` is a `DataFrame`.
 		
 		Returns:
 		  Function, that has signature of ()->(dict of `features`, `target`)
@@ -75,7 +83,8 @@ package tensorflow.python.estimator.inputs.inputs;
 		Raises:
 		  ValueError: if `x` already contains a column with the same name as `y`, or
 		    if the indexes of `x` and `y` don't match.
-		  TypeError: `shuffle` is not bool.
+		  ValueError: if 'shuffle' is not provided or a bool.
 	**/
 	static public function pandas_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?target_column:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

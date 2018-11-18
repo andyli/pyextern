@@ -10,7 +10,10 @@ package theano.compile;
 	static public var OPT_FAST_RUN_STABLE : Dynamic;
 	static public var OPT_MERGE : Dynamic;
 	static public var OPT_NONE : Dynamic;
+	static public var OPT_O2 : Dynamic;
+	static public var OPT_O3 : Dynamic;
 	static public var OPT_STABILIZE : Dynamic;
+	static public var OPT_UNSAFE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -277,7 +280,7 @@ package theano.compile;
 		as any of the specified variables. Used internally by function,
 		FunctionMaker.
 		
-		This list (or set) is also refered to as no_recycling sometimes,
+		This list (or set) is also referred to as no_recycling sometimes,
 		especially by linker code.
 	**/
 	static public function infer_reuse_pattern(fgraph:Dynamic, outputs_to_disown:Dynamic):Dynamic;

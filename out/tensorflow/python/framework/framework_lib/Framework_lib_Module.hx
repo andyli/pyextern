@@ -70,22 +70,44 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Wrapper for `Graph.add_to_collection()` using the default graph.
 		
-		See @{tf.Graph.add_to_collection}
+		See `tf.Graph.add_to_collection`
 		for more details.
 		
 		Args:
 		  name: The key for the collection. For example, the `GraphKeys` class
 		    contains many standard names for collections.
 		  value: The value to add to the collection.
+		
+		@compatibility(eager)
+		Collections are only supported in eager when variables are created inside an
+		EagerVariableStore (e.g. as part of a layer or template).
+		@end_compatibility
 	**/
 	static public function add_to_collection(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Wrapper for `Graph.add_to_collections()` using the default graph.
+		
+		See `tf.Graph.add_to_collections`
+		for more details.
+		
+		Args:
+		  names: The key for the collections. The `GraphKeys` class
+		    contains many standard names for collections.
+		  value: The value to add to the collections.
+		
+		@compatibility(eager)
+		Collections are only supported in eager when variables are created inside an
+		EagerVariableStore (e.g. as part of a layer or template).
+		@end_compatibility
+	**/
+	static public function add_to_collections(names:Dynamic, value:Dynamic):Dynamic;
 	/**
 		Converts the given `type_value` to a `DType`.
 		
 		Args:
-		  type_value: A value that can be converted to a `tf.DType`
-		    object. This may currently be a `tf.DType` object, a
-		    [`DataType` enum](https://www.tensorflow.org/code/tensorflow/core/framework/types.proto),
+		  type_value: A value that can be converted to a `tf.DType` object. This may
+		    currently be a `tf.DType` object, a [`DataType`
+		    enum](https://www.tensorflow.org/code/tensorflow/core/framework/types.proto),
 		    a string type name, or a `numpy.dtype`.
 		
 		Returns:
@@ -99,6 +121,7 @@ package tensorflow.python.framework.framework_lib;
 	static public var bfloat16_ref : Dynamic;
 	static public var bool : Dynamic;
 	static public var bool_ref : Dynamic;
+	static public function colocate_with(op:Dynamic, ?ignore_existing:Dynamic):Dynamic;
 	static public var complex128 : Dynamic;
 	static public var complex128_ref : Dynamic;
 	static public var complex64 : Dynamic;
@@ -117,14 +140,18 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Wrapper for `Graph.control_dependencies()` using the default graph.
 		
-		See @{tf.Graph.control_dependencies}
+		See `tf.Graph.control_dependencies`
 		for more details.
+		
+		When eager execution is enabled, any callable object in the `control_inputs`
+		list will be called.
 		
 		Args:
 		  control_inputs: A list of `Operation` or `Tensor` objects which
 		    must be executed or computed before running the operations
 		    defined in the context.  Can also be `None` to clear the control
-		    dependencies.
+		    dependencies. If eager execution is enabled, any callable object in the
+		    `control_inputs` list will be called.
 		
 		Returns:
 		 A context manager that specifies control dependencies for all
@@ -156,6 +183,10 @@ package tensorflow.python.framework.framework_lib;
 		constructors apply this function to each of their Tensor-valued
 		inputs, which allows those ops to accept numpy arrays, Python lists,
 		and scalars in addition to `Tensor` objects.
+		
+		Note: This function diverges from default Numpy behavior for `float` and
+		  `string` types when `None` is present in a Python list or scalar. Rather
+		  than silently converting `None` values, an error will be thrown.
 		
 		Args:
 		  value: An object whose type has a registered `Tensor` conversion function.
@@ -218,7 +249,7 @@ package tensorflow.python.framework.framework_lib;
 		Wrapper for `Graph.device()` using the default graph.
 		
 		See
-		@{tf.Graph.device}
+		`tf.Graph.device`
 		for more details.
 		
 		Args:
@@ -228,6 +259,9 @@ package tensorflow.python.framework.framework_lib;
 		Returns:
 		  A context manager that specifies the default device to use for newly
 		  created ops.
+		
+		Raises:
+		  RuntimeError: If eager execution is enabled and a function is passed in.
 	**/
 	static public function device(device_name_or_function:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -243,7 +277,7 @@ package tensorflow.python.framework.framework_lib;
 	/**
 		Wrapper for `Graph.get_collection()` using the default graph.
 		
-		See @{tf.Graph.get_collection}
+		See `tf.Graph.get_collection`
 		for more details.
 		
 		Args:
@@ -260,12 +294,16 @@ package tensorflow.python.framework.framework_lib;
 		  an empty list if no value has been added to that collection. The
 		  list contains the values in the order under which they were
 		  collected.
+		
+		@compatibility(eager)
+		Collections are not supported when eager execution is enabled.
+		@end_compatibility
 	**/
 	static public function get_collection(key:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Wrapper for `Graph.get_collection_ref()` using the default graph.
 		
-		See @{tf.Graph.get_collection_ref}
+		See `tf.Graph.get_collection_ref`
 		for more details.
 		
 		Args:
@@ -277,6 +315,10 @@ package tensorflow.python.framework.framework_lib;
 		  list if no value has been added to that collection.  Note that this returns
 		  the collection list itself, which can be modified in place to change the
 		  collection.
+		
+		@compatibility(eager)
+		Collections are not supported when eager execution is enabled.
+		@end_compatibility
 	**/
 	static public function get_collection_ref(key:Dynamic):Dynamic;
 	/**
@@ -304,7 +346,7 @@ package tensorflow.python.framework.framework_lib;
 		graph, or for only specific operations.
 		
 		For details on how the graph-level seed interacts with op seeds, see
-		@{tf.set_random_seed}.
+		`tf.set_random_seed`.
 		
 		Args:
 		  op_seed: integer.
@@ -317,14 +359,18 @@ package tensorflow.python.framework.framework_lib;
 	static public var half : Dynamic;
 	static public var half_ref : Dynamic;
 	/**
-		Imports the graph from `graph_def` into the current default `Graph`.
+		Imports the graph from `graph_def` into the current default `Graph`. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		Please file an issue at https://github.com/tensorflow/tensorflow/issues if you depend on this feature.
 		
 		This function provides a way to import a serialized TensorFlow
 		[`GraphDef`](https://www.tensorflow.org/code/tensorflow/core/framework/graph.proto)
 		protocol buffer, and extract individual objects in the `GraphDef` as
-		@{tf.Tensor} and @{tf.Operation} objects. Once extracted,
+		`tf.Tensor` and `tf.Operation` objects. Once extracted,
 		these objects are placed into the current default `Graph`. See
-		@{tf.Graph.as_graph_def} for a way to create a `GraphDef`
+		`tf.Graph.as_graph_def` for a way to create a `GraphDef`
 		proto.
 		
 		Args:
@@ -339,15 +385,12 @@ package tensorflow.python.framework.framework_lib;
 		  name: (Optional.) A prefix that will be prepended to the names in
 		    `graph_def`. Note that this does not apply to imported function names.
 		    Defaults to `"import"`.
-		  op_dict: (Optional.) A dictionary mapping op type names to `OpDef` protos.
-		    Must contain an `OpDef` proto for each op type named in `graph_def`.
-		    If omitted, uses the `OpDef` protos registered in the global registry.
+		  op_dict: (Optional.) Deprecated, do not use.
 		  producer_op_list: (Optional.) An `OpList` proto with the (possibly stripped)
-		    list of `OpDef`s used by the producer of the graph. If provided, attrs
-		    for ops in `graph_def` that are not in `op_dict` that have their default
-		    value according to `producer_op_list` will be removed. This will allow
-		    some more `GraphDef`s produced by later binaries to be accepted by
-		    earlier binaries.
+		    list of `OpDef`s used by the producer of the graph. If provided,
+		    unrecognized attrs for ops in `graph_def` that have their default value
+		    according to `producer_op_list` will be removed. This will allow some more
+		    `GraphDef`s produced by later binaries to be accepted by earlier binaries.
 		
 		Returns:
 		  A list of `Operation` and/or `Tensor` objects from the imported graph,
@@ -388,6 +431,26 @@ package tensorflow.python.framework.framework_lib;
 		  RuntimeError: when unable to load the library.
 	**/
 	static public function load_file_system_library(library_filename:Dynamic):Dynamic;
+	/**
+		Loads a TensorFlow plugin.
+		
+		"library_location" can be a path to a specific shared object, or a folder.
+		If it is a folder, all sahred objects that are named "libtfkernel*" will be
+		loaded. When the library is loaded, kernels registered in the library via the
+		`REGISTER_*` macros are made available in the TensorFlow process.
+		
+		Args:
+		  library_location: Path to the plugin or the folder of plugins.
+		    Relative or absolute filesystem path to a dynamic library file or folder.
+		
+		Returns:
+		  None
+		
+		Raises:
+		  OSError: When the file to be loaded is not found.
+		  RuntimeError: when unable to load the library.
+	**/
+	static public function load_library(library_location:Dynamic):Dynamic;
 	/**
 		Loads a TensorFlow plugin, containing custom ops and kernels.
 		
@@ -436,10 +499,13 @@ package tensorflow.python.framework.framework_lib;
 		  verify_shape:   Boolean that enables verification of a shape of values.
 		
 		Returns:
-		  A TensorProto. Depending on the type, it may contain data in the
+		  A `TensorProto`. Depending on the type, it may contain data in the
 		  "tensor_content" attribute, which is not directly useful to Python programs.
 		  To access the values you should convert the proto back to a numpy ndarray
-		  with tensor_util.MakeNdarray(proto).
+		  with `tf.make_ndarray(proto)`.
+		
+		  If `values` is a `TensorProto`, it is immediately returned; `dtype` and
+		  `shape` are ignored.
 		
 		Raises:
 		  TypeError:  if unsupported types are provided.
@@ -467,40 +533,6 @@ package tensorflow.python.framework.framework_lib;
 		can not have more elements than what "shape" specifies.
 	**/
 	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
-	/**
-		Returns a context manager for use when defining a Python op.
-		
-		This context manager validates that the given `values` are from the
-		same graph, makes that graph the default graph, and pushes a
-		name scope in that graph (see
-		@{tf.Graph.name_scope}
-		for more details on that).
-		
-		For example, to define a new Python op called `my_op`:
-		
-		```python
-		def my_op(a, b, c, name=None):
-		  with tf.name_scope(name, "MyOp", [a, b, c]) as scope:
-		    a = tf.convert_to_tensor(a, name="a")
-		    b = tf.convert_to_tensor(b, name="b")
-		    c = tf.convert_to_tensor(c, name="c")
-		    # Define some computation that uses `a`, `b`, and `c`.
-		    return foo_op(..., name=scope)
-		```
-		
-		Args:
-		  name: The name argument that is passed to the op function.
-		  default_name: The default name to use if the `name` argument is `None`.
-		  values: The list of `Tensor` arguments that are passed to the op function.
-		
-		Returns:
-		  A context manager for use in defining Python ops. Yields the name scope.
-		
-		Raises:
-		  ValueError: if neither `name` nor `default_name` is provided
-		    but `values` are.
-	**/
-	static public function name_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
 	static public var np_resource : Dynamic;
 	/**
 		DEPRECATED. Same as name_scope above, just different argument order.
@@ -565,6 +597,8 @@ package tensorflow.python.framework.framework_lib;
 		a `tf.Session` or `tf.InteractiveSession` is active will result in undefined
 		behavior. Using any previously created `tf.Operation` or `tf.Tensor` objects
 		after calling this function will result in undefined behavior.
+		Raises:
+		  AssertionError: If this function is called within a nested graph.
 	**/
 	static public function reset_default_graph():Dynamic;
 	static public var resource : Dynamic;
@@ -667,44 +701,15 @@ package tensorflow.python.framework.framework_lib;
 	static public function set_random_seed(seed:Dynamic):Dynamic;
 	static public var string : Dynamic;
 	static public var string_ref : Dynamic;
-	/**
-		Subscribe to a tensor.
-		
-		This method will attach side effect graphs to a given set
-		of tensors. Set of tensors follows from session.run and supports
-		single `Tensor`, `list`, nested `list`, `tuple`, `namedtuple`, or `dict`. It
-		returns the tensors in the same passed in structure, but as clones with
-		side effects applied. The supplied side effect graphs are specified
-		as a constructor function which takes the target tensor and
-		constructs a side effect graph and returns a list of ops that should
-		be control dependencies on fetching the tensor. It will append
-		'subscription' to the name scope of the tensor for every node in
-		the side effect graph. These control dependencies are what trigger
-		the side effects. Subscribe will construct the additions to your
-		graph and return the created identity tensor downstream of the control
-		dependencies. Use these tensors as you would normally in the rest of
-		your tensorflow code. If a given tensor has already been subscribed or a
-		tensor returned by a call to subscribe is passed, the previously created
-		identity tensor will be reused and the side effect graphs will be added to
-		the existing ones.
-		
-		Args:
-		  tensors: `Tensor` or set of tensors to subscribe to. Set of tensors format
-		    follows from `Session.run` and supports single `Tensor`, `list`, nested
-		    `list`, `tuple`, `namedtuple`, or `dict`.
-		  side_effects: Function(s) that takes a `Tensor`, construct a subgraph, and
-		    return a nonempty list of control dependencies. This can be a single
-		    function or list of functions.
-		Returns:
-		  Subscribed tensors, which are identity copies of the passed in tensors
-		    in the same passed in structure, but the graph has been modified
-		    such that these are downstream of the control dependencies for
-		    the side effect graphs. Use these functionally equivalent tensors
-		    instead of the passed in tensors for further construction or running.
-	**/
-	static public function subscribe(tensors:Dynamic, side_effects:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var uint16 : Dynamic;
 	static public var uint16_ref : Dynamic;
+	static public var uint32 : Dynamic;
+	static public var uint32_ref : Dynamic;
+	static public var uint64 : Dynamic;
+	static public var uint64_ref : Dynamic;
 	static public var uint8 : Dynamic;
 	static public var uint8_ref : Dynamic;
+	static public var variant : Dynamic;
+	static public var variant_ref : Dynamic;
 }

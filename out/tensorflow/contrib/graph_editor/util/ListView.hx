@@ -3,7 +3,7 @@ package tensorflow.contrib.graph_editor.util;
 @:pythonImport("tensorflow.contrib.graph_editor.util", "ListView") extern class ListView {
 	public function __add__(other:Dynamic):Dynamic;
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,7 +55,7 @@ package tensorflow.contrib.graph_editor.util;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -109,7 +109,7 @@ package tensorflow.contrib.graph_editor.util;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

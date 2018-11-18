@@ -37,7 +37,8 @@ package numpy.fft.helper;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -129,88 +130,15 @@ package numpy.fft.helper;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
 		True
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
-	/**
-		concatenate((a1, a2, ...), axis=0)
-		
-		Join a sequence of arrays along an existing axis.
-		
-		Parameters
-		----------
-		a1, a2, ... : sequence of array_like
-		    The arrays must have the same shape, except in the dimension
-		    corresponding to `axis` (the first, by default).
-		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
-		
-		Returns
-		-------
-		res : ndarray
-		    The concatenated array.
-		
-		See Also
-		--------
-		ma.concatenate : Concatenate function that preserves input masks.
-		array_split : Split an array into multiple sub-arrays of equal or
-		              near-equal size.
-		split : Split array into a list of multiple sub-arrays of equal size.
-		hsplit : Split array into multiple sub-arrays horizontally (column wise)
-		vsplit : Split array into multiple sub-arrays vertically (row wise)
-		dsplit : Split array into multiple sub-arrays along the 3rd axis (depth).
-		stack : Stack a sequence of arrays along a new axis.
-		hstack : Stack arrays in sequence horizontally (column wise)
-		vstack : Stack arrays in sequence vertically (row wise)
-		dstack : Stack arrays in sequence depth wise (along third dimension)
-		
-		Notes
-		-----
-		When one or more of the arrays to be concatenated is a MaskedArray,
-		this function will return a MaskedArray object instead of an ndarray,
-		but the input masks are *not* preserved. In cases where a MaskedArray
-		is expected as input, use the ma.concatenate function from the masked
-		array module instead.
-		
-		Examples
-		--------
-		>>> a = np.array([[1, 2], [3, 4]])
-		>>> b = np.array([[5, 6]])
-		>>> np.concatenate((a, b), axis=0)
-		array([[1, 2],
-		       [3, 4],
-		       [5, 6]])
-		>>> np.concatenate((a, b.T), axis=1)
-		array([[1, 2, 5],
-		       [3, 4, 6]])
-		
-		This function will not preserve masking of MaskedArray inputs.
-		
-		>>> a = np.ma.arange(3)
-		>>> a[1] = np.ma.masked
-		>>> b = np.arange(2, 5)
-		>>> a
-		masked_array(data = [0 -- 2],
-		             mask = [False  True False],
-		       fill_value = 999999)
-		>>> b
-		array([2, 3, 4])
-		>>> np.concatenate([a, b])
-		masked_array(data = [0 1 2 2 3 4],
-		             mask = False,
-		       fill_value = 999999)
-		>>> np.ma.concatenate([a, b])
-		masked_array(data = [0 -- 2 2 3 4],
-		             mask = [False  True False False False False],
-		       fill_value = 999999)
-	**/
-	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		empty(shape, dtype=float, order='C')
@@ -220,10 +148,11 @@ package numpy.fft.helper;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -236,7 +165,11 @@ package numpy.fft.helper;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -412,67 +345,61 @@ package numpy.fft.helper;
 	**/
 	static public function rfftfreq(n:Dynamic, ?d:Dynamic):numpy.Ndarray;
 	/**
-		Take elements from an array along an axis.
+		Roll array elements along a given axis.
 		
-		This function does the same thing as "fancy" indexing (indexing arrays
-		using arrays); however, it can be easier to use if you need elements
-		along a given axis.
+		Elements that roll beyond the last position are re-introduced at
+		the first.
 		
 		Parameters
 		----------
 		a : array_like
-		    The source array.
-		indices : array_like
-		    The indices of the values to extract.
-		
-		    .. versionadded:: 1.8.0
-		
-		    Also allow scalars for indices.
-		axis : int, optional
-		    The axis over which to select values. By default, the flattened
-		    input array is used.
-		out : ndarray, optional
-		    If provided, the result will be placed in this array. It should
-		    be of the appropriate shape and dtype.
-		mode : {'raise', 'wrap', 'clip'}, optional
-		    Specifies how out-of-bounds indices will behave.
-		
-		    * 'raise' -- raise an error (default)
-		    * 'wrap' -- wrap around
-		    * 'clip' -- clip to the range
-		
-		    'clip' mode means that all indices that are too large are replaced
-		    by the index that addresses the last element along that axis. Note
-		    that this disables indexing with negative numbers.
+		    Input array.
+		shift : int or tuple of ints
+		    The number of places by which elements are shifted.  If a tuple,
+		    then `axis` must be a tuple of the same size, and each of the
+		    given axes is shifted by the corresponding number.  If an int
+		    while `axis` is a tuple of ints, then the same value is used for
+		    all given axes.
+		axis : int or tuple of ints, optional
+		    Axis or axes along which elements are shifted.  By default, the
+		    array is flattened before shifting, after which the original
+		    shape is restored.
 		
 		Returns
 		-------
-		subarray : ndarray
-		    The returned array has the same type as `a`.
+		res : ndarray
+		    Output array, with the same shape as `a`.
 		
 		See Also
 		--------
-		compress : Take elements using a boolean mask
-		ndarray.take : equivalent method
+		rollaxis : Roll the specified axis backwards, until it lies in a
+		           given position.
+		
+		Notes
+		-----
+		.. versionadded:: 1.12.0
+		
+		Supports rolling over multiple dimensions simultaneously.
 		
 		Examples
 		--------
-		>>> a = [4, 3, 5, 7, 6, 8]
-		>>> indices = [0, 1, 4]
-		>>> np.take(a, indices)
-		array([4, 3, 6])
+		>>> x = np.arange(10)
+		>>> np.roll(x, 2)
+		array([8, 9, 0, 1, 2, 3, 4, 5, 6, 7])
 		
-		In this example if `a` is an ndarray, "fancy" indexing can be used.
-		
-		>>> a = np.array(a)
-		>>> a[indices]
-		array([4, 3, 6])
-		
-		If `indices` is not one dimensional, the output also has these dimensions.
-		
-		>>> np.take(a, [[0, 1], [2, 3]])
-		array([[4, 3],
-		       [5, 7]])
+		>>> x2 = np.reshape(x, (2,5))
+		>>> x2
+		array([[0, 1, 2, 3, 4],
+		       [5, 6, 7, 8, 9]])
+		>>> np.roll(x2, 1)
+		array([[9, 0, 1, 2, 3],
+		       [4, 5, 6, 7, 8]])
+		>>> np.roll(x2, 1, axis=0)
+		array([[5, 6, 7, 8, 9],
+		       [0, 1, 2, 3, 4]])
+		>>> np.roll(x2, 1, axis=1)
+		array([[4, 0, 1, 2, 3],
+		       [9, 5, 6, 7, 8]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
+	static public function roll(a:Dynamic, shift:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 }

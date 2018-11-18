@@ -135,7 +135,7 @@ package tensorflow.contrib.nn.python.ops.cross_entropy;
 		
 		Raises:
 		  ValueError: If logits are scalars (need to have rank >= 1) or if the rank
-		    of the labels is not equal to the rank of the labels minus one.
+		    of the labels is not equal to the rank of the logits minus one.
 	**/
 	static public function deprecated_flipped_sparse_softmax_cross_entropy_with_logits(logits:Dynamic, labels:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;

@@ -43,6 +43,28 @@ package pandas.core.algorithms;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Factorize an array-like to labels and uniques.
+		
+		This doesn't do any coercion of types or unboxing before factorization.
+		
+		Parameters
+		----------
+		values : ndarray
+		na_sentinel : int, default -1
+		size_hint : int, optional
+		    Passsed through to the hashtable's 'get_labels' method
+		na_value : object, optional
+		    A value in `values` to consider missing. Note: only use this
+		    parameter when you know that you don't have any values pandas would
+		    consider missing in the array (NaN for float data, iNaT for
+		    datetimes, etc.).
+		
+		Returns
+		-------
+		labels, uniques : ndarray
+	**/
+	static public function _factorize_array(values:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic, ?na_value:Dynamic):Dynamic;
 	static public function _get_data_algo(values:Dynamic, func_map:Dynamic):Dynamic;
 	/**
 		Parameters
@@ -61,7 +83,6 @@ package pandas.core.algorithms;
 	static public function _get_take_nd_function(ndim:Dynamic, arr_dtype:Dynamic, out_dtype:Dynamic, ?axis:Dynamic, ?mask_info:Dynamic):Dynamic;
 	static public var _hashtables : Dynamic;
 	static public var _np_version_under1p10 : Dynamic;
-	static public var _np_version_under1p8 : Dynamic;
 	static public var _rank1d_functions : Dynamic;
 	static public var _rank2d_functions : Dynamic;
 	/**
@@ -78,6 +99,7 @@ package pandas.core.algorithms;
 		Index for extension types, otherwise ndarray casted to dtype
 	**/
 	static public function _reconstruct_data(values:Dynamic, dtype:Dynamic, original:Dynamic):Dynamic;
+	static public var _shared_docs : Dynamic;
 	static public var _take_1d_dict : Dynamic;
 	static public var _take_2d_axis0_dict : Dynamic;
 	static public var _take_2d_axis1_dict : Dynamic;
@@ -125,8 +147,103 @@ package pandas.core.algorithms;
 	**/
 	static public function checked_add_with_arr(arr:Dynamic, b:Dynamic, ?arr_mask:Dynamic, ?b_mask:Dynamic):Dynamic;
 	/**
+		Transform any list-like object in a 1-dimensional numpy array of object
+		dtype.
+		
+		Parameters
+		----------
+		values : any iterable which has a len()
+		
+		Raises
+		------
+		TypeError
+		    * If `values` does not have a len()
+		
+		Returns
+		-------
+		1-dimensional numpy array of dtype object
+	**/
+	static public function construct_1d_object_array_from_listlike(values:Dynamic):Dynamic;
+	/**
+		Remove any common leading whitespace from every line in `text`.
+		
+		This can be used to make triple-quoted strings line up with the left
+		edge of the display, while still presenting them in the source code
+		in indented form.
+		
+		Note that tabs and spaces are both treated as whitespace, but they
+		are not equal: the lines "  hello" and "\thello" are
+		considered to have no common leading whitespace.  (This behaviour is
+		new in Python 2.5; older versions of this module incorrectly
+		expanded tabs before searching for common leading whitespace.)
+	**/
+	static public function dedent(text:Dynamic):Dynamic;
+	/**
+		Decorator to deprecate a keyword argument of a function.
+		
+		Parameters
+		----------
+		old_arg_name : str
+		    Name of argument in function to deprecate
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
+		mapping : dict or callable
+		    If mapping is present, use it to translate old arguments to
+		    new arguments. A callable must do its own value checking;
+		    values not found in a dict will be forwarded unchanged.
+		
+		Examples
+		--------
+		The following deprecates 'cols', using 'columns' instead
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
+		... def f(columns=''):
+		...     print(columns)
+		...
+		>>> f(columns='should work ok')
+		should work ok
+		
+		>>> f(cols='should raise warning')
+		FutureWarning: cols is deprecated, use columns instead
+		  warnings.warn(msg, FutureWarning)
+		should raise warning
+		
+		>>> f(cols='should error', columns="can't pass do both")
+		TypeError: Can only specify 'cols' or 'columns', not both
+		
+		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
+		... def f(new=False):
+		...     print('yes!' if new else 'no!')
+		...
+		>>> f(old='yes')
+		FutureWarning: old='yes' is deprecated, use new=True instead
+		  warnings.warn(msg, FutureWarning)
+		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+	**/
+	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	/**
 		difference of n between self,
-		analagoust to s-s.shift(n)
+		analogous to s-s.shift(n)
 		
 		Parameters
 		----------
@@ -164,30 +281,138 @@ package pandas.core.algorithms;
 	**/
 	static public function duplicated(values:Dynamic, ?keep:Dynamic):numpy.Ndarray;
 	/**
-		Encode input values as an enumerated type or categorical variable
+		Encode the object as an enumerated type or categorical variable.
+		
+		This method is useful for obtaining a numeric representation of an
+		array when all that matters is identifying distinct values. `factorize`
+		is available as both a top-level function :func:`pandas.factorize`,
+		and as a method :meth:`Series.factorize` and :meth:`Index.factorize`.
 		
 		Parameters
 		----------
-		values : ndarray (1-d)
-		    Sequence
-		sort : boolean, default False
-		    Sort by values
+		values : sequence
+		    A 1-D seqeunce. Sequences that aren't pandas objects are
+		    coereced to ndarrays before factorization.
+		sort : bool, default False
+		    Sort `uniques` and shuffle `labels` to maintain the
+		    relationship.
+		order
+		    .. deprecated:: 0.23.0
+		
+		       This parameter has no effect and is deprecated.
+		
 		na_sentinel : int, default -1
-		    Value to mark "not found"
-		size_hint : hint to the hashtable sizer
+		    Value to mark "not found".
+		size_hint : int, optional
+		    Hint to the hashtable sizer.
 		
 		Returns
 		-------
-		labels : the indexer to the original array
-		uniques : ndarray (1-d) or Index
-		    the unique values. Index is returned when passed values is Index or
-		    Series
+		labels : ndarray
+		    An integer ndarray that's an indexer into `uniques`.
+		    ``uniques.take(labels)`` will have the same values as `values`.
+		uniques : ndarray, Index, or Categorical
+		    The unique valid values. When `values` is Categorical, `uniques`
+		    is a Categorical. When `values` is some other pandas object, an
+		    `Index` is returned. Otherwise, a 1-D ndarray is returned.
 		
-		note: an array of Periods will ignore sort as it returns an always sorted
-		PeriodIndex
+		    .. note ::
+		
+		       Even if there's a missing value in `values`, `uniques` will
+		       *not* contain an entry for it.
+		
+		See Also
+		--------
+		pandas.cut : Discretize continuous-valued array.
+		pandas.unique : Find the unique valuse in an array.
+		
+		Examples
+		--------
+		These examples all show factorize as a top-level method like
+		``pd.factorize(values)``. The results are identical for methods like
+		:meth:`Series.factorize`.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'])
+		>>> labels
+		array([0, 0, 1, 2, 0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		With ``sort=True``, the `uniques` will be sorted, and `labels` will be
+		shuffled so that the relationship is the maintained.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'], sort=True)
+		>>> labels
+		array([1, 1, 0, 2, 1])
+		>>> uniques
+		array(['a', 'b', 'c'], dtype=object)
+		
+		Missing values are indicated in `labels` with `na_sentinel`
+		(``-1`` by default). Note that missing values are never
+		included in `uniques`.
+		
+		>>> labels, uniques = pd.factorize(['b', None, 'a', 'c', 'b'])
+		>>> labels
+		array([ 0, -1,  1,  2,  0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		Thus far, we've only factorized lists (which are internally coerced to
+		NumPy arrays). When factorizing pandas objects, the type of `uniques`
+		will differ. For Categoricals, a `Categorical` is returned.
+		
+		>>> cat = pd.Categorical(['a', 'a', 'c'], categories=['a', 'b', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		[a, c]
+		Categories (3, object): [a, b, c]
+		
+		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		present in ``cat.values``.
+		
+		For all other pandas objects, an Index of the appropriate type is
+		returned.
+		
+		>>> cat = pd.Series(['a', 'a', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		Index(['a', 'c'], dtype='object')
 	**/
-	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):Dynamic;
+	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):numpy.Ndarray;
 	static public var iNaT : Dynamic;
+	/**
+		Check if the object is array-like.
+		
+		For an object to be considered array-like, it must be list-like and
+		have a `dtype` attribute.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_array_like : bool
+		    Whether `obj` has array-like properties.
+		
+		Examples
+		--------
+		>>> is_array_like(np.array([1, 2, 3]))
+		True
+		>>> is_array_like(pd.Series(["a", "b"]))
+		True
+		>>> is_array_like(pd.Index(["2016-01-01"]))
+		True
+		>>> is_array_like([1, 2, 3])
+		False
+		>>> is_array_like(("a", "b"))
+		False
+	**/
+	static public function is_array_like(obj:Dynamic):Bool;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
 		
@@ -218,34 +443,6 @@ package pandas.core.algorithms;
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Check whether an array-like is a Categorical instance.
-		
-		Parameters
-		----------
-		arr : array-like
-		    The array-like to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like is of a Categorical instance.
-		
-		Examples
-		--------
-		>>> is_categorical([1, 2, 3])
-		False
-		
-		Categoricals, Series Categoricals, and CategoricalIndex will return True.
-		
-		>>> cat = pd.Categorical([1, 2, 3])
-		>>> is_categorical(cat)
-		True
-		>>> is_categorical(pd.Series(cat))
-		True
-		>>> is_categorical(pd.CategoricalIndex([1, 2, 3]))
-		True
-	**/
-	static public function is_categorical(arr:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the Categorical dtype.
 		
@@ -403,6 +600,28 @@ package pandas.core.algorithms;
 		True
 	**/
 	static public function is_datetimetz(arr:Dynamic):Dynamic;
+	/**
+		Check if an object is a pandas extension array type.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		
+		Returns
+		-------
+		bool
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
 		
@@ -631,6 +850,7 @@ package pandas.core.algorithms;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -726,6 +946,8 @@ package pandas.core.algorithms;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -775,24 +997,79 @@ package pandas.core.algorithms;
 	**/
 	static public function isin(comps:Dynamic, values:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	/**
 		Compute locations of to_match into values
 		
@@ -827,6 +1104,19 @@ package pandas.core.algorithms;
 		mode : Series
 	**/
 	static public function mode(values:Dynamic):pandas.Series;
+	/**
+		Return a dtype compat na value
+		
+		Parameters
+		----------
+		dtype : string / dtype
+		compat : boolean, default True
+		
+		Returns
+		-------
+		np.dtype or a pandas dtype
+	**/
+	static public function na_value_for_dtype(dtype:Dynamic, ?compat:Dynamic):Dynamic;
 	/**
 		Check whether the array or dtype should be converted to int64.
 		
@@ -923,54 +1213,94 @@ package pandas.core.algorithms;
 	**/
 	static public function rank(values:Dynamic, ?axis:Dynamic, ?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):Dynamic;
 	/**
-		Sort ``values`` and reorder corresponding ``labels``.
-		``values`` should be unique if ``labels`` is not None.
-		Safe for use with mixed types (int, str), orders ints before strs.
+		Take elements from an array.
 		
-		.. versionadded:: 0.19.0
+		.. versionadded:: 0.23.0
 		
 		Parameters
 		----------
-		values : list-like
-		    Sequence; must be unique if ``labels`` is not None.
-		labels : list_like
-		    Indices to ``values``. All out of bound indices are treated as
-		    "not found" and will be masked with ``na_sentinel``.
-		na_sentinel : int, default -1
-		    Value in ``labels`` to mark "not found".
-		    Ignored when ``labels`` is None.
-		assume_unique : bool, default False
-		    When True, ``values`` are assumed to be unique, which can speed up
-		    the calculation. Ignored when ``labels`` is None.
+		arr : sequence
+		    Non array-likes (sequences without a dtype) are coereced
+		    to an ndarray.
+		indices : sequence of integers
+		    Indices to be taken.
+		axis : int, default 0
+		    The axis over which to select values.
+		allow_fill : bool, default False
+		    How to handle negative values in `indices`.
+		
+		    * False: negative values in `indices` indicate positional indices
+		      from the right (the default). This is similar to :func:`numpy.take`.
+		
+		    * True: negative values in `indices` indicate
+		      missing values. These values are set to `fill_value`. Any other
+		      other negative values raise a ``ValueError``.
+		
+		fill_value : any, optional
+		    Fill value to use for NA-indices when `allow_fill` is True.
+		    This may be ``None``, in which case the default NA value for
+		    the type (``self.dtype.na_value``) is used.
+		
+		    For multi-dimensional `arr`, each *element* is filled with
+		    `fill_value`.
 		
 		Returns
 		-------
-		ordered : ndarray
-		    Sorted ``values``
-		new_labels : ndarray
-		    Reordered ``labels``; returned when ``labels`` is not None.
+		ndarray or ExtensionArray
+		    Same type as the input.
 		
 		Raises
 		------
-		TypeError
-		    * If ``values`` is not list-like or if ``labels`` is neither None
-		    nor list-like
-		    * If ``values`` cannot be sorted
+		IndexError
+		    When `indices` is out of bounds for the array.
 		ValueError
-		    * If ``labels`` is not None and ``values`` contain duplicates.
+		    When the indexer contains negative values other than ``-1``
+		    and `allow_fill` is True.
+		
+		Notes
+		-----
+		When `allow_fill` is False, `indices` may be whatever dimensionality
+		is accepted by NumPy for `arr`.
+		
+		When `allow_fill` is True, `indices` should be 1-D.
+		
+		See Also
+		--------
+		numpy.take
+		
+		Examples
+		--------
+		>>> from pandas.api.extensions import take
+		
+		With the default ``allow_fill=False``, negative numbers indicate
+		positional indices from the right.
+		
+		>>> take(np.array([10, 20, 30]), [0, 0, -1])
+		array([10, 10, 30])
+		
+		Setting ``allow_fill=True`` will place `fill_value` in those positions.
+		
+		>>> take(np.array([10, 20, 30]), [0, 0, -1], allow_fill=True)
+		array([10., 10., nan])
+		
+		>>> take(np.array([10, 20, 30]), [0, 0, -1], allow_fill=True,
+		...      fill_value=-10)
+		array([ 10,  10, -10])
 	**/
-	static public function safe_sort(values:Dynamic, ?labels:Dynamic, ?na_sentinel:Dynamic, ?assume_unique:Dynamic):numpy.Ndarray;
-	static public var string_types : Dynamic;
+	static public function take(arr:Dynamic, indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Specialized Cython take which sets NaN values in one pass
 		
+		This dispatches to ``take`` defined on ExtensionArrays. It does not
+		currently dispatch to ``SparseArray.take`` for sparse ``arr``.
+		
 		Parameters
 		----------
-		arr : ndarray
-		    Input array
+		arr : array-like
+		    Input array.
 		indexer : ndarray
 		    1-D array of indices to take, subarrays corresponding to -1 value
-		    indicies are filed with fill_value
+		    indices are filed with fill_value
 		axis : int, default 0
 		    Axis to take from
 		out : ndarray or None, default None
@@ -987,6 +1317,11 @@ package pandas.core.algorithms;
 		    If False, indexer is assumed to contain no -1 values so no filling
 		    will be done.  This short-circuits computation of a mask.  Result is
 		    undefined if allow_fill == False and -1 is present in indexer.
+		
+		Returns
+		-------
+		subarray : array-like
+		    May be the same type as the input, or cast to an ndarray.
 	**/
 	static public function take_1d(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 	/**
@@ -996,13 +1331,16 @@ package pandas.core.algorithms;
 	/**
 		Specialized Cython take which sets NaN values in one pass
 		
+		This dispatches to ``take`` defined on ExtensionArrays. It does not
+		currently dispatch to ``SparseArray.take`` for sparse ``arr``.
+		
 		Parameters
 		----------
-		arr : ndarray
-		    Input array
+		arr : array-like
+		    Input array.
 		indexer : ndarray
 		    1-D array of indices to take, subarrays corresponding to -1 value
-		    indicies are filed with fill_value
+		    indices are filed with fill_value
 		axis : int, default 0
 		    Axis to take from
 		out : ndarray or None, default None
@@ -1019,6 +1357,11 @@ package pandas.core.algorithms;
 		    If False, indexer is assumed to contain no -1 values so no filling
 		    will be done.  This short-circuits computation of a mask.  Result is
 		    undefined if allow_fill == False and -1 is present in indexer.
+		
+		Returns
+		-------
+		subarray : array-like
+		    May be the same type as the input, or cast to an ndarray.
 	**/
 	static public function take_nd(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 	/**

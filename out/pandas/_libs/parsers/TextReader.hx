@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas._libs.parsers;
 @:pythonImport("pandas._libs.parsers", "TextReader") extern class TextReader {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -51,7 +51,7 @@ package pandas._libs.parsers;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -69,9 +69,6 @@ package pandas._libs.parsers;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
-	/**
-		helper for pickle
-	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		helper for pickle
@@ -85,6 +82,7 @@ package pandas._libs.parsers;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -102,18 +100,15 @@ package pandas._libs.parsers;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _convert_column_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_converter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _set_quoting(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var allow_leading_cols : Dynamic;
-	public var as_recarray : Dynamic;
 	public var buffer_lines : Dynamic;
 	public function close(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public var compact_ints : Dynamic;
 	public var compression : Dynamic;
 	public var converters : Dynamic;
-	public function debug_print(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var delim_whitespace : Dynamic;
 	public var delimiter : Dynamic;
 	public var dtype : Dynamic;
@@ -142,6 +137,5 @@ package pandas._libs.parsers;
 	public var skiprows : Dynamic;
 	public var table_width : Dynamic;
 	public var tupleize_cols : Dynamic;
-	public var use_unsigned : Dynamic;
 	public var usecols : Dynamic;
 }

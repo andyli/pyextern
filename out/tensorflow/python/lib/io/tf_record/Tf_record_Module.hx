@@ -12,6 +12,7 @@ package tensorflow.python.lib.io.tf_record;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An iterator that read the records from a TFRecords file.
 		

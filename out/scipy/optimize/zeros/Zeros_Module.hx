@@ -63,6 +63,22 @@ package scipy.optimize.zeros;
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
 		
+		Examples
+		--------
+		
+		>>> def f(x):
+		...     return (x**2 - 1)
+		
+		>>> from scipy import optimize
+		
+		>>> root = optimize.bisect(f, 0, 2)
+		>>> root
+		1.0
+		
+		>>> root = optimize.bisect(f, -2, 0)
+		>>> root
+		-1.0
+		
 		See Also
 		--------
 		brentq, brenth, bisect, newton
@@ -95,13 +111,13 @@ package scipy.optimize.zeros;
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter must be nonnegative. As with `brentq`, for nice
 		    functions the method will often satisfy the above condition
-		    will ``xtol/2`` and ``rtol/2``.
+		    with ``xtol/2`` and ``rtol/2``.
 		rtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter cannot be smaller than its default value of
 		    ``4*np.finfo(float).eps``. As with `brentq`, for nice functions
-		    the method will often satisfy the above condition will
+		    the method will often satisfy the above condition with
 		    ``xtol/2`` and ``rtol/2``.
 		maxiter : number, optional
 		    if convergence is not achieved in maxiter iterations, an error is
@@ -123,6 +139,21 @@ package scipy.optimize.zeros;
 		r : RootResults (present if ``full_output = True``)
 		    Object containing information about the convergence.  In particular,
 		    ``r.converged`` is True if the routine converged.
+		
+		Examples
+		--------
+		>>> def f(x):
+		...     return (x**2 - 1)
+		
+		>>> from scipy import optimize
+		
+		>>> root = optimize.brenth(f, -2, 0)
+		>>> root
+		-1.0
+		
+		>>> root = optimize.brenth(f, 0, 2)
+		>>> root
+		1.0
 		
 		See Also
 		--------
@@ -177,14 +208,14 @@ package scipy.optimize.zeros;
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter must be nonnegative. For nice functions, Brent's
-		    method will often satisfy the above condition will ``xtol/2``
+		    method will often satisfy the above condition with ``xtol/2``
 		    and ``rtol/2``. [Brent1973]_
 		rtol : number, optional
 		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
 		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
 		    parameter cannot be smaller than its default value of
 		    ``4*np.finfo(float).eps``. For nice functions, Brent's
-		    method will often satisfy the above condition will ``xtol/2``
+		    method will often satisfy the above condition with ``xtol/2``
 		    and ``rtol/2``. [Brent1973]_
 		maxiter : number, optional
 		    if convergence is not achieved in maxiter iterations, an error is
@@ -230,6 +261,20 @@ package scipy.optimize.zeros;
 		-----
 		`f` must be continuous.  f(a) and f(b) must have opposite signs.
 		
+		Examples
+		--------
+		>>> def f(x):
+		...     return (x**2 - 1)
+		
+		>>> from scipy import optimize
+		
+		>>> root = optimize.brentq(f, -2, 0)
+		>>> root
+		-1.0
+		
+		>>> root = optimize.brentq(f, 0, 2)
+		>>> root
+		1.0
 		
 		References
 		----------
@@ -253,8 +298,7 @@ package scipy.optimize.zeros;
 		Find a zero of the function `func` given a nearby starting point `x0`.
 		The Newton-Raphson method is used if the derivative `fprime` of `func`
 		is provided, otherwise the secant method is used.  If the second order
-		derivate `fprime2` of `func` is provided, parabolic Halley's method
-		is used.
+		derivative `fprime2` of `func` is provided, then Halley's method is used.
 		
 		Parameters
 		----------
@@ -277,8 +321,8 @@ package scipy.optimize.zeros;
 		fprime2 : function, optional
 		    The second order derivative of the function when available and
 		    convenient. If it is None (default), then the normal Newton-Raphson
-		    or the secant method is used. If it is given, parabolic Halley's
-		    method is used.
+		    or the secant method is used. If it is not None, then Halley's method
+		    is used.
 		
 		Returns
 		-------
@@ -304,6 +348,36 @@ package scipy.optimize.zeros;
 		first be bracketed in an interval where the function changes
 		sign. The brentq algorithm is recommended for general use in one
 		dimensional problems when such an interval has been found.
+		
+		Examples
+		--------
+		
+		>>> def f(x):
+		...     return (x**3 - 1)  # only one real root at x = 1
+		
+		>>> from scipy import optimize
+		
+		``fprime`` not provided, use secant method
+		
+		>>> root = optimize.newton(f, 1.5)
+		>>> root
+		1.0000000000000016
+		>>> root = optimize.newton(f, 1.5, fprime2=lambda x: 6 * x)
+		>>> root
+		1.0000000000000016
+		
+		Only ``fprime`` provided, use Newton Raphson method
+		
+		>>> root = optimize.newton(f, 1.5, fprime=lambda x: 3 * x**2)
+		>>> root
+		1.0
+		
+		Both ``fprime2`` and ``fprime`` provided, use Halley's method
+		
+		>>> root = optimize.newton(f, 1.5, fprime=lambda x: 3 * x**2,
+		...                        fprime2=lambda x: 6 * x)
+		>>> root
+		1.0
 	**/
 	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic):Float;
 	static public var print_function : Dynamic;
@@ -359,12 +433,28 @@ package scipy.optimize.zeros;
 		-----
 		Uses [Ridders1979]_ method to find a zero of the function `f` between the
 		arguments `a` and `b`. Ridders' method is faster than bisection, but not
-		generally as fast as the Brent rountines. [Ridders1979]_ provides the
+		generally as fast as the Brent routines. [Ridders1979]_ provides the
 		classic description and source of the algorithm. A description can also be
 		found in any recent edition of Numerical Recipes.
 		
 		The routine used here diverges slightly from standard presentations in
 		order to be a bit more careful of tolerance.
+		
+		Examples
+		--------
+		
+		>>> def f(x):
+		...     return (x**2 - 1)
+		
+		>>> from scipy import optimize
+		
+		>>> root = optimize.ridder(f, 0, 2)
+		>>> root
+		1.0
+		
+		>>> root = optimize.ridder(f, -2, 0)
+		>>> root
+		-1.0
 		
 		References
 		----------
@@ -390,7 +480,7 @@ package scipy.optimize.zeros;
 		Parameters
 		----------
 		x : array_like
-		  Input values.
+		    Input values.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -406,7 +496,8 @@ package scipy.optimize.zeros;
 		Returns
 		-------
 		y : ndarray
-		  The sign of `x`.
+		    The sign of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -427,7 +518,7 @@ package scipy.optimize.zeros;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -454,6 +545,7 @@ package scipy.optimize.zeros;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------

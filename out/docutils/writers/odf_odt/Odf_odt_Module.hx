@@ -9,6 +9,7 @@ package docutils.writers.odf_odt;
 	static public var FILL_PAT1 : Dynamic;
 	static public var FILL_PAT2 : Dynamic;
 	static public var GENERATOR_DESC : Dynamic;
+	static public var IMAGE_NAME_COUNTER : Dynamic;
 	static public var MANIFEST_NAMESPACE_ATTRIB : Dynamic;
 	static public var MANIFEST_NAMESPACE_DICT : Dynamic;
 	static public var MANNSD : Dynamic;
@@ -44,5 +45,6 @@ package docutils.writers.odf_odt;
 	static public function add_ns(tag:Dynamic, ?nsdict:Dynamic):Dynamic;
 	static public function escape_cdata(text:Dynamic):Dynamic;
 	static public function fix_ns(tag:Dynamic, attrib:Dynamic, nsdict:Dynamic):Dynamic;
+	static public var pygments : Dynamic;
 	static public function split_words(line:Dynamic):Dynamic;
 }

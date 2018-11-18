@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.cbook;
 @:pythonImport("matplotlib.cbook", "CallbackRegistry") extern class CallbackRegistry {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,18 +42,18 @@ package matplotlib.cbook;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__():Dynamic;
+	public function ___init__(?exception_handler:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new():Void;
+	public function new(?exception_handler:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,24 +105,27 @@ package matplotlib.cbook;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _remove_proxy(proxy:Dynamic):Dynamic;
 	/**
-		register *func* to be called when a signal *s* is generated
-		func will be called
+		Register *func* to be called when signal *s* is generated.
+		        
 	**/
 	public function connect(s:Dynamic, func:Dynamic):Dynamic;
 	/**
-		disconnect the callback registered with callback id *cid*
+		Disconnect the callback registered with callback id *cid*.
+		        
 	**/
 	public function disconnect(cid:Dynamic):Dynamic;
 	/**
-		process signal *s*.  All of the functions registered to receive
-		callbacks on *s* will be called with *\*args* and *\*\*kwargs*
+		Process signal *s*.
+		
+		All of the functions registered to receive callbacks on *s* will be
+		called with ``*args`` and ``**kwargs``.
 	**/
 	public function process(s:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

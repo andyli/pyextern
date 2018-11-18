@@ -17,9 +17,9 @@ package scipy.io.harwell_boeing;
 		
 		Parameters
 		----------
-		file : str-like or file-like
-		    If a string-like object, file is the name of the file to read. If a
-		    file-like object, the data are read from it.
+		path_or_open_file : path-like or file-like
+		    If a file-like object, it is used as-is. Otherwise it is opened
+		    before reading.
 		
 		Returns
 		-------
@@ -35,15 +35,15 @@ package scipy.io.harwell_boeing;
 		    - integer for pointer/indices
 		    - exponential format for float values, and int format
 	**/
-	static public function hb_read(file:Dynamic):Dynamic;
+	static public function hb_read(path_or_open_file:Dynamic):Dynamic;
 	/**
 		Write HB-format file.
 		
 		Parameters
 		----------
-		file : str-like or file-like
-		    if a string-like object, file is the name of the file to read. If a
-		    file-like object, the data are read from it.
+		path_or_open_file : path-like or file-like
+		    If a file-like object, it is used as-is. Otherwise it is opened
+		    before writing.
 		m : sparse-matrix
 		    the sparse matrix to write
 		hb_info : HBInfo
@@ -62,6 +62,6 @@ package scipy.io.harwell_boeing;
 		    - integer for pointer/indices
 		    - exponential format for float values, and int format
 	**/
-	static public function hb_write(file:Dynamic, m:Dynamic, ?hb_info:Dynamic):Dynamic;
+	static public function hb_write(path_or_open_file:Dynamic, m:Dynamic, ?hb_info:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

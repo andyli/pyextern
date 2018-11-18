@@ -50,30 +50,24 @@ package numpy.ma.core;
 		self != 0
 	**/
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __complex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
-		a.__copy__([order])
+		a.__copy__()
 		
-		Return a copy of the array.
+		Used if :func:`copy.copy` is called on an array. Returns a copy of the array.
 		
-		Parameters
-		----------
-		order : {'C', 'F', 'A'}, optional
-		    If order is 'C' (False) then the result is contiguous (default).
-		    If order is 'Fortran' (True) then the result has fortran order.
-		    If order is 'Any' (None) then the result has fortran order
-		    only if the array already is in fortran order.
+		Equivalent to ``a.copy(order='K')``.
 	**/
 	public function __copy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		a.__deepcopy__() -> Deep copy of array.
+		a.__deepcopy__(memo, /) -> Deep copy of array.
 		
-		Used if copy.deepcopy is called on an array.
+		Used if :func:`copy.deepcopy` is called on an array.
 	**/
 	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
@@ -196,7 +190,7 @@ package numpy.ma.core;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Convert to int.
 	**/
@@ -241,6 +235,10 @@ package numpy.ma.core;
 		Return len(self).
 	**/
 	public function __len__():Dynamic;
+	/**
+		Convert to long.
+	**/
+	public function __long__():Dynamic;
 	/**
 		Return self<<value.
 	**/
@@ -321,7 +319,7 @@ package numpy.ma.core;
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		String representation.
+		Return str(self).
 	**/
 	public function __repr__():Dynamic;
 	/**
@@ -375,7 +373,7 @@ package numpy.ma.core;
 	/**
 		Implement setattr(self, name, value).
 	**/
-	public function __setattr__(attr:Dynamic, value:Dynamic):Dynamic;
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
 		x.__setitem__(i, y) <==> x[i]=y
 		
@@ -405,7 +403,7 @@ package numpy.ma.core;
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		String representation.
+		Return str(self).
 	**/
 	public function __str__():Dynamic;
 	/**
@@ -420,7 +418,7 @@ package numpy.ma.core;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Divide other into self, and return a new masked array.
 	**/
@@ -547,7 +545,7 @@ package numpy.ma.core;
 		...            dtype=int) # offset = 1*itemsize, i.e. skip first element
 		array([2, 3])
 	**/
-	static public function _baseclass(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _baseclass(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compare self with other using operator.eq or operator.ne.
 		
@@ -585,6 +583,11 @@ package numpy.ma.core;
 		A record is masked when all the fields are masked.
 	**/
 	public function _get_recordmask():Dynamic;
+	/**
+		Replace masked values with masked_print_option, casting all innermost
+		dtypes to object.
+	**/
+	public function _insert_masked_print():Dynamic;
 	static public var _print_width : Dynamic;
 	static public var _print_width_1d : Dynamic;
 	/**
@@ -768,7 +771,7 @@ package numpy.ma.core;
 		        originally intended.
 		        Until then, the axis should be given explicitly when
 		        ``arr.ndim > 1``, to avoid a FutureWarning.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm.
 		order : list, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -812,27 +815,71 @@ package numpy.ma.core;
 	**/
 	public function argsort(?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
-		Returns a copy of the MaskedArray cast to given newtype.
+		a.astype(dtype, order='K', casting='unsafe', subok=True, copy=True)
+		
+		Copy of the array, cast to a specified type.
+		
+		Parameters
+		----------
+		dtype : str or dtype
+		    Typecode or data-type to which the array is cast.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    Controls the memory layout order of the result.
+		    'C' means C order, 'F' means Fortran order, 'A'
+		    means 'F' order if all the arrays are Fortran contiguous,
+		    'C' order otherwise, and 'K' means as close to the
+		    order the array elements appear in memory as possible.
+		    Default is 'K'.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
+		    Controls what kind of data casting may occur. Defaults to 'unsafe'
+		    for backwards compatibility.
+		
+		      * 'no' means the data types should not be cast at all.
+		      * 'equiv' means only byte-order changes are allowed.
+		      * 'safe' means only casts which can preserve values are allowed.
+		      * 'same_kind' means only safe casts or casts within a kind,
+		        like float64 to float32, are allowed.
+		      * 'unsafe' means any data conversions may be done.
+		subok : bool, optional
+		    If True, then sub-classes will be passed-through (default), otherwise
+		    the returned array will be forced to be a base-class array.
+		copy : bool, optional
+		    By default, astype always returns a newly allocated array. If this
+		    is set to false, and the `dtype`, `order`, and `subok`
+		    requirements are satisfied, the input array is returned instead
+		    of a copy.
 		
 		Returns
 		-------
-		output : MaskedArray
-		    A copy of self cast to input newtype.
-		    The returned record shape matches self.shape.
+		arr_t : ndarray
+		    Unless `copy` is False and the other conditions for returning the input
+		    array are satisfied (see description for `copy` input parameter), `arr_t`
+		    is a new array of the same shape as the input array, with dtype, order
+		    given by `dtype`, `order`.
+		
+		Notes
+		-----
+		Starting in NumPy 1.9, astype method now returns an error if the string
+		dtype to cast to is not long enough in 'safe' casting mode to hold the max
+		value of integer/float array that is being casted. Previously the casting
+		was allowed even if the result was truncated.
+		
+		Raises
+		------
+		ComplexWarning
+		    When casting from complex to float or int. To avoid this,
+		    one should use ``a.real.astype(t)``.
 		
 		Examples
 		--------
-		>>> x = np.ma.array([[1,2,3.1],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print(x)
-		[[1.0 -- 3.1]
-		 [-- 5.0 --]
-		 [7.0 -- 9.0]]
-		>>> print(x.astype(int32))
-		[[1 -- 3]
-		 [-- 5 --]
-		 [7 -- 9]]
+		>>> x = np.array([1, 2, 2.5])
+		>>> x
+		array([ 1. ,  2. ,  2.5])
+		
+		>>> x.astype(int)
+		array([1, 2, 2])
 	**/
-	public function astype(newtype:Dynamic):numpy.ma.MaskedArray;
+	public function astype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Base object if memory is from some other object.
 		
@@ -856,7 +903,7 @@ package numpy.ma.core;
 	**/
 	public var baseclass : Dynamic;
 	/**
-		a.byteswap(inplace)
+		a.byteswap(inplace=False)
 		
 		Swap the bytes of the array elements
 		
@@ -879,7 +926,7 @@ package numpy.ma.core;
 		>>> A = np.array([1, 256, 8755], dtype=np.int16)
 		>>> map(hex, A)
 		['0x1', '0x100', '0x2233']
-		>>> A.byteswap(True)
+		>>> A.byteswap(inplace=True)
 		array([  256,     1, 13090], dtype=int16)
 		>>> map(hex, A)
 		['0x100', '0x1', '0x3322']
@@ -1027,7 +1074,7 @@ package numpy.ma.core;
 		    Controls the memory layout of the copy. 'C' means C-order,
 		    'F' means F-order, 'A' means 'F' if `a` is Fortran contiguous,
 		    'C' otherwise. 'K' means match the layout of `a` as closely
-		    as possible. (Note that this function and :func:numpy.copy are very
+		    as possible. (Note that this function and :func:`numpy.copy` are very
 		    similar, but have different default values for their order=
 		    arguments.)
 		
@@ -1435,8 +1482,13 @@ package numpy.ma.core;
 		    array raises a RuntimeError exception.
 		ALIGNED (A)
 		    The data and all elements are aligned appropriately for the hardware.
+		WRITEBACKIFCOPY (X)
+		    This array is a copy of some other array. The C-API function
+		    PyArray_ResolveWritebackIfCopy must be called before deallocating
+		    to the base array will be updated with the contents of this array.
 		UPDATEIFCOPY (U)
-		    This array is a copy of some other array. When this array is
+		    (Deprecated, use WRITEBACKIFCOPY) This array is a copy of some other array.
+		    When this array is
 		    deallocated, the base array will be updated with the contents of
 		    this array.
 		FNC
@@ -1456,13 +1508,14 @@ package numpy.ma.core;
 		or by using lowercased attribute names (as in ``a.flags.writeable``). Short flag
 		names are only supported in dictionary access.
 		
-		Only the UPDATEIFCOPY, WRITEABLE, and ALIGNED flags can be changed by
-		the user, via direct assignment to the attribute or dictionary entry,
-		or by calling `ndarray.setflags`.
+		Only the WRITEBACKIFCOPY, UPDATEIFCOPY, WRITEABLE, and ALIGNED flags can be
+		changed by the user, via direct assignment to the attribute or dictionary
+		entry, or by calling `ndarray.setflags`.
 		
 		The array flags cannot be set arbitrarily:
 		
 		- UPDATEIFCOPY can only be set ``False``.
+		- WRITEBACKIFCOPY can only be set ``False``.
 		- ALIGNED can only be set ``True`` if the data is truly aligned.
 		- WRITEABLE can only be set ``True`` if the array owns its own memory
 		  or the ultimate owner of the memory exposes a writeable buffer
@@ -1698,6 +1751,7 @@ package numpy.ma.core;
 		  OWNDATA : False
 		  WRITEABLE : True
 		  ALIGNED : True
+		  WRITEBACKIFCOPY : False
 		  UPDATEIFCOPY : False
 	**/
 	public function iscontiguous():Dynamic;
@@ -2115,7 +2169,7 @@ package numpy.ma.core;
 	/**
 		a.partition(kth, axis=-1, kind='introselect', order=None)
 		
-		Rearranges the elements in the array in such a way that value of the
+		Rearranges the elements in the array in such a way that the value of the
 		element in kth position is in the position it would be in a sorted array.
 		All elements smaller than the kth element are moved before this element and
 		all equal or greater are moved behind it. The ordering of the elements in
@@ -2129,7 +2183,7 @@ package numpy.ma.core;
 		    Element index to partition by. The kth element value will be in its
 		    final sorted position and all smaller elements will be moved before it
 		    and all equal or greater elements behind it.
-		    The order all elements in the partitions is undefined.
+		    The order of all elements in the partitions is undefined.
 		    If provided with a sequence of kth it will partition all elements
 		    indexed by kth of them into their sorted position at once.
 		axis : int, optional
@@ -2139,8 +2193,8 @@ package numpy.ma.core;
 		    Selection algorithm. Default is 'introselect'.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string, and not all fields need be specified,
+		    which fields to compare first, second, etc. A single field can
+		    be specified as a string, and not all fields need to be specified,
 		    but unspecified fields will still be used, in the order in which
 		    they come up in the dtype, to break ties.
 		
@@ -2223,7 +2277,7 @@ package numpy.ma.core;
 		    A new array holding the result, unless ``out`` was
 		    specified, in which case a reference to ``out`` is returned.
 	**/
-	public function ptp(?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function ptp(?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Set storage-indexed locations to corresponding values.
 		
@@ -2487,16 +2541,17 @@ package numpy.ma.core;
 	/**
 		a.setflags(write=None, align=None, uic=None)
 		
-		Set array flags WRITEABLE, ALIGNED, and UPDATEIFCOPY, respectively.
+		Set array flags WRITEABLE, ALIGNED, (WRITEBACKIFCOPY and UPDATEIFCOPY),
+		respectively.
 		
 		These Boolean-valued flags affect how numpy interprets the memory
 		area used by `a` (see Notes below). The ALIGNED flag can only
 		be set to True if the data is actually aligned according to the type.
-		The UPDATEIFCOPY flag can never be set to True. The flag WRITEABLE
-		can only be set to True if the array owns its own memory, or the
-		ultimate owner of the memory exposes a writeable buffer interface,
-		or is a string. (The exception for string is made so that unpickling
-		can be done without copying memory.)
+		The WRITEBACKIFCOPY and (deprecated) UPDATEIFCOPY flags can never be set
+		to True. The flag WRITEABLE can only be set to True if the array owns its
+		own memory, or the ultimate owner of the memory exposes a writeable buffer
+		interface, or is a string. (The exception for string is made so that
+		unpickling can be done without copying memory.)
 		
 		Parameters
 		----------
@@ -2510,20 +2565,22 @@ package numpy.ma.core;
 		Notes
 		-----
 		Array flags provide information about how the memory area used
-		for the array is to be interpreted. There are 6 Boolean flags
-		in use, only three of which can be changed by the user:
-		UPDATEIFCOPY, WRITEABLE, and ALIGNED.
+		for the array is to be interpreted. There are 7 Boolean flags
+		in use, only four of which can be changed by the user:
+		WRITEBACKIFCOPY, UPDATEIFCOPY, WRITEABLE, and ALIGNED.
 		
 		WRITEABLE (W) the data area can be written to;
 		
 		ALIGNED (A) the data and strides are aligned appropriately for the hardware
 		(as determined by the compiler);
 		
-		UPDATEIFCOPY (U) this array is a copy of some other array (referenced
-		by .base). When this array is deallocated, the base array will be
-		updated with the contents of this array.
+		UPDATEIFCOPY (U) (deprecated), replaced by WRITEBACKIFCOPY;
 		
-		All flags can be accessed using their first (upper case) letter as well
+		WRITEBACKIFCOPY (X) this array is a copy of some other array (referenced
+		by .base). When the C-API function PyArray_ResolveWritebackIfCopy is
+		called, the base array will be updated with the contents of this array.
+		
+		All flags can be accessed using the single (upper case) letter as well
 		as the full name.
 		
 		Examples
@@ -2538,6 +2595,7 @@ package numpy.ma.core;
 		  OWNDATA : True
 		  WRITEABLE : True
 		  ALIGNED : True
+		  WRITEBACKIFCOPY : False
 		  UPDATEIFCOPY : False
 		>>> y.setflags(write=0, align=0)
 		>>> y.flags
@@ -2546,20 +2604,23 @@ package numpy.ma.core;
 		  OWNDATA : True
 		  WRITEABLE : False
 		  ALIGNED : False
+		  WRITEBACKIFCOPY : False
 		  UPDATEIFCOPY : False
 		>>> y.setflags(uic=1)
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: cannot set UPDATEIFCOPY flag to True
+		ValueError: cannot set WRITEBACKIFCOPY flag to True
 	**/
 	public function setflags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Tuple of array dimensions.
 		
-		Notes
-		-----
-		May be used to "reshape" the array, as long as this would not
-		require a change in the total number of elements
+		The shape property is usually used to get the current shape of an array,
+		but may also be used to reshape the array in-place by assigning a tuple of
+		array dimensions to it.  As with `numpy.reshape`, one of the new shape
+		dimensions can be -1, in which case its value is inferred from the size of
+		the array and the remaining dimensions. Reshaping an array in-place will
+		fail if a copy is required.
 		
 		Examples
 		--------
@@ -2578,6 +2639,15 @@ package numpy.ma.core;
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
 		ValueError: total size of new array must be unchanged
+		>>> np.zeros((4,2))[::2].shape = (-1,)
+		Traceback (most recent call last):
+		  File "<stdin>", line 1, in <module>
+		AttributeError: incompatible shape for a non-contiguous array
+		
+		See Also
+		--------
+		numpy.reshape : similar function
+		ndarray.reshape : similar method
 	**/
 	public var shape : Dynamic;
 	/**
@@ -2600,7 +2670,7 @@ package numpy.ma.core;
 		>>> x = np.ma.array([[1,2 ], [3, 4]], mask=[0]*4)
 		>>> x.mask
 		array([[False, False],
-		       [False, False]], dtype=bool)
+		       [False, False]])
 		>>> x.shrink_mask()
 		>>> x.mask
 		False
@@ -2609,8 +2679,16 @@ package numpy.ma.core;
 	/**
 		Number of elements in the array.
 		
-		Equivalent to ``np.prod(a.shape)``, i.e., the product of the array's
+		Equal to ``np.prod(a.shape)``, i.e., the product of the array's
 		dimensions.
+		
+		Notes
+		-----
+		`a.size` returns a standard arbitrary precision Python integer. This 
+		may not be the case with other methods of obtaining the same value
+		(like the suggested ``np.prod(a.shape)``, which returns an instance
+		of ``np.int_``), and may be relevant if the value is used further in
+		calculations that may overflow a fixed size integer type.
 		
 		Examples
 		--------
@@ -2642,7 +2720,7 @@ package numpy.ma.core;
 		axis : int, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm. Default is 'quicksort'.
 		order : list, optional
 		    When `a` is a structured array, this argument specifies which fields
@@ -3079,7 +3157,7 @@ package numpy.ma.core;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `var` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns

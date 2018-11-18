@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.base;
 @:pythonImport("pandas.core.base", "SelectionMixin") extern class SelectionMixin {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package pandas.core.base;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,7 +104,7 @@ package pandas.core.base;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -155,8 +155,8 @@ package pandas.core.base;
 		if we define an internal function for this argument, return it 
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
-	static public var _obj_with_exclusions : Dynamic;
-	static public var _selected_obj : Dynamic;
+	public var _obj_with_exclusions : Dynamic;
+	public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	/**
@@ -178,5 +178,5 @@ package pandas.core.base;
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function aggregate(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 }

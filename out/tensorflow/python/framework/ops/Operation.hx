@@ -4,8 +4,8 @@ package tensorflow.python.framework.ops;
 	/**
 		Immutable input list wrapper.
 	**/
-	static public function _InputList(op:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _InputList(inputs:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -128,7 +128,7 @@ package tensorflow.python.framework.ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -179,7 +179,7 @@ package tensorflow.python.framework.ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -207,35 +207,84 @@ package tensorflow.python.framework.ops;
 	**/
 	public function _add_control_inputs(ops:Dynamic):Dynamic;
 	/**
-		Add a new input to this operation.
+		Code locations for colocation context managers active at op creation.
 		
-		Args:
-		  tensor: the Tensor to add as an input.
-		  dtype: tf.DType: type of the input; defaults to
-		    the tensor's dtype.
+		This property will return a dictionary for which the keys are nodes with
+		which this Operation is colocated, and for which the values are
+		traceable_stack.TraceableObject instances.  The TraceableObject instances
+		record the location of the relevant colocation context manager but have the
+		"obj" field set to None to prevent leaking private data.
 		
-		Raises:
-		  TypeError: if tensor is not a Tensor,
-		    or if input tensor type is not convertible to dtype.
-		  ValueError: if the Tensor is from a different graph.
-	**/
-	public function _add_input(tensor:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		Creates a TF_Operation.
+		For example, suppose file_a contained these lines:
 		
-		Arguments:
-		  graph: a `Graph`.
-		  node_def: `node_def_pb2.NodeDef` for the operation to create.
-		  inputs: A list of `Tensor`s (corresponding to scalar inputs) and lists of
-		    `Tensor`s (corresponding to sequence inputs, e.g. "int64 * N",
-		    "list(int64)"). The length of the list should be equal to the number of
-		    inputs specified by this operation's op def.
-		  control_inputs: A list of `Operation`s to set as control dependencies.
+		  file_a.py:
+		    14: node_a = tf.constant(3, name='NODE_A')
+		    15: with tf.colocate_with(node_a):
+		    16:   node_b = tf.constant(4, name='NODE_B')
+		
+		Then a TraceableObject t_obj representing the colocation context manager
+		would have these member values:
+		
+		  t_obj.obj -> None
+		  t_obj.filename = 'file_a.py'
+		  t_obj.lineno = 15
+		
+		and node_b.op._colocation_dict would return the dictionary
+		
+		  { 'NODE_A': t_obj }
 		
 		Returns:
-		  A wrapped TF_Operation*.
+		  {str: traceable_stack.TraceableObject} as per this method's description,
+		  above.
 	**/
-	public function _create_c_op(graph:Dynamic, node_def:Dynamic, inputs:Dynamic, control_inputs:Dynamic):Dynamic;
+	public var _colocation_dict : Dynamic;
+	/**
+		Add this op to its control flow context.
+		
+		This may add new ops and change this op's inputs. self.inputs must be
+		available before calling this method.
+	**/
+	public function _control_flow_post_processing():Dynamic;
+	public var _control_inputs : Dynamic;
+	/**
+		The `Operation` objects which have a control dependency on this op.
+		
+		Before any of the ops in self._control_outputs can execute tensorflow will
+		ensure self has finished executing.
+		
+		Returns:
+		  A list of `Operation` objects.
+	**/
+	public var _control_outputs : Dynamic;
+	/**
+		Code locations for device context managers active at op creation.
+		
+		This property will return a list of traceable_stack.TraceableObject
+		instances where .obj is a string representing the assigned device
+		(or information about the function that would be applied to this op
+		to compute the desired device) and the filename and lineno members
+		record the location of the relevant device context manager.
+		
+		For example, suppose file_a contained these lines:
+		
+		  file_a.py:
+		    15: with tf.device('/gpu:0'):
+		    16:   node_b = tf.constant(4, name='NODE_B')
+		
+		Then a TraceableObject t_obj representing the device context manager
+		would have these member values:
+		
+		  t_obj.obj -> '/gpu:0'
+		  t_obj.filename = 'file_a.py'
+		  t_obj.lineno = 15
+		
+		and node_b.op._device_assignments would return the list [t_obj].
+		
+		Returns:
+		  [str: traceable_stack.TraceableObject, ...] as per this method's
+		  description, above.
+	**/
+	public var _device_assignments : Dynamic;
 	/**
 		Returns the control flow context of this op.
 		
@@ -247,12 +296,25 @@ package tensorflow.python.framework.ops;
 		The unique integer id of this operation.
 	**/
 	public var _id : Dynamic;
-	public var _input_dtypes : Dynamic;
-	public function _recompute_node_def():Dynamic;
+	public var _input_types : Dynamic;
+	public var _inputs : Dynamic;
+	public var _node_def : Dynamic;
+	public var _op_def : Dynamic;
+	/**
+		List this operation's output types.
+		
+		Returns:
+		  List of the types of the Tensors computed by this operation.
+		  Each element in the list is an integer whose value is one of
+		  the TF_DataType enums defined in c_api.h
+		  The length of this list indicates the number of output endpoints
+		  of the operation.
+	**/
+	public var _output_types : Dynamic;
 	/**
 		Regroups a flat list of input tensors into scalar and sequence inputs.
 		
-		Arguments:
+		Args:
 		  op_def: The `op_def_pb2.OpDef` (for knowing the input types)
 		  inputs: a list of input `Tensor`s to the op.
 		  attrs: mapping from attr name to `attr_value_pb2.AttrValue` (these define
@@ -264,12 +326,20 @@ package tensorflow.python.framework.ops;
 	**/
 	public function _reconstruct_sequence_inputs(op_def:Dynamic, inputs:Dynamic, attrs:Dynamic):Dynamic;
 	/**
+		Removes any control inputs to this operation.
+	**/
+	public function _remove_all_control_inputs():Dynamic;
+	/**
+		Private method used to set an attribute in the node_def.
+	**/
+	public function _set_attr(attr_name:Dynamic, attr_value:Dynamic):Dynamic;
+	/**
 		Sets the current control flow context of this op.
 		
 		Args:
-		  context: a context object.
+		  ctx: a context object.
 	**/
-	public function _set_control_flow_context(context:Dynamic):Dynamic;
+	public function _set_control_flow_context(ctx:Dynamic):Dynamic;
 	/**
 		Set the device of this operation.
 		
@@ -277,6 +347,16 @@ package tensorflow.python.framework.ops;
 		  device: string or device..  The device to set.
 	**/
 	public function _set_device(device:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Create and return a new TF_Input for input_idx'th input of this op.
+	**/
+	public function _tf_input(input_idx:Dynamic):Dynamic;
+	/**
+		Create and return a new TF_Output for output_idx'th output of this op.
+	**/
+	public function _tf_output(output_idx:Dynamic):Dynamic;
 	/**
 		Update the input to this operation at the given index.
 		
@@ -285,15 +365,13 @@ package tensorflow.python.framework.ops;
 		Args:
 		  index: the index of the input to update.
 		  tensor: the Tensor to be used as the input at the given index.
-		  dtype: tf.DType: type of the input; defaults to
-		    the tensor's dtype.
 		
 		Raises:
 		  TypeError: if tensor is not a Tensor,
 		    or if input tensor type is not convertible to dtype.
 		  ValueError: if the Tensor is from a different graph.
 	**/
-	public function _update_input(index:Dynamic, tensor:Dynamic, ?dtype:Dynamic):Dynamic;
+	public function _update_input(index:Dynamic, tensor:Dynamic):Dynamic;
 	/**
 		Returns the list of colocation groups of the op.
 	**/
@@ -346,7 +424,7 @@ package tensorflow.python.framework.ops;
 	**/
 	public var name : Dynamic;
 	/**
-		Returns a serialized `NodeDef` representation of this operation.
+		Returns the `NodeDef` representation of this operation.
 		
 		Returns:
 		  A
@@ -379,7 +457,7 @@ package tensorflow.python.framework.ops;
 		
 		Args:
 		  feed_dict: A dictionary that maps `Tensor` objects to feed values.
-		    See @{tf.Session.run}
+		    See `tf.Session.run`
 		    for a description of the valid feed values.
 		  session: (Optional.) The `Session` to be used to run to this operation. If
 		    none, the default session will be used.

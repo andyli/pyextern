@@ -18,7 +18,6 @@ package matplotlib.style.core;
 	static public function _apply_style(d:Dynamic, ?warn:Dynamic):Dynamic;
 	static public var _base_library : Dynamic;
 	static public function _remove_blacklisted_style_params(d:Dynamic, ?warn:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	static public var available : Dynamic;
 	/**
 		Context manager for using style settings temporarily.
@@ -44,7 +43,6 @@ package matplotlib.style.core;
 		    otherwise, apply style on top of the current settings.
 	**/
 	static public function context(style:Dynamic, ?after_reset:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Return True if the filename looks like a style file.
 	**/
@@ -59,7 +57,6 @@ package matplotlib.style.core;
 		Load style library defined in this package.
 	**/
 	static public function load_base_library():Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParamsDefault : Dynamic;
 	/**
 		Return :class:`matplotlib.RcParams` from the contents of the given file.
@@ -84,7 +81,6 @@ package matplotlib.style.core;
 		Reload style library.
 	**/
 	static public function reload_library():Dynamic;
-	static public var unicode_literals : Dynamic;
 	/**
 		Update nested dict (only level of nesting) with new values.
 		

@@ -9,15 +9,11 @@ package theano.gof.lazylinker_c;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	static public var _logger : Dynamic;
 	static public var _need_reload : Dynamic;
 	static public var absolute_import : Dynamic;
-	static public var args : Dynamic;
-	static public var cfile : Dynamic;
-	static public var code : Dynamic;
+	static public var actual_version : Dynamic;
 	static public var config : Dynamic;
-	static public var dirname : Dynamic;
 	static public var division : Dynamic;
 	static public var force_compile : Dynamic;
 	/**
@@ -39,9 +35,6 @@ package theano.gof.lazylinker_c;
 	**/
 	static public function get_version(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var init_file : Dynamic;
-	static public var init_py : Dynamic;
-	static public var init_pyc : Dynamic;
-	static public var loc : Dynamic;
 	static public var location : Dynamic;
 	static public var print_function : Dynamic;
 	/**

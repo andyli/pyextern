@@ -10,6 +10,7 @@ package numpy.lib.shape_base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _make_along_axis_idx(arr_shape:Dynamic, indices:Dynamic, axis:Dynamic):Dynamic;
 	static public function _replace_zero_by_x_arrays(sub_arys:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -18,14 +19,32 @@ package numpy.lib.shape_base;
 		Execute `func1d(a, *args)` where `func1d` operates on 1-D arrays and `a`
 		is a 1-D slice of `arr` along `axis`.
 		
+		This is equivalent to (but faster than) the following use of `ndindex` and
+		`s_`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of indices::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nk):
+		            f = func1d(arr[ii + s_[:,] + kk])
+		            Nj = f.shape
+		            for jj in ndindex(Nj):
+		                out[ii + jj + kk] = f[jj]
+		
+		Equivalently, eliminating the inner loop, this can be expressed as::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nk):
+		            out[ii + s_[...,] + kk] = func1d(arr[ii + s_[:,] + kk])
+		
 		Parameters
 		----------
-		func1d : function
+		func1d : function (M,) -> (Nj...)
 		    This function should accept 1-D arrays. It is applied to 1-D
 		    slices of `arr` along the specified axis.
 		axis : integer
 		    Axis along which `arr` is sliced.
-		arr : ndarray
+		arr : ndarray (Ni..., M, Nk...)
 		    Input array.
 		args : any
 		    Additional arguments to `func1d`.
@@ -37,11 +56,11 @@ package numpy.lib.shape_base;
 		
 		Returns
 		-------
-		apply_along_axis : ndarray
-		    The output array. The shape of `outarr` is identical to the shape of
+		out : ndarray  (Ni..., Nj..., Nk...)
+		    The output array. The shape of `out` is identical to the shape of
 		    `arr`, except along the `axis` dimension. This axis is removed, and
 		    replaced with new dimensions equal to the shape of the return value
-		    of `func1d`. So if `func1d` returns a scalar `outarr` will have one
+		    of `func1d`. So if `func1d` returns a scalar `out` will have one
 		    fewer dimensions than `arr`.
 		
 		See Also
@@ -76,16 +95,14 @@ package numpy.lib.shape_base;
 		array([[[1, 0, 0],
 		        [0, 2, 0],
 		        [0, 0, 3]],
-		
 		       [[4, 0, 0],
 		        [0, 5, 0],
 		        [0, 0, 6]],
-		
 		       [[7, 0, 0],
 		        [0, 8, 0],
 		        [0, 0, 9]]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -203,7 +220,15 @@ package numpy.lib.shape_base;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -260,7 +285,9 @@ package numpy.lib.shape_base;
 		Please refer to the ``split`` documentation.  The only difference
 		between these functions is that ``array_split`` allows
 		`indices_or_sections` to be an integer that does *not* equally
-		divide the axis.
+		divide the axis. For an array of length l that should be split
+		into n sections, it returns l % n sub-arrays of size l//n + 1
+		and the rest of size l//n.
 		
 		See Also
 		--------
@@ -271,6 +298,10 @@ package numpy.lib.shape_base;
 		>>> x = np.arange(8.0)
 		>>> np.array_split(x, 3)
 		    [array([ 0.,  1.,  2.]), array([ 3.,  4.,  5.]), array([ 6.,  7.])]
+		
+		>>> x = np.arange(7.0)
+		>>> np.array_split(x, 3)
+		    [array([ 0.,  1.,  2.]), array([ 3.,  4.]), array([ 5.,  6.])]
 	**/
 	static public function array_split(ary:Dynamic, indices_or_sections:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -317,7 +348,7 @@ package numpy.lib.shape_base;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -381,9 +412,9 @@ package numpy.lib.shape_base;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -458,7 +489,7 @@ package numpy.lib.shape_base;
 		
 		See Also
 		--------
-		hstack, vstack, concatenate
+		stack, hstack, vstack, concatenate
 		
 		Examples
 		--------
@@ -471,7 +502,7 @@ package numpy.lib.shape_base;
 	**/
 	static public function column_stack(tup:Dynamic):Dynamic;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -481,7 +512,12 @@ package numpy.lib.shape_base;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -521,6 +557,8 @@ package numpy.lib.shape_base;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -587,25 +625,26 @@ package numpy.lib.shape_base;
 	/**
 		Stack arrays in sequence depth wise (along third axis).
 		
-		Takes a sequence of arrays and stack them along the third axis
-		to make a single array. Rebuilds arrays divided by `dsplit`.
-		This is a simple way to stack 2D arrays (images) into a single
-		3D array for processing.
+		This is equivalent to concatenation along the third axis after 2-D arrays
+		of shape `(M,N)` have been reshaped to `(M,N,1)` and 1-D arrays of shape
+		`(N,)` have been reshaped to `(1,N,1)`. Rebuilds arrays divided by
+		`dsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of arrays
-		    Arrays to stack. All of them must have the same shape along all
-		    but the third axis.
+		    The arrays must have the same shape along all but the third axis.
+		    1-D or 2-D arrays must have the same shape.
 		
 		Returns
 		-------
 		stacked : ndarray
-		    The array formed by stacking the given arrays.
+		    The array formed by stacking the given arrays, will be at least 3-D.
 		
 		See Also
 		--------
@@ -614,11 +653,6 @@ package numpy.lib.shape_base;
 		hstack : Stack along second axis.
 		concatenate : Join a sequence of arrays along an existing axis.
 		dsplit : Split array along third axis.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=2)`` if `tup` contains arrays that
-		are at least 3-dimensional.
 		
 		Examples
 		--------
@@ -681,7 +715,7 @@ package numpy.lib.shape_base;
 		>>> y.shape
 		(1, 2)
 		
-		>>> y = np.expand_dims(x, axis=1)  # Equivalent to x[:,newaxis]
+		>>> y = np.expand_dims(x, axis=1)  # Equivalent to x[:,np.newaxis]
 		>>> y
 		array([[1],
 		       [2]])
@@ -761,29 +795,6 @@ package numpy.lib.shape_base;
 		       [[ 6.,  7.]]])]
 	**/
 	static public function hsplit(ary:Dynamic, indices_or_sections:Dynamic):Dynamic;
-	/**
-		Returns True if the type of `num` is a scalar type.
-		
-		Parameters
-		----------
-		num : any
-		    Input argument, can be of any type and shape.
-		
-		Returns
-		-------
-		val : bool
-		    True if `num` is a scalar type, False if it is not.
-		
-		Examples
-		--------
-		>>> np.isscalar(3.1)
-		True
-		>>> np.isscalar([3.1])
-		False
-		>>> np.isscalar(False)
-		True
-	**/
-	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Kronecker product of two arrays.
 		
@@ -933,11 +944,14 @@ package numpy.lib.shape_base;
 		
 		See also
 		--------
-		inner, einsum
+		inner
+		einsum : ``einsum('i,j->ij', a.ravel(), b.ravel())`` is the equivalent.
+		ufunc.outer : A generalization to N dimensions and other operations.
+		              ``np.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.
 		
 		References
 		----------
-		.. [1] : G. H. Golub and C. F. van Loan, *Matrix Computations*, 3rd
+		.. [1] : G. H. Golub and C. F. Van Loan, *Matrix Computations*, 3rd
 		         ed., Baltimore, MD, Johns Hopkins University Press, 1996,
 		         pg. 8.
 		
@@ -984,7 +998,78 @@ package numpy.lib.shape_base;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Put values into the destination array by matching 1d index and data slices.
+		
+		This iterates over matching 1d slices oriented along the specified axis in
+		the index and data arrays, and uses the former to place values into the
+		latter. These slices can be different lengths.
+		
+		Functions returning an index along an axis, like `argsort` and
+		`argpartition`, produce suitable indices for this function.
+		
+		.. versionadded:: 1.15.0
+		
+		Parameters
+		----------
+		arr: ndarray (Ni..., M, Nk...)
+		    Destination array.
+		indices: ndarray (Ni..., J, Nk...)
+		    Indices to change along each 1d slice of `arr`. This must match the
+		    dimension of arr, but dimensions in Ni and Nj may be 1 to broadcast
+		    against `arr`.
+		values: array_like (Ni..., J, Nk...)
+		    values to insert at those indices. Its shape and dimension are
+		    broadcast to match that of `indices`.
+		axis: int
+		    The axis to take 1d slices along. If axis is None, the destination
+		    array is treated as if a flattened 1d view had been created of it.
+		
+		Notes
+		-----
+		This is equivalent to (but faster than) the following use of `ndindex` and
+		`s_`, which sets each of ``ii`` and ``kk`` to a tuple of indices::
+		
+		    Ni, M, Nk = a.shape[:axis], a.shape[axis], a.shape[axis+1:]
+		    J = indices.shape[axis]  # Need not equal M
+		
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nk):
+		            a_1d       = a      [ii + s_[:,] + kk]
+		            indices_1d = indices[ii + s_[:,] + kk]
+		            values_1d  = values [ii + s_[:,] + kk]
+		            for j in range(J):
+		                a_1d[indices_1d[j]] = values_1d[j]
+		
+		Equivalently, eliminating the inner loop, the last two lines would be::
+		
+		            a_1d[indices_1d] = values_1d
+		
+		See Also
+		--------
+		take_along_axis :
+		    Take values from the input array by matching 1d index and data slices
+		
+		Examples
+		--------
+		
+		For this sample array
+		
+		>>> a = np.array([[10, 30, 20], [60, 40, 50]])
+		
+		We can replace the maximum values with:
+		
+		>>> ai = np.expand_dims(np.argmax(a, axis=1), axis=1)
+		>>> ai
+		array([[1],
+		       [0]], dtype=int64)
+		>>> np.put_along_axis(a, ai, 99, axis=1)
+		>>> a
+		array([[10, 99, 20],
+		       [99, 40, 50]])
+	**/
+	static public function put_along_axis(arr:Dynamic, indices:Dynamic, values:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Gives a new shape to an array without changing its data.
 		
@@ -1025,11 +1110,11 @@ package numpy.lib.shape_base;
 		Notes
 		-----
 		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
+		copying the data. If you want an error to be raised when the data is copied,
 		you should assign the new shape to the shape attribute of the array::
 		
 		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
+		 # A transpose makes the array non-contiguous
 		 >>> b = a.T
 		 # Taking a view makes it possible to modify the shape without modifying
 		 # the initial object.
@@ -1082,23 +1167,25 @@ package numpy.lib.shape_base;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		
-		Take a sequence of arrays and stack them vertically to make a single
-		array. Rebuild arrays divided by `vsplit`.
+		This is equivalent to concatenation along the first axis after 1-D arrays
+		of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		`vsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    Tuple containing arrays to be stacked. The arrays must have the same
-		    shape along all but the first axis.
+		    The arrays must have the same shape along all but the first axis.
+		    1-D arrays must have the same length.
 		
 		Returns
 		-------
 		stacked : ndarray
-		    The array formed by stacking the given arrays.
+		    The array formed by stacking the given arrays, will be at least 2-D.
 		
 		See Also
 		--------
@@ -1108,11 +1195,6 @@ package numpy.lib.shape_base;
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -1198,6 +1280,109 @@ package numpy.lib.shape_base;
 		 array([], dtype=float64)]
 	**/
 	static public function split(ary:Dynamic, indices_or_sections:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Take values from the input array by matching 1d index and data slices.
+		
+		This iterates over matching 1d slices oriented along the specified axis in
+		the index and data arrays, and uses the former to look up values in the
+		latter. These slices can be different lengths.
+		
+		Functions returning an index along an axis, like `argsort` and
+		`argpartition`, produce suitable indices for this function.
+		
+		.. versionadded:: 1.15.0
+		
+		Parameters
+		----------
+		arr: ndarray (Ni..., M, Nk...)
+		    Source array
+		indices: ndarray (Ni..., J, Nk...)
+		    Indices to take along each 1d slice of `arr`. This must match the
+		    dimension of arr, but dimensions Ni and Nj only need to broadcast
+		    against `arr`.
+		axis: int
+		    The axis to take 1d slices along. If axis is None, the input array is
+		    treated as if it had first been flattened to 1d, for consistency with
+		    `sort` and `argsort`.
+		
+		Returns
+		-------
+		out: ndarray (Ni..., J, Nk...)
+		    The indexed result.
+		
+		Notes
+		-----
+		This is equivalent to (but faster than) the following use of `ndindex` and
+		`s_`, which sets each of ``ii`` and ``kk`` to a tuple of indices::
+		
+		    Ni, M, Nk = a.shape[:axis], a.shape[axis], a.shape[axis+1:]
+		    J = indices.shape[axis]  # Need not equal M
+		    out = np.empty(Nk + (J,) + Nk)
+		
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nk):
+		            a_1d       = a      [ii + s_[:,] + kk]
+		            indices_1d = indices[ii + s_[:,] + kk]
+		            out_1d     = out    [ii + s_[:,] + kk]
+		            for j in range(J):
+		                out_1d[j] = a_1d[indices_1d[j]]
+		
+		Equivalently, eliminating the inner loop, the last two lines would be::
+		
+		            out_1d[:] = a_1d[indices_1d]
+		
+		See Also
+		--------
+		take : Take along an axis, using the same indices for every 1d slice
+		put_along_axis :
+		    Put values into the destination array by matching 1d index and data slices
+		
+		Examples
+		--------
+		
+		For this sample array
+		
+		>>> a = np.array([[10, 30, 20], [60, 40, 50]])
+		
+		We can sort either by using sort directly, or argsort and this function
+		
+		>>> np.sort(a, axis=1)
+		array([[10, 20, 30],
+		       [40, 50, 60]])
+		>>> ai = np.argsort(a, axis=1); ai
+		array([[0, 2, 1],
+		       [1, 2, 0]], dtype=int64)
+		>>> np.take_along_axis(a, ai, axis=1)
+		array([[10, 20, 30],
+		       [40, 50, 60]])
+		
+		The same works for max and min, if you expand the dimensions:
+		
+		>>> np.expand_dims(np.max(a, axis=1), axis=1)
+		array([[30],
+		       [60]])
+		>>> ai = np.expand_dims(np.argmax(a, axis=1), axis=1)
+		>>> ai
+		array([[1],
+		       [0], dtype=int64)
+		>>> np.take_along_axis(a, ai, axis=1)
+		array([[30],
+		       [60]])
+		
+		If we want to get the max and min at the same time, we can stack the
+		indices first
+		
+		>>> ai_min = np.expand_dims(np.argmin(a, axis=1), axis=1)
+		>>> ai_max = np.expand_dims(np.argmax(a, axis=1), axis=1)
+		>>> ai = np.concatenate([ai_min, ai_max], axis=axis)
+		>> ai
+		array([[0, 1],
+		       [1, 0]], dtype=int64)
+		>>> np.take_along_axis(a, ai, axis=1)
+		array([[10, 30],
+		       [40, 60]])
+	**/
+	static public function take_along_axis(arr:Dynamic, indices:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Construct an array by repeating A the number of times given by reps.
 		
@@ -1358,23 +1543,25 @@ package numpy.lib.shape_base;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		
-		Take a sequence of arrays and stack them vertically to make a single
-		array. Rebuild arrays divided by `vsplit`.
+		This is equivalent to concatenation along the first axis after 1-D arrays
+		of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		`vsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    Tuple containing arrays to be stacked. The arrays must have the same
-		    shape along all but the first axis.
+		    The arrays must have the same shape along all but the first axis.
+		    1-D arrays must have the same length.
 		
 		Returns
 		-------
 		stacked : ndarray
-		    The array formed by stacking the given arrays.
+		    The array formed by stacking the given arrays, will be at least 2-D.
 		
 		See Also
 		--------
@@ -1384,11 +1571,6 @@ package numpy.lib.shape_base;
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -1416,14 +1598,15 @@ package numpy.lib.shape_base;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1433,17 +1616,16 @@ package numpy.lib.shape_base;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 @:pythonImport("tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops") extern class Gen_training_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -15,6 +15,23 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 	static public var _op_def_lib : Dynamic;
 	static public var _stochastic_hard_routing_function_outputs : Dynamic;
 	static public var _stochastic_hard_routing_gradient_outputs : Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Chooses a single path for each instance in `input_data` and returns the leaf
 		
@@ -31,7 +48,7 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 		   regression model that translates from node features to
 		   probabilities.
 		
-		  path_probility: `path_probability[i]` gives the probability of reaching each
+		  path_probability: `path_probability[i]` gives the probability of reaching each
 		   node in `path[i]`.
 		  path: `path[i][j]` gives the jth node in the path taken by the ith data
 		   instance.
@@ -51,6 +68,11 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 		  path: A `Tensor` of type `int32`.
 	**/
 	static public function hard_routing_function(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, max_nodes:Dynamic, tree_depth:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function hard_routing_function
+	**/
+	static public function hard_routing_function_eager_fallback(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, max_nodes:Dynamic, tree_depth:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the derivative of the routing loss with respect to each decision
 		
@@ -107,6 +129,11 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 	**/
 	static public function k_feature_gradient(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, routes:Dynamic, layer_num:Dynamic, random_seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function k_feature_gradient
+	**/
+	static public function k_feature_gradient_eager_fallback(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, routes:Dynamic, layer_num:Dynamic, random_seed:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Returns the probability that each input will reach each leaf node.  Each
 		
 		  decision is made based on k features.
@@ -145,6 +172,11 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 	**/
 	static public function k_feature_routing_function(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, layer_num:Dynamic, max_nodes:Dynamic, num_features_per_node:Dynamic, random_seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function k_feature_routing_function
+	**/
+	static public function k_feature_routing_function_eager_fallback(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, layer_num:Dynamic, max_nodes:Dynamic, num_features_per_node:Dynamic, random_seed:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Returns the probability that each input will reach each leaf node.
 		
 		  max_nodes: The number of nodes in the tree.
@@ -172,6 +204,11 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 		  A `Tensor` of type `float32`.
 	**/
 	static public function routing_function(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, max_nodes:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function routing_function
+	**/
+	static public function routing_function_eager_fallback(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, max_nodes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the derivative of the routing loss with respect to each decision
 		
@@ -212,6 +249,11 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 	**/
 	static public function routing_gradient(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, routes:Dynamic, max_nodes:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function routing_gradient
+	**/
+	static public function routing_gradient_eager_fallback(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, routes:Dynamic, max_nodes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Samples a path for each instance in `input_data` and returns the
 		
 		  probability of the path and the path taken.
@@ -228,7 +270,7 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 		   regression model that translates from node features to
 		   probabilities.
 		
-		  path_probility: `path_probability[i]` gives the probability of reaching each
+		  path_probability: `path_probability[i]` gives the probability of reaching each
 		   node in `path[i]`.
 		  path: `path[i][j]` gives the jth node in the path taken by the ith data
 		   instance.
@@ -249,6 +291,11 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 	**/
 	static public function stochastic_hard_routing_function(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, tree_depth:Dynamic, random_seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function stochastic_hard_routing_function
+	**/
+	static public function stochastic_hard_routing_function_eager_fallback(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, tree_depth:Dynamic, random_seed:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes the derivative of the routing loss with respect to each decision
 		
 		  node.
@@ -263,7 +310,7 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 		  tree_biases: `tree_biases[i]` gives the bias of the logistic
 		   regression model that translates from node features to
 		   probabilities.
-		  path_probility: `path_probability[i]` gives the probability of reaching each
+		  path_probability: `path_probability[i]` gives the probability of reaching each
 		   node in `path[i]`.
 		  path: `path[i][j]` gives the jth node in the path taken by the ith data
 		   instance.
@@ -307,6 +354,12 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 	**/
 	static public function stochastic_hard_routing_gradient(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, path_probability:Dynamic, path:Dynamic, tree_depth:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function stochastic_hard_routing_gradient
+	**/
+	static public function stochastic_hard_routing_gradient_eager_fallback(input_data:Dynamic, tree_parameters:Dynamic, tree_biases:Dynamic, path_probability:Dynamic, path:Dynamic, tree_depth:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Takes a batch of paths through a tree and a batch of values along those paths
 		
 		  and returns a batch_size by num_nodes encoding of the path values.
@@ -328,4 +381,9 @@ package tensorflow.contrib.tensor_forest.hybrid.ops.gen_training_ops;
 		  A `Tensor` of type `float32`.
 	**/
 	static public function unpack_path(path:Dynamic, path_values:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function unpack_path
+	**/
+	static public function unpack_path_eager_fallback(path:Dynamic, path_values:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 }

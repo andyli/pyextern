@@ -100,7 +100,7 @@ package theano.gradient;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -153,11 +153,12 @@ package theano.gradient;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _f16_ok : Dynamic;
 	/**
 		Extract test value from variable v.
 		Raises AttributeError if there is none.
@@ -193,10 +194,10 @@ package theano.gradient;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	/**
 		Optional: return a code string specific to the apply to be
 		inserted in the struct cleanup code.
@@ -493,7 +494,7 @@ package theano.gradient;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -557,6 +558,7 @@ package theano.gradient;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	public function grad(args:Dynamic, g_outs:Dynamic):Dynamic;
 	public function infer_shape(node:Dynamic, input_shapes:Dynamic):Dynamic;
 	/**
@@ -647,7 +649,7 @@ package theano.gradient;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

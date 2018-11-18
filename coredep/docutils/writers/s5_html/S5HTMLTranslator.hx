@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.s5_html;
 @:pythonImport("docutils.writers.s5_html", "S5HTMLTranslator") extern class S5HTMLTranslator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.writers.s5_html;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.writers.s5_html;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -263,6 +263,7 @@ package docutils.writers.s5_html;
 	public function footnote_backrefs(node:Dynamic):Dynamic;
 	static public var generator : Dynamic;
 	static public var head_prefix_template : Dynamic;
+	static public var in_word_wrap_point : Dynamic;
 	static public var indirect_theme_files : Dynamic;
 	public function is_compactable(node:Dynamic):Dynamic;
 	static public var lang_attribute : Dynamic;
@@ -285,7 +286,6 @@ package docutils.writers.s5_html;
 		Determine if the <p> tags around paragraph ``node`` can be omitted.
 	**/
 	public function should_be_compact_paragraph(node:Dynamic):Dynamic;
-	static public var sollbruchstelle : Dynamic;
 	static public var special_characters : Dynamic;
 	/**
 		Construct and return a start tag given a node (id & class attributes
@@ -414,6 +414,5 @@ package docutils.writers.s5_html;
 	public function visit_transition(node:Dynamic):Dynamic;
 	public function visit_version(node:Dynamic):Dynamic;
 	static public var words_and_spaces : Dynamic;
-	public function write_colspecs():Dynamic;
 	static public var xml_declaration : Dynamic;
 }

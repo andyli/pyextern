@@ -8,7 +8,7 @@ package pandas.core.window;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -50,18 +50,19 @@ package pandas.core.window;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?adjust:Dynamic, ?ignore_na:Dynamic, ?axis:Dynamic):Dynamic;
+	public function ___init__(obj:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?adjust:Dynamic, ?ignore_na:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?adjust:Dynamic, ?ignore_na:Dynamic, ?axis:Dynamic):Void;
+	public function new(obj:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?adjust:Dynamic, ?ignore_na:Dynamic, ?axis:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -98,7 +99,7 @@ package pandas.core.window;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -117,7 +118,7 @@ package pandas.core.window;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		provide a nice str repr of our rolling object 
 	**/
@@ -126,6 +127,7 @@ package pandas.core.window;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	static public var _agg_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
@@ -154,14 +156,12 @@ package pandas.core.window;
 		Parameters
 		----------
 		func : string/callable to apply
-		how : string, default to None (DEPRECATED)
-		    how to resample
 		
 		Returns
 		-------
 		y : type of input argument
 	**/
-	public function _apply(func:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _apply(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _builtin_table : Dynamic;
 	/**
@@ -175,14 +175,15 @@ package pandas.core.window;
 	/**
 		resample according to the how, return a new object 
 	**/
-	public function _convert_freq(?how:Dynamic):Dynamic;
+	public function _convert_freq():Dynamic;
 	/**
 		split data into blocks & return conformed data 
 	**/
-	public function _create_blocks(how:Dynamic):Dynamic;
+	public function _create_blocks():Dynamic;
 	static public var _cython_table : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -222,14 +223,14 @@ package pandas.core.window;
 		if we define an internal function for this argument, return it 
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
-	static public var _obj_with_exclusions : Dynamic;
+	public var _obj_with_exclusions : Dynamic;
 	public var _on : Dynamic;
-	public function _prep_values(?values:Dynamic, ?kill_inf:Dynamic, ?how:Dynamic):Dynamic;
+	public function _prep_values(?values:Dynamic, ?kill_inf:Dynamic):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
-	static public var _selected_obj : Dynamic;
+	public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	/**
@@ -257,44 +258,47 @@ package pandas.core.window;
 	/**
 		wrap the results
 		
-		Paramters
-		---------
+		Parameters
+		----------
 		results : list of ndarrays
 		blocks : list of blocks
 		obj : conformed data (may be resampled)
 	**/
 	public function _wrap_results(results:Dynamic, blocks:Dynamic, obj:Dynamic):Dynamic;
 	/**
-		Aggregate using callable, string, dict, or list of string/callables
+		Aggregate using one or more operations over the specified axis.
 		
 		
 		
 		Parameters
 		----------
-		func : callable, string, dictionary, or list of string/callables
+		func : function, string, dictionary, or list of string/functions
 		    Function to use for aggregating the data. If a function, must either
 		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
 		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
 		
-		    Accepted Combinations are:
+		    Accepted combinations are:
 		
-		    - string function name
-		    - function
-		    - list of functions
-		    - dict of column names -> functions (or list of functions)
+		    - string function name.
+		    - function.
+		    - list of functions.
+		    - dict of column names -> functions (or list of functions).
 		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
 		
-		agg is an alias for aggregate. Use it.
+		*args
+		    Positional arguments to pass to `func`.
+		**kwargs
+		    Keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		aggregated : Series/DataFrame
+		
+		Notes
+		-----
+		`agg` is an alias for `aggregate`. Use the alias.
+		
+		A passed user-defined-function will be passed a Series for evaluation.
 		
 		Examples
 		--------
@@ -332,36 +336,39 @@ package pandas.core.window;
 	**/
 	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Aggregate using callable, string, dict, or list of string/callables
+		Aggregate using one or more operations over the specified axis.
 		
 		
 		
 		Parameters
 		----------
-		func : callable, string, dictionary, or list of string/callables
+		func : function, string, dictionary, or list of string/functions
 		    Function to use for aggregating the data. If a function, must either
 		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
 		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
 		
-		    Accepted Combinations are:
+		    Accepted combinations are:
 		
-		    - string function name
-		    - function
-		    - list of functions
-		    - dict of column names -> functions (or list of functions)
+		    - string function name.
+		    - function.
+		    - list of functions.
+		    - dict of column names -> functions (or list of functions).
 		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
 		
-		agg is an alias for aggregate. Use it.
+		*args
+		    Positional arguments to pass to `func`.
+		**kwargs
+		    Keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		aggregated : Series/DataFrame
+		
+		Notes
+		-----
+		`agg` is an alias for `aggregate`. Use the alias.
+		
+		A passed user-defined-function will be passed a Series for evaluation.
 		
 		Examples
 		--------
@@ -470,7 +477,7 @@ package pandas.core.window;
 		pandas.DataFrame.ewm
 	**/
 	public function mean(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		exponential weighted moving stddev
 		

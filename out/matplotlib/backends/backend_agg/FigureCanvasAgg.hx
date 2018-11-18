@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_agg;
 @:pythonImport("matplotlib.backends.backend_agg", "FigureCanvasAgg") extern class FigureCanvasAgg {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.backends.backend_agg;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,24 +103,25 @@ package matplotlib.backends.backend_agg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Return a canvas that is suitable for saving figures to a specified
-		file format. If necessary, this function will switch to a registered
-		backend that supports the format.
+		Return a canvas suitable for saving figures to a specified file format.
+		
+		If necessary, this function will switch to a registered backend that
+		supports the format.
 	**/
-	public function _get_output_canvas(format:Dynamic):Dynamic;
+	public function _get_output_canvas(fmt:Dynamic):Dynamic;
 	public function _idle_draw_cntx():Dynamic;
 	/**
-		blit the canvas in bbox (default entire canvas)
+		Blit the canvas in bbox (default entire canvas).
 	**/
 	public function blit(?bbox:Dynamic):Dynamic;
 	/**
-		Get the image as an RGBA byte string
+		Get the image as an RGBA byte string.
 		
 		`draw` must be called at least once before this function will work and
 		to update the renderer for any subsequent changes to the Figure.
@@ -143,28 +144,29 @@ package matplotlib.backends.backend_agg;
 		Backend derived classes should call this function on any mouse
 		button release.
 		
-		*x*
+		This method will call all functions connected to the
+		'button_release_event' with a :class:`MouseEvent` instance.
+		
+		Parameters
+		----------
+		x : scalar
 		    the canvas coordinates where 0=left
 		
-		*y*
+		y : scalar
 		    the canvas coordinates where 0=bottom
 		
-		*guiEvent*
+		guiEvent
 		    the native UI event that generated the mpl event
-		
-		
-		This method will be call all functions connected to the
-		'button_release_event' with a :class:`MouseEvent` instance.
 	**/
 	public function button_release_event(x:Dynamic, y:Dynamic, button:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
-		This method will be called by all functions connected to the
-		'close_event' with a :class:`CloseEvent`
+		Pass a `CloseEvent` to all functions connected to ``close_event``.
+		        
 	**/
 	public function close_event(?guiEvent:Dynamic):Dynamic;
 	public function copy_from_bbox(bbox:Dynamic):Dynamic;
 	/**
-		Draw the figure using the renderer
+		Draw the figure using the renderer.
 	**/
 	public function draw():Dynamic;
 	/**
@@ -173,21 +175,22 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function draw_cursor(event:Dynamic):Dynamic;
 	/**
-		This method will be call all functions connected to the
-		'draw_event' with a :class:`DrawEvent`
+		Pass a `DrawEvent` to all functions connected to ``draw_event``.
 	**/
 	public function draw_event(renderer:Dynamic):Dynamic;
 	/**
-		:meth:`draw` only if idle; defaults to draw but backends can overrride
+		:meth:`draw` only if idle; defaults to draw but backends can override
 	**/
 	public function draw_idle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Backend derived classes should call this function when entering
 		canvas
 		
-		*guiEvent*
+		Parameters
+		----------
+		guiEvent
 		    the native UI event that generated the mpl event
-		*xy*
+		xy : (float, float)
 		    the coordinate location of the pointer when the canvas is
 		    entered
 	**/
@@ -196,8 +199,9 @@ package matplotlib.backends.backend_agg;
 	static public var filetypes : Dynamic;
 	static public var fixed_dpi : Dynamic;
 	/**
-		Flush the GUI events for the figure. Implemented only for
-		backends with GUIs.
+		Flush the GUI events for the figure.
+		
+		Interactive backends need to reimplement this method.
 	**/
 	public function flush_events():Dynamic;
 	/**
@@ -241,29 +245,26 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function grab_mouse(ax:Dynamic):Dynamic;
 	/**
-		Called when GUI is idle.
-	**/
-	public function idle_event(?guiEvent:Dynamic):Dynamic;
-	/**
-		Returns `True` when the renderer is in the process of saving
+		Returns whether the renderer is in the process of saving
 		to a file, rather than rendering for an on-screen buffer.
 	**/
 	public function is_saving():Dynamic;
 	/**
-		This method will be call all functions connected to the
-		'key_press_event' with a :class:`KeyEvent`
+		Pass a `KeyEvent` to all functions connected to ``key_press_event``.
+		        
 	**/
 	public function key_press_event(key:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
-		This method will be call all functions connected to the
-		'key_release_event' with a :class:`KeyEvent`
+		Pass a `KeyEvent` to all functions connected to ``key_release_event``.
 	**/
 	public function key_release_event(key:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
 		Backend derived classes should call this function when leaving
 		canvas
 		
-		*guiEvent*
+		Parameters
+		----------
+		guiEvent
 		    the native UI event that generated the mpl event
 	**/
 	public function leave_notify_event(?guiEvent:Dynamic):Dynamic;
@@ -271,18 +272,19 @@ package matplotlib.backends.backend_agg;
 		Backend derived classes should call this function on any
 		motion-notify-event.
 		
-		*x*
+		This method will call all functions connected to the
+		'motion_notify_event' with a :class:`MouseEvent` instance.
+		
+		Parameters
+		----------
+		x : scalar
 		    the canvas coordinates where 0=left
 		
-		*y*
+		y : scalar
 		    the canvas coordinates where 0=bottom
 		
-		*guiEvent*
+		guiEvent
 		    the native UI event that generated the mpl event
-		
-		
-		This method will be call all functions connected to the
-		'motion_notify_event' with a :class:`MouseEvent` instance.
 	**/
 	public function motion_notify_event(x:Dynamic, y:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
@@ -320,7 +322,9 @@ package matplotlib.backends.backend_agg;
 		Return value is a connection id that can be used with
 		:meth:`~matplotlib.backend_bases.Event.mpl_disconnect`.
 		
-		Example usage::
+		Examples
+		--------
+		Usage::
 		
 		    def on_press(event):
 		        print('you pressed', event.button, event.xdata, event.ydata)
@@ -331,7 +335,9 @@ package matplotlib.backends.backend_agg;
 	/**
 		Disconnect callback id cid
 		
-		Example usage::
+		Examples
+		--------
+		Usage::
 		
 		    cid = canvas.mpl_connect('button_press_event', on_press)
 		    #...later
@@ -344,24 +350,28 @@ package matplotlib.backends.backend_agg;
 		events through the backend's native event loop. Implemented only for
 		backends with GUIs.
 		
-		optional arguments:
+		Other Parameters
+		----------------
+		interval : scalar
+		    Timer interval in milliseconds
 		
-		*interval*
-		  Timer interval in milliseconds
-		*callbacks*
-		  Sequence of (func, args, kwargs) where func(*args, **kwargs) will
-		  be executed by the timer every *interval*.
+		callbacks : List[Tuple[callable, Tuple, Dict]]
+		    Sequence of (func, args, kwargs) where ``func(*args, **kwargs)``
+		    will be executed by the timer every *interval*.
+		
+		    callbacks which return ``False`` or ``0`` will be removed from the
+		    timer.
+		
+		Examples
+		--------
+		
+		>>> timer = fig.canvas.new_timer(callbacks=[(f1, (1, ), {'a': 3}),])
 	**/
 	public function new_timer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Mouse event processor which highlights the artists
-		under the cursor.  Connect this to the 'motion_notify_event'
-		using::
+		.. deprecated:: 2.2
+		    The onRemove function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
 		
-		    canvas.mpl_connect('motion_notify_event',canvas.onHilite)
-	**/
-	public function onHilite(ev:Dynamic):Dynamic;
-	/**
 		Mouse event processor which removes the top artist
 		under the cursor.  Connect this to the 'mouse_press_event'
 		using::
@@ -381,43 +391,79 @@ package matplotlib.backends.backend_agg;
 		face color background and you'll probably want to override this on
 		hardcopy.
 		
-		Arguments are:
-		
-		*filename*
+		Parameters
+		----------
+		filename
 		    can also be a file object on image backends
 		
-		*orientation*
+		orientation : {'landscape', 'portrait'}, optional
 		    only currently applies to PostScript printing.
 		
-		*dpi*
+		dpi : scalar, optional
 		    the dots per inch to save the figure in; if None, use savefig.dpi
 		
-		*facecolor*
+		facecolor : color spec or None, optional
 		    the facecolor of the figure; if None, defaults to savefig.facecolor
 		
-		*edgecolor*
+		edgecolor : color spec or None, optional
 		    the edgecolor of the figure; if None, defaults to savefig.edgecolor
 		
-		*orientation*
-		    landscape' | 'portrait' (not supported on all backends)
-		
-		*format*
+		format : str, optional
 		    when set, forcibly set the file format to save to
 		
-		*bbox_inches*
+		bbox_inches : str or `~matplotlib.transforms.Bbox`, optional
 		    Bbox in inches. Only the given portion of the figure is
 		    saved. If 'tight', try to figure out the tight bbox of
 		    the figure. If None, use savefig.bbox
 		
-		*pad_inches*
+		pad_inches : scalar, optional
 		    Amount of padding around the figure when bbox_inches is
 		    'tight'. If None, use savefig.pad_inches
 		
-		*bbox_extra_artists*
+		bbox_extra_artists : list of `~matplotlib.artist.Artist`, optional
 		    A list of extra artists that will be considered when the
 		    tight bbox is calculated.
 	**/
-	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, ?bbox_inches:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Write the figure to a PNG file.
+		
+		Parameters
+		----------
+		filename_or_obj : str or PathLike or file-like object
+		    The file to write to.
+		
+		metadata : dict, optional
+		    Metadata in the PNG file as key-value pairs of bytes or latin-1
+		    encodable strings.
+		    According to the PNG specification, keys must be shorter than 79
+		    chars.
+		
+		    The `PNG specification`_ defines some common keywords that may be
+		    used as appropriate:
+		
+		    - Title: Short (one line) title or caption for image.
+		    - Author: Name of image's creator.
+		    - Description: Description of image (possibly long).
+		    - Copyright: Copyright notice.
+		    - Creation Time: Time of original image creation
+		      (usually RFC 1123 format).
+		    - Software: Software used to create the image.
+		    - Disclaimer: Legal disclaimer.
+		    - Warning: Warning of nature of content.
+		    - Source: Device used to create the image.
+		    - Comment: Miscellaneous comment;
+		      conversion from other image format.
+		
+		    Other keywords may be invented for other purposes.
+		
+		    If 'Software' is not given, an autogenerated value for matplotlib
+		    will be used.
+		
+		    For more details see the `PNG specification`_.
+		
+		    .. _PNG specification:                 https://www.w3.org/TR/2003/REC-PNG-20031110/#11keywords
+	**/
 	public function print_png(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_raw(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_rgba(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -430,12 +476,12 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function release_mouse(ax:Dynamic):Dynamic;
 	/**
-		set the canvas size in pixels
+		Set the canvas size in pixels.
 	**/
 	public function resize(w:Dynamic, h:Dynamic):Dynamic;
 	/**
-		This method will be call all functions connected to the
-		'resize_event' with a :class:`ResizeEvent`
+		Pass a `ResizeEvent` to all functions connected to ``resize_event``.
+		        
 	**/
 	public function resize_event():Dynamic;
 	public function restore_region(region:Dynamic, ?bbox:Dynamic, ?xy:Dynamic):Dynamic;
@@ -454,46 +500,29 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function set_window_title(title:Dynamic):Dynamic;
 	/**
-		Start an event loop.  This is used to start a blocking event
-		loop so that interactive functions, such as ginput and
-		waitforbuttonpress, can wait for events.  This should not be
-		confused with the main GUI event loop, which is always running
-		and has nothing to do with this.
+		Start a blocking event loop.
 		
-		This is implemented only for backends with GUIs.
+		Such an event loop is used by interactive functions, such as `ginput`
+		and `waitforbuttonpress`, to wait for events.
+		
+		The event loop blocks until a callback function triggers
+		`stop_event_loop`, or *timeout* is reached.
+		
+		If *timeout* is negative, never timeout.
+		
+		Only interactive backends need to reimplement this method and it relies
+		on `flush_events` being properly implemented.
+		
+		Interactive backends should implement this in a more native way.
 	**/
-	public function start_event_loop(timeout:Dynamic):Dynamic;
+	public function start_event_loop(?timeout:Dynamic):Dynamic;
 	/**
-		Start an event loop.  This is used to start a blocking event
-		loop so that interactive functions, such as ginput and
-		waitforbuttonpress, can wait for events.  This should not be
-		confused with the main GUI event loop, which is always running
-		and has nothing to do with this.
+		Stop the current blocking event loop.
 		
-		This function provides default event loop functionality based
-		on time.sleep that is meant to be used until event loop
-		functions for each of the GUI backends can be written.  As
-		such, it throws a deprecated warning.
-		
-		This call blocks until a callback function triggers
-		stop_event_loop() or *timeout* is reached.  If *timeout* is
-		<=0, never timeout.
-	**/
-	public function start_event_loop_default(?timeout:Dynamic):Dynamic;
-	/**
-		Stop an event loop.  This is used to stop a blocking event
-		loop so that interactive functions, such as ginput and
-		waitforbuttonpress, can wait for events.
-		
-		This is implemented only for backends with GUIs.
+		Interactive backends need to reimplement this to match
+		`start_event_loop`
 	**/
 	public function stop_event_loop():Dynamic;
-	/**
-		Stop an event loop.  This is used to stop a blocking event
-		loop so that interactive functions, such as ginput and
-		waitforbuttonpress, can wait for events.
-	**/
-	public function stop_event_loop_default():Dynamic;
 	static public var supports_blit : Dynamic;
 	/**
 		Instantiate an instance of FigureCanvasClass
@@ -516,7 +545,7 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function tostring_argb():Dynamic;
 	/**
-		Get the image as an RGB byte string
+		Get the image as an RGB byte string.
 		
 		`draw` must be called at least once before this function will work and
 		to update the renderer for any subsequent changes to the Figure.

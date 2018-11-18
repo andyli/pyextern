@@ -10,6 +10,34 @@ package numpy.core.shape_base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Internal implementation of block. `arrays` is the argument passed to
+		block. `max_depth` is the depth of nested lists within `arrays` and
+		`result_ndim` is the greatest of the dimensions of the arrays in
+		`arrays` and the depth of the lists in `arrays` (see block docstring
+		for details).
+	**/
+	static public function _block(arrays:Dynamic, max_depth:Dynamic, result_ndim:Dynamic):Dynamic;
+	/**
+		Recursive function checking that the depths of nested lists in `arrays`
+		all match. Mismatch raises a ValueError as described in the block
+		docstring below.
+		
+		The entire index (rather than just the depth) needs to be calculated
+		for each innermost list, in case an error needs to be raised, so that
+		the index of the offending list can be printed as part of the error.
+		
+		The parameter `parent_index` is the full index of `arrays` within the
+		nested lists passed to _block_check_depths_match at the top of the
+		recursion.
+		The return value is a pair. The first item returned is the full index
+		of an element (specifically the first element) from the bottom of the
+		nesting in `arrays`. An empty list at the bottom of the nesting is
+		represented by a `None` index.
+		The second item is the maximum of the ndims of the arrays nested in
+		`arrays`.
+	**/
+	static public function _block_check_depths_match(arrays:Dynamic, ?parent_index:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
@@ -64,7 +92,15 @@ package numpy.core.shape_base;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -159,7 +195,7 @@ package numpy.core.shape_base;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -436,17 +472,20 @@ package numpy.core.shape_base;
 	/**
 		Stack arrays in sequence horizontally (column wise).
 		
-		Take a sequence of arrays and stack them horizontally to make
-		a single array. Rebuild arrays divided by `hsplit`.
+		This is equivalent to concatenation along the second axis, except for 1-D
+		arrays where it concatenates along the first axis. Rebuilds arrays divided
+		by `hsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    All arrays must have the same shape along all but the second axis.
+		    The arrays must have the same shape along all but the second axis,
+		    except 1-D arrays which can be any length.
 		
 		Returns
 		-------
@@ -461,11 +500,6 @@ package numpy.core.shape_base;
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -548,6 +582,10 @@ package numpy.core.shape_base;
 		    Each array must have the same shape.
 		axis : int, optional
 		    The axis in the result array along which the input arrays are stacked.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what stack would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -583,27 +621,29 @@ package numpy.core.shape_base;
 		       [2, 3],
 		       [3, 4]])
 	**/
-	static public function stack(arrays:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	static public function stack(arrays:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		
-		Take a sequence of arrays and stack them vertically to make a single
-		array. Rebuild arrays divided by `vsplit`.
+		This is equivalent to concatenation along the first axis after 1-D arrays
+		of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		`vsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    Tuple containing arrays to be stacked. The arrays must have the same
-		    shape along all but the first axis.
+		    The arrays must have the same shape along all but the first axis.
+		    1-D arrays must have the same length.
 		
 		Returns
 		-------
 		stacked : ndarray
-		    The array formed by stacking the given arrays.
+		    The array formed by stacking the given arrays, will be at least 2-D.
 		
 		See Also
 		--------
@@ -613,11 +653,6 @@ package numpy.core.shape_base;
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------

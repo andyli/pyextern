@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.estimators.estimator;
 @:pythonImport("tensorflow.contrib.learn.python.learn.estimators.estimator", "SKCompat") extern class SKCompat {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,12 +38,20 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to the Estimator interface.
 	**/
 	@:native("__init__")
 	public function ___init__(estimator:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to the Estimator interface.
 	**/
 	public function new(estimator:Dynamic):Void;
 	/**
@@ -52,7 +60,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +111,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -124,7 +132,7 @@ package tensorflow.contrib.learn.python.learn.estimators.estimator;
 	**/
 	public function get_params(?deep:Dynamic):Dynamic;
 	public function predict(x:Dynamic, ?batch_size:Dynamic, ?outputs:Dynamic):Dynamic;
-	public function score(x:Dynamic, y:Dynamic, ?batch_size:Dynamic, ?steps:Dynamic, ?metrics:Dynamic):Dynamic;
+	public function score(x:Dynamic, y:Dynamic, ?batch_size:Dynamic, ?steps:Dynamic, ?metrics:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Set the parameters of this estimator.
 		

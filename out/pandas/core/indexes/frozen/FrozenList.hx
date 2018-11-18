@@ -12,7 +12,7 @@ package pandas.core.indexes.frozen;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -88,7 +88,7 @@ package pandas.core.indexes.frozen;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -158,7 +158,7 @@ package pandas.core.indexes.frozen;
 	**/
 	public function __setslice__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -177,7 +177,7 @@ package pandas.core.indexes.frozen;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -189,12 +189,14 @@ package pandas.core.indexes.frozen;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**

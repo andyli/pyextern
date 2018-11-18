@@ -2,11 +2,10 @@
 package matplotlib.blocking_input;
 @:pythonImport("matplotlib.blocking_input", "BlockingMouseInput") extern class BlockingMouseInput {
 	/**
-		Blocking call to retrieve n coordinate pairs through mouse
-		clicks.
+		Blocking call to retrieve *n* coordinate pairs through mouse clicks.
 	**/
 	public function __call__(?n:Dynamic, ?timeout:Dynamic, ?show_clicks:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -57,7 +56,7 @@ package matplotlib.blocking_input;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -108,13 +107,17 @@ package matplotlib.blocking_input;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		This add the coordinates of an event to the list of clicks
+		Add the coordinates of an event to the list of clicks.
+		
+		Parameters
+		----------
+		event : `~.backend_bases.MouseEvent`
 	**/
 	public function add_click(event:Dynamic):Dynamic;
 	/**
@@ -125,59 +128,71 @@ package matplotlib.blocking_input;
 	static public var button_pop : Dynamic;
 	static public var button_stop : Dynamic;
 	/**
-		Disconnect all callbacks
+		Parameters
+		----------
+		event : `~.backend_bases.MouseEvent`, optional
+		    Not used
 	**/
 	public function cleanup(?event:Dynamic):Dynamic;
 	/**
-		Process a key click event.  This maps certain keys to appropriate
-		mouse click events.
+		Process a key press event, mapping keys to appropriate mouse clicks.
 	**/
 	public function key_event():Dynamic;
 	/**
-		Process a mouse click event
+		Process a mouse click event.
 	**/
 	public function mouse_event():Dynamic;
 	/**
-		Will be called for any event involving a button other than
-		button 2 or 3.  This will add a click if it is inside axes.
+		Process an button-1 event (add a click if inside axes).
+		
+		Parameters
+		----------
+		event : `~.backend_bases.MouseEvent`
 	**/
 	public function mouse_event_add(event:Dynamic):Dynamic;
 	/**
-		Will be called for any event involving button 3.
-		Button 3 removes the last click.
+		Process an button-3 event (remove the last click).
+		
+		Parameters
+		----------
+		event : `~.backend_bases.MouseEvent`
 	**/
 	public function mouse_event_pop(event:Dynamic):Dynamic;
 	/**
-		Will be called for any event involving button 2.
-		Button 2 ends blocking input.
+		Process an button-2 event (end blocking input).
+		
+		Parameters
+		----------
+		event : `~.backend_bases.MouseEvent`
 	**/
 	public function mouse_event_stop(event:Dynamic):Dynamic;
 	/**
-		Event handler that will be passed to the current figure to
-		retrieve events.
+		Event handler; will be passed to the current figure to retrieve events.
 	**/
 	public function on_event(event:Dynamic):Dynamic;
 	/**
-		This removes a click and the associated event from the object.
-		Defaults to removing the last click, but any index can be
-		supplied.
+		Removes a click and the associated event from the list of clicks.
+		
+		Defaults to the last click.
 	**/
 	public function pop(event:Dynamic, ?index:Dynamic):Dynamic;
 	/**
-		This removes a click from the list of clicks.  Defaults to
-		removing the last click.
+		Remove a click (by default, the last) from the list of clicks.
+		
+		Parameters
+		----------
+		event : `~.backend_bases.MouseEvent`
 	**/
 	public function pop_click(event:Dynamic, ?index:Dynamic):Dynamic;
 	/**
-		This removes an event from the event list.  Defaults to
-		removing last event, but an index can be supplied.  Note that
-		this does not check that there are events, much like the
-		normal pop method.  If not events exist, this will throw an
-		exception.
+		Remove an event from the event list -- by default, the last.
+		
+		Note that this does not check that there are events, much like the
+		normal pop method.  If no events exist, this will throw an exception.
 	**/
 	public function pop_event(?index:Dynamic):Dynamic;
 	/**
-		This will be called to process events
+		Process an event.
 	**/
 	public function post_event():Dynamic;
 }

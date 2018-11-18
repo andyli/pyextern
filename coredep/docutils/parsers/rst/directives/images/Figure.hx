@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.parsers.rst.directives.images;
 @:pythonImport("docutils.parsers.rst.directives.images", "Figure") extern class Figure {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.parsers.rst.directives.images;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.parsers.rst.directives.images;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -114,7 +114,7 @@ package docutils.parsers.rst.directives.images;
 		Also normalize the name string and register it as explicit target.
 	**/
 	public function add_name(node:Dynamic):Dynamic;
-	public function align():Dynamic;
+	static public function align(argument:Dynamic):Dynamic;
 	static public var align_h_values : Dynamic;
 	static public var align_v_values : Dynamic;
 	static public var align_values : Dynamic;
@@ -138,7 +138,7 @@ package docutils.parsers.rst.directives.images;
 	**/
 	public function directive_error(level:Dynamic, message:Dynamic):Dynamic;
 	public function error(message:Dynamic):Dynamic;
-	public function figwidth_value():Dynamic;
+	static public function figwidth_value(argument:Dynamic):Dynamic;
 	static public var final_argument_whitespace : Dynamic;
 	static public var has_content : Dynamic;
 	public function info(message:Dynamic):Dynamic;

@@ -85,7 +85,7 @@ package scipy.io.wavfile;
 		.. [1] IBM Corporation and Microsoft Corporation, "Multimedia Programming
 		   Interface and Data Specifications 1.0", section "Data Format of the
 		   Samples", August 1991
-		   http://www-mmsp.ece.mcgill.ca/documents/audioformats/wave/Docs/riffmci.pdf
+		   http://www.tactilemedia.com/info/MCI_Control_Info.html
 	**/
 	static public function read(filename:Dynamic, ?mmap:Dynamic):Int;
 	/**
@@ -125,7 +125,7 @@ package scipy.io.wavfile;
 		.. [1] IBM Corporation and Microsoft Corporation, "Multimedia Programming
 		   Interface and Data Specifications 1.0", section "Data Format of the
 		   Samples", August 1991
-		   http://www-mmsp.ece.mcgill.ca/documents/audioformats/wave/Docs/riffmci.pdf
+		   http://www.tactilemedia.com/info/MCI_Control_Info.html
 	**/
 	static public function write(filename:Dynamic, rate:Dynamic, data:Dynamic):Dynamic;
 }

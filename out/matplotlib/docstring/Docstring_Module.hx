@@ -9,7 +9,6 @@ package matplotlib.docstring;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Copy a docstring from another source function (if present)
 	**/
@@ -28,8 +27,5 @@ package matplotlib.docstring;
 		the incoming docstring
 	**/
 	static public function dedent_interpd(func:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	static public function interpd(func:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

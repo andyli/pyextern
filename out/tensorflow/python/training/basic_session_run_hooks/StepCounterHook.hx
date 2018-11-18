@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.basic_session_run_hooks;
 @:pythonImport("tensorflow.python.training.basic_session_run_hooks", "StepCounterHook") extern class StepCounterHook {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.python.training.basic_session_run_hooks;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,15 @@ package tensorflow.python.training.basic_session_run_hooks;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _log_and_record(elapsed_steps:Dynamic, elapsed_time:Dynamic, global_step:Dynamic):Dynamic;
+	public function _set_steps_per_run(steps_per_run:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Called when new TensorFlow session is created.
 		

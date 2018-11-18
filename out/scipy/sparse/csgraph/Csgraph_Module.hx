@@ -12,47 +12,6 @@ package scipy.sparse.csgraph;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Issues a DeprecationWarning, adds warning to `old_name`'s
-		docstring, rebinds ``old_name.__name__`` and returns the new
-		function object.
-		
-		This function may also be used as a decorator.
-		
-		Parameters
-		----------
-		func : function
-		    The function to be deprecated.
-		old_name : str, optional
-		    The name of the function to be deprecated. Default is None, in
-		    which case the name of `func` is used.
-		new_name : str, optional
-		    The new name for the function. Default is None, in which case the
-		    deprecation message is that `old_name` is deprecated. If given, the
-		    deprecation message is that `old_name` is deprecated and `new_name`
-		    should be used instead.
-		message : str, optional
-		    Additional explanation of the deprecation.  Displayed in the
-		    docstring after the warning.
-		
-		Returns
-		-------
-		old_func : function
-		    The deprecated function.
-		
-		Examples
-		--------
-		Note that ``olduint`` returns a value after printing Deprecation
-		Warning:
-		
-		>>> olduint = np.deprecate(np.uint)
-		>>> olduint(6)
-		/usr/lib/python2.5/site-packages/numpy/lib/utils.py:114:
-		DeprecationWarning: uint32 is deprecated
-		  warnings.warn(str1, DeprecationWarning, stacklevel=2)
-		6
-	**/
-	static public function _deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public var absolute_import : Dynamic;
 	/**
 		bellman_ford(csgraph, directed=True, indices=None, return_predecessors=False,
@@ -300,56 +259,6 @@ package scipy.sparse.csgraph;
 	**/
 	static public function construct_dist_matrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		`cs_graph_components` is deprecated!
-		In the future, use csgraph.connected_components. Note that this new function has a slightly different interface: see the docstring for more information.
-		
-		
-		    Determine connected components of a graph stored as a compressed
-		    sparse row or column matrix.
-		
-		    For speed reasons, the symmetry of the matrix x is not checked. A
-		    nonzero at index `(i, j)` means that node `i` is connected to node
-		    `j` by an edge. The number of rows/columns of the matrix thus
-		    corresponds to the number of nodes in the graph.
-		
-		    Parameters
-		    -----------
-		    x : array_like or sparse matrix, 2 dimensions
-		        The adjacency matrix of the graph. Only the upper triangular part
-		        is used.
-		
-		    Returns
-		    --------
-		    n_comp : int
-		        The number of connected components.
-		    label : ndarray (ints, 1 dimension):
-		        The label array of each connected component (-2 is used to
-		        indicate empty rows in the matrix: 0 everywhere, including
-		        diagonal). This array has the length of the number of nodes,
-		        i.e. one label for each node of the graph. Nodes having the same
-		        label belong to the same connected component.
-		
-		    Notes
-		    ------
-		    The matrix is assumed to be symmetric and the upper triangular part
-		    of the matrix is used. The matrix is converted to a CSR matrix unless
-		    it is already a CSR.
-		
-		    Examples
-		    --------
-		    >>> from scipy.sparse.csgraph import connected_components
-		    >>> D = np.eye(4)
-		    >>> D[0,1] = D[1,0] = 1
-		    >>> cs_graph_components(D)
-		    (3, array([0, 0, 1, 2]))
-		    >>> from scipy.sparse import dok_matrix
-		    >>> cs_graph_components(dok_matrix(D))
-		    (3, array([0, 0, 1, 2]))
-		
-		    
-	**/
-	static public function cs_graph_components(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		csgraph_from_dense(graph, null_value=0, nan_null=True, infinity_null=True)
 		
 		Construct a CSR-format sparse graph from a dense matrix.
@@ -537,12 +446,12 @@ package scipy.sparse.csgraph;
 		Returns
 		-------
 		node_array : ndarray, one dimension
-		    The breadth-first list of nodes, starting with specified node.  The
+		    The depth-first list of nodes, starting with specified node.  The
 		    length of node_array is the number of nodes reachable from the
 		    specified node.
 		predecessors : ndarray, one dimension
 		    Returned only if return_predecessors is True.
-		    The length-N list of predecessors of each node in a breadth-first
+		    The length-N list of predecessors of each node in a depth-first
 		    tree.  If node i is in the tree, then its parent is given by
 		    predecessors[i]. If node i is not in the tree (and for the parent
 		    node) then predecessors[i] = -9999.
@@ -1131,66 +1040,5 @@ package scipy.sparse.csgraph;
 		.. [2] http://www.cise.ufl.edu/research/sparse/matrices/legend.html
 	**/
 	static public function structural_rank(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 }

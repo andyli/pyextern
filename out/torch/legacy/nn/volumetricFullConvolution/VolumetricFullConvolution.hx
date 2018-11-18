@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.legacy.nn.volumetricFullConvolution;
 @:pythonImport("torch.legacy.nn.VolumetricFullConvolution", "VolumetricFullConvolution") extern class VolumetricFullConvolution {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package torch.legacy.nn.volumetricFullConvolution;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,12 +103,12 @@ package torch.legacy.nn.volumetricFullConvolution;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _calculateAdj(ker:Dynamic, pad:Dynamic, stride:Dynamic):Dynamic;
+	static public function _calculateAdj(targetSize:Dynamic, ker:Dynamic, pad:Dynamic, stride:Dynamic):Dynamic;
 	public function _flatten(?parameters:Dynamic):Dynamic;
 	static public var _flattenTensorBuffer : Dynamic;
 	public function _makeContiguous(input:Dynamic, ?gradOutput:Dynamic):Dynamic;

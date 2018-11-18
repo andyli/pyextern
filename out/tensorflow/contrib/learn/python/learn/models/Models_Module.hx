@@ -24,7 +24,11 @@ package tensorflow.contrib.learn.python.learn.models;
 	static public function _reverse_seq(input_seq:Dynamic, lengths:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Creates a bidirectional recurrent neural network.
+		Creates a bidirectional recurrent neural network. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please consider `tf.nn.bidirectional_dynamic_rnn`.
 		
 		Similar to the unidirectional case (rnn) but takes input and builds
 		independent forward and backward RNNs with the final forward and backward
@@ -62,9 +66,46 @@ package tensorflow.contrib.learn.python.learn.models;
 		  ValueError: If inputs is None or an empty list.
 	**/
 	static public function bidirectional_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Returns a function that creates a RNN TensorFlow subgraph.
+		Returns a function that creates a RNN TensorFlow subgraph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please consider tensorflow/tensor2tensor.
 		
 		Args:
 		  rnn_size: The size for rnn cell, e.g. size of your word embeddings.
@@ -95,13 +136,17 @@ package tensorflow.contrib.learn.python.learn.models;
 	**/
 	static public function get_rnn_model(rnn_size:Dynamic, cell_type:Dynamic, num_layers:Dynamic, input_op_fn:Dynamic, bidirectional:Dynamic, target_predictor_fn:Dynamic, sequence_length:Dynamic, initial_state:Dynamic, attn_length:Dynamic, attn_size:Dynamic, attn_vec_size:Dynamic):Dynamic;
 	/**
-		Creates linear regression TensorFlow subgraph.
+		Creates linear regression TensorFlow subgraph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Consider using a class from tf.estimator.
 		
 		Args:
 		  x: tensor or placeholder for input features.
 		  y: tensor or placeholder for labels.
 		  init_mean: the mean value to use for initialization.
-		  init_stddev: the standard devation to use for initialization.
+		  init_stddev: the standard deviation to use for initialization.
 		
 		Returns:
 		  Predictions and loss tensors.
@@ -116,7 +161,11 @@ package tensorflow.contrib.learn.python.learn.models;
 	**/
 	static public function linear_regression(x:Dynamic, y:Dynamic, ?init_mean:Dynamic, ?init_stddev:Dynamic):Dynamic;
 	/**
-		Linear regression subgraph with zero-value initial weights and bias.
+		Linear regression subgraph with zero-value initial weights and bias. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Consider using a tf.estimator.LinearRegressor
 		
 		Args:
 		  x: tensor or placeholder for input features.
@@ -127,7 +176,11 @@ package tensorflow.contrib.learn.python.learn.models;
 	**/
 	static public function linear_regression_zero_init(x:Dynamic, y:Dynamic):Dynamic;
 	/**
-		Creates logistic regression TensorFlow subgraph.
+		Creates logistic regression TensorFlow subgraph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Consider using a class from tf.estimator.
 		
 		Args:
 		  x: tensor or placeholder for input features,
@@ -139,7 +192,7 @@ package tensorflow.contrib.learn.python.learn.models;
 		                will check if graph contains tensor `class_weight:0`.
 		                If that is not provided either all ones are used.
 		  init_mean: the mean value to use for initialization.
-		  init_stddev: the standard devation to use for initialization.
+		  init_stddev: the standard deviation to use for initialization.
 		
 		Returns:
 		  Predictions and loss tensors.
@@ -154,7 +207,11 @@ package tensorflow.contrib.learn.python.learn.models;
 	**/
 	static public function logistic_regression(x:Dynamic, y:Dynamic, ?class_weight:Dynamic, ?init_mean:Dynamic, ?init_stddev:Dynamic):Dynamic;
 	/**
-		Logistic regression subgraph with zero-value initial weights and bias.
+		Logistic regression subgraph with zero-value initial weights and bias. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Consider using a class from tf.estimator.LinearClassifier
 		
 		Args:
 		  x: tensor or placeholder for input features.

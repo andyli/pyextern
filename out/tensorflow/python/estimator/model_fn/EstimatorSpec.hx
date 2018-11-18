@@ -5,7 +5,7 @@ package tensorflow.python.estimator.model_fn;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.python.estimator.model_fn;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -98,16 +98,17 @@ package tensorflow.python.estimator.model_fn;
 		Creates a validated `EstimatorSpec` instance.
 		
 		Depending on the value of `mode`, different arguments are required. Namely
+		
 		* For `mode == ModeKeys.TRAIN`: required fields are `loss` and `train_op`.
-		* For `mode == ModeKeys.EVAL`: required field is`loss`.
+		* For `mode == ModeKeys.EVAL`: required field is `loss`.
 		* For `mode == ModeKeys.PREDICT`: required fields are `predictions`.
 		
 		model_fn can populate all arguments independent of mode. In this case, some
-		arguments will be ignored by `Estimator`. E.g. `train_op` will be ignored
-		in eval and infer modes. Example:
+		arguments will be ignored by an `Estimator`. E.g. `train_op` will be
+		ignored in eval and infer modes. Example:
 		
 		```python
-		def my_model_fn(mode, features, labels):
+		def my_model_fn(features, labels, mode):
 		  predictions = ...
 		  loss = ...
 		  train_op = ...
@@ -122,7 +123,7 @@ package tensorflow.python.estimator.model_fn;
 		given mode. Example:
 		
 		```python
-		def my_model_fn(mode, features, labels):
+		def my_model_fn(features, labels, mode):
 		  if (mode == tf.estimator.ModeKeys.TRAIN or
 		      mode == tf.estimator.ModeKeys.EVAL):
 		    loss = ...
@@ -150,9 +151,14 @@ package tensorflow.python.estimator.model_fn;
 		  predictions: Predictions `Tensor` or dict of `Tensor`.
 		  loss: Training loss `Tensor`. Must be either scalar, or with shape `[1]`.
 		  train_op: Op for the training step.
-		  eval_metric_ops: Dict of metric results keyed by name. The values of the
-		    dict are the results of calling a metric function, namely a
-		    `(metric_tensor, update_op)` tuple.
+		  eval_metric_ops: Dict of metric results keyed by name.
+		    The values of the dict can be one of the following:
+		    (1) instance of `Metric` class.
+		    (2) Results of calling a metric function, namely a
+		    `(metric_tensor, update_op)` tuple. `metric_tensor` should be
+		    evaluated without any impact on state (typically is a pure computation
+		    results based on variables.). For example, it should not trigger the
+		    `update_op` or requires any input fetching.
 		  export_outputs: Describes the output signatures to be exported to
 		    `SavedModel` and used during serving.
 		    A dict `{name: output}` where:
@@ -163,12 +169,18 @@ package tensorflow.python.estimator.model_fn;
 		    Multi-headed models should specify one entry for each head, one of
 		    which must be named using
 		    signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY.
+		    If no entry is provided, a default `PredictOutput` mapping to
+		    `predictions` will be created.
 		  training_chief_hooks: Iterable of `tf.train.SessionRunHook` objects to
 		    run on the chief worker during training.
-		  training_hooks: Iterable of `tf.train.SessionRunHook` objects that to run
+		  training_hooks: Iterable of `tf.train.SessionRunHook` objects to run
 		    on all workers during training.
 		  scaffold: A `tf.train.Scaffold` object that can be used to set
 		    initialization, saver, and more to be used in training.
+		  evaluation_hooks: Iterable of `tf.train.SessionRunHook` objects to
+		    run during evaluation.
+		  prediction_hooks: Iterable of `tf.train.SessionRunHook` objects to
+		    run during predictions.
 		
 		Returns:
 		  A validated `EstimatorSpec` object.
@@ -177,7 +189,7 @@ package tensorflow.python.estimator.model_fn;
 		  ValueError: If validation fails.
 		  TypeError: If any of the arguments is not the expected type.
 	**/
-	static public function __new__(cls:Dynamic, mode:Dynamic, ?predictions:Dynamic, ?loss:Dynamic, ?train_op:Dynamic, ?eval_metric_ops:Dynamic, ?export_outputs:Dynamic, ?training_chief_hooks:Dynamic, ?training_hooks:Dynamic, ?scaffold:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, mode:Dynamic, ?predictions:Dynamic, ?loss:Dynamic, ?train_op:Dynamic, ?eval_metric_ops:Dynamic, ?export_outputs:Dynamic, ?training_chief_hooks:Dynamic, ?training_hooks:Dynamic, ?scaffold:Dynamic, ?evaluation_hooks:Dynamic, ?prediction_hooks:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -216,18 +228,20 @@ package tensorflow.python.estimator.model_fn;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	static public var _fields : Dynamic;
 	/**
 		Make a new EstimatorSpec object from a sequence or iterable
 	**/
 	static public function _make(iterable:Dynamic, ?_new:Dynamic, ?len:Dynamic):Dynamic;
 	/**
-		Return a new EstimatorSpec object replacing specified fields with new values
+		Return a new EstimatorSpec replacing specified fields with new values.
 	**/
 	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
@@ -236,11 +250,15 @@ package tensorflow.python.estimator.model_fn;
 	**/
 	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Alias for field number 3
+		Alias for field number 4
 	**/
 	public var eval_metric_ops : Dynamic;
 	/**
-		Alias for field number 4
+		Alias for field number 9
+	**/
+	public var evaluation_hooks : Dynamic;
+	/**
+		Alias for field number 5
 	**/
 	public var export_outputs : Dynamic;
 	/**
@@ -249,27 +267,35 @@ package tensorflow.python.estimator.model_fn;
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Alias for field number 1
+		Alias for field number 2
 	**/
 	public var loss : Dynamic;
 	/**
 		Alias for field number 0
 	**/
+	public var mode : Dynamic;
+	/**
+		Alias for field number 10
+	**/
+	public var prediction_hooks : Dynamic;
+	/**
+		Alias for field number 1
+	**/
 	public var predictions : Dynamic;
 	/**
-		Alias for field number 7
+		Alias for field number 8
 	**/
 	public var scaffold : Dynamic;
 	/**
-		Alias for field number 2
+		Alias for field number 3
 	**/
 	public var train_op : Dynamic;
 	/**
-		Alias for field number 5
+		Alias for field number 6
 	**/
 	public var training_chief_hooks : Dynamic;
 	/**
-		Alias for field number 6
+		Alias for field number 7
 	**/
 	public var training_hooks : Dynamic;
 }

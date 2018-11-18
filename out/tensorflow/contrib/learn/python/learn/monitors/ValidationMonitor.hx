@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.monitors;
 @:pythonImport("tensorflow.contrib.learn.python.learn.monitors", "ValidationMonitor") extern class ValidationMonitor {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -64,12 +64,15 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		      loss metrics like mean squared error, and False for performance
 		      metrics like accuracy.
 		  name: See `BaseEstimator.evaluate`.
+		  check_interval_secs: Only check for new checkpoint if at least
+		      `check_interval_secs` have passed. Ignore if None. Default is 5 secs.
+		
 		
 		Raises:
 		  ValueError: If both x and input_fn are provided.
 	**/
 	@:native("__init__")
-	public function ___init__(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?hooks:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?hooks:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic, ?check_interval_secs:Dynamic):Dynamic;
 	/**
 		Initializes a ValidationMonitor.
 		
@@ -97,18 +100,21 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		      loss metrics like mean squared error, and False for performance
 		      metrics like accuracy.
 		  name: See `BaseEstimator.evaluate`.
+		  check_interval_secs: Only check for new checkpoint if at least
+		      `check_interval_secs` have passed. Ignore if None. Default is 5 secs.
+		
 		
 		Raises:
 		  ValueError: If both x and input_fn are provided.
 	**/
-	public function new(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?hooks:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic):Void;
+	public function new(?x:Dynamic, ?y:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?eval_steps:Dynamic, ?every_n_steps:Dynamic, ?metrics:Dynamic, ?hooks:Dynamic, ?early_stopping_rounds:Dynamic, ?early_stopping_metric:Dynamic, ?early_stopping_metric_minimize:Dynamic, ?name:Dynamic, ?check_interval_secs:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -159,7 +165,7 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -177,6 +183,21 @@ package tensorflow.contrib.learn.python.learn.monitors;
 		  ValueError: if we've already begun a run.
 	**/
 	public function begin(?max_steps:Dynamic):Dynamic;
+	/**
+		Returns all eval metrics computed with the best early stopping metric.
+		
+		For instance, if the metrics computed in two successive evals are
+		1. {'loss':40, 'auc':0.5}
+		2. {'loss':50, 'auc':0.6}
+		this function would return the first dict {'loss':40, 'auc':0.5} after both
+		first and second eval (if `early_stopping_metric` is 'loss' and
+		`early_stopping_metric_minimize` is True).
+		
+		Returns:
+		  The output dict of estimator.evaluate which contains the best value of
+		  the early stopping metric seen so far.
+	**/
+	public var best_metrics : Dynamic;
 	/**
 		Returns the step at which the best early stopping metric was found.
 	**/

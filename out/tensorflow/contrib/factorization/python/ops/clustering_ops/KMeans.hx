@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.factorization.python.ops.clustering_ops;
 @:pythonImport("tensorflow.contrib.factorization.python.ops.clustering_ops", "KMeans") extern class KMeans {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -66,16 +66,27 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		exactly like a full-batch version.
 		
 		Args:
-		  inputs: An input tensor or list of input tensors
-		  num_clusters: number of clusters.
-		  initial_clusters: Specifies the clusters used during initialization.  Can
-		    be a tensor or numpy array, or a function that generates the clusters.
-		    Can also be "random" to specify that clusters should be chosen randomly
-		    from input data.
-		  distance_metric: distance metric used for clustering.
+		  inputs: An input tensor or list of input tensors. It is assumed that the
+		    data points have been previously randomly permuted.
+		  num_clusters: An integer tensor specifying the number of clusters. This
+		    argument is ignored if initial_clusters is a tensor or numpy array.
+		  initial_clusters: Specifies the clusters used during initialization. One
+		    of the following:
+		    - a tensor or numpy array with the initial cluster centers.
+		    - a function f(inputs, k) that returns up to k centers from `inputs`.
+		    - "random": Choose centers randomly from `inputs`.
+		    - "kmeans_plus_plus": Use kmeans++ to choose centers from `inputs`.
+		    - "kmc2": Use the fast k-MC2 algorithm to choose centers from `inputs`.
+		    In the last three cases, one batch of `inputs` may not yield
+		    `num_clusters` centers, in which case initialization will require
+		    multiple batches until enough centers are chosen. In the case of
+		    "random" or "kmeans_plus_plus", if the input size is <= `num_clusters`
+		    then the entire batch is chosen to be cluster centers.
+		  distance_metric: Distance metric used for clustering. Supported options:
+		    "squared_euclidean", "cosine".
 		  use_mini_batch: If true, use the mini-batch k-means algorithm. Else assume
 		    full batch.
-		  mini_batch_steps_per_iteration: number of steps after which the updated
+		  mini_batch_steps_per_iteration: Number of steps after which the updated
 		    cluster centers are synced back to a master copy.
 		  random_seed: Seed for PRNG used to initialize seeds.
 		  kmeans_plus_plus_num_retries: For each point that is sampled during
@@ -83,9 +94,17 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		    additional points to draw from the current distribution before selecting
 		    the best. If a negative value is specified, a heuristic is used to
 		    sample O(log(num_to_sample)) additional points.
+		  kmc2_chain_length: Determines how many candidate points are used by the
+		    k-MC2 algorithm to produce one new cluster centers. If a (mini-)batch
+		    contains less points, one new cluster center is generated from the
+		    (mini-)batch.
+		
+		Raises:
+		  ValueError: An invalid argument was passed to initial_clusters or
+		    distance_metric.
 	**/
 	@:native("__init__")
-	public function ___init__(inputs:Dynamic, num_clusters:Dynamic, ?initial_clusters:Dynamic, ?distance_metric:Dynamic, ?use_mini_batch:Dynamic, ?mini_batch_steps_per_iteration:Dynamic, ?random_seed:Dynamic, ?kmeans_plus_plus_num_retries:Dynamic):Dynamic;
+	public function ___init__(inputs:Dynamic, num_clusters:Dynamic, ?initial_clusters:Dynamic, ?distance_metric:Dynamic, ?use_mini_batch:Dynamic, ?mini_batch_steps_per_iteration:Dynamic, ?random_seed:Dynamic, ?kmeans_plus_plus_num_retries:Dynamic, ?kmc2_chain_length:Dynamic):Dynamic;
 	/**
 		Creates an object for generating KMeans clustering graph.
 		
@@ -115,16 +134,27 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		exactly like a full-batch version.
 		
 		Args:
-		  inputs: An input tensor or list of input tensors
-		  num_clusters: number of clusters.
-		  initial_clusters: Specifies the clusters used during initialization.  Can
-		    be a tensor or numpy array, or a function that generates the clusters.
-		    Can also be "random" to specify that clusters should be chosen randomly
-		    from input data.
-		  distance_metric: distance metric used for clustering.
+		  inputs: An input tensor or list of input tensors. It is assumed that the
+		    data points have been previously randomly permuted.
+		  num_clusters: An integer tensor specifying the number of clusters. This
+		    argument is ignored if initial_clusters is a tensor or numpy array.
+		  initial_clusters: Specifies the clusters used during initialization. One
+		    of the following:
+		    - a tensor or numpy array with the initial cluster centers.
+		    - a function f(inputs, k) that returns up to k centers from `inputs`.
+		    - "random": Choose centers randomly from `inputs`.
+		    - "kmeans_plus_plus": Use kmeans++ to choose centers from `inputs`.
+		    - "kmc2": Use the fast k-MC2 algorithm to choose centers from `inputs`.
+		    In the last three cases, one batch of `inputs` may not yield
+		    `num_clusters` centers, in which case initialization will require
+		    multiple batches until enough centers are chosen. In the case of
+		    "random" or "kmeans_plus_plus", if the input size is <= `num_clusters`
+		    then the entire batch is chosen to be cluster centers.
+		  distance_metric: Distance metric used for clustering. Supported options:
+		    "squared_euclidean", "cosine".
 		  use_mini_batch: If true, use the mini-batch k-means algorithm. Else assume
 		    full batch.
-		  mini_batch_steps_per_iteration: number of steps after which the updated
+		  mini_batch_steps_per_iteration: Number of steps after which the updated
 		    cluster centers are synced back to a master copy.
 		  random_seed: Seed for PRNG used to initialize seeds.
 		  kmeans_plus_plus_num_retries: For each point that is sampled during
@@ -132,15 +162,23 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		    additional points to draw from the current distribution before selecting
 		    the best. If a negative value is specified, a heuristic is used to
 		    sample O(log(num_to_sample)) additional points.
+		  kmc2_chain_length: Determines how many candidate points are used by the
+		    k-MC2 algorithm to produce one new cluster centers. If a (mini-)batch
+		    contains less points, one new cluster center is generated from the
+		    (mini-)batch.
+		
+		Raises:
+		  ValueError: An invalid argument was passed to initial_clusters or
+		    distance_metric.
 	**/
-	public function new(inputs:Dynamic, num_clusters:Dynamic, ?initial_clusters:Dynamic, ?distance_metric:Dynamic, ?use_mini_batch:Dynamic, ?mini_batch_steps_per_iteration:Dynamic, ?random_seed:Dynamic, ?kmeans_plus_plus_num_retries:Dynamic):Void;
+	public function new(inputs:Dynamic, num_clusters:Dynamic, ?initial_clusters:Dynamic, ?distance_metric:Dynamic, ?use_mini_batch:Dynamic, ?mini_batch_steps_per_iteration:Dynamic, ?random_seed:Dynamic, ?kmeans_plus_plus_num_retries:Dynamic, ?kmc2_chain_length:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -191,7 +229,7 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -230,19 +268,22 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 	/**
 		Creates variables.
 		
+		Args:
+		  num_clusters: an integer Tensor providing the number of clusters.
+		
 		Returns:
-		Tuple with following elements:
-		  cluster_centers: a Tensor for storing cluster centers
-		  cluster_centers_initialized: bool Variable indicating whether clusters
-		    are initialized.
-		  cluster_counts: a Tensor for storing counts of points assigned to this
-		    cluster. This is used by mini-batch training.
-		  cluster_centers_updated: Tensor representing copy of cluster centers that
-		    are updated every step.
-		  update_in_steps: numbers of steps left before we sync
-		    cluster_centers_updated back to cluster_centers.
+		  Tuple with following elements:
+		  - cluster_centers: a Tensor for storing cluster centers
+		  - cluster_centers_initialized: bool Variable indicating whether clusters
+		        are initialized.
+		  - cluster_counts: a Tensor for storing counts of points assigned to this
+		        cluster. This is used by mini-batch training.
+		  - cluster_centers_updated: Tensor representing copy of cluster centers
+		        that are updated every step.
+		  - update_in_steps: numbers of steps left before we sync
+		        cluster_centers_updated back to cluster_centers.
 	**/
-	public function _create_variables():Dynamic;
+	public function _create_variables(num_clusters:Dynamic):Dynamic;
 	/**
 		Computes distance between each input and each cluster center.
 		
@@ -262,6 +303,7 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		
 		Args:
 		  inputs: list of input Tensors.
+		  num_clusters: an integer Tensor providing the number of clusters.
 		  cluster_idx_list: A vector (or list of vectors). Each element in the
 		    vector corresponds to an input row in 'inp' and specifies the cluster id
 		    corresponding to the input.
@@ -270,7 +312,7 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		Returns:
 		  An op for doing an update of mini-batch k-means.
 	**/
-	public function _full_batch_training_op(inputs:Dynamic, cluster_idx_list:Dynamic, cluster_centers:Dynamic):Dynamic;
+	public function _full_batch_training_op(inputs:Dynamic, num_clusters:Dynamic, cluster_idx_list:Dynamic, cluster_centers:Dynamic):Dynamic;
 	/**
 		Maps input to closest cluster and the score.
 		
@@ -286,17 +328,6 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 		  cluster_idx: index of cluster center closest to the corresponding input.
 	**/
 	public function _infer_graph(inputs:Dynamic, clusters:Dynamic):Dynamic;
-	/**
-		Does random initialization of clusters.
-		
-		Returns:
-		  Tensor of randomly initialized clusters.
-	**/
-	public function _init_clusters_random():Dynamic;
-	/**
-		Returns an op to initialize the cluster centers.
-	**/
-	public function _initialize_clusters(cluster_centers:Dynamic, cluster_centers_initialized:Dynamic, cluster_centers_updated:Dynamic):Dynamic;
 	/**
 		Normalized the input data.
 	**/
@@ -319,6 +350,14 @@ package tensorflow.contrib.factorization.python.ops.clustering_ops;
 	public function _mini_batch_training_op(inputs:Dynamic, cluster_idx_list:Dynamic, cluster_centers:Dynamic, total_counts:Dynamic):Dynamic;
 	/**
 		Generate a training graph for kmeans algorithm.
+		
+		This returns, among other things, an op that chooses initial centers
+		(init_op), a boolean variable that is set to True when the initial centers
+		are chosen (cluster_centers_initialized), and an op to perform either an
+		entire Lloyd iteration or a mini-batch of a Lloyd iteration (training_op).
+		The caller should use these components as follows. A single worker should
+		execute init_op multiple times until cluster_centers_initialized becomes
+		True. Then multiple workers may execute training_op any number of times.
 		
 		Returns:
 		  A tuple consisting of:

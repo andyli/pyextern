@@ -45,9 +45,56 @@ package scipy.special.orthogonal;
 		
 		Gamma function.
 		
+		.. math::
+		
+		      \Gamma(z) = \int_0^\infty x^{z-1} e^{-x} dx = (z - 1)!
+		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
 		n!`` for natural number *n*.
+		
+		Parameters
+		----------
+		z : float or complex array_like
+		
+		Returns
+		-------
+		float or complex
+		    The value(s) of gamma(z)
+		
+		Examples
+		--------
+		>>> from scipy.special import gamma, factorial
+		
+		>>> gamma([0, 0.5, 1, 5])
+		array([         inf,   1.77245385,   1.        ,  24.        ])
+		
+		>>> z = 2.5 + 1j
+		>>> gamma(z)
+		(0.77476210455108352+0.70763120437959293j)
+		>>> gamma(z+1), z*gamma(z)  # Recurrence property
+		((1.2292740569981171+2.5438401155000685j),
+		 (1.2292740569981158+2.5438401155000658j))
+		
+		>>> gamma(0.5)**2  # gamma(0.5) = sqrt(pi)
+		3.1415926535897927
+		
+		Plot gamma(x) for real x
+		
+		>>> x = np.linspace(-3.5, 5.5, 2251)
+		>>> y = gamma(x)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, y, 'b', alpha=0.6, label='gamma(x)')
+		>>> k = np.arange(1, 7)
+		>>> plt.plot(k, factorial(k-1), 'k*', alpha=0.6,
+		...          label='(x-1)!, x = 1, 2, ...')
+		>>> plt.xlim(-3.5, 5.5)
+		>>> plt.ylim(-10, 25)
+		>>> plt.grid()
+		>>> plt.xlabel('x')
+		>>> plt.legend(loc='lower right')
+		>>> plt.show()
 	**/
 	static public function _gam(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -305,7 +352,25 @@ package scipy.special.orthogonal;
 		       http://www.netlib.org/cephes/index.html
 		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
 		       of a Complex Argument and Nonnegative Order",
-		       http://netlib.org/amos/.org/amos/
+		       http://netlib.org/amos/
+		
+		Examples
+		--------
+		Compute the Airy functions on the interval [-15, 5].
+		
+		>>> from scipy import special
+		>>> x = np.linspace(-15, 5, 201)
+		>>> ai, aip, bi, bip = special.airy(x)
+		
+		Plot Ai(x) and Bi(x).
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, ai, 'r', label='Ai(x)')
+		>>> plt.plot(x, bi, 'b--', label='Bi(x)')
+		>>> plt.ylim(-0.5, 1.0)
+		>>> plt.grid()
+		>>> plt.legend(loc='upper left')
+		>>> plt.show()
 	**/
 	static public function airy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -334,7 +399,8 @@ package scipy.special.orthogonal;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -395,9 +461,8 @@ package scipy.special.orthogonal;
 		-------
 		angle : ndarray
 		    The angle of the ray intersecting the unit circle at the given
-		    `x`-coordinate in radians [0, pi]. If `x` is a scalar then a
-		    scalar is returned, otherwise an array of the same shape as `x`
-		    is returned.
+		    `x`-coordinate in radians [0, pi].
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -742,6 +807,7 @@ package scipy.special.orthogonal;
 		-------
 		y : ndarray
 		    The corresponding cosine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -1250,7 +1316,7 @@ package scipy.special.orthogonal;
 		roots_sh_chebyt : roots and quadrature weights of shifted
 		                  Chebyshev polynomials of the first kind
 		sh_chebyt : shifted Chebyshev polynomial object
-		eval_chebyt : evalaute Chebyshev polynomials of the first kind
+		eval_chebyt : evaluate Chebyshev polynomials of the first kind
 		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
 	**/
 	static public function eval_sh_chebyt(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1390,8 +1456,9 @@ package scipy.special.orthogonal;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1469,6 +1536,7 @@ package scipy.special.orthogonal;
 		-------
 		y : ndarray or scalar
 		    The floor of each element in `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1526,7 +1594,7 @@ package scipy.special.orthogonal;
 		Defined to be the solution of
 		
 		.. math::
-		    x\frac{d^2}{dx^2}L_n^{(\alpha)} 
+		    x\frac{d^2}{dx^2}L_n^{(\alpha)}
 		      + (\alpha + 1 - x)\frac{d}{dx}L_n^{(\alpha)}
 		      + nL_n^{(\alpha)} = 0,
 		
@@ -1729,17 +1797,20 @@ package scipy.special.orthogonal;
 	/**
 		Stack arrays in sequence horizontally (column wise).
 		
-		Take a sequence of arrays and stack them horizontally to make
-		a single array. Rebuild arrays divided by `hsplit`.
+		This is equivalent to concatenation along the second axis, except for 1-D
+		arrays where it concatenates along the first axis. Rebuilds arrays divided
+		by `hsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    All arrays must have the same shape along all but the second axis.
+		    The arrays must have the same shape along all but the second axis,
+		    except 1-D arrays which can be any length.
 		
 		Returns
 		-------
@@ -1754,11 +1825,6 @@ package scipy.special.orthogonal;
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -1792,7 +1858,7 @@ package scipy.special.orthogonal;
 		alpha : float
 		    alpha must be > -1
 		beta : float
-		    beta must be > 0
+		    beta must be > -1
 		mu : bool, optional
 		    If True, return the sum of the weights, optional.
 		
@@ -2060,13 +2126,29 @@ package scipy.special.orthogonal;
 		
 		Rising factorial (z)_m
 		
-		The Pochhammer symbol (rising factorial), is defined as::
+		The Pochhammer symbol (rising factorial), is defined as
 		
-		    (z)_m = gamma(z + m) / gamma(z)
+		.. math::
 		
-		For positive integer `m` it reads::
+		    (z)_m = \frac{\Gamma(z + m)}{\Gamma(z)}
 		
-		    (z)_m = z * (z + 1) * ... * (z + m - 1)
+		For positive integer `m` it reads
+		
+		.. math::
+		
+		    (z)_m = z (z + 1) ... (z + m - 1)
+		
+		Parameters
+		----------
+		z : array_like
+		    (int or float)
+		m : array_like
+		    (int or float)
+		
+		Returns
+		-------
+		poch : ndarray
+		    The value of the function.
 	**/
 	static public function poch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
@@ -2414,7 +2496,7 @@ package scipy.special.orthogonal;
 		alpha : float
 		    alpha must be > -1
 		beta : float
-		    beta must be > 0
+		    beta must be > -1
 		mu : bool, optional
 		    If True, return the sum of the weights, optional.
 		
@@ -2716,7 +2798,7 @@ package scipy.special.orthogonal;
 		
 		.. math::
 		
-		    G_n^{(p, q)}(x) 
+		    G_n^{(p, q)}(x)
 		      = \binom{2n + p - 1}{n}^{-1}P_n^{(p - q, q - 1)}(2x - 1),
 		
 		where :math:`P_n^{(\cdot, \cdot)}` is the nth Jacobi polynomial.
@@ -2795,6 +2877,7 @@ package scipy.special.orthogonal;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -2840,7 +2923,7 @@ package scipy.special.orthogonal;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -2867,6 +2950,7 @@ package scipy.special.orthogonal;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------

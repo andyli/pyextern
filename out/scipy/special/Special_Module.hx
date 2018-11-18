@@ -13,20 +13,61 @@ package scipy.special;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Arithmetic, Geometric Mean.
+		agm(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Start with a_0=a and b_0=b and iteratively compute
+		agm(a, b)
 		
-		a_{n+1} = (a_n+b_n)/2
-		b_{n+1} = sqrt(a_n*b_n)
+		Compute the arithmetic-geometric mean of `a` and `b`.
 		
-		until a_n=b_n.   The result is agm(a, b)
+		Start with a_0 = a and b_0 = b and iteratively compute::
 		
-		agm(a, b)=agm(b, a)
-		agm(a, a) = a
-		min(a, b) < agm(a, b) < max(a, b)
+		    a_{n+1} = (a_n + b_n)/2
+		    b_{n+1} = sqrt(a_n*b_n)
+		
+		a_n and b_n converge to the same limit as n increases; their common
+		limit is agm(a, b).
+		
+		Parameters
+		----------
+		a, b : array_like
+		    Real values only.  If the values are both negative, the result
+		    is negative.  If one value is negative and the other is positive,
+		    `nan` is returned.
+		
+		Returns
+		-------
+		float
+		    The arithmetic-geometric mean of `a` and `b`.
+		
+		Examples
+		--------
+		>>> from scipy.special import agm
+		>>> a, b = 24.0, 6.0
+		>>> agm(a, b)
+		13.458171481725614
+		
+		Compare that result to the iteration:
+		
+		>>> while a != b:
+		...     a, b = (a + b)/2, np.sqrt(a*b)
+		...     print("a = %19.16f  b=%19.16f" % (a, b))
+		...
+		a = 15.0000000000000000  b=12.0000000000000000
+		a = 13.5000000000000000  b=13.4164078649987388
+		a = 13.4582039324993694  b=13.4581390309909850
+		a = 13.4581714817451772  b=13.4581714817060547
+		a = 13.4581714817256159  b=13.4581714817256159
+		
+		When array-like arguments are given, broadcasting applies:
+		
+		>>> a = np.array([[1.5], [3], [6]])  # a has shape (3, 1).
+		>>> b = np.array([6, 12, 24, 48])    # b has shape (4,).
+		>>> agm(a, b)
+		array([[  3.36454287,   5.42363427,   9.05798751,  15.53650756],
+		       [  4.37037309,   6.72908574,  10.84726853,  18.11597502],
+		       [  6.        ,   8.74074619,  13.45817148,  21.69453707]])
 	**/
-	static public function agm(a:Dynamic, b:Dynamic):Dynamic;
+	static public function agm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compute `nt` zeros and values of the Airy function Ai and its derivative.
 		
@@ -55,7 +96,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function ai_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -110,7 +151,25 @@ package scipy.special;
 		       http://www.netlib.org/cephes/index.html
 		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
 		       of a Complex Argument and Nonnegative Order",
-		       http://netlib.org/amos/.org/amos/
+		       http://netlib.org/amos/
+		
+		Examples
+		--------
+		Compute the Airy functions on the interval [-15, 5].
+		
+		>>> from scipy import special
+		>>> x = np.linspace(-15, 5, 201)
+		>>> ai, aip, bi, bip = special.airy(x)
+		
+		Plot Ai(x) and Bi(x).
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, ai, 'r', label='Ai(x)')
+		>>> plt.plot(x, bi, 'b--', label='Bi(x)')
+		>>> plt.ylim(-0.5, 1.0)
+		>>> plt.grid()
+		>>> plt.legend(loc='upper left')
+		>>> plt.show()
 	**/
 	static public function airy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -336,8 +395,8 @@ package scipy.special;
 		Formula 26.5.24 of [1]_ is used to reduce the binomial distribution to the
 		cumulative incomplete beta distribution.
 		
-		Computation of `k` involves a seach for a value that produces the desired
-		value of `y`.  The search relies on the monotinicity of `y` with `k`.
+		Computation of `k` involves a search for a value that produces the desired
+		value of `y`.  The search relies on the monotonicity of `y` with `k`.
 		
 		Wrapper for the CDFLIB [2]_ Fortran routine `cdfbin`.
 		
@@ -386,8 +445,8 @@ package scipy.special;
 		Formula 26.5.24 of [1]_ is used to reduce the binomial distribution to the
 		cumulative incomplete beta distribution.
 		
-		Computation of `n` involves a seach for a value that produces the desired
-		value of `y`.  The search relies on the monotinicity of `y` with `n`.
+		Computation of `n` involves a search for a value that produces the desired
+		value of `y`.  The search relies on the monotonicity of `y` with `n`.
 		
 		Wrapper for the CDFLIB [2]_ Fortran routine `cdfbin`.
 		
@@ -416,7 +475,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function bei_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -434,7 +493,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function beip_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -452,7 +511,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function ber_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -462,7 +521,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function bernoulli(n:Dynamic):Dynamic;
 	/**
@@ -480,7 +539,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function berp_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -583,7 +642,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function bi_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -811,9 +870,9 @@ package scipy.special;
 		Wrapper for the CDFLIB [1]_ Fortran routine `cdfbet`.
 		
 		The cumulative distribution function `p` is computed using a routine by
-		DiDinato and Morris [2]_.  Computation of `a` involves a seach for a value
+		DiDinato and Morris [2]_.  Computation of `a` involves a search for a value
 		that produces the desired value of `p`.  The search relies on the
-		monotinicity of `p` with `a`.
+		monotonicity of `p` with `a`.
 		
 		References
 		----------
@@ -864,9 +923,9 @@ package scipy.special;
 		Wrapper for the CDFLIB [1]_ Fortran routine `cdfbet`.
 		
 		The cumulative distribution function `p` is computed using a routine by
-		DiDinato and Morris [2]_.  Computation of `b` involves a seach for a value
+		DiDinato and Morris [2]_.  Computation of `b` involves a search for a value
 		that produces the desired value of `p`.  The search relies on the
-		monotinicity of `p` with `b`.
+		monotonicity of `p` with `b`.
 		
 		References
 		----------
@@ -914,7 +973,26 @@ package scipy.special;
 		
 		cbrt(x)
 		
-		Cube root of `x`
+		Element-wise cube root of `x`.
+		
+		Parameters
+		----------
+		x : array_like
+		    `x` must contain real numbers.
+		
+		Returns
+		-------
+		float
+		    The cube root of each value in `x`.
+		
+		Examples
+		--------
+		>>> from scipy.special import cbrt
+		
+		>>> cbrt(8)
+		2.0
+		>>> cbrt([-8, -3, 0.125, 1.331])
+		array([-2.        , -1.44224957,  0.5       ,  1.1       ])
 	**/
 	static public function cbrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1215,7 +1293,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
 		       http://dlmf.nist.gov/14.21
 	**/
@@ -1240,7 +1318,7 @@ package scipy.special;
 		
 		Returns
 		-------
-		val : int, ndarray
+		val : int, float, ndarray
 		    The total number of combinations.
 		
 		See Also
@@ -1371,7 +1449,7 @@ package scipy.special;
 		
 		The Dirichlet function is defined as::
 		
-		    diric(x) = sin(x * n/2) / (n * sin(x / 2)),
+		    diric(x, n) = sin(x * n/2) / (n * sin(x / 2)),
 		
 		where `n` is a positive integer.
 		
@@ -1471,7 +1549,7 @@ package scipy.special;
 		
 		Notes
 		-----
-		The geometric intepretation of the ellipsoidal functions is
+		The geometric interpretation of the ellipsoidal functions is
 		explained in [2]_, [3]_, [4]_.  The `signm` and `signn` arguments control the
 		sign of prefactors for functions according to their type::
 		
@@ -1484,7 +1562,7 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] Digital Libary of Mathematical Functions 29.12
+		.. [1] Digital Library of Mathematical Functions 29.12
 		   http://dlmf.nist.gov/29.12
 		.. [2] Bardhan and Knepley, "Computational science and
 		   re-discovery: open-source implementations of
@@ -1647,6 +1725,12 @@ package scipy.special;
 		
 		is used.
 		
+		The parameterization in terms of :math:`m` follows that of section
+		17.2 in [2]_. Other parameterizations in terms of the
+		complementary parameter :math:`1 - m`, modular angle
+		:math:`\sin^2(\alpha) = m`, or modulus :math:`k^2 = m` are also
+		used, so be careful that you choose the correct parameter.
+		
 		See Also
 		--------
 		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
@@ -1658,6 +1742,9 @@ package scipy.special;
 		----------
 		.. [1] Cephes Mathematical Functions Library,
 		       http://www.netlib.org/cephes/index.html
+		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
 	**/
 	static public function ellipe(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1690,6 +1777,12 @@ package scipy.special;
 		
 		Computation uses arithmetic-geometric means algorithm.
 		
+		The parameterization in terms of :math:`m` follows that of section
+		17.2 in [2]_. Other parameterizations in terms of the
+		complementary parameter :math:`1 - m`, modular angle
+		:math:`\sin^2(\alpha) = m`, or modulus :math:`k^2 = m` are also
+		used, so be careful that you choose the correct parameter.
+		
 		See Also
 		--------
 		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
@@ -1701,6 +1794,9 @@ package scipy.special;
 		----------
 		.. [1] Cephes Mathematical Functions Library,
 		       http://www.netlib.org/cephes/index.html
+		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
 	**/
 	static public function ellipeinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1777,12 +1873,24 @@ package scipy.special;
 		For more precision around point m = 1, use `ellipkm1`, which this
 		function calls.
 		
+		The parameterization in terms of :math:`m` follows that of section
+		17.2 in [1]_. Other parameterizations in terms of the
+		complementary parameter :math:`1 - m`, modular angle
+		:math:`\sin^2(\alpha) = m`, or modulus :math:`k^2 = m` are also
+		used, so be careful that you choose the correct parameter.
+		
 		See Also
 		--------
 		ellipkm1 : Complete elliptic integral of the first kind around m = 1
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
 		ellipeinc : Incomplete elliptic integral of the second kind
+		
+		References
+		----------
+		.. [1] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
 	**/
 	static public function ellipk(m:Dynamic):Dynamic;
 	/**
@@ -1816,6 +1924,12 @@ package scipy.special;
 		Wrapper for the Cephes [1]_ routine `ellik`.  The computation is
 		carried out using the arithmetic-geometric mean algorithm.
 		
+		The parameterization in terms of :math:`m` follows that of section
+		17.2 in [2]_. Other parameterizations in terms of the
+		complementary parameter :math:`1 - m`, modular angle
+		:math:`\sin^2(\alpha) = m`, or modulus :math:`k^2 = m` are also
+		used, so be careful that you choose the correct parameter.
+		
 		See Also
 		--------
 		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
@@ -1827,6 +1941,9 @@ package scipy.special;
 		----------
 		.. [1] Cephes Mathematical Functions Library,
 		       http://www.netlib.org/cephes/index.html
+		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
 	**/
 	static public function ellipkinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1968,7 +2085,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function erf_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -2116,13 +2233,44 @@ package scipy.special;
 	**/
 	static public function errprint(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Euler numbers E0..En (inclusive).
+		Euler numbers E(0), E(1), ..., E(n).
+		
+		The Euler numbers [1]_ are also known as the secant numbers.
+		
+		Because ``euler(n)`` returns floating point values, it does not give
+		exact values for large `n`.  The first inexact value is E(22).
+		
+		Parameters
+		----------
+		n : int
+		    The highest index of the Euler number to be returned.
+		
+		Returns
+		-------
+		ndarray
+		    The Euler numbers [E(0), E(1), ..., E(n)].
+		    The odd Euler numbers, which are all zero, are included.
 		
 		References
 		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		.. [1] Sequence A122045, The On-Line Encyclopedia of Integer Sequences,
+		       https://oeis.org/A122045
+		.. [2] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
+		
+		Examples
+		--------
+		>>> from scipy.special import euler
+		>>> euler(6)
+		array([  1.,   0.,  -1.,   0.,   5.,   0., -61.])
+		
+		>>> euler(13).astype(np.int64)
+		array([      1,       0,      -1,       0,       5,       0,     -61,
+		             0,    1385,       0,  -50521,       0, 2702765,       0])
+		
+		>>> euler(22)[-1]  # Exact value of E(22) is -69348874393137901.
+		-69348874393137976.0
 	**/
 	static public function euler(n:Dynamic):Dynamic;
 	/**
@@ -2604,7 +2752,7 @@ package scipy.special;
 		roots_sh_chebyt : roots and quadrature weights of shifted
 		                  Chebyshev polynomials of the first kind
 		sh_chebyt : shifted Chebyshev polynomial object
-		eval_chebyt : evalaute Chebyshev polynomials of the first kind
+		eval_chebyt : evaluate Chebyshev polynomials of the first kind
 		numpy.polynomial.chebyshev.Chebyshev : Chebyshev series
 	**/
 	static public function eval_sh_chebyt(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -2738,7 +2886,28 @@ package scipy.special;
 		
 		exp10(x)
 		
-		10**x
+		Compute ``10**x`` element-wise.
+		
+		Parameters
+		----------
+		x : array_like
+		    `x` must contain real numbers.
+		
+		Returns
+		-------
+		float
+		    ``10**x``, computed element-wise.
+		
+		Examples
+		--------
+		>>> from scipy.special import exp10
+		
+		>>> exp10(3)
+		1000.0
+		>>> x = np.array([[-1, -0.5, 0], [0.5, 1, 1.5]])
+		>>> exp10(x)
+		array([[  0.1       ,   0.31622777,   1.        ],
+		       [  3.16227766,  10.        ,  31.6227766 ]])
 	**/
 	static public function exp10(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2746,7 +2915,28 @@ package scipy.special;
 		
 		exp2(x)
 		
-		2**x
+		Compute ``2**x`` element-wise.
+		
+		Parameters
+		----------
+		x : array_like
+		    `x` must contain real numbers.
+		
+		Returns
+		-------
+		float
+		    ``2**x``, computed element-wise.
+		
+		Examples
+		--------
+		>>> from scipy.special import exp2
+		
+		>>> exp2(3)
+		8.0
+		>>> x = np.array([[-1, -0.5, 0], [0.5, 1, 1.5]])
+		>>> exp2(x)
+		array([[ 0.5       ,  0.70710678,  1.        ],
+		       [ 1.41421356,  2.        ,  2.82842712]])
 	**/
 	static public function exp2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2784,6 +2974,10 @@ package scipy.special;
 		    An ndarray of the same shape as x. Its entries
 		    are expit of the corresponding entry of x.
 		
+		See Also
+		--------
+		logit
+		
 		Notes
 		-----
 		As a ufunc expit takes a number of optional
@@ -2791,6 +2985,30 @@ package scipy.special;
 		see `ufuncs <https://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_
 		
 		.. versionadded:: 0.10.0
+		
+		Examples
+		--------
+		>>> from scipy.special import expit, logit
+		
+		>>> expit([-np.inf, -1.5, 0, 1.5, np.inf])
+		array([ 0.        ,  0.18242552,  0.5       ,  0.81757448,  1.        ])
+		
+		`logit` is the inverse of `expit`:
+		
+		>>> logit(expit([-2.5, 0, 3.1, 5.0]))
+		array([-2.5,  0. ,  3.1,  5. ])
+		
+		Plot expit(x) for x in [-6, 6]:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-6, 6, 121)
+		>>> y = expit(x)
+		>>> plt.plot(x, y)
+		>>> plt.grid()
+		>>> plt.xlim(-6, 6)
+		>>> plt.xlabel('x')
+		>>> plt.title('expit(x)')
+		>>> plt.show()
 	**/
 	static public function expit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2798,7 +3016,46 @@ package scipy.special;
 		
 		expm1(x)
 		
-		exp(x) - 1 for use when `x` is near zero.
+		Compute ``exp(x) - 1``.
+		
+		When `x` is near zero, ``exp(x)`` is near 1, so the numerical calculation
+		of ``exp(x) - 1`` can suffer from catastrophic loss of precision.
+		``expm1(x)`` is implemented to avoid the loss of precision that occurs when
+		`x` is near zero.
+		
+		Parameters
+		----------
+		x : array_like
+		    `x` must contain real numbers.
+		
+		Returns
+		-------
+		float
+		    ``exp(x) - 1`` computed element-wise.
+		
+		Examples
+		--------
+		>>> from scipy.special import expm1
+		
+		>>> expm1(1.0)
+		1.7182818284590451
+		>>> expm1([-0.2, -0.1, 0, 0.1, 0.2])
+		array([-0.18126925, -0.09516258,  0.        ,  0.10517092,  0.22140276])
+		
+		The exact value of ``exp(7.5e-13) - 1`` is::
+		
+		    7.5000000000028125000000007031250000001318...*10**-13.
+		
+		Here is what ``expm1(7.5e-13)`` gives:
+		
+		>>> expm1(7.5e-13)
+		7.5000000000028135e-13
+		
+		Compare that to ``exp(7.5e-13) - 1``, where the subtraction results in
+		a "catastrophic" loss of precision:
+		
+		>>> np.exp(7.5e-13) - 1
+		7.5006667543675576e-13
 	**/
 	static public function expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2819,23 +3076,48 @@ package scipy.special;
 		
 		exprel(x)
 		
-		Relative error exponential, (exp(x)-1)/x, for use when `x` is near zero.
+		Relative error exponential, ``(exp(x) - 1)/x``.
+		
+		When `x` is near zero, ``exp(x)`` is near 1, so the numerical calculation
+		of ``exp(x) - 1`` can suffer from catastrophic loss of precision.
+		``exprel(x)`` is implemented to avoid the loss of precision that occurs when
+		`x` is near zero.
 		
 		Parameters
 		----------
 		x : ndarray
-		    Input array.
+		    Input array.  `x` must contain real numbers.
 		
 		Returns
 		-------
-		res : ndarray
-		    Output array.
+		float
+		    ``(exp(x) - 1)/x``, computed element-wise.
 		
 		See Also
 		--------
 		expm1
 		
+		Notes
+		-----
 		.. versionadded:: 0.17.0
+		
+		Examples
+		--------
+		>>> from scipy.special import exprel
+		
+		>>> exprel(0.01)
+		1.0050167084168056
+		>>> exprel([-0.25, -0.1, 0, 0.1, 0.25])
+		array([ 0.88479687,  0.95162582,  1.        ,  1.05170918,  1.13610167])
+		
+		Compare ``exprel(5e-9)`` to the naive calculation.  The exact value
+		is ``1.00000000250000000416...``.
+		
+		>>> exprel(5e-9)
+		1.0000000025
+		
+		>>> (np.exp(5e-9) - 1)/5e-9
+		0.99999999392252903
 	**/
 	static public function exprel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3144,7 +3426,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function fresnel_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -3154,7 +3436,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function fresnelc_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -3164,7 +3446,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function fresnels_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -3174,9 +3456,56 @@ package scipy.special;
 		
 		Gamma function.
 		
+		.. math::
+		
+		      \Gamma(z) = \int_0^\infty x^{z-1} e^{-x} dx = (z - 1)!
+		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
 		n!`` for natural number *n*.
+		
+		Parameters
+		----------
+		z : float or complex array_like
+		
+		Returns
+		-------
+		float or complex
+		    The value(s) of gamma(z)
+		
+		Examples
+		--------
+		>>> from scipy.special import gamma, factorial
+		
+		>>> gamma([0, 0.5, 1, 5])
+		array([         inf,   1.77245385,   1.        ,  24.        ])
+		
+		>>> z = 2.5 + 1j
+		>>> gamma(z)
+		(0.77476210455108352+0.70763120437959293j)
+		>>> gamma(z+1), z*gamma(z)  # Recurrence property
+		((1.2292740569981171+2.5438401155000685j),
+		 (1.2292740569981158+2.5438401155000658j))
+		
+		>>> gamma(0.5)**2  # gamma(0.5) = sqrt(pi)
+		3.1415926535897927
+		
+		Plot gamma(x) for real x
+		
+		>>> x = np.linspace(-3.5, 5.5, 2251)
+		>>> y = gamma(x)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, y, 'b', alpha=0.6, label='gamma(x)')
+		>>> k = np.arange(1, 7)
+		>>> plt.plot(k, factorial(k-1), 'k*', alpha=0.6,
+		...          label='(x-1)!, x = 1, 2, ...')
+		>>> plt.xlim(-3.5, 5.5)
+		>>> plt.ylim(-10, 25)
+		>>> plt.grid()
+		>>> plt.xlabel('x')
+		>>> plt.legend(loc='lower right')
+		>>> plt.show()
 	**/
 	static public function gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3266,7 +3595,9 @@ package scipy.special;
 	**/
 	static public function gammaincinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Logarithm of the absolute value of the Gamma function for real inputs.
+		gammaln(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Logarithm of the absolute value of the Gamma function.
 		
 		Parameters
 		----------
@@ -3289,14 +3620,9 @@ package scipy.special;
 		for working in logspace on the real axis without having to deal with
 		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
 		
-		Note that `gammaln` currently accepts complex-valued inputs, but it is not
-		the same function as for real-valued inputs, and the branch is not
-		well-defined --- using `gammaln` with complex is deprecated and will be
-		disallowed in future Scipy versions.
-		
 		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gammaln(x:Dynamic):Dynamic;
+	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		gammasgn(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -3453,9 +3779,9 @@ package scipy.special;
 		Wrapper for the CDFLIB [1]_ Fortran routine `cdfgam`.
 		
 		The cumulative distribution function `p` is computed using a routine by
-		DiDinato and Morris [2]_.  Computation of `a` involves a seach for a value
+		DiDinato and Morris [2]_.  Computation of `a` involves a search for a value
 		that produces the desired value of `p`.  The search relies on the
-		monotinicity of `p` with `a`.
+		monotonicity of `p` with `a`.
 		
 		References
 		----------
@@ -3523,9 +3849,9 @@ package scipy.special;
 		Wrapper for the CDFLIB [1]_ Fortran routine `cdfgam`.
 		
 		The cumulative distribution function `p` is computed using a routine by
-		DiDinato and Morris [2]_.  Computation of `b` involves a seach for a value
+		DiDinato and Morris [2]_.  Computation of `b` involves a search for a value
 		that produces the desired value of `p`.  The search relies on the
-		monotinicity of `p` with `b`.
+		monotonicity of `p` with `b`.
 		
 		References
 		----------
@@ -3594,9 +3920,9 @@ package scipy.special;
 		Wrapper for the CDFLIB [1]_ Fortran routine `cdfgam`.
 		
 		The cumulative distribution function `p` is computed using a routine by
-		DiDinato and Morris [2]_.  Computation of `x` involves a seach for a value
+		DiDinato and Morris [2]_.  Computation of `x` involves a search for a value
 		that produces the desired value of `p`.  The search relies on the
-		monotinicity of `p` with `x`.
+		monotonicity of `p` with `x`.
 		
 		References
 		----------
@@ -3661,7 +3987,7 @@ package scipy.special;
 		Defined to be the solution of
 		
 		.. math::
-		    x\frac{d^2}{dx^2}L_n^{(\alpha)} 
+		    x\frac{d^2}{dx^2}L_n^{(\alpha)}
 		      + (\alpha + 1 - x)\frac{d}{dx}L_n^{(\alpha)}
 		      + nL_n^{(\alpha)} = 0,
 		
@@ -3759,7 +4085,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.6.E7
 	**/
@@ -3784,7 +4110,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.6.E7
 	**/
@@ -4226,7 +4552,47 @@ package scipy.special;
 		
 		hyp2f1(a, b, c, z)
 		
-		Gauss hypergeometric function 2F1(a, b; c; z).
+		Gauss hypergeometric function 2F1(a, b; c; z)
+		
+		Parameters
+		----------
+		a, b, c : array_like
+		    Arguments, should be real-valued.
+		z : array_like
+		    Argument, real or complex.
+		
+		Returns
+		-------
+		hyp2f1 : scalar or ndarray
+		    The values of the gaussian hypergeometric function.
+		
+		See also
+		--------
+		hyp0f1 : confluent hypergeometric limit function.
+		hyp1f1 : Kummer's (confluent hypergeometric) function.
+		
+		Notes
+		-----
+		This function is defined for :math:`|z| < 1` as
+		
+		.. math::
+		
+		   \mathrm{hyp2f1}(a, b, c, z) = \sum_{n=0}^\infty
+		   \frac{(a)_n (b)_n}{(c)_n}\frac{z^n}{n!},
+		
+		and defined on the rest of the complex z-plane by analytic continuation.
+		Here :math:`(\cdot)_n` is the Pochhammer symbol; see `poch`. When
+		:math:`n` is an integer the result is a polynomial of degree :math:`n`.
+		
+		The implementation for complex values of ``z`` is described in [1]_.
+		
+		References
+		----------
+		.. [1] S. Zhang and J.M. Jin, "Computation of Special Functions", Wiley 1996
+		.. [2] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
+		.. [3] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/
 	**/
 	static public function hyp2f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4562,7 +4928,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function it2struve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4602,7 +4968,7 @@ package scipy.special;
 		
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function itairy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4664,7 +5030,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function itmodstruve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4700,7 +5066,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function itstruve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4730,10 +5096,10 @@ package scipy.special;
 		expansions are applied.
 		
 		For complex `z` and positive `v`, the AMOS [2]_ `zbesi` routine is
-		called. It uses a power series for small `z`, the asymptitic expansion
+		called. It uses a power series for small `z`, the asymptotic expansion
 		for large `abs(z)`, the Miller algorithm normalized by the Wronskian
 		and a Neumann series for intermediate magnitudes, and the uniform
-		asymptitic expansions for :math:`I_v(z)` and :math:`J_v(z)` for large
+		asymptotic expansions for :math:`I_v(z)` and :math:`J_v(z)` for large
 		orders.  Backward recurrence is used to generate sequences or reduce
 		orders when necessary.
 		
@@ -4788,9 +5154,9 @@ package scipy.special;
 		Notes
 		-----
 		For positive `v`, the AMOS [1]_ `zbesi` routine is called. It uses a
-		power series for small `z`, the asymptitic expansion for large
+		power series for small `z`, the asymptotic expansion for large
 		`abs(z)`, the Miller algorithm normalized by the Wronskian and a
-		Neumann series for intermediate magnitudes, and the uniform asymptitic
+		Neumann series for intermediate magnitudes, and the uniform asymptotic
 		expansions for :math:`I_v(z)` and :math:`J_v(z)` for large orders.
 		Backward recurrence is used to generate sequences or reduce orders when
 		necessary.
@@ -4836,7 +5202,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 6.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.29.E5
 	**/
@@ -4875,7 +5241,7 @@ package scipy.special;
 		two rational functions of degree 6/6 and 7/7.
 		
 		This function is a wrapper for the Cephes [1]_ routine `j0`.
-		It should not to be confused with the spherical Bessel functions (see
+		It should not be confused with the spherical Bessel functions (see
 		`spherical_jn`).
 		
 		See also
@@ -4914,7 +5280,7 @@ package scipy.special;
 		functions of degree 5/5.
 		
 		This function is a wrapper for the Cephes [1]_ routine `j1`.
-		It should not to be confused with the spherical Bessel functions (see
+		It should not be confused with the spherical Bessel functions (see
 		`spherical_jn`).
 		
 		See also
@@ -4945,7 +5311,7 @@ package scipy.special;
 		alpha : float
 		    alpha must be > -1
 		beta : float
-		    beta must be > 0
+		    beta must be > -1
 		mu : bool, optional
 		    If True, return the sum of the weights, optional.
 		
@@ -5028,9 +5394,9 @@ package scipy.special;
 		Bessel function :math:`I_v`,
 		
 		.. math::
-		    J_v(z) = \exp(n\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
+		    J_v(z) = \exp(v\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
 		
-		    J_v(z) = \exp(-n\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
+		    J_v(z) = \exp(-v\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
 		
 		For negative `v` values the formula,
 		
@@ -5069,7 +5435,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function jn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
@@ -5103,7 +5469,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function jnjnp_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -5120,7 +5486,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function jnp_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
@@ -5142,7 +5508,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function jnyn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
@@ -5207,9 +5573,9 @@ package scipy.special;
 		Bessel function :math:`I_v`,
 		
 		.. math::
-		    J_v(z) = \exp(n\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
+		    J_v(z) = \exp(v\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
 		
-		    J_v(z) = \exp(-n\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
+		    J_v(z) = \exp(-v\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
 		
 		For negative `v` values the formula,
 		
@@ -5264,9 +5630,9 @@ package scipy.special;
 		Bessel function :math:`I_v`,
 		
 		.. math::
-		    J_v(z) = \exp(n\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
+		    J_v(z) = \exp(v\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
 		
-		    J_v(z) = \exp(-n\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
+		    J_v(z) = \exp(-v\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
 		
 		For negative `v` values the formula,
 		
@@ -5304,7 +5670,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.6.E7
 	**/
@@ -5490,7 +5856,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function keip_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -5520,7 +5886,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function kelvin_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -5538,7 +5904,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function ker_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -5556,7 +5922,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function kerp_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -5818,7 +6184,9 @@ package scipy.special;
 		
 		>>> from scipy.special import kvp
 		>>> kvp(5, (1, 2, 3+5j))
-		array([-1849.0354+0.j    ,   -25.7735+0.j    ,    -0.0307+0.0875j])
+		array([-1.84903536e+03+0.j        , -2.57735387e+01+0.j        ,
+		       -3.06627741e-02+0.08750845j])
+		
 		
 		Calculate for a single value at multiple orders:
 		
@@ -5833,7 +6201,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 6.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.29.E5
 	**/
@@ -6100,7 +6468,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] Jahnke, E. and Emde, F. "Tables of Functions with Formulae and
 		       Curves" (4th ed.), Dover, 1945
 	**/
@@ -6227,6 +6595,10 @@ package scipy.special;
 		    An ndarray of the same shape as x. Its entries
 		    are logit of the corresponding entry of x.
 		
+		See Also
+		--------
+		expit
+		
 		Notes
 		-----
 		As a ufunc logit takes a number of optional
@@ -6234,6 +6606,30 @@ package scipy.special;
 		see `ufuncs <https://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_
 		
 		.. versionadded:: 0.10.0
+		
+		Examples
+		--------
+		>>> from scipy.special import logit, expit
+		
+		>>> logit([0, 0.25, 0.5, 0.75, 1])
+		array([       -inf, -1.09861229,  0.        ,  1.09861229,         inf])
+		
+		`expit` is the inverse of `logit`:
+		
+		>>> expit(logit([0.1, 0.75, 0.999]))
+		array([ 0.1  ,  0.75 ,  0.999])
+		
+		Plot logit(x) for x in [0, 1]:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(0, 1, 501)
+		>>> y = logit(x)
+		>>> plt.plot(x, y)
+		>>> plt.grid()
+		>>> plt.ylim(-6, 6)
+		>>> plt.xlabel('x')
+		>>> plt.title('logit(x)')
+		>>> plt.show()
 	**/
 	static public function logit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6266,6 +6662,7 @@ package scipy.special;
 		    as NaN. Default is False (no sign information).
 		
 		    .. versionadded:: 0.16.0
+		
 		Returns
 		-------
 		res : ndarray
@@ -6363,7 +6760,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
 		       http://dlmf.nist.gov/14.3
 	**/
@@ -6435,7 +6832,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function lpn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -6468,7 +6865,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function lqmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -6481,7 +6878,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function lqn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -6564,7 +6961,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions
 		       http://dlmf.nist.gov/28.4#i
 	**/
@@ -6675,7 +7072,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function mathieu_odd_coef(m:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -7020,8 +7417,8 @@ package scipy.special;
 		is used to reduce calculation of the cumulative distribution function to
 		that of a regularized incomplete beta :math:`I`.
 		
-		Computation of `k` involves a seach for a value that produces the desired
-		value of `y`.  The search relies on the monotinicity of `y` with `k`.
+		Computation of `k` involves a search for a value that produces the desired
+		value of `y`.  The search relies on the monotonicity of `y` with `k`.
 		
 		References
 		----------
@@ -7076,8 +7473,8 @@ package scipy.special;
 		is used to reduce calculation of the cumulative distribution function to
 		that of a regularized incomplete beta :math:`I`.
 		
-		Computation of `n` involves a seach for a value that produces the desired
-		value of `y`.  The search relies on the monotinicity of `y` with `n`.
+		Computation of `n` involves a search for a value that produces the desired
+		value of `y`.  The search relies on the monotonicity of `y` with `n`.
 		
 		References
 		----------
@@ -7125,10 +7522,10 @@ package scipy.special;
 		
 		See Also
 		--------
-		ncdfdtri : Inverse CDF (iCDF) of the non-central F distribution.
-		ncdfdtridfd : Calculate dfd, given CDF and iCDF values.
-		ncdfdtridfn : Calculate dfn, given CDF and iCDF values.
-		ncdfdtrinc : Calculate noncentrality parameter, given CDF, iCDF, dfn, dfd.
+		ncfdtri : Quantile function; inverse of `ncfdtr` with respect to `f`.
+		ncfdtridfd : Inverse of `ncfdtr` with respect to `dfd`.
+		ncfdtridfn : Inverse of `ncfdtr` with respect to `dfn`.
+		ncfdtrinc : Inverse of `ncfdtr` with respect to `nc`.
 		
 		Notes
 		-----
@@ -7182,21 +7579,86 @@ package scipy.special;
 	/**
 		ncfdtri(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		ncfdtri(p, dfn, dfd, nc)
+		ncfdtri(dfn, dfd, nc, p)
 		
-		Inverse cumulative distribution function of the non-central F distribution.
+		Inverse with respect to `f` of the CDF of the non-central F distribution.
 		
 		See `ncfdtr` for more details.
+		
+		Parameters
+		----------
+		dfn : array_like
+		    Degrees of freedom of the numerator sum of squares.  Range (0, inf).
+		dfd : array_like
+		    Degrees of freedom of the denominator sum of squares.  Range (0, inf).
+		nc : array_like
+		    Noncentrality parameter.  Should be in range (0, 1e4).
+		p : array_like
+		    Value of the cumulative distribution function.  Must be in the
+		    range [0, 1].
+		
+		Returns
+		-------
+		f : float
+		    Quantiles, i.e. the upper limit of integration.
+		
+		See Also
+		--------
+		ncfdtr : CDF of the non-central F distribution.
+		ncfdtridfd : Inverse of `ncfdtr` with respect to `dfd`.
+		ncfdtridfn : Inverse of `ncfdtr` with respect to `dfn`.
+		ncfdtrinc : Inverse of `ncfdtr` with respect to `nc`.
+		
+		Examples
+		--------
+		>>> from scipy.special import ncfdtr, ncfdtri
+		
+		Compute the CDF for several values of `f`:
+		
+		>>> f = [0.5, 1, 1.5]
+		>>> p = ncfdtr(2, 3, 1.5, f)
+		>>> p
+		array([ 0.20782291,  0.36107392,  0.47345752])
+		
+		Compute the inverse.  We recover the values of `f`, as expected:
+		
+		>>> ncfdtri(2, 3, 1.5, p)
+		array([ 0.5,  1. ,  1.5])
 	**/
 	static public function ncfdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ncfdtridfd(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		ncfdtridfd(p, f, dfn, nc)
+		ncfdtridfd(dfn, p, nc, f)
 		
 		Calculate degrees of freedom (denominator) for the noncentral F-distribution.
 		
+		This is the inverse with respect to `dfd` of `ncfdtr`.
 		See `ncfdtr` for more details.
+		
+		Parameters
+		----------
+		dfn : array_like
+		    Degrees of freedom of the numerator sum of squares.  Range (0, inf).
+		p : array_like
+		    Value of the cumulative distribution function.  Must be in the
+		    range [0, 1].
+		nc : array_like
+		    Noncentrality parameter.  Should be in range (0, 1e4).
+		f : array_like
+		    Quantiles, i.e. the upper limit of integration.
+		
+		Returns
+		-------
+		dfd : float
+		    Degrees of freedom of the denominator sum of squares.
+		
+		See Also
+		--------
+		ncfdtr : CDF of the non-central F distribution.
+		ncfdtri : Quantile function; inverse of `ncfdtr` with respect to `f`.
+		ncfdtridfn : Inverse of `ncfdtr` with respect to `dfn`.
+		ncfdtrinc : Inverse of `ncfdtr` with respect to `nc`.
 		
 		Notes
 		-----
@@ -7204,16 +7666,57 @@ package scipy.special;
 		monotone in either degrees of freedom.  There thus may be two values that
 		provide a given CDF value.  This routine assumes monotonicity and will
 		find an arbitrary one of the two values.
+		
+		Examples
+		--------
+		>>> from scipy.special import ncfdtr, ncfdtridfd
+		
+		Compute the CDF for several values of `dfd`:
+		
+		>>> dfd = [1, 2, 3]
+		>>> p = ncfdtr(2, dfd, 0.25, 15)
+		>>> p
+		array([ 0.8097138 ,  0.93020416,  0.96787852])
+		
+		Compute the inverse.  We recover the values of `dfd`, as expected:
+		
+		>>> ncfdtridfd(2, p, 0.25, 15)
+		array([ 1.,  2.,  3.])
 	**/
 	static public function ncfdtridfd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ncfdtridfn(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		ncfdtridfn(p, f, dfd, nc)
+		ncfdtridfn(p, dfd, nc, f)
 		
 		Calculate degrees of freedom (numerator) for the noncentral F-distribution.
 		
+		This is the inverse with respect to `dfn` of `ncfdtr`.
 		See `ncfdtr` for more details.
+		
+		Parameters
+		----------
+		p : array_like
+		    Value of the cumulative distribution function.  Must be in the
+		    range [0, 1].
+		dfd : array_like
+		    Degrees of freedom of the denominator sum of squares.  Range (0, inf).
+		nc : array_like
+		    Noncentrality parameter.  Should be in range (0, 1e4).
+		f : float
+		    Quantiles, i.e. the upper limit of integration.
+		
+		Returns
+		-------
+		dfn : float
+		    Degrees of freedom of the numerator sum of squares.
+		
+		See Also
+		--------
+		ncfdtr : CDF of the non-central F distribution.
+		ncfdtri : Quantile function; inverse of `ncfdtr` with respect to `f`.
+		ncfdtridfd : Inverse of `ncfdtr` with respect to `dfd`.
+		ncfdtrinc : Inverse of `ncfdtr` with respect to `nc`.
 		
 		Notes
 		-----
@@ -7221,16 +7724,73 @@ package scipy.special;
 		monotone in either degrees of freedom.  There thus may be two values that
 		provide a given CDF value.  This routine assumes monotonicity and will
 		find an arbitrary one of the two values.
+		
+		Examples
+		--------
+		>>> from scipy.special import ncfdtr, ncfdtridfn
+		
+		Compute the CDF for several values of `dfn`:
+		
+		>>> dfn = [1, 2, 3]
+		>>> p = ncfdtr(dfn, 2, 0.25, 15)
+		>>> p
+		array([ 0.92562363,  0.93020416,  0.93188394])
+		
+		Compute the inverse.  We recover the values of `dfn`, as expected:
+		
+		>>> ncfdtridfn(p, 2, 0.25, 15)
+		array([ 1.,  2.,  3.])
 	**/
 	static public function ncfdtridfn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ncfdtrinc(x1, x2, x3, x4, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		ncfdtrinc(p, f, dfn, dfd)
+		ncfdtrinc(dfn, dfd, p, f)
 		
 		Calculate non-centrality parameter for non-central F distribution.
 		
+		This is the inverse with respect to `nc` of `ncfdtr`.
 		See `ncfdtr` for more details.
+		
+		Parameters
+		----------
+		dfn : array_like
+		    Degrees of freedom of the numerator sum of squares.  Range (0, inf).
+		dfd : array_like
+		    Degrees of freedom of the denominator sum of squares.  Range (0, inf).
+		p : array_like
+		    Value of the cumulative distribution function.  Must be in the
+		    range [0, 1].
+		f : array_like
+		    Quantiles, i.e. the upper limit of integration.
+		
+		Returns
+		-------
+		nc : float
+		    Noncentrality parameter.
+		
+		See Also
+		--------
+		ncfdtr : CDF of the non-central F distribution.
+		ncfdtri : Quantile function; inverse of `ncfdtr` with respect to `f`.
+		ncfdtridfd : Inverse of `ncfdtr` with respect to `dfd`.
+		ncfdtridfn : Inverse of `ncfdtr` with respect to `dfn`.
+		
+		Examples
+		--------
+		>>> from scipy.special import ncfdtr, ncfdtrinc
+		
+		Compute the CDF for several values of `nc`:
+		
+		>>> nc = [0.5, 1.5, 2.0]
+		>>> p = ncfdtr(2, 3, nc, 15)
+		>>> p
+		array([ 0.96309246,  0.94327955,  0.93304098])
+		
+		Compute the inverse.  We recover the values of `nc`, as expected:
+		
+		>>> ncfdtrinc(2, 3, p, 15)
+		array([ 0.5,  1.5,  2. ])
 	**/
 	static public function ncfdtrinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7496,7 +8056,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function obl_cv_seq(m:Dynamic, n:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -7578,6 +8138,44 @@ package scipy.special;
 	**/
 	static public function obl_rad2_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		owens_t(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		owens_t(h, a)
+		
+		Owen's T Function.
+		
+		The function T(h, a) gives the probability of the event
+		(X > h and 0 < Y < a * X) where X and Y are independent
+		standard normal random variables.
+		
+		Parameters
+		----------
+		h: array_like
+		    Input value.
+		a: array_like
+		    Input value.
+		
+		Returns
+		-------
+		t: scalar or ndarray
+		    Probability of the event (X > h and 0 < Y < a * X),
+		    where X and Y are independent standard normal random variables.
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> a = 3.5
+		>>> h = 0.78
+		>>> special.owens_t(h, a)
+		0.10877216734852274
+		
+		References
+		----------
+		.. [1] M. Patefield and D. Tandy, "Fast and accurate calculation of
+		       Owen's T Function", Statistical Software vol. 5, pp. 1-25, 2000.
+	**/
+	static public function owens_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Gauss-Legendre quadrature.
 		
 		Computes the sample points and weights for Gauss-Legendre quadrature.
@@ -7630,7 +8228,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 13.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function pbdn_seq(n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -7672,7 +8270,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 13.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function pbdv_seq(v:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -7714,7 +8312,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 13.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function pbvv_seq(v:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -7722,21 +8320,43 @@ package scipy.special;
 		
 		pbwa(a, x)
 		
-		Parabolic cylinder function W
+		Parabolic cylinder function W.
 		
-		Returns the parabolic cylinder function W(a, x) in w and the
-		derivative, W'(a, x) in wp.
+		The function is a particular solution to the differential equation
 		
-		.. warning::
+		.. math::
 		
-		   May not be accurate for large (>5) arguments in a and/or x.
+		    y'' + \left(\frac{1}{4}x^2 - a\right)y = 0,
+		
+		for a full definition see section 12.14 in [1]_.
+		
+		Parameters
+		----------
+		a : array_like
+		    Real parameter
+		x : array_like
+		    Real argument
 		
 		Returns
 		-------
-		w
+		w : scalar or ndarray
 		    Value of the function
-		wp
-		    Value of the derivative vs x
+		wp : scalar or ndarray
+		    Value of the derivative in x
+		
+		Notes
+		-----
+		The function is a wrapper for a Fortran routine by Zhang and Jin
+		[2]_. The implementation is accurate only for ``|a|, |x| < 5`` and
+		returns NaN outside that range.
+		
+		References
+		----------
+		.. [1] Digital Library of Mathematical Functions, 14.30.
+		       http://dlmf.nist.gov/14.30
+		.. [2] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function pbwa(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7829,13 +8449,29 @@ package scipy.special;
 		
 		Rising factorial (z)_m
 		
-		The Pochhammer symbol (rising factorial), is defined as::
+		The Pochhammer symbol (rising factorial), is defined as
 		
-		    (z)_m = gamma(z + m) / gamma(z)
+		.. math::
 		
-		For positive integer `m` it reads::
+		    (z)_m = \frac{\Gamma(z + m)}{\Gamma(z)}
 		
-		    (z)_m = z * (z + 1) * ... * (z + m - 1)
+		For positive integer `m` it reads
+		
+		.. math::
+		
+		    (z)_m = z (z + 1) ... (z + m - 1)
+		
+		Parameters
+		----------
+		z : array_like
+		    (int or float)
+		m : array_like
+		    (int or float)
+		
+		Returns
+		-------
+		poch : ndarray
+		    The value of the function.
 	**/
 	static public function poch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7927,7 +8563,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function pro_cv_seq(m:Dynamic, n:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -7974,7 +8610,7 @@ package scipy.special;
 		
 		pro_rad2(m, n, c, x)
 		
-		Prolate spheroidal radial function of the secon kind and its derivative
+		Prolate spheroidal radial function of the second kind and its derivative
 		
 		Computes the prolate spheroidal radial function of the second kind
 		and its derivative (with respect to `x`) for mode parameters m>=0
@@ -8202,7 +8838,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.51.E1
 	**/
@@ -8243,7 +8879,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.51.E1
 	**/
@@ -8561,7 +9197,7 @@ package scipy.special;
 		alpha : float
 		    alpha must be > -1
 		beta : float
-		    beta must be > 0
+		    beta must be > -1
 		mu : bool, optional
 		    If True, return the sum of the weights, optional.
 		
@@ -8870,11 +9506,11 @@ package scipy.special;
 		Examples
 		--------
 		>>> import scipy.special as sc
-		>>> from numpy.testing import assert_raises
+		>>> from pytest import raises
 		>>> sc.gammaln(0)
 		inf
 		>>> olderr = sc.seterr(singular='raise')
-		>>> with assert_raises(sc.SpecialFunctionError):
+		>>> with raises(sc.SpecialFunctionError):
 		...     sc.gammaln(0)
 		...
 		>>> _ = sc.seterr(**olderr)
@@ -8884,7 +9520,7 @@ package scipy.special;
 		>>> olderr = sc.seterr(all='raise', singular='ignore')
 		>>> sc.gammaln(0)
 		inf
-		>>> with assert_raises(sc.SpecialFunctionError):
+		>>> with raises(sc.SpecialFunctionError):
 		...     sc.spence(-1)
 		...
 		>>> _ = sc.seterr(**olderr)
@@ -8947,7 +9583,7 @@ package scipy.special;
 		
 		.. math::
 		
-		    G_n^{(p, q)}(x) 
+		    G_n^{(p, q)}(x)
 		      = \binom{2n + p - 1}{n}^{-1}P_n^{(p - q, q - 1)}(2x - 1),
 		
 		where :math:`P_n^{(\cdot, \cdot)}` is the nth Jacobi polynomial.
@@ -9319,232 +9955,6 @@ package scipy.special;
 	**/
 	static public function sph_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		`sph_in` is deprecated!
-		scipy.special.sph_in is deprecated in scipy 0.18.0. Use scipy.special.spherical_in instead. Note that the new function has a different signature.
-		
-		Compute spherical Bessel function in(z) and derivative.
-		
-		    This function computes the value and first derivative of in(z) for all
-		    orders up to and including n.
-		
-		    Parameters
-		    ----------
-		    n : int
-		        Maximum order of in to compute
-		    z : complex
-		        Argument at which to evaluate
-		
-		    Returns
-		    -------
-		    in : ndarray
-		        Value of i0(z), ..., in(z)
-		    inp : ndarray
-		        First derivative i0'(z), ..., in'(z)
-		
-		    See also
-		    --------
-		    spherical_in
-		
-		    References
-		    ----------
-		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		           Functions", John Wiley and Sons, 1996, chapter 8.
-		           http://jin.ece.illinois.edu/specfunc.html
-		
-		    
-	**/
-	static public function sph_in(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`sph_inkn` is deprecated!
-		scipy.special.sph_inkn is deprecated in scipy 0.18.0. Use scipy.special.spherical_in and scipy.special.spherical_kn instead. Note that the new function has a different signature.
-		
-		Compute spherical Bessel functions in(z), kn(z), and derivatives.
-		
-		    This function computes the value and first derivative of in(z) and kn(z)
-		    for all orders up to and including n.
-		
-		    Parameters
-		    ----------
-		    n : int
-		        Maximum order of in and kn to compute
-		    z : complex
-		        Argument at which to evaluate
-		
-		    Returns
-		    -------
-		    in : ndarray
-		        Value of i0(z), ..., in(z)
-		    inp : ndarray
-		        First derivative i0'(z), ..., in'(z)
-		    kn : ndarray
-		        Value of k0(z), ..., kn(z)
-		    knp : ndarray
-		        First derivative k0'(z), ..., kn'(z)
-		
-		    See also
-		    --------
-		    spherical_in
-		    spherical_kn
-		
-		    References
-		    ----------
-		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		           Functions", John Wiley and Sons, 1996, chapter 8.
-		           http://jin.ece.illinois.edu/specfunc.html
-		
-		    
-	**/
-	static public function sph_inkn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`sph_jn` is deprecated!
-		scipy.special.sph_jn is deprecated in scipy 0.18.0. Use scipy.special.spherical_jn instead. Note that the new function has a different signature.
-		
-		Compute spherical Bessel function jn(z) and derivative.
-		
-		    This function computes the value and first derivative of jn(z) for all
-		    orders up to and including n.
-		
-		    Parameters
-		    ----------
-		    n : int
-		        Maximum order of jn to compute
-		    z : complex
-		        Argument at which to evaluate
-		
-		    Returns
-		    -------
-		    jn : ndarray
-		        Value of j0(z), ..., jn(z)
-		    jnp : ndarray
-		        First derivative j0'(z), ..., jn'(z)
-		
-		    See also
-		    --------
-		    spherical_jn
-		
-		    References
-		    ----------
-		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		           Functions", John Wiley and Sons, 1996, chapter 8.
-		           http://jin.ece.illinois.edu/specfunc.html
-		
-		    
-	**/
-	static public function sph_jn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`sph_jnyn` is deprecated!
-		scipy.special.sph_jnyn is deprecated in scipy 0.18.0. Use scipy.special.spherical_jn and scipy.special.spherical_yn instead. Note that the new function has a different signature.
-		
-		Compute spherical Bessel functions jn(z) and yn(z) and derivatives.
-		
-		    This function computes the value and first derivative of jn(z) and yn(z)
-		    for all orders up to and including n.
-		
-		    Parameters
-		    ----------
-		    n : int
-		        Maximum order of jn and yn to compute
-		    z : complex
-		        Argument at which to evaluate
-		
-		    Returns
-		    -------
-		    jn : ndarray
-		        Value of j0(z), ..., jn(z)
-		    jnp : ndarray
-		        First derivative j0'(z), ..., jn'(z)
-		    yn : ndarray
-		        Value of y0(z), ..., yn(z)
-		    ynp : ndarray
-		        First derivative y0'(z), ..., yn'(z)
-		
-		    See also
-		    --------
-		    spherical_jn
-		    spherical_yn
-		
-		    References
-		    ----------
-		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		           Functions", John Wiley and Sons, 1996, chapter 8.
-		           http://jin.ece.illinois.edu/specfunc.html
-		
-		    
-	**/
-	static public function sph_jnyn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`sph_kn` is deprecated!
-		scipy.special.sph_kn is deprecated in scipy 0.18.0. Use scipy.special.spherical_kn instead. Note that the new function has a different signature.
-		
-		Compute spherical Bessel function kn(z) and derivative.
-		
-		    This function computes the value and first derivative of kn(z) for all
-		    orders up to and including n.
-		
-		    Parameters
-		    ----------
-		    n : int
-		        Maximum order of kn to compute
-		    z : complex
-		        Argument at which to evaluate
-		
-		    Returns
-		    -------
-		    kn : ndarray
-		        Value of k0(z), ..., kn(z)
-		    knp : ndarray
-		        First derivative k0'(z), ..., kn'(z)
-		
-		    See also
-		    --------
-		    spherical_kn
-		
-		    References
-		    ----------
-		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		           Functions", John Wiley and Sons, 1996, chapter 8.
-		           http://jin.ece.illinois.edu/specfunc.html
-		
-		    
-	**/
-	static public function sph_kn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`sph_yn` is deprecated!
-		scipy.special.sph_yn is deprecated in scipy 0.18.0. Use scipy.special.spherical_yn instead. Note that the new function has a different signature.
-		
-		Compute spherical Bessel function yn(z) and derivative.
-		
-		    This function computes the value and first derivative of yn(z) for all
-		    orders up to and including n.
-		
-		    Parameters
-		    ----------
-		    n : int
-		        Maximum order of yn to compute
-		    z : complex
-		        Argument at which to evaluate
-		
-		    Returns
-		    -------
-		    yn : ndarray
-		        Value of y0(z), ..., yn(z)
-		    ynp : ndarray
-		        First derivative y0'(z), ..., yn'(z)
-		
-		    See also
-		    --------
-		    spherical_yn
-		
-		    References
-		    ----------
-		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		           Functions", John Wiley and Sons, 1996, chapter 8.
-		           http://jin.ece.illinois.edu/specfunc.html
-		
-		    
-	**/
-	static public function sph_yn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Modified spherical Bessel function of the first kind or its derivative.
 		
 		Defined as [1]_,
@@ -9575,7 +9985,7 @@ package scipy.special;
 		The derivative is computed using the relations [2]_,
 		
 		.. math::
-		    i_n' = i_{n-1} - \frac{n + 1}{2} i_n.
+		    i_n' = i_{n-1} - \frac{n + 1}{z} i_n.
 		
 		    i_1' = i_0
 		
@@ -9621,9 +10031,9 @@ package scipy.special;
 		The derivative is computed using the relations [3]_,
 		
 		.. math::
-		    j_n' = j_{n-1} - \frac{n + 1}{2} j_n.
+		    j_n'(z) = j_{n-1}(z) - \frac{n + 1}{z} j_n(z).
 		
-		    j_0' = -j_1
+		    j_0'(z) = -j_1(z)
 		
 		
 		.. versionadded:: 0.18.0
@@ -9666,7 +10076,7 @@ package scipy.special;
 		The derivative is computed using the relations [2]_,
 		
 		.. math::
-		    k_n' = -k_{n-1} - \frac{n + 1}{2} k_n.
+		    k_n' = -k_{n-1} - \frac{n + 1}{z} k_n.
 		
 		    k_0' = -k_1
 		
@@ -9711,7 +10121,7 @@ package scipy.special;
 		The derivative is computed using the relations [3]_,
 		
 		.. math::
-		    y_n' = y_{n-1} - \frac{n + 1}{2} y_n.
+		    y_n' = y_{n-1} - \frac{n + 1}{z} y_n.
 		
 		    y_0' = -y_1
 		
@@ -9848,68 +10258,7 @@ package scipy.special;
 		Tangent of angle x given in degrees.
 	**/
 	static public function tandg(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		tklmbda(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -10037,10 +10386,15 @@ package scipy.special;
 		--------
 		>>> from scipy import special
 		>>> import matplotlib.pyplot as plt
+		
 		>>> x = np.linspace(-3, 3)
-		>>> plt.plot(x, special.wofz(x))
+		>>> z = special.wofz(x)
+		
+		>>> plt.plot(x, z.real, label='wofz(x).real')
+		>>> plt.plot(x, z.imag, label='wofz(x).imag')
 		>>> plt.xlabel('$x$')
-		>>> plt.ylabel('$wofz(x)$')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
 		>>> plt.show()
 	**/
 	static public function wofz(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -10218,7 +10572,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function y0_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
@@ -10287,7 +10641,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function y1_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
@@ -10316,7 +10670,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function y1p_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
@@ -10370,7 +10724,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function yn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
@@ -10387,7 +10741,7 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 	**/
 	static public function ynp_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
@@ -10505,23 +10859,60 @@ package scipy.special;
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
-		       http://jin.ece.illinois.edu/specfunc.html
+		       https://people.sc.fsu.edu/~jburkardt/f_src/special_functions/special_functions.html
 		.. [2] NIST Digital Library of Mathematical Functions.
 		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function yvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Riemann zeta function.
+		Riemann or Hurwitz zeta function.
 		
+		Parameters
+		----------
+		x : array_like of float
+		    Input data, must be real
+		q : array_like of float, optional
+		    Input data, must be real.  Defaults to Riemann zeta.
+		out : ndarray, optional
+		    Output array for the computed values.
+		
+		Returns
+		-------
+		out : array_like
+		    Values of zeta(x).
+		
+		Notes
+		-----
 		The two-argument version is the Hurwitz zeta function:
 		
 		.. math:: \zeta(x, q) = \sum_{k=0}^{\infty} \frac{1}{(k + q)^x},
 		
 		Riemann zeta function corresponds to ``q = 1``.
 		
-		See also
+		See Also
 		--------
 		zetac
+		
+		Examples
+		--------
+		>>> from scipy.special import zeta, polygamma, factorial
+		
+		Some specific values:
+		
+		>>> zeta(2), np.pi**2/6
+		(1.6449340668482266, 1.6449340668482264)
+		
+		>>> zeta(4), np.pi**4/90
+		(1.0823232337111381, 1.082323233711138)
+		
+		Relation to the `polygamma` function:
+		
+		>>> m = 3
+		>>> x = 1.25
+		>>> polygamma(m, x)
+		array(2.782144009188397)
+		>>> (-1)**(m+1) * factorial(m) * zeta(m+1, x)
+		2.7821440091883969
 	**/
 	static public function zeta(x:Dynamic, ?q:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -10535,11 +10926,41 @@ package scipy.special;
 		
 		.. math:: \zeta(x) = \sum_{k=2}^{\infty} 1 / k^x,
 		
-		where ``x > 1``.
+		where ``x > 1``.  For ``x < 1``, the analytic continuation is computed.
+		
+		Because of limitations of the numerical algorithm, ``zetac(x)`` returns
+		`nan` for `x` less than -30.8148.
+		
+		Parameters
+		----------
+		x : array_like of float
+		    Values at which to compute zeta(x) - 1 (must be real).
+		
+		Returns
+		-------
+		out : array_like
+		    Values of zeta(x) - 1.
 		
 		See Also
 		--------
 		zeta
+		
+		Examples
+		--------
+		>>> from scipy.special import zetac, zeta
+		
+		Some special values:
+		
+		>>> zetac(2), np.pi**2/6 - 1
+		(0.64493406684822641, 0.6449340668482264)
+		
+		>>> zetac(-1), -1.0/12 - 1
+		(-1.0833333333333333, -1.0833333333333333)
+		
+		Compare ``zetac(x)`` to ``zeta(x) - 1`` for large `x`:
+		
+		>>> zetac(60), zeta(60) - 1
+		(8.673617380119933e-19, 0.0)
 	**/
 	static public function zetac(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.coordinator;
 @:pythonImport("tensorflow.python.training.coordinator", "Coordinator") extern class Coordinator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -70,7 +70,7 @@ package tensorflow.python.training.coordinator;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +121,7 @@ package tensorflow.python.training.coordinator;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -144,6 +144,8 @@ package tensorflow.python.training.coordinator;
 		  ex or None.
 	**/
 	public function _filter_exception(ex:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Clears the stop flag.
 		
@@ -237,8 +239,8 @@ package tensorflow.python.training.coordinator;
 		```python
 		try:
 		  ...body...
-		exception Exception as ex:
-		  coord.request_stop(ex)
+		except:
+		  coord.request_stop(sys.exc_info())
 		```
 		
 		Yields:

@@ -103,12 +103,10 @@ package scipy.linalg._decomp_qz;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -119,8 +117,37 @@ package scipy.linalg._decomp_qz;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -156,7 +183,6 @@ package scipy.linalg._decomp_qz;
 		    considered to lie outside the unit circle. For the eigenvalue
 		    ``(alpha, beta) = (0, 0)`` the predefined sorting functions
 		    all return `False`.
-		
 		output : str {'real','complex'}, optional
 		    Construct the real or complex QZ decomposition for real matrices.
 		    Default is 'real'.
@@ -192,12 +218,24 @@ package scipy.linalg._decomp_qz;
 		that would result if the 2-by-2 diagonal blocks of the real generalized
 		Schur form of (A,B) were further reduced to triangular form using complex
 		unitary transformations. If ALPHAI(j) is zero, then the j-th eigenvalue is
-		real; if positive, then the ``j``-th and ``(j+1)``-st eigenvalues are a complex
-		conjugate pair, with ``ALPHAI(j+1)`` negative.
+		real; if positive, then the ``j``-th and ``(j+1)``-st eigenvalues are a
+		complex conjugate pair, with ``ALPHAI(j+1)`` negative.
 		
 		See also
 		--------
 		qz
+		
+		Examples
+		--------
+		>>> from scipy.linalg import ordqz
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> B = np.array([[0, 6, 0, 0], [5, 0, 2, 1], [5, 2, 6, 6], [4, 7, 7, 7]])
+		>>> AA, BB, alpha, beta, Q, Z = ordqz(A, B, sort='lhp')
+		
+		Since we have sorted for left half plane eigenvalues, negatives come first
+		
+		>>> (alpha/beta).real < 0
+		array([ True,  True, False, False], dtype=bool)
 	**/
 	static public function ordqz(A:Dynamic, B:Dynamic, ?sort:Dynamic, ?output:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

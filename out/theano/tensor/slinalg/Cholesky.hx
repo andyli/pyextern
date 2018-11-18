@@ -1,7 +1,17 @@
 /* This file is generated, do not edit! */
 package theano.tensor.slinalg;
 @:pythonImport("theano.tensor.slinalg", "Cholesky") extern class Cholesky {
-	public function L_op(inputs:Dynamic, outputs:Dynamic, output_grads:Dynamic):Dynamic;
+	/**
+		Cholesky decomposition reverse-mode gradient update.
+		
+		Symbolic expression for reverse-mode Cholesky gradient taken from [#]_
+		
+		References
+		----------
+		.. [#] I. Murray, "Differentiation of the Cholesky decomposition",
+		   http://arxiv.org/abs/1602.07527
+	**/
+	public function L_op(inputs:Dynamic, outputs:Dynamic, gradients:Dynamic):Dynamic;
 	/**
 		This method is primarily used by tensor.Rop
 		
@@ -89,18 +99,18 @@ package theano.tensor.slinalg;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?lower:Dynamic):Dynamic;
+	public function ___init__(?lower:Dynamic, ?on_error:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?lower:Dynamic):Void;
+	public function new(?lower:Dynamic, ?on_error:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -150,7 +160,7 @@ package theano.tensor.slinalg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -190,10 +200,10 @@ package theano.tensor.slinalg;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	/**
 		Optional: return a code string specific to the apply to be
 		inserted in the struct cleanup code.
@@ -489,7 +499,7 @@ package theano.tensor.slinalg;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -553,17 +563,7 @@ package theano.tensor.slinalg;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
-	/**
-		Cholesky decomposition reverse-mode gradient update.
-		
-		Symbolic expression for reverse-mode Cholesky gradient taken from [0]_
-		
-		References
-		----------
-		.. [0] I. Murray, "Differentiation of the Cholesky decomposition",
-		   http://arxiv.org/abs/1602.07527
-	**/
-	public function grad(inputs:Dynamic, gradients:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	public function infer_shape(node:Dynamic, shapes:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
@@ -653,7 +653,7 @@ package theano.tensor.slinalg;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

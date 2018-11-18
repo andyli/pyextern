@@ -3,11 +3,11 @@ package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "EngFormatter") extern class EngFormatter {
 	static public var ENG_PREFIXES : Dynamic;
 	/**
-		Return the format for tick value `x` at position pos.
+		Return the format for tick value *x* at position pos.
 		``pos=None`` indicates an unspecified location.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -44,21 +44,67 @@ package matplotlib.ticker;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		unit : str (default: "")
+		    Unit symbol to use, suitable for use with single-letter
+		    representations of powers of 1000. For example, 'Hz' or 'm'.
+		
+		places : int (default: None)
+		    Precision with which to display the number, specified in
+		    digits after the decimal point (there will be between one
+		    and three digits before the decimal point). If it is None,
+		    the formatting falls back to the floating point format '%g',
+		    which displays up to 6 *significant* digits, i.e. the equivalent
+		    value for *places* varies between 0 and 5 (inclusive).
+		
+		sep : str (default: " ")
+		    Separator used between the value and the prefix/unit. For
+		    example, one get '3.14 mV' if ``sep`` is " " (default) and
+		    '3.14mV' if ``sep`` is "". Besides the default behavior, some
+		    other useful options may be:
+		
+		    * ``sep=""`` to append directly the prefix/unit to the value;
+		    * ``sep="\N{THIN SPACE}"`` (``U+2009``);
+		    * ``sep="\N{NARROW NO-BREAK SPACE}"`` (``U+202F``);
+		    * ``sep="\N{NO-BREAK SPACE}"`` (``U+00A0``).
 	**/
 	@:native("__init__")
-	public function ___init__(?unit:Dynamic, ?places:Dynamic):Dynamic;
+	public function ___init__(?unit:Dynamic, ?places:Dynamic, ?sep:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		unit : str (default: "")
+		    Unit symbol to use, suitable for use with single-letter
+		    representations of powers of 1000. For example, 'Hz' or 'm'.
+		
+		places : int (default: None)
+		    Precision with which to display the number, specified in
+		    digits after the decimal point (there will be between one
+		    and three digits before the decimal point). If it is None,
+		    the formatting falls back to the floating point format '%g',
+		    which displays up to 6 *significant* digits, i.e. the equivalent
+		    value for *places* varies between 0 and 5 (inclusive).
+		
+		sep : str (default: " ")
+		    Separator used between the value and the prefix/unit. For
+		    example, one get '3.14 mV' if ``sep`` is " " (default) and
+		    '3.14mV' if ``sep`` is "". Besides the default behavior, some
+		    other useful options may be:
+		
+		    * ``sep=""`` to append directly the prefix/unit to the value;
+		    * ``sep="\N{THIN SPACE}"`` (``U+2009``);
+		    * ``sep="\N{NARROW NO-BREAK SPACE}"`` (``U+202F``);
+		    * ``sep="\N{NO-BREAK SPACE}"`` (``U+00A0``).
 	**/
-	public function new(?unit:Dynamic, ?places:Dynamic):Void;
+	public function new(?unit:Dynamic, ?places:Dynamic, ?sep:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,7 +155,7 @@ package matplotlib.ticker;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -143,7 +189,8 @@ package matplotlib.ticker;
 	public function format_data_short(value:Dynamic):Dynamic;
 	/**
 		Formats a number in engineering notation, appending a letter
-		representing the power of 1000 of the original number. Some examples:
+		representing the power of 1000 of the original number.
+		Some examples:
 		
 		>>> format_eng(0)       # for self.places = 0
 		'0'
@@ -152,13 +199,7 @@ package matplotlib.ticker;
 		'1.0 M'
 		
 		>>> format_eng("-1e-6") # for self.places = 2
-		u'-1.00 μ'
-		
-		@param num: the value to represent
-		@type num: either a numeric value or a string that can be converted to
-		           a numeric value (as per decimal.Decimal constructor)
-		
-		@return: engineering formatted string
+		'-1.00 μ'
 	**/
 	public function format_eng(num:Dynamic):Dynamic;
 	public function get_offset():Dynamic;

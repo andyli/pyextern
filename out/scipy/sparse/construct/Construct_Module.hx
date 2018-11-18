@@ -199,7 +199,7 @@ package scipy.sparse.construct;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 		>>> sparse.eye(3, dtype=np.int8)
-		<3x3 sparse matrix of type '<type 'numpy.int8'>'
+		<3x3 sparse matrix of type '<class 'numpy.int8'>'
 		    with 3 stored elements (1 diagonals) in DIAgonal format>
 	**/
 	static public function eye(m:Dynamic, ?n:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?format:Dynamic):Dynamic;
@@ -275,7 +275,7 @@ package scipy.sparse.construct;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 		>>> identity(3, dtype='int8', format='dia')
-		<3x3 sparse matrix of type '<type 'numpy.int8'>'
+		<3x3 sparse matrix of type '<class 'numpy.int8'>'
 		        with 3 stored elements (1 diagonals) in DIAgonal format>
 	**/
 	static public function identity(n:Dynamic, ?dtype:Dynamic, ?format:Dynamic):Dynamic;
@@ -283,6 +283,33 @@ package scipy.sparse.construct;
 		Is x either a scalar, an array scalar, or a 0-dim array?
 	**/
 	static public function isscalarlike(x:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function issparse(x:Dynamic):Dynamic;
 	/**
 		kronecker product of sparse matrices A and B
@@ -364,9 +391,30 @@ package scipy.sparse.construct;
 		    Random number generator or random seed. If not given, the singleton
 		    numpy.random will be used.
 		
+		Returns
+		-------
+		res : sparse matrix
+		
 		Notes
 		-----
 		Only float types are supported for now.
+		
+		See Also
+		--------
+		scipy.sparse.random : Similar function that allows a user-specified random
+		    data source.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import rand
+		>>> matrix = rand(3, 4, density=0.25, format="csr", random_state=42)
+		>>> matrix
+		<3x4 sparse matrix of type '<class 'numpy.float64'>'
+		   with 3 stored elements in Compressed Sparse Row format>
+		>>> matrix.todense()
+		matrix([[ 0.        ,  0.59685016,  0.779691  ,  0.        ],
+		        [ 0.        ,  0.        ,  0.        ,  0.44583275],
+		        [ 0.        ,  0.        ,  0.        ,  0.        ]])
 	**/
 	static public function rand(m:Dynamic, n:Dynamic, ?density:Dynamic, ?format:Dynamic, ?dtype:Dynamic, ?random_state:Dynamic):Dynamic;
 	/**
@@ -398,6 +446,10 @@ package scipy.sparse.construct;
 		    sampled using the same random state as is used for sampling
 		    the sparsity structure.
 		
+		Returns
+		-------
+		res : sparse matrix
+		
 		Examples
 		--------
 		>>> from scipy.sparse import random
@@ -413,6 +465,19 @@ package scipy.sparse.construct;
 		array([[ 36.,   0.,  33.,   0.],   # random
 		       [  0.,   0.,   0.,   0.],
 		       [  0.,   0.,  36.,   0.]])
+		
+		>>> from scipy.sparse import random
+		>>> from scipy.stats import rv_continuous
+		>>> class CustomDistribution(rv_continuous):
+		...     def _rvs(self, *args, **kwargs):
+		...         return self._random_state.randn(*self._size)
+		>>> X = CustomDistribution(seed=2906)
+		>>> Y = X()  # get a frozen version of the distribution
+		>>> S = random(3, 4, density=0.25, random_state=2906, data_rvs=Y.rvs)
+		>>> S.A
+		array([[ 0.        ,  1.9467163 ,  0.13569738, -0.81205367],
+		       [ 0.        ,  0.        ,  0.        ,  0.        ],
+		       [ 0.        ,  0.        ,  0.        ,  0.        ]])
 		
 		Notes
 		-----

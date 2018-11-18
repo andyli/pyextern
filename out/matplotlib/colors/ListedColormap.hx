@@ -19,11 +19,16 @@ package matplotlib.colors;
 		
 		Returns
 		-------
-		Tuple of RGBA values if X is scalar, othewise an array of
+		Tuple of RGBA values if X is scalar, otherwise an array of
 		RGBA values with a shape of ``X.shape + (4, )``.
 	**/
 	public function __call__(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Create new object with the same class, update attributes
+		        
+	**/
+	public function __copy__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -112,7 +117,7 @@ package matplotlib.colors;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -163,7 +168,7 @@ package matplotlib.colors;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -178,6 +183,21 @@ package matplotlib.colors;
 	public function _resample(lutsize:Dynamic):Dynamic;
 	public function _set_extremes():Dynamic;
 	public function is_gray():Dynamic;
+	/**
+		Make a reversed instance of the Colormap.
+		
+		Parameters
+		----------
+		name : str, optional
+		    The name for the reversed colormap. If it's None the
+		    name will be the name of the parent colormap + "_r".
+		
+		Returns
+		-------
+		ListedColormap
+		    A reversed instance of the colormap.
+	**/
+	public function reversed(?name:Dynamic):Dynamic;
 	/**
 		Set color to be used for masked values.
 		        

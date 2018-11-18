@@ -10,6 +10,35 @@ package pandas.core.indexes.period;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Ensure that we have an index from some index-like object
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           labels=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		_ensure_index_from_sequences
+	**/
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _field_accessor(name:Dynamic, alias:Dynamic, ?docstring:Dynamic):Dynamic;
@@ -25,8 +54,8 @@ package pandas.core.indexes.period;
 		-------
 		return : tuple of base frequency code and stride (mult)
 		
-		Example
-		-------
+		Examples
+		--------
 		>>> get_freq_code('3D')
 		(6000, 3)
 		
@@ -36,28 +65,30 @@ package pandas.core.indexes.period;
 		>>> get_freq_code(('D', 3))
 		(6000, 3)
 	**/
-	static public function _gfc(freqstr:Dynamic):Dynamic;
+	static public function _gfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _index_doc_kwargs : Dynamic;
 	static public var _index_shared_docs : Dynamic;
 	static public function _make_field_arrays(?fields:python.VarArgs<Dynamic>):Dynamic;
 	static public function _new_PeriodIndex(cls:Dynamic, ?d:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Wrap comparison operations to convert datetime-like to datetime64
+		Wrap comparison operations to convert Period-like to PeriodDtype
 	**/
-	static public function _period_index_cmp(opname:Dynamic, ?nat_result:Dynamic):Dynamic;
+	static public function _period_index_cmp(opname:Dynamic, cls:Dynamic):Dynamic;
 	static public function _quarter_to_myear(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _range_from_fields(?year:Dynamic, ?month:Dynamic, ?quarter:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic, ?freq:Dynamic):Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _validate_end_alias(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function delta_to_nanoseconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function
+		Decorator to deprecate a keyword argument of a function.
 		
 		Parameters
 		----------
 		old_arg_name : str
 		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of preferred argument in function
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -73,12 +104,15 @@ package pandas.core.indexes.period;
 		...
 		>>> f(columns='should work ok')
 		should work ok
+		
 		>>> f(cols='should raise warning')
 		FutureWarning: cols is deprecated, use columns instead
 		  warnings.warn(msg, FutureWarning)
 		should raise warning
+		
 		>>> f(cols='should error', columns="can't pass do both")
 		TypeError: Can only specify 'cols' or 'columns', not both
+		
 		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
 		... def f(new=False):
 		...     print('yes!' if new else 'no!')
@@ -87,17 +121,41 @@ package pandas.core.indexes.period;
 		FutureWarning: old='yes' is deprecated, use new=True instead
 		  warnings.warn(msg, FutureWarning)
 		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public function dt64arr_to_periodarr(data:Dynamic, freq:Dynamic, tz:Dynamic):Dynamic;
 	static public function get_period_field_arr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Effeciently infer the type of a passed val, or list-like
+		Efficiently infer the type of a passed val, or list-like
 		array of values. Return a string describing the type.
 		
 		Parameters
 		----------
 		value : scalar, list, ndarray, or pandas type
+		skipna : bool, default False
+		    Ignore NaN values when inferring the type. The default of ``False``
+		    will be deprecated in a later version of pandas.
+		
+		    .. versionadded:: 0.21.0
 		
 		Returns
 		-------
@@ -111,6 +169,7 @@ package pandas.core.indexes.period;
 		- integer
 		- mixed-integer
 		- mixed-integer-float
+		- decimal
 		- complex
 		- categorical
 		- boolean
@@ -139,6 +198,12 @@ package pandas.core.indexes.period;
 		>>> infer_dtype(['foo', 'bar'])
 		'string'
 		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=True)
+		'string'
+		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=False)
+		'mixed'
+		
 		>>> infer_dtype([b'foo', b'bar'])
 		'bytes'
 		
@@ -153,6 +218,9 @@ package pandas.core.indexes.period;
 		
 		>>> infer_dtype(['a', 1])
 		'mixed-integer'
+		
+		>>> infer_dtype([Decimal(1), Decimal(2.0)])
+		'decimal'
 		
 		>>> infer_dtype([True, False])
 		'boolean'
@@ -207,6 +275,39 @@ package pandas.core.indexes.period;
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether the provided array or dtype is of the datetime64 dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array or dtype is of the datetime64 dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64_any_dtype(str)
+		False
+		>>> is_datetime64_any_dtype(int)
+		False
+		>>> is_datetime64_any_dtype(np.datetime64)  # can be tz-naive
+		True
+		>>> is_datetime64_any_dtype(DatetimeTZDtype("ns", "US/Eastern"))
+		True
+		>>> is_datetime64_any_dtype(np.array(['a', 'b']))
+		False
+		>>> is_datetime64_any_dtype(np.array([1, 2]))
+		False
+		>>> is_datetime64_any_dtype(np.array([], dtype=np.datetime64))
+		True
+		>>> is_datetime64_any_dtype(pd.DatetimeIndex([1, 2, 3],
+		                            dtype=np.datetime64))
+		True
+	**/
+	static public function is_datetime64_any_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether an array-like or dtype is of the datetime64 dtype.
 		
 		Parameters
@@ -233,38 +334,6 @@ package pandas.core.indexes.period;
 		False
 	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is of
-		          a DatetimeTZDtype dtype.
-		
-		Examples
-		--------
-		>>> is_datetime64tz_dtype(object)
-		False
-		>>> is_datetime64tz_dtype([1, 2, 3])
-		False
-		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
-		False
-		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
-		True
-		
-		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
-		>>> s = pd.Series([], dtype=dtype)
-		>>> is_datetime64tz_dtype(dtype)
-		True
-		>>> is_datetime64tz_dtype(s)
-		True
-	**/
-	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
@@ -335,32 +404,6 @@ package pandas.core.indexes.period;
 	**/
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Check whether an array-like or dtype is of the object dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is of the object dtype.
-		
-		Examples
-		--------
-		>>> is_object_dtype(object)
-		True
-		>>> is_object_dtype(int)
-		False
-		>>> is_object_dtype(np.array([], dtype=object))
-		True
-		>>> is_object_dtype(np.array([], dtype=int))
-		False
-		>>> is_object_dtype([1, 2, 3])
-		False
-	**/
-	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
 		Check whether an array-like or dtype is of the Period dtype.
 		
 		Parameters
@@ -399,33 +442,13 @@ package pandas.core.indexes.period;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Check whether an array-like or dtype is of the timedelta64 dtype.
-		
-		Parameters
-		----------
-		arr_or_dtype : array-like
-		    The array-like or dtype to check.
-		
-		Returns
-		-------
-		boolean : Whether or not the array-like or dtype is
-		          of the timedelta64 dtype.
-		
-		Examples
-		--------
-		>>> is_timedelta64_dtype(object)
-		False
-		>>> is_timedelta64_dtype(np.timedelta64)
-		True
-		>>> is_timedelta64_dtype([1, 2, 3])
-		False
-		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
-		True
+		vectorized version of isleapyear; NaT evaluates as False
 	**/
-	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function isleapyear_arr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Converts input into a pandas only dtype object or a numpy dtype object.
 		
@@ -456,26 +479,53 @@ package pandas.core.indexes.period;
 		-------
 		datetime, datetime/dateutil.parser._result, str
 	**/
-	static public function parse_time_string(arg:Dynamic, ?freq:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic):Dynamic;
+	static public function parse_time_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a fixed frequency datetime index, with day (calendar) as the default
+		Return a fixed frequency PeriodIndex, with day (calendar) as the default
 		frequency
-		
 		
 		Parameters
 		----------
-		start : starting value, period-like, optional
-		end : ending value, period-like, optional
-		periods : int, default None
-		    Number of periods in the index
-		freq : str/DateOffset, default 'D'
+		start : string or period-like, default None
+		    Left bound for generating periods
+		end : string or period-like, default None
+		    Right bound for generating periods
+		periods : integer, default None
+		    Number of periods to generate
+		freq : string or DateOffset, default 'D' (calendar daily)
 		    Frequency alias
-		name : str, default None
-		    Name for the resulting PeriodIndex
+		name : string, default None
+		    Name of the resulting PeriodIndex
+		
+		Notes
+		-----
+		Of the three parameters: ``start``, ``end``, and ``periods``, exactly two
+		must be specified.
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Returns
 		-------
 		prng : PeriodIndex
+		
+		Examples
+		--------
+		
+		>>> pd.period_range(start='2017-01-01', end='2018-01-01', freq='M')
+		PeriodIndex(['2017-01', '2017-02', '2017-03', '2017-04', '2017-05',
+		             '2017-06', '2017-06', '2017-07', '2017-08', '2017-09',
+		             '2017-10', '2017-11', '2017-12', '2018-01'],
+		            dtype='period[M]', freq='M')
+		
+		If ``start`` or ``end`` are ``Period`` objects, they will be used as anchor
+		endpoints for a ``PeriodIndex`` with frequency matching that of the
+		``period_range`` constructor.
+		
+		>>> pd.period_range(start=pd.Period('2017Q1', freq='Q'),
+		...                 end=pd.Period('2017Q2', freq='Q'), freq='M')
+		PeriodIndex(['2017-03', '2017-04', '2017-05', '2017-06'],
+		            dtype='period[M]', freq='M')
 	**/
 	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
 	static public function pnow(?freq:Dynamic):Dynamic;

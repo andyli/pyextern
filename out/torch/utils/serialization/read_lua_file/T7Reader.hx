@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.utils.serialization.read_lua_file;
 @:pythonImport("torch.utils.serialization.read_lua_file", "T7Reader") extern class T7Reader {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -68,7 +68,7 @@ package torch.utils.serialization.read_lua_file;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,14 +119,14 @@ package torch.utils.serialization.read_lua_file;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _can_be_list(table:Dynamic):Dynamic;
 	public function _read(fmt:Dynamic):Dynamic;
-	public function memoize_index():Dynamic;
+	static public function memoize_index(fn:Dynamic):Dynamic;
 	public function read():Dynamic;
 	public function read_boolean():Dynamic;
 	public function read_double():Dynamic;

@@ -52,7 +52,6 @@ package numpy.linalg._umath_linalg;
 		
 		eigvals on the last two dimension and broadcast to the rest. 
 		Results in a vector of eigenvalues. 
-		    "(m,m)->(m),(m,m)" 
 	**/
 	static public function eigvals(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -79,6 +78,20 @@ package numpy.linalg._umath_linalg;
 		    "(m,m)->(m,m)" 
 	**/
 	static public function inv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		lstsq_m(x1, x2, x3[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		least squares on the last two dimensions and broadcast to the rest. 
+		For m <= n. 
+	**/
+	static public function lstsq_m(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		lstsq_n(x1, x2, x3[, out1, out2, out3, out4], / [, out=(None, None, None, None)], *, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		least squares on the last two dimensions and broadcast to the rest. 
+		For m >= n, meaning that residuals are produced. 
+	**/
+	static public function lstsq_n(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		slogdet(x[, out1, out2], / [, out=(None, None)], *, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		

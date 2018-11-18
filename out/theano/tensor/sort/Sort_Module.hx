@@ -9,6 +9,12 @@ package theano.tensor.sort;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Checks if a tensor variable is scalar, raise ValueError otherwise
+	**/
+	static public function _check_tensor_is_scalar(_var:Dynamic):Dynamic;
+	static public function _topk_py_impl(op:Dynamic, x:Dynamic, k:Dynamic, axis:Dynamic, idx_dtype:Dynamic):Dynamic;
+	static public function _variable_is_none(_var:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function arange(start:Dynamic, ?stop:Dynamic, ?step:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
@@ -20,7 +26,57 @@ package theano.tensor.sort;
 		order.
 	**/
 	static public function argsort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	/**
+		Returns the indices of k-largest elements along an axis.
+		
+		Parameters
+		----------
+		
+		x: tensor instance
+		
+		kth: integer constant/variable
+		    Must not be 0. If negative, gives k-smallest elements instead.
+		
+		sorted: bool
+		    NOTE: NOT IMPLEMENTED YET, USE ``False`` FOR NOW.
+		    Defaults to ``True``
+		
+		    If True, the result array of corresponding indices would be sorted in descending order.
+		
+		
+		axis: integer, tuple/list of integers, or ``None``
+		    Upon which axis shall the operation be performed on.
+		    If ``None``, works on flattened array.
+		
+		idx_dtype: string
+		    Specify output dtype, defaults to ``int64``, must be integer type.
+		
+		Returns
+		-------
+		Tensor variable with dtype specified in `idx_dtype`.
+		
+		Notes
+		-----
+		- ``sorted=True`` is not supported yet.
+		
+		- If the top-k-th value is not unique, we cannot guarantee the output
+		  indices are deterministically chosen.
+	**/
+	static public function argtopk(x:Dynamic, kth:Dynamic, ?axis:Dynamic, ?sorted:Dynamic, ?idx_dtype:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Return an un-computable symbolic variable of type `x.type`.
+		
+		If any call to tensor.grad results in an expression containing this
+		un-computable variable, an exception (GradUndefinedError) will be
+		raised indicating that the gradient on the
+		`x_pos`'th input of `op` is mathematically undefined. Likewise if
+		any call to theano.function involves this variable.
+		
+		Optionally adds a comment to the exception explaining why this
+		gradient is not defined.
+	**/
+	static public function grad_undefined(op:Dynamic, x_pos:Dynamic, x:Dynamic, ?comment:Dynamic):Dynamic;
 	/**
 		elementwise multiplication
 		
@@ -70,6 +126,26 @@ package theano.tensor.sort;
 	static public function mul(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
+		Return x with the given subtensor overwritten by y.
+		
+		Parameters
+		----------
+		x
+		    Symbolic variable for the lvalue of = operation.
+		y
+		    Symbolic variable for the rvalue of = operation.
+		tolerate_inplace_aliasing
+		    See inc_subtensor for documentation.
+		
+		Examples
+		--------
+		To replicate the numpy expression "r[10:] = 5", type
+		
+		>>> r = ivector()
+		>>> new_r = set_subtensor(r[10:], 5)
+	**/
+	static public function set_subtensor(x:Dynamic, y:Dynamic, ?inplace:Dynamic, ?tolerate_inplace_aliasing:Dynamic):Dynamic;
+	/**
 		Parameters
 		----------
 		a : Tensor
@@ -90,4 +166,48 @@ package theano.tensor.sort;
 		    A sorted copy of an array.
 	**/
 	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	/**
+		Returns the k-largest elements along an axis.
+		
+		Parameters
+		----------
+		
+		x: tensor instance
+		
+		kth: integer constant/variable
+		    Must not be 0. If negative, gives k-smallest elements instead.
+		
+		axis: integer or ``None``
+		    Upon which axis shall the operation be performed on.
+		    If ``None``, works on flattened array.
+		
+		sorted: bool
+		    NOTE: NOT IMPLEMENTED YET, USE ``False`` FOR NOW.
+		    Defaults to ``True``
+		
+		    If True, the result array would be sorted in descending order.
+		
+		idx_dtype: string
+		    Specify output dtype used in indices, defaults to ``int64``, must be integer type.
+		    This option is here because indices are needed for gradient.
+		
+		Returns
+		-------
+		Tensor variable with same dtype as `x`.
+		
+		Notes
+		-----
+		- ``sorted=True`` is not supported yet.
+	**/
+	static public function topk(x:Dynamic, kth:Dynamic, ?axis:Dynamic, ?sorted:Dynamic, ?idx_dtype:Dynamic):Dynamic;
+	/**
+		Returns the results of both topk() and argtopk() in one Op.
+		
+		See the respective documentation for details.
+		
+		Returns
+		-------
+		tuple: (values, indices)
+	**/
+	static public function topk_and_argtopk(x:Dynamic, kth:Dynamic, ?axis:Dynamic, ?sorted:Dynamic, ?idx_dtype:Dynamic):Dynamic;
 }

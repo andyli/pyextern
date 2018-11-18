@@ -15,14 +15,14 @@ package tensorflow.python.ops.distributions.distribution;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __base__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __base__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __bases__ : Dynamic;
 	static public var __basicsize__ : Dynamic;
 	/**
 		Call self as a function.
 	**/
 	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -75,11 +75,11 @@ package tensorflow.python.ops.distributions.distribution;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Override for isinstance(instance, cls).
 	**/
-	public function __instancecheck__(instance:Dynamic):Dynamic;
+	static public function __instancecheck__(cls:Dynamic, instance:Dynamic):Dynamic;
 	static public var __itemsize__ : Dynamic;
 	/**
 		Return self<=value.
@@ -124,7 +124,7 @@ package tensorflow.python.ops.distributions.distribution;
 		__prepare__() -> dict
 		used to create the namespace for the class statement
 	**/
-	static public function __prepare__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __prepare__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __qualname__ : Dynamic;
 	/**
 		helper for pickle
@@ -154,7 +154,7 @@ package tensorflow.python.ops.distributions.distribution;
 	/**
 		Override for issubclass(subclass, cls).
 	**/
-	public function __subclasscheck__(subclass:Dynamic):Dynamic;
+	static public function __subclasscheck__(cls:Dynamic, subclass:Dynamic):Dynamic;
 	/**
 		__subclasses__() -> list of immediate subclasses
 	**/
@@ -167,14 +167,14 @@ package tensorflow.python.ops.distributions.distribution;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __text_signature__ : Dynamic;
 	static public var __weakrefoffset__ : Dynamic;
 	static public var _abc_invalidation_counter : Dynamic;
 	/**
 		Debug helper to print the ABC registry.
 	**/
-	public function _dump_registry(?file:Dynamic):Dynamic;
+	static public function _dump_registry(cls:Dynamic, ?file:Dynamic):Dynamic;
 	/**
 		mro() -> list
 		return a type's method resolution order
@@ -185,5 +185,5 @@ package tensorflow.python.ops.distributions.distribution;
 		
 		Returns the subclass, to allow usage as a class decorator.
 	**/
-	public function register(subclass:Dynamic):Dynamic;
+	static public function register(cls:Dynamic, subclass:Dynamic):Dynamic;
 }

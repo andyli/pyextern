@@ -20,50 +20,53 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `alpha` is::
+		The probability density function for `alpha` is:
 		
-		    alpha.pdf(x, a) = 1/(x**2*Phi(a)*sqrt(2*pi)) * exp(-1/2 * (a-1/x)**2),
+		.. math::
+		
+		    f(x, a) = \frac{1}{x^2 \Phi(a) \sqrt{2\pi}} *
+		              \exp(-\frac{1}{2} (a-1/x)^2)
 		
 		where ``Phi(alpha)`` is the normal CDF, ``x > 0``, and ``a > 0``.
 		
@@ -114,7 +117,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -128,52 +131,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `anglit` is::
+		The probability density function for `anglit` is:
 		
-		    anglit.pdf(x) = sin(2*x + pi/2) = cos(2*x),
+		.. math::
 		
-		for ``-pi/4 <= x <= pi/4``.
+		    f(x) = \sin(2x + \pi/2) = \cos(2x)
+		
+		for :math:`-\pi/4 \le x \le \pi/4`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -220,7 +225,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -234,52 +239,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `arcsine` is::
+		The probability density function for `arcsine` is:
 		
-		    arcsine.pdf(x) = 1/(pi*sqrt(x*(1-x)))
+		.. math::
 		
-		for ``0 < x < 1``.
+		    f(x) = \frac{1}{\pi \sqrt{x (1-x)}}
+		
+		for :math:`0 \le x \le 1`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -326,7 +333,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -340,56 +347,64 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(chi, loc=0, scale=1, size=1, random_state=None)``
+		rvs(chi, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, chi, loc=0, scale=1)``
+		pdf(x, chi, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, chi, loc=0, scale=1)``
+		logpdf(x, chi, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, chi, loc=0, scale=1)``
+		cdf(x, chi, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, chi, loc=0, scale=1)``
+		logcdf(x, chi, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, chi, loc=0, scale=1)``
+		sf(x, chi, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, chi, loc=0, scale=1)``
+		logsf(x, chi, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, chi, loc=0, scale=1)``
+		ppf(q, chi, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, chi, loc=0, scale=1)``
+		isf(q, chi, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, chi, loc=0, scale=1)``
+		moment(n, chi, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(chi, loc=0, scale=1, moments='mv')``
+		stats(chi, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(chi, loc=0, scale=1)``
+		entropy(chi, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, chi, loc=0, scale=1)``
+		fit(data, chi, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(chi,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(chi,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(chi, loc=0, scale=1)``
+		median(chi, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(chi, loc=0, scale=1)``
+		mean(chi, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(chi, loc=0, scale=1)``
+		var(chi, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(chi, loc=0, scale=1)``
+		std(chi, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, chi, loc=0, scale=1)``
+		interval(alpha, chi, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `argus` is::
+		The probability density function for `argus` is:
 		
-		    argus.pdf(x, chi) = chi**3 / (sqrt(2*pi) * Psi(chi)) * x * sqrt(1-x**2) * exp(- 0.5 * chi**2 * (1 - x**2))
+		.. math::
+		
+		    f(x, \chi) = \frac{\chi^3}{\sqrt{2\pi} \Psi(\chi)} x \sqrt{1-x^2}
+		                 \exp(- 0.5 \chi^2 (1 - x^2))
 		
 		    where:
-		             Psi(chi) = Phi(chi) - chi * phi(chi) - 1/2
-		             with Phi and phi being the CDF and PDF of a standard normal distribution, respectively.
 		
-		`argus` takes ``chi`` as shape a parameter.
+		.. math::
+		
+		    \Psi(\chi) = \Phi(\chi) - \chi \phi(\chi) - 1/2
+		
+		with :math:`\Phi` and :math:`\phi` being the CDF and PDF of a standard
+		normal distribution, respectively.
+		
+		`argus` takes :math:`\chi` as shape a parameter.
 		
 		References
 		----------
@@ -444,7 +459,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -458,51 +473,53 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(p, loc=0, size=1, random_state=None)``
+		rvs(p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, p, loc=0)``
+		pmf(k, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, p, loc=0)``
+		logpmf(k, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, p, loc=0)``
+		cdf(k, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, p, loc=0)``
+		logcdf(k, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, p, loc=0)``
+		sf(k, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, p, loc=0)``
+		logsf(k, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, p, loc=0)``
+		ppf(q, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, p, loc=0)``
+		isf(q, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(p, loc=0, moments='mv')``
+		stats(p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(p, loc=0)``
+		entropy(p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(p, loc=0)``
+		median(p, loc=0)
 		    Median of the distribution.
-		``mean(p, loc=0)``
+		mean(p, loc=0)
 		    Mean of the distribution.
-		``var(p, loc=0)``
+		var(p, loc=0)
 		    Variance of the distribution.
-		``std(p, loc=0)``
+		std(p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, p, loc=0)``
+		interval(alpha, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `bernoulli` is::
+		The probability mass function for `bernoulli` is:
 		
-		   bernoulli.pmf(k) = 1-p  if k = 0
-		                    = p    if k = 1
+		.. math::
 		
-		for ``k`` in ``{0, 1}``.
+		   f(k) = \begin{cases}1-p  &\text{if } k = 0\\
+		                       p    &\text{if } k = 1\end{cases}
 		
-		`bernoulli` takes ``p`` as shape parameter.
+		for :math:`k` in :math:`\{0, 1\}`.
+		
+		`bernoulli` takes :math:`p` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -559,57 +576,58 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, loc=0, scale=1)``
+		pdf(x, a, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, loc=0, scale=1)``
+		logpdf(x, a, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, loc=0, scale=1)``
+		cdf(x, a, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, loc=0, scale=1)``
+		logcdf(x, a, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, loc=0, scale=1)``
+		sf(x, a, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, loc=0, scale=1)``
+		logsf(x, a, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, loc=0, scale=1)``
+		ppf(q, a, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, loc=0, scale=1)``
+		isf(q, a, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, loc=0, scale=1)``
+		moment(n, a, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, loc=0, scale=1, moments='mv')``
+		stats(a, b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, loc=0, scale=1)``
+		entropy(a, b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, loc=0, scale=1)``
+		fit(data, a, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, loc=0, scale=1)``
+		median(a, b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, loc=0, scale=1)``
+		mean(a, b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, loc=0, scale=1)``
+		var(a, b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, loc=0, scale=1)``
+		std(a, b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, loc=0, scale=1)``
+		interval(alpha, a, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `beta` is::
+		The probability density function for `beta` is:
 		
-		                        gamma(a+b) * x**(a-1) * (1-x)**(b-1)
-		    beta.pdf(x, a, b) = ------------------------------------
-		                                 gamma(a)*gamma(b)
+		.. math::
 		
-		for ``0 < x < 1``, ``a > 0``, ``b > 0``, where ``gamma(z)`` is the gamma
-		function (`scipy.special.gamma`).
+		    f(x, a, b) = \frac{\gamma(a+b) x^{a-1} (1-x)^{b-1}}
+		                      {\gamma(a) \gamma(b)}
 		
-		`beta` takes ``a`` and ``b`` as shape parameters.
+		for :math:`0 < x < 1`, :math:`a > 0`, :math:`b > 0`, where
+		:math:`\gamma(z)` is the gamma function (`scipy.special.gamma`).
+		
+		`beta` takes :math:`a` and :math:`b` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -656,7 +674,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -670,50 +688,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, loc=0, scale=1)``
+		pdf(x, a, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, loc=0, scale=1)``
+		logpdf(x, a, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, loc=0, scale=1)``
+		cdf(x, a, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, loc=0, scale=1)``
+		logcdf(x, a, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, loc=0, scale=1)``
+		sf(x, a, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, loc=0, scale=1)``
+		logsf(x, a, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, loc=0, scale=1)``
+		ppf(q, a, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, loc=0, scale=1)``
+		isf(q, a, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, loc=0, scale=1)``
+		moment(n, a, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, loc=0, scale=1, moments='mv')``
+		stats(a, b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, loc=0, scale=1)``
+		entropy(a, b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, loc=0, scale=1)``
+		fit(data, a, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, loc=0, scale=1)``
+		median(a, b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, loc=0, scale=1)``
+		mean(a, b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, loc=0, scale=1)``
+		var(a, b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, loc=0, scale=1)``
+		std(a, b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, loc=0, scale=1)``
+		interval(alpha, a, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `betaprime` is::
+		The probability density function for `betaprime` is:
 		
-		    betaprime.pdf(x, a, b) = x**(a-1) * (1+x)**(-a-b) / beta(a, b)
+		.. math::
+		
+		    f(x, a, b) = \frac{x^{a-1} (1+x)^{-a-b}}{\beta(a, b)}
 		
 		for ``x > 0``, ``a > 0``, ``b > 0``, where ``beta(a, b)`` is the beta
 		function (see `scipy.special.beta`).
@@ -765,7 +785,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -779,46 +799,48 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(n, p, loc=0, size=1, random_state=None)``
+		rvs(n, p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, n, p, loc=0)``
+		pmf(k, n, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, n, p, loc=0)``
+		logpmf(k, n, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, n, p, loc=0)``
+		cdf(k, n, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, n, p, loc=0)``
+		logcdf(k, n, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, n, p, loc=0)``
+		sf(k, n, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, n, p, loc=0)``
+		logsf(k, n, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, n, p, loc=0)``
+		ppf(q, n, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, n, p, loc=0)``
+		isf(q, n, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(n, p, loc=0, moments='mv')``
+		stats(n, p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(n, p, loc=0)``
+		entropy(n, p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(n, p, loc=0)``
+		median(n, p, loc=0)
 		    Median of the distribution.
-		``mean(n, p, loc=0)``
+		mean(n, p, loc=0)
 		    Mean of the distribution.
-		``var(n, p, loc=0)``
+		var(n, p, loc=0)
 		    Variance of the distribution.
-		``std(n, p, loc=0)``
+		std(n, p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, n, p, loc=0)``
+		interval(alpha, n, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `binom` is::
+		The probability mass function for `binom` is:
 		
-		   binom.pmf(k) = choose(n, k) * p**k * (1-p)**(n-k)
+		.. math::
+		
+		   f(k) = \binom{n}{k} p^k (1-p)^{n-k}
 		
 		for ``k`` in ``{0, 1,..., n}``.
 		
@@ -879,50 +901,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(lambda_, N, loc=0, size=1, random_state=None)``
+		rvs(lambda_, N, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, lambda_, N, loc=0)``
+		pmf(k, lambda_, N, loc=0)
 		    Probability mass function.
-		``logpmf(k, lambda_, N, loc=0)``
+		logpmf(k, lambda_, N, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, lambda_, N, loc=0)``
+		cdf(k, lambda_, N, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, lambda_, N, loc=0)``
+		logcdf(k, lambda_, N, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, lambda_, N, loc=0)``
+		sf(k, lambda_, N, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, lambda_, N, loc=0)``
+		logsf(k, lambda_, N, loc=0)
 		    Log of the survival function.
-		``ppf(q, lambda_, N, loc=0)``
+		ppf(q, lambda_, N, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, lambda_, N, loc=0)``
+		isf(q, lambda_, N, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(lambda_, N, loc=0, moments='mv')``
+		stats(lambda_, N, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(lambda_, N, loc=0)``
+		entropy(lambda_, N, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(lambda_, N), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(lambda_, N), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(lambda_, N, loc=0)``
+		median(lambda_, N, loc=0)
 		    Median of the distribution.
-		``mean(lambda_, N, loc=0)``
+		mean(lambda_, N, loc=0)
 		    Mean of the distribution.
-		``var(lambda_, N, loc=0)``
+		var(lambda_, N, loc=0)
 		    Variance of the distribution.
-		``std(lambda_, N, loc=0)``
+		std(lambda_, N, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, lambda_, N, loc=0)``
+		interval(alpha, lambda_, N, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `boltzmann` is::
+		The probability mass function for `boltzmann` is:
 		
-		    boltzmann.pmf(k) = (1-exp(-lambda_)*exp(-lambda_*k)/(1-exp(-lambda_*N))
+		.. math::
 		
-		for ``k = 0,..., N-1``.
+		    f(k) = (1-\exp(-\lambda) \exp(-\lambda k)/(1-\exp(-\lambda N))
 		
-		`boltzmann` takes ``lambda_`` and ``N`` as shape parameters.
+		for :math:`k = 0,..., N-1`.
+		
+		`boltzmann` takes :math:`\lambda` and :math:`N` as shape parameters.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -979,54 +1003,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `bradford` is::
+		The probability density function for `bradford` is:
 		
-		    bradford.pdf(x, c) = c / (k * (1+c*x)),
+		.. math::
 		
-		for ``0 < x < 1``, ``c > 0`` and ``k = log(1+c)``.
+		    f(x, c) = \frac{c}{k (1+cx)}
 		
-		`bradford` takes ``c`` as a shape parameter.
+		for :math:`0 < x < 1`, :math:`c > 0` and :math:`k = \log(1+c)`.
+		
+		`bradford` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -1073,7 +1099,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -1087,43 +1113,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, d, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, d, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, d, loc=0, scale=1)``
+		pdf(x, c, d, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, d, loc=0, scale=1)``
+		logpdf(x, c, d, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, d, loc=0, scale=1)``
+		cdf(x, c, d, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, d, loc=0, scale=1)``
+		logcdf(x, c, d, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, d, loc=0, scale=1)``
+		sf(x, c, d, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, d, loc=0, scale=1)``
+		logsf(x, c, d, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, d, loc=0, scale=1)``
+		ppf(q, c, d, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, d, loc=0, scale=1)``
+		isf(q, c, d, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, d, loc=0, scale=1)``
+		moment(n, c, d, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, d, loc=0, scale=1, moments='mv')``
+		stats(c, d, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, d, loc=0, scale=1)``
+		entropy(c, d, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, d, loc=0, scale=1)``
+		fit(data, c, d, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, d, loc=0, scale=1)``
+		median(c, d, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, d, loc=0, scale=1)``
+		mean(c, d, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, d, loc=0, scale=1)``
+		var(c, d, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, d, loc=0, scale=1)``
+		std(c, d, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, d, loc=0, scale=1)``
+		interval(alpha, c, d, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -1133,13 +1159,15 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `burr` is::
+		The probability density function for `burr` is:
 		
-		    burr.pdf(x, c, d) = c * d * x**(-c-1) * (1+x**(-c))**(-d-1)
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, c, d) = c d x^{-c-1} (1+x^{-c})^{-d-1}
 		
-		`burr` takes ``c`` and ``d`` as shape parameters.
+		for :math:`x > 0`.
+		
+		`burr` takes :math:`c` and :math:`d` as shape parameters.
 		
 		This is the PDF corresponding to the third CDF given in Burr's list;
 		specifically, it is equation (11) in Burr's paper [1]_.
@@ -1194,7 +1222,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -1208,43 +1236,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, d, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, d, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, d, loc=0, scale=1)``
+		pdf(x, c, d, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, d, loc=0, scale=1)``
+		logpdf(x, c, d, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, d, loc=0, scale=1)``
+		cdf(x, c, d, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, d, loc=0, scale=1)``
+		logcdf(x, c, d, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, d, loc=0, scale=1)``
+		sf(x, c, d, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, d, loc=0, scale=1)``
+		logsf(x, c, d, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, d, loc=0, scale=1)``
+		ppf(q, c, d, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, d, loc=0, scale=1)``
+		isf(q, c, d, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, d, loc=0, scale=1)``
+		moment(n, c, d, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, d, loc=0, scale=1, moments='mv')``
+		stats(c, d, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, d, loc=0, scale=1)``
+		entropy(c, d, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, d, loc=0, scale=1)``
+		fit(data, c, d, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, d, loc=0, scale=1)``
+		median(c, d, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, d, loc=0, scale=1)``
+		mean(c, d, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, d, loc=0, scale=1)``
+		var(c, d, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, d, loc=0, scale=1)``
+		std(c, d, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, d, loc=0, scale=1)``
+		interval(alpha, c, d, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -1254,13 +1282,15 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `burr` is::
+		The probability density function for `burr` is:
 		
-		    burr12.pdf(x, c, d) = c * d * x**(c-1) * (1+x**(c))**(-d-1)
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, c, d) = c d x^{c-1} (1+x^c)^{-d-1}
 		
-		`burr12` takes ``c`` and ``d`` as shape parameters.
+		for :math:`x > 0`.
+		
+		`burr12` takes :math:`c` and :math:`d` as shape parameters.
 		
 		This is the PDF corresponding to the twelfth CDF given in Burr's list;
 		specifically, it is equation (20) in Burr's paper [1]_.
@@ -1320,7 +1350,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -1334,50 +1364,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `cauchy` is::
+		The probability density function for `cauchy` is:
 		
-		    cauchy.pdf(x) = 1 / (pi * (1 + x**2))
+		.. math::
+		
+		    f(x) = \frac{1}{\pi (1 + x^2)}
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -1424,7 +1456,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -1438,52 +1470,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(df, loc=0, scale=1, size=1, random_state=None)``
+		rvs(df, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, df, loc=0, scale=1)``
+		pdf(x, df, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, df, loc=0, scale=1)``
+		logpdf(x, df, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, df, loc=0, scale=1)``
+		cdf(x, df, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, df, loc=0, scale=1)``
+		logcdf(x, df, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, df, loc=0, scale=1)``
+		sf(x, df, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, df, loc=0, scale=1)``
+		logsf(x, df, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, df, loc=0, scale=1)``
+		ppf(q, df, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, df, loc=0, scale=1)``
+		isf(q, df, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, df, loc=0, scale=1)``
+		moment(n, df, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(df, loc=0, scale=1, moments='mv')``
+		stats(df, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(df, loc=0, scale=1)``
+		entropy(df, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, df, loc=0, scale=1)``
+		fit(data, df, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(df, loc=0, scale=1)``
+		median(df, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(df, loc=0, scale=1)``
+		mean(df, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(df, loc=0, scale=1)``
+		var(df, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(df, loc=0, scale=1)``
+		std(df, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, df, loc=0, scale=1)``
+		interval(alpha, df, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `chi` is::
+		The probability density function for `chi` is:
 		
-		    chi.pdf(x, df) = x**(df-1) * exp(-x**2/2) / (2**(df/2-1) * gamma(df/2))
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, df) = \frac{x^{df-1} \exp(-x^2/2)}{2^{df/2-1} \gamma(df/2)}
+		
+		for :math:`x > 0`.
 		
 		Special cases of `chi` are:
 		
@@ -1538,7 +1572,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -1552,50 +1586,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(df, loc=0, scale=1, size=1, random_state=None)``
+		rvs(df, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, df, loc=0, scale=1)``
+		pdf(x, df, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, df, loc=0, scale=1)``
+		logpdf(x, df, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, df, loc=0, scale=1)``
+		cdf(x, df, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, df, loc=0, scale=1)``
+		logcdf(x, df, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, df, loc=0, scale=1)``
+		sf(x, df, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, df, loc=0, scale=1)``
+		logsf(x, df, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, df, loc=0, scale=1)``
+		ppf(q, df, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, df, loc=0, scale=1)``
+		isf(q, df, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, df, loc=0, scale=1)``
+		moment(n, df, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(df, loc=0, scale=1, moments='mv')``
+		stats(df, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(df, loc=0, scale=1)``
+		entropy(df, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, df, loc=0, scale=1)``
+		fit(data, df, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(df, loc=0, scale=1)``
+		median(df, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(df, loc=0, scale=1)``
+		mean(df, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(df, loc=0, scale=1)``
+		var(df, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(df, loc=0, scale=1)``
+		std(df, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, df, loc=0, scale=1)``
+		interval(alpha, df, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `chi2` is::
+		The probability density function for `chi2` is:
 		
-		    chi2.pdf(x, df) = 1 / (2*gamma(df/2)) * (x/2)**(df/2-1) * exp(-x/2)
+		.. math::
+		
+		    f(x, df) = \frac{1}{(2 \gamma(df/2)} (x/2)^{df/2-1} \exp(-x/2)
 		
 		`chi2` takes ``df`` as a shape parameter.
 		
@@ -1644,7 +1680,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -1658,53 +1694,55 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
 		The cosine distribution is an approximation to the normal distribution.
-		The probability density function for `cosine` is::
+		The probability density function for `cosine` is:
 		
-		    cosine.pdf(x) = 1/(2*pi) * (1+cos(x))
+		.. math::
 		
-		for ``-pi <= x <= pi``.
+		    f(x) = \frac{1}{2\pi} (1+\cos(x))
+		
+		for :math:`-\pi \le x \le \pi`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -1751,11 +1789,134 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
 	static public function cosine(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Crystalball distribution
+		
+		As an instance of the `rv_continuous` class, `crystalball` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		rvs(beta, m, loc=0, scale=1, size=1, random_state=None)
+		    Random variates.
+		pdf(x, beta, m, loc=0, scale=1)
+		    Probability density function.
+		logpdf(x, beta, m, loc=0, scale=1)
+		    Log of the probability density function.
+		cdf(x, beta, m, loc=0, scale=1)
+		    Cumulative distribution function.
+		logcdf(x, beta, m, loc=0, scale=1)
+		    Log of the cumulative distribution function.
+		sf(x, beta, m, loc=0, scale=1)
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		logsf(x, beta, m, loc=0, scale=1)
+		    Log of the survival function.
+		ppf(q, beta, m, loc=0, scale=1)
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		isf(q, beta, m, loc=0, scale=1)
+		    Inverse survival function (inverse of ``sf``).
+		moment(n, beta, m, loc=0, scale=1)
+		    Non-central moment of order n
+		stats(beta, m, loc=0, scale=1, moments='mv')
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		entropy(beta, m, loc=0, scale=1)
+		    (Differential) entropy of the RV.
+		fit(data, beta, m, loc=0, scale=1)
+		    Parameter estimates for generic data.
+		expect(func, args=(beta, m), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
+		    Expected value of a function (of one argument) with respect to the distribution.
+		median(beta, m, loc=0, scale=1)
+		    Median of the distribution.
+		mean(beta, m, loc=0, scale=1)
+		    Mean of the distribution.
+		var(beta, m, loc=0, scale=1)
+		    Variance of the distribution.
+		std(beta, m, loc=0, scale=1)
+		    Standard deviation of the distribution.
+		interval(alpha, beta, m, loc=0, scale=1)
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability density function for `crystalball` is:
+		
+		.. math::
+		
+		    f(x, \beta, m) =  \begin{cases}
+		                        N \exp(-x^2 / 2),  &\text{for } x > -\beta\\
+		                        N A (B - x)^{-m}  &\text{for } x \le -\beta
+		                      \end{cases}
+		
+		where :math:`A = (m / |beta|)**n * exp(-beta**2 / 2)`,
+		:math:`B = m/|beta| - |beta|` and :math:`N` is a normalisation constant.
+		
+		`crystalball` takes :math:`\beta` and :math:`m` as shape parameters.
+		:math:`\beta` defines the point where the pdf changes from a power-law to a
+		gaussian distribution :math:`m` is power of the power-law tail.
+		
+		References
+		----------
+		.. [1] "Crystal Ball Function",
+		       https://en.wikipedia.org/wiki/Crystal_Ball_function
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``crystalball.pdf(x, beta, m, loc, scale)`` is identically
+		equivalent to ``crystalball.pdf(y, beta, m) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.stats import crystalball
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> beta, m = 2, 3
+		>>> mean, var, skew, kurt = crystalball.stats(beta, m, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(crystalball.ppf(0.01, beta, m),
+		...                 crystalball.ppf(0.99, beta, m), 100)
+		>>> ax.plot(x, crystalball.pdf(x, beta, m),
+		...        'r-', lw=5, alpha=0.6, label='crystalball pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = crystalball(beta, m)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = crystalball.ppf([0.001, 0.5, 0.999], beta, m)
+		>>> np.allclose([0.001, 0.5, 0.999], crystalball.cdf(vals, beta, m))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = crystalball.rvs(beta, m, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function crystalball(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A double gamma continuous random variable.
 		
@@ -1765,54 +1926,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `dgamma` is::
+		The probability density function for `dgamma` is:
 		
-		    dgamma.pdf(x, a) = 1 / (2*gamma(a)) * abs(x)**(a-1) * exp(-abs(x))
+		.. math::
 		
-		for ``a > 0``.
+		    f(x, a) = \frac{1}{2\gamma(a)} |x|^{a-1} \exp(-|x|)
 		
-		`dgamma` takes ``a`` as a shape parameter.
+		for :math:`a > 0`.
+		
+		`dgamma` takes :math:`a` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -1859,7 +2022,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -1874,50 +2037,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, size=1, random_state=None)``
+		rvs(a, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, a, loc=0)``
+		pmf(k, a, loc=0)
 		    Probability mass function.
-		``logpmf(k, a, loc=0)``
+		logpmf(k, a, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, a, loc=0)``
+		cdf(k, a, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, a, loc=0)``
+		logcdf(k, a, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, a, loc=0)``
+		sf(k, a, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, a, loc=0)``
+		logsf(k, a, loc=0)
 		    Log of the survival function.
-		``ppf(q, a, loc=0)``
+		ppf(q, a, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0)``
+		isf(q, a, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(a, loc=0, moments='mv')``
+		stats(a, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0)``
+		entropy(a, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0)``
+		median(a, loc=0)
 		    Median of the distribution.
-		``mean(a, loc=0)``
+		mean(a, loc=0)
 		    Mean of the distribution.
-		``var(a, loc=0)``
+		var(a, loc=0)
 		    Variance of the distribution.
-		``std(a, loc=0)``
+		std(a, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0)``
+		interval(alpha, a, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `dlaplace` is::
+		The probability mass function for `dlaplace` is:
 		
-		    dlaplace.pmf(k) = tanh(a/2) * exp(-a*abs(k))
+		.. math::
 		
-		for ``a > 0``.
+		    f(k) = \tanh(a/2) \exp(-a |k|)
 		
-		`dlaplace` takes ``a`` as shape parameter.
+		for :math:`a > 0`.
+		
+		`dlaplace` takes :math:`a` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1974,52 +2139,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `dweibull` is::
+		The probability density function for `dweibull` is:
 		
-		    dweibull.pdf(x, c) = c / 2 * abs(x)**(c-1) * exp(-abs(x)**c)
+		.. math::
 		
-		`dweibull` takes ``d`` as a shape parameter.
+		    f(x, c) = c / 2 |x|^{c-1} \exp(-|x|^c)
+		
+		`dweibull` takes :math:`d` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2066,7 +2233,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2108,43 +2275,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -2170,52 +2337,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `expon` is::
+		The probability density function for `expon` is:
 		
-		    expon.pdf(x) = exp(-x)
+		.. math::
 		
-		for ``x >= 0``.
+		    f(x) = \exp(-x)
+		
+		for :math:`x \ge 0`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2266,7 +2435,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2280,53 +2449,55 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(K, loc=0, scale=1, size=1, random_state=None)``
+		rvs(K, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, K, loc=0, scale=1)``
+		pdf(x, K, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, K, loc=0, scale=1)``
+		logpdf(x, K, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, K, loc=0, scale=1)``
+		cdf(x, K, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, K, loc=0, scale=1)``
+		logcdf(x, K, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, K, loc=0, scale=1)``
+		sf(x, K, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, K, loc=0, scale=1)``
+		logsf(x, K, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, K, loc=0, scale=1)``
+		ppf(q, K, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, K, loc=0, scale=1)``
+		isf(q, K, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, K, loc=0, scale=1)``
+		moment(n, K, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(K, loc=0, scale=1, moments='mv')``
+		stats(K, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(K, loc=0, scale=1)``
+		entropy(K, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, K, loc=0, scale=1)``
+		fit(data, K, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(K,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(K,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(K, loc=0, scale=1)``
+		median(K, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(K, loc=0, scale=1)``
+		mean(K, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(K, loc=0, scale=1)``
+		var(K, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(K, loc=0, scale=1)``
+		std(K, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, K, loc=0, scale=1)``
+		interval(alpha, K, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `exponnorm` is::
+		The probability density function for `exponnorm` is:
 		
-		    exponnorm.pdf(x, K) =
-		        1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc-(x - 1/K) / sqrt(2))
+		.. math::
 		
-		where the shape parameter ``K > 0``.
+		    f(x, K) = \frac{1}{2K} \exp\left(\frac{1}{2 K^2}\right) \exp(-x / K)
+		              \text{erfc}\left(-\frac{x - 1/K}{\sqrt{2}}\right)
+		
+		where the shape parameter :math:`K > 0`.
 		
 		It can be thought of as the sum of a normally distributed random
 		value with mean ``loc`` and sigma ``scale`` and an exponentially
@@ -2341,10 +2512,11 @@ package scipy.stats.distributions;
 		
 		An alternative parameterization of this distribution (for example, in
 		`Wikipedia <http://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution>`_)
-		involves three parameters, :math:`\mu`, :math:`\lambda` and :math:`\sigma`.
+		involves three parameters, :math:`\mu`, :math:`\lambda` and
+		:math:`\sigma`.
 		In the present parameterization this corresponds to having ``loc`` and
 		``scale`` equal to :math:`\mu` and :math:`\sigma`, respectively, and
-		shape parameter :math:`K = 1/\sigma\lambda`.
+		shape parameter :math:`K = 1/(\sigma\lambda)`.
 		
 		.. versionadded:: 0.16.0
 		
@@ -2387,7 +2559,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2401,56 +2573,58 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, b, loc=0, scale=1)``
+		pdf(x, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, b, loc=0, scale=1)``
+		logpdf(x, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, b, loc=0, scale=1)``
+		cdf(x, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, b, loc=0, scale=1)``
+		logcdf(x, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, b, loc=0, scale=1)``
+		sf(x, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, b, loc=0, scale=1)``
+		logsf(x, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, b, loc=0, scale=1)``
+		ppf(q, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, b, loc=0, scale=1)``
+		isf(q, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, b, loc=0, scale=1)``
+		moment(n, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(b, loc=0, scale=1, moments='mv')``
+		stats(b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(b, loc=0, scale=1)``
+		entropy(b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, b, loc=0, scale=1)``
+		fit(data, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(b, loc=0, scale=1)``
+		median(b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(b, loc=0, scale=1)``
+		mean(b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(b, loc=0, scale=1)``
+		var(b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(b, loc=0, scale=1)``
+		std(b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, b, loc=0, scale=1)``
+		interval(alpha, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `exponpow` is::
+		The probability density function for `exponpow` is:
 		
-		    exponpow.pdf(x, b) = b * x**(b-1) * exp(1 + x**b - exp(x**b))
+		.. math::
 		
-		for ``x >= 0``, ``b > 0``.  Note that this is a different distribution
-		from the exponential power distribution that is also known under the names
-		"generalized normal" or "generalized Gaussian".
+		    f(x, b) = b x^{b-1} \exp(1 + x^b - \exp(x^b))
 		
-		`exponpow` takes ``b`` as a shape parameter.
+		for :math:`x \ge 0`, :math:`b > 0``.  Note that this is a different
+		distribution from the exponential power distribution that is also known
+		under the names "generalized normal" or "generalized Gaussian".
+		
+		`exponpow` takes :math:`b` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2501,7 +2675,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2515,55 +2689,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, c, loc=0, scale=1)``
+		pdf(x, a, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, c, loc=0, scale=1)``
+		logpdf(x, a, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, c, loc=0, scale=1)``
+		cdf(x, a, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, c, loc=0, scale=1)``
+		logcdf(x, a, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, c, loc=0, scale=1)``
+		sf(x, a, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, c, loc=0, scale=1)``
+		logsf(x, a, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, c, loc=0, scale=1)``
+		ppf(q, a, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, c, loc=0, scale=1)``
+		isf(q, a, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, c, loc=0, scale=1)``
+		moment(n, a, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, c, loc=0, scale=1, moments='mv')``
+		stats(a, c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, c, loc=0, scale=1)``
+		entropy(a, c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, c, loc=0, scale=1)``
+		fit(data, a, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, c, loc=0, scale=1)``
+		median(a, c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, c, loc=0, scale=1)``
+		mean(a, c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, c, loc=0, scale=1)``
+		var(a, c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, c, loc=0, scale=1)``
+		std(a, c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, c, loc=0, scale=1)``
+		interval(alpha, a, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `exponweib` is::
+		The probability density function for `exponweib` is:
 		
-		    exponweib.pdf(x, a, c) =
-		        a * c * (1-exp(-x**c))**(a-1) * exp(-x**c)*x**(c-1)
+		.. math::
 		
-		for ``x > 0``, ``a > 0``, ``c > 0``.
+		    f(x, a, c) = a c (1-\exp(-x^c))^{a-1} \exp(-x^c) x^{c-1}
 		
-		`exponweib` takes ``a`` and ``c`` as shape parameters.
+		for :math:`x > 0`, :math:`a > 0`, :math:`c > 0`.
+		
+		`exponweib` takes :math:`a` and :math:`c` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2610,7 +2785,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2624,54 +2799,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(dfn, dfd, loc=0, scale=1, size=1, random_state=None)``
+		rvs(dfn, dfd, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, dfn, dfd, loc=0, scale=1)``
+		pdf(x, dfn, dfd, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, dfn, dfd, loc=0, scale=1)``
+		logpdf(x, dfn, dfd, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, dfn, dfd, loc=0, scale=1)``
+		cdf(x, dfn, dfd, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, dfn, dfd, loc=0, scale=1)``
+		logcdf(x, dfn, dfd, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, dfn, dfd, loc=0, scale=1)``
+		sf(x, dfn, dfd, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, dfn, dfd, loc=0, scale=1)``
+		logsf(x, dfn, dfd, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, dfn, dfd, loc=0, scale=1)``
+		ppf(q, dfn, dfd, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, dfn, dfd, loc=0, scale=1)``
+		isf(q, dfn, dfd, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, dfn, dfd, loc=0, scale=1)``
+		moment(n, dfn, dfd, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(dfn, dfd, loc=0, scale=1, moments='mv')``
+		stats(dfn, dfd, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(dfn, dfd, loc=0, scale=1)``
+		entropy(dfn, dfd, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, dfn, dfd, loc=0, scale=1)``
+		fit(data, dfn, dfd, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(dfn, dfd), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(dfn, dfd), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(dfn, dfd, loc=0, scale=1)``
+		median(dfn, dfd, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(dfn, dfd, loc=0, scale=1)``
+		mean(dfn, dfd, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(dfn, dfd, loc=0, scale=1)``
+		var(dfn, dfd, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(dfn, dfd, loc=0, scale=1)``
+		std(dfn, dfd, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, dfn, dfd, loc=0, scale=1)``
+		interval(alpha, dfn, dfd, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `f` is::
+		The probability density function for `f` is:
 		
-		                         df2**(df2/2) * df1**(df1/2) * x**(df1/2-1)
-		    F.pdf(x, df1, df2) = --------------------------------------------
-		                         (df2+df1*x)**((df1+df2)/2) * B(df1/2, df2/2)
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, df_1, df_2) = \frac{df_2^{df_2/2} df_1^{df_1/2} x^{df_1 / 2-1}}
+		                            {(df_2+df_1 x)^{(df_1+df_2)/2}
+		                             B(df_1/2, df_2/2)}
+		
+		for :math:`x > 0`.
 		
 		`f` takes ``dfn`` and ``dfd`` as shape parameters.
 		
@@ -2720,7 +2897,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2734,55 +2911,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `fatiguelife` is::
+		The probability density function for `fatiguelife` is:
 		
-		    fatiguelife.pdf(x, c) =
-		        (x+1) / (2*c*sqrt(2*pi*x**3)) * exp(-(x-1)**2/(2*x*c**2))
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, c) = \frac{x+1}{ 2c\sqrt{2\pi x^3} \exp(-\frac{(x-1)^2}{2x c^2}}
 		
-		`fatiguelife` takes ``c`` as a shape parameter.
+		for :math:`x > 0`.
+		
+		`fatiguelife` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2834,7 +3012,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2845,7 +3023,7 @@ package scipy.stats.distributions;
 		The Fisk distribution is also known as the log-logistic distribution, and
 		equals the Burr distribution with ``d == 1``.
 		
-		`fisk` takes ``c`` as a shape parameter.
+		`fisk` takes :math:`c` as a shape parameter.
 		
 		As an instance of the `rv_continuous` class, `fisk` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -2853,54 +3031,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `fisk` is::
+		The probability density function for `fisk` is:
 		
-		    fisk.pdf(x, c) = c * x**(-c-1) * (1 + x**(-c))**(-2)
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, c) = c x^{-c-1} (1 + x^{-c})^{-2}
 		
-		`fisk` takes ``c`` as a shape parameters.
+		for :math:`x > 0`.
+		
+		`fisk` takes :math:`c` as a shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -2951,7 +3131,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -2965,54 +3145,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `foldcauchy` is::
+		The probability density function for `foldcauchy` is:
 		
-		    foldcauchy.pdf(x, c) = 1/(pi*(1+(x-c)**2)) + 1/(pi*(1+(x+c)**2))
+		.. math::
 		
-		for ``x >= 0``.
+		    f(x, c) = \frac{1}{\pi (1+(x-c)^2)} + \frac{1}{\pi (1+(x+c)^2)}
 		
-		`foldcauchy` takes ``c`` as a shape parameter.
+		for :math:`x \ge 0``.
+		
+		`foldcauchy` takes :math:`c` as a shape parameter.
 		
 		Examples
 		--------
@@ -3053,7 +3235,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -3067,54 +3249,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `foldnorm` is::
+		The probability density function for `foldnorm` is:
 		
-		    foldnormal.pdf(x, c) = sqrt(2/pi) * cosh(c*x) * exp(-(x**2+c**2)/2)
+		.. math::
 		
-		for ``c >= 0``.
+		    f(x, c) = \sqrt{2/\pi} cosh(c x) \exp(-\frac{x^2+c^2}{2})
 		
-		`foldnorm` takes ``c`` as a shape parameter.
+		for :math:`c \ge 0`.
+		
+		`foldnorm` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3161,13 +3345,13 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
 	static public function foldnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A Frechet left (or Weibull maximum) continuous random variable.
+		A frechet_l continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `frechet_l` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -3175,65 +3359,47 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
-		
-		See Also
-		--------
-		weibull_max : The same distribution as `frechet_l`.
-		frechet_r, weibull_min
 		
 		Notes
 		-----
-		The probability density function for `frechet_l` is::
-		
-		    frechet_l.pdf(x, c) = c * (-x)**(c-1) * exp(-(-x)**c)
-		
-		for ``x < 0``, ``c > 0``.
-		
-		`frechet_l` takes ``c`` as a shape parameter.
-		
-		The probability density above is defined in the "standardized" form. To shift
-		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
-		Specifically, ``frechet_l.pdf(x, c, loc, scale)`` is identically
-		equivalent to ``frechet_l.pdf(y, c) / scale`` with
-		``y = (x - loc) / scale``.
 		
 		Examples
 		--------
@@ -3243,7 +3409,7 @@ package scipy.stats.distributions;
 		
 		Calculate a few first moments:
 		
-		>>> c = 3.63
+		>>> c = 
 		>>> mean, var, skew, kurt = frechet_l.stats(c, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -3274,13 +3440,13 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
 	static public function frechet_l(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A Frechet right (or Weibull minimum) continuous random variable.
+		A frechet_r continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `frechet_r` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -3288,65 +3454,47 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
-		
-		See Also
-		--------
-		weibull_min : The same distribution as `frechet_r`.
-		frechet_l, weibull_max
 		
 		Notes
 		-----
-		The probability density function for `frechet_r` is::
-		
-		    frechet_r.pdf(x, c) = c * x**(c-1) * exp(-x**c)
-		
-		for ``x > 0``, ``c > 0``.
-		
-		`frechet_r` takes ``c`` as a shape parameter.
-		
-		The probability density above is defined in the "standardized" form. To shift
-		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
-		Specifically, ``frechet_r.pdf(x, c, loc, scale)`` is identically
-		equivalent to ``frechet_r.pdf(y, c) / scale`` with
-		``y = (x - loc) / scale``.
 		
 		Examples
 		--------
@@ -3356,7 +3504,7 @@ package scipy.stats.distributions;
 		
 		Calculate a few first moments:
 		
-		>>> c = 1.89
+		>>> c = 
 		>>> mean, var, skew, kurt = frechet_r.stats(c, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -3387,7 +3535,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -3401,43 +3549,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -3446,16 +3594,19 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `gamma` is::
+		The probability density function for `gamma` is:
 		
-		    gamma.pdf(x, a) = x**(a-1) * exp(-x) / gamma(a)
+		.. math::
 		
-		for ``x >= 0``, ``a > 0``. Here ``gamma(a)`` refers to the gamma function.
+		    f(x, a) = \frac{x^{a-1} \exp(-x)}{\Gamma(a)}
+		
+		for :math:`x \ge 0`, :math:`a > 0`. Here :math:`\Gamma(a)` refers to the
+		gamma function.
 		
 		`gamma` has a shape parameter `a` which needs to be set explicitly.
 		
-		When ``a`` is an integer, `gamma` reduces to the Erlang
-		distribution, and when ``a=1`` to the exponential distribution.
+		When :math:`a` is an integer, `gamma` reduces to the Erlang
+		distribution, and when :math:`a=1` to the exponential distribution.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3502,7 +3653,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -3516,56 +3667,58 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, c, z, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, c, z, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, c, z, loc=0, scale=1)``
+		pdf(x, a, b, c, z, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, c, z, loc=0, scale=1)``
+		logpdf(x, a, b, c, z, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, c, z, loc=0, scale=1)``
+		cdf(x, a, b, c, z, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, c, z, loc=0, scale=1)``
+		logcdf(x, a, b, c, z, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, c, z, loc=0, scale=1)``
+		sf(x, a, b, c, z, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, c, z, loc=0, scale=1)``
+		logsf(x, a, b, c, z, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, c, z, loc=0, scale=1)``
+		ppf(q, a, b, c, z, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, c, z, loc=0, scale=1)``
+		isf(q, a, b, c, z, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, c, z, loc=0, scale=1)``
+		moment(n, a, b, c, z, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, c, z, loc=0, scale=1, moments='mv')``
+		stats(a, b, c, z, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, c, z, loc=0, scale=1)``
+		entropy(a, b, c, z, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, c, z, loc=0, scale=1)``
+		fit(data, a, b, c, z, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b, c, z), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b, c, z), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, c, z, loc=0, scale=1)``
+		median(a, b, c, z, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, c, z, loc=0, scale=1)``
+		mean(a, b, c, z, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, c, z, loc=0, scale=1)``
+		var(a, b, c, z, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, c, z, loc=0, scale=1)``
+		std(a, b, c, z, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, c, z, loc=0, scale=1)``
+		interval(alpha, a, b, c, z, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `gausshyper` is::
+		The probability density function for `gausshyper` is:
 		
-		    gausshyper.pdf(x, a, b, c, z) =
-		        C * x**(a-1) * (1-x)**(b-1) * (1+z*x)**(-c)
+		.. math::
 		
-		for ``0 <= x <= 1``, ``a > 0``, ``b > 0``, and
-		``C = 1 / (B(a, b) F[2, 1](c, a; a+b; -z))``
+		    f(x, a, b, c, z) = C x^{a-1} (1-x)^{b-1} (1+zx)^{-c}
 		
-		`gausshyper` takes ``a``, ``b``, ``c`` and ``z`` as shape parameters.
+		for :math:`0 \le x \le 1`, :math:`a > 0`, :math:`b > 0`, and
+		:math:`C = \frac{1}{B(a, b) F[2, 1](c, a; a+b; -z)}`
+		
+		`gausshyper` takes :math:`a`, :math:`b`, :math:`c` and :math:`z` as shape
+		parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3612,7 +3765,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -3626,54 +3779,57 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, c, loc=0, scale=1)``
+		pdf(x, a, b, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, c, loc=0, scale=1)``
+		logpdf(x, a, b, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, c, loc=0, scale=1)``
+		cdf(x, a, b, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, c, loc=0, scale=1)``
+		logcdf(x, a, b, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, c, loc=0, scale=1)``
+		sf(x, a, b, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, c, loc=0, scale=1)``
+		logsf(x, a, b, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, c, loc=0, scale=1)``
+		ppf(q, a, b, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, c, loc=0, scale=1)``
+		isf(q, a, b, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, c, loc=0, scale=1)``
+		moment(n, a, b, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, c, loc=0, scale=1, moments='mv')``
+		stats(a, b, c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, c, loc=0, scale=1)``
+		entropy(a, b, c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, c, loc=0, scale=1)``
+		fit(data, a, b, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, c, loc=0, scale=1)``
+		median(a, b, c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, c, loc=0, scale=1)``
+		mean(a, b, c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, c, loc=0, scale=1)``
+		var(a, b, c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, c, loc=0, scale=1)``
+		std(a, b, c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, c, loc=0, scale=1)``
+		interval(alpha, a, b, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `genexpon` is::
+		The probability density function for `genexpon` is:
 		
-		    genexpon.pdf(x, a, b, c) = (a + b * (1 - exp(-c*x))) *                                    exp(-a*x - b*x + b/c * (1-exp(-c*x)))
+		.. math::
 		
-		for ``x >= 0``, ``a, b, c > 0``.
+		    f(x, a, b, c) = (a + b (1 - \exp(-c x)))
+		                    \exp(-a x - b x + \frac{b}{c}  (1-\exp(-c x)))
 		
-		`genexpon` takes ``a``, ``b`` and ``c`` as shape parameters.
+		for :math:`x \ge 0`, :math:`a, b, c > 0`.
+		
+		`genexpon` takes :math:`a`, :math:`b` and :math:`c` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3728,7 +3884,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -3742,43 +3898,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -3787,17 +3943,22 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		For ``c=0``, `genextreme` is equal to `gumbel_r`.
-		The probability density function for `genextreme` is::
+		For :math:`c=0`, `genextreme` is equal to `gumbel_r`.
+		The probability density function for `genextreme` is:
 		
-		    genextreme.pdf(x, c) =
-		        exp(-exp(-x))*exp(-x),                    for c==0
-		        exp(-(1-c*x)**(1/c))*(1-c*x)**(1/c-1),    for x <= 1/c, c > 0
+		.. math::
+		
+		    f(x, c) = \begin{cases}
+		                \exp(-\exp(-x)) \exp(-x)              &\text{for } c = 0\\
+		                \exp(-(1-c x)^{1/c}) (1-c x)^{1/c-1}  &\text{for }
+		                                                        x \le 1/c, c > 0
+		              \end{cases}
+		
 		
 		Note that several sources and software packages use the opposite
-		convention for the sign of the shape parameter ``c``.
+		convention for the sign of the shape parameter :math:`c`.
 		
-		`genextreme` takes ``c`` as a shape parameter.
+		`genextreme` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3844,7 +4005,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -3858,54 +4019,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, c, loc=0, scale=1)``
+		pdf(x, a, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, c, loc=0, scale=1)``
+		logpdf(x, a, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, c, loc=0, scale=1)``
+		cdf(x, a, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, c, loc=0, scale=1)``
+		logcdf(x, a, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, c, loc=0, scale=1)``
+		sf(x, a, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, c, loc=0, scale=1)``
+		logsf(x, a, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, c, loc=0, scale=1)``
+		ppf(q, a, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, c, loc=0, scale=1)``
+		isf(q, a, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, c, loc=0, scale=1)``
+		moment(n, a, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, c, loc=0, scale=1, moments='mv')``
+		stats(a, c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, c, loc=0, scale=1)``
+		entropy(a, c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, c, loc=0, scale=1)``
+		fit(data, a, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, c, loc=0, scale=1)``
+		median(a, c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, c, loc=0, scale=1)``
+		mean(a, c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, c, loc=0, scale=1)``
+		var(a, c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, c, loc=0, scale=1)``
+		std(a, c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, c, loc=0, scale=1)``
+		interval(alpha, a, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `gengamma` is::
+		The probability density function for `gengamma` is:
 		
-		    gengamma.pdf(x, a, c) = abs(c) * x**(c*a-1) * exp(-x**c) / gamma(a)
+		.. math::
 		
-		for ``x >= 0``, ``a > 0``, and ``c != 0``.
+		    f(x, a, c) = \frac{|c| x^{c a-1} \exp(-x^c)}{\gamma(a)}
 		
-		`gengamma` takes ``a`` and ``c`` as shape parameters.
+		for :math:`x \ge 0`, :math:`a > 0`, and :math:`c \ne 0`.
+		
+		`gengamma` takes :math:`a` and :math:`c` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -3952,7 +4115,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -3966,55 +4129,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `genhalflogistic` is::
+		The probability density function for `genhalflogistic` is:
 		
-		    genhalflogistic.pdf(x, c) =
-		        2 * (1-c*x)**(1/c-1) / (1+(1-c*x)**(1/c))**2
+		.. math::
 		
-		for ``0 <= x <= 1/c``, and ``c > 0``.
+		    f(x, c) = \frac{2 (1 - c x)^{1/(c-1)}}{[1 + (1 - c x)^{1/c}]^2}
 		
-		`genhalflogistic` takes ``c`` as a shape parameter.
+		for :math:`0 \le x \le 1/c`, and :math:`c > 0`.
+		
+		`genhalflogistic` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4061,7 +4225,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4075,54 +4239,57 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `genlogistic` is::
+		The probability density function for `genlogistic` is:
 		
-		    genlogistic.pdf(x, c) = c * exp(-x) / (1 + exp(-x))**(c+1)
+		.. math::
 		
-		for ``x > 0``, ``c > 0``.
+		    f(x, c) = c \frac{\exp(-x)}
+		                     {(1 + \exp(-x))^{c+1}}
 		
-		`genlogistic` takes ``c`` as a shape parameter.
+		for :math:`x > 0`, :math:`c > 0`.
+		
+		`genlogistic` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4169,7 +4336,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4183,43 +4350,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(beta, loc=0, scale=1, size=1, random_state=None)``
+		rvs(beta, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, beta, loc=0, scale=1)``
+		pdf(x, beta, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, beta, loc=0, scale=1)``
+		logpdf(x, beta, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, beta, loc=0, scale=1)``
+		cdf(x, beta, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, beta, loc=0, scale=1)``
+		logcdf(x, beta, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, beta, loc=0, scale=1)``
+		sf(x, beta, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, beta, loc=0, scale=1)``
+		logsf(x, beta, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, beta, loc=0, scale=1)``
+		ppf(q, beta, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, beta, loc=0, scale=1)``
+		isf(q, beta, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, beta, loc=0, scale=1)``
+		moment(n, beta, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(beta, loc=0, scale=1, moments='mv')``
+		stats(beta, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(beta, loc=0, scale=1)``
+		entropy(beta, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, beta, loc=0, scale=1)``
+		fit(data, beta, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(beta,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(beta,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(beta, loc=0, scale=1)``
+		median(beta, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(beta, loc=0, scale=1)``
+		mean(beta, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(beta, loc=0, scale=1)``
+		var(beta, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(beta, loc=0, scale=1)``
+		std(beta, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, beta, loc=0, scale=1)``
+		interval(alpha, beta, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -4230,10 +4397,10 @@ package scipy.stats.distributions;
 		    gennorm.pdf(x, beta) =  ---------------  exp(-|x|**beta)
 		                            2 gamma(1/beta)
 		
-		`gennorm` takes ``beta`` as a shape parameter.
-		For ``beta = 1``, it is identical to a Laplace distribution.
-		For ``beta = 2``, it is identical to a normal distribution
-		(with ``scale=1/sqrt(2)``).
+		`gennorm` takes :math:`\beta` as a shape parameter.
+		For :math:`\beta = 1`, it is identical to a Laplace distribution.
+		For ``\beta = 2``, it is identical to a normal distribution
+		(with :math:`scale=1/\sqrt{2}`).
 		
 		See Also
 		--------
@@ -4285,7 +4452,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4299,64 +4466,70 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `genpareto` is::
+		The probability density function for `genpareto` is:
 		
-		    genpareto.pdf(x, c) = (1 + c * x)**(-1 - 1/c)
+		.. math::
 		
-		defined for ``x >= 0`` if ``c >=0``, and for
-		``0 <= x <= -1/c`` if ``c < 0``.
+		    f(x, c) = (1 + c x)^{-1 - 1/c}
 		
-		`genpareto` takes ``c`` as a shape parameter.
+		defined for :math:`x \ge 0` if :math:`c \ge 0`, and for
+		:math:`0 \le x \le -1/c` if :math:`c < 0`.
+		
+		`genpareto` takes :math:`c` as a shape parameter.
 		
 		For ``c == 0``, `genpareto` reduces to the exponential
-		distribution, `expon`::
+		distribution, `expon`:
 		
-		    genpareto.pdf(x, c=0) = exp(-x)
+		.. math::
 		
-		For ``c == -1``, `genpareto` is uniform on ``[0, 1]``::
+		    f(x, c=0) = \exp(-x)
 		
-		    genpareto.cdf(x, c=-1) = x
+		For ``c == -1``, `genpareto` is uniform on ``[0, 1]``:
+		
+		.. math::
+		
+		    f(x, c=-1) = x
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4403,7 +4576,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4417,50 +4590,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(p, loc=0, size=1, random_state=None)``
+		rvs(p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, p, loc=0)``
+		pmf(k, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, p, loc=0)``
+		logpmf(k, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, p, loc=0)``
+		cdf(k, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, p, loc=0)``
+		logcdf(k, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, p, loc=0)``
+		sf(k, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, p, loc=0)``
+		logsf(k, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, p, loc=0)``
+		ppf(q, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, p, loc=0)``
+		isf(q, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(p, loc=0, moments='mv')``
+		stats(p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(p, loc=0)``
+		entropy(p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(p, loc=0)``
+		median(p, loc=0)
 		    Median of the distribution.
-		``mean(p, loc=0)``
+		mean(p, loc=0)
 		    Mean of the distribution.
-		``var(p, loc=0)``
+		var(p, loc=0)
 		    Variance of the distribution.
-		``std(p, loc=0)``
+		std(p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, p, loc=0)``
+		interval(alpha, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `geom` is::
+		The probability mass function for `geom` is:
 		
-		    geom.pmf(k) = (1-p)**(k-1)*p
+		.. math::
 		
-		for ``k >= 1``.
+		    f(k) = (1-p)^{k-1} p
 		
-		`geom` takes ``p`` as shape parameter.
+		for :math:`k \ge 1`.
+		
+		`geom` takes :math:`p` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -4517,50 +4692,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `gilbrat` is::
+		The probability density function for `gilbrat` is:
 		
-		    gilbrat.pdf(x) = 1/(x*sqrt(2*pi)) * exp(-1/2*(log(x))**2)
+		.. math::
+		
+		    f(x) = \frac{1}{x \sqrt{2\pi}} \exp(-\frac{1}{2} (\log(x))^2)
 		
 		`gilbrat` is a special case of `lognorm` with ``s = 1``.
 		
@@ -4609,7 +4786,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4623,54 +4800,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `gompertz` is::
+		The probability density function for `gompertz` is:
 		
-		    gompertz.pdf(x, c) = c * exp(x) * exp(-c*(exp(x)-1))
+		.. math::
 		
-		for ``x >= 0``, ``c > 0``.
+		    f(x, c) = c \exp(x) \exp(-c (e^x-1))
 		
-		`gompertz` takes ``c`` as a shape parameter.
+		for :math:`x \ge 0`, :math:`c > 0`.
+		
+		`gompertz` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -4717,7 +4896,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4731,43 +4910,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -4776,9 +4955,11 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `gumbel_l` is::
+		The probability density function for `gumbel_l` is:
 		
-		    gumbel_l.pdf(x) = exp(x - exp(x))
+		.. math::
+		
+		    f(x) = \exp(x - e^x)
 		
 		The Gumbel distribution is sometimes referred to as a type I Fisher-Tippett
 		distribution.  It is also related to the extreme value distribution,
@@ -4829,7 +5010,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4843,43 +5024,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -4888,9 +5069,11 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `gumbel_r` is::
+		The probability density function for `gumbel_r` is:
 		
-		    gumbel_r.pdf(x) = exp(-(x + exp(-x)))
+		.. math::
+		
+		    f(x) = \exp(-(x + e^{-x}))
 		
 		The Gumbel distribution is sometimes referred to as a type I Fisher-Tippett
 		distribution.  It is also related to the extreme value distribution,
@@ -4941,7 +5124,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -4955,52 +5138,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `halfcauchy` is::
+		The probability density function for `halfcauchy` is:
 		
-		    halfcauchy.pdf(x) = 2 / (pi * (1 + x**2))
+		.. math::
 		
-		for ``x >= 0``.
+		    f(x) = \frac{2}{\pi (1 + x^2)}
+		
+		for :math:`x \ge 0`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5047,7 +5232,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5061,57 +5246,57 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(beta, loc=0, scale=1, size=1, random_state=None)``
+		rvs(beta, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, beta, loc=0, scale=1)``
+		pdf(x, beta, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, beta, loc=0, scale=1)``
+		logpdf(x, beta, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, beta, loc=0, scale=1)``
+		cdf(x, beta, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, beta, loc=0, scale=1)``
+		logcdf(x, beta, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, beta, loc=0, scale=1)``
+		sf(x, beta, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, beta, loc=0, scale=1)``
+		logsf(x, beta, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, beta, loc=0, scale=1)``
+		ppf(q, beta, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, beta, loc=0, scale=1)``
+		isf(q, beta, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, beta, loc=0, scale=1)``
+		moment(n, beta, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(beta, loc=0, scale=1, moments='mv')``
+		stats(beta, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(beta, loc=0, scale=1)``
+		entropy(beta, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, beta, loc=0, scale=1)``
+		fit(data, beta, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(beta,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(beta,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(beta, loc=0, scale=1)``
+		median(beta, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(beta, loc=0, scale=1)``
+		mean(beta, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(beta, loc=0, scale=1)``
+		var(beta, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(beta, loc=0, scale=1)``
+		std(beta, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, beta, loc=0, scale=1)``
+		interval(alpha, beta, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `halfgennorm` is::
+		The probability density function for `halfgennorm` is:
 		
-		                                    beta
-		    halfgennorm.pdf(x, beta) =  -------------  exp(-|x|**beta)
-		                                gamma(1/beta)
+		.. math::
 		
-		`gennorm` takes ``beta`` as a shape parameter.
-		For ``beta = 1``, it is identical to an exponential distribution.
-		For ``beta = 2``, it is identical to a half normal distribution
-		(with ``scale=1/sqrt(2)``).
+		    f(x, \beta) = \frac{\beta}{\gamma(1/\beta)} \exp(-|x|^\beta)
+		
+		`gennorm` takes :math:`\beta` as a shape parameter.
+		For :math:`\beta = 1`, it is identical to an exponential distribution.
+		For :math:`\beta = 2`, it is identical to a half normal distribution
+		(with :math:`scale=1/\sqrt{2}`).
 		
 		See Also
 		--------
@@ -5164,7 +5349,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5178,52 +5363,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `halflogistic` is::
+		The probability density function for `halflogistic` is:
 		
-		    halflogistic.pdf(x) = 2 * exp(-x) / (1+exp(-x))**2 = 1/2 * sech(x/2)**2
+		.. math::
 		
-		for ``x >= 0``.
+		    f(x) = \frac{ 2 e^{-x} }{ (1+e^{-x})^2 } = \frac{1}{2} sech(x/2)^2
+		
+		for :math:`x \ge 0`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5270,7 +5457,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5284,54 +5471,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `halfnorm` is::
+		The probability density function for `halfnorm` is:
 		
-		    halfnorm.pdf(x) = sqrt(2/pi) * exp(-x**2/2)
+		.. math::
 		
-		for ``x > 0``.
+		    f(x) = \sqrt{2/\pi} e^{-\frac{x^2}{2}}
 		
-		`halfnorm` is a special case of `chi` with ``df == 1``.
+		for :math:`x > 0`.
+		
+		`halfnorm` is a special case of :math`\chi` with ``df == 1``.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5378,7 +5567,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5397,39 +5586,39 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(M, n, N, loc=0, size=1, random_state=None)``
+		rvs(M, n, N, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, M, n, N, loc=0)``
+		pmf(k, M, n, N, loc=0)
 		    Probability mass function.
-		``logpmf(k, M, n, N, loc=0)``
+		logpmf(k, M, n, N, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, M, n, N, loc=0)``
+		cdf(k, M, n, N, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, M, n, N, loc=0)``
+		logcdf(k, M, n, N, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, M, n, N, loc=0)``
+		sf(k, M, n, N, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, M, n, N, loc=0)``
+		logsf(k, M, n, N, loc=0)
 		    Log of the survival function.
-		``ppf(q, M, n, N, loc=0)``
+		ppf(q, M, n, N, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, M, n, N, loc=0)``
+		isf(q, M, n, N, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(M, n, N, loc=0, moments='mv')``
+		stats(M, n, N, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(M, n, N, loc=0)``
+		entropy(M, n, N, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(M, n, N), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(M, n, N), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(M, n, N, loc=0)``
+		median(M, n, N, loc=0)
 		    Median of the distribution.
-		``mean(M, n, N, loc=0)``
+		mean(M, n, N, loc=0)
 		    Mean of the distribution.
-		``var(M, n, N, loc=0)``
+		var(M, n, N, loc=0)
 		    Variance of the distribution.
-		``std(M, n, N, loc=0)``
+		std(M, n, N, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, M, n, N, loc=0)``
+		interval(alpha, M, n, N, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -5440,7 +5629,8 @@ package scipy.stats.distributions;
 		
 		The probability mass function is defined as,
 		
-		.. math:: p(k, M, n, N) = \frac{\binom{n}{k} \binom{M - n}{N - k}}{\binom{M}{N}}
+		.. math:: p(k, M, n, N) = \frac{\binom{n}{k} \binom{M - n}{N - k}}
+		                               {\binom{M}{N}}
 		
 		for :math:`k \in [\max(0, N - M + n), \min(n, N)]`, where the binomial
 		coefficients are defined as,
@@ -5495,50 +5685,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `hypsecant` is::
+		The probability density function for `hypsecant` is:
 		
-		    hypsecant.pdf(x) = 1/pi * sech(x)
+		.. math::
+		
+		    f(x) = \frac{1}{\pi} sech(x)
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5585,7 +5777,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5599,54 +5791,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `invgamma` is::
+		The probability density function for `invgamma` is:
 		
-		    invgamma.pdf(x, a) = x**(-a-1) / gamma(a) * exp(-1/x)
+		.. math::
 		
-		for x > 0, a > 0.
+		    f(x, a) = \frac{x^{-a-1}}{\gamma(a)} \exp(-\frac{1}{x})
 		
-		`invgamma` takes ``a`` as a shape parameter.
+		for :math:`x > 0`, :math:`a > 0`.
+		
+		`invgamma` takes :math:`a` as a shape parameter.
 		
 		`invgamma` is a special case of `gengamma` with ``c == -1``.
 		
@@ -5695,7 +5889,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5709,54 +5903,57 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(mu, loc=0, scale=1, size=1, random_state=None)``
+		rvs(mu, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, mu, loc=0, scale=1)``
+		pdf(x, mu, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, mu, loc=0, scale=1)``
+		logpdf(x, mu, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, mu, loc=0, scale=1)``
+		cdf(x, mu, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, mu, loc=0, scale=1)``
+		logcdf(x, mu, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, mu, loc=0, scale=1)``
+		sf(x, mu, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu, loc=0, scale=1)``
+		logsf(x, mu, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, mu, loc=0, scale=1)``
+		ppf(q, mu, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, mu, loc=0, scale=1)``
+		isf(q, mu, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, mu, loc=0, scale=1)``
+		moment(n, mu, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(mu, loc=0, scale=1, moments='mv')``
+		stats(mu, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(mu, loc=0, scale=1)``
+		entropy(mu, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, mu, loc=0, scale=1)``
+		fit(data, mu, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(mu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(mu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(mu, loc=0, scale=1)``
+		median(mu, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(mu, loc=0, scale=1)``
+		mean(mu, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(mu, loc=0, scale=1)``
+		var(mu, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(mu, loc=0, scale=1)``
+		std(mu, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, mu, loc=0, scale=1)``
+		interval(alpha, mu, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `invgauss` is::
+		The probability density function for `invgauss` is:
 		
-		    invgauss.pdf(x, mu) = 1 / sqrt(2*pi*x**3) * exp(-(x-mu)**2/(2*x*mu**2))
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, \mu) = \frac{1}{\sqrt{2 \pi x^3}}
+		                \exp(-\frac{(x-\mu)^2}{2 x \mu^2})
 		
-		`invgauss` takes ``mu`` as a shape parameter.
+		for :math:`x > 0`.
+		
+		`invgauss` takes :math:`\mu` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5764,9 +5961,9 @@ package scipy.stats.distributions;
 		equivalent to ``invgauss.pdf(y, mu) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		When `mu` is too small, evaluating the cumulative distribution function will be
-		inaccurate due to ``cdf(mu -> 0) = inf * 0``.
-		NaNs are returned for ``mu <= 0.0028``.
+		When :math:`\mu` is too small, evaluating the cumulative distribution
+		function will be inaccurate due to ``cdf(mu -> 0) = inf * 0``.
+		NaNs are returned for :math:`\mu \le 0.0028`.
 		
 		Examples
 		--------
@@ -5807,7 +6004,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5815,60 +6012,65 @@ package scipy.stats.distributions;
 	/**
 		An inverted Weibull continuous random variable.
 		
+		This distribution is also known as the Fréchet distribution or the
+		type II extreme value distribution.
+		
 		As an instance of the `rv_continuous` class, `invweibull` object inherits from it
 		a collection of generic methods (see below for the full list),
 		and completes them with details specific for this particular distribution.
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `invweibull` is::
+		The probability density function for `invweibull` is:
 		
-		    invweibull.pdf(x, c) = c * x**(-c-1) * exp(-x**(-c))
+		.. math::
 		
-		for ``x > 0``, ``c > 0``.
+		    f(x, c) = c x^{-c-1} \exp(-x^{-c})
 		
-		`invweibull` takes ``c`` as a shape parameter.
+		for :math:`x > 0``, :math:`c > 0``.
+		
+		`invweibull` takes :math:`c`` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -5920,7 +6122,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -5934,43 +6136,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, loc=0, scale=1)``
+		pdf(x, a, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, loc=0, scale=1)``
+		logpdf(x, a, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, loc=0, scale=1)``
+		cdf(x, a, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, loc=0, scale=1)``
+		logcdf(x, a, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, loc=0, scale=1)``
+		sf(x, a, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, loc=0, scale=1)``
+		logsf(x, a, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, loc=0, scale=1)``
+		ppf(q, a, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, loc=0, scale=1)``
+		isf(q, a, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, loc=0, scale=1)``
+		moment(n, a, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, loc=0, scale=1, moments='mv')``
+		stats(a, b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, loc=0, scale=1)``
+		entropy(a, b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, loc=0, scale=1)``
+		fit(data, a, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, loc=0, scale=1)``
+		median(a, b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, loc=0, scale=1)``
+		mean(a, b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, loc=0, scale=1)``
+		var(a, b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, loc=0, scale=1)``
+		std(a, b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, loc=0, scale=1)``
+		interval(alpha, a, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -5979,13 +6181,16 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `johnsonsb` is::
+		The probability density function for `johnsonsb` is:
 		
-		    johnsonsb.pdf(x, a, b) = b / (x*(1-x)) * phi(a + b * log(x/(1-x)))
+		.. math::
 		
-		for ``0 < x < 1`` and ``a, b > 0``, and ``phi`` is the normal pdf.
+		    f(x, a, b) = \frac{b}{x(1-x)}  \phi(a + b \log \frac{x}{1-x} )
 		
-		`johnsonsb` takes ``a`` and ``b`` as shape parameters.
+		for :math:`0 < x < 1` and :math:`a, b > 0`, and :math:`\phi` is the normal
+		pdf.
+		
+		`johnsonsb` takes :math:`a` and :math:`b` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6032,7 +6237,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6046,43 +6251,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, loc=0, scale=1)``
+		pdf(x, a, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, loc=0, scale=1)``
+		logpdf(x, a, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, loc=0, scale=1)``
+		cdf(x, a, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, loc=0, scale=1)``
+		logcdf(x, a, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, loc=0, scale=1)``
+		sf(x, a, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, loc=0, scale=1)``
+		logsf(x, a, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, loc=0, scale=1)``
+		ppf(q, a, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, loc=0, scale=1)``
+		isf(q, a, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, loc=0, scale=1)``
+		moment(n, a, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, loc=0, scale=1, moments='mv')``
+		stats(a, b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, loc=0, scale=1)``
+		entropy(a, b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, loc=0, scale=1)``
+		fit(data, a, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, loc=0, scale=1)``
+		median(a, b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, loc=0, scale=1)``
+		mean(a, b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, loc=0, scale=1)``
+		var(a, b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, loc=0, scale=1)``
+		std(a, b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, loc=0, scale=1)``
+		interval(alpha, a, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -6091,14 +6296,16 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `johnsonsu` is::
+		The probability density function for `johnsonsu` is:
 		
-		    johnsonsu.pdf(x, a, b) = b / sqrt(x**2 + 1) *
-		                             phi(a + b * log(x + sqrt(x**2 + 1)))
+		.. math::
 		
-		for all ``x, a, b > 0``, and `phi` is the normal pdf.
+		    f(x, a, b) = \frac{b}{\sqrt{x^2 + 1}}
+		                 \phi(a + b \log(x + \sqrt{x^2 + 1}))
 		
-		`johnsonsu` takes ``a`` and ``b`` as shape parameters.
+		for all :math:`x, a, b > 0`, and :math:`\phi` is the normal pdf.
+		
+		`johnsonsu` takes :math:`a` and :math:`b` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6145,7 +6352,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6159,54 +6366,57 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `kappa` is::
+		The probability density function for `kappa` is:
 		
-		    kappa3.pdf(x, a) =
-		        a*[a + x**a]**(-(a + 1)/a),     for ``x > 0``
-		        0.0,                            for ``x <= 0``
+		.. math::
 		
-		`kappa3` takes ``a`` as a shape parameter and ``a > 0``.
+		    f(x, a) = \begin{cases}
+		                a [a + x^a]^{-(a + 1)/a},     &\text{for } x > 0\\
+		                0.0,                          &\text{for } x \le 0
+		              \end{cases}
+		
+		`kappa3` takes :math:`a` as a shape parameter and :math:`a > 0`.
 		
 		References
 		----------
@@ -6265,7 +6475,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6279,55 +6489,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(h, k, loc=0, scale=1, size=1, random_state=None)``
+		rvs(h, k, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, h, k, loc=0, scale=1)``
+		pdf(x, h, k, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, h, k, loc=0, scale=1)``
+		logpdf(x, h, k, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, h, k, loc=0, scale=1)``
+		cdf(x, h, k, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, h, k, loc=0, scale=1)``
+		logcdf(x, h, k, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, h, k, loc=0, scale=1)``
+		sf(x, h, k, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, h, k, loc=0, scale=1)``
+		logsf(x, h, k, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, h, k, loc=0, scale=1)``
+		ppf(q, h, k, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, h, k, loc=0, scale=1)``
+		isf(q, h, k, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, h, k, loc=0, scale=1)``
+		moment(n, h, k, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(h, k, loc=0, scale=1, moments='mv')``
+		stats(h, k, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(h, k, loc=0, scale=1)``
+		entropy(h, k, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, h, k, loc=0, scale=1)``
+		fit(data, h, k, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(h, k), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(h, k), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(h, k, loc=0, scale=1)``
+		median(h, k, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(h, k, loc=0, scale=1)``
+		mean(h, k, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(h, k, loc=0, scale=1)``
+		var(h, k, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(h, k, loc=0, scale=1)``
+		std(h, k, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, h, k, loc=0, scale=1)``
+		interval(alpha, h, k, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for kappa4 is::
+		The probability density function for kappa4 is:
 		
-		    kappa4.pdf(x, h, k) = (1.0 - k*x)**(1.0/k - 1.0)*
-		                          (1.0 - h*(1.0 - k*x)**(1.0/k))**(1.0/h-1)
+		.. math::
 		
-		if ``h`` and ``k`` are not equal to 0.
+		    f(x, h, k) = (1 - k x)^{1/k - 1} (1 - h (1 - k x)^{1/k})^{1/h-1}
 		
-		If ``h`` or ``k`` are zero then the pdf can be simplified:
+		if :math:`h` and :math:`k` are not equal to 0.
+		
+		If :math:`h` or :math:`k` are zero then the pdf can be simplified:
 		
 		h = 0 and k != 0::
 		
@@ -6342,10 +6553,10 @@ package scipy.stats.distributions;
 		
 		    kappa4.pdf(x, h, k) = exp(-x)*exp(-exp(-x))
 		
-		kappa4 takes ``h`` and ``k`` as shape parameters.
+		kappa4 takes :math:`h` and :math:`k` as shape parameters.
 		
 		The kappa4 distribution returns other distributions when certain
-		``h`` and ``k`` values are used.
+		:math:`h` and :math:`k` values are used.
 		
 		+------+-------------+----------------+------------------+
 		| h    | k=0.0       | k=1.0          | -inf<=k<=inf     |
@@ -6381,7 +6592,7 @@ package scipy.stats.distributions;
 		to the Kolmogorov-Smirnov Test", A Dissertation Submitted to the Graduate
 		Faculty of the Louisiana State University and Agricultural and Mechanical
 		College, (August, 2004),
-		http://etd.lsu.edu/docs/available/etd-05182004-144851/unrestricted/Finney_dis.pdf
+		http://digitalcommons.lsu.edu/cgi/viewcontent.cgi?article=4671&context=gradschool_dissertations
 		
 		J.R.M. Hosking, "The four-parameter kappa distribution". IBM J. Res.
 		Develop. 38 (3), 25 1-258 (1994).
@@ -6441,7 +6652,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6455,43 +6666,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(n, loc=0, scale=1, size=1, random_state=None)``
+		rvs(n, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, n, loc=0, scale=1)``
+		pdf(x, n, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, n, loc=0, scale=1)``
+		logpdf(x, n, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, n, loc=0, scale=1)``
+		cdf(x, n, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, n, loc=0, scale=1)``
+		logcdf(x, n, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, n, loc=0, scale=1)``
+		sf(x, n, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, n, loc=0, scale=1)``
+		logsf(x, n, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, n, loc=0, scale=1)``
+		ppf(q, n, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, n, loc=0, scale=1)``
+		isf(q, n, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, n, loc=0, scale=1)``
+		moment(n, n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(n, loc=0, scale=1, moments='mv')``
+		stats(n, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(n, loc=0, scale=1)``
+		entropy(n, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, n, loc=0, scale=1)``
+		fit(data, n, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(n,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(n,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(n, loc=0, scale=1)``
+		median(n, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(n, loc=0, scale=1)``
+		mean(n, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(n, loc=0, scale=1)``
+		var(n, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(n, loc=0, scale=1)``
+		std(n, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, n, loc=0, scale=1)``
+		interval(alpha, n, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Examples
@@ -6533,7 +6744,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6547,43 +6758,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Examples
@@ -6625,7 +6836,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6639,50 +6850,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `laplace` is::
+		The probability density function for `laplace` is:
 		
-		    laplace.pdf(x) = 1/2 * exp(-abs(x))
+		.. math::
+		
+		    f(x) = \frac{1}{2} \exp(-|x|)
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6729,7 +6942,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6743,43 +6956,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -6788,13 +7001,16 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `levy` is::
+		The probability density function for `levy` is:
 		
-		    levy.pdf(x) = 1 / (x * sqrt(2*pi*x)) * exp(-1/(2*x))
+		.. math::
 		
-		for ``x > 0``.
+		    f(x) = \frac{1}{x \sqrt{2\pi x}) \exp(-\frac{1}{2x}}
 		
-		This is the same as the Levy-stable distribution with a=1/2 and b=1.
+		for :math:`x > 0`.
+		
+		This is the same as the Levy-stable distribution with :math:`a=1/2` and
+		:math:`b=1`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6841,7 +7057,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6855,43 +7071,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -6900,13 +7116,16 @@ package scipy.stats.distributions;
 		
 		Notes
 		-----
-		The probability density function for `levy_l` is::
+		The probability density function for `levy_l` is:
 		
-		    levy_l.pdf(x) = 1 / (abs(x) * sqrt(2*pi*abs(x))) * exp(-1/(2*abs(x)))
+		.. math::
 		
-		for ``x < 0``.
+		    f(x) = \frac{1}{|x| \sqrt{2\pi |x|}} \exp(-\frac{1}{2 |x|})
 		
-		This is the same as the Levy-stable distribution with a=1/2 and b=-1.
+		for :math:`x < 0`.
+		
+		This is the same as the Levy-stable distribution with :math:`a=1/2` and
+		:math:`b=-1`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -6953,7 +7172,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -6967,43 +7186,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(alpha, beta, loc=0, scale=1, size=1, random_state=None)``
+		rvs(alpha, beta, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, alpha, beta, loc=0, scale=1)``
+		pdf(x, alpha, beta, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, alpha, beta, loc=0, scale=1)``
+		logpdf(x, alpha, beta, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, alpha, beta, loc=0, scale=1)``
+		cdf(x, alpha, beta, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, alpha, beta, loc=0, scale=1)``
+		logcdf(x, alpha, beta, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, alpha, beta, loc=0, scale=1)``
+		sf(x, alpha, beta, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, alpha, beta, loc=0, scale=1)``
+		logsf(x, alpha, beta, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, alpha, beta, loc=0, scale=1)``
+		ppf(q, alpha, beta, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, alpha, beta, loc=0, scale=1)``
+		isf(q, alpha, beta, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, alpha, beta, loc=0, scale=1)``
+		moment(n, alpha, beta, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(alpha, beta, loc=0, scale=1, moments='mv')``
+		stats(alpha, beta, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(alpha, beta, loc=0, scale=1)``
+		entropy(alpha, beta, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, alpha, beta, loc=0, scale=1)``
+		fit(data, alpha, beta, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(alpha, beta), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(alpha, beta), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(alpha, beta, loc=0, scale=1)``
+		median(alpha, beta, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(alpha, beta, loc=0, scale=1)``
+		mean(alpha, beta, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(alpha, beta, loc=0, scale=1)``
+		var(alpha, beta, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(alpha, beta, loc=0, scale=1)``
+		std(alpha, beta, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, alpha, beta, loc=0, scale=1)``
+		interval(alpha, alpha, beta, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
@@ -7014,55 +7233,6 @@ package scipy.stats.distributions;
 		-----
 		Levy-stable distribution (only random variates available -- ignore other
 		docs)
-		
-		The probability density above is defined in the "standardized" form. To shift
-		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
-		Specifically, ``levy_stable.pdf(x, alpha, beta, loc, scale)`` is identically
-		equivalent to ``levy_stable.pdf(y, alpha, beta) / scale`` with
-		``y = (x - loc) / scale``.
-		
-		Examples
-		--------
-		>>> from scipy.stats import levy_stable
-		>>> import matplotlib.pyplot as plt
-		>>> fig, ax = plt.subplots(1, 1)
-		
-		Calculate a few first moments:
-		
-		>>> alpha, beta = 0.357, -0.675
-		>>> mean, var, skew, kurt = levy_stable.stats(alpha, beta, moments='mvsk')
-		
-		Display the probability density function (``pdf``):
-		
-		>>> x = np.linspace(levy_stable.ppf(0.01, alpha, beta),
-		...                 levy_stable.ppf(0.99, alpha, beta), 100)
-		>>> ax.plot(x, levy_stable.pdf(x, alpha, beta),
-		...        'r-', lw=5, alpha=0.6, label='levy_stable pdf')
-		
-		Alternatively, the distribution object can be called (as a function)
-		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed.
-		
-		Freeze the distribution and display the frozen ``pdf``:
-		
-		>>> rv = levy_stable(alpha, beta)
-		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
-		
-		Check accuracy of ``cdf`` and ``ppf``:
-		
-		>>> vals = levy_stable.ppf([0.001, 0.5, 0.999], alpha, beta)
-		>>> np.allclose([0.001, 0.5, 0.999], levy_stable.cdf(vals, alpha, beta))
-		True
-		
-		Generate random numbers:
-		
-		>>> r = levy_stable.rvs(alpha, beta, size=1000)
-		
-		And compare the histogram:
-		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
-		>>> ax.legend(loc='best', frameon=False)
-		>>> plt.show()
 	**/
 	static public function levy_stable(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -7074,54 +7244,57 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `loggamma` is::
+		The probability density function for `loggamma` is:
 		
-		    loggamma.pdf(x, c) = exp(c*x-exp(x)) / gamma(c)
+		.. math::
 		
-		for all ``x, c > 0``.
+		    f(x, c) = \frac{\exp(c x - \exp(x))}
+		                   {\gamma(c)}
 		
-		`loggamma` takes ``c`` as a shape parameter.
+		for all :math:`x, c > 0`.
+		
+		`loggamma` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7168,7 +7341,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -7182,50 +7355,53 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `logistic` is::
+		The probability density function for `logistic` is:
 		
-		    logistic.pdf(x) = exp(-x) / (1+exp(-x))**2
+		.. math::
+		
+		    f(x) = \frac{\exp(-x)}
+		                {(1+exp(-x))^2}
 		
 		`logistic` is a special case of `genlogistic` with ``c == 1``.
 		
@@ -7274,7 +7450,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -7288,51 +7464,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `loglaplace` is::
+		The probability density function for `loglaplace` is:
 		
-		    loglaplace.pdf(x, c) = c / 2 * x**(c-1),   for 0 < x < 1
-		                         = c / 2 * x**(-c-1),  for x >= 1
+		.. math::
+		
+		    f(x, c) = \begin{cases}\frac{c}{2} x^{ c-1}  &\text{for } 0 < x < 1\\
+		                           \frac{c}{2} x^{-c-1}  &\text{for } x \ge 1
+		              \end{cases}
 		
 		for ``c > 0``.
 		
@@ -7388,7 +7567,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -7402,50 +7581,53 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(s, loc=0, scale=1, size=1, random_state=None)``
+		rvs(s, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, s, loc=0, scale=1)``
+		pdf(x, s, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, s, loc=0, scale=1)``
+		logpdf(x, s, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, s, loc=0, scale=1)``
+		cdf(x, s, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, s, loc=0, scale=1)``
+		logcdf(x, s, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, s, loc=0, scale=1)``
+		sf(x, s, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, s, loc=0, scale=1)``
+		logsf(x, s, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, s, loc=0, scale=1)``
+		ppf(q, s, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, s, loc=0, scale=1)``
+		isf(q, s, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, s, loc=0, scale=1)``
+		moment(n, s, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(s, loc=0, scale=1, moments='mv')``
+		stats(s, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(s, loc=0, scale=1)``
+		entropy(s, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, s, loc=0, scale=1)``
+		fit(data, s, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(s,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(s,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(s, loc=0, scale=1)``
+		median(s, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(s, loc=0, scale=1)``
+		mean(s, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(s, loc=0, scale=1)``
+		var(s, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(s, loc=0, scale=1)``
+		std(s, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, s, loc=0, scale=1)``
+		interval(alpha, s, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `lognorm` is::
+		The probability density function for `lognorm` is:
 		
-		    lognorm.pdf(x, s) = 1 / (s*x*sqrt(2*pi)) * exp(-1/2*(log(x)/s)**2)
+		.. math::
+		
+		    f(x, s) = \frac{1}{s x \sqrt{2\pi}}
+		              \exp(-\frac{1}{2} (\frac{\log(x)}{s})^2)
 		
 		for ``x > 0``, ``s > 0``.
 		
@@ -7502,7 +7684,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -7516,50 +7698,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(p, loc=0, size=1, random_state=None)``
+		rvs(p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, p, loc=0)``
+		pmf(k, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, p, loc=0)``
+		logpmf(k, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, p, loc=0)``
+		cdf(k, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, p, loc=0)``
+		logcdf(k, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, p, loc=0)``
+		sf(k, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, p, loc=0)``
+		logsf(k, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, p, loc=0)``
+		ppf(q, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, p, loc=0)``
+		isf(q, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(p, loc=0, moments='mv')``
+		stats(p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(p, loc=0)``
+		entropy(p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(p, loc=0)``
+		median(p, loc=0)
 		    Median of the distribution.
-		``mean(p, loc=0)``
+		mean(p, loc=0)
 		    Mean of the distribution.
-		``var(p, loc=0)``
+		var(p, loc=0)
 		    Variance of the distribution.
-		``std(p, loc=0)``
+		std(p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, p, loc=0)``
+		interval(alpha, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `logser` is::
+		The probability mass function for `logser` is:
 		
-		    logser.pmf(k) = - p**k / (k*log(1-p))
+		.. math::
 		
-		for ``k >= 1``.
+		    f(k) = - \frac{p^k}{k \log(1-p)}
 		
-		`logser` takes ``p`` as shape parameter.
+		for :math:`k \ge 1`.
+		
+		`logser` takes :math:`p` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -7616,43 +7800,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -7660,13 +7844,15 @@ package scipy.stats.distributions;
 		The Lomax distribution is a special case of the Pareto distribution, with
 		(loc=-1.0).
 		
-		The probability density function for `lomax` is::
+		The probability density function for `lomax` is:
 		
-		    lomax.pdf(x, c) = c / (1+x)**(c+1)
+		.. math::
 		
-		for ``x >= 0``, ``c > 0``.
+		    f(x, c) = \frac{c}{(1+x)^{c+1}}
 		
-		`lomax` takes ``c`` as a shape parameter.
+		for :math:`x \ge 0`, ``c > 0``.
+		
+		`lomax` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -7713,7 +7899,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -7727,43 +7913,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -7772,9 +7958,11 @@ package scipy.stats.distributions;
 		and given ``scale = a``, where ``a`` is the parameter used in the
 		Mathworld description [1]_.
 		
-		The probability density function for `maxwell` is::
+		The probability density function for `maxwell` is:
 		
-		    maxwell.pdf(x) = sqrt(2/pi)x**2 * exp(-x**2/2)
+		.. math::
+		
+		    f(x) = \sqrt{2/\pi}x^2 \exp(-x^2/2)
 		
 		for ``x > 0``.
 		
@@ -7827,7 +8015,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -7841,50 +8029,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(k, s, loc=0, scale=1, size=1, random_state=None)``
+		rvs(k, s, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, k, s, loc=0, scale=1)``
+		pdf(x, k, s, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, k, s, loc=0, scale=1)``
+		logpdf(x, k, s, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, k, s, loc=0, scale=1)``
+		cdf(x, k, s, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, k, s, loc=0, scale=1)``
+		logcdf(x, k, s, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, k, s, loc=0, scale=1)``
+		sf(x, k, s, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, k, s, loc=0, scale=1)``
+		logsf(x, k, s, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, k, s, loc=0, scale=1)``
+		ppf(q, k, s, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, k, s, loc=0, scale=1)``
+		isf(q, k, s, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, k, s, loc=0, scale=1)``
+		moment(n, k, s, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(k, s, loc=0, scale=1, moments='mv')``
+		stats(k, s, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(k, s, loc=0, scale=1)``
+		entropy(k, s, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, k, s, loc=0, scale=1)``
+		fit(data, k, s, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(k, s), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(k, s), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(k, s, loc=0, scale=1)``
+		median(k, s, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(k, s, loc=0, scale=1)``
+		mean(k, s, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(k, s, loc=0, scale=1)``
+		var(k, s, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(k, s, loc=0, scale=1)``
+		std(k, s, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, k, s, loc=0, scale=1)``
+		interval(alpha, k, s, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `mielke` is::
+		The probability density function for `mielke` is:
 		
-		    mielke.pdf(x, k, s) = k * x**(k-1) / (1+x**s)**(1+k/s)
+		.. math::
+		
+		    f(x, k, s) = \frac{k x^{k-1}}{(1+x^s)^{1+k/s}}
 		
 		for ``x > 0``.
 		
@@ -7935,11 +8125,140 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
 	static public function mielke(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		A Moyal continuous random variable.
+		
+		As an instance of the `rv_continuous` class, `moyal` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		rvs(loc=0, scale=1, size=1, random_state=None)
+		    Random variates.
+		pdf(x, loc=0, scale=1)
+		    Probability density function.
+		logpdf(x, loc=0, scale=1)
+		    Log of the probability density function.
+		cdf(x, loc=0, scale=1)
+		    Cumulative distribution function.
+		logcdf(x, loc=0, scale=1)
+		    Log of the cumulative distribution function.
+		sf(x, loc=0, scale=1)
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		logsf(x, loc=0, scale=1)
+		    Log of the survival function.
+		ppf(q, loc=0, scale=1)
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		isf(q, loc=0, scale=1)
+		    Inverse survival function (inverse of ``sf``).
+		moment(n, loc=0, scale=1)
+		    Non-central moment of order n
+		stats(loc=0, scale=1, moments='mv')
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		entropy(loc=0, scale=1)
+		    (Differential) entropy of the RV.
+		fit(data, loc=0, scale=1)
+		    Parameter estimates for generic data.
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
+		    Expected value of a function (of one argument) with respect to the distribution.
+		median(loc=0, scale=1)
+		    Median of the distribution.
+		mean(loc=0, scale=1)
+		    Mean of the distribution.
+		var(loc=0, scale=1)
+		    Variance of the distribution.
+		std(loc=0, scale=1)
+		    Standard deviation of the distribution.
+		interval(alpha, loc=0, scale=1)
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability density function for `moyal` is:
+		
+		.. math::
+		
+		    f(x) = \exp(-(x + \exp(-x))/2) / \sqrt{2\pi}
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``moyal.pdf(x, loc, scale)`` is identically
+		equivalent to ``moyal.pdf(y) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		This distribution has utility in high-energy physics and radiation
+		detection. It describes the energy loss of a charged relativistic
+		particle due to ionization of the medium [1]_. It also provides an
+		approximation for the Landau distribution. For an in depth description
+		see [2]_. For additional description, see [3]_.
+		
+		References
+		----------
+		.. [1] J.E. Moyal, "XXX. Theory of ionization fluctuations",
+		       The London, Edinburgh, and Dublin Philosophical Magazine
+		       and Journal of Science, vol 46, 263-280, (1955).
+		       https://doi.org/10.1080/14786440308521076 (gated)
+		.. [2] G. Cordeiro et al., "The beta Moyal: a useful skew distribution",
+		       International Journal of Research and Reviews in Applied Sciences,
+		       vol 10, 171-192, (2012).
+		       http://www.arpapress.com/Volumes/Vol10Issue2/IJRRAS_10_2_02.pdf
+		.. [3] C. Walck, "Handbook on Statistical Distributions for
+		       Experimentalists; International Report SUF-PFY/96-01", Chapter 26,
+		       University of Stockholm: Stockholm, Sweden, (2007).
+		       www.stat.rice.edu/~dobelman/textfiles/DistributionsHandbook.pdf
+		
+		.. versionadded:: 1.1.0
+		
+		Examples
+		--------
+		>>> from scipy.stats import moyal
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		
+		>>> mean, var, skew, kurt = moyal.stats(moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(moyal.ppf(0.01),
+		...                 moyal.ppf(0.99), 100)
+		>>> ax.plot(x, moyal.pdf(x),
+		...        'r-', lw=5, alpha=0.6, label='moyal pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = moyal()
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = moyal.ppf([0.001, 0.5, 0.999])
+		>>> np.allclose([0.001, 0.5, 0.999], moyal.cdf(vals))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = moyal.rvs(size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function moyal(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Nakagami continuous random variable.
 		
@@ -7949,51 +8268,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(nu, loc=0, scale=1, size=1, random_state=None)``
+		rvs(nu, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, nu, loc=0, scale=1)``
+		pdf(x, nu, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, nu, loc=0, scale=1)``
+		logpdf(x, nu, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, nu, loc=0, scale=1)``
+		cdf(x, nu, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, nu, loc=0, scale=1)``
+		logcdf(x, nu, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, nu, loc=0, scale=1)``
+		sf(x, nu, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, nu, loc=0, scale=1)``
+		logsf(x, nu, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, nu, loc=0, scale=1)``
+		ppf(q, nu, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, nu, loc=0, scale=1)``
+		isf(q, nu, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, nu, loc=0, scale=1)``
+		moment(n, nu, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(nu, loc=0, scale=1, moments='mv')``
+		stats(nu, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(nu, loc=0, scale=1)``
+		entropy(nu, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, nu, loc=0, scale=1)``
+		fit(data, nu, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(nu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(nu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(nu, loc=0, scale=1)``
+		median(nu, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(nu, loc=0, scale=1)``
+		mean(nu, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(nu, loc=0, scale=1)``
+		var(nu, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(nu, loc=0, scale=1)``
+		std(nu, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, nu, loc=0, scale=1)``
+		interval(alpha, nu, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `nakagami` is::
+		The probability density function for `nakagami` is:
 		
-		    nakagami.pdf(x, nu) = 2 * nu**nu / gamma(nu) *
-		                          x**(2*nu-1) * exp(-nu*x**2)
+		.. math::
+		
+		    f(x, nu) = \frac{2 \nu^\nu}{\Gamma(\nu)} x^{2\nu-1} \exp(-\nu x^2)
 		
 		for ``x > 0``, ``nu > 0``.
 		
@@ -8044,7 +8364,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -8058,54 +8378,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(n, p, loc=0, size=1, random_state=None)``
+		rvs(n, p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, n, p, loc=0)``
+		pmf(k, n, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, n, p, loc=0)``
+		logpmf(k, n, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, n, p, loc=0)``
+		cdf(k, n, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, n, p, loc=0)``
+		logcdf(k, n, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, n, p, loc=0)``
+		sf(k, n, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, n, p, loc=0)``
+		logsf(k, n, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, n, p, loc=0)``
+		ppf(q, n, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, n, p, loc=0)``
+		isf(q, n, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(n, p, loc=0, moments='mv')``
+		stats(n, p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(n, p, loc=0)``
+		entropy(n, p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(n, p, loc=0)``
+		median(n, p, loc=0)
 		    Median of the distribution.
-		``mean(n, p, loc=0)``
+		mean(n, p, loc=0)
 		    Mean of the distribution.
-		``var(n, p, loc=0)``
+		var(n, p, loc=0)
 		    Variance of the distribution.
-		``std(n, p, loc=0)``
+		std(n, p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, n, p, loc=0)``
+		interval(alpha, n, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		Negative binomial distribution describes a sequence of i.i.d. Bernoulli 
+		Negative binomial distribution describes a sequence of i.i.d. Bernoulli
 		trials, repeated until a predefined, non-random number of successes occurs.
 		
-		The probability mass function of the number of failures for `nbinom` is::
+		The probability mass function of the number of failures for `nbinom` is:
 		
-		   nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
+		.. math::
 		
-		for ``k >= 0``.
+		   f(k) = \binom{k+n-1}{n-1} p^n (1-p)^k
 		
-		`nbinom` takes ``n`` and ``p`` as shape parameters where n is the number of
-		successes, whereas p is the probability of a single success.
+		for :math:`k \ge 0`.
+		
+		`nbinom` takes :math:`n` and :math:`p` as shape parameters where n is the
+		number of successes, whereas p is the probability of a single success.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -8162,57 +8484,65 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(dfn, dfd, nc, loc=0, scale=1, size=1, random_state=None)``
+		rvs(dfn, dfd, nc, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, dfn, dfd, nc, loc=0, scale=1)``
+		pdf(x, dfn, dfd, nc, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, dfn, dfd, nc, loc=0, scale=1)``
+		logpdf(x, dfn, dfd, nc, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, dfn, dfd, nc, loc=0, scale=1)``
+		cdf(x, dfn, dfd, nc, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, dfn, dfd, nc, loc=0, scale=1)``
+		logcdf(x, dfn, dfd, nc, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, dfn, dfd, nc, loc=0, scale=1)``
+		sf(x, dfn, dfd, nc, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, dfn, dfd, nc, loc=0, scale=1)``
+		logsf(x, dfn, dfd, nc, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, dfn, dfd, nc, loc=0, scale=1)``
+		ppf(q, dfn, dfd, nc, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, dfn, dfd, nc, loc=0, scale=1)``
+		isf(q, dfn, dfd, nc, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, dfn, dfd, nc, loc=0, scale=1)``
+		moment(n, dfn, dfd, nc, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(dfn, dfd, nc, loc=0, scale=1, moments='mv')``
+		stats(dfn, dfd, nc, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(dfn, dfd, nc, loc=0, scale=1)``
+		entropy(dfn, dfd, nc, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, dfn, dfd, nc, loc=0, scale=1)``
+		fit(data, dfn, dfd, nc, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(dfn, dfd, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(dfn, dfd, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(dfn, dfd, nc, loc=0, scale=1)``
+		median(dfn, dfd, nc, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(dfn, dfd, nc, loc=0, scale=1)``
+		mean(dfn, dfd, nc, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(dfn, dfd, nc, loc=0, scale=1)``
+		var(dfn, dfd, nc, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(dfn, dfd, nc, loc=0, scale=1)``
+		std(dfn, dfd, nc, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, dfn, dfd, nc, loc=0, scale=1)``
+		interval(alpha, dfn, dfd, nc, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `ncf` is::
+		The probability density function for `ncf` is:
 		
-		    ncf.pdf(x, df1, df2, nc) = exp(nc/2 + nc*df1*x/(2*(df1*x+df2))) *
-		                df1**(df1/2) * df2**(df2/2) * x**(df1/2-1) *
-		                (df2+df1*x)**(-(df1+df2)/2) *
-		                gamma(df1/2)*gamma(1+df2/2) *
-		                L^{v1/2-1}^{v2/2}(-nc*v1*x/(2*(v1*x+v2))) /
-		                (B(v1/2, v2/2) * gamma((v1+v2)/2))
+		.. math::
 		
-		for ``df1, df2, nc > 0``.
+		    f(x, n_1, n_2, \lambda) =
+		                      \exp(\frac{\lambda}{2} + \lambda n_1 \frac{x}{2(n_1 x+n_2)})
+		                      n_1^{n_1/2} n_2^{n_2/2} x^{n_1/2 - 1} \\
+		                      (n_2+n_1 x)^{-(n_1+n_2)/2}
+		                      \gamma(n_1/2) \gamma(1+n_2/2) \\
+		                     \frac{L^{\frac{v_1}{2}-1}_{v_2/2}
+		                           (-\lambda v_1 \frac{x}{2(v_1 x+v_2)})}
+		                          {(B(v_1/2, v_2/2)  \gamma(\frac{v_1+v_2}{2})}
+		
+		for :math:`n_1 > 1`, :math:`n_2, \lambda > 0`.  Here :math:`n_1` is the
+		degrees of freedom in the numerator, :math:`n_2` the degrees of freedom in
+		the denominator, :math:`\lambda` the non-centrality parameter,
+		:math:`\gamma` is the logarithm of the Gamma function, :math:`L_n^k` is a
+		generalized Laguerre polynomial and :math:`B` is the beta function.
 		
 		`ncf` takes ``df1``, ``df2`` and ``nc`` as shape parameters.
 		
@@ -8261,7 +8591,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -8275,52 +8605,53 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(df, nc, loc=0, scale=1, size=1, random_state=None)``
+		rvs(df, nc, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, df, nc, loc=0, scale=1)``
+		pdf(x, df, nc, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, df, nc, loc=0, scale=1)``
+		logpdf(x, df, nc, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, df, nc, loc=0, scale=1)``
+		cdf(x, df, nc, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, df, nc, loc=0, scale=1)``
+		logcdf(x, df, nc, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, df, nc, loc=0, scale=1)``
+		sf(x, df, nc, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, df, nc, loc=0, scale=1)``
+		logsf(x, df, nc, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, df, nc, loc=0, scale=1)``
+		ppf(q, df, nc, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, df, nc, loc=0, scale=1)``
+		isf(q, df, nc, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, df, nc, loc=0, scale=1)``
+		moment(n, df, nc, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(df, nc, loc=0, scale=1, moments='mv')``
+		stats(df, nc, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(df, nc, loc=0, scale=1)``
+		entropy(df, nc, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, df, nc, loc=0, scale=1)``
+		fit(data, df, nc, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(df, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(df, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(df, nc, loc=0, scale=1)``
+		median(df, nc, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(df, nc, loc=0, scale=1)``
+		mean(df, nc, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(df, nc, loc=0, scale=1)``
+		var(df, nc, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(df, nc, loc=0, scale=1)``
+		std(df, nc, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, df, nc, loc=0, scale=1)``
+		interval(alpha, df, nc, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `nct` is::
+		The probability density function for `nct` is:
 		
-		                                        df**(df/2) * gamma(df+1)
-		    nct.pdf(x, df, nc) = ----------------------------------------------------
-		                         2**df*exp(nc**2/2) * (df+x**2)**(df/2) * gamma(df/2)
+		.. math::
+		
+		    f(x, df, nc) = \frac{df^{df/2} \gamma(df+1)}{2^{df}
+		                   \exp(nc^2 / 2) (df+x^2)^{df/2} \gamma(df/2)}
 		
 		for ``df > 0``.
 		
@@ -8371,7 +8702,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -8385,53 +8716,55 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(df, nc, loc=0, scale=1, size=1, random_state=None)``
+		rvs(df, nc, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, df, nc, loc=0, scale=1)``
+		pdf(x, df, nc, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, df, nc, loc=0, scale=1)``
+		logpdf(x, df, nc, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, df, nc, loc=0, scale=1)``
+		cdf(x, df, nc, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, df, nc, loc=0, scale=1)``
+		logcdf(x, df, nc, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, df, nc, loc=0, scale=1)``
+		sf(x, df, nc, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, df, nc, loc=0, scale=1)``
+		logsf(x, df, nc, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, df, nc, loc=0, scale=1)``
+		ppf(q, df, nc, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, df, nc, loc=0, scale=1)``
+		isf(q, df, nc, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, df, nc, loc=0, scale=1)``
+		moment(n, df, nc, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(df, nc, loc=0, scale=1, moments='mv')``
+		stats(df, nc, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(df, nc, loc=0, scale=1)``
+		entropy(df, nc, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, df, nc, loc=0, scale=1)``
+		fit(data, df, nc, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(df, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(df, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(df, nc, loc=0, scale=1)``
+		median(df, nc, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(df, nc, loc=0, scale=1)``
+		mean(df, nc, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(df, nc, loc=0, scale=1)``
+		var(df, nc, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(df, nc, loc=0, scale=1)``
+		std(df, nc, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, df, nc, loc=0, scale=1)``
+		interval(alpha, df, nc, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `ncx2` is::
+		The probability density function for `ncx2` is:
 		
-		    ncx2.pdf(x, df, nc) = exp(-(nc+x)/2) * 1/2 * (x/nc)**((df-2)/4)
-		                          * I[(df-2)/2](sqrt(nc*x))
+		.. math::
 		
-		for ``x > 0``.
+		    f(x, df, nc) = \exp(-\frac{nc+x}{2}) \frac{1}{2} (x/nc)^{(df-2)/4}
+		                   I[(df-2)/2](\sqrt{nc x})
+		
+		for :math:`x > 0`.
 		
 		`ncx2` takes ``df`` and ``nc`` as shape parameters.
 		
@@ -8480,7 +8813,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -8497,50 +8830,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `norm` is::
+		The probability density function for `norm` is:
 		
-		    norm.pdf(x) = exp(-x**2/2)/sqrt(2*pi)
+		.. math::
+		
+		    f(x) = \frac{\exp(-x^2/2)}{\sqrt{2\pi}}
 		
 		The survival function, ``norm.sf``, is also referred to as the
 		Q-function in some contexts (see, e.g.,
@@ -8591,11 +8926,137 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
 	static public function norm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		A Normal Inverse Gaussian continuous random variable.
+		
+		As an instance of the `rv_continuous` class, `norminvgauss` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		rvs(a, b, loc=0, scale=1, size=1, random_state=None)
+		    Random variates.
+		pdf(x, a, b, loc=0, scale=1)
+		    Probability density function.
+		logpdf(x, a, b, loc=0, scale=1)
+		    Log of the probability density function.
+		cdf(x, a, b, loc=0, scale=1)
+		    Cumulative distribution function.
+		logcdf(x, a, b, loc=0, scale=1)
+		    Log of the cumulative distribution function.
+		sf(x, a, b, loc=0, scale=1)
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		logsf(x, a, b, loc=0, scale=1)
+		    Log of the survival function.
+		ppf(q, a, b, loc=0, scale=1)
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		isf(q, a, b, loc=0, scale=1)
+		    Inverse survival function (inverse of ``sf``).
+		moment(n, a, b, loc=0, scale=1)
+		    Non-central moment of order n
+		stats(a, b, loc=0, scale=1, moments='mv')
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		entropy(a, b, loc=0, scale=1)
+		    (Differential) entropy of the RV.
+		fit(data, a, b, loc=0, scale=1)
+		    Parameter estimates for generic data.
+		expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
+		    Expected value of a function (of one argument) with respect to the distribution.
+		median(a, b, loc=0, scale=1)
+		    Median of the distribution.
+		mean(a, b, loc=0, scale=1)
+		    Mean of the distribution.
+		var(a, b, loc=0, scale=1)
+		    Variance of the distribution.
+		std(a, b, loc=0, scale=1)
+		    Standard deviation of the distribution.
+		interval(alpha, a, b, loc=0, scale=1)
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability density function for `norminvgauss` is:
+		
+		.. math::
+		
+		    f(x; a, b) = (a \exp(\sqrt{a^2 - b^2} + b x)) /
+		                 (\pi \sqrt{1 + x^2} \, K_1(a * \sqrt{1 + x^2}))
+		
+		where `x` is a real number, the parameter `a` is the tail heaviness
+		and `b` is the asymmetry parameter satisfying `a > 0` and `abs(b) <= a`.
+		`K_1` is the modified Bessel function of second kind (`scipy.special.k1`).
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``norminvgauss.pdf(x, a, b, loc, scale)`` is identically
+		equivalent to ``norminvgauss.pdf(y, a, b) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		A normal inverse Gaussian random variable with parameters `a` and `b` can
+		be expressed  as `X = b * V + sqrt(V) * X` where `X` is `norm(0,1)`
+		and `V` is `invgauss(mu=1/sqrt(a**2 - b**2))`. This representation is used
+		to generate random variates.
+		
+		References
+		----------
+		O. Barndorff-Nielsen, "Hyperbolic Distributions and Distributions on
+		Hyperbolae", Scandinavian Journal of Statistics, Vol. 5(3),
+		pp. 151-157, 1978.
+		
+		O. Barndorff-Nielsen, "Normal Inverse Gaussian Distributions and Stochastic
+		Volatility Modelling", Scandinavian Journal of Statistics, Vol. 24,
+		pp. 1–13, 1997.
+		
+		Examples
+		--------
+		>>> from scipy.stats import norminvgauss
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> a, b = 1, 0.5
+		>>> mean, var, skew, kurt = norminvgauss.stats(a, b, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(norminvgauss.ppf(0.01, a, b),
+		...                 norminvgauss.ppf(0.99, a, b), 100)
+		>>> ax.plot(x, norminvgauss.pdf(x, a, b),
+		...        'r-', lw=5, alpha=0.6, label='norminvgauss pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = norminvgauss(a, b)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = norminvgauss.ppf([0.001, 0.5, 0.999], a, b)
+		>>> np.allclose([0.001, 0.5, 0.999], norminvgauss.cdf(vals, a, b))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = norminvgauss.rvs(a, b, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function norminvgauss(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Pareto continuous random variable.
 		
@@ -8605,54 +9066,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, b, loc=0, scale=1)``
+		pdf(x, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, b, loc=0, scale=1)``
+		logpdf(x, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, b, loc=0, scale=1)``
+		cdf(x, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, b, loc=0, scale=1)``
+		logcdf(x, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, b, loc=0, scale=1)``
+		sf(x, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, b, loc=0, scale=1)``
+		logsf(x, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, b, loc=0, scale=1)``
+		ppf(q, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, b, loc=0, scale=1)``
+		isf(q, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, b, loc=0, scale=1)``
+		moment(n, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(b, loc=0, scale=1, moments='mv')``
+		stats(b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(b, loc=0, scale=1)``
+		entropy(b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, b, loc=0, scale=1)``
+		fit(data, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(b, loc=0, scale=1)``
+		median(b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(b, loc=0, scale=1)``
+		mean(b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(b, loc=0, scale=1)``
+		var(b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(b, loc=0, scale=1)``
+		std(b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, b, loc=0, scale=1)``
+		interval(alpha, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `pareto` is::
+		The probability density function for `pareto` is:
 		
-		    pareto.pdf(x, b) = b / x**(b+1)
+		.. math::
 		
-		for ``x >= 1``, ``b > 0``.
+		    f(x, b) = \frac{b}{x^{b+1}}
 		
-		`pareto` takes ``b`` as a shape parameter.
+		for :math:`x \ge 1`, :math:`b > 0`.
+		
+		`pareto` takes :math:`b` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -8699,7 +9162,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -8713,57 +9176,61 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(skew, loc=0, scale=1, size=1, random_state=None)``
+		rvs(skew, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, skew, loc=0, scale=1)``
+		pdf(x, skew, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, skew, loc=0, scale=1)``
+		logpdf(x, skew, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, skew, loc=0, scale=1)``
+		cdf(x, skew, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, skew, loc=0, scale=1)``
+		logcdf(x, skew, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, skew, loc=0, scale=1)``
+		sf(x, skew, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, skew, loc=0, scale=1)``
+		logsf(x, skew, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, skew, loc=0, scale=1)``
+		ppf(q, skew, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, skew, loc=0, scale=1)``
+		isf(q, skew, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, skew, loc=0, scale=1)``
+		moment(n, skew, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(skew, loc=0, scale=1, moments='mv')``
+		stats(skew, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(skew, loc=0, scale=1)``
+		entropy(skew, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, skew, loc=0, scale=1)``
+		fit(data, skew, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(skew,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(skew,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(skew, loc=0, scale=1)``
+		median(skew, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(skew, loc=0, scale=1)``
+		mean(skew, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(skew, loc=0, scale=1)``
+		var(skew, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(skew, loc=0, scale=1)``
+		std(skew, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, skew, loc=0, scale=1)``
+		interval(alpha, skew, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `pearson3` is::
+		The probability density function for `pearson3` is:
 		
-		    pearson3.pdf(x, skew) = abs(beta) / gamma(alpha) *
-		        (beta * (x - zeta))**(alpha - 1) * exp(-beta*(x - zeta))
+		.. math::
 		
-		where::
+		    f(x, skew) = \frac{|\beta|}{\gamma(\alpha)}
+		                 (\beta (x - \zeta))^{alpha - 1} \exp(-\beta (x - \zeta))
 		
-		        beta = 2 / (skew * stddev)
-		        alpha = (stddev * beta)**2
-		        zeta = loc - alpha / beta
+		where:
+		
+		.. math::
+		
+		        \beta = \frac{2}{skew  stddev}
+		        \alpha = (stddev \beta)^2
+		        \zeta = loc - \frac{\alpha}{\beta}
 		
 		`pearson3` takes ``skew`` as a shape parameter.
 		
@@ -8812,7 +9279,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 		
@@ -8839,50 +9306,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(lambda_, loc=0, size=1, random_state=None)``
+		rvs(lambda_, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, lambda_, loc=0)``
+		pmf(k, lambda_, loc=0)
 		    Probability mass function.
-		``logpmf(k, lambda_, loc=0)``
+		logpmf(k, lambda_, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, lambda_, loc=0)``
+		cdf(k, lambda_, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, lambda_, loc=0)``
+		logcdf(k, lambda_, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, lambda_, loc=0)``
+		sf(k, lambda_, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, lambda_, loc=0)``
+		logsf(k, lambda_, loc=0)
 		    Log of the survival function.
-		``ppf(q, lambda_, loc=0)``
+		ppf(q, lambda_, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, lambda_, loc=0)``
+		isf(q, lambda_, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(lambda_, loc=0, moments='mv')``
+		stats(lambda_, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(lambda_, loc=0)``
+		entropy(lambda_, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(lambda_,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(lambda_,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(lambda_, loc=0)``
+		median(lambda_, loc=0)
 		    Median of the distribution.
-		``mean(lambda_, loc=0)``
+		mean(lambda_, loc=0)
 		    Mean of the distribution.
-		``var(lambda_, loc=0)``
+		var(lambda_, loc=0)
 		    Variance of the distribution.
-		``std(lambda_, loc=0)``
+		std(lambda_, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, lambda_, loc=0)``
+		interval(alpha, lambda_, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `planck` is::
+		The probability mass function for `planck` is:
 		
-		    planck.pmf(k) = (1-exp(-lambda_))*exp(-lambda_*k)
+		.. math::
 		
-		for ``k*lambda_ >= 0``.
+		    f(k) = (1-\exp(-\lambda)) \exp(-\lambda k)
 		
-		`planck` takes ``lambda_`` as shape parameter.
+		for :math:`k \lambda \ge 0`.
+		
+		`planck` takes :math:`\lambda` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -8939,50 +9408,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(mu, loc=0, size=1, random_state=None)``
+		rvs(mu, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, mu, loc=0)``
+		pmf(k, mu, loc=0)
 		    Probability mass function.
-		``logpmf(k, mu, loc=0)``
+		logpmf(k, mu, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, mu, loc=0)``
+		cdf(k, mu, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, mu, loc=0)``
+		logcdf(k, mu, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, mu, loc=0)``
+		sf(k, mu, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, mu, loc=0)``
+		logsf(k, mu, loc=0)
 		    Log of the survival function.
-		``ppf(q, mu, loc=0)``
+		ppf(q, mu, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, mu, loc=0)``
+		isf(q, mu, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(mu, loc=0, moments='mv')``
+		stats(mu, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(mu, loc=0)``
+		entropy(mu, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(mu,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(mu,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(mu, loc=0)``
+		median(mu, loc=0)
 		    Median of the distribution.
-		``mean(mu, loc=0)``
+		mean(mu, loc=0)
 		    Mean of the distribution.
-		``var(mu, loc=0)``
+		var(mu, loc=0)
 		    Variance of the distribution.
-		``std(mu, loc=0)``
+		std(mu, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, mu, loc=0)``
+		interval(alpha, mu, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `poisson` is::
+		The probability mass function for `poisson` is:
 		
-		    poisson.pmf(k) = exp(-mu) * mu**k / k!
+		.. math::
 		
-		for ``k >= 0``.
+		    f(k) = \exp(-\mu) \frac{mu^k}{k!}
 		
-		`poisson` takes ``mu`` as shape parameter.
+		for :math:`k \ge 0`.
+		
+		`poisson` takes :math:`\mu` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -9039,54 +9510,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `powerlaw` is::
+		The probability density function for `powerlaw` is:
 		
-		    powerlaw.pdf(x, a) = a * x**(a-1)
+		.. math::
 		
-		for ``0 <= x <= 1``, ``a > 0``.
+		    f(x, a) = a x^{a-1}
 		
-		`powerlaw` takes ``a`` as a shape parameter.
+		for :math:`0 \le x \le 1`, :math:`a > 0`.
+		
+		`powerlaw` takes :math:`a` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9135,7 +9608,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -9149,56 +9622,58 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, s, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, s, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, s, loc=0, scale=1)``
+		pdf(x, c, s, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, s, loc=0, scale=1)``
+		logpdf(x, c, s, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, s, loc=0, scale=1)``
+		cdf(x, c, s, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, s, loc=0, scale=1)``
+		logcdf(x, c, s, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, s, loc=0, scale=1)``
+		sf(x, c, s, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, s, loc=0, scale=1)``
+		logsf(x, c, s, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, s, loc=0, scale=1)``
+		ppf(q, c, s, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, s, loc=0, scale=1)``
+		isf(q, c, s, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, s, loc=0, scale=1)``
+		moment(n, c, s, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, s, loc=0, scale=1, moments='mv')``
+		stats(c, s, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, s, loc=0, scale=1)``
+		entropy(c, s, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, s, loc=0, scale=1)``
+		fit(data, c, s, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c, s), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c, s), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, s, loc=0, scale=1)``
+		median(c, s, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, s, loc=0, scale=1)``
+		mean(c, s, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, s, loc=0, scale=1)``
+		var(c, s, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, s, loc=0, scale=1)``
+		std(c, s, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, s, loc=0, scale=1)``
+		interval(alpha, c, s, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `powerlognorm` is::
+		The probability density function for `powerlognorm` is:
 		
-		    powerlognorm.pdf(x, c, s) = c / (x*s) * phi(log(x)/s) *
-		                                            (Phi(-log(x)/s))**(c-1),
+		.. math::
 		
-		where ``phi`` is the normal pdf, and ``Phi`` is the normal cdf,
-		and ``x > 0``, ``s, c > 0``.
+		    f(x, c, s) = \frac{c}{x s} \phi(\log(x)/s)
+		                 (\Phi(-\log(x)/s))^{c-1}
 		
-		`powerlognorm` takes ``c`` and ``s`` as shape parameters.
+		where :math:`\phi` is the normal pdf, and :math:`\Phi` is the normal cdf,
+		and :math:`x > 0`, :math:`s, c > 0`.
+		
+		`powerlognorm` takes :math:`c` and :math:`s` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9245,7 +9720,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -9259,55 +9734,57 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `powernorm` is::
+		The probability density function for `powernorm` is:
 		
-		    powernorm.pdf(x, c) = c * phi(x) * (Phi(-x))**(c-1)
+		.. math::
 		
-		where ``phi`` is the normal pdf, and ``Phi`` is the normal cdf,
-		and ``x > 0``, ``c > 0``.
+		    f(x, c) = c \phi(x) (\Phi(-x))^{c-1}
 		
-		`powernorm` takes ``c`` as a shape parameter.
+		where :math:`\phi` is the normal pdf, and :math:`\Phi` is the normal cdf,
+		and :math:`x > 0`, :math:`c > 0`.
+		
+		`powernorm` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9354,7 +9831,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -9369,46 +9846,48 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(low, high, loc=0, size=1, random_state=None)``
+		rvs(low, high, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, low, high, loc=0)``
+		pmf(k, low, high, loc=0)
 		    Probability mass function.
-		``logpmf(k, low, high, loc=0)``
+		logpmf(k, low, high, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, low, high, loc=0)``
+		cdf(k, low, high, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, low, high, loc=0)``
+		logcdf(k, low, high, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, low, high, loc=0)``
+		sf(k, low, high, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, low, high, loc=0)``
+		logsf(k, low, high, loc=0)
 		    Log of the survival function.
-		``ppf(q, low, high, loc=0)``
+		ppf(q, low, high, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, low, high, loc=0)``
+		isf(q, low, high, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(low, high, loc=0, moments='mv')``
+		stats(low, high, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(low, high, loc=0)``
+		entropy(low, high, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(low, high), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(low, high), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(low, high, loc=0)``
+		median(low, high, loc=0)
 		    Median of the distribution.
-		``mean(low, high, loc=0)``
+		mean(low, high, loc=0)
 		    Mean of the distribution.
-		``var(low, high, loc=0)``
+		var(low, high, loc=0)
 		    Variance of the distribution.
-		``std(low, high, loc=0)``
+		std(low, high, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, low, high, loc=0)``
+		interval(alpha, low, high, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `randint` is::
+		The probability mass function for `randint` is:
 		
-		    randint.pmf(k) = 1./(high - low)
+		.. math::
+		
+		    f(k) = \frac{1}{high - low}
 		
 		for ``k = low, ..., high - 1``.
 		
@@ -9469,52 +9948,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `rayleigh` is::
+		The probability density function for `rayleigh` is:
 		
-		    rayleigh.pdf(r) = r * exp(-r**2/2)
+		.. math::
 		
-		for ``x >= 0``.
+		    f(r) = r \exp(-r^2/2)
+		
+		for :math:`x \ge 0`.
 		
 		`rayleigh` is a special case of `chi` with ``df == 2``.
 		
@@ -9563,7 +10044,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -9577,54 +10058,64 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `rdist` is::
+		The probability density function for `rdist` is:
 		
-		    rdist.pdf(x, c) = (1-x**2)**(c/2-1) / B(1/2, c/2)
+		.. math::
 		
-		for ``-1 <= x <= 1``, ``c > 0``.
+		    f(x, c) = \frac{(1-x^2)^{c/2-1}}{B(1/2, c/2)}
 		
-		`rdist` takes ``c`` as a shape parameter.
+		for :math:`-1 \le x \le 1`, :math:`c > 0`.
+		
+		`rdist` takes :math:`c` as a shape parameter.
+		
+		This distribution includes the following distribution kernels as
+		special cases::
+		
+		    c = 2:  uniform
+		    c = 4:  Epanechnikov (parabolic)
+		    c = 6:  quartic (biweight)
+		    c = 8:  triweight
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9671,7 +10162,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -9685,54 +10176,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(mu, loc=0, scale=1, size=1, random_state=None)``
+		rvs(mu, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, mu, loc=0, scale=1)``
+		pdf(x, mu, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, mu, loc=0, scale=1)``
+		logpdf(x, mu, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, mu, loc=0, scale=1)``
+		cdf(x, mu, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, mu, loc=0, scale=1)``
+		logcdf(x, mu, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, mu, loc=0, scale=1)``
+		sf(x, mu, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, mu, loc=0, scale=1)``
+		logsf(x, mu, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, mu, loc=0, scale=1)``
+		ppf(q, mu, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, mu, loc=0, scale=1)``
+		isf(q, mu, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, mu, loc=0, scale=1)``
+		moment(n, mu, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(mu, loc=0, scale=1, moments='mv')``
+		stats(mu, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(mu, loc=0, scale=1)``
+		entropy(mu, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, mu, loc=0, scale=1)``
+		fit(data, mu, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(mu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(mu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(mu, loc=0, scale=1)``
+		median(mu, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(mu, loc=0, scale=1)``
+		mean(mu, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(mu, loc=0, scale=1)``
+		var(mu, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(mu, loc=0, scale=1)``
+		std(mu, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, mu, loc=0, scale=1)``
+		interval(alpha, mu, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `recipinvgauss` is::
+		The probability density function for `recipinvgauss` is:
 		
-		    recipinvgauss.pdf(x, mu) = 1/sqrt(2*pi*x) * exp(-(1-mu*x)**2/(2*x*mu**2))
+		.. math::
 		
-		for ``x >= 0``.
+		    f(x, \mu) = \frac{1}{\sqrt{2\pi x}} \frac{\exp(-(1-\mu x)^2}{2x\mu^2)}
 		
-		`recipinvgauss` takes ``mu`` as a shape parameter.
+		for :math:`x \ge 0`.
+		
+		`recipinvgauss` takes :math:`\mu` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9779,7 +10272,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -9793,54 +10286,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, loc=0, scale=1)``
+		pdf(x, a, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, loc=0, scale=1)``
+		logpdf(x, a, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, loc=0, scale=1)``
+		cdf(x, a, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, loc=0, scale=1)``
+		logcdf(x, a, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, loc=0, scale=1)``
+		sf(x, a, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, loc=0, scale=1)``
+		logsf(x, a, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, loc=0, scale=1)``
+		ppf(q, a, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, loc=0, scale=1)``
+		isf(q, a, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, loc=0, scale=1)``
+		moment(n, a, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, loc=0, scale=1, moments='mv')``
+		stats(a, b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, loc=0, scale=1)``
+		entropy(a, b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, loc=0, scale=1)``
+		fit(data, a, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, loc=0, scale=1)``
+		median(a, b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, loc=0, scale=1)``
+		mean(a, b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, loc=0, scale=1)``
+		var(a, b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, loc=0, scale=1)``
+		std(a, b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, loc=0, scale=1)``
+		interval(alpha, a, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `reciprocal` is::
+		The probability density function for `reciprocal` is:
 		
-		    reciprocal.pdf(x, a, b) = 1 / (x*log(b/a))
+		.. math::
 		
-		for ``a <= x <= b``, ``a, b > 0``.
+		    f(x, a, b) = \frac{1}{x \log(b/a)}
 		
-		`reciprocal` takes ``a`` and ``b`` as shape parameters.
+		for :math:`a \le x \le b`, :math:`a, b > 0`.
+		
+		`reciprocal` takes :math:`a` and :math:`b` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9887,7 +10382,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -9901,54 +10396,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, b, loc=0, scale=1)``
+		pdf(x, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, b, loc=0, scale=1)``
+		logpdf(x, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, b, loc=0, scale=1)``
+		cdf(x, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, b, loc=0, scale=1)``
+		logcdf(x, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, b, loc=0, scale=1)``
+		sf(x, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, b, loc=0, scale=1)``
+		logsf(x, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, b, loc=0, scale=1)``
+		ppf(q, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, b, loc=0, scale=1)``
+		isf(q, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, b, loc=0, scale=1)``
+		moment(n, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(b, loc=0, scale=1, moments='mv')``
+		stats(b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(b, loc=0, scale=1)``
+		entropy(b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, b, loc=0, scale=1)``
+		fit(data, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(b, loc=0, scale=1)``
+		median(b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(b, loc=0, scale=1)``
+		mean(b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(b, loc=0, scale=1)``
+		var(b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(b, loc=0, scale=1)``
+		std(b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, b, loc=0, scale=1)``
+		interval(alpha, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `rice` is::
+		The probability density function for `rice` is:
 		
-		    rice.pdf(x, b) = x * exp(-(x**2+b**2)/2) * I[0](x*b)
+		.. math::
 		
-		for ``x > 0``, ``b > 0``.
+		    f(x, b) = x \exp(- \frac{x^2 + b^2}{2}) I[0](x b)
 		
-		`rice` takes ``b`` as a shape parameter.
+		for :math:`x > 0`, :math:`b > 0`.
+		
+		`rice` takes :math:`b` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -9956,10 +10453,10 @@ package scipy.stats.distributions;
 		equivalent to ``rice.pdf(y, b) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		The Rice distribution describes the length, ``r``, of a 2-D vector
-		with components ``(U+u, V+v)``, where ``U, V`` are constant, ``u, v``
-		are independent Gaussian random variables with standard deviation
-		``s``.  Let ``R = (U**2 + V**2)**0.5``. Then the pdf of ``r`` is
+		The Rice distribution describes the length, :math:`r`, of a 2-D vector with
+		components :math:`(U+u, V+v)`, where :math:`U, V` are constant, :math:`u,
+		v` are independent Gaussian random variables with standard deviation
+		:math:`s`.  Let :math:`R = \sqrt{U^2 + V^2}`. Then the pdf of :math:`r` is
 		``rice.pdf(x, R/s, scale=s)``.
 		
 		Examples
@@ -10001,7 +10498,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -10015,52 +10512,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `semicircular` is::
+		The probability density function for `semicircular` is:
 		
-		    semicircular.pdf(x) = 2/pi * sqrt(1-x**2)
+		.. math::
 		
-		for ``-1 <= x <= 1``.
+		    f(x) = \frac{2}{\pi} \sqrt{1-x^2}
+		
+		for :math:`-1 \le x \le 1`.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10107,7 +10606,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -10121,39 +10620,39 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(mu1, mu2, loc=0, size=1, random_state=None)``
+		rvs(mu1, mu2, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, mu1, mu2, loc=0)``
+		pmf(k, mu1, mu2, loc=0)
 		    Probability mass function.
-		``logpmf(k, mu1, mu2, loc=0)``
+		logpmf(k, mu1, mu2, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, mu1, mu2, loc=0)``
+		cdf(k, mu1, mu2, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, mu1, mu2, loc=0)``
+		logcdf(k, mu1, mu2, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, mu1, mu2, loc=0)``
+		sf(k, mu1, mu2, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, mu1, mu2, loc=0)``
+		logsf(k, mu1, mu2, loc=0)
 		    Log of the survival function.
-		``ppf(q, mu1, mu2, loc=0)``
+		ppf(q, mu1, mu2, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, mu1, mu2, loc=0)``
+		isf(q, mu1, mu2, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(mu1, mu2, loc=0, moments='mv')``
+		stats(mu1, mu2, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(mu1, mu2, loc=0)``
+		entropy(mu1, mu2, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(mu1, mu2), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(mu1, mu2), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(mu1, mu2, loc=0)``
+		median(mu1, mu2, loc=0)
 		    Median of the distribution.
-		``mean(mu1, mu2, loc=0)``
+		mean(mu1, mu2, loc=0)
 		    Mean of the distribution.
-		``var(mu1, mu2, loc=0)``
+		var(mu1, mu2, loc=0)
 		    Variance of the distribution.
-		``std(mu1, mu2, loc=0)``
+		std(mu1, mu2, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, mu1, mu2, loc=0)``
+		interval(alpha, mu1, mu2, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -10161,18 +10660,20 @@ package scipy.stats.distributions;
 		Probability distribution of the difference of two correlated or
 		uncorrelated Poisson random variables.
 		
-		Let k1 and k2 be two Poisson-distributed r.v. with expected values
-		lam1 and lam2. Then, ``k1 - k2`` follows a Skellam distribution with
-		parameters ``mu1 = lam1 - rho*sqrt(lam1*lam2)`` and
-		``mu2 = lam2 - rho*sqrt(lam1*lam2)``, where rho is the correlation
-		coefficient between k1 and k2. If the two Poisson-distributed r.v.
-		are independent then ``rho = 0``.
+		Let :math:`k_1` and :math:`k_2` be two Poisson-distributed r.v. with
+		expected values lam1 and lam2. Then, :math:`k_1 - k_2` follows a Skellam
+		distribution with parameters
+		:math:`\mu_1 = \lambda_1 - \rho \sqrt{\lambda_1 \lambda_2}` and
+		:math:`\mu_2 = \lambda_2 - \rho \sqrt{\lambda_1 \lambda_2}`, where
+		:math:`\rho` is the correlation coefficient between :math:`k_1` and
+		:math:`k_2`. If the two Poisson-distributed r.v. are independent then
+		:math:`\rho = 0`.
 		
-		Parameters mu1 and mu2 must be strictly positive.
+		Parameters :math:`\mu_1` and :math:`\mu_2` must be strictly positive.
 		
 		For details see: http://en.wikipedia.org/wiki/Skellam_distribution
 		
-		`skellam` takes ``mu1`` and ``mu2`` as shape parameters.
+		`skellam` takes :math:`\mu_1` and :math:`\mu_2` as shape parameters.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -10229,53 +10730,53 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, loc=0, scale=1)``
+		pdf(x, a, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, loc=0, scale=1)``
+		logpdf(x, a, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, loc=0, scale=1)``
+		cdf(x, a, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, loc=0, scale=1)``
+		logcdf(x, a, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, loc=0, scale=1)``
+		sf(x, a, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, loc=0, scale=1)``
+		logsf(x, a, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, loc=0, scale=1)``
+		ppf(q, a, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0, scale=1)``
+		isf(q, a, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, loc=0, scale=1)``
+		moment(n, a, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, loc=0, scale=1, moments='mv')``
+		stats(a, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0, scale=1)``
+		entropy(a, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, loc=0, scale=1)``
+		fit(data, a, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0, scale=1)``
+		median(a, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, loc=0, scale=1)``
+		mean(a, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, loc=0, scale=1)``
+		var(a, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, loc=0, scale=1)``
+		std(a, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0, scale=1)``
+		interval(alpha, a, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
 		The pdf is::
 		
-		    skewnorm.pdf(x, a) = 2*norm.pdf(x)*norm.cdf(ax)
+		    skewnorm.pdf(x, a) = 2 * norm.pdf(x) * norm.cdf(a*x)
 		
-		`skewnorm` takes ``a`` as a skewness parameter
-		When a=0 the distribution is identical to a normal distribution.
+		`skewnorm` takes :math:`a` as a skewness parameter
+		When ``a = 0`` the distribution is identical to a normal distribution.
 		rvs implements the method of [1]_.
 		
 		The probability density above is defined in the "standardized" form. To shift
@@ -10323,15 +10824,13 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 		
 		
-		
 		References
 		----------
-		
 		.. [1] A. Azzalini and A. Capitanio (1999). Statistical applications of the
 		    multivariate skew-normal distribution. J. Roy. Statist. Soc., B 61, 579-602.
 		    http://azzalini.stat.unipd.it/SN/faq-r.html
@@ -10346,52 +10845,53 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(df, loc=0, scale=1, size=1, random_state=None)``
+		rvs(df, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, df, loc=0, scale=1)``
+		pdf(x, df, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, df, loc=0, scale=1)``
+		logpdf(x, df, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, df, loc=0, scale=1)``
+		cdf(x, df, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, df, loc=0, scale=1)``
+		logcdf(x, df, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, df, loc=0, scale=1)``
+		sf(x, df, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, df, loc=0, scale=1)``
+		logsf(x, df, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, df, loc=0, scale=1)``
+		ppf(q, df, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, df, loc=0, scale=1)``
+		isf(q, df, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, df, loc=0, scale=1)``
+		moment(n, df, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(df, loc=0, scale=1, moments='mv')``
+		stats(df, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(df, loc=0, scale=1)``
+		entropy(df, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, df, loc=0, scale=1)``
+		fit(data, df, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(df, loc=0, scale=1)``
+		median(df, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(df, loc=0, scale=1)``
+		mean(df, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(df, loc=0, scale=1)``
+		var(df, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(df, loc=0, scale=1)``
+		std(df, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, df, loc=0, scale=1)``
+		interval(alpha, df, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `t` is::
+		The probability density function for `t` is:
 		
-		                                   gamma((df+1)/2)
-		    t.pdf(x, df) = ---------------------------------------------------
-		                   sqrt(pi*df) * gamma(df/2) * (1+x**2/df)**((df+1)/2)
+		.. math::
+		
+		    f(x, df) = \frac{\gamma((df+1)/2)}
+		                    {\sqrt{\pi*df} \gamma(df/2) (1+x^2/df)^{(df+1)/2}}
 		
 		for ``df > 0``.
 		
@@ -10442,7 +10942,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -10456,43 +10956,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, d, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, d, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, d, loc=0, scale=1)``
+		pdf(x, c, d, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, d, loc=0, scale=1)``
+		logpdf(x, c, d, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, d, loc=0, scale=1)``
+		cdf(x, c, d, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, d, loc=0, scale=1)``
+		logcdf(x, c, d, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, d, loc=0, scale=1)``
+		sf(x, c, d, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, d, loc=0, scale=1)``
+		logsf(x, c, d, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, d, loc=0, scale=1)``
+		ppf(q, c, d, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, d, loc=0, scale=1)``
+		isf(q, c, d, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, d, loc=0, scale=1)``
+		moment(n, c, d, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, d, loc=0, scale=1, moments='mv')``
+		stats(c, d, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, d, loc=0, scale=1)``
+		entropy(c, d, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, d, loc=0, scale=1)``
+		fit(data, c, d, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, d, loc=0, scale=1)``
+		median(c, d, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, d, loc=0, scale=1)``
+		mean(c, d, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, d, loc=0, scale=1)``
+		var(c, d, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, d, loc=0, scale=1)``
+		std(c, d, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, d, loc=0, scale=1)``
+		interval(alpha, c, d, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -10501,7 +11001,7 @@ package scipy.stats.distributions;
 		from ``loc`` to ``(loc + c*scale)``, then constant to ``(loc + d*scale)``
 		and then downsloping from ``(loc + d*scale)`` to ``(loc+scale)``.
 		
-		`trapz` takes ``c`` and ``d`` as shape parameters.
+		`trapz` takes :math:`c` and :math:`d` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10552,7 +11052,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -10566,43 +11066,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -10611,7 +11111,7 @@ package scipy.stats.distributions;
 		``loc`` to ``(loc + c*scale)`` and then downsloping for ``(loc + c*scale)``
 		to ``(loc+scale)``.
 		
-		`triang` takes ``c`` as a shape parameter.
+		`triang` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10662,7 +11162,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -10676,54 +11176,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, b, loc=0, scale=1)``
+		pdf(x, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, b, loc=0, scale=1)``
+		logpdf(x, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, b, loc=0, scale=1)``
+		cdf(x, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, b, loc=0, scale=1)``
+		logcdf(x, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, b, loc=0, scale=1)``
+		sf(x, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, b, loc=0, scale=1)``
+		logsf(x, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, b, loc=0, scale=1)``
+		ppf(q, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, b, loc=0, scale=1)``
+		isf(q, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, b, loc=0, scale=1)``
+		moment(n, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(b, loc=0, scale=1, moments='mv')``
+		stats(b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(b, loc=0, scale=1)``
+		entropy(b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, b, loc=0, scale=1)``
+		fit(data, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(b, loc=0, scale=1)``
+		median(b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(b, loc=0, scale=1)``
+		mean(b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(b, loc=0, scale=1)``
+		var(b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(b, loc=0, scale=1)``
+		std(b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, b, loc=0, scale=1)``
+		interval(alpha, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `truncexpon` is::
+		The probability density function for `truncexpon` is:
 		
-		    truncexpon.pdf(x, b) = exp(-x) / (1-exp(-b))
+		.. math::
 		
-		for ``0 < x < b``.
+		    f(x, b) = \frac{\exp(-x)}{1 - \exp(-b)}
 		
-		`truncexpon` takes ``b`` as a shape parameter.
+		for :math:`0 < x < b`.
+		
+		`truncexpon` takes :math:`b` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10770,7 +11272,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -10784,43 +11286,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, b, loc=0, scale=1, size=1, random_state=None)``
+		rvs(a, b, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, a, b, loc=0, scale=1)``
+		pdf(x, a, b, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, a, b, loc=0, scale=1)``
+		logpdf(x, a, b, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, a, b, loc=0, scale=1)``
+		cdf(x, a, b, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, a, b, loc=0, scale=1)``
+		logcdf(x, a, b, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, a, b, loc=0, scale=1)``
+		sf(x, a, b, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, a, b, loc=0, scale=1)``
+		logsf(x, a, b, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, a, b, loc=0, scale=1)``
+		ppf(q, a, b, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, b, loc=0, scale=1)``
+		isf(q, a, b, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, a, b, loc=0, scale=1)``
+		moment(n, a, b, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(a, b, loc=0, scale=1, moments='mv')``
+		stats(a, b, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, b, loc=0, scale=1)``
+		entropy(a, b, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, a, b, loc=0, scale=1)``
+		fit(data, a, b, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, b, loc=0, scale=1)``
+		median(a, b, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(a, b, loc=0, scale=1)``
+		mean(a, b, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(a, b, loc=0, scale=1)``
+		var(a, b, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(a, b, loc=0, scale=1)``
+		std(a, b, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, b, loc=0, scale=1)``
+		interval(alpha, a, b, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -10832,7 +11334,7 @@ package scipy.stats.distributions;
 		
 		    a, b = (myclip_a - my_mean) / my_std, (myclip_b - my_mean) / my_std
 		
-		`truncnorm` takes ``a`` and ``b`` as shape parameters.
+		`truncnorm` takes :math:`a` and :math:`b` as shape parameters.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -10879,7 +11381,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -10893,43 +11395,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(lam, loc=0, scale=1, size=1, random_state=None)``
+		rvs(lam, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, lam, loc=0, scale=1)``
+		pdf(x, lam, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, lam, loc=0, scale=1)``
+		logpdf(x, lam, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, lam, loc=0, scale=1)``
+		cdf(x, lam, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, lam, loc=0, scale=1)``
+		logcdf(x, lam, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, lam, loc=0, scale=1)``
+		sf(x, lam, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, lam, loc=0, scale=1)``
+		logsf(x, lam, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, lam, loc=0, scale=1)``
+		ppf(q, lam, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, lam, loc=0, scale=1)``
+		isf(q, lam, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, lam, loc=0, scale=1)``
+		moment(n, lam, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(lam, loc=0, scale=1, moments='mv')``
+		stats(lam, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(lam, loc=0, scale=1)``
+		entropy(lam, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, lam, loc=0, scale=1)``
+		fit(data, lam, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(lam,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(lam,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(lam, loc=0, scale=1)``
+		median(lam, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(lam, loc=0, scale=1)``
+		mean(lam, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(lam, loc=0, scale=1)``
+		var(lam, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(lam, loc=0, scale=1)``
+		std(lam, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, lam, loc=0, scale=1)``
+		interval(alpha, lam, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -10937,11 +11439,11 @@ package scipy.stats.distributions;
 		A flexible distribution, able to represent and interpolate between the
 		following distributions:
 		
-		    - Cauchy                (lam=-1)
-		    - logistic              (lam=0.0)
-		    - approx Normal         (lam=0.14)
-		    - u-shape               (lam = 0.5)
-		    - uniform from -1 to 1  (lam = 1)
+		- Cauchy                (lam=-1)
+		- logistic              (lam=0.0)
+		- approx Normal         (lam=0.14)
+		- u-shape               (lam = 0.5)
+		- uniform from -1 to 1  (lam = 1)
 		
 		`tukeylambda` takes ``lam`` as a shape parameter.
 		
@@ -10990,7 +11492,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -11006,43 +11508,43 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Examples
@@ -11084,7 +11586,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -11098,57 +11600,59 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(kappa, loc=0, scale=1, size=1, random_state=None)``
+		rvs(kappa, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, kappa, loc=0, scale=1)``
+		pdf(x, kappa, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, kappa, loc=0, scale=1)``
+		logpdf(x, kappa, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, kappa, loc=0, scale=1)``
+		cdf(x, kappa, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, kappa, loc=0, scale=1)``
+		logcdf(x, kappa, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, kappa, loc=0, scale=1)``
+		sf(x, kappa, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, kappa, loc=0, scale=1)``
+		logsf(x, kappa, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, kappa, loc=0, scale=1)``
+		ppf(q, kappa, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, kappa, loc=0, scale=1)``
+		isf(q, kappa, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, kappa, loc=0, scale=1)``
+		moment(n, kappa, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(kappa, loc=0, scale=1, moments='mv')``
+		stats(kappa, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(kappa, loc=0, scale=1)``
+		entropy(kappa, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, kappa, loc=0, scale=1)``
+		fit(data, kappa, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(kappa,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(kappa,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(kappa, loc=0, scale=1)``
+		median(kappa, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(kappa, loc=0, scale=1)``
+		mean(kappa, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(kappa, loc=0, scale=1)``
+		var(kappa, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(kappa, loc=0, scale=1)``
+		std(kappa, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, kappa, loc=0, scale=1)``
+		interval(alpha, kappa, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
 		If `x` is not in range or `loc` is not in range it assumes they are angles
-		and converts them to [-pi, pi] equivalents.
+		and converts them to [-\pi, \pi] equivalents.
 		
-		The probability density function for `vonmises` is::
+		The probability density function for `vonmises` is:
 		
-		    vonmises.pdf(x, kappa) = exp(kappa * cos(x)) / (2*pi*I[0](kappa))
+		.. math::
 		
-		for ``-pi <= x <= pi``, ``kappa > 0``.
+		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I[0](\kappa) }
 		
-		`vonmises` takes ``kappa`` as a shape parameter.
+		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`.
+		
+		`vonmises` takes :math:`\kappa` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11158,7 +11662,7 @@ package scipy.stats.distributions;
 		
 		See Also
 		--------
-		vonmises_line : The same distribution, defined on a [-pi, pi] segment
+		vonmises_line : The same distribution, defined on a [-\pi, \pi] segment
 		                of the real line.
 		
 		Examples
@@ -11200,7 +11704,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -11214,57 +11718,59 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(kappa, loc=0, scale=1, size=1, random_state=None)``
+		rvs(kappa, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, kappa, loc=0, scale=1)``
+		pdf(x, kappa, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, kappa, loc=0, scale=1)``
+		logpdf(x, kappa, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, kappa, loc=0, scale=1)``
+		cdf(x, kappa, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, kappa, loc=0, scale=1)``
+		logcdf(x, kappa, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, kappa, loc=0, scale=1)``
+		sf(x, kappa, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, kappa, loc=0, scale=1)``
+		logsf(x, kappa, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, kappa, loc=0, scale=1)``
+		ppf(q, kappa, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, kappa, loc=0, scale=1)``
+		isf(q, kappa, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, kappa, loc=0, scale=1)``
+		moment(n, kappa, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(kappa, loc=0, scale=1, moments='mv')``
+		stats(kappa, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(kappa, loc=0, scale=1)``
+		entropy(kappa, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, kappa, loc=0, scale=1)``
+		fit(data, kappa, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(kappa,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(kappa,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(kappa, loc=0, scale=1)``
+		median(kappa, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(kappa, loc=0, scale=1)``
+		mean(kappa, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(kappa, loc=0, scale=1)``
+		var(kappa, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(kappa, loc=0, scale=1)``
+		std(kappa, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, kappa, loc=0, scale=1)``
+		interval(alpha, kappa, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
 		If `x` is not in range or `loc` is not in range it assumes they are angles
-		and converts them to [-pi, pi] equivalents.
+		and converts them to [-\pi, \pi] equivalents.
 		
-		The probability density function for `vonmises` is::
+		The probability density function for `vonmises` is:
 		
-		    vonmises.pdf(x, kappa) = exp(kappa * cos(x)) / (2*pi*I[0](kappa))
+		.. math::
 		
-		for ``-pi <= x <= pi``, ``kappa > 0``.
+		    f(x, \kappa) = \frac{ \exp(\kappa \cos(x)) }{ 2 \pi I[0](\kappa) }
 		
-		`vonmises` takes ``kappa`` as a shape parameter.
+		for :math:`-\pi \le x \le \pi`, :math:`\kappa > 0`.
+		
+		`vonmises` takes :math:`\kappa` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11274,7 +11780,7 @@ package scipy.stats.distributions;
 		
 		See Also
 		--------
-		vonmises_line : The same distribution, defined on a [-pi, pi] segment
+		vonmises_line : The same distribution, defined on a [-\pi, \pi] segment
 		                of the real line.
 		
 		Examples
@@ -11316,7 +11822,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -11330,52 +11836,54 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(loc=0, scale=1, size=1, random_state=None)``
+		rvs(loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, loc=0, scale=1)``
+		pdf(x, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, loc=0, scale=1)``
+		logpdf(x, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, loc=0, scale=1)``
+		cdf(x, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, loc=0, scale=1)``
+		logcdf(x, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, loc=0, scale=1)``
+		sf(x, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, loc=0, scale=1)``
+		logsf(x, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, loc=0, scale=1)``
+		ppf(q, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, loc=0, scale=1)``
+		isf(q, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, loc=0, scale=1)``
+		moment(n, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(loc=0, scale=1, moments='mv')``
+		stats(loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(loc=0, scale=1)``
+		entropy(loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, loc=0, scale=1)``
+		fit(data, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(loc=0, scale=1)``
+		median(loc=0, scale=1)
 		    Median of the distribution.
-		``mean(loc=0, scale=1)``
+		mean(loc=0, scale=1)
 		    Mean of the distribution.
-		``var(loc=0, scale=1)``
+		var(loc=0, scale=1)
 		    Variance of the distribution.
-		``std(loc=0, scale=1)``
+		std(loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, loc=0, scale=1)``
+		interval(alpha, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `wald` is::
+		The probability density function for `wald` is:
 		
-		    wald.pdf(x) = 1/sqrt(2*pi*x**3) * exp(-(x-1)**2/(2*x))
+		.. math::
 		
-		for ``x > 0``.
+		    f(x) = \frac{1}{\sqrt{2\pi x^3}} \exp(- \frac{ (x-1)^2 }{ 2x })
+		
+		for :math:`x > 0`.
 		
 		`wald` is a special case of `invgauss` with ``mu == 1``.
 		
@@ -11424,13 +11932,13 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
 	static public function wald(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A Frechet left (or Weibull maximum) continuous random variable.
+		Weibull maximum continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `weibull_max` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -11438,59 +11946,60 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
 		--------
-		weibull_max : The same distribution as `frechet_l`.
-		frechet_r, weibull_min
+		weibull_min
 		
 		Notes
 		-----
-		The probability density function for `frechet_l` is::
+		The probability density function for `weibull_max` is:
 		
-		    frechet_l.pdf(x, c) = c * (-x)**(c-1) * exp(-(-x)**c)
+		.. math::
 		
-		for ``x < 0``, ``c > 0``.
+		    f(x, c) = c (-x)^{c-1} \exp(-(-x)^c)
 		
-		`frechet_l` takes ``c`` as a shape parameter.
+		for :math:`x < 0`, :math:`c > 0`.
+		
+		`weibull_max` takes ``c`` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11537,13 +12046,13 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
 	static public function weibull_max(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A Frechet right (or Weibull minimum) continuous random variable.
+		Weibull minimum continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `weibull_min` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -11551,59 +12060,60 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		See Also
 		--------
-		weibull_min : The same distribution as `frechet_r`.
-		frechet_l, weibull_max
+		weibull_max
 		
 		Notes
 		-----
-		The probability density function for `frechet_r` is::
+		The probability density function for `weibull_min` is:
 		
-		    frechet_r.pdf(x, c) = c * x**(c-1) * exp(-x**c)
+		.. math::
 		
-		for ``x > 0``, ``c > 0``.
+		    f(x, c) = c x^{c-1} \exp(-x^c)
 		
-		`frechet_r` takes ``c`` as a shape parameter.
+		for :math:`x > 0`, :math:`c > 0`.
+		
+		`weibull_min` takes ``c`` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11650,7 +12160,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -11664,54 +12174,56 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(c, loc=0, scale=1, size=1, random_state=None)``
+		rvs(c, loc=0, scale=1, size=1, random_state=None)
 		    Random variates.
-		``pdf(x, c, loc=0, scale=1)``
+		pdf(x, c, loc=0, scale=1)
 		    Probability density function.
-		``logpdf(x, c, loc=0, scale=1)``
+		logpdf(x, c, loc=0, scale=1)
 		    Log of the probability density function.
-		``cdf(x, c, loc=0, scale=1)``
+		cdf(x, c, loc=0, scale=1)
 		    Cumulative distribution function.
-		``logcdf(x, c, loc=0, scale=1)``
+		logcdf(x, c, loc=0, scale=1)
 		    Log of the cumulative distribution function.
-		``sf(x, c, loc=0, scale=1)``
+		sf(x, c, loc=0, scale=1)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(x, c, loc=0, scale=1)``
+		logsf(x, c, loc=0, scale=1)
 		    Log of the survival function.
-		``ppf(q, c, loc=0, scale=1)``
+		ppf(q, c, loc=0, scale=1)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, c, loc=0, scale=1)``
+		isf(q, c, loc=0, scale=1)
 		    Inverse survival function (inverse of ``sf``).
-		``moment(n, c, loc=0, scale=1)``
+		moment(n, c, loc=0, scale=1)
 		    Non-central moment of order n
-		``stats(c, loc=0, scale=1, moments='mv')``
+		stats(c, loc=0, scale=1, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(c, loc=0, scale=1)``
+		entropy(c, loc=0, scale=1)
 		    (Differential) entropy of the RV.
-		``fit(data, c, loc=0, scale=1)``
+		fit(data, c, loc=0, scale=1)
 		    Parameter estimates for generic data.
-		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(c, loc=0, scale=1)``
+		median(c, loc=0, scale=1)
 		    Median of the distribution.
-		``mean(c, loc=0, scale=1)``
+		mean(c, loc=0, scale=1)
 		    Mean of the distribution.
-		``var(c, loc=0, scale=1)``
+		var(c, loc=0, scale=1)
 		    Variance of the distribution.
-		``std(c, loc=0, scale=1)``
+		std(c, loc=0, scale=1)
 		    Standard deviation of the distribution.
-		``interval(alpha, c, loc=0, scale=1)``
+		interval(alpha, c, loc=0, scale=1)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability density function for `wrapcauchy` is::
+		The probability density function for `wrapcauchy` is:
 		
-		    wrapcauchy.pdf(x, c) = (1-c**2) / (2*pi*(1+c**2-2*c*cos(x)))
+		.. math::
 		
-		for ``0 <= x <= 2*pi``, ``0 < c < 1``.
+		    f(x, c) = \frac{1-c^2}{2\pi (1+c^2 - 2c \cos(x))}
 		
-		`wrapcauchy` takes ``c`` as a shape parameter.
+		for :math:`0 \le x \le 2\pi`, :math:`0 < c < 1`.
+		
+		`wrapcauchy` takes :math:`c` as a shape parameter.
 		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
@@ -11758,7 +12270,7 @@ package scipy.stats.distributions;
 		
 		And compare the histogram:
 		
-		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.hist(r, density=True, histtype='stepfilled', alpha=0.2)
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
@@ -11772,50 +12284,52 @@ package scipy.stats.distributions;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, size=1, random_state=None)``
+		rvs(a, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, a, loc=0)``
+		pmf(k, a, loc=0)
 		    Probability mass function.
-		``logpmf(k, a, loc=0)``
+		logpmf(k, a, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, a, loc=0)``
+		cdf(k, a, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, a, loc=0)``
+		logcdf(k, a, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, a, loc=0)``
+		sf(k, a, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, a, loc=0)``
+		logsf(k, a, loc=0)
 		    Log of the survival function.
-		``ppf(q, a, loc=0)``
+		ppf(q, a, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0)``
+		isf(q, a, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(a, loc=0, moments='mv')``
+		stats(a, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0)``
+		entropy(a, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0)``
+		median(a, loc=0)
 		    Median of the distribution.
-		``mean(a, loc=0)``
+		mean(a, loc=0)
 		    Mean of the distribution.
-		``var(a, loc=0)``
+		var(a, loc=0)
 		    Variance of the distribution.
-		``std(a, loc=0)``
+		std(a, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0)``
+		interval(alpha, a, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `zipf` is::
+		The probability mass function for `zipf` is:
 		
-		    zipf.pmf(k, a) = 1/(zeta(a) * k**a)
+		.. math::
 		
-		for ``k >= 1``.
+		    f(k, a) = \frac{1}{\zeta(a) k^a}
 		
-		`zipf` takes ``a`` as shape parameter.
+		for :math:`k \ge 1`.
+		
+		`zipf` takes :math:`a` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.

@@ -5,6 +5,7 @@ package tensorflow.contrib.tensor_forest.python.ops.data_ops;
 	static public var DATA_CATEGORICAL : Dynamic;
 	static public var DATA_FLOAT : Dynamic;
 	static public var DTYPE_TO_FTYPE : Dynamic;
+	static public function GetColumnName(column_key:Dynamic, col_num:Dynamic):Dynamic;
 	/**
 		Return a tensor to use for input data.
 		

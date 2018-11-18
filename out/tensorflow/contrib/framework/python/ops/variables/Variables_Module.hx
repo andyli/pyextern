@@ -18,6 +18,13 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  var: a variable.
 	**/
 	static public function add_model_variable(_var:Dynamic):Dynamic;
+	/**
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.train.assert_global_step
+	**/
 	static public function assert_global_step(global_step_tensor:Dynamic):Dynamic;
 	/**
 		Verifies that a global step tensor is valid or gets one if None is given.
@@ -49,15 +56,17 @@ package tensorflow.contrib.framework.python.ops.variables;
 		      name in the checkpoint must be the full variable, not the
 		      name of the partitioned variable, eg. "my_var" rather than
 		      "my_var/part_4". If empty, returns no_op(), {}.
+		  ignore_missing_vars: Boolean, if True ignore variables missing in the
+		      checkpoint with a warning instead of failing.
 		
 		Returns:
 		  the restore_op and the feed_dict that need to be run to restore var_list.
 		
 		Raises:
-		  ValueError: If the checkpoint specified at `model_path` is missing one of
-		    the variables in `var_list`.
+		  ValueError: If `ignore_missing_vars` is False and the checkpoint specified
+		      at `model_path` is missing one of the variables in `var_list`.
 	**/
-	static public function assign_from_checkpoint(model_path:Dynamic, var_list:Dynamic):Dynamic;
+	static public function assign_from_checkpoint(model_path:Dynamic, var_list:Dynamic, ?ignore_missing_vars:Dynamic):Dynamic;
 	/**
 		Returns a function that assigns specific variables from a checkpoint.
 		
@@ -131,7 +140,11 @@ package tensorflow.contrib.framework.python.ops.variables;
 	**/
 	static public function contrib_add_arg_scope(func:Dynamic):Dynamic;
 	/**
-		Create global step tensor in graph.
+		Create global step tensor in graph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.train.create_global_step
 		
 		This API is deprecated. Use core framework training version instead.
 		
@@ -146,6 +159,39 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  ValueError: if global step tensor is already defined.
 	**/
 	static public function create_global_step(?graph:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Filter a list of variables using regular expressions.
@@ -181,6 +227,13 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  filtered list of variables.
 	**/
 	static public function filter_variables(var_list:Dynamic, ?include_patterns:Dynamic, ?exclude_patterns:Dynamic, ?reg_search:Dynamic):Dynamic;
+	/**
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.train.get_global_step
+	**/
 	static public function get_global_step(?graph:Dynamic):Dynamic;
 	/**
 		Gets the list of local variables, filtered by scope and/or suffix.
@@ -205,7 +258,11 @@ package tensorflow.contrib.framework.python.ops.variables;
 	**/
 	static public function get_model_variables(?scope:Dynamic, ?suffix:Dynamic):Dynamic;
 	/**
-		Returns and create (if necessary) the global step tensor.
+		Returns and create (if necessary) the global step tensor. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.train.get_or_create_global_step
 		
 		Args:
 		  graph: The graph in which to create the global step tensor. If missing, use
@@ -309,16 +366,29 @@ package tensorflow.contrib.framework.python.ops.variables;
 	**/
 	static public function get_variables_to_restore(?include:Dynamic, ?exclude:Dynamic):Dynamic;
 	/**
-		Create variable and add it to `GraphKeys.LOCAL_VARIABLES` collection.
+		Create a variable with a value and add it to `GraphKeys.GLOBAL_VARIABLES`.
 		
 		Args:
 		  initial_value: See variables.Variable.__init__.
 		  validate_shape: See variables.Variable.__init__.
 		  name: See variables.Variable.__init__.
+		  use_resource: If `True` use a ResourceVariable instead of a Variable.
 		Returns:
 		  New variable.
 	**/
-	static public function local_variable(initial_value:Dynamic, ?validate_shape:Dynamic, ?name:Dynamic):Dynamic;
+	static public function global_variable(initial_value:Dynamic, ?validate_shape:Dynamic, ?name:Dynamic, ?use_resource:Dynamic):Dynamic;
+	/**
+		Create a variable with a value and add it to `GraphKeys.LOCAL_VARIABLES`.
+		
+		Args:
+		  initial_value: See variables.Variable.__init__.
+		  validate_shape: See variables.Variable.__init__.
+		  name: See variables.Variable.__init__.
+		  use_resource: If `True` use a ResourceVariable instead of a Variable.
+		Returns:
+		  New variable.
+	**/
+	static public function local_variable(initial_value:Dynamic, ?validate_shape:Dynamic, ?name:Dynamic, ?use_resource:Dynamic):Dynamic;
 	/**
 		Gets an existing model variable with these parameters or creates a new one.
 		
@@ -346,11 +416,20 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  custom_getter: Callable that allows overwriting the internal
 		    get_variable method and has to have the same signature.
 		  use_resource: If `True` use a ResourceVariable instead of a Variable.
+		  synchronization: Indicates when a distributed a variable will be
+		    aggregated. Accepted values are constants defined in the class
+		    `tf.VariableSynchronization`. By default the synchronization is set to
+		    `AUTO` and the current `DistributionStrategy` chooses
+		    when to synchronize. If `synchronization` is set to `ON_READ`,
+		    `trainable` must not be set to `True`.
+		  aggregation: Indicates how a distributed variable will be aggregated.
+		    Accepted values are constants defined in the class
+		    `tf.VariableAggregation`.
 		
 		Returns:
 		  The created or existing variable.
 	**/
-	static public function model_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?use_resource:Dynamic):Dynamic;
+	static public function model_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?use_resource:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Gets an existing variable with these parameters or creates a new one.
@@ -378,11 +457,20 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  custom_getter: Callable that allows overwriting the internal
 		    get_variable method and has to have the same signature.
 		  use_resource: If `True` use a ResourceVariable instead of a Variable.
+		  synchronization: Indicates when a distributed a variable will be
+		    aggregated. Accepted values are constants defined in the class
+		    `tf.VariableSynchronization`. By default the synchronization is set to
+		    `AUTO` and the current `DistributionStrategy` chooses
+		    when to synchronize. If `synchronization` is set to `ON_READ`,
+		    `trainable` must not be set to `True`.
+		  aggregation: Indicates how a distributed variable will be aggregated.
+		    Accepted values are constants defined in the class
+		    `tf.VariableAggregation`.
 		
 		Returns:
 		  The created or existing variable.
 	**/
-	static public function variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?use_resource:Dynamic):Dynamic;
+	static public function variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?use_resource:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
 	/**
 		Initialize 'ref' with all zeros, ref tensor should be uninitialized.
 		If already initialized, you will get ValueError. This op is intended to

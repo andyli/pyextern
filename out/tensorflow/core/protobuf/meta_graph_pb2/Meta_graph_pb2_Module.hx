@@ -17,6 +17,7 @@ package tensorflow.core.protobuf.meta_graph_pb2;
 	static public var _SIGNATUREDEF_INPUTSENTRY : Dynamic;
 	static public var _SIGNATUREDEF_OUTPUTSENTRY : Dynamic;
 	static public var _TENSORINFO : Dynamic;
+	static public var _TENSORINFO_COOSPARSE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

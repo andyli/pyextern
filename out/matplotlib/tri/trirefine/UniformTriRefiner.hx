@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.tri.trirefine;
 @:pythonImport("matplotlib.tri.trirefine", "UniformTriRefiner") extern class UniformTriRefiner {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.tri.trirefine;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.tri.trirefine;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -112,7 +112,7 @@ package matplotlib.tri.trirefine;
 		This function refines a matplotlib.tri *triangulation* by splitting
 		each triangle into 4 child-masked_triangles built on the edges midside
 		nodes.
-		The masked triangles, if present, are also splitted but their children
+		The masked triangles, if present, are also split but their children
 		returned masked.
 		
 		If *ancestors* is not provided, returns only a new triangulation:
@@ -152,14 +152,6 @@ package matplotlib.tri.trirefine;
 		             The returned refined triangulation
 		refi_z : 1d array of length: *refi_tri* node count.
 		           The returned interpolated field (at *refi_tri* nodes)
-		
-		Examples
-		--------
-		The main application of this method is to plot high-quality
-		iso-contours on a coarse triangular grid (e.g., triangulation built
-		from relatively sparse test data):
-		
-		.. plot:: mpl_examples/pylab_examples/tricontour_smooth_user.py
 	**/
 	public function refine_field(z:Dynamic, ?triinterpolator:Dynamic, ?subdiv:Dynamic):Dynamic;
 	/**

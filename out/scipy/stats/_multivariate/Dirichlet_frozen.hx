@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.stats._multivariate;
 @:pythonImport("scipy.stats._multivariate", "dirichlet_frozen") extern class Dirichlet_frozen {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package scipy.stats._multivariate;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package scipy.stats._multivariate;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -132,7 +132,7 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		pdf : ndarray
+		pdf : ndarray or scalar
 		    Log of the probability density function evaluated at `x`.
 	**/
 	public function logpdf(x:Dynamic):Dynamic;
@@ -145,8 +145,8 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		mu : scalar
-		    Mean of the Dirichlet distribution
+		mu : ndarray or scalar
+		    Mean of the Dirichlet distribution.
 	**/
 	public function mean():Dynamic;
 	/**
@@ -160,7 +160,7 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		pdf : ndarray
+		pdf : ndarray or scalar
 		    The probability density function evaluated at `x`.
 	**/
 	public function pdf(x:Dynamic):Dynamic;
@@ -194,8 +194,8 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		v : scalar
-		    Variance of the Dirichlet distribution
+		v : ndarray or scalar
+		    Variance of the Dirichlet distribution.
 	**/
 	@:native("var")
 	public function _var():Dynamic;

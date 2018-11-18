@@ -14,7 +14,7 @@ package docutils.nodes;
 		false value.
 	**/
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -76,7 +76,7 @@ package docutils.nodes;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -150,7 +150,7 @@ package docutils.nodes;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -261,11 +261,7 @@ package docutils.nodes;
 	/**
 		S.index(sub[, start[, end]]) -> int
 		
-		Return the lowest index in S where substring sub is found, 
-		such that sub is contained within S[start:end].  Optional
-		arguments start and end are interpreted as in slice notation.
-		
-		Raises ValueError when the substring is not found.
+		Like S.find() but raise ValueError when the substring is not found.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -434,11 +430,7 @@ package docutils.nodes;
 	/**
 		S.rindex(sub[, start[, end]]) -> int
 		
-		Return the highest index in S where substring sub is found,
-		such that sub is contained within S[start:end].  Optional
-		arguments start and end are interpreted as in slice notation.
-		
-		Raises ValueError when the substring is not found.
+		Like S.rfind() but raise ValueError when the substring is not found.
 	**/
 	public function rindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

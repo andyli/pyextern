@@ -27,7 +27,7 @@ package scipy.integrate;
 		axis : int, optional
 		    Specifies the axis to cumulate.  Default is -1 (last axis).
 		initial : scalar, optional
-		    If given, uses this value as the first value in the returned result.
+		    If given, insert this value at the beginning of the returned result.
 		    Typically this value should be 0.  Default is None, which means no
 		    value at ``x[0]`` is returned and `res` has one element less than `y`
 		    along the axis of integration.
@@ -78,11 +78,11 @@ package scipy.integrate;
 		    first argument and x the second argument.
 		a, b : float
 		    The limits of integration in x: `a` < `b`
-		gfun : callable
+		gfun : callable or float
 		    The lower boundary curve in y which is a function taking a single
-		    floating point argument (x) and returning a floating point result: a
-		    lambda function can be useful here.
-		hfun : callable
+		    floating point argument (x) and returning a floating point result
+		    or a float indicating a constant boundary curve.
+		hfun : callable or float
 		    The upper boundary curve in y (same requirements as `gfun`).
 		args : sequence, optional
 		    Extra arguments to pass to `func`.
@@ -111,6 +111,17 @@ package scipy.integrate;
 		simps : integrator for sampled data
 		romb : integrator for sampled data
 		scipy.special : for coefficients and roots of orthogonal polynomials
+		
+		Examples
+		--------
+		
+		Compute the double integral of ``x * y**2`` over the box
+		``x`` ranging from 0 to 2 and ``y`` ranging from 0 to 1.
+		
+		>>> from scipy import integrate
+		>>> f = lambda y, x: x*y**2
+		>>> integrate.dblquad(f, 0, 2, lambda x: 0, lambda x: 1)
+		    (0.6666666666666667, 7.401486830834377e-15)
 	**/
 	static public function dblquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Float;
 	static public var division : Dynamic;
@@ -221,7 +232,7 @@ package scipy.integrate;
 		        double func(int n, double *xx, void *user_data)
 		
 		    where ``n`` is the number of extra parameters and args is an array
-		    of doubles of the additional parameters, the ``xx`` array contains the 
+		    of doubles of the additional parameters, the ``xx`` array contains the
 		    coordinates. The ``user_data`` is the data contained in the
 		    `scipy.LowLevelCallable`.
 		ranges : iterable object
@@ -229,7 +240,7 @@ package scipy.integrate;
 		    a callable that returns such a sequence.  ``ranges[0]`` corresponds to
 		    integration over x0, and so on.  If an element of ranges is a callable,
 		    then it will be called with all of the integration arguments available,
-		    as well as any parametric arguments. e.g. if 
+		    as well as any parametric arguments. e.g. if
 		    ``func = f(x0, x1, x2, t0, t1)``, then ``ranges[0]`` may be defined as
 		    either ``(a, b)`` or else as ``(a, b) = range0(x1, x2, t0, t1)``.
 		args : iterable object, optional
@@ -241,7 +252,7 @@ package scipy.integrate;
 		    default options from scipy.integrate.quad are used.  If a dict, the same
 		    options are used for all levels of integraion.  If a sequence, then each
 		    element of the sequence corresponds to a particular integration. e.g.
-		    opts[0] corresponds to integration over x0, and so on. If a callable, 
+		    opts[0] corresponds to integration over x0, and so on. If a callable,
 		    the signature must be the same as for ``ranges``. The available
 		    options together with their default values are:
 		
@@ -256,8 +267,8 @@ package scipy.integrate;
 		    For more information on these options, see `quad` and `quad_explain`.
 		
 		full_output : bool, optional
-		    Partial implementation of ``full_output`` from scipy.integrate.quad. 
-		    The number of integrand function evaluations ``neval`` can be obtained 
+		    Partial implementation of ``full_output`` from scipy.integrate.quad.
+		    The number of integrand function evaluations ``neval`` can be obtained
 		    by setting ``full_output=True`` when calling nquad.
 		
 		Returns
@@ -268,7 +279,7 @@ package scipy.integrate;
 		    The maximum of the estimates of the absolute error in the various
 		    integration results.
 		out_dict : dict, optional
-		    A dict containing additional information on the integration. 
+		    A dict containing additional information on the integration.
 		
 		See Also
 		--------
@@ -319,24 +330,32 @@ package scipy.integrate;
 	/**
 		Integrate a system of ordinary differential equations.
 		
+		.. note:: For new code, use `scipy.integrate.solve_ivp` to solve a
+		          differential equation.
+		
 		Solve a system of ordinary differential equations using lsoda from the
 		FORTRAN library odepack.
 		
 		Solves the initial value problem for stiff or non-stiff systems
 		of first order ode-s::
 		
-		    dy/dt = func(y, t0, ...)
+		    dy/dt = func(y, t, ...)  [or func(t, y, ...)]
 		
 		where y can be a vector.
 		
-		*Note*: The first two arguments of ``func(y, t0, ...)`` are in the
-		opposite order of the arguments in the system definition function used
-		by the `scipy.integrate.ode` class.
+		.. note:: By default, the required order of the first two arguments of
+		          `func` are in the opposite order of the arguments in the system
+		          definition function used by the `scipy.integrate.ode` class and
+		          the function `scipy.integrate.solve_ivp`.  To use a function with
+		          the signature ``func(t, y, ...)``, the argument `tfirst` must be
+		          set to ``True``.
 		
 		Parameters
 		----------
-		func : callable(y, t0, ...)
-		    Computes the derivative of y at t0.
+		func : callable(y, t, ...) or callable(t, y, ...)
+		    Computes the derivative of y at t.
+		    If the signature is ``callable(t, y, ...)``, then the argument
+		    `tfirst` must be set ``True``.
 		y0 : array
 		    Initial condition on y (can be a vector).
 		t : array
@@ -344,8 +363,10 @@ package scipy.integrate;
 		    value point should be the first element of this sequence.
 		args : tuple, optional
 		    Extra arguments to pass to function.
-		Dfun : callable(y, t0, ...)
+		Dfun : callable(y, t, ...) or callable(t, y, ...)
 		    Gradient (Jacobian) of `func`.
+		    If the signature is ``callable(t, y, ...)``, then the argument
+		    `tfirst` must be set ``True``.
 		col_deriv : bool, optional
 		    True if `Dfun` defines derivatives down columns (faster),
 		    otherwise `Dfun` should define derivatives across rows.
@@ -353,6 +374,11 @@ package scipy.integrate;
 		    True if to return a dictionary of optional outputs as the second output
 		printmessg : bool, optional
 		    Whether to print the convergence message
+		tfirst: bool, optional
+		    If True, the first two arguments of `func` (and `Dfun`, if given)
+		    must ``t, y`` instead of the default ``y, t``.
+		
+		    .. versionadded:: 1.1.0
 		
 		Returns
 		-------
@@ -431,6 +457,7 @@ package scipy.integrate;
 		
 		See Also
 		--------
+		solve_ivp : Solve an initial value problem for a system of ODEs.
 		ode : a more object-oriented integrator based on VODE.
 		quad : for finding the area under a curve.
 		
@@ -464,12 +491,12 @@ package scipy.integrate;
 		>>> c = 5.0
 		
 		For initial conditions, we assume the pendulum is nearly vertical
-		with `theta(0)` = `pi` - 0.1, and it initially at rest, so
+		with `theta(0)` = `pi` - 0.1, and is initially at rest, so
 		`omega(0)` = 0.  Then the vector of initial conditions is
 		
 		>>> y0 = [np.pi - 0.1, 0.0]
 		
-		We generate a solution 101 evenly spaced samples in the interval
+		We will generate a solution at 101 evenly spaced samples in the interval
 		0 <= `t` <= 10.  So our array of times is:
 		
 		>>> t = np.linspace(0, 10, 101)
@@ -493,7 +520,7 @@ package scipy.integrate;
 		>>> plt.grid()
 		>>> plt.show()
 	**/
-	static public function odeint(func:Dynamic, y0:Dynamic, t:Dynamic, ?args:Dynamic, ?Dfun:Dynamic, ?col_deriv:Dynamic, ?full_output:Dynamic, ?ml:Dynamic, ?mu:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?tcrit:Dynamic, ?h0:Dynamic, ?hmax:Dynamic, ?hmin:Dynamic, ?ixpr:Dynamic, ?mxstep:Dynamic, ?mxhnil:Dynamic, ?mxordn:Dynamic, ?mxords:Dynamic, ?printmessg:Dynamic):Dynamic;
+	static public function odeint(func:Dynamic, y0:Dynamic, t:Dynamic, ?args:Dynamic, ?Dfun:Dynamic, ?col_deriv:Dynamic, ?full_output:Dynamic, ?ml:Dynamic, ?mu:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?tcrit:Dynamic, ?h0:Dynamic, ?hmax:Dynamic, ?hmin:Dynamic, ?ixpr:Dynamic, ?mxstep:Dynamic, ?mxhnil:Dynamic, ?mxordn:Dynamic, ?mxords:Dynamic, ?printmessg:Dynamic, ?tfirst:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Compute a definite integral.
@@ -517,11 +544,11 @@ package scipy.integrate;
 		        double func(int n, double *xx, void *user_data)
 		
 		    The ``user_data`` is the data contained in the `scipy.LowLevelCallable`.
-		    In the call forms with ``xx``,  ``n`` is the length of the ``xx`` 
+		    In the call forms with ``xx``,  ``n`` is the length of the ``xx``
 		    array which contains ``xx[0] == x`` and the rest of the items are
 		    numbers contained in the ``args`` argument of quad.
 		
-		    In addition, certain ctypes call signatures are supported for 
+		    In addition, certain ctypes call signatures are supported for
 		    backward compatibility, but those should not be used in new code.
 		a : float
 		    Lower limit of integration (use -numpy.inf for -infinity).
@@ -765,6 +792,20 @@ package scipy.integrate;
 		   #(1.3333333333333333, 1.4802973661668752e-14)
 		   print((1.0**3/3.0 + 1.0) - (0.0**3/3.0 + 0.0)) #Analytic result
 		   # 1.3333333333333333
+		
+		Be aware that pulse shapes and other sharp features as compared to the
+		size of the integration interval may not be integrated correctly using
+		this method. A simplified example of this limitation is integrating a
+		y-axis reflected step function with many zero values within the integrals
+		bounds.
+		
+		>>> y = lambda x: 1 if x<=0 else 0
+		>>> integrate.quad(y, -1, 1)
+		(1.0, 1.1102230246251565e-14)
+		>>> integrate.quad(y, -1, 100)
+		(1.0000000002199108, 1.0189464580163188e-08)
+		>>> integrate.quad(y, -1, 10000)
+		(0.0, 0.0)
 	**/
 	static public function quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?full_output:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic, ?limit:Dynamic, ?points:Dynamic, ?weight:Dynamic, ?wvar:Dynamic, ?wopts:Dynamic, ?maxp1:Dynamic, ?limlst:Dynamic):Float;
 	/**
@@ -862,6 +903,30 @@ package scipy.integrate;
 		cumtrapz : cumulative integration for sampled data
 		ode : ODE integrators
 		odeint : ODE integrators
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> x = np.arange(10, 14.25, 0.25)
+		>>> y = np.arange(3, 12)
+		
+		>>> integrate.romb(y)
+		56.0
+		
+		>>> y = np.sin(np.power(x, 2.5))
+		>>> integrate.romb(y)
+		-0.742561336672229
+		
+		>>> integrate.romb(y, show=True)
+		Richardson Extrapolation Table for Romberg Integration       
+		====================================================================
+		-0.81576 
+		4.63862  6.45674 
+		-1.10581 -3.02062 -3.65245 
+		-2.57379 -3.06311 -3.06595 -3.05664 
+		-1.34093 -0.92997 -0.78776 -0.75160 -0.74256 
+		====================================================================
+		-0.742561336672229
 	**/
 	static public function romb(y:Dynamic, ?dx:Dynamic, ?axis:Dynamic, ?show:Dynamic):Dynamic;
 	/**
@@ -995,6 +1060,24 @@ package scipy.integrate;
 		exact if the function is a polynomial of order 3 or less.  If
 		the samples are not equally spaced, then the result is exact only
 		if the function is a polynomial of order 2 or less.
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> x = np.arange(0, 10)
+		>>> y = np.arange(0, 10)
+		
+		>>> integrate.simps(y, x)
+		40.5
+		
+		>>> y = np.power(x, 3)
+		>>> integrate.simps(y, x)
+		1642.5
+		>>> integrate.quad(lambda x: x**3, 0, 9)[0]
+		1640.25
+		
+		>>> integrate.simps(y, x, even='first')
+		1644.5
 	**/
 	static public function simps(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic, ?even:Dynamic):Dynamic;
 	/**
@@ -1281,67 +1364,273 @@ package scipy.integrate;
 	**/
 	static public function solve_bvp(fun:Dynamic, bc:Dynamic, x:Dynamic, y:Dynamic, ?p:Dynamic, ?S:Dynamic, ?fun_jac:Dynamic, ?bc_jac:Dynamic, ?tol:Dynamic, ?max_nodes:Dynamic, ?verbose:Dynamic):Dynamic;
 	/**
-		Run tests for module using nose.
+		Solve an initial value problem for a system of ODEs.
+		
+		This function numerically integrates a system of ordinary differential
+		equations given an initial value::
+		
+		    dy / dt = f(t, y)
+		    y(t0) = y0
+		
+		Here t is a one-dimensional independent variable (time), y(t) is an
+		n-dimensional vector-valued function (state), and an n-dimensional
+		vector-valued function f(t, y) determines the differential equations.
+		The goal is to find y(t) approximately satisfying the differential
+		equations, given an initial value y(t0)=y0.
+		
+		Some of the solvers support integration in the complex domain, but note that
+		for stiff ODE solvers, the right-hand side must be complex-differentiable
+		(satisfy Cauchy-Riemann equations [11]_). To solve a problem in the complex
+		domain, pass y0 with a complex data type. Another option is always to
+		rewrite your problem for real and imaginary parts separately.
 		
 		Parameters
 		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
+		fun : callable
+		    Right-hand side of the system. The calling signature is ``fun(t, y)``.
+		    Here ``t`` is a scalar, and there are two options for the ndarray ``y``:
+		    It can either have shape (n,); then ``fun`` must return array_like with
+		    shape (n,). Alternatively it can have shape (n, k); then ``fun``
+		    must return an array_like with shape (n, k), i.e. each column
+		    corresponds to a single column in ``y``. The choice between the two
+		    options is determined by `vectorized` argument (see below). The
+		    vectorized implementation allows a faster approximation of the Jacobian
+		    by finite differences (required for stiff solvers).
+		t_span : 2-tuple of floats
+		    Interval of integration (t0, tf). The solver starts with t=t0 and
+		    integrates until it reaches t=tf.
+		y0 : array_like, shape (n,)
+		    Initial state. For problems in the complex domain, pass `y0` with a
+		    complex data type (even if the initial guess is purely real).
+		method : string or `OdeSolver`, optional
+		    Integration method to use:
 		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
+		        * 'RK45' (default): Explicit Runge-Kutta method of order 5(4) [1]_.
+		          The error is controlled assuming accuracy of the fourth-order
+		          method, but steps are taken using the fifth-order accurate formula
+		          (local extrapolation is done). A quartic interpolation polynomial
+		          is used for the dense output [2]_. Can be applied in the complex domain.
+		        * 'RK23': Explicit Runge-Kutta method of order 3(2) [3]_. The error
+		          is controlled assuming accuracy of the second-order method, but
+		          steps are taken using the third-order accurate formula (local
+		          extrapolation is done). A cubic Hermite polynomial is used for the
+		          dense output. Can be applied in the complex domain.
+		        * 'Radau': Implicit Runge-Kutta method of the Radau IIA family of
+		          order 5 [4]_. The error is controlled with a third-order accurate
+		          embedded formula. A cubic polynomial which satisfies the
+		          collocation conditions is used for the dense output.
+		        * 'BDF': Implicit multi-step variable-order (1 to 5) method based
+		          on a backward differentiation formula for the derivative
+		          approximation [5]_. The implementation follows the one described
+		          in [6]_. A quasi-constant step scheme is used and accuracy is
+		          enhanced using the NDF modification. Can be applied in the complex
+		          domain.
+		        * 'LSODA': Adams/BDF method with automatic stiffness detection and
+		          switching [7]_, [8]_. This is a wrapper of the Fortran solver
+		          from ODEPACK.
 		
-		    The default is to use the class initialization value.
+		    You should use the 'RK45' or 'RK23' method for non-stiff problems and
+		    'Radau' or 'BDF' for stiff problems [9]_. If not sure, first try to run
+		    'RK45'. If needs unusually many iterations, diverges, or fails, your
+		    problem is likely to be stiff and you should use 'Radau' or 'BDF'.
+		    'LSODA' can also be a good universal choice, but it might be somewhat
+		    less convenient to work with as it wraps old Fortran code.
+		
+		    You can also pass an arbitrary class derived from `OdeSolver` which
+		    implements the solver.
+		dense_output : bool, optional
+		    Whether to compute a continuous solution. Default is False.
+		t_eval : array_like or None, optional
+		    Times at which to store the computed solution, must be sorted and lie
+		    within `t_span`. If None (default), use points selected by the solver.
+		events : callable, list of callables or None, optional
+		    Types of events to track. Each is defined by a continuous function of
+		    time and state that becomes zero value in case of an event. Each function
+		    must have the signature ``event(t, y)`` and return a float. The solver will
+		    find an accurate value of ``t`` at which ``event(t, y(t)) = 0`` using a
+		    root-finding algorithm. Additionally each ``event`` function might have
+		    the following attributes:
+		
+		        * terminal: bool, whether to terminate integration if this
+		          event occurs. Implicitly False if not assigned.
+		        * direction: float, direction of a zero crossing. If `direction`
+		          is positive, `event` must go from negative to positive, and
+		          vice versa if `direction` is negative. If 0, then either direction
+		          will count. Implicitly 0 if not assigned.
+		
+		    You can assign attributes like ``event.terminal = True`` to any
+		    function in Python. If None (default), events won't be tracked.
+		vectorized : bool, optional
+		    Whether `fun` is implemented in a vectorized fashion. Default is False.
+		options
+		    Options passed to a chosen solver. All options available for already
+		    implemented solvers are listed below.
+		max_step : float, optional
+		    Maximum allowed step size. Default is np.inf, i.e. the step size is not
+		    bounded and determined solely by the solver.
+		rtol, atol : float and array_like, optional
+		    Relative and absolute tolerances. The solver keeps the local error
+		    estimates less than ``atol + rtol * abs(y)``. Here `rtol` controls a
+		    relative accuracy (number of correct digits). But if a component of `y`
+		    is approximately below `atol`, the error only needs to fall within
+		    the same `atol` threshold, and the number of correct digits is not
+		    guaranteed. If components of y have different scales, it might be
+		    beneficial to set different `atol` values for different components by
+		    passing array_like with shape (n,) for `atol`. Default values are
+		    1e-3 for `rtol` and 1e-6 for `atol`.
+		jac : {None, array_like, sparse_matrix, callable}, optional
+		    Jacobian matrix of the right-hand side of the system with respect to
+		    y, required by the 'Radau', 'BDF' and 'LSODA' method. The Jacobian matrix
+		    has shape (n, n) and its element (i, j) is equal to ``d f_i / d y_j``.
+		    There are three ways to define the Jacobian:
+		
+		        * If array_like or sparse_matrix, the Jacobian is assumed to
+		          be constant. Not supported by 'LSODA'.
+		        * If callable, the Jacobian is assumed to depend on both
+		          t and y; it will be called as ``jac(t, y)`` as necessary.
+		          For the 'Radau' and 'BDF' methods, the return value might be a
+		          sparse matrix.
+		        * If None (default), the Jacobian will be approximated by
+		          finite differences.
+		
+		    It is generally recommended to provide the Jacobian rather than
+		    relying on a finite-difference approximation.
+		jac_sparsity : {None, array_like, sparse matrix}, optional
+		    Defines a sparsity structure of the Jacobian matrix for a
+		    finite-difference approximation. Its shape must be (n, n). This argument
+		    is ignored if `jac` is not `None`. If the Jacobian has only few non-zero
+		    elements in *each* row, providing the sparsity structure will greatly
+		    speed up the computations [10]_. A zero entry means that a corresponding
+		    element in the Jacobian is always zero. If None (default), the Jacobian
+		    is assumed to be dense.
+		    Not supported by 'LSODA', see `lband` and `uband` instead.
+		lband, uband : int or None
+		    Parameters defining the bandwidth of the Jacobian for the 'LSODA' method,
+		    i.e., ``jac[i, j] != 0 only for i - lband <= j <= i + uband``. Setting
+		    these requires your jac routine to return the Jacobian in the packed format:
+		    the returned array must have ``n`` columns and ``uband + lband + 1``
+		    rows in which Jacobian diagonals are written. Specifically
+		    ``jac_packed[uband + i - j , j] = jac[i, j]``. The same format is used
+		    in `scipy.linalg.solve_banded` (check for an illustration).
+		    These parameters can be also used with ``jac=None`` to reduce the
+		    number of Jacobian elements estimated by finite differences.
+		min_step, first_step : float, optional
+		    The minimum allowed step size and the initial step size respectively
+		    for 'LSODA' method. By default `min_step` is zero and `first_step` is
+		    selected automatically.
 		
 		Returns
 		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
+		Bunch object with the following fields defined:
+		t : ndarray, shape (n_points,)
+		    Time points.
+		y : ndarray, shape (n, n_points)
+		    Values of the solution at `t`.
+		sol : `OdeSolution` or None
+		    Found solution as `OdeSolution` instance; None if `dense_output` was
+		    set to False.
+		t_events : list of ndarray or None
+		    Contains for each event type a list of arrays at which an event of
+		    that type event was detected. None if `events` was None.
+		nfev : int
+		    Number of evaluations of the right-hand side.
+		njev : int
+		    Number of evaluations of the Jacobian.
+		nlu : int
+		    Number of LU decompositions.
+		status : int
+		    Reason for algorithm termination:
 		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
+		        * -1: Integration step failed.
+		        *  0: The solver successfully reached the end of `tspan`.
+		        *  1: A termination event occurred.
 		
-		>>> np.lib.test() #doctest: +SKIP
+		message : string
+		    Human-readable description of the termination reason.
+		success : bool
+		    True if the solver reached the interval end or a termination event
+		    occurred (``status >= 0``).
+		
+		References
+		----------
+		.. [1] J. R. Dormand, P. J. Prince, "A family of embedded Runge-Kutta
+		       formulae", Journal of Computational and Applied Mathematics, Vol. 6,
+		       No. 1, pp. 19-26, 1980.
+		.. [2] L. W. Shampine, "Some Practical Runge-Kutta Formulas", Mathematics
+		       of Computation,, Vol. 46, No. 173, pp. 135-150, 1986.
+		.. [3] P. Bogacki, L.F. Shampine, "A 3(2) Pair of Runge-Kutta Formulas",
+		       Appl. Math. Lett. Vol. 2, No. 4. pp. 321-325, 1989.
+		.. [4] E. Hairer, G. Wanner, "Solving Ordinary Differential Equations II:
+		       Stiff and Differential-Algebraic Problems", Sec. IV.8.
+		.. [5] `Backward Differentiation Formula
+		        <https://en.wikipedia.org/wiki/Backward_differentiation_formula>`_
+		        on Wikipedia.
+		.. [6] L. F. Shampine, M. W. Reichelt, "THE MATLAB ODE SUITE", SIAM J. SCI.
+		       COMPUTE., Vol. 18, No. 1, pp. 1-22, January 1997.
+		.. [7] A. C. Hindmarsh, "ODEPACK, A Systematized Collection of ODE
+		       Solvers," IMACS Transactions on Scientific Computation, Vol 1.,
+		       pp. 55-64, 1983.
+		.. [8] L. Petzold, "Automatic selection of methods for solving stiff and
+		       nonstiff systems of ordinary differential equations", SIAM Journal
+		       on Scientific and Statistical Computing, Vol. 4, No. 1, pp. 136-148,
+		       1983.
+		.. [9] `Stiff equation <https://en.wikipedia.org/wiki/Stiff_equation>`_ on
+		       Wikipedia.
+		.. [10] A. Curtis, M. J. D. Powell, and J. Reid, "On the estimation of
+		        sparse Jacobian matrices", Journal of the Institute of Mathematics
+		        and its Applications, 13, pp. 117-120, 1974.
+		.. [11] `Cauchy-Riemann equations
+		         <https://en.wikipedia.org/wiki/Cauchy-Riemann_equations>`_ on
+		         Wikipedia.
 		
 		Examples
 		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
+		Basic exponential decay showing automatically chosen time points.
 		
-		OK
+		>>> from scipy.integrate import solve_ivp
+		>>> def exponential_decay(t, y): return -0.5 * y
+		>>> sol = solve_ivp(exponential_decay, [0, 10], [2, 4, 8])
+		>>> print(sol.t)
+		[  0.           0.11487653   1.26364188   3.06061781   4.85759374
+		   6.65456967   8.4515456   10.        ]
+		>>> print(sol.y)
+		[[2.         1.88836035 1.06327177 0.43319312 0.17648948 0.0719045
+		  0.02929499 0.01350938]
+		 [4.         3.7767207  2.12654355 0.86638624 0.35297895 0.143809
+		  0.05858998 0.02701876]
+		 [8.         7.5534414  4.25308709 1.73277247 0.7059579  0.287618
+		  0.11717996 0.05403753]]
 		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
+		Specifying points where the solution is desired.
+		
+		>>> sol = solve_ivp(exponential_decay, [0, 10], [2, 4, 8],
+		...                 t_eval=[0, 1, 2, 4, 10])
+		>>> print(sol.t)
+		[ 0  1  2  4 10]
+		>>> print(sol.y)
+		[[2.         1.21305369 0.73534021 0.27066736 0.01350938]
+		 [4.         2.42610739 1.47068043 0.54133472 0.02701876]
+		 [8.         4.85221478 2.94136085 1.08266944 0.05403753]]
+		
+		Cannon fired upward with terminal event upon impact. The ``terminal`` and
+		``direction`` fields of an event are applied by monkey patching a function.
+		Here ``y[0]`` is position and ``y[1]`` is velocity. The projectile starts at
+		position 0 with velocity +10. Note that the integration never reaches t=100
+		because the event is terminal.
+		
+		>>> def upward_cannon(t, y): return [y[1], -0.5]
+		>>> def hit_ground(t, y): return y[1]
+		>>> hit_ground.terminal = True
+		>>> hit_ground.direction = -1
+		>>> sol = solve_ivp(upward_cannon, [0, 100], [0, 10], events=hit_ground)
+		>>> print(sol.t_events)
+		[array([ 20.])]
+		>>> print(sol.t)
+		[0.00000000e+00 9.99900010e-05 1.09989001e-03 1.10988901e-02
+		 1.11088891e-01 1.11098890e+00 1.11099890e+01 2.00000000e+01]
 	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function solve_ivp(fun:Dynamic, t_span:Dynamic, y0:Dynamic, ?method:Dynamic, ?t_eval:Dynamic, ?dense_output:Dynamic, ?events:Dynamic, ?vectorized:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		Compute a triple (definite) integral.
 		
@@ -1355,16 +1644,17 @@ package scipy.integrate;
 		    order (z, y, x).
 		a, b : float
 		    The limits of integration in x: `a` < `b`
-		gfun : function
+		gfun : function or float
 		    The lower boundary curve in y which is a function taking a single
-		    floating point argument (x) and returning a floating point result:
-		    a lambda function can be useful here.
-		hfun : function
+		    floating point argument (x) and returning a floating point result
+		    or a float indicating a constant boundary curve.
+		hfun : function or float
 		    The upper boundary curve in y (same requirements as `gfun`).
-		qfun : function
+		qfun : function or float
 		    The lower boundary surface in z.  It must be a function that takes
-		    two floats in the order (x, y) and returns a float.
-		rfun : function
+		    two floats in the order (x, y) and returns a float or a float
+		    indicating a constant boundary surface.
+		rfun : function or float
 		    The upper boundary surface in z. (Same requirements as `qfun`.)
 		args : tuple, optional
 		    Extra arguments to pass to `func`.
@@ -1393,6 +1683,18 @@ package scipy.integrate;
 		ode: ODE integrators
 		odeint: ODE integrators
 		scipy.special: For coefficients and roots of orthogonal polynomials
+		
+		Examples
+		--------
+		
+		Compute the triple integral of ``x * y * z``, over ``x`` ranging 
+		from 1 to 2, ``y`` ranging from 2 to 3, ``z`` ranging from 0 to 1.
+		
+		>>> from scipy import integrate
+		>>> f = lambda z, y, x: x*y*z
+		>>> integrate.tplquad(f, 1, 2, lambda x: 2, lambda x: 3,
+		...                   lambda x, y: 0, lambda x, y: 1)
+		(1.8750000000000002, 3.324644794257407e-14)
 	**/
 	static public function tplquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, qfun:Dynamic, rfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Float;
 	/**

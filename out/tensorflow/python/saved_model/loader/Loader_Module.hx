@@ -9,7 +9,8 @@ package tensorflow.python.saved_model.loader;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Loads the model from a SavedModel as specified by tags.
 		
@@ -20,6 +21,10 @@ package tensorflow.python.saved_model.loader;
 		      SavedModel `save()` API.
 		  export_dir: Directory in which the SavedModel protocol buffer and variables
 		      to be loaded are located.
+		  import_scope: Optional `string` -- if specified, prepend this string
+		      followed by '/' to all loaded tensor names. This scope is applied to
+		      tensor instances loaded into the passed session, but it is *not* written
+		      through to the static `MetaGraphDef` protocol buffer that is returned.
 		  **saver_kwargs: Optional keyword arguments passed through to Saver.
 		
 		Returns:
@@ -29,7 +34,7 @@ package tensorflow.python.saved_model.loader;
 		Raises:
 		  RuntimeError: MetaGraphDef associated with the tags cannot be found.
 	**/
-	static public function load(sess:Dynamic, tags:Dynamic, export_dir:Dynamic, ?saver_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function load(sess:Dynamic, tags:Dynamic, export_dir:Dynamic, ?import_scope:Dynamic, ?saver_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Checks whether the provided export directory could contain a SavedModel.
 		
@@ -46,4 +51,5 @@ package tensorflow.python.saved_model.loader;
 		  True if the export directory contains SavedModel files, False otherwise.
 	**/
 	static public function maybe_saved_model_directory(export_dir:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

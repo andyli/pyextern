@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.evaluation;
 @:pythonImport("tensorflow.python.training.evaluation", "_StopAfterNEvalsHook") extern class _StopAfterNEvalsHook {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,7 +41,8 @@ package tensorflow.python.training.evaluation;
 		Constructs the run hook.
 		
 		Args:
-		  num_evals: The number of evaluations to run for.
+		  num_evals: The number of evaluations to run for. if set to None, will
+		    iterate the dataset until all inputs are exhausted.
 		  log_progress: Whether to log evaluation progress, defaults to True.
 	**/
 	@:native("__init__")
@@ -50,7 +51,8 @@ package tensorflow.python.training.evaluation;
 		Constructs the run hook.
 		
 		Args:
-		  num_evals: The number of evaluations to run for.
+		  num_evals: The number of evaluations to run for. if set to None, will
+		    iterate the dataset until all inputs are exhausted.
 		  log_progress: Whether to log evaluation progress, defaults to True.
 	**/
 	public function new(num_evals:Dynamic, ?log_progress:Dynamic):Void;
@@ -60,7 +62,7 @@ package tensorflow.python.training.evaluation;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -111,12 +113,14 @@ package tensorflow.python.training.evaluation;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _set_evals_completed_tensor(updated_eval_step:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Called when new TensorFlow session is created.
 		

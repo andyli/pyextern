@@ -58,7 +58,7 @@ package numpy.core.function_base;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/

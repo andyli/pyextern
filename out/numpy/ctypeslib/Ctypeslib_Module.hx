@@ -10,9 +10,17 @@ package numpy.ctypeslib;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Create an ndarray of the given element type and shape 
+	**/
+	static public function _ctype_ndarray(element_type:Dynamic, shape:Dynamic):Dynamic;
 	static public var _flagdict : Dynamic;
 	static public var _flagnames : Dynamic;
 	static public function _flags_fromnum(num:Dynamic):Dynamic;
+	/**
+		Return a dictionary mapping __array_interface__ formats to ctypes types 
+	**/
+	static public function _get_typecodes():Dynamic;
 	static public function _num_fromflags(flaglist:Dynamic):Dynamic;
 	static public var _pointer_type_cache : Dynamic;
 	static public var _typecodes : Dynamic;
@@ -70,7 +78,15 @@ package numpy.ctypeslib;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -122,11 +138,12 @@ package numpy.ctypeslib;
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Create a numpy array from a ctypes array or a ctypes POINTER.
+		Create a numpy array from a ctypes array or POINTER.
+		
 		The numpy array shares the memory with the ctypes object.
 		
-		The size parameter must be given if converting from a ctypes POINTER.
-		The size parameter is ignored if converting from a ctypes array
+		The shape parameter must be given if converting from a ctypes POINTER.
+		The shape parameter is ignored if converting from a ctypes array
 	**/
 	static public function as_array(obj:Dynamic, ?shape:Dynamic):Dynamic;
 	/**
@@ -134,7 +151,6 @@ package numpy.ctypeslib;
 		anything that exposes the __array_interface__ is accepted.
 	**/
 	static public function as_ctypes(obj:Dynamic):Dynamic;
-	static public var code : Dynamic;
 	/**
 		`ctypes_load_library` is deprecated, use `load_library` instead!
 		
@@ -263,6 +279,7 @@ package numpy.ctypeslib;
 		      - OWNDATA / O
 		      - WRITEABLE / W
 		      - ALIGNED / A
+		      - WRITEBACKIFCOPY / X
 		      - UPDATEIFCOPY / U
 		
 		Returns
@@ -286,23 +303,5 @@ package numpy.ctypeslib;
 		... #doctest: +SKIP
 	**/
 	static public function ndpointer(?dtype:Dynamic, ?ndim:Dynamic, ?shape:Dynamic, ?flags:Dynamic):Dynamic;
-	/**
-		Given a ctypes array type, construct and attach an
-		__array_interface__ property to it if it does not yet have one.
-	**/
-	static public function prep_array(array_type:Dynamic):Dynamic;
-	/**
-		Given a ctypes pointer object, construct and
-		attach an __array_interface__ property to it if it does not
-		yet have one.
-	**/
-	static public function prep_pointer(pointer_obj:Dynamic, shape:Dynamic):Dynamic;
-	/**
-		Given a ctypes simple type, construct and attach an
-		__array_interface__ property to it if it does not yet have one.
-	**/
-	static public function prep_simple(simple_type:Dynamic, dtype:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	static public var simple_types : Dynamic;
-	static public var types : Dynamic;
 }

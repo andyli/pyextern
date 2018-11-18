@@ -40,7 +40,7 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var GRAPH_INPUT_NODE_NAME_FIELD_NUMBER : Dynamic;
 	static public var GRAPH_OUTPUT_NODE_NAME_FIELD_NUMBER : Dynamic;
 	/**
@@ -75,7 +75,7 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var SERIALIZED_EXECUTOR_PARAMETERS_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
@@ -92,7 +92,7 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 	/**
 		A ProtocolMessage
 	**/
-	static public function TensorShapeTypeProto(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function TensorShapeTypeProto(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -140,7 +140,7 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -195,7 +195,7 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -251,7 +251,7 @@ package tensorflow.core.framework.remote_fused_graph_execute_info_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/

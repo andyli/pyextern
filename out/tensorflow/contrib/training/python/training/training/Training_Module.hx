@@ -34,6 +34,10 @@ package tensorflow.contrib.training.python.training.training;
 	**/
 	static public function clip_gradient_norms(gradients_to_variables:Dynamic, max_norm:Dynamic):Dynamic;
 	/**
+		Returns a `transform_grads_fn` function for gradient clipping.
+	**/
+	static public function clip_gradient_norms_fn(max_norm:Dynamic):Dynamic;
+	/**
 		Creates an `Operation` that evaluates the gradients and returns the loss.
 		
 		Args:
@@ -106,6 +110,11 @@ package tensorflow.contrib.training.python.training.training;
 		    `save_summaries_steps` is set to `None`, then the default summary saver
 		    isn't used.
 		  config: An instance of `tf.ConfigProto`.
+		  max_wait_secs: Maximum time workers should wait for the session to
+		    become available. This should be kept relatively short to help detect
+		    incorrect code, but sometimes may need to be increased if the chief takes
+		    a while to start up.
+		  run_metadata: A [`RunMetadata`] protocol buffer.
 		
 		Returns:
 		  the value of the loss function after training.
@@ -114,5 +123,5 @@ package tensorflow.contrib.training.python.training.training;
 		  ValueError: if `logdir` is `None` and either `save_checkpoint_secs` or
 		  `save_summaries_steps` are `None.
 	**/
-	static public function train(train_op:Dynamic, logdir:Dynamic, ?master:Dynamic, ?is_chief:Dynamic, ?scaffold:Dynamic, ?hooks:Dynamic, ?chief_only_hooks:Dynamic, ?save_checkpoint_secs:Dynamic, ?save_summaries_steps:Dynamic, ?config:Dynamic):Dynamic;
+	static public function train(train_op:Dynamic, logdir:Dynamic, ?master:Dynamic, ?is_chief:Dynamic, ?scaffold:Dynamic, ?hooks:Dynamic, ?chief_only_hooks:Dynamic, ?save_checkpoint_secs:Dynamic, ?save_summaries_steps:Dynamic, ?config:Dynamic, ?max_wait_secs:Dynamic, ?run_metadata:Dynamic):Dynamic;
 }

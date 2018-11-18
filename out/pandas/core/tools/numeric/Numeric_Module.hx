@@ -48,20 +48,37 @@ package pandas.core.tools.numeric;
 	/**
 		Check if the object is a number.
 		
+		Returns True when the object is a number, and False if is not.
+		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : any type
+		    The object to check if is a number.
 		
 		Returns
 		-------
 		is_number : bool
 		    Whether `obj` is a number or not.
 		
+		See Also
+		--------
+		pandas.api.types.is_integer: checks a subgroup of numbers
+		
 		Examples
 		--------
-		>>> is_number(1)
+		>>> pd.api.types.is_number(1)
 		True
-		>>> is_number("foo")
+		>>> pd.api.types.is_number(7.15)
+		True
+		
+		Booleans are valid because they are int subclass.
+		
+		>>> pd.api.types.is_number(False)
+		True
+		
+		>>> pd.api.types.is_number("foo")
+		False
+		>>> pd.api.types.is_number("5")
 		False
 	**/
 	static public function is_number(obj:Dynamic):Bool;
@@ -114,6 +131,7 @@ package pandas.core.tools.numeric;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -192,6 +210,13 @@ package pandas.core.tools.numeric;
 		2    2.0
 		3   -3.0
 		dtype: float64
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
+		pandas.to_timedelta : Convert argument to timedelta.
+		numpy.ndarray.astype : Cast a numpy array to a specified type.
 	**/
 	static public function to_numeric(arg:Dynamic, ?errors:Dynamic, ?downcast:Dynamic):Dynamic;
 }

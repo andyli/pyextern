@@ -31,13 +31,11 @@ package tensorflow.python.platform.tf_logging;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public function _get_logger():Dynamic;
 	/**
 		Get id of current thread, suitable for logging as an unsigned quantity.
 	**/
 	static public function _get_thread_id():Dynamic;
-	static public var _handler : Dynamic;
-	static public var _interactive : Dynamic;
 	static public var _level_names : Dynamic;
 	static public var _log_counter_per_token : Dynamic;
 	/**
@@ -45,8 +43,12 @@ package tensorflow.python.platform.tf_logging;
 	**/
 	static public function _log_prefix(level:Dynamic, ?timestamp:Dynamic, ?file_and_line:Dynamic):Dynamic;
 	static public var _logger : Dynamic;
-	static public var _logging_target : Dynamic;
+	static public var _logger_lock : Dynamic;
+	static public var _tf_api_constants : Dynamic;
+	static public var _tf_api_constants_v1 : Dynamic;
+	static public var absolute_import : Dynamic;
 	static public function debug(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var division : Dynamic;
 	static public function error(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function fatal(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function flush():Dynamic;
@@ -54,6 +56,10 @@ package tensorflow.python.platform.tf_logging;
 		Return how much logging output will be produced.
 	**/
 	static public function get_verbosity():Dynamic;
+	/**
+		Assemble a logline prefix using the google2 format.
+	**/
+	static public function google2_log_prefix(level:Dynamic, ?timestamp:Dynamic, ?file_and_line:Dynamic):Dynamic;
 	static public function info(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function log(level:Dynamic, msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -85,10 +91,12 @@ package tensorflow.python.platform.tf_logging;
 		Log 'msg % args' at level 'level' only if condition is fulfilled.
 	**/
 	static public function log_if(level:Dynamic, msg:Dynamic, condition:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Sets the threshold for what messages will be logged.
 	**/
 	static public function set_verbosity(v:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function vlog(level:Dynamic, msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function warn(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function warning(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

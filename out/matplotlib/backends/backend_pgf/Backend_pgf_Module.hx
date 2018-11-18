@@ -10,50 +10,17 @@ package matplotlib.backends.backend_pgf;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __version__ : Dynamic;
 	static public function _cleanup_all():Dynamic;
 	static public function _font_properties_str(prop:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	/**
-		Run command with arguments and return its output.
-		
-		If the exit code was non-zero it raises a CalledProcessError.  The
-		CalledProcessError object will have the return code in the returncode
-		attribute and output in the output attribute.
-		
-		The arguments are the same as for the Popen constructor.  Example:
-		
-		>>> check_output(["ls", "-l", "/dev/null"])
-		b'crw-rw-rw- 1 root root 1, 3 Oct 18  2007 /dev/null\n'
-		
-		The stdout argument is not allowed as it is used internally.
-		To capture standard error in the result, use stderr=STDOUT.
-		
-		>>> check_output(["/bin/sh", "-c",
-		...               "ls -l non_existent_file ; exit 0"],
-		...              stderr=STDOUT)
-		b'ls: non_existent_file: No such file or directory\n'
-		
-		There is an additional optional argument, "input", allowing you to
-		pass a string to the subprocess's stdin.  If you use this argument
-		you may not also use the Popen constructor's "stdin" argument, as
-		it too will be used internally.  Example:
-		
-		>>> check_output(["sed", "-e", "s/foo/bar/"],
-		...              input=b"when in the course of fooman events\n")
-		b'when in the course of barman events\n'
-		
-		If universal_newlines=True is passed, the "input" argument must be a
-		string and the return value will be a string rather than bytes.
-	**/
-	static public function check_output(?popenargs:python.VarArgs<Dynamic>, ?timeout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _log : Dynamic;
+	static public var backend_version : Dynamic;
 	/**
 		Do some necessary and/or useful substitutions for texts to be included in
 		LaTeX documents.
 	**/
 	static public function common_texification(text:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	static public function draw_if_interactive():Dynamic;
-	static public var fc_list : Dynamic;
 	/**
 		Build fontspec preamble from rc.
 	**/
@@ -63,13 +30,12 @@ package matplotlib.backends.backend_pgf;
 	**/
 	static public function get_preamble():Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    The get_texcommand function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
 		Get chosen TeX system from rc.
 	**/
 	static public function get_texcommand():Dynamic;
-	/**
-		Return True if *obj* looks like a string
-	**/
-	static public function is_string_like(obj:Dynamic):Dynamic;
 	/**
 		return true if *obj* looks like a file object with a *write* method
 	**/
@@ -83,21 +49,29 @@ package matplotlib.backends.backend_pgf;
 	static public var mpl_in_to_pt : Dynamic;
 	static public var mpl_pt_to_in : Dynamic;
 	/**
-		Create a new figure manager instance
+		Create a new figure manager instance.
+		        
 	**/
 	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
+		        
 	**/
 	static public function new_figure_manager_given_figure(num:Dynamic, figure:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	static public var re_escapetext : Dynamic;
 	static public var re_mathdefault : Dynamic;
 	static public var re_mathsep : Dynamic;
 	static public function repl_escapetext(m:Dynamic):Dynamic;
 	static public function repl_mathdefault(m:Dynamic):Dynamic;
-	static public var system_fonts : Dynamic;
-	static public var unicode_literals : Dynamic;
+	static public var required_interactive_framework : Dynamic;
+	/**
+		Show all figures.
+		
+		`show` blocks by calling `mainloop` if *block* is ``True``, or if it
+		is ``None`` and we are neither in IPython's ``%pylab`` mode, nor in
+		`interactive` mode.
+	**/
+	static public function show(?block:Dynamic):Dynamic;
 	static public function writeln(fh:Dynamic, line:Dynamic):Dynamic;
 }

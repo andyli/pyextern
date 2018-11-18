@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gof.cmodule;
 @:pythonImport("theano.gof.cmodule", "ModuleCache") extern class ModuleCache {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package theano.gof.cmodule;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package theano.gof.cmodule;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -150,7 +150,7 @@ package theano.gof.cmodule;
 		    to -1 in order to delete all unversioned cached modules regardless
 		    of their age.
 		clear_base_files : bool
-		    If True, then delete base directories 'cuda_ndarray', 'cutils_ext',
+		    If True, then delete base directories 'cutils_ext',
 		    'lazylinker_ext' and 'scan_perform' if they are present.
 		    If False, those directories are left intact.
 		delete_if_problem
@@ -158,8 +158,8 @@ package theano.gof.cmodule;
 	**/
 	public function clear(?unversioned_min_age:Dynamic, ?clear_base_files:Dynamic, ?delete_if_problem:Dynamic):Dynamic;
 	/**
-		Remove base directories 'cuda_ndarray', 'cutils_ext', 'lazylinker_ext'
-		and 'scan_perform' if present.
+		Remove base directories 'cutils_ext', 'lazylinker_ext' and
+		'scan_perform' if present.
 		
 		Note that we do not delete them outright because it may not work on
 		some systems due to these modules being currently in use. Instead we

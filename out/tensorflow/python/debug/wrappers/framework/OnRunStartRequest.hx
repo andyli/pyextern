@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.wrappers.framework;
 @:pythonImport("tensorflow.python.debug.wrappers.framework", "OnRunStartRequest") extern class OnRunStartRequest {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -49,9 +49,11 @@ package tensorflow.python.debug.wrappers.framework;
 		    run() method of a non-wrapped TensorFlow session.
 		  run_call_count: 1-based count of how many run calls (including this one)
 		    has been invoked.
+		  is_callable_runner: (bool) whether a runner returned by
+		    Session.make_callable is being run.
 	**/
 	@:native("__init__")
-	public function ___init__(fetches:Dynamic, feed_dict:Dynamic, run_options:Dynamic, run_metadata:Dynamic, run_call_count:Dynamic):Dynamic;
+	public function ___init__(fetches:Dynamic, feed_dict:Dynamic, run_options:Dynamic, run_metadata:Dynamic, run_call_count:Dynamic, ?is_callable_runner:Dynamic):Dynamic;
 	/**
 		Constructor of `OnRunStartRequest`.
 		
@@ -64,15 +66,17 @@ package tensorflow.python.debug.wrappers.framework;
 		    run() method of a non-wrapped TensorFlow session.
 		  run_call_count: 1-based count of how many run calls (including this one)
 		    has been invoked.
+		  is_callable_runner: (bool) whether a runner returned by
+		    Session.make_callable is being run.
 	**/
-	public function new(fetches:Dynamic, feed_dict:Dynamic, run_options:Dynamic, run_metadata:Dynamic, run_call_count:Dynamic):Void;
+	public function new(fetches:Dynamic, feed_dict:Dynamic, run_options:Dynamic, run_metadata:Dynamic, run_call_count:Dynamic, ?is_callable_runner:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,7 +127,7 @@ package tensorflow.python.debug.wrappers.framework;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

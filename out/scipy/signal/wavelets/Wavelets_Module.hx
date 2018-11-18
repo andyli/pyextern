@@ -62,7 +62,7 @@ package scipy.signal.wavelets;
 		
 		Returns
 		-------
-		val : int, ndarray
+		val : int, float, ndarray
 		    The total number of combinations.
 		
 		See Also
@@ -297,7 +297,38 @@ package scipy.signal.wavelets;
 		
 		See Also
 		--------
+		eigvals : eigenvalues of general arrays
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
+		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
+		    band matrices
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
+		
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a) == linalg.eig(a)[0]
+		array([ True,  True])
+		>>> linalg.eig(a, left=True, right=False)[1] # normalized left eigenvector
+		array([[-0.70710678+0.j        , -0.70710678-0.j        ],
+		       [-0.        +0.70710678j, -0.        -0.70710678j]])
+		>>> linalg.eig(a, left=False, right=True)[1] # normalized right eigenvector
+		array([[0.70710678+0.j        , 0.70710678-0.j        ],
+		       [0.        -0.70710678j, 0.        +0.70710678j]])
 	**/
 	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
@@ -323,8 +354,9 @@ package scipy.signal.wavelets;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------

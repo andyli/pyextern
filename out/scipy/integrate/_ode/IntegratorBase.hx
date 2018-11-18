@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.integrate._ode;
 @:pythonImport("scipy.integrate._ode", "IntegratorBase") extern class IntegratorBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package scipy.integrate._ode;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package scipy.integrate._ode;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -111,6 +111,7 @@ package scipy.integrate._ode;
 	public function acquire_new_handle():Dynamic;
 	public function check_handle():Dynamic;
 	static public var integrator_classes : Dynamic;
+	static public var istate : Dynamic;
 	/**
 		Prepare integrator for call: allocate memory, set flags, etc.
 		n - number of equations.
@@ -133,7 +134,7 @@ package scipy.integrate._ode;
 		
 		Convert a string or number to a floating point number, if possible.
 	**/
-	static public function scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Make one integration step and return (y1,t1).
 	**/

@@ -10,7 +10,6 @@ package theano.misc.may_share_memory;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _is_cuda(a:Dynamic):Dynamic;
 	static public function _is_gpua(a:Dynamic):Dynamic;
 	static public function _is_sparse(a:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;

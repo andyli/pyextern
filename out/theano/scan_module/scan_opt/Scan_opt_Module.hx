@@ -34,10 +34,6 @@ package theano.scan_module.scan_opt;
 	**/
 	static public function equal_computations(xs:Dynamic, ys:Dynamic, ?in_xs:Dynamic, ?in_ys:Dynamic):Dynamic;
 	/**
-		Goes up in the graph and returns True if a node in nodes is found.
-	**/
-	static public function find_up(l_node:Dynamic, f_node:Dynamic):Dynamic;
-	/**
 		Return the constant scalar(0-D) value underlying variable `v`.
 		
 		If `v` is the output of dimshuffles, fills, allocs, rebroadcasts,

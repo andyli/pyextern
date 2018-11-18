@@ -106,9 +106,365 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function auc_using_histogram(boolean_labels:Dynamic, scores:Dynamic, score_range:Dynamic, ?nbins:Dynamic, ?collections:Dynamic, ?check_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Computes the AUC and asymptotic normally distributed confidence interval.
+		
+		USAGE NOTE: this approach requires storing all of the predictions and labels
+		for a single evaluation in memory, so it may not be usable when the evaluation
+		batch size and/or the number of evaluation steps is very large.
+		
+		Computes the area under the ROC curve and its confidence interval using
+		placement values. This has the advantage of being resilient to the
+		distribution of predictions by aggregating across batches, accumulating labels
+		and predictions and performing the final calculation using all of the
+		concatenated values.
+		
+		Args:
+		  labels: A `Tensor` of ground truth labels with the same shape as `labels`
+		    and with values of 0 or 1 whose values are castable to `int64`.
+		  predictions: A `Tensor` of predictions whose values are castable to
+		    `float64`. Will be flattened into a 1-D `Tensor`.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`.
+		  alpha: Confidence interval level desired.
+		  logit_transformation: A boolean value indicating whether the estimate should
+		    be logit transformed prior to calculating the confidence interval. Doing
+		    so enforces the restriction that the AUC should never be outside the
+		    interval [0,1].
+		  metrics_collections: An optional iterable of collections that `auc` should
+		    be added to.
+		  updates_collections: An optional iterable of collections that `update_op`
+		    should be added to.
+		  name: An optional name for the variable_scope that contains the metric
+		    variables.
+		
+		Returns:
+		  auc: A 1-D `Tensor` containing the current area-under-curve, lower, and
+		    upper confidence interval values.
+		  update_op: An operation that concatenates the input labels and predictions
+		    to the accumulated values.
+		
+		Raises:
+		  ValueError: If `labels`, `predictions`, and `weights` have mismatched shapes
+		  or if `alpha` isn't in the range (0,1).
+	**/
+	static public function auc_with_confidence_intervals(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?alpha:Dynamic, ?logit_transformation:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Calculates Cohen's kappa.
+		
+		[Cohen's kappa](https://en.wikipedia.org/wiki/Cohen's_kappa) is a statistic
+		that measures inter-annotator agreement.
+		
+		The `cohen_kappa` function calculates the confusion matrix, and creates three
+		local variables to compute the Cohen's kappa: `po`, `pe_row`, and `pe_col`,
+		which refer to the diagonal part, rows and columns totals of the confusion
+		matrix, respectively. This value is ultimately returned as `kappa`, an
+		idempotent operation that is calculated by
+		
+		    pe = (pe_row * pe_col) / N
+		    k = (sum(po) - sum(pe)) / (N - sum(pe))
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		`kappa`. `update_op` weights each prediction by the corresponding value in
+		`weights`.
+		
+		Class labels are expected to start at 0. E.g., if `num_classes`
+		was three, then the possible labels would be [0, 1, 2].
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		NOTE: Equivalent to `sklearn.metrics.cohen_kappa_score`, but the method
+		doesn't support weighted matrix yet.
+		
+		Args:
+		  labels: 1-D `Tensor` of real labels for the classification task. Must be
+		    one of the following types: int16, int32, int64.
+		  predictions_idx: 1-D `Tensor` of predicted class indices for a given
+		    classification. Must have the same type as `labels`.
+		  num_classes: The possible number of labels.
+		  weights: Optional `Tensor` whose shape matches `predictions`.
+		  metrics_collections: An optional list of collections that `kappa` should
+		    be added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  kappa: Scalar float `Tensor` representing the current Cohen's kappa.
+		  update_op: `Operation` that increments `po`, `pe_row` and `pe_col`
+		    variables appropriately and whose value matches `kappa`.
+		
+		Raises:
+		  ValueError: If `num_classes` is less than 2, or `predictions` and `labels`
+		    have mismatched shapes, or if `weights` is not `None` and its shape
+		    doesn't match `predictions`, or if either `metrics_collections` or
+		    `updates_collections` are not a list or tuple.
+		  RuntimeError: If eager execution is enabled.
+	**/
+	static public function cohen_kappa(labels:Dynamic, predictions_idx:Dynamic, num_classes:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Deprecated. Use tf.confusion_matrix instead.
 	**/
 	static public function confusion_matrix(labels:Dynamic, predictions:Dynamic, ?num_classes:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?weights:Dynamic):Dynamic;
+	/**
+		Computes the number of examples, or sum of `weights`.
+		
+		This metric keeps track of the denominator in `tf.metrics.mean`.
+		When evaluating some metric (e.g. mean) on one or more subsets of the data,
+		this auxiliary metric is useful for keeping track of how many examples there
+		are in each subset.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  values: A `Tensor` of arbitrary dimensions. Only it's shape is used.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions
+		    must be either `1`, or the same as the corresponding `labels`
+		    dimension).
+		  metrics_collections: An optional list of collections that the metric
+		    value variable should be added to.
+		  updates_collections: An optional list of collections that the metric update
+		    ops should be added to.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  count: A `Tensor` representing the current value of the metric.
+		  update_op: An operation that accumulates the metric from a batch of data.
+		
+		Raises:
+		  ValueError: If `weights` is not `None` and its shape doesn't match `values`,
+		    or if either `metrics_collections` or `updates_collections` are not a list
+		    or tuple.
+		  RuntimeError: If eager execution is enabled.
+	**/
+	static public function count(values:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the approximately best F1-score across different thresholds.
+		
+		The f1_score function applies a range of thresholds to the predictions to
+		convert them from [0, 1] to bool. Precision and recall are computed by
+		comparing them to the labels. The F1-Score is then defined as
+		2 * precision * recall / (precision + recall). The best one across the
+		thresholds is returned.
+		
+		Disclaimer: In practice it may be desirable to choose the best threshold on
+		the validation set and evaluate the F1 score with this threshold on a
+		separate test set. Or it may be desirable to use a fixed threshold (e.g. 0.5).
+		
+		This function internally creates four local variables, `true_positives`,
+		`true_negatives`, `false_positives` and `false_negatives` that are used to
+		compute the pairs of recall and precision values for a linearly spaced set of
+		thresholds from which the best f1-score is derived.
+		
+		This value is ultimately returned as `f1-score`, an idempotent operation that
+		computes the F1-score (computed using the aforementioned variables). The
+		`num_thresholds` variable controls the degree of discretization with larger
+		numbers of thresholds more closely approximating the true best F1-score.
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the F1-score.
+		
+		Example usage with a custom estimator:
+		def model_fn(features, labels, mode):
+		  predictions = make_predictions(features)
+		  loss = make_loss(predictions, labels)
+		  train_op = tf.contrib.training.create_train_op(
+		        total_loss=loss,
+		        optimizer='Adam')
+		  eval_metric_ops = {'f1': f1_score(labels, predictions)}
+		  return tf.estimator.EstimatorSpec(
+		      mode=mode,
+		      predictions=predictions,
+		      loss=loss,
+		      train_op=train_op,
+		      eval_metric_ops=eval_metric_ops,
+		      export_outputs=export_outputs)
+		estimator = tf.estimator.Estimator(model_fn=model_fn)
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  labels: A `Tensor` whose shape matches `predictions`. Will be cast to
+		    `bool`.
+		  predictions: A floating point `Tensor` of arbitrary shape and whose values
+		    are in the range `[0, 1]`.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
+		    be either `1`, or the same as the corresponding `labels` dimension).
+		  num_thresholds: The number of thresholds to use when discretizing the roc
+		    curve.
+		  metrics_collections: An optional list of collections that `f1_score` should
+		    be added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  f1_score: A scalar `Tensor` representing the current best f1-score across
+		    different thresholds.
+		  update_op: An operation that increments the `true_positives`,
+		    `true_negatives`, `false_positives` and `false_negatives` variables
+		    appropriately and whose value matches the `f1_score`.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, or if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    either `metrics_collections` or `updates_collections` are not a list or
+		    tuple.
+	**/
+	static public function f1_score(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?num_thresholds:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the precision at a given recall.
+		
+		This function creates variables to track the true positives, false positives,
+		true negatives, and false negatives at a set of thresholds. Among those
+		thresholds where recall is at least `target_recall`, precision is computed
+		at the threshold where recall is closest to `target_recall`.
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		precision at `target_recall`. `update_op` increments the counts of true
+		positives, false positives, true negatives, and false negatives with the
+		weight of each case found in the `predictions` and `labels`.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		For additional information about precision and recall, see
+		http://en.wikipedia.org/wiki/Precision_and_recall
+		
+		Args:
+		  labels: The ground truth values, a `Tensor` whose dimensions must match
+		    `predictions`. Will be cast to `bool`.
+		  predictions: A floating point `Tensor` of arbitrary shape and whose values
+		    are in the range `[0, 1]`.
+		  target_recall: A scalar value in range `[0, 1]`.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
+		    be either `1`, or the same as the corresponding `labels` dimension).
+		  num_thresholds: The number of thresholds to use for matching the given
+		    recall.
+		  metrics_collections: An optional list of collections to which `precision`
+		    should be added.
+		  updates_collections: An optional list of collections to which `update_op`
+		    should be added.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  precision: A scalar `Tensor` representing the precision at the given
+		    `target_recall` value.
+		  update_op: An operation that increments the variables for tracking the
+		    true positives, false positives, true negatives, and false negatives and
+		    whose value matches `precision`.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    `target_recall` is not between 0 and 1, or if either `metrics_collections`
+		    or `updates_collections` are not a list or tuple.
+		  RuntimeError: If eager execution is enabled.
+	**/
+	static public function precision_at_recall(labels:Dynamic, predictions:Dynamic, target_recall:Dynamic, ?weights:Dynamic, ?num_thresholds:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		A helper method for creating metrics related to precision-recall curves.
+		
+		These values are true positives, false negatives, true negatives, false
+		positives, precision, and recall. This function returns a data structure that
+		contains ops within it.
+		
+		Unlike _streaming_confusion_matrix_at_thresholds (which exhibits O(T * N)
+		space and run time), this op exhibits O(T + N) space and run time, where T is
+		the number of thresholds and N is the size of the predictions tensor. Hence,
+		it may be advantageous to use this function when `predictions` is big.
+		
+		For instance, prefer this method for per-pixel classification tasks, for which
+		the predictions tensor may be very large.
+		
+		Each number in `predictions`, a float in `[0, 1]`, is compared with its
+		corresponding label in `labels`, and counts as a single tp/fp/tn/fn value at
+		each threshold. This is then multiplied with `weights` which can be used to
+		reweight certain values, or more commonly used for masking values.
+		
+		Args:
+		  labels: A bool `Tensor` whose shape matches `predictions`.
+		  predictions: A floating point `Tensor` of arbitrary shape and whose values
+		    are in the range `[0, 1]`.
+		  weights: Optional; If provided, a `Tensor` that has the same dtype as,
+		    and broadcastable to, `predictions`. This tensor is multiplied by counts.
+		  num_thresholds: Optional; Number of thresholds, evenly distributed in
+		    `[0, 1]`. Should be `>= 2`. Defaults to 201. Note that the number of bins
+		    is 1 less than `num_thresholds`. Using an even `num_thresholds` value
+		    instead of an odd one may yield unfriendly edges for bins.
+		  use_locking: Optional; If True, the op will be protected by a lock.
+		    Otherwise, the behavior is undefined, but may exhibit less contention.
+		    Defaults to True.
+		  name: Optional; variable_scope name. If not provided, the string
+		    'precision_recall_at_equal_threshold' is used.
+		
+		Returns:
+		  result: A named tuple (See PrecisionRecallData within the implementation of
+		    this function) with properties that are variables of shape
+		    `[num_thresholds]`. The names of the properties are tp, fp, tn, fn,
+		    precision, recall, thresholds. Types are same as that of predictions.
+		  update_op: An op that accumulates values.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, or if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    `includes` contains invalid keys.
+	**/
+	static public function precision_recall_at_equal_thresholds(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?num_thresholds:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes `recall` at `precision`.
+		
+		The `recall_at_precision` function creates four local variables,
+		`tp` (true positives), `fp` (false positives) and `fn` (false negatives)
+		that are used to compute the `recall` at the given `precision` value. The
+		threshold for the given `precision` value is computed and used to evaluate the
+		corresponding `recall`.
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		`recall`. `update_op` increments the `tp`, `fp` and `fn` counts with the
+		weight of each case found in the `predictions` and `labels`.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  labels: The ground truth values, a `Tensor` whose dimensions must match
+		    `predictions`. Will be cast to `bool`.
+		  predictions: A floating point `Tensor` of arbitrary shape and whose values
+		    are in the range `[0, 1]`.
+		  precision: A scalar value in range `[0, 1]`.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
+		    be either `1`, or the same as the corresponding `labels` dimension).
+		  num_thresholds: The number of thresholds to use for matching the given
+		    `precision`.
+		  metrics_collections: An optional list of collections that `recall`
+		    should be added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  name: An optional variable_scope name.
+		  strict_mode: If true and there exists a threshold where the precision is
+		    above the target precision, return the corresponding recall at the
+		    threshold. Otherwise, return 0. If false, find the threshold where the
+		    precision is closest to the target precision and return the recall at the
+		    threshold.
+		
+		Returns:
+		  recall: A scalar `Tensor` representing the recall at the given
+		    `precision` value.
+		  update_op: An operation that increments the `tp`, `fp` and `fn`
+		    variables appropriately and whose value matches `recall`.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    `precision` is not between 0 and 1, or if either `metrics_collections`
+		    or `updates_collections` are not a list or tuple.
+	**/
+	static public function recall_at_precision(labels:Dynamic, predictions:Dynamic, precision:Dynamic, ?weights:Dynamic, ?num_thresholds:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic, ?strict_mode:Dynamic):Dynamic;
 	/**
 		Compute set difference of elements in last dimension of `a` and `b`.
 		
@@ -117,42 +473,46 @@ package tensorflow.contrib.metrics;
 		Example:
 		
 		```python
-		  a = [
-		    [
-		      [
-		        [1, 2],
-		        [3],
-		      ],
-		      [
-		        [4],
-		        [5, 6],
-		      ],
-		    ],
-		  ]
-		  b = [
-		    [
-		      [
-		        [1, 3],
-		        [2],
-		      ],
-		      [
-		        [4, 5],
-		        [5, 6, 7, 8],
-		      ],
-		    ],
-		  ]
-		  set_difference(a, b, aminusb=True) = [
-		    [
-		      [
-		        [2],
-		        [3],
-		      ],
-		      [
-		        [],
-		        [],
-		      ],
-		    ],
-		  ]
+		  import tensorflow as tf
+		  import collections
+		
+		  # Represent the following array of sets as a sparse tensor:
+		  # a = np.array([[{1, 2}, {3}], [{4}, {5, 6}]])
+		  a = collections.OrderedDict([
+		      ((0, 0, 0), 1),
+		      ((0, 0, 1), 2),
+		      ((0, 1, 0), 3),
+		      ((1, 0, 0), 4),
+		      ((1, 1, 0), 5),
+		      ((1, 1, 1), 6),
+		  ])
+		  a = tf.SparseTensor(list(a.keys()), list(a.values()), dense_shape=[2, 2, 2])
+		
+		  # np.array([[{1, 3}, {2}], [{4, 5}, {5, 6, 7, 8}]])
+		  b = collections.OrderedDict([
+		      ((0, 0, 0), 1),
+		      ((0, 0, 1), 3),
+		      ((0, 1, 0), 2),
+		      ((1, 0, 0), 4),
+		      ((1, 0, 1), 5),
+		      ((1, 1, 0), 5),
+		      ((1, 1, 1), 6),
+		      ((1, 1, 2), 7),
+		      ((1, 1, 3), 8),
+		  ])
+		  b = tf.SparseTensor(list(b.keys()), list(b.values()), dense_shape=[2, 2, 4])
+		
+		  # `set_difference` is applied to each aligned pair of sets.
+		  tf.sets.set_difference(a, b)
+		
+		  # The result will be equivalent to either of:
+		  #
+		  # np.array([[{2}, {3}], [{}, {}]])
+		  #
+		  # collections.OrderedDict([
+		  #     ((0, 0, 0), 2),
+		  #     ((0, 1, 0), 3),
+		  # ])
 		```
 		
 		Args:
@@ -178,42 +538,45 @@ package tensorflow.contrib.metrics;
 		Example:
 		
 		```python
-		  a = [
-		    [
-		      [
-		        [1, 2],
-		        [3],
-		      ],
-		      [
-		        [4],
-		        [5, 6],
-		      ],
-		    ],
-		  ]
-		  b = [
-		    [
-		      [
-		        [1, 3],
-		        [2],
-		      ],
-		      [
-		        [4, 5],
-		        [5, 6, 7, 8],
-		      ],
-		    ],
-		  ]
-		  set_intersection(a, b) = [
-		    [
-		      [
-		        [1],
-		        [],
-		      ],
-		      [
-		        [4],
-		        [5, 6],
-		      ],
-		    ],
-		  ]
+		  import tensorflow as tf
+		  import collections
+		
+		  # Represent the following array of sets as a sparse tensor:
+		  # a = np.array([[{1, 2}, {3}], [{4}, {5, 6}]])
+		  a = collections.OrderedDict([
+		      ((0, 0, 0), 1),
+		      ((0, 0, 1), 2),
+		      ((0, 1, 0), 3),
+		      ((1, 0, 0), 4),
+		      ((1, 1, 0), 5),
+		      ((1, 1, 1), 6),
+		  ])
+		  a = tf.SparseTensor(list(a.keys()), list(a.values()), dense_shape=[2,2,2])
+		
+		  # b = np.array([[{1}, {}], [{4}, {5, 6, 7, 8}]])
+		  b = collections.OrderedDict([
+		      ((0, 0, 0), 1),
+		      ((1, 0, 0), 4),
+		      ((1, 1, 0), 5),
+		      ((1, 1, 1), 6),
+		      ((1, 1, 2), 7),
+		      ((1, 1, 3), 8),
+		  ])
+		  b = tf.SparseTensor(list(b.keys()), list(b.values()), dense_shape=[2, 2, 4])
+		
+		  # `tf.sets.set_intersection` is applied to each aligned pair of sets.
+		  tf.sets.set_intersection(a, b)
+		
+		  # The result will be equivalent to either of:
+		  #
+		  # np.array([[{1}, {}], [{4}, {5, 6}]])
+		  #
+		  # collections.OrderedDict([
+		  #     ((0, 0, 0), 1),
+		  #     ((1, 0, 0), 4),
+		  #     ((1, 1, 0), 5),
+		  #     ((1, 1, 1), 6),
+		  # ])
 		```
 		
 		Args:
@@ -255,42 +618,54 @@ package tensorflow.contrib.metrics;
 		Example:
 		
 		```python
-		  a = [
-		    [
-		      [
-		        [1, 2],
-		        [3],
-		      ],
-		      [
-		        [4],
-		        [5, 6],
-		      ],
-		    ],
-		  ]
-		  b = [
-		    [
-		      [
-		        [1, 3],
-		        [2],
-		      ],
-		      [
-		        [4, 5],
-		        [5, 6, 7, 8],
-		      ],
-		    ],
-		  ]
-		  set_union(a, b) = [
-		    [
-		      [
-		        [1, 2, 3],
-		        [2, 3],
-		      ],
-		      [
-		        [4, 5],
-		        [5, 6, 7, 8],
-		      ],
-		    ],
-		  ]
+		  import tensorflow as tf
+		  import collections
+		
+		  # [[{1, 2}, {3}], [{4}, {5, 6}]]
+		  a = collections.OrderedDict([
+		      ((0, 0, 0), 1),
+		      ((0, 0, 1), 2),
+		      ((0, 1, 0), 3),
+		      ((1, 0, 0), 4),
+		      ((1, 1, 0), 5),
+		      ((1, 1, 1), 6),
+		  ])
+		  a = tf.SparseTensor(list(a.keys()), list(a.values()), dense_shape=[2, 2, 2])
+		
+		  # [[{1, 3}, {2}], [{4, 5}, {5, 6, 7, 8}]]
+		  b = collections.OrderedDict([
+		      ((0, 0, 0), 1),
+		      ((0, 0, 1), 3),
+		      ((0, 1, 0), 2),
+		      ((1, 0, 0), 4),
+		      ((1, 0, 1), 5),
+		      ((1, 1, 0), 5),
+		      ((1, 1, 1), 6),
+		      ((1, 1, 2), 7),
+		      ((1, 1, 3), 8),
+		  ])
+		  b = tf.SparseTensor(list(b.keys()), list(b.values()), dense_shape=[2, 2, 4])
+		
+		  # `set_union` is applied to each aligned pair of sets.
+		  tf.sets.set_union(a, b)
+		
+		  # The result will be a equivalent to either of:
+		  #
+		  # np.array([[{1, 2, 3}, {2, 3}], [{4, 5}, {5, 6, 7, 8}]])
+		  #
+		  # collections.OrderedDict([
+		  #     ((0, 0, 0), 1),
+		  #     ((0, 0, 1), 2),
+		  #     ((0, 0, 2), 3),
+		  #     ((0, 1, 0), 2),
+		  #     ((0, 1, 1), 3),
+		  #     ((1, 0, 0), 4),
+		  #     ((1, 0, 1), 5),
+		  #     ((1, 1, 0), 5),
+		  #     ((1, 1, 1), 6),
+		  #     ((1, 1, 2), 7),
+		  #     ((1, 1, 3), 8),
+		  # ])
 		```
 		
 		Args:
@@ -308,14 +683,81 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function set_union(a:Dynamic, b:Dynamic, ?validate_indices:Dynamic):Dynamic;
 	/**
-		Calculates how often `predictions` matches `labels`.
+		Computes recall@k of top-k predictions with respect to sparse labels.
+		
+		If `class_id` is specified, we calculate recall by considering only the
+		    entries in the batch for which `class_id` is in the label, and computing
+		    the fraction of them for which `class_id` is in the top-k `predictions`.
+		If `class_id` is not specified, we'll calculate recall as how often on
+		    average a class among the labels of a batch entry is in the top-k
+		    `predictions`.
+		
+		`sparse_recall_at_top_k` creates two local variables, `true_positive_at_<k>`
+		and `false_negative_at_<k>`, that are used to compute the recall_at_k
+		frequency. This frequency is ultimately returned as `recall_at_<k>`: an
+		idempotent operation that simply divides `true_positive_at_<k>` by total
+		(`true_positive_at_<k>` + `false_negative_at_<k>`).
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		`recall_at_<k>`. Set operations applied to `top_k` and `labels` calculate the
+		true positives and false negatives weighted by `weights`. Then `update_op`
+		increments `true_positive_at_<k>` and `false_negative_at_<k>` using these
+		values.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  labels: `int64` `Tensor` or `SparseTensor` with shape
+		    [D1, ... DN, num_labels], where N >= 1 and num_labels is the number of
+		    target classes for the associated prediction. Commonly, N=1 and `labels`
+		    has shape [batch_size, num_labels]. [D1, ... DN] must match
+		    `top_k_predictions`. Values should be in range [0, num_classes), where
+		    num_classes is the last dimension of `predictions`. Values outside this
+		    range always count towards `false_negative_at_<k>`.
+		  top_k_predictions: Integer `Tensor` with shape [D1, ... DN, k] where
+		    N >= 1. Commonly, N=1 and top_k_predictions has shape [batch size, k].
+		    The final dimension contains the indices of top-k labels. [D1, ... DN]
+		    must match `labels`.
+		  class_id: Integer class ID for which we want binary metrics. This should be
+		    in range [0, num_classes), where num_classes is the last dimension of
+		    `predictions`. If class_id is outside this range, the method returns NAN.
+		  weights: `Tensor` whose rank is either 0, or n-1, where n is the rank of
+		    `labels`. If the latter, it must be broadcastable to `labels` (i.e., all
+		    dimensions must be either `1`, or the same as the corresponding `labels`
+		    dimension).
+		  metrics_collections: An optional list of collections that values should
+		    be added to.
+		  updates_collections: An optional list of collections that updates should
+		    be added to.
+		  name: Name of new update operation, and namespace for other dependent ops.
+		
+		Returns:
+		  recall: Scalar `float64` `Tensor` with the value of `true_positives` divided
+		    by the sum of `true_positives` and `false_negatives`.
+		  update_op: `Operation` that increments `true_positives` and
+		    `false_negatives` variables appropriately, and whose value matches
+		    `recall`.
+		
+		Raises:
+		  ValueError: If `weights` is not `None` and its shape doesn't match
+		  `predictions`, or if either `metrics_collections` or `updates_collections`
+		  are not a list or tuple.
+	**/
+	static public function sparse_recall_at_top_k(labels:Dynamic, top_k_predictions:Dynamic, ?class_id:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Calculates how often `predictions` matches `labels`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.accuracy. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_accuracy` function creates two local variables, `total` and
 		`count` that are used to compute the frequency with which `predictions`
 		matches `labels`. This frequency is ultimately returned as `accuracy`: an
 		idempotent operation that simply divides `total` by `count`.
 		
-		For estimation of the metric  over a stream of data, the function creates an
+		For estimation of the metric over a stream of data, the function creates an
 		`update_op` operation that updates these variables and returns the `accuracy`.
 		Internally, an `is_correct` operation computes a `Tensor` with elements 1.0
 		where the corresponding elements of `predictions` and `labels` match and 0.0
@@ -352,7 +794,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_accuracy(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the approximate AUC via a Riemann sum.
+		Computes the approximate AUC via a Riemann sum. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.auc. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_auc` function creates four local variables, `true_positives`,
 		`true_negatives`, `false_positives` and `false_negatives` that are used to
@@ -496,7 +942,188 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_covariance(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the total number of false negatives.
+		Computes curve (ROC or PR) values for a prespecified number of points.
+		
+		The `streaming_curve_points` function creates four local variables,
+		`true_positives`, `true_negatives`, `false_positives` and `false_negatives`
+		that are used to compute the curve values. To discretize the curve, a linearly
+		spaced set of thresholds is used to compute pairs of recall and precision
+		values.
+		
+		For best results, `predictions` should be distributed approximately uniformly
+		in the range [0, 1] and not peaked around 0 or 1.
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  labels: A `Tensor` whose shape matches `predictions`. Will be cast to
+		    `bool`.
+		  predictions: A floating point `Tensor` of arbitrary shape and whose values
+		    are in the range `[0, 1]`.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
+		    be either `1`, or the same as the corresponding `labels` dimension).
+		  num_thresholds: The number of thresholds to use when discretizing the roc
+		    curve.
+		  metrics_collections: An optional list of collections that `auc` should be
+		    added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  curve: Specifies the name of the curve to be computed, 'ROC' [default] or
+		    'PR' for the Precision-Recall-curve.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  points: A `Tensor` with shape [num_thresholds, 2] that contains points of
+		    the curve.
+		  update_op: An operation that increments the `true_positives`,
+		    `true_negatives`, `false_positives` and `false_negatives` variables.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, or if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    either `metrics_collections` or `updates_collections` are not a list or
+		    tuple.
+		
+		TODO(chizeng): Consider rewriting this method to make use of logic within the
+		precision_recall_at_equal_thresholds method (to improve run time).
+	**/
+	static public function streaming_curve_points(?labels:Dynamic, ?predictions:Dynamic, ?weights:Dynamic, ?num_thresholds:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?curve:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the apporixmate AUC by a Riemann sum with data-derived thresholds.
+		
+		USAGE NOTE: this approach requires storing all of the predictions and labels
+		for a single evaluation in memory, so it may not be usable when the evaluation
+		batch size and/or the number of evaluation steps is very large.
+		
+		Computes the area under the ROC or PR curve using each prediction as a
+		threshold. This has the advantage of being resilient to the distribution of
+		predictions by aggregating across batches, accumulating labels and predictions
+		and performing the final calculation using all of the concatenated values.
+		
+		Args:
+		  labels: A `Tensor` of ground truth labels with the same shape as `labels`
+		    and with values of 0 or 1 whose values are castable to `int64`.
+		  predictions: A `Tensor` of predictions whose values are castable to
+		    `float64`. Will be flattened into a 1-D `Tensor`.
+		  curve: The name of the curve for which to compute AUC, 'ROC' for the
+		    Receiving Operating Characteristic or 'PR' for the Precision-Recall curve.
+		  metrics_collections: An optional iterable of collections that `auc` should
+		    be added to.
+		  updates_collections: An optional iterable of collections that `update_op`
+		    should be added to.
+		  name: An optional name for the variable_scope that contains the metric
+		    variables.
+		  weights: A 'Tensor' of non-negative weights whose values are castable to
+		    `float64`. Will be flattened into a 1-D `Tensor`.
+		
+		Returns:
+		  auc: A scalar `Tensor` containing the current area-under-curve value.
+		  update_op: An operation that concatenates the input labels and predictions
+		    to the accumulated values.
+		
+		Raises:
+		  ValueError: If `labels` and `predictions` have mismatched shapes or if
+		    `curve` isn't a recognized curve type.
+	**/
+	static public function streaming_dynamic_auc(labels:Dynamic, predictions:Dynamic, ?curve:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic, ?weights:Dynamic):Dynamic;
+	/**
+		Computes the false negative rate of predictions with respect to labels.
+		
+		The `false_negative_rate` function creates two local variables,
+		`false_negatives` and `true_positives`, that are used to compute the
+		false positive rate. This value is ultimately returned as
+		`false_negative_rate`, an idempotent operation that simply divides
+		`false_negatives` by the sum of `false_negatives` and `true_positives`.
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		`false_negative_rate`. `update_op` weights each prediction by the
+		corresponding value in `weights`.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  predictions: The predicted values, a `Tensor` of arbitrary dimensions. Will
+		    be cast to `bool`.
+		  labels: The ground truth values, a `Tensor` whose dimensions must match
+		    `predictions`. Will be cast to `bool`.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
+		    be either `1`, or the same as the corresponding `labels` dimension).
+		  metrics_collections: An optional list of collections that
+		    `false_negative_rate` should be added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  false_negative_rate: Scalar float `Tensor` with the value of
+		    `false_negatives` divided by the sum of `false_negatives` and
+		    `true_positives`.
+		  update_op: `Operation` that increments `false_negatives` and
+		    `true_positives` variables appropriately and whose value matches
+		    `false_negative_rate`.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, or if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    either `metrics_collections` or `updates_collections` are not a list or
+		    tuple.
+	**/
+	static public function streaming_false_negative_rate(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes various fnr values for different `thresholds` on `predictions`.
+		
+		The `streaming_false_negative_rate_at_thresholds` function creates two
+		local variables, `false_negatives`, `true_positives`, for various values of
+		thresholds. `false_negative_rate[i]` is defined as the total weight
+		of values in `predictions` above `thresholds[i]` whose corresponding entry in
+		`labels` is `False`, divided by the total weight of `True` values in `labels`
+		(`false_negatives[i] / (false_negatives[i] + true_positives[i])`).
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		`false_positive_rate`.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  predictions: A floating point `Tensor` of arbitrary shape and whose values
+		    are in the range `[0, 1]`.
+		  labels: A `bool` `Tensor` whose shape matches `predictions`.
+		  thresholds: A python list or tuple of float thresholds in `[0, 1]`.
+		  weights: `Tensor` whose rank is either 0, or the same rank as `labels`, and
+		    must be broadcastable to `labels` (i.e., all dimensions must be either
+		    `1`, or the same as the corresponding `labels` dimension).
+		  metrics_collections: An optional list of collections that
+		    `false_negative_rate` should be added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  false_negative_rate: A float `Tensor` of shape `[len(thresholds)]`.
+		  update_op: An operation that increments the `false_negatives` and
+		    `true_positives` variables that are used in the computation of
+		    `false_negative_rate`.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, or if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    either `metrics_collections` or `updates_collections` are not a list or
+		    tuple.
+	**/
+	static public function streaming_false_negative_rate_at_thresholds(predictions:Dynamic, labels:Dynamic, thresholds:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the total number of false negatives. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.false_negatives. Note that the order of the labels and predictions arguments has been switched.
 		
 		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
 		
@@ -527,7 +1154,99 @@ package tensorflow.contrib.metrics;
 	static public function streaming_false_negatives(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	static public function streaming_false_negatives_at_thresholds(predictions:Dynamic, labels:Dynamic, thresholds:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
-		Sum the weights of false positives.
+		Computes the false positive rate of predictions with respect to labels.
+		
+		The `false_positive_rate` function creates two local variables,
+		`false_positives` and `true_negatives`, that are used to compute the
+		false positive rate. This value is ultimately returned as
+		`false_positive_rate`, an idempotent operation that simply divides
+		`false_positives` by the sum of `false_positives` and `true_negatives`.
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		`false_positive_rate`. `update_op` weights each prediction by the
+		corresponding value in `weights`.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  predictions: The predicted values, a `Tensor` of arbitrary dimensions. Will
+		    be cast to `bool`.
+		  labels: The ground truth values, a `Tensor` whose dimensions must match
+		    `predictions`. Will be cast to `bool`.
+		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
+		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
+		    be either `1`, or the same as the corresponding `labels` dimension).
+		  metrics_collections: An optional list of collections that
+		   `false_positive_rate` should be added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  false_positive_rate: Scalar float `Tensor` with the value of
+		    `false_positives` divided by the sum of `false_positives` and
+		    `true_negatives`.
+		  update_op: `Operation` that increments `false_positives` and
+		    `true_negatives` variables appropriately and whose value matches
+		    `false_positive_rate`.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, or if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    either `metrics_collections` or `updates_collections` are not a list or
+		    tuple.
+	**/
+	static public function streaming_false_positive_rate(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes various fpr values for different `thresholds` on `predictions`.
+		
+		The `streaming_false_positive_rate_at_thresholds` function creates two
+		local variables, `false_positives`, `true_negatives`, for various values of
+		thresholds. `false_positive_rate[i]` is defined as the total weight
+		of values in `predictions` above `thresholds[i]` whose corresponding entry in
+		`labels` is `False`, divided by the total weight of `False` values in `labels`
+		(`false_positives[i] / (false_positives[i] + true_negatives[i])`).
+		
+		For estimation of the metric over a stream of data, the function creates an
+		`update_op` operation that updates these variables and returns the
+		`false_positive_rate`.
+		
+		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
+		
+		Args:
+		  predictions: A floating point `Tensor` of arbitrary shape and whose values
+		    are in the range `[0, 1]`.
+		  labels: A `bool` `Tensor` whose shape matches `predictions`.
+		  thresholds: A python list or tuple of float thresholds in `[0, 1]`.
+		  weights: `Tensor` whose rank is either 0, or the same rank as `labels`, and
+		    must be broadcastable to `labels` (i.e., all dimensions must be either
+		    `1`, or the same as the corresponding `labels` dimension).
+		  metrics_collections: An optional list of collections that
+		    `false_positive_rate` should be added to.
+		  updates_collections: An optional list of collections that `update_op` should
+		    be added to.
+		  name: An optional variable_scope name.
+		
+		Returns:
+		  false_positive_rate: A float `Tensor` of shape `[len(thresholds)]`.
+		  update_op: An operation that increments the `false_positives` and
+		    `true_negatives` variables that are used in the computation of
+		    `false_positive_rate`.
+		
+		Raises:
+		  ValueError: If `predictions` and `labels` have mismatched shapes, or if
+		    `weights` is not `None` and its shape doesn't match `predictions`, or if
+		    either `metrics_collections` or `updates_collections` are not a list or
+		    tuple.
+	**/
+	static public function streaming_false_positive_rate_at_thresholds(predictions:Dynamic, labels:Dynamic, thresholds:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Sum the weights of false positives. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.false_positives. Note that the order of the labels and predictions arguments has been switched.
 		
 		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
 		
@@ -559,14 +1278,18 @@ package tensorflow.contrib.metrics;
 	static public function streaming_false_positives(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	static public function streaming_false_positives_at_thresholds(predictions:Dynamic, labels:Dynamic, thresholds:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
-		Computes the (weighted) mean of the given values.
+		Computes the (weighted) mean of the given values. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.mean
 		
 		The `streaming_mean` function creates two local variables, `total` and `count`
 		that are used to compute the average of `values`. This average is ultimately
 		returned as `mean` which is an idempotent operation that simply divides
 		`total` by `count`.
 		
-		For estimation of the metric  over a stream of data, the function creates an
+		For estimation of the metric over a stream of data, the function creates an
 		`update_op` operation that updates these variables and returns the `mean`.
 		`update_op` increments `total` with the reduced sum of the product of `values`
 		and `weights`, and it increments `count` with the reduced sum of `weights`.
@@ -597,7 +1320,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_mean(values:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the mean absolute error between the labels and predictions.
+		Computes the mean absolute error between the labels and predictions. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.mean_absolute_error. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_mean_absolute_error` function creates two local variables,
 		`total` and `count` that are used to compute the mean absolute error. This
@@ -771,7 +1498,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_mean_relative_error(predictions:Dynamic, labels:Dynamic, normalizer:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the mean squared error between the labels and predictions.
+		Computes the mean squared error between the labels and predictions. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.mean_squared_error. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_mean_squared_error` function creates two local variables,
 		`total` and `count` that are used to compute the mean squared error.
@@ -816,7 +1547,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_mean_squared_error(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the element-wise (weighted) mean of the given tensors.
+		Computes the element-wise (weighted) mean of the given tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.mean_tensor
 		
 		In contrast to the `streaming_mean` function which returns a scalar with the
 		mean,  this function returns an average tensor with the same shape as the
@@ -827,7 +1562,7 @@ package tensorflow.contrib.metrics;
 		`values`. This average is ultimately returned as `mean` which is an idempotent
 		operation that simply divides `total` by `count`.
 		
-		For estimation of the metric  over a stream of data, the function creates an
+		For estimation of the metric over a stream of data, the function creates an
 		`update_op` operation that updates these variables and returns the `mean`.
 		`update_op` increments `total` with the reduced sum of the product of `values`
 		and `weights`, and it increments `count` with the reduced sum of `weights`.
@@ -941,7 +1676,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_percentage_less(values:Dynamic, threshold:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the precision of the predictions with respect to the labels.
+		Computes the precision of the predictions with respect to the labels. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.precision. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_precision` function creates two local variables,
 		`true_positives` and `false_positives`, that are used to compute the
@@ -949,7 +1688,7 @@ package tensorflow.contrib.metrics;
 		operation that simply divides `true_positives` by the sum of `true_positives`
 		and `false_positives`.
 		
-		For estimation of the metric  over a stream of data, the function creates an
+		For estimation of the metric over a stream of data, the function creates an
 		`update_op` operation that updates these variables and returns the
 		`precision`. `update_op` weights each prediction by the corresponding value in
 		`weights`.
@@ -984,7 +1723,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_precision(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes precision values for different `thresholds` on `predictions`.
+		Computes precision values for different `thresholds` on `predictions`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.precision_at_thresholds. Note that the order of the labels and predictions arguments are switched.
 		
 		The `streaming_precision_at_thresholds` function creates four local variables,
 		`true_positives`, `true_negatives`, `false_positives` and `false_negatives`
@@ -1008,8 +1751,8 @@ package tensorflow.contrib.metrics;
 		  weights: `Tensor` whose rank is either 0, or the same rank as `labels`, and
 		    must be broadcastable to `labels` (i.e., all dimensions must be either
 		    `1`, or the same as the corresponding `labels` dimension).
-		  metrics_collections: An optional list of collections that `auc` should be
-		    added to.
+		  metrics_collections: An optional list of collections that `precision` should
+		    be added to.
 		  updates_collections: An optional list of collections that `update_op` should
 		    be added to.
 		  name: An optional variable_scope name.
@@ -1028,14 +1771,18 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_precision_at_thresholds(predictions:Dynamic, labels:Dynamic, thresholds:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the recall of the predictions with respect to the labels.
+		Computes the recall of the predictions with respect to the labels. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.recall. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_recall` function creates two local variables, `true_positives`
 		and `false_negatives`, that are used to compute the recall. This value is
 		ultimately returned as `recall`, an idempotent operation that simply divides
 		`true_positives` by the sum of `true_positives`  and `false_negatives`.
 		
-		For estimation of the metric  over a stream of data, the function creates an
+		For estimation of the metric over a stream of data, the function creates an
 		`update_op` that updates these variables and returns the `recall`. `update_op`
 		weights each prediction by the corresponding value in `weights`.
 		
@@ -1118,7 +1865,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_recall_at_k(predictions:Dynamic, labels:Dynamic, k:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes various recall values for different `thresholds` on `predictions`.
+		Computes various recall values for different `thresholds` on `predictions`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.recall_at_thresholds. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_recall_at_thresholds` function creates four local variables,
 		`true_positives`, `true_negatives`, `false_positives` and `false_negatives`
@@ -1160,7 +1911,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_recall_at_thresholds(predictions:Dynamic, labels:Dynamic, thresholds:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the root mean squared error between the labels and predictions.
+		Computes the root mean squared error between the labels and predictions. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.root_mean_squared_error. Note that the order of the labels and predictions arguments has been switched.
 		
 		The `streaming_root_mean_squared_error` function creates two local variables,
 		`total` and `count` that are used to compute the root mean squared error.
@@ -1205,7 +1960,7 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_root_mean_squared_error(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the specificity at a given sensitivity.
+		Computes the sensitivity at a given specificity.
 		
 		The `streaming_sensitivity_at_specificity` function creates four local
 		variables, `true_positives`, `true_negatives`, `false_positives` and
@@ -1303,7 +2058,7 @@ package tensorflow.contrib.metrics;
 		Returns:
 		  mean_average_precision: Scalar `float64` `Tensor` with the mean average
 		    precision values.
-		  update: `Operation` that increments  variables appropriately, and whose
+		  update: `Operation` that increments variables appropriately, and whose
 		    value matches `metric`.
 	**/
 	static public function streaming_sparse_average_precision_at_k(predictions:Dynamic, labels:Dynamic, k:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
@@ -1350,7 +2105,7 @@ package tensorflow.contrib.metrics;
 		Returns:
 		  mean_average_precision: Scalar `float64` `Tensor` with the mean average
 		    precision values.
-		  update: `Operation` that increments  variables appropriately, and whose
+		  update: `Operation` that increments variables appropriately, and whose
 		    value matches `metric`.
 		
 		Raises:
@@ -1616,7 +2371,11 @@ package tensorflow.contrib.metrics;
 	**/
 	static public function streaming_specificity_at_sensitivity(predictions:Dynamic, labels:Dynamic, sensitivity:Dynamic, ?weights:Dynamic, ?num_thresholds:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Sum the weights of true_negatives.
+		Sum the weights of true_negatives. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.true_negatives. Note that the order of the labels and predictions arguments has been switched.
 		
 		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
 		
@@ -1648,7 +2407,11 @@ package tensorflow.contrib.metrics;
 	static public function streaming_true_negatives(predictions:Dynamic, labels:Dynamic, ?weights:Dynamic, ?metrics_collections:Dynamic, ?updates_collections:Dynamic, ?name:Dynamic):Dynamic;
 	static public function streaming_true_negatives_at_thresholds(predictions:Dynamic, labels:Dynamic, thresholds:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
-		Sum the weights of true_positives.
+		Sum the weights of true_positives. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.metrics.true_positives. Note that the order of the labels and predictions arguments has been switched.
 		
 		If `weights` is `None`, weights default to 1. Use weights of 0 to mask values.
 		

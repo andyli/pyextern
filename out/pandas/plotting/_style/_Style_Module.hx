@@ -73,6 +73,5 @@ package pandas.plotting._style;
 	static public function is_list_like(obj:Dynamic):Bool;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var mpl_stylesheet : Dynamic;
 	static public var plot_params : Dynamic;
 }

@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package torch.nn.functional;
 @:pythonImport("torch.nn.functional") extern class Functional_Module {
+	static public var GRID_SAMPLE_MODE_BORDER : Dynamic;
+	static public var GRID_SAMPLE_MODE_ZEROS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,11 +11,34 @@ package torch.nn.functional;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _add_docstr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _get_softmax_dim(name:Dynamic, ndim:Dynamic, stacklevel:Dynamic):Dynamic;
+	/**
+		Draw a sample from the Gumbel-Softmax distribution
+		
+		based on
+		https://github.com/ericjang/gumbel-softmax/blob/3c8584924603869e90ca74ac20a6a03d99a91ef9/Categorical%20VAE.ipynb
+		(MIT license)
+	**/
+	static public function _gumbel_softmax_sample(logits:Dynamic, ?tau:Dynamic, ?eps:Dynamic):Dynamic;
+	static public function _infer_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _list_with_default(out_size:Dynamic, defaults:Dynamic):Dynamic;
 	static public function _pair(x:Dynamic):Dynamic;
+	static public function _pointwise_loss(lambd:Dynamic, lambd_optimized:Dynamic, input:Dynamic, target:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Sample from Gumbel(0, 1)
+		
+		based on
+		https://github.com/ericjang/gumbel-softmax/blob/3c8584924603869e90ca74ac20a6a03d99a91ef9/Categorical%20VAE.ipynb ,
+		(MIT license)
+	**/
+	static public function _sample_gumbel(shape:Dynamic, ?eps:Dynamic, ?out:Dynamic):Dynamic;
 	static public function _single(x:Dynamic):Dynamic;
 	static public function _triple(x:Dynamic):Dynamic;
 	static public function _unpool_output_size(input:Dynamic, kernel_size:Dynamic, stride:Dynamic, padding:Dynamic, output_size:Dynamic):Dynamic;
 	/**
+		adaptive_avg_pool1d(input, output_size) -> Tensor
+		
 		Applies a 1D adaptive average pooling over an input signal composed of
 		several input planes.
 		
@@ -22,7 +47,7 @@ package torch.nn.functional;
 		Args:
 		    output_size: the target output size (single integer)
 	**/
-	static public function adaptive_avg_pool1d(input:Dynamic, output_size:Dynamic):Dynamic;
+	static public function adaptive_avg_pool1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Applies a 2D adaptive average pooling over an input signal composed of
 		several input planes.
@@ -30,9 +55,21 @@ package torch.nn.functional;
 		See :class:`~torch.nn.AdaptiveAvgPool2d` for details and output shape.
 		
 		Args:
-		    output_size: the target output size (single integer or double-integer tuple)
+		    output_size: the target output size (single integer or
+		        double-integer tuple)
 	**/
 	static public function adaptive_avg_pool2d(input:Dynamic, output_size:Dynamic):Dynamic;
+	/**
+		Applies a 3D adaptive average pooling over an input signal composed of
+		several input planes.
+		
+		See :class:`~torch.nn.AdaptiveAvgPool3d` for details and output shape.
+		
+		Args:
+		    output_size: the target output size (single integer or
+		        triple-integer tuple)
+	**/
+	static public function adaptive_avg_pool3d(input:Dynamic, output_size:Dynamic):Dynamic;
 	/**
 		Applies a 1D adaptive max pooling over an input signal composed of
 		several input planes.
@@ -41,7 +78,7 @@ package torch.nn.functional;
 		
 		Args:
 		    output_size: the target output size (single integer)
-		    return_indices: whether to return pooling indices
+		    return_indices: whether to return pooling indices. Default: ``False``
 	**/
 	static public function adaptive_max_pool1d(input:Dynamic, output_size:Dynamic, ?return_indices:Dynamic):Dynamic;
 	/**
@@ -51,388 +88,1418 @@ package torch.nn.functional;
 		See :class:`~torch.nn.AdaptiveMaxPool2d` for details and output shape.
 		
 		Args:
-		    output_size: the target output size (single integer or double-integer tuple)
-		    return_indices: whether to return pooling indices
+		    output_size: the target output size (single integer or
+		        double-integer tuple)
+		    return_indices: whether to return pooling indices. Default: ``False``
 	**/
 	static public function adaptive_max_pool2d(input:Dynamic, output_size:Dynamic, ?return_indices:Dynamic):Dynamic;
 	/**
+		Applies a 3D adaptive max pooling over an input signal composed of
+		several input planes.
+		
+		See :class:`~torch.nn.AdaptiveMaxPool3d` for details and output shape.
+		
+		Args:
+		    output_size: the target output size (single integer or
+		        triple-integer tuple)
+		    return_indices: whether to return pooling indices. Default: ``False``
+	**/
+	static public function adaptive_max_pool3d(input:Dynamic, output_size:Dynamic, ?return_indices:Dynamic):Dynamic;
+	/**
+		Generates a 2d flow field, given a batch of affine matrices :attr:`theta`
+		Generally used in conjunction with :func:`grid_sample` to
+		implement Spatial Transformer Networks.
+		
+		Args:
+		    theta (Tensor): input batch of affine matrices (:math:`N \times 2 \times 3`)
+		    size (torch.Size): the target output image size (:math:`N \times C \times H \times W`)
+		                       Example: torch.Size((32, 3, 24, 24))
+		
+		Returns:
+		    output (Tensor): output Tensor of size (:math:`N \times H \times W \times 2`)
+	**/
+	static public function affine_grid(theta:Dynamic, size:Dynamic):Dynamic;
+	/**
+		Applies alpha dropout to the input.
+		
+		See :class:`~torch.nn.AlphaDropout` for details.
+	**/
+	static public function alpha_dropout(input:Dynamic, ?p:Dynamic, ?training:Dynamic, ?inplace:Dynamic):Dynamic;
+	static public function assert_int_or_pair(arg:Dynamic, arg_name:Dynamic, message:Dynamic):Dynamic;
+	/**
+		avg_pool1d(input, kernel_size, stride=None, padding=0, ceil_mode=False, count_include_pad=True) -> Tensor
+		
 		Applies a 1D average pooling over an input signal composed of several
 		input planes.
 		
 		See :class:`~torch.nn.AvgPool1d` for details and output shape.
 		
 		Args:
-		    kernel_size: the size of the window
-		    stride: the stride of the window. Default value is :attr:`kernel_size`
-		    padding: implicit zero padding to be added on both sides
-		    ceil_mode: when True, will use `ceil` instead of `floor` to compute the output shape
-		    count_include_pad: when True, will include the zero-padding in the averaging calculation
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iW`)
+		    kernel_size: the size of the window. Can be a single number or a
+		      tuple `(kW,)`
+		    stride: the stride of the window. Can be a single number or a tuple
+		      `(sW,)`. Default: :attr:`kernel_size`
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padW,)`. Default: 0
+		    ceil_mode: when True, will use `ceil` instead of `floor` to compute the
+		        output shape. Default: ``False``
+		    count_include_pad: when True, will include the zero-padding in the
+		        averaging calculation. Default: ``True``
 		
-		Example:
+		Example::
 		    >>> # pool of square window of size=3, stride=2
-		    >>> input = Variable(torch.Tensor([[[1,2,3,4,5,6,7]]]))
+		    >>> input = torch.tensor([[[1,2,3,4,5,6,7]]])
 		    >>> F.avg_pool1d(input, kernel_size=3, stride=2)
-		    Variable containing:
-		    (0 ,.,.) =
-		      2  4  6
-		    [torch.FloatTensor of size 1x1x3]
+		    tensor([[[ 2.,  4.,  6.]]])
 	**/
-	static public function avg_pool1d(input:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?ceil_mode:Dynamic, ?count_include_pad:Dynamic):Dynamic;
+	static public function avg_pool1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Applies 2D average-pooling operation in kh x kw regions by step size
-		dh x dw steps. The number of output features is equal to the number of
+		avg_pool2d(input, kernel_size, stride=None, padding=0, ceil_mode=False, count_include_pad=True) -> Tensor
+		
+		Applies 2D average-pooling operation in :math:`kH \times kW` regions by step size
+		:math:`sH \times sW` steps. The number of output features is equal to the number of
 		input planes.
 		
 		See :class:`~torch.nn.AvgPool2d` for details and output shape.
 		
 		Args:
-		    input: input tensor (minibatch x in_channels x iH x iW)
-		    kernel_size: size of the pooling region, a single number or a
-		      tuple (kh x kw)
-		    stride: stride of the pooling operation, a single number or a
-		      tuple (sh x sw). Default is equal to kernel size
-		    padding: implicit zero padding on the input, a single number or
-		      a tuple (padh x padw), Default: 0
-		    ceil_mode: operation that defines spatial output shape
-		    count_include_pad: divide by the number of elements inside the
-		      original non-padded image or kh * kw
+		    input: input tensor (:math:`minibatch \times in\_channels \times iH \times iW`)
+		    kernel_size: size of the pooling region. Can be a single number or a
+		      tuple (:math:`kH \times kW`)
+		    stride: stride of the pooling operation. Can be a single number or a
+		      tuple `(sH, sW)`. Default: :attr:`kernel_size`
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padH, padW)`. Default: 0
+		    ceil_mode: when True, will use `ceil` instead of `floor` in the formula
+		        to compute the output shape. Default: ``False``
+		    count_include_pad: when True, will include the zero-padding in the
+		        averaging calculation. Default: ``True``
 	**/
-	static public function avg_pool2d(input:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?ceil_mode:Dynamic, ?count_include_pad:Dynamic):Dynamic;
+	static public function avg_pool2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Applies 3D average-pooling operation in kt x kh x kw regions by step
-		size kt x dh x dw steps. The number of output features is equal to the
-		number of input planes / dt.
+		avg_pool3d(input, kernel_size, stride=None, padding=0, ceil_mode=False, count_include_pad=True) -> Tensor
+		
+		Applies 3D average-pooling operation in :math:`kT \times kH \times kW` regions by step
+		size :math:`sT \times sH \times sW` steps. The number of output features is equal to
+		:math:`\lfloor\frac{\text{input planes}}{sT}\rfloor`.
+		
+		See :class:`~torch.nn.AvgPool3d` for details and output shape.
+		
+		Args:
+		    input: input tensor (:math:`minibatch \times in\_channels \times iT \times iH \times iW`)
+		    kernel_size: size of the pooling region. Can be a single number or a
+		      tuple (:math:`kT \times kH \times kW`)
+		    stride: stride of the pooling operation. Can be a single number or a
+		      tuple `(sT, sH, sW)`. Default: :attr:`kernel_size`
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padT, padH, padW)`, Default: 0
+		    ceil_mode: when True, will use `ceil` instead of `floor` in the formula
+		        to compute the output shape
+		    count_include_pad: when True, will include the zero-padding in the
+		        averaging calculation
 	**/
-	static public function avg_pool3d(input:Dynamic, kernel_size:Dynamic, ?stride:Dynamic):Dynamic;
+	static public function avg_pool3d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Applies Batch Normalization for each channel across a batch of data.
+		
+		See :class:`~torch.nn.BatchNorm1d`, :class:`~torch.nn.BatchNorm2d`,
+		:class:`~torch.nn.BatchNorm3d` for details.
+	**/
 	static public function batch_norm(input:Dynamic, running_mean:Dynamic, running_var:Dynamic, ?weight:Dynamic, ?bias:Dynamic, ?training:Dynamic, ?momentum:Dynamic, ?eps:Dynamic):Dynamic;
 	static public function bilinear(input1:Dynamic, input2:Dynamic, weight:Dynamic, ?bias:Dynamic):Dynamic;
 	/**
 		Function that measures the Binary Cross Entropy
-		between the target and the output:
+		between the target and the output.
 		
 		See :class:`~torch.nn.BCELoss` for details.
 		
 		Args:
-		    input: Variable of arbitrary shape
-		    target: Variable of the same shape as input
-		    weight (Variable, optional): a manual rescaling weight
+		    input: Tensor of arbitrary shape
+		    target: Tensor of the same shape as input
+		    weight (Tensor, optional): a manual rescaling weight
 		            if provided it's repeated to match input tensor shape
-		    size_average (bool, optional): By default, the losses are averaged
-		            over observations for each minibatch. However, if the field
-		            sizeAverage is set to False, the losses are instead summed
-		            for each minibatch.
+		    size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,
+		        the losses are averaged over each loss element in the batch. Note that for
+		        some losses, there multiple elements per sample. If the field :attr:`size_average`
+		        is set to ``False``, the losses are instead summed for each minibatch. Ignored
+		        when reduce is ``False``. Default: ``True``
+		    reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the
+		        losses are averaged or summed over observations for each minibatch depending
+		        on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per
+		        batch element instead and ignores :attr:`size_average`. Default: ``True``
+		    reduction (string, optional): Specifies the reduction to apply to the output:
+		        'none' | 'elementwise_mean' | 'sum'. 'none': no reduction will be applied,
+		        'elementwise_mean': the sum of the output will be divided by the number of
+		        elements in the output, 'sum': the output will be summed. Note: :attr:`size_average`
+		        and :attr:`reduce` are in the process of being deprecated, and in the meantime,
+		        specifying either of those two args will override :attr:`reduction`. Default: 'elementwise_mean'
+		
+		Examples::
+		
+		    >>> input = torch.randn((3, 2), requires_grad=True)
+		    >>> target = torch.rand((3, 2), requires_grad=False)
+		    >>> loss = F.binary_cross_entropy(F.sigmoid(input), target)
+		    >>> loss.backward()
 	**/
-	static public function binary_cross_entropy(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic):Dynamic;
+	static public function binary_cross_entropy(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
+		Function that measures Binary Cross Entropy between target and output
+		logits.
+		
+		See :class:`~torch.nn.BCEWithLogitsLoss` for details.
+		
+		Args:
+		    input: Tensor of arbitrary shape
+		    target: Tensor of the same shape as input
+		    weight (Tensor, optional): a manual rescaling weight
+		        if provided it's repeated to match input tensor shape
+		    size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,
+		        the losses are averaged over each loss element in the batch. Note that for
+		        some losses, there multiple elements per sample. If the field :attr:`size_average`
+		        is set to ``False``, the losses are instead summed for each minibatch. Ignored
+		        when reduce is ``False``. Default: ``True``
+		    reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the
+		        losses are averaged or summed over observations for each minibatch depending
+		        on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per
+		        batch element instead and ignores :attr:`size_average`. Default: ``True``
+		    reduction (string, optional): Specifies the reduction to apply to the output:
+		        'none' | 'elementwise_mean' | 'sum'. 'none': no reduction will be applied,
+		        'elementwise_mean': the sum of the output will be divided by the number of
+		        elements in the output, 'sum': the output will be summed. Note: :attr:`size_average`
+		        and :attr:`reduce` are in the process of being deprecated, and in the meantime,
+		        specifying either of those two args will override :attr:`reduction`. Default: 'elementwise_mean'
+		    pos_weight (Tensor, optional): a weight of positive examples.
+		            Must be a vector with length equal to the number of classes.
+		
+		Examples::
+		
+		     >>> input = torch.randn(3, requires_grad=True)
+		     >>> target = torch.empty(3).random_(2)
+		     >>> loss = F.binary_cross_entropy_with_logits(input, target)
+		     >>> loss.backward()
+	**/
+	static public function binary_cross_entropy_with_logits(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic, ?pos_weight:Dynamic):Dynamic;
+	/**
+		conv1d(input, weight, bias=None, stride=1, padding=0, dilation=1, groups=1) -> Tensor
+		
 		Applies a 1D convolution over an input signal composed of several input
 		planes.
 		
 		See :class:`~torch.nn.Conv1d` for details and output shape.
 		
 		Args:
-		    input: input tensor of shape (minibatch x in_channels x iW)
-		    weight: filters of shape (out_channels, in_channels, kW)
-		    bias: optional bias of shape (out_channels)
-		    stride: the stride of the convolving kernel, default 1
-		    padding: implicit zero padding on the input. Can be a single number or
-		      a tuple. Default: 0
-		    dilation: the spacing between kernel elements. Default: 1
-		    groups: split input into groups, in_channels should be divisible by
-		      the number of groups
+		    input: input tensor of shape :math:`minibatch \times in\_channels \times iW`
+		    weight: filters of shape :math:`out\_channels \times \frac{in\_channels}{groups} \times kW`
+		    bias: optional bias of shape (:math:`out\_channels`). Default: ``None``
+		    stride: the stride of the convolving kernel. Can be a single number or
+		      a one-element tuple `(sW,)`. Default: 1
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a one-element tuple `(padW,)`. Default: 0
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a one-element tuple `(dW,)`. Default: 1
+		    groups: split input into groups, :math:`in\_channels` should be divisible by
+		      the number of groups. Default: 1
 		
-		Examples:
-		    >>> filters = autograd.Variable(torch.randn(33, 16, 3))
-		    >>> inputs = autograd.Variable(torch.randn(20, 16, 50))
+		Examples::
+		
+		    >>> filters = torch.randn(33, 16, 3)
+		    >>> inputs = torch.randn(20, 16, 50)
 		    >>> F.conv1d(inputs, filters)
 	**/
-	static public function conv1d(input:Dynamic, weight:Dynamic, ?bias:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
+	static public function conv1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		conv2d(input, weight, bias=None, stride=1, padding=0, dilation=1, groups=1) -> Tensor
+		
 		Applies a 2D convolution over an input image composed of several input
 		planes.
 		
 		See :class:`~torch.nn.Conv2d` for details and output shape.
 		
 		Args:
-		    input: input tensor (minibatch x in_channels x iH x iW)
-		    weight: filters tensor (out_channels, in_channels/groups, kH, kW)
-		    bias: optional bias tensor (out_channels)
-		    stride: the stride of the convolving kernel. Can be a single number or
-		      a tuple (sh x sw). Default: 1
-		    padding: implicit zero padding on the input. Can be a single number or
-		      a tuple. Default: 0
-		    dilation: the spacing between kernel elements. Default: 1
-		    groups: split input into groups, in_channels should be divisible by
-		      the number of groups
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iH \times iW`)
+		    weight: filters of shape (:math:`out\_channels \times \frac{in\_channels}{groups} \times kH \times kW`)
+		    bias: optional bias tensor of shape (:math:`out\_channels`). Default: ``None``
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple `(sH, sW)`. Default: 1
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padH, padW)`. Default: 0
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple `(dH, dW)`. Default: 1
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
 		
-		Examples:
+		Examples::
+		
 		    >>> # With square kernels and equal stride
-		    >>> filters = autograd.Variable(torch.randn(8,4,3,3))
-		    >>> inputs = autograd.Variable(torch.randn(1,4,5,5))
+		    >>> filters = torch.randn(8,4,3,3)
+		    >>> inputs = torch.randn(1,4,5,5)
 		    >>> F.conv2d(inputs, filters, padding=1)
 	**/
-	static public function conv2d(input:Dynamic, weight:Dynamic, ?bias:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
+	static public function conv2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		conv3d(input, weight, bias=None, stride=1, padding=0, dilation=1, groups=1) -> Tensor
+		
 		Applies a 3D convolution over an input image composed of several input
-		    planes.
+		planes.
 		
 		See :class:`~torch.nn.Conv3d` for details and output shape.
 		
 		Args:
-		    input: input tensor of shape (minibatch x in_channels x iT x iH x iW)
-		    weight: filters tensor of shape (out_channels, in_channels, kT, kH, kW)
-		    bias: optional bias tensor of shape (out_channels)
-		    stride: the stride of the convolving kernel. Can be a single number or
-		      a tuple (st x sh x sw). Default: 1
-		    padding: implicit zero padding on the input. Can be a single number or
-		      a tuple. Default: 0
-		    dilation: the spacing between kernel elements. Default: 1
-		    groups: split input into groups, in_channels should be divisible by
-		      the number of groups
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iT \times iH \times iW`)
+		    weight: filters of shape (:math:`out\_channels \times \frac{in\_channels}{groups} \times kT \times kH \times kW`)
+		    bias: optional bias tensor of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple `(sT, sH, sW)`. Default: 1
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padT, padH, padW)`. Default: 0
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple `(dT, dH, dW)`. Default: 1
+		    groups: split input into groups, :math:`in\_channels` should be divisible by
+		      the number of groups. Default: 1
 		
-		Examples:
-		    >>> filters = autograd.Variable(torch.randn(33, 16, 3, 3, 3))
-		    >>> inputs = autograd.Variable(torch.randn(20, 16, 50, 10, 20))
+		Examples::
+		
+		    >>> filters = torch.randn(33, 16, 3, 3, 3)
+		    >>> inputs = torch.randn(20, 16, 50, 10, 20)
 		    >>> F.conv3d(inputs, filters)
 	**/
-	static public function conv3d(input:Dynamic, weight:Dynamic, ?bias:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?groups:Dynamic):Dynamic;
-	static public function conv_transpose1d(input:Dynamic, weight:Dynamic, ?bias:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?output_padding:Dynamic, ?groups:Dynamic, ?dilation:Dynamic):Dynamic;
+	static public function conv3d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Applies a 1-dimensional sequence convolution over an input sequence.
+		Input and output dimensions are (Time, Batch, Channels) - hence TBC.
+		
+		Args:
+		    input: input tensor of shape (:math:`\text{sequence length} \times batch \times in\_channels`)
+		    weight: filter of shape (:math:`\text{kernel width} \times in\_channels \times out\_channels`)
+		    bias: bias of shape (:math:`out\_channels`)
+		    pad: number of timesteps to pad
+	**/
+	static public function conv_tbc(input:Dynamic, weight:Dynamic, bias:Dynamic, ?pad:Dynamic):Dynamic;
+	/**
+		conv_transpose1d(input, weight, bias=None, stride=1, padding=0, output_padding=0, groups=1, dilation=1) -> Tensor
+		
+		Applies a 1D transposed convolution operator over an input signal
+		composed of several input planes, sometimes also called "deconvolution".
+		
+		See :class:`~torch.nn.ConvTranspose1d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iW`)
+		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kW`)
+		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple ``(sW,)``. Default: 1
+		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
+		      sides of each dimension in the input. Can be a single number or a tuple
+		      ``(padW,)``. Default: 0
+		    output_padding: additional size added to one side of each dimension in the
+		      output shape. Can be a single number or a tuple ``(out_padW)``. Default: 0
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple ``(dW,)``. Default: 1
+		
+		Examples::
+		
+		    >>> inputs = torch.randn(20, 16, 50)
+		    >>> weights = torch.randn(16, 33, 5)
+		    >>> F.conv_transpose1d(inputs, weights)
+	**/
+	static public function conv_transpose1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		conv_transpose2d(input, weight, bias=None, stride=1, padding=0, output_padding=0, groups=1, dilation=1) -> Tensor
+		
 		Applies a 2D transposed convolution operator over an input image
 		composed of several input planes, sometimes also called "deconvolution".
 		
 		See :class:`~torch.nn.ConvTranspose2d` for details and output shape.
 		
 		Args:
-		    input: input tensor of shape (minibatch x in_channels x iH x iW)
-		    weight: filters of shape (in_channels x out_channels x kH x kW)
-		    bias: optional bias of shape (out_channels)
-		    stride: the stride of the convolving kernel, a single number or a
-		      tuple (sh x sw). Default: 1
-		    padding: implicit zero padding on the input, a single number or a
-		      tuple (padh x padw). Default: 0
-		    groups: split input into groups, in_channels should be divisible by
-		      the number of groups
-		    output_padding: A zero-padding of 0 <= padding < stride that should be
-		      added to the output. Can be a single number or a tuple. Default: 0
-		    dilation: the spacing between kernel elements. Default: 1
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iH \times iW`)
+		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kH \times kW`)
+		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple ``(sH, sW)``. Default: 1
+		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
+		      sides of each dimension in the input. Can be a single number or a tuple
+		      ``(padH, padW)``. Default: 0
+		    output_padding: additional size added to one side of each dimension in the
+		      output shape. Can be a single number or a tuple ``(out_padH, out_padW)``.
+		      Default: 0
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple ``(dH, dW)``. Default: 1
+		
+		Examples::
+		
+		    >>> # With square kernels and equal stride
+		    >>> inputs = torch.randn(1, 4, 5, 5)
+		    >>> weights = torch.randn(4, 8, 3, 3)
+		    >>> F.conv_transpose2d(inputs, weights, padding=1)
 	**/
-	static public function conv_transpose2d(input:Dynamic, weight:Dynamic, ?bias:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?output_padding:Dynamic, ?groups:Dynamic, ?dilation:Dynamic):Dynamic;
+	static public function conv_transpose2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		conv_transpose3d(input, weight, bias=None, stride=1, padding=0, output_padding=0, groups=1, dilation=1) -> Tensor
+		
 		Applies a 3D transposed convolution operator over an input image
 		composed of several input planes, sometimes also called "deconvolution"
 		
 		See :class:`~torch.nn.ConvTranspose3d` for details and output shape.
 		
 		Args:
-		    input: input tensor of shape (minibatch x in_channels x iT x iH x iW)
-		    weight: filters of shape (in_channels x out_channels x kH x kW)
-		    bias: optional bias of shape (out_channels)
-		    stride: the stride of the convolving kernel, a single number or a
-		      tuple (sh x sw). Default: 1
-		    padding: implicit zero padding on the input, a single number or a
-		      tuple (padh x padw). Default: 0
-		    output_padding: A zero-padding of 0 <= padding < stride that should be
-		      added to the output. Can be a single number or a tuple. Default: 0
-		    groups: split input into groups, in_channels should be divisible by
-		      the number of groups
-		    dilation: the spacing between kernel elements. Default: 1
-	**/
-	static public function conv_transpose3d(input:Dynamic, weight:Dynamic, ?bias:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?output_padding:Dynamic, ?groups:Dynamic, ?dilation:Dynamic):Dynamic;
-	/**
-		This criterion combines `log_softmax` and `nll_loss` in one single class.
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iT \times iH \times iW`)
+		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kT \times kH \times kW`)
+		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple ``(sT, sH, sW)``. Default: 1
+		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
+		      sides of each dimension in the input. Can be a single number or a tuple
+		      ``(padT, padH, padW)``. Default: 0
+		    output_padding: additional size added to one side of each dimension in the
+		      output shape. Can be a single number or a tuple
+		      ``(out_padT, out_padH, out_padW)``. Default: 0
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple `(dT, dH, dW)`. Default: 1
 		
-		See :class:`torch.nn.CrossEntropyLoss` for details.
+		Examples::
+		
+		    >>> inputs = torch.randn(20, 16, 50, 10, 20)
+		    >>> weights = torch.randn(16, 33, 3, 3, 3)
+		    >>> F.conv_transpose3d(inputs, weights)
+	**/
+	static public function conv_transpose3d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		cosine_embedding_loss(input1, input2, target, margin=0, size_average=None, reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		See :class:`~torch.nn.CosineEmbeddingLoss` for details.
+	**/
+	static public function cosine_embedding_loss(input1:Dynamic, input2:Dynamic, target:Dynamic, ?margin:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Returns cosine similarity between x1 and x2, computed along dim.
+		
+		.. math ::
+		    \text{similarity} = \dfrac{x_1 \cdot x_2}{\max(\Vert x_1 \Vert _2 \cdot \Vert x_2 \Vert _2, \epsilon)}
 		
 		Args:
-		    input: Variable :math:`(N, C)` where `C = number of classes`
-		    target: Variable :math:`(N)` where each value is `0 <= targets[i] <= C-1`
-		    weight (Tensor, optional): a manual rescaling weight given to each
-		            class. If given, has to be a Tensor of size "nclasses"
-		    size_average (bool, optional): By default, the losses are averaged
-		            over observations for each minibatch. However, if the field
-		            sizeAverage is set to False, the losses are instead summed
-		            for each minibatch.
+		    x1 (Tensor): First input.
+		    x2 (Tensor): Second input (of size matching x1).
+		    dim (int, optional): Dimension of vectors. Default: 1
+		    eps (float, optional): Small value to avoid division by zero.
+		        Default: 1e-8
+		
+		Shape:
+		    - Input: :math:`(\ast_1, D, \ast_2)` where D is at position `dim`.
+		    - Output: :math:`(\ast_1, \ast_2)` where 1 is at position `dim`.
+		
+		Example::
+		
+		    >>> input1 = torch.randn(100, 128)
+		    >>> input2 = torch.randn(100, 128)
+		    >>> output = F.cosine_similarity(input1, input2)
+		    >>> print(output)
 	**/
-	static public function cross_entropy(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic):Dynamic;
+	static public function cosine_similarity(x1:Dynamic, x2:Dynamic, ?dim:Dynamic, ?eps:Dynamic):Dynamic;
+	/**
+		This criterion combines `log_softmax` and `nll_loss` in a single
+		function.
+		
+		See :class:`~torch.nn.CrossEntropyLoss` for details.
+		
+		Args:
+		    input (Tensor) : :math:`(N, C)` where `C = number of classes` or :math:`(N, C, H, W)`
+		        in case of 2D Loss, or :math:`(N, C, d_1, d_2, ..., d_K)` where :math:`K > 1`
+		        in the case of K-dimensional loss.
+		    target (Tensor) : :math:`(N)` where each value is :math:`0 \leq \text{targets}[i] \leq C-1`,
+		        or :math:`(N, d_1, d_2, ..., d_K)` where :math:`K \geq 1` for
+		        K-dimensional loss.
+		    weight (Tensor, optional): a manual rescaling weight given to each
+		        class. If given, has to be a Tensor of size `C`
+		    size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,
+		        the losses are averaged over each loss element in the batch. Note that for
+		        some losses, there multiple elements per sample. If the field :attr:`size_average`
+		        is set to ``False``, the losses are instead summed for each minibatch. Ignored
+		        when reduce is ``False``. Default: ``True``
+		    ignore_index (int, optional): Specifies a target value that is ignored
+		        and does not contribute to the input gradient. When :attr:`size_average` is
+		        ``True``, the loss is averaged over non-ignored targets. Default: -100
+		    reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the
+		        losses are averaged or summed over observations for each minibatch depending
+		        on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per
+		        batch element instead and ignores :attr:`size_average`. Default: ``True``
+		    reduction (string, optional): Specifies the reduction to apply to the output:
+		        'none' | 'elementwise_mean' | 'sum'. 'none': no reduction will be applied,
+		        'elementwise_mean': the sum of the output will be divided by the number of
+		        elements in the output, 'sum': the output will be summed. Note: :attr:`size_average`
+		        and :attr:`reduce` are in the process of being deprecated, and in the meantime,
+		        specifying either of those two args will override :attr:`reduction`. Default: 'elementwise_mean'
+		
+		Examples::
+		
+		    >>> input = torch.randn(3, 5, requires_grad=True)
+		    >>> target = torch.randint(5, (3,), dtype=torch.int64)
+		    >>> loss = F.cross_entropy(input, target)
+		    >>> loss.backward()
+	**/
+	static public function cross_entropy(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic, ?ignore_index:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
 	static public function dropout(input:Dynamic, ?p:Dynamic, ?training:Dynamic, ?inplace:Dynamic):Dynamic;
+	static public function dropout2d(input:Dynamic, ?p:Dynamic, ?training:Dynamic, ?inplace:Dynamic):Dynamic;
+	static public function dropout3d(input:Dynamic, ?p:Dynamic, ?training:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		Applies element-wise,
+		:math:`\text{ELU}(x) = \max(0,x) + \min(0, \alpha * (\exp(x) - 1))`.
+		
+		See :class:`~torch.nn.ELU` for more details.
+	**/
 	static public function elu(input:Dynamic, ?alpha:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		elu_(input, alpha=1.) -> Tensor
+		
+		In-place version of :func:`~elu`.
+	**/
+	static public function elu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		A simple lookup table that looks up embeddings in a fixed dictionary and size.
+		
+		This module is often used to retrieve word embeddings using indices.
+		The input to the module is a list of indices, and the embedding matrix,
+		and the output is the corresponding word embeddings.
+		
+		See :class:`torch.nn.Embedding` for more details.
+		
+		Args:
+		    input (LongTensor): Tensor containing indices into the embedding matrix
+		    weight (Tensor): The embedding matrix
+		        Number of rows should correspond to the maximum possible index + 1,
+		        number of columns is the embedding size
+		    padding_idx (int, optional): If given, pads the output with the embedding vector at :attr:`padding_idx`
+		                                     (initialized to zeros) whenever it encounters the index.
+		    max_norm (float, optional): If given, will renormalize the embedding vectors to have a norm lesser than
+		                                this before extracting. Note: this will modify :attr:`weight` in-place.
+		    norm_type (float, optional): The p of the p-norm to compute for the max_norm option. Default ``2``.
+		    scale_grad_by_freq (boolean, optional): if given, this will scale gradients by the inverse of frequency of
+		                                            the words in the mini-batch. Default ``False``.
+		    sparse (bool, optional): if ``True``, gradient w.r.t. :attr:`weight` will be a sparse tensor. See Notes under
+		                             :class:`torch.nn.Embedding` for more details regarding sparse gradients.
+		
+		Shape:
+		    - Input: LongTensor of arbitrary shape containing the indices to extract
+		    - Weight: Embedding matrix of floating point type with shape `(V, embedding_dim)`,
+		                        where V = maximum index + 1 and embedding_dim = the embedding size
+		    - Output: `(*, embedding_dim)`, where `*` is the input shape
+		
+		Examples::
+		
+		    >>> # a batch of 2 samples of 4 indices each
+		    >>> input = torch.tensor([[1,2,4,5],[4,3,2,9]])
+		    >>> # an embedding matrix containing 10 tensors of size 3
+		    >>> embedding_matrix = torch.rand(10, 3)
+		    >>> F.embedding(input, embedding_matrix)
+		    tensor([[[ 0.8490,  0.9625,  0.6753],
+		             [ 0.9666,  0.7761,  0.6108],
+		             [ 0.6246,  0.9751,  0.3618],
+		             [ 0.4161,  0.2419,  0.7383]],
+		
+		            [[ 0.6246,  0.9751,  0.3618],
+		             [ 0.0237,  0.7794,  0.0528],
+		             [ 0.9666,  0.7761,  0.6108],
+		             [ 0.3385,  0.8612,  0.1867]]])
+		
+		    >>> # example with padding_idx
+		    >>> weights = torch.rand(10, 3)
+		    >>> weights[0, :].zero_()
+		    >>> embedding_matrix = weights
+		    >>> input = torch.tensor([[0,2,0,5]])
+		    >>> F.embedding(input, embedding_matrix, padding_idx=0)
+		    tensor([[[ 0.0000,  0.0000,  0.0000],
+		             [ 0.5609,  0.5384,  0.8720],
+		             [ 0.0000,  0.0000,  0.0000],
+		             [ 0.6262,  0.2438,  0.7471]]])
+	**/
+	static public function embedding(input:Dynamic, weight:Dynamic, ?padding_idx:Dynamic, ?max_norm:Dynamic, ?norm_type:Dynamic, ?scale_grad_by_freq:Dynamic, ?sparse:Dynamic):Dynamic;
+	/**
+		Computes sums or means of 'bags' of embeddings, without instantiating the
+		intermediate embeddings.
+		
+		See :class:`torch.nn.EmbeddingBag` for more details.
+		
+		Args:
+		    input (LongTensor): Tensor containing bags of indices into the embedding matrix
+		    weight (Tensor): The embedding matrix
+		        Number of rows should correspond to the maximum possible index + 1,
+		        number of columns is the embedding size
+		    offsets (LongTensor, optional): Only used when :attr:`input` is 1D. :attr:`offsets` determines
+		                         the starting index position of each bag (sequence) in :attr:`input`.
+		    max_norm (float, optional): If given, will renormalize the embedding vectors to have a norm lesser than
+		                                this before extracting. Note: this will modify :attr:`weight` in-place.
+		    norm_type (float, optional): The ``p`` in the ``p``-norm to compute for the max_norm option. Default ``2``.
+		    scale_grad_by_freq (boolean, optional): if given, this will scale gradients by the inverse of frequency of
+		                                            the words in the mini-batch. Default ``False``.
+		                                            Note: this option is not supported when ``mode="max"``.
+		    mode (string, optional): ``"sum"``, ``"mean"`` or ``"max"``. Specifies the way to reduce the bag.
+		                             Default: ``"mean"``
+		    sparse (bool, optional): if ``True``, gradient w.r.t. :attr:`weight` will be a sparse tensor. See Notes under
+		                             :class:`torch.nn.Embedding` for more details regarding sparse gradients.
+		                             Note: this option is not supported when ``mode="max"``.
+		
+		Shape:
+		
+		    - :attr:`input` (LongTensor) and :attr:`offsets` (LongTensor, optional)
+		
+		      - If :attr:`input` is 2D of shape ``B x N``,
+		
+		        it will be treated as ``B`` bags (sequences) each of fixed length ``N``, and
+		        this will return ``B`` values aggregated in a way depending on the :attr:`mode`.
+		        :attr:`offsets` is ignored and required to be ``None`` in this case.
+		
+		      - If :attr:`input` is 1D of shape ``N``,
+		
+		        it will be treated as a concatenation of multiple bags (sequences).
+		        :attr:`offsets` is required to be a 1D tensor containing the
+		        starting index positions of each bag in :attr:`input`. Therefore,
+		        for :attr:`offsets` of shape ``B``, :attr:`input` will be viewed as
+		        having ``B`` bags. Empty bags (i.e., having 0-length) will have
+		        returned vectors filled by zeros.
+		
+		    - :attr:`weight` (Tensor): the learnable weights of the module of
+		      shape ``(num_embeddings x embedding_dim)``
+		
+		    - :attr:`output`: aggregated embedding values of shape ``B x embedding_dim``
+		
+		Examples::
+		
+		    >>> # an Embedding module containing 10 tensors of size 3
+		    >>> embedding_matrix = torch.rand(10, 3)
+		    >>> # a batch of 2 samples of 4 indices each
+		    >>> input = torch.tensor([1,2,4,5,4,3,2,9])
+		    >>> offsets = torch.tensor([0,4])
+		    >>> F.embedding_bag(embedding_matrix, input, offsets)
+		    tensor([[ 0.3397,  0.3552,  0.5545],
+		            [ 0.5893,  0.4386,  0.5882]])
+	**/
+	static public function embedding_bag(input:Dynamic, weight:Dynamic, ?offsets:Dynamic, ?max_norm:Dynamic, ?norm_type:Dynamic, ?scale_grad_by_freq:Dynamic, ?mode:Dynamic, ?sparse:Dynamic):Dynamic;
+	static public function feature_alpha_dropout(input:Dynamic, ?p:Dynamic, ?training:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		Combines an array of sliding local blocks into a large containing
+		tensor.
+		
+		.. warning::
+		    Currently, only 4-D output tensors (batched image-like tensors) are
+		    supported.
+		
+		See :class:`torch.nn.Fold` for details
+	**/
+	static public function fold(input:Dynamic, output_size:Dynamic, kernel_size:Dynamic, ?dilation:Dynamic, ?padding:Dynamic, ?stride:Dynamic):Dynamic;
+	/**
+		Applies 2D fractional max pooling over an input signal composed of several input planes.
+		
+		Fractional MaxPooling is described in detail in the paper `Fractional MaxPooling`_ by Ben Graham
+		
+		The max-pooling operation is applied in :math:`kH \times kW` regions by a stochastic
+		step size determined by the target output size.
+		The number of output features is equal to the number of input planes.
+		
+		Args:
+		    kernel_size: the size of the window to take a max over.
+		                 Can be a single number :math:`k` (for a square kernel of :math:`k \times k`)
+		                 or a tuple (:math:`kH \times kW`)
+		    output_size: the target output size of the image of the form :math:`oH \times oW`.
+		                 Can be a tuple `(oH, oW)` or a single number :math:`oH` for a square image :math:`oH \times oH`
+		    output_ratio: If one wants to have an output size as a ratio of the input size, this option can be given.
+		                  This has to be a number or tuple in the range (0, 1)
+		    return_indices: if ``True``, will return the indices along with the outputs.
+		                    Useful to pass to `max_unpool2d`.
+		
+		Examples::
+		    >>> input = torch.randn(20, 16, 50, 32)
+		    >>> # pool of square window of size=3, and target output size 13x12
+		    >>> F.fractional_max_pool2d(input, 3, output_size=(13, 12))
+		    >>> # pool of square window and target output size being half of input image size
+		    >>> F.fractional_max_pool2d(input, 3, output_ratio=(0.5, 0.5))
+		
+		.. _Fractional MaxPooling:
+		    http://arxiv.org/abs/1412.6071
+	**/
+	static public function fractional_max_pool2d(input:Dynamic, kernel_size:Dynamic, ?output_size:Dynamic, ?output_ratio:Dynamic, ?return_indices:Dynamic, ?_random_samples:Dynamic):Dynamic;
+	/**
+		glu(input, dim=-1) -> Tensor
+		
+		The gated linear unit. Computes:
+		
+		.. math ::
+		
+		    H = A \times \sigma(B)
+		
+		where `input` is split in half along `dim` to form `A` and `B`.
+		
+		See `Language Modeling with Gated Convolutional Networks <https://arxiv.org/abs/1612.08083>`_.
+		
+		Args:
+		    input (Tensor): input tensor
+		    dim (int): dimension on which to split the input
+	**/
+	static public function glu(input:Dynamic, ?dim:Dynamic):Dynamic;
+	/**
+		Given an :attr:`input` and a flow-field :attr:`grid`, computes the
+		`output` using input pixel locations from the grid.
+		
+		Uses bilinear interpolation to sample the input pixels.
+		Currently, only spatial (4 dimensional) and volumetric (5 dimensional)
+		inputs are supported.
+		
+		For each output location, :attr:`grid` has `x`, `y`
+		input pixel locations which are used to compute output.
+		In the case of 5D inputs, :attr:`grid` has `x`, `y`, `z` pixel locations.
+		
+		.. Note::
+		    To avoid confusion in notation, let's note that `x` corresponds to the `width` dimension `IW`,
+		    `y` corresponds to the height dimension `IH` and `z` corresponds to the `depth` dimension `ID`.
+		
+		:attr:`grid` has values in the range of `[-1, 1]`. This is because the
+		pixel locations are normalized by the input height and width.
+		
+		For example, values: x: -1, y: -1 is the left-top pixel of the input, and
+		values: x: 1, y: 1 is the right-bottom pixel of the input.
+		
+		If :attr:`grid` has values outside the range of `[-1, 1]`, those locations
+		are handled as defined by `padding_mode`. Options are `zeros` or `border`,
+		defining those locations to use 0 or image border values as contribution
+		to the bilinear interpolation.
+		
+		.. Note:: This function is used in building Spatial Transformer Networks
+		
+		Args:
+		    input (Tensor): input batch (N x C x IH x IW) or (N x C x ID x IH x IW)
+		    grid (Tensor): flow-field of size (N x OH x OW x 2) or (N x OD x OH x OW x 3)
+		    padding_mode (str): padding mode for outside grid values
+		        'zeros' | 'border'. Default: 'zeros'
+		
+		Returns:
+		    output (Tensor): output Tensor
+	**/
+	static public function grid_sample(input:Dynamic, grid:Dynamic, ?mode:Dynamic, ?padding_mode:Dynamic):Dynamic;
+	/**
+		Applies Group Normalization for last certain number of dimensions.
+		
+		See :class:`~torch.nn.GroupNorm` for details.
+	**/
+	static public function group_norm(input:Dynamic, num_groups:Dynamic, ?weight:Dynamic, ?bias:Dynamic, ?eps:Dynamic):Dynamic;
+	/**
+		Sample from the Gumbel-Softmax distribution and optionally discretize.
+		
+		Args:
+		  logits: `[batch_size, num_features]` unnormalized log probabilities
+		  tau: non-negative scalar temperature
+		  hard: if ``True``, the returned samples will be discretized as one-hot vectors,
+		        but will be differentiated as if it is the soft sample in autograd
+		
+		Returns:
+		  Sampled tensor of shape ``batch_size x num_features`` from the Gumbel-Softmax distribution.
+		  If ``hard=True``, the returned samples will be one-hot, otherwise they will
+		  be probability distributions that sum to 1 across features
+		
+		Constraints:
+		
+		- Currently only work on 2D input :attr:`logits` tensor of shape ``batch_size x num_features``
+		
+		Based on
+		https://github.com/ericjang/gumbel-softmax/blob/3c8584924603869e90ca74ac20a6a03d99a91ef9/Categorical%20VAE.ipynb ,
+		(MIT license)
+	**/
+	static public function gumbel_softmax(logits:Dynamic, ?tau:Dynamic, ?hard:Dynamic, ?eps:Dynamic):Dynamic;
+	/**
+		hardshrink(input, lambd=0.5) -> Tensor
+		
+		Applies the hard shrinkage function element-wise
+		
+		See :class:`~torch.nn.Hardshrink` for more details.
+	**/
 	static public function hardshrink(input:Dynamic, ?lambd:Dynamic):Dynamic;
+	/**
+		hardtanh(input, min_val=-1., max_val=1., inplace=False) -> Tensor
+		
+		Applies the HardTanh function element-wise. See :class:`~torch.nn.Hardtanh` for more
+		details.
+	**/
 	static public function hardtanh(input:Dynamic, ?min_val:Dynamic, ?max_val:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		hardtanh_(input, min_val=-1., max_val=1.) -> Tensor
+		
+		In-place version of :func:`~hardtanh`.
+	**/
+	static public function hardtanh_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		hinge_embedding_loss(input, target, margin=1.0, size_average=None, reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		See :class:`~torch.nn.HingeEmbeddingLoss` for details.
+	**/
+	static public function hinge_embedding_loss(input:Dynamic, target:Dynamic, ?margin:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Applies Instance Normalization for each channel in each data sample in a
+		batch.
+		
+		See :class:`~torch.nn.InstanceNorm1d`, :class:`~torch.nn.InstanceNorm2d`,
+		:class:`~torch.nn.InstanceNorm3d` for details.
+	**/
+	static public function instance_norm(input:Dynamic, ?running_mean:Dynamic, ?running_var:Dynamic, ?weight:Dynamic, ?bias:Dynamic, ?use_input_stats:Dynamic, ?momentum:Dynamic, ?eps:Dynamic):Dynamic;
+	/**
+		Down/up samples the input to either the given :attr:`size` or the given
+		:attr:`scale_factor`
+		
+		The algorithm used for interpolation is determined by :attr:`mode`.
+		
+		Currently temporal, spatial and volumetric sampling are supported, i.e.
+		expected inputs are 3-D, 4-D or 5-D in shape.
+		
+		The input dimensions are interpreted in the form:
+		`mini-batch x channels x [optional depth] x [optional height] x width`.
+		
+		The modes available for resizing are: `nearest`, `linear` (3D-only),
+		`bilinear` (4D-only), `trilinear` (5D-only), `area`
+		
+		Args:
+		    input (Tensor): the input tensor
+		    size (int or Tuple[int] or Tuple[int, int] or Tuple[int, int, int]):
+		        output spatial size.
+		    scale_factor (float or Tuple[float]): multiplier for spatial size. Has to match input size if it is a tuple.
+		    mode (string): algorithm used for upsampling:
+		        'nearest' | 'linear' | 'bilinear' | 'trilinear' | 'area'. Default: 'nearest'
+		    align_corners (bool, optional): if True, the corner pixels of the input
+		        and output tensors are aligned, and thus preserving the values at
+		        those pixels. This only has effect when :attr:`mode` is `linear`,
+		        `bilinear`, or `trilinear`. Default: False
+		
+		.. warning::
+		    With ``align_corners = True``, the linearly interpolating modes
+		    (`linear`, `bilinear`, and `trilinear`) don't proportionally align the
+		    output and input pixels, and thus the output values can depend on the
+		    input size. This was the default behavior for these modes up to version
+		    0.3.1. Since then, the default behavior is ``align_corners = False``.
+		    See :class:`~torch.nn.Upsample` for concrete examples on how this
+		    affects the outputs.
+	**/
+	static public function interpolate(input:Dynamic, ?size:Dynamic, ?scale_factor:Dynamic, ?mode:Dynamic, ?align_corners:Dynamic):Dynamic;
 	/**
 		The `Kullback-Leibler divergence`_ Loss.
 		
 		See :class:`~torch.nn.KLDivLoss` for details.
 		
 		Args:
-		    input: Variable of arbitrary shape
-		    target: Variable of the same shape as input
-		    size_average: if True the output is divided by the number of elements
-		      in input tensor
+		    input: Tensor of arbitrary shape
+		    target: Tensor of the same shape as input
+		    size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,
+		        the losses are averaged over each loss element in the batch. Note that for
+		        some losses, there multiple elements per sample. If the field :attr:`size_average`
+		        is set to ``False``, the losses are instead summed for each minibatch. Ignored
+		        when reduce is ``False``. Default: ``True``
+		    reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the
+		        losses are averaged or summed over observations for each minibatch depending
+		        on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per
+		        batch element instead and ignores :attr:`size_average`. Default: ``True``
+		    reduction (string, optional): Specifies the reduction to apply to the output:
+		        'none' | 'elementwise_mean' | 'sum'. 'none': no reduction will be applied,
+		        'elementwise_mean': the sum of the output will be divided by the number of
+		        elements in the output, 'sum': the output will be summed. Note: :attr:`size_average`
+		        and :attr:`reduce` are in the process of being deprecated, and in the meantime,
+		        specifying either of those two args will override :attr:`reduction`. Default: 'elementwise_mean'
 	**/
-	static public function kl_div(input:Dynamic, target:Dynamic, ?size_average:Dynamic):Dynamic;
+	static public function kl_div(input:Dynamic, target:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		l1_loss(input, target, size_average=None, reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		Function that takes the mean element-wise absolute value difference.
+		
+		See :class:`~torch.nn.L1Loss` for details.
+	**/
+	static public function l1_loss(input:Dynamic, target:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Applies Layer Normalization for last certain number of dimensions.
+		
+		See :class:`~torch.nn.LayerNorm` for details.
+	**/
+	static public function layer_norm(input:Dynamic, normalized_shape:Dynamic, ?weight:Dynamic, ?bias:Dynamic, ?eps:Dynamic):Dynamic;
+	/**
+		leaky_relu(input, negative_slope=0.01, inplace=False) -> Tensor
+		
+		Applies element-wise,
+		:math:`\text{LeakyReLU}(x) = \max(0, x) + \text{negative_slope} * \min(0, x)`
+		
+		See :class:`~torch.nn.LeakyReLU` for more details.
+	**/
 	static public function leaky_relu(input:Dynamic, ?negative_slope:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		leaky_relu_(input, negative_slope=0.01) -> Tensor
+		
+		In-place version of :func:`~leaky_relu`.
+	**/
+	static public function leaky_relu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Applies a linear transformation to the incoming data: :math:`y = xA^T + b`.
+		
+		Shape:
+		
+		    - Input: :math:`(N, *, in\_features)` where `*` means any number of
+		      additional dimensions
+		    - Weight: :math:`(out\_features, in\_features)`
+		    - Bias: :math:`(out\_features)`
+		    - Output: :math:`(N, *, out\_features)`
+	**/
 	static public function linear(input:Dynamic, weight:Dynamic, ?bias:Dynamic):Dynamic;
-	static public function log_softmax(input:Dynamic):Dynamic;
-	static public function logsigmoid(input:Dynamic):Dynamic;
+	/**
+		Applies local response normalization over an input signal composed of
+		several input planes, where channels occupy the second dimension.
+		Applies normalization across channels.
+		
+		See :class:`~torch.nn.LocalResponseNorm` for details.
+	**/
+	static public function local_response_norm(input:Dynamic, size:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?k:Dynamic):Dynamic;
+	/**
+		Applies a softmax followed by a logarithm.
+		
+		While mathematically equivalent to log(softmax(x)), doing these two
+		operations separately is slower, and numerically unstable. This function
+		uses an alternative formulation to compute the output and gradient correctly.
+		
+		See :class:`~torch.nn.LogSoftmax` for more details.
+		
+		Arguments:
+		    input (Tensor): input
+		    dim (int): A dimension along which log_softmax will be computed.
+	**/
+	static public function log_softmax(input:Dynamic, ?dim:Dynamic, ?_stacklevel:Dynamic):Dynamic;
+	/**
+		logsigmoid(input) -> Tensor
+		
+		Applies element-wise :math:`\text{LogSigmoid}(x) = \log \left(\frac{1}{1 + \exp(-x_i)}\right)`
+		
+		See :class:`~torch.nn.LogSigmoid` for more details.
+	**/
+	static public function logsigmoid(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Applies a 1D power-average pooling over an input signal composed of
+		several input planes. If the sum of all inputs to the power of `p` is
+		zero, the gradient is set to zero as well.
+		
+		See :class:`~torch.nn.LPPool1d` for details.
+	**/
+	static public function lp_pool1d(input:Dynamic, norm_type:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?ceil_mode:Dynamic):Dynamic;
+	/**
+		Applies a 2D power-average pooling over an input signal composed of
+		several input planes. If the sum of all inputs to the power of `p` is
+		zero, the gradient is set to zero as well.
+		
+		See :class:`~torch.nn.LPPool2d` for details.
+	**/
 	static public function lp_pool2d(input:Dynamic, norm_type:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?ceil_mode:Dynamic):Dynamic;
+	/**
+		margin_ranking_loss(input1, input2, target, margin=0, size_average=None, reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		See :class:`~torch.nn.MarginRankingLoss` for details.
+	**/
+	static public function margin_ranking_loss(input1:Dynamic, input2:Dynamic, target:Dynamic, ?margin:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Applies a 1D max pooling over an input signal composed of several input
+		planes.
+		
+		See :class:`~torch.nn.MaxPool1d` for details.
+	**/
 	static public function max_pool1d(input:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?ceil_mode:Dynamic, ?return_indices:Dynamic):Dynamic;
+	/**
+		Applies a 2D max pooling over an input signal composed of several input
+		planes.
+		
+		See :class:`~torch.nn.MaxPool2d` for details.
+	**/
 	static public function max_pool2d(input:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?ceil_mode:Dynamic, ?return_indices:Dynamic):Dynamic;
+	/**
+		Applies a 3D max pooling over an input signal composed of several input
+		planes.
+		
+		See :class:`~torch.nn.MaxPool3d` for details.
+	**/
 	static public function max_pool3d(input:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?dilation:Dynamic, ?ceil_mode:Dynamic, ?return_indices:Dynamic):Dynamic;
+	/**
+		Computes a partial inverse of :class:`MaxPool1d`.
+		
+		See :class:`~torch.nn.MaxUnpool1d` for details.
+	**/
 	static public function max_unpool1d(input:Dynamic, indices:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?output_size:Dynamic):Dynamic;
+	/**
+		Computes a partial inverse of :class:`MaxPool2d`.
+		
+		See :class:`~torch.nn.MaxUnpool2d` for details.
+	**/
 	static public function max_unpool2d(input:Dynamic, indices:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?output_size:Dynamic):Dynamic;
+	/**
+		Computes a partial inverse of :class:`MaxPool3d`.
+		
+		See :class:`~torch.nn.MaxUnpool3d` for details.
+	**/
 	static public function max_unpool3d(input:Dynamic, indices:Dynamic, kernel_size:Dynamic, ?stride:Dynamic, ?padding:Dynamic, ?output_size:Dynamic):Dynamic;
+	/**
+		mse_loss(input, target, size_average=None, reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		Measures the element-wise mean squared error.
+		
+		See :class:`~torch.nn.MSELoss` for details.
+	**/
+	static public function mse_loss(input:Dynamic, target:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		mul(a, b) -- Same as a * b.
+	**/
+	static public function mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		multi_margin_loss(input, target, p=1, margin=1, weight=None, size_average=None,
+		                      reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		See :class:`~torch.nn.MultiMarginLoss` for details.
+	**/
+	static public function multi_margin_loss(input:Dynamic, target:Dynamic, ?p:Dynamic, ?margin:Dynamic, ?weight:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		multilabel_margin_loss(input, target, size_average=None, reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		See :class:`~torch.nn.MultiLabelMarginLoss` for details.
+	**/
+	static public function multilabel_margin_loss(input:Dynamic, target:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		multilabel_soft_margin_loss(input, target, weight=None, size_average=None) -> Tensor
+		
+		See :class:`~torch.nn.MultiLabelSoftMarginLoss` for details.
+	**/
+	static public function multilabel_soft_margin_loss(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
 		The negative log likelihood loss.
 		
 		See :class:`~torch.nn.NLLLoss` for details.
 		
 		Args:
-		    input: :math:`(N, C)` where `C = number of classes` or `(N, C, H, W)` in case of 2D - Loss
-		    target: :math:`(N)` where each value is `0 <= targets[i] <= C-1`
-		    weight (Variable, optional): a manual rescaling weight given to each
-		            class. If given, has to be a Variable of size "nclasses"
-		    size_average (bool, optional): By default, the losses are averaged
-		            over observations for each minibatch. However, if the field
-		            sizeAverage is set to False, the losses are instead summed
-		            for each minibatch.
+		    input: :math:`(N, C)` where `C = number of classes` or :math:`(N, C, H, W)`
+		        in case of 2D Loss, or :math:`(N, C, d_1, d_2, ..., d_K)` where :math:`K > 1`
+		        in the case of K-dimensional loss.
+		    target: :math:`(N)` where each value is :math:`0 \leq \text{targets}[i] \leq C-1`,
+		        or :math:`(N, d_1, d_2, ..., d_K)` where :math:`K \geq 1` for
+		        K-dimensional loss.
+		    weight (Tensor, optional): a manual rescaling weight given to each
+		        class. If given, has to be a Tensor of size `C`
+		    size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,
+		        the losses are averaged over each loss element in the batch. Note that for
+		        some losses, there multiple elements per sample. If the field :attr:`size_average`
+		        is set to ``False``, the losses are instead summed for each minibatch. Ignored
+		        when reduce is ``False``. Default: ``True``
+		    ignore_index (int, optional): Specifies a target value that is ignored
+		        and does not contribute to the input gradient. When :attr:`size_average` is
+		        ``True``, the loss is averaged over non-ignored targets. Default: -100
+		    reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the
+		        losses are averaged or summed over observations for each minibatch depending
+		        on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per
+		        batch element instead and ignores :attr:`size_average`. Default: ``True``
+		    reduction (string, optional): Specifies the reduction to apply to the output:
+		        'none' | 'elementwise_mean' | 'sum'. 'none': no reduction will be applied,
+		        'elementwise_mean': the sum of the output will be divided by the number of
+		        elements in the output, 'sum': the output will be summed. Note: :attr:`size_average`
+		        and :attr:`reduce` are in the process of being deprecated, and in the meantime,
+		        specifying either of those two args will override :attr:`reduction`. Default: 'elementwise_mean'
 		
-		Attributes:
-		    weight: the class-weights given as input to the constructor
+		Example::
 		
-		Example:
-		    >>> # input is of size nBatch x nClasses = 3 x 5
-		    >>> input = autograd.Variable(torch.randn(3, 5))
-		    >>> # each element in target has to have 0 <= value < nclasses
-		    >>> target = autograd.Variable(torch.LongTensor([1, 0, 4]))
+		    >>> # input is of size N x C = 3 x 5
+		    >>> input = torch.randn(3, 5, requires_grad=True)
+		    >>> # each element in target has to have 0 <= value < C
+		    >>> target = torch.tensor([1, 0, 4])
 		    >>> output = F.nll_loss(F.log_softmax(input), target)
 		    >>> output.backward()
 	**/
-	static public function nll_loss(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic):Dynamic;
+	static public function nll_loss(input:Dynamic, target:Dynamic, ?weight:Dynamic, ?size_average:Dynamic, ?ignore_index:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Performs :math:`L_p` normalization of inputs over specified dimension.
+		
+		Does:
+		
+		.. math::
+		    v = \frac{v}{\max(\lVert v \rVert_p, \epsilon)}
+		
+		for each subtensor v over dimension dim of input. Each subtensor is
+		flattened into a vector, i.e. :math:`\lVert v \rVert_p` is not a matrix
+		norm.
+		
+		With default arguments normalizes over the second dimension with Euclidean
+		norm.
+		
+		Args:
+		    input: input tensor of any shape
+		    p (float): the exponent value in the norm formulation. Default: 2
+		    dim (int): the dimension to reduce. Default: 1
+		    eps (float): small value to avoid division by zero. Default: 1e-12
+	**/
+	static public function normalize(input:Dynamic, ?p:Dynamic, ?dim:Dynamic, ?eps:Dynamic):Dynamic;
 	/**
 		Pads tensor.
 		
-		Currently only 2D and 3D padding supported.
-		In case of 4D input tensor pad should be in form (pad_l, pad_r, pad_t, pad_b )
-		In case of 5D pad should be (pleft, pright, ptop, pbottom, pfront, pback)
+		`Nd` constant padding:  The number of dimensions to pad is
+		    :math:`\left\lfloor\frac{len(padding)}{2}\right\rfloor` and the dimensions that get padded begins with the
+		    last dimension and moves forward. See below for examples.
+		
+		`1D`, `2D` and `3D` "reflect" / "replicate" padding:
+		    for 1D:
+		            3D input tensor with padding of the form `(padLeft, padRight)`
+		    for 2D:
+		            4D input tensor with padding of the form `(padLeft, padRight, padTop, padBottom)`.
+		    for 3D:
+		            5D input tensor with padding of the form
+		            `(padLeft, padRight, padTop, padBottom, padFront, padBack)`. No "reflect" implementation.
+		
+		See :class:`torch.nn.ConstantPad2d`, :class:`torch.nn.ReflectionPad2d`, and
+		:class:`torch.nn.ReplicationPad2d` for concrete examples on how each of the
+		padding modes works.
 		
 		Args:
-		    input (Variable): 4D or 5D tensor
-		    pad (tuple): 4-elem or 6-elem tuple
-		    mode: 'constant', 'reflect' or 'replicate'
-		    value: fill value for 'constant' padding
+		    input (Tensor): `Nd` tensor
+		    pad (tuple): m-elem tuple, where :math:`\frac{m}{2} \leq` input dimensions and :math:`m` is even.
+		    mode: 'constant', 'reflect' or 'replicate'. Default: 'constant'
+		    value: fill value for 'constant' padding. Default: 0
+		
+		Examples::
+		
+		    >>> t4d = torch.empty(3, 3, 4, 2)
+		    >>> p1d = (1, 1) # pad last dim by 1 on each side
+		    >>> out = F.pad(t4d, p1d, "constant", 0)  # effectively zero padding
+		    >>> print(out.data.size())
+		    torch.Size([3, 3, 4, 4])
+		    >>> p2d = (1, 1, 2, 2) # pad last dim by (1, 1) and 2nd to last by (2, 2)
+		    >>> out = F.pad(t4d, p2d, "constant", 0)
+		    >>> print(out.data.size())
+		    torch.Size([3, 3, 8, 4])
+		    >>> t4d = torch.empty(3, 3, 4, 2)
+		    >>> p3d = (0, 1, 2, 1, 3, 3) # pad by (0, 1), (2, 1), and (3, 3)
+		    >>> out = F.pad(t4d, p3d, "constant", 0)
+		    >>> print(out.data.size())
+		    torch.Size([3, 9, 7, 3])
 	**/
 	static public function pad(input:Dynamic, pad:Dynamic, ?mode:Dynamic, ?value:Dynamic):Dynamic;
 	/**
-		Computes the batchwise pairwise distance between vectors v1,v2:
-		
-		    .. math ::
-		        \Vert x \Vert _p := \left( \sum_{i=1}^n  \vert x_i \vert ^ p \right) ^ {1/p}
-		
-		    Args:
-		        x1: first input tensor
-		        x2: second input tensor
-		        p: the norm degree. Default: 2
-		
-		    Shape:
-		        - Input: :math:`(N, D)` where `D = vector dimension`
-		        - Output: :math:`(N, 1)`
-		
-		    >>> input1 = autograd.Variable(torch.randn(100, 128))
-		    >>> input2 = autograd.Variable(torch.randn(100, 128))
-		    >>> output = F.pairwise_distance(input1, input2, p=2)
-		    >>> output.backward()
+		See :class:`torch.nn.PairwiseDistance` for details
 	**/
-	static public function pairwise_distance(x1:Dynamic, x2:Dynamic, ?p:Dynamic, ?eps:Dynamic):Dynamic;
+	static public function pairwise_distance(x1:Dynamic, x2:Dynamic, ?p:Dynamic, ?eps:Dynamic, ?keepdim:Dynamic):Dynamic;
 	/**
-		Rearranges elements in a tensor of shape ``[*, C*r^2, H, W]`` to a
-		tensor of shape ``[C, H*r, W*r]``.
+		Rearranges elements in a tensor of shape :math:`[*, C*r^2, H, W]` to a
+		tensor of shape :math:`[C, H*r, W*r]`.
 		
 		See :class:`~torch.nn.PixelShuffle` for details.
 		
 		Args:
-		    input (Variable): Input
+		    input (Tensor): Input
 		    upscale_factor (int): factor to increase spatial resolution by
 		
-		Examples:
+		Examples::
+		
 		    >>> ps = nn.PixelShuffle(3)
-		    >>> input = autograd.Variable(torch.Tensor(1, 9, 4, 4))
+		    >>> input = torch.empty(1, 9, 4, 4)
 		    >>> output = ps(input)
 		    >>> print(output.size())
 		    torch.Size([1, 1, 12, 12])
 	**/
 	static public function pixel_shuffle(input:Dynamic, upscale_factor:Dynamic):Dynamic;
-	static public function prelu(input:Dynamic, weight:Dynamic):Dynamic;
+	/**
+		Poisson negative log likelihood loss.
+		
+		See :class:`~torch.nn.PoissonNLLLoss` for details.
+		
+		Args:
+		    input: expectation of underlying Poisson distribution.
+		    target: random sample :math:`target \sim \text{Poisson}(input)`.
+		    log_input: if ``True`` the loss is computed as
+		        :math:`\exp(\text{input}) - \text{target} * \text{input}`, if ``False`` then loss is
+		        :math:`\text{input} - \text{target} * \log(\text{input}+\text{eps})`. Default: ``True``
+		    full: whether to compute full loss, i. e. to add the Stirling
+		        approximation term. Default: ``False``
+		        :math:`\text{target} * \log(\text{target}) - \text{target} + 0.5 * \log(2 * \pi * \text{target})`.
+		    size_average (bool, optional): Deprecated (see :attr:`reduction`). By default,
+		        the losses are averaged over each loss element in the batch. Note that for
+		        some losses, there multiple elements per sample. If the field :attr:`size_average`
+		        is set to ``False``, the losses are instead summed for each minibatch. Ignored
+		        when reduce is ``False``. Default: ``True``
+		    eps (float, optional): Small value to avoid evaluation of :math:`\log(0)` when
+		        :attr:`log_input`=``False``. Default: 1e-8
+		    reduce (bool, optional): Deprecated (see :attr:`reduction`). By default, the
+		        losses are averaged or summed over observations for each minibatch depending
+		        on :attr:`size_average`. When :attr:`reduce` is ``False``, returns a loss per
+		        batch element instead and ignores :attr:`size_average`. Default: ``True``
+		    reduction (string, optional): Specifies the reduction to apply to the output:
+		        'none' | 'elementwise_mean' | 'sum'. 'none': no reduction will be applied,
+		        'elementwise_mean': the sum of the output will be divided by the number of
+		        elements in the output, 'sum': the output will be summed. Note: :attr:`size_average`
+		        and :attr:`reduce` are in the process of being deprecated, and in the meantime,
+		        specifying either of those two args will override :attr:`reduction`. Default: 'elementwise_mean'
+	**/
+	static public function poisson_nll_loss(input:Dynamic, target:Dynamic, ?log_input:Dynamic, ?full:Dynamic, ?size_average:Dynamic, ?eps:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		prelu(input, weight) -> Tensor
+		
+		Applies element-wise the function
+		:math:`\text{PReLU}(x) = \max(0,x) + \text{weight} * \min(0,x)` where weight is a
+		learnable parameter.
+		
+		See :class:`~torch.nn.PReLU` for more details.
+	**/
+	static public function prelu(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		reduce(function, sequence[, initial]) -> value
+		
+		Apply a function of two arguments cumulatively to the items of a sequence,
+		from left to right, so as to reduce the sequence to a single value.
+		For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
+		((((1+2)+3)+4)+5).  If initial is present, it is placed before the items
+		of the sequence in the calculation, and serves as a default when the
+		sequence is empty.
+	**/
+	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		relu(input, inplace=False) -> Tensor
+		
+		Applies the rectified linear unit function element-wise. See
+		:class:`~torch.nn.ReLU` for more details.
+	**/
 	static public function relu(input:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		relu6(input, inplace=False) -> Tensor
+		
+		Applies the element-wise function :math:`\text{ReLU6}(x) = \min(\max(0,x), 6)`.
+		
+		See :class:`~torch.nn.ReLU6` for more details.
+	**/
 	static public function relu6(input:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		relu_(input) -> Tensor
+		
+		In-place version of :func:`~relu`.
+	**/
+	static public function relu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rrelu(input, lower=1./8, upper=1./3, training=False, inplace=False) -> Tensor
+		
+		Randomized leaky ReLU.
+		
+		See :class:`~torch.nn.RReLU` for more details.
+	**/
 	static public function rrelu(input:Dynamic, ?lower:Dynamic, ?upper:Dynamic, ?training:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		rrelu_(input, lower=1./8, upper=1./3, training=False) -> Tensor
+		
+		In-place version of :func:`~rrelu`.
+	**/
+	static public function rrelu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		selu(input, inplace=False) -> Tensor
+		
+		Applies element-wise,
+		:math:`\text{SELU}(x) = scale * (\max(0,x) + \min(0, \alpha * (\exp(x) - 1)))`,
+		with :math:`\alpha=1.6732632423543772848170429916717` and
+		:math:`scale=1.0507009873554804934193349852946`.
+		
+		See :class:`~torch.nn.SELU` for more details.
+	**/
+	static public function selu(input:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		selu_(input) -> Tensor
+		
+		In-place version of :func:`~selu`.
+	**/
+	static public function selu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		sigmoid(input) -> Tensor
+		
+		Applies the element-wise function :math:`\text{Sigmoid}(x) = \frac{1}{1 + \exp(-x)}`
+		
+		See :class:`~torch.nn.Sigmoid` for more details.
+	**/
 	static public function sigmoid(input:Dynamic):Dynamic;
-	static public function smooth_l1_loss(input:Dynamic, target:Dynamic, ?size_average:Dynamic):Dynamic;
-	static public function softmax(input:Dynamic):Dynamic;
-	static public function softmin(input:Dynamic):Dynamic;
-	static public function softplus(input:Dynamic, ?beta:Dynamic, ?threshold:Dynamic):Dynamic;
-	static public function softshrink(input:Dynamic, ?lambd:Dynamic):Dynamic;
+	/**
+		Function that uses a squared term if the absolute
+		element-wise error falls below 1 and an L1 term otherwise.
+		
+		See :class:`~torch.nn.SmoothL1Loss` for details.
+	**/
+	static public function smooth_l1_loss(input:Dynamic, target:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		soft_margin_loss(input, target, size_average=None, reduce=None, reduction='elementwise_mean') -> Tensor
+		
+		See :class:`~torch.nn.SoftMarginLoss` for details.
+	**/
+	static public function soft_margin_loss(input:Dynamic, target:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Applies a softmax function.
+		
+		Softmax is defined as:
+		
+		:math:`\text{Softmax}(x_{i}) = \frac{exp(x_i)}{\sum_j exp(x_j)}`
+		
+		It is applied to all slices along dim, and will re-scale them so that the elements
+		lie in the range `(0, 1)` and sum to 1.
+		
+		See :class:`~torch.nn.Softmax` for more details.
+		
+		Arguments:
+		    input (Tensor): input
+		    dim (int): A dimension along which softmax will be computed.
+		
+		.. note::
+		    This function doesn't work directly with NLLLoss,
+		    which expects the Log to be computed between the Softmax and itself.
+		    Use log_softmax instead (it's faster and has better numerical properties).
+	**/
+	static public function softmax(input:Dynamic, ?dim:Dynamic, ?_stacklevel:Dynamic):Dynamic;
+	/**
+		Applies a softmin function.
+		
+		Note that :math:`\text{Softmin}(x) = \text{Softmax}(-x)`. See softmax definition for mathematical formula.
+		
+		See :class:`~torch.nn.Softmin` for more details.
+		
+		Arguments:
+		    input (Tensor): input
+		    dim (int): A dimension along which softmin will be computed (so every slice
+		        along dim will sum to 1).
+	**/
+	static public function softmin(input:Dynamic, ?dim:Dynamic, ?_stacklevel:Dynamic):Dynamic;
+	/**
+		softplus(input, beta=1, threshold=20) -> Tensor
+	**/
+	static public function softplus(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		softshrink(input, lambd=0.5) -> Tensor
+		
+		Applies the soft shrinkage function elementwise
+		
+		See :class:`~torch.nn.Softshrink` for more details.
+	**/
+	static public function softshrink(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		softsign(input) -> Tensor
+		
+		Applies element-wise, the function :math:`\text{SoftSign}(x) = \frac{x}{1 + |x|}`
+		
+		See :class:`~torch.nn.Softsign` for more details.
+	**/
 	static public function softsign(input:Dynamic):Dynamic;
+	/**
+		tanh(input) -> Tensor
+		
+		Applies element-wise,
+		:math:`\text{Tanh}(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)}{\exp(x) + \exp(-x)}`
+		
+		See :class:`~torch.nn.Tanh` for more details.
+	**/
 	static public function tanh(input:Dynamic):Dynamic;
+	/**
+		tanhshrink(input) -> Tensor
+		
+		Applies element-wise, :math:`\text{Tanhshrink}(x) = x - \text{Tanh}(x)`
+		
+		See :class:`~torch.nn.Tanhshrink` for more details.
+	**/
 	static public function tanhshrink(input:Dynamic):Dynamic;
+	/**
+		Thresholds each element of the input Tensor.
+		
+		See :class:`~torch.nn.Threshold` for more details.
+	**/
 	static public function threshold(input:Dynamic, threshold:Dynamic, value:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Creates a criterion that measures the triplet loss given an input tensors x1, x2, x3
-		and a margin with a value greater than 0.
-		This is used for measuring a relative similarity between samples. A triplet is composed by
-		`a`, `p` and `n`: anchor, positive examples and negative example respectively.
-		The shape of all input variables should be :math:`(N, D)`.
+		threshold_(input, threshold, value) -> Tensor
 		
-		The distance swap is described in detail in the paper `Learning shallow convolutional feature descriptors with
-		triplet losses`_ by V. Balntas, E. Riba et al.
-		
-		.. math::
-		    L(a, p, n) = \frac{1}{N} \left( \sum_{i=1}^N \max \{d(a_i, p_i) - d(a_i, n_i) + {\rm margin}, 0\} \right)
-		
-		where :math: `d(x_i, y_i) = \| {\bf x}_i - {\bf y}_i \|_2^2`.
-		
-		Args:
-		    anchor: anchor input tensor
-		    positive: positive input tensor
-		    negative: negative input tensor
-		    p: the norm degree. Default: 2
-		    eps: small epsilon value to avoid numerical issues
-		    swap: compute distance swap
-		
-		Shape:
-		    - Input: :math:`(N, D)` where `D = vector dimension`
-		    - Output: :math:`(N, 1)`
-		
-		    >>> input1 = autograd.Variable(torch.randn(100, 128))
-		    >>> input2 = autograd.Variable(torch.randn(100, 128))
-		    >>> input3 = autograd.Variable(torch.randn(100, 128))
-		    >>> output = F.triplet_margin_loss(input1, input2, input3, p=2)
-		    >>> output.backward()
-		
-		.. _Learning shallow convolutional feature descriptors with triplet losses:
-		    http://www.iis.ee.ic.ac.uk/%7Evbalnt/shallow_descr/TFeat_paper.pdf
+		In-place version of :func:`~threshold`.
 	**/
-	static public function triplet_margin_loss(anchor:Dynamic, positive:Dynamic, negative:Dynamic, ?margin:Dynamic, ?p:Dynamic, ?eps:Dynamic, ?swap:Dynamic):Dynamic;
+	static public function threshold_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Upscales the input, using the bilinear upsampling.
+		See :class:`~torch.nn.TripletMarginLoss` for details
+	**/
+	static public function triplet_margin_loss(anchor:Dynamic, positive:Dynamic, negative:Dynamic, ?margin:Dynamic, ?p:Dynamic, ?eps:Dynamic, ?swap:Dynamic, ?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
+	/**
+		Extracts sliding local blocks from an batched input tensor.
 		
-		Currently only spatial upsampling is supported (i.e. expected inputs
-		are 4 dimensional).
+		.. warning::
+		    Currently, only 4-D input tensors (batched image-like tensors) are
+		    supported.
+		
+		See :class:`torch.nn.Unfold` for details
+	**/
+	static public function unfold(input:Dynamic, kernel_size:Dynamic, ?dilation:Dynamic, ?padding:Dynamic, ?stride:Dynamic):Dynamic;
+	/**
+		Upsamples the input to either the given :attr:`size` or the given
+		:attr:`scale_factor`
+		
+		.. warning::
+		    This function is deprecated in favor of :func:`torch.nn.functional.interpolate`.
+		    This is equivalent with ``nn.functional.interpolate(...)``.
+		
+		
+		The algorithm used for upsampling is determined by :attr:`mode`.
+		
+		Currently temporal, spatial and volumetric upsampling are supported, i.e.
+		expected inputs are 3-D, 4-D or 5-D in shape.
+		
+		The input dimensions are interpreted in the form:
+		`mini-batch x channels x [optional depth] x [optional height] x width`.
+		
+		The modes available for upsampling are: `nearest`, `linear` (3D-only),
+		`bilinear` (4D-only), `trilinear` (5D-only)
 		
 		Args:
-		    input (Variable): input
-		    size (int or Tuple[int, int]): output spatial size.
+		    input (Tensor): the input tensor
+		    size (int or Tuple[int] or Tuple[int, int] or Tuple[int, int, int]):
+		        output spatial size.
 		    scale_factor (int): multiplier for spatial size. Has to be an integer.
+		    mode (string): algorithm used for upsampling:
+		        'nearest' | 'linear' | 'bilinear' | 'trilinear'. Default: 'nearest'
+		    align_corners (bool, optional): if True, the corner pixels of the input
+		        and output tensors are aligned, and thus preserving the values at
+		        those pixels. This only has effect when :attr:`mode` is `linear`,
+		        `bilinear`, or `trilinear`. Default: False
+		
+		.. warning::
+		    With ``align_corners = True``, the linearly interpolating modes
+		    (`linear`, `bilinear`, and `trilinear`) don't proportionally align the
+		    output and input pixels, and thus the output values can depend on the
+		    input size. This was the default behavior for these modes up to version
+		    0.3.1. Since then, the default behavior is ``align_corners = False``.
+		    See :class:`~torch.nn.Upsample` for concrete examples on how this
+		    affects the outputs.
+	**/
+	static public function upsample(input:Dynamic, ?size:Dynamic, ?scale_factor:Dynamic, ?mode:Dynamic, ?align_corners:Dynamic):Dynamic;
+	/**
+		Upsamples the input, using bilinear upsampling.
+		
+		.. warning::
+		    This function is deprecated in favor of :func:`torch.nn.functional.interpolate`.
+		    This is equivalent with
+		    ``nn.functional.interpolate(..., mode='bilinear', align_corners=True)``.
+		
+		Expected inputs are spatial (4 dimensional). Use `upsample_trilinear` fo
+		volumetric (5 dimensional) inputs.
+		
+		Args:
+		    input (Tensor): input
+		    size (int or Tuple[int, int]): output spatial size.
+		    scale_factor (int or Tuple[int, int]): multiplier for spatial size
 	**/
 	static public function upsample_bilinear(input:Dynamic, ?size:Dynamic, ?scale_factor:Dynamic):Dynamic;
 	/**
 		Upsamples the input, using nearest neighbours' pixel values.
 		
-		Currently only spatial upsampling is supported (i.e. expected inputs
-		are 4 dimensional).
+		.. warning::
+		    This function is deprecated in favor of :func:`torch.nn.functional.interpolate`.
+		    This is equivalent with ``nn.functional.interpolate(..., mode='nearest')``.
+		
+		Currently spatial and volumetric upsampling are supported (i.e. expected
+		inputs are 4 or 5 dimensional).
 		
 		Args:
-		    input (Variable): input
-		    size (int or Tuple[int, int]): output spatial size.
+		    input (Tensor): input
+		    size (int or Tuple[int, int] or Tuple[int, int, int]): output spatia
+		        size.
 		    scale_factor (int): multiplier for spatial size. Has to be an integer.
 	**/
 	static public function upsample_nearest(input:Dynamic, ?size:Dynamic, ?scale_factor:Dynamic):Dynamic;

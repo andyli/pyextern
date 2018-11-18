@@ -51,18 +51,26 @@ package theano.tensor.nnet.corr;
 		    to: batch size, number of input channels, height and width (and
 		    possibly depth) of the image. None where undefined.
 		kernel_shape: tuple of int (symbolic or numeric) corresponding to the
-		    kernel shape. Its four (or five) elements must correspond respectively
-		    to: number of output channels, number of input channels, height and
-		    width (and possibly depth) of the kernel. None where undefined.
+		    kernel shape. For a normal convolution, its four (for 2D convolution)
+		    or five (for 3D convolution) elements must correspond respectively to :
+		    number of output channels, number of input channels, height and width
+		    (and possibly depth) of the kernel.
+		    For an unshared 2D convolution, its six channels must correspond to :
+		    number of output channels, height and width of the output, number of
+		    input channels, height and width of the kernel.
+		    None where undefined.
 		border_mode: string, int (symbolic or numeric) or tuple of int (symbolic
-		    or numeric). If it is a string, it must be 'valid', 'half' or 'full'.
-		    If it is a tuple, its two (or three) elements respectively correspond
-		    to the padding on height and width (and possibly depth) axis.
+		    or numeric) or pairs of ints. If it is a string, it must be 'valid',
+		    'half' or 'full'. If it is a tuple, its two (or three) elements respectively
+		    correspond to the padding on height and width (and possibly depth)
+		    axis. For asymmetric padding, provide a pair of ints for each dimension.
 		subsample: tuple of int (symbolic or numeric). Its two or three elements
 		    espectively correspond to the subsampling on height and width (and
 		    possibly depth) axis.
 		filter_dilation: tuple of int (symbolic or numeric). Its two or three
 		    elements correspond respectively to the dilation on height and width axis.
+		Note - The shape of the convolution output does not depend on the 'unshared'
+		    or the 'num_groups' parameters.
 		
 		Returns
 		-------
@@ -71,6 +79,8 @@ package theano.tensor.nnet.corr;
 		    output channels, height and width of the image. None where undefined.
 	**/
 	static public function get_conv_output_shape(image_shape:Dynamic, kernel_shape:Dynamic, border_mode:Dynamic, subsample:Dynamic, ?filter_dilation:Dynamic):Dynamic;
+	static public function int64(?name:Dynamic):Dynamic;
+	static public function int8(?name:Dynamic):Dynamic;
 	static public var integer_types : Dynamic;
 	/**
 		Extract a list of compilation flags from config.blas.ldflags.

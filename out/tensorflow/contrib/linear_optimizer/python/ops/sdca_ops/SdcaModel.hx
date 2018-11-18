@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 @:pythonImport("tensorflow.contrib.linear_optimizer.python.ops.sdca_ops", "SdcaModel") extern class SdcaModel {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,18 +103,30 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _adaptive():Dynamic;
 	public function _assertList(items:Dynamic, check_in:Dynamic):Dynamic;
 	public function _assertSpecified(items:Dynamic, check_in:Dynamic):Dynamic;
 	/**
 		Converts input list to a set of tensors.
 	**/
 	public function _convert_n_to_tensor(input_list:Dynamic, ?as_ref:Dynamic):Dynamic;
+	/**
+		Make unshrinked internal variables (slots).
+	**/
 	public function _create_slots():Dynamic;
+	/**
+		Compute the static size of the first dimension for a sharded variable.
+	**/
+	public function _get_first_dimension_size_statically(w:Dynamic, num_partitions:Dynamic):Dynamic;
+	/**
+		Get updates for partitioned variables.
+	**/
+	public function _get_partitioned_update_ops(v_num:Dynamic, num_partitions_by_var:Dynamic, p_assignments_by_var:Dynamic, gather_ids_by_var:Dynamic, weights:Dynamic, full_update:Dynamic, p_assignments:Dynamic, num_partitions:Dynamic):Dynamic;
 	/**
 		Computes the (un-normalized) l1 loss of the model.
 	**/
@@ -131,6 +143,10 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 	public function _num_table_shards():Dynamic;
 	public function _symmetric_l1_regularization():Dynamic;
 	public function _symmetric_l2_regularization():Dynamic;
+	/**
+		Wraps var in a list if it is not a list or PartitionedVariable.
+	**/
+	public function _var_to_list(_var:Dynamic):Dynamic;
 	/**
 		Add operations to compute the approximate duality gap.
 		
@@ -155,6 +171,7 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		Add operations to compute predictions by the model.
 		
 		If logistic_loss is being used, predicted probabilities are returned.
+		If poisson_loss is being used, predictions are exponentiated.
 		Otherwise, (raw) linear predictions (w*x) are returned.
 		
 		Args:

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_webagg;
 @:pythonImport("matplotlib.backends.backend_webagg", "ServerThread") extern class ServerThread {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -88,7 +88,7 @@ package matplotlib.backends.backend_webagg;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -139,7 +139,7 @@ package matplotlib.backends.backend_webagg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -156,7 +156,7 @@ package matplotlib.backends.backend_webagg;
 		Return information about the most recent exception caught by an except
 		clause in the current stack frame or in an older stack frame.
 	**/
-	static public function _exc_info(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _exc_info(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _initialized : Dynamic;
 	public function _reset_internal_locks(is_alive:Dynamic):Dynamic;
 	public function _set_ident():Dynamic;

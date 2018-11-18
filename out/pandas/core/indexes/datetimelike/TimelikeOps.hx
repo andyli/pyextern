@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.indexes.datetimelike;
 @:pythonImport("pandas.core.indexes.datetimelike", "TimelikeOps") extern class TimelikeOps {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package pandas.core.indexes.datetimelike;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,59 +103,162 @@ package pandas.core.indexes.datetimelike;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _ceil_example : Dynamic;
+	static public var _floor_example : Dynamic;
 	public function _round(freq:Dynamic, rounder:Dynamic):Dynamic;
 	static public var _round_doc : Dynamic;
+	static public var _round_example : Dynamic;
 	/**
-		ceil the index to the specified freq
+		Validate that a frequency is compatible with the values of a given
+		DatetimeIndex or TimedeltaIndex
 		
 		Parameters
 		----------
-		freq : freq string/object
+		index : DatetimeIndex or TimedeltaIndex
+		    The index on which to determine if the given frequency is valid
+		freq : DateOffset
+		    The frequency to validate
+	**/
+	static public function _validate_frequency(index:Dynamic, freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		ceil the data to the specified `freq`.
+		
+		Parameters
+		----------
+		freq : str or Offset
+		    The frequency level to ceil the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.ceil('H')
+		DatetimeIndex(['2018-01-01 12:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 13:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.ceil("H")
+		0   2018-01-01 12:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 13:00:00
+		dtype: datetime64[ns]
 	**/
 	public function ceil(freq:Dynamic):Dynamic;
 	/**
-		floor the index to the specified freq
+		floor the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to floor the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.floor('H')
+		DatetimeIndex(['2018-01-01 11:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.floor("H")
+		0   2018-01-01 11:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 12:00:00
+		dtype: datetime64[ns]
 	**/
 	public function floor(freq:Dynamic):Dynamic;
 	/**
-		round the index to the specified freq
+		Return the frequency object if it is set, otherwise None
+	**/
+	public var freq : Dynamic;
+	/**
+		round the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to round the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.round('H')
+		DatetimeIndex(['2018-01-01 12:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.round("H")
+		0   2018-01-01 12:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 12:00:00
+		dtype: datetime64[ns]
 	**/
 	public function round(freq:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

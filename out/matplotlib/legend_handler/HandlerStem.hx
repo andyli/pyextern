@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.legend_handler;
 @:pythonImport("matplotlib.legend_handler", "HandlerStem") extern class HandlerStem {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,12 +38,44 @@ package matplotlib.legend_handler;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		marker_pad : float
+		    Padding between points in legend entry. Default is 0.3.
+		
+		numpoints : int, optional
+		    Number of points to show in legend entry.
+		
+		bottom : float, optional
+		
+		yoffsets : array of floats, optional
+		    Length *numpoints* list of y offsets for each point in
+		    legend entry.
+		
+		Notes
+		-----
+		Any other keyword arguments are given to `HandlerNpointsYoffsets`.
 	**/
 	@:native("__init__")
 	public function ___init__(?marker_pad:Dynamic, ?numpoints:Dynamic, ?bottom:Dynamic, ?yoffsets:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		marker_pad : float
+		    Padding between points in legend entry. Default is 0.3.
+		
+		numpoints : int, optional
+		    Number of points to show in legend entry.
+		
+		bottom : float, optional
+		
+		yoffsets : array of floats, optional
+		    Length *numpoints* list of y offsets for each point in
+		    legend entry.
+		
+		Notes
+		-----
+		Any other keyword arguments are given to `HandlerNpointsYoffsets`.
 	**/
 	public function new(?marker_pad:Dynamic, ?numpoints:Dynamic, ?bottom:Dynamic, ?yoffsets:Dynamic, ?kw:python.KwArgs<Dynamic>):Void;
 	/**
@@ -52,7 +84,7 @@ package matplotlib.legend_handler;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +135,7 @@ package matplotlib.legend_handler;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

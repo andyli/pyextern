@@ -33,6 +33,10 @@ package tensorflow.python.ops.sparse_grad;
 	**/
 	static public function _SparseDenseCwiseMulOrDivGrad(op:Dynamic, grad:Dynamic, is_mul:Dynamic):Dynamic;
 	/**
+		Gradients for SparseFillEmptyRows.
+	**/
+	static public function _SparseFillEmptyRowsGrad(op:Dynamic, unused_grad_output_indices:Dynamic, output_grad_values:Dynamic, unused_grad_empty_row_indicator:Dynamic, unused_grad_reverse_index_map:Dynamic):Dynamic;
+	/**
 		Similar to gradient for the Sum Op (i.e. tf.reduce_sum()).
 	**/
 	static public function _SparseReduceSumGrad(op:Dynamic, out_grad:Dynamic):Dynamic;
@@ -50,6 +54,23 @@ package tensorflow.python.ops.sparse_grad;
 		  The gradients for input_indices and input_shape is None.
 	**/
 	static public function _SparseReorderGrad(op:Dynamic, unused_output_indices_grad:Dynamic, output_values_grad:Dynamic):Dynamic;
+	/**
+		The backward operator for the SparseSlice op.
+		
+		This op takes in the upstream gradient w.r.t. non-empty values of
+		the sliced `SparseTensor`, and outputs the gradients w.r.t.
+		the non-empty values of input `SparseTensor`.
+		
+		Args:
+		  op: the SparseSlice op
+		  *grads: the incoming gradients, one element per output of `op`
+		
+		Returns:
+		  Gradient for each of the 5 input tensors of SparseSlice:
+		    (indices, values, shape, start, size)
+		  The gradients for the indices, shape, start and the size are None.
+	**/
+	static public function _SparseSliceGrad(op:Dynamic, ?grads:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Gradients for SparseSoftmax.
 		

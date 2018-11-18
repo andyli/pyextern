@@ -6,6 +6,55 @@ package tensorflow.python.ops.nn_grad;
 	static public function _AvgPoolGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _AvgPoolGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		Return the gradients for the 3 inputs of BatchNorm.
+		
+		Args:
+		  op: The BatchNormOp for which we need to compute gradients.
+		  use_v2: Boolean indicating whether to use the V2 version of the fused batch
+		          norm gradient.
+		  *grad: An argument list for tensors of gradients wrt the outputs
+		        with grad[0] as grad_y.
+		
+		Returns:
+		  grad_x: gradient for x, which is scale * rsqrt(variance + epsilon) *
+		          [grad_y - mean(grad_y) - (x - mean(x)) *
+		          mean(grad_y * (x - mean(x))) / (variance + epsilon)]
+		          in training mode; grad_y * scale * rsqrt(pop_variance + epsilon)
+		          in freeze mode.
+		
+		  grad_scale: gradient for scale, which is sum(grad_y * (x - mean(x)) *
+		              rsqrt(variance + epsilon)) in training mode;
+		              sum(grad_y * (x - pop_mean) * rsqrt(pop_variance + epsilon))
+		              in freeze mode.
+		
+		  grad_offset: gradient for offset, which is sum(grad_y) in training mode;
+		               sum(grad_y) in freeze mode.
+	**/
+	static public function _BaseFusedBatchNormGrad(op:Dynamic, use_v2:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Returns the gradients for the 3 inputs of BatchNorm.
+		
+		Args:
+		  grad_y: A `Tensor` of 4 dimensions for gradient for y.
+		  x: A `Tensor` of 4 dimensions for x.
+		  scale: A `Tensor` of 1 dimension for scaling.
+		  pop_mean: A `Tensor` of 1 dimension for the population mean. Only used when
+		    is_training=False.
+		  pop_var: A `Tensor` of 1 dimension for the population variance. Only used
+		    when is_training=False.
+		  epsilon: A small float number added to the variance of x.
+		  data_format: The data format for input. Either b"NHWC" or b"NCHW".
+		  is_training: A bool value to indicate the operation is for training
+		    (default)
+		      or inference.
+		
+		Returns:
+		  A tuple (grad_x, grad_scale, grad_offset), where grad_x is the gradient
+		  for x, grad_scale the gradient for scale, and grad_offset the gradient
+		  for offset.
+	**/
+	static public function _BatchNormGrad(grad_y:Dynamic, x:Dynamic, scale:Dynamic, pop_mean:Dynamic, pop_var:Dynamic, epsilon:Dynamic, data_format:Dynamic, ?is_training:Dynamic):Dynamic;
+	/**
 		Return the gradients for the 5 inputs of BatchNormWithGlobalNormalization.
 		
 		We do not backprop anything for the mean and var intentionally as they are
@@ -141,25 +190,24 @@ package tensorflow.python.ops.nn_grad;
 		  Input backprop for FractionalMaxPool op.
 	**/
 	static public function _FractionalMaxPoolGrad(op:Dynamic, grad_0:Dynamic, unused_grad_1:Dynamic, unused_grad_2:Dynamic):Dynamic;
+	static public function _FusedBatchNormGrad(op:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Return the gradients for the 3 inputs of BatchNorm.
+		Returns the gradients for the 3 inputs of FusedBatchNormGrad.
 		
 		Args:
-		  op: The BatchNormOp for which we need to compute gradients.
+		  op: The FusedBatchNormGradOp for which we need to compute gradients.
 		  *grad: An argument list for tensors of gradients wrt the outputs
-		        with grad[0] as grad_y.
+		        with grad[0] as grad_grad_x, grad[1] as grad_grad_scale,
+		        grad[2] as grad_grad_offset.
 		
 		Returns:
-		  grad_x: gradient for x, which is scale * rsqrt(variance + epsilon) *
-		          [grad_y - mean(grad_y) - (x - mean(x)) *
-		          mean(grad_y * (x - mean(x))) / (variance + epsilon)]
-		
-		  grad_scale: gradient for scale, which is sum(grad_y * (x - mean(x)) *
-		              rsqrt(variance + epsilon))
-		
-		  grad_offset: gradient for offset, which is sum(grad_y)
+		  A tuple (grad_grad_y, grad_x, grad_scale, None, None), where grad_grad_y
+		  is the gradient for grad_y, grad_x the gradient for x, grad_scale the
+		  gradient for scale.
 	**/
-	static public function _FusedBatchNormGrad(op:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
+	static public function _FusedBatchNormGradGrad(op:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
+	static public function _FusedBatchNormGradGradV2(op:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
+	static public function _FusedBatchNormV2Grad(op:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the gradients for L2Loss.
 		
@@ -192,10 +240,27 @@ package tensorflow.python.ops.nn_grad;
 	static public function _MaxPoolGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _MaxPoolGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _MaxPoolGradGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _MaxPoolGradGradV2(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _MaxPoolGradV2(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _MaxPoolGradWithArgmax(op:Dynamic, grad:Dynamic, unused_argmax_grad:Dynamic):Dynamic;
+	/**
+		Return the gradients for NthElement.
+		
+		Args:
+		  op: The NthElementOp for which we need to generate gradients.
+		  grad: Tensor. The gradients passed to the NthElementOp
+		
+		Returns:
+		  A list of two tensors, the first being the gradient w.r.t. the input,
+		  the second being the gradient w.r.t. the N (None).
+	**/
+	static public function _NthElementGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _Relu6Grad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _Relu6GradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ReluGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ReluGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _SeluGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _SeluGradGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient function for SoftmaxCrossEntropyWithLogits.
 	**/

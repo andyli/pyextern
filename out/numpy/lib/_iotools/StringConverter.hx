@@ -5,7 +5,7 @@ package numpy.lib._iotools;
 		Call self as a function.
 	**/
 	public function __call__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package numpy.lib._iotools;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +107,7 @@ package numpy.lib._iotools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -146,8 +146,9 @@ package numpy.lib._iotools;
 		    A string representing a standard input value of the converter.
 		    This string is used to help defining a reasonable default
 		    value.
-		missing_values : sequence of str, optional
-		    Sequence of strings indicating a missing value.
+		missing_values : {sequence of str, None}, optional
+		    Sequence of strings indicating a missing value. If ``None``, then
+		    the existing `missing_values` are cleared. The default is `''`.
 		locked : bool, optional
 		    Whether the StringConverter should be locked to prevent
 		    automatic upgrade or not. Default is False.

@@ -9,6 +9,19 @@ package numpy.lib._datasource;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Check mode and that encoding and newline are compatible.
+		
+		Parameters
+		----------
+		mode : str
+		    File open mode.
+		encoding : str
+		    File encoding.
+		newline : str
+		    Newline for text files.
+	**/
+	static public function _check_mode(mode:Dynamic, encoding:Dynamic, newline:Dynamic):Dynamic;
 	static public var _file_openers : Dynamic;
 	/**
 		Open file and return a stream.  Raise IOError upon failure.
@@ -131,6 +144,37 @@ package numpy.lib._datasource;
 		opened in a binary mode.
 	**/
 	static public function _open(file:Dynamic, ?mode:Dynamic, ?buffering:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?newline:Dynamic, ?closefd:Dynamic, ?opener:Dynamic):Dynamic;
+	/**
+		Wrapper to open bz2 in text mode.
+		
+		Parameters
+		----------
+		fn : str
+		    File name
+		mode : {'r', 'w'}
+		    File mode. Note that bz2 Text files are not supported.
+		encoding : str
+		    Ignored, text bz2 files not supported in Python2.
+		newline : str
+		    Ignored, text bz2 files not supported in Python2.
+	**/
+	static public function _python2_bz2open(fn:Dynamic, mode:Dynamic, encoding:Dynamic, newline:Dynamic):Dynamic;
+	/**
+		Wrapper to open gzip in text mode.
+		
+		Parameters
+		----------
+		fn : str, bytes, file
+		    File path or opened file.
+		mode : str
+		    File mode. The actual files are opened as binary, but will decoded
+		    using the specified `encoding` and `newline`.
+		encoding : str
+		    Encoding to be used when reading/writing as text.
+		newline : str
+		    Newline to be used when reading/writing as text.
+	**/
+	static public function _python2_gzipopen(fn:Dynamic, mode:Dynamic, encoding:Dynamic, newline:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -151,6 +195,11 @@ package numpy.lib._datasource;
 		    Path to the directory where the source file gets downloaded to for
 		    use.  If `destpath` is None, a temporary directory will be created.
 		    The default path is the current directory.
+		encoding : {None, str}, optional
+		    Open text file with given encoding. The default encoding will be
+		    what `io.open` uses.
+		newline : {None, str}, optional
+		    Newline to use when reading text file.
 		
 		Returns
 		-------
@@ -162,6 +211,6 @@ package numpy.lib._datasource;
 		This is a convenience function that instantiates a `DataSource` and
 		returns the file object from ``DataSource.open(path)``.
 	**/
-	static public function open(path:Dynamic, ?mode:Dynamic, ?destpath:Dynamic):Dynamic;
+	static public function open(path:Dynamic, ?mode:Dynamic, ?destpath:Dynamic, ?encoding:Dynamic, ?newline:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

@@ -65,13 +65,24 @@ package theano.gof.graph;
 		    Output Variables.
 		copy_inputs : bool
 		    If True, the inputs will be copied (defaults to True).
+		copy_orphans:
+		    When None, use the copy_inputs value,
+		    When True, new orphans nodes are created.
+		    When False, original orphans nodes are reused in the new graph.
 		
 		Returns
 		-------
 		object
 		    The inputs and outputs of that copy.
+		
+		Note
+		----
+		
+		A constant, if in the ``i`` list is not an orpha. So it will be
+		copied depending of the ``copy_inputs`` parameter. Otherwise it
+		will be copied depending of the ``copy_orphans`` parameter.
 	**/
-	static public function clone(i:Dynamic, o:Dynamic, ?copy_inputs:Dynamic):Dynamic;
+	static public function clone(i:Dynamic, o:Dynamic, ?copy_inputs:Dynamic, ?copy_orphans:Dynamic):Dynamic;
 	/**
 		Return a dictionary that maps from Variable and Apply nodes in the
 		original graph to a new node (a clone) in a new graph.
@@ -83,17 +94,20 @@ package theano.gof.graph;
 		----------
 		inputs : a list of Variables
 		outputs : a list of Variables
-		copy_inputs_and_orphans : bool
-		    True means to create the cloned graph from new input and constant
+		copy_inputs : bool
+		    True means to create the cloned graph from new input
 		    nodes (the bottom of a feed-upward graph).
 		    False means to clone a graph that is rooted at the original input
 		    nodes.
+		copy_orphans:
+		    When True, new constant nodes are created. When False, original
+		    constant nodes are reused in the new graph.
 		memo : None or dict
 		    Optionally start with a partly-filled dictionary for the return value.
 		    If a dictionary is passed, this function will work in-place on that
 		    dictionary and return it.
 	**/
-	static public function clone_get_equiv(inputs:Dynamic, outputs:Dynamic, ?copy_inputs_and_orphans:Dynamic, ?memo:Dynamic):Dynamic;
+	static public function clone_get_equiv(inputs:Dynamic, outputs:Dynamic, ?copy_inputs:Dynamic, ?copy_orphans:Dynamic, ?memo:Dynamic):Dynamic;
 	static public var config : Dynamic;
 	/**
 		Shallow copy operation on arbitrary Python objects.
@@ -135,7 +149,7 @@ package theano.gof.graph;
 		    function call, and allows for more specialized code, so it can be
 		    faster.
 	**/
-	static public function general_toposort(r_out:Dynamic, deps:Dynamic, ?debug_print:Dynamic, ?compute_deps_cache:Dynamic, ?deps_cache:Dynamic, ?clients:Dynamic):Dynamic;
+	static public function general_toposort(outputs:Dynamic, deps:Dynamic, ?debug_print:Dynamic, ?compute_deps_cache:Dynamic, ?deps_cache:Dynamic, ?clients:Dynamic):Dynamic;
 	/**
 		Return the inputs required to compute the given Variables.
 		
@@ -174,6 +188,14 @@ package theano.gof.graph;
 		    node->clients for each node in the subgraph that is sorted
 	**/
 	static public function io_toposort(inputs:Dynamic, outputs:Dynamic, ?orderings:Dynamic, ?clients:Dynamic):Dynamic;
+	/**
+		Goes up in the graph and returns True if the apply node f_node is found.
+		
+		Use a stack implementation as the vm algo.
+		We suppose all nodes are not lazy
+		(i.e. for IfElse we suppose all inputs are computed)
+	**/
+	static public function is_in_ancestors(l_node:Dynamic, f_node:Dynamic):Dynamic;
 	/**
 		Return True iff Variables `var1` and `var2` perform the same computation.
 		
@@ -225,6 +247,31 @@ package theano.gof.graph;
 		Return the apply nodes of the graph between inputs and outputs.
 	**/
 	static public function list_of_nodes(inputs:Dynamic, outputs:Dynamic):Dynamic;
+	/**
+		A contextmanager that is used in inherit_stack_trace and keeps track
+		of all the newly created varaible nodes inside an optimization. A list
+		of new_nodes is instantiated but will be filled in a lazy manner (when
+		Variable.notify_construction_observers is called).
+		
+		
+		`observer` is the entity that updates the new_nodes list.
+		construction_observers is a list inside Variable class and contains
+		a list of observer functions. The observer functions inside
+		construction_observers are only called when a variable node is
+		instantiated (where Variable.notify_construction_observers is called).
+		When the observer function is called, a new variable node is added to
+		the new_nodes list.
+		
+		
+		Parameters
+		----------
+		new_nodes
+		    A list of all the variable nodes that are created inside the optimization.
+		
+		yields
+		    new_nodes list.
+	**/
+	static public function nodes_constructed():Dynamic;
 	/**
 		Op to return a string representation of the subgraph
 		between i and o
@@ -282,6 +329,8 @@ package theano.gof.graph;
 		expand : callable
 		    When we get to a node, add expand(node) to the list of nodes to visit.
 		    This function should return a list, or None.
+		mode : string
+		    'bfs' or 'dfs' for breath first search or depth first search.
 		
 		Returns
 		-------

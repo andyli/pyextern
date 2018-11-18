@@ -4,6 +4,7 @@ package tensorflow.core.framework.kernel_def_pb2;
 	static public var DESCRIPTOR : Dynamic;
 	static public var _KERNELDEF : Dynamic;
 	static public var _KERNELDEF_ATTRCONSTRAINT : Dynamic;
+	static public var _KERNELLIST : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

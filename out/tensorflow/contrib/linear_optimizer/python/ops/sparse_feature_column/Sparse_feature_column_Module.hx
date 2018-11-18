@@ -34,6 +34,7 @@ package tensorflow.contrib.linear_optimizer.python.ops.sparse_feature_column;
 		    dtype in mind when converting to a tensor, so preferred_dtype
 		    can be used as a soft preference.  If the conversion to
 		    `preferred_dtype` is not possible, this argument has no effect.
+		  ctx: Optional: The value of context.context().
 		
 		Returns:
 		  A `Tensor` based on `value`.
@@ -42,40 +43,6 @@ package tensorflow.contrib.linear_optimizer.python.ops.sparse_feature_column;
 		  TypeError: If no conversion function is registered for `value`.
 		  RuntimeError: If a registered conversion function returns an invalid value.
 	**/
-	static public function internal_convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
-	/**
-		Returns a context manager for use when defining a Python op.
-		
-		This context manager validates that the given `values` are from the
-		same graph, makes that graph the default graph, and pushes a
-		name scope in that graph (see
-		@{tf.Graph.name_scope}
-		for more details on that).
-		
-		For example, to define a new Python op called `my_op`:
-		
-		```python
-		def my_op(a, b, c, name=None):
-		  with tf.name_scope(name, "MyOp", [a, b, c]) as scope:
-		    a = tf.convert_to_tensor(a, name="a")
-		    b = tf.convert_to_tensor(b, name="b")
-		    c = tf.convert_to_tensor(c, name="c")
-		    # Define some computation that uses `a`, `b`, and `c`.
-		    return foo_op(..., name=scope)
-		```
-		
-		Args:
-		  name: The name argument that is passed to the op function.
-		  default_name: The default name to use if the `name` argument is `None`.
-		  values: The list of `Tensor` arguments that are passed to the op function.
-		
-		Returns:
-		  A context manager for use in defining Python ops. Yields the name scope.
-		
-		Raises:
-		  ValueError: if neither `name` nor `default_name` is provided
-		    but `values` are.
-	**/
-	static public function name_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
+	static public function internal_convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic, ?preferred_dtype:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

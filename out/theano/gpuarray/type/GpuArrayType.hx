@@ -94,7 +94,7 @@ package theano.gpuarray.type;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -146,7 +146,7 @@ package theano.gpuarray.type;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -239,6 +239,16 @@ package theano.gpuarray.type;
 		    return "PyObject ** addr_of_%(name)s;"
 	**/
 	public function c_declare(name:Dynamic, sub:Dynamic, ?check_input:Dynamic):Dynamic;
+	/**
+		Optional: Return the name of the primitive C type of items into variables
+		handled by this type.
+		
+		e.g:
+		
+		 - For ``TensorType(dtype='int64', ...)``: should return ``"npy_int64"``.
+		 - For ``GpuArrayType(dtype='int32', ...)``: should return ``"ga_int"``.
+	**/
+	public function c_element_type():Dynamic;
 	/**
 		Required: Return c code to extract a PyObject * instance.
 		
@@ -432,7 +442,7 @@ package theano.gpuarray.type;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -522,8 +532,9 @@ package theano.gpuarray.type;
 		Convert a symbolic variable into this Type, if compatible.
 		
 		For the moment, the only Types compatible with one another are
-		TensorType and CudaNdarrayType, provided they have the same
-		number of dimensions, same broadcasting pattern, and same dtype.
+		TensorType and GpuArrayType, provided they have the same
+		number of dimensions, same broadcasting pattern, and same
+		dtype.
 		
 		If Types are not compatible, a TypeError should be raised.
 	**/

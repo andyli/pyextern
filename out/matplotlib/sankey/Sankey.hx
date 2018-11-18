@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.sankey;
 @:pythonImport("matplotlib.sankey", "Sankey") extern class Sankey {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -112,7 +112,7 @@ package matplotlib.sankey;
 		
 		**Examples:**
 		
-		    .. plot:: mpl_examples/api/sankey_demo_basics.py
+		    .. plot:: gallery/specialty_plots/sankey_basics.py
 	**/
 	@:native("__init__")
 	public function ___init__(?ax:Dynamic, ?scale:Dynamic, ?unit:Dynamic, ?format:Dynamic, ?gap:Dynamic, ?radius:Dynamic, ?shoulder:Dynamic, ?offset:Dynamic, ?head_angle:Dynamic, ?margin:Dynamic, ?tolerance:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -191,7 +191,7 @@ package matplotlib.sankey;
 		
 		**Examples:**
 		
-		    .. plot:: mpl_examples/api/sankey_demo_basics.py
+		    .. plot:: gallery/specialty_plots/sankey_basics.py
 	**/
 	public function new(?ax:Dynamic, ?scale:Dynamic, ?unit:Dynamic, ?format:Dynamic, ?gap:Dynamic, ?radius:Dynamic, ?shoulder:Dynamic, ?offset:Dynamic, ?head_angle:Dynamic, ?margin:Dynamic, ?tolerance:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -200,7 +200,7 @@ package matplotlib.sankey;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -251,7 +251,7 @@ package matplotlib.sankey;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -344,36 +344,36 @@ package matplotlib.sankey;
 		
 		Valid kwargs are :meth:`matplotlib.patches.PathPatch` arguments:
 		
-		  agg_filter: unknown
-		  alpha: float or None 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False]  or None for default 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  capstyle: ['butt' | 'round' | 'projecting'] 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: matplotlib color spec
-		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fill: [True | False] 
-		  gid: an id string 
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
-		  joinstyle: ['miter' | 'round' | 'bevel'] 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float or None for default 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  zorder: any number 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  alpha: float or None
+		  animated: bool
+		  antialiased: unknown
+		  capstyle: {'butt', 'round', 'projecting'}
+		  clip_box: `.Bbox`
+		  clip_on: bool
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  color: color
+		  contains: callable
+		  edgecolor: color or None or 'auto'
+		  facecolor: color or None
+		  figure: `.Figure`
+		  fill: bool
+		  gid: str
+		  hatch: {'/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'}
+		  in_layout: bool
+		  joinstyle: {'miter', 'round', 'bevel'}
+		  label: object
+		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth: float or None for default 
+		  path_effects: `.AbstractPathEffect`
+		  picker: None or bool or float or callable
+		  rasterized: bool or None
+		  sketch_params: (scale: float, length: float, randomness: float) 
+		  snap: bool or None
+		  transform: `.Transform`
+		  url: str
+		  visible: bool
+		  zorder: float
 		
 		As examples, ``fill=False`` and ``label='A legend entry'``.
 		By default, ``facecolor='#bfd1d4'`` (light blue) and

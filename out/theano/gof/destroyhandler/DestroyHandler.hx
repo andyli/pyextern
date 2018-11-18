@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gof.destroyhandler;
 @:pythonImport("theano.gof.destroyhandler", "DestroyHandler") extern class DestroyHandler {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package theano.gof.destroyhandler;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?do_imports_on_attach:Dynamic):Dynamic;
+	public function ___init__(?do_imports_on_attach:Dynamic, ?algo:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?do_imports_on_attach:Dynamic):Void;
+	public function new(?do_imports_on_attach:Dynamic, ?algo:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,21 @@ package theano.gof.destroyhandler;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Do the check for only 1 level.
+		
+		For now:
+		- Destroyed variables can have only 1 clients.
+		- Allow view to have multiple clients.
+		- Allow sequence of view.
+		- But don't allow to destroy view
+	**/
+	public function fast_destroy(app:Dynamic, reason:Dynamic):Dynamic;
 	/**
 		When attaching to a new fgraph, check that
 		    1) This DestroyHandler wasn't already attached to some fgraph
@@ -148,7 +158,7 @@ package theano.gof.destroyhandler;
 		b) attempting to destroy a value multiple times, or
 		c) an Apply destroys (illegally) one of its own inputs by aliasing
 	**/
-	public function orderings(fgraph:Dynamic):Dynamic;
+	public function orderings(fgraph:Dynamic, ?ordered:Dynamic):Dynamic;
 	static public var pickle_rm_attr : Dynamic;
 	/**
 		Makes sure self.droot, self.impact, and self.root_destroyer are up to

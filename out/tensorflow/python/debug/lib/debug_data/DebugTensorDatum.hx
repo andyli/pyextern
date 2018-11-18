@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.lib.debug_data;
 @:pythonImport("tensorflow.python.debug.lib.debug_data", "DebugTensorDatum") extern class DebugTensorDatum {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,13 +41,17 @@ package tensorflow.python.debug.lib.debug_data;
 		`DebugTensorDatum` constructor.
 		
 		Args:
-		  dump_root: (`str`) Debug dump root directory.
+		  dump_root: (`str`) Debug dump root directory. This path should not include
+		    the path component that represents the device name (see also below).
 		  debug_dump_rel_path: (`str`) Path to a debug dump file, relative to the
-		      `dump_root`. For example, suppose the debug dump root
-		      directory is `/tmp/tfdbg_1` and the dump file is at
-		      `/tmp/tfdbg_1/ns_1/node_a_0_DebugIdentity_123456789`, then
-		      the value of the debug_dump_rel_path should be
-		      `ns_1/node_a_0_DebugIdenity_1234456789`.
+		    `dump_root`. The first item of this relative path is assumed to be
+		    a path representing the name of the device that the Tensor belongs to.
+		    See `device_path_to_device_name` for more details on the device path.
+		    For example, suppose the debug dump root
+		    directory is `/tmp/tfdbg_1` and the dump file is at
+		    `/tmp/tfdbg_1/<device_path>/>ns_1/node_a_0_DebugIdentity_123456789`,
+		    then the value of the debug_dump_rel_path should be
+		    `<device_path>/ns_1/node_a_0_DebugIdenity_1234456789`.
 		
 		Raises:
 		  ValueError: If the base file name of the dump file does not conform to
@@ -60,13 +64,17 @@ package tensorflow.python.debug.lib.debug_data;
 		`DebugTensorDatum` constructor.
 		
 		Args:
-		  dump_root: (`str`) Debug dump root directory.
+		  dump_root: (`str`) Debug dump root directory. This path should not include
+		    the path component that represents the device name (see also below).
 		  debug_dump_rel_path: (`str`) Path to a debug dump file, relative to the
-		      `dump_root`. For example, suppose the debug dump root
-		      directory is `/tmp/tfdbg_1` and the dump file is at
-		      `/tmp/tfdbg_1/ns_1/node_a_0_DebugIdentity_123456789`, then
-		      the value of the debug_dump_rel_path should be
-		      `ns_1/node_a_0_DebugIdenity_1234456789`.
+		    `dump_root`. The first item of this relative path is assumed to be
+		    a path representing the name of the device that the Tensor belongs to.
+		    See `device_path_to_device_name` for more details on the device path.
+		    For example, suppose the debug dump root
+		    directory is `/tmp/tfdbg_1` and the dump file is at
+		    `/tmp/tfdbg_1/<device_path>/>ns_1/node_a_0_DebugIdentity_123456789`,
+		    then the value of the debug_dump_rel_path should be
+		    `<device_path>/ns_1/node_a_0_DebugIdenity_1234456789`.
 		
 		Raises:
 		  ValueError: If the base file name of the dump file does not conform to
@@ -80,7 +88,7 @@ package tensorflow.python.debug.lib.debug_data;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -131,7 +139,7 @@ package tensorflow.python.debug.lib.debug_data;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -143,6 +151,13 @@ package tensorflow.python.debug.lib.debug_data;
 		  (`str`) debug op name (e.g., `DebugIdentity`).
 	**/
 	public var debug_op : Dynamic;
+	/**
+		Name of the device that the tensor belongs to.
+		
+		Returns:
+		  (`str`) device name.
+	**/
+	public var device_name : Dynamic;
 	/**
 		Size of the dump file.
 		

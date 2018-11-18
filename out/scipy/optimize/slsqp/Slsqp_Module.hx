@@ -22,7 +22,7 @@ package scipy.optimize.slsqp;
 		ftol : float
 		    Precision goal for the value of f in the stopping criterion.
 		eps : float
-		    Step size used for numerical approximation of the jacobian.
+		    Step size used for numerical approximation of the Jacobian.
 		disp : bool
 		    Set to True to print convergence messages. If False,
 		    `verbosity` is ignored and set to 0.
@@ -154,7 +154,15 @@ package scipy.optimize.slsqp;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -270,7 +278,7 @@ package scipy.optimize.slsqp;
 	**/
 	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -280,7 +288,12 @@ package scipy.optimize.slsqp;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -320,6 +333,8 @@ package scipy.optimize.slsqp;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -366,8 +381,9 @@ package scipy.optimize.slsqp;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -551,15 +567,9 @@ package scipy.optimize.slsqp;
 		Returns
 		-------
 		y : ndarray, bool
-		    For scalar input, the result is a new boolean with value True
-		    if the input is finite; otherwise the value is False (input is
-		    either positive infinity, negative infinity or Not a Number).
-		
-		    For array input, the result is a boolean array with the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is finite; otherwise the values
-		    are False (element is either positive infinity, negative infinity
-		    or Not a Number).
+		    True where ``x`` is not positive infinity, negative infinity,
+		    or NaN; false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -590,7 +600,7 @@ package scipy.optimize.slsqp;
 		>>> np.isfinite(np.NINF)
 		False
 		>>> np.isfinite([np.log(-1.),1.,np.log(0)])
-		array([False,  True, False], dtype=bool)
+		array([False,  True, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -638,7 +648,7 @@ package scipy.optimize.slsqp;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -665,6 +675,7 @@ package scipy.optimize.slsqp;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -693,23 +704,25 @@ package scipy.optimize.slsqp;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		
-		Take a sequence of arrays and stack them vertically to make a single
-		array. Rebuild arrays divided by `vsplit`.
+		This is equivalent to concatenation along the first axis after 1-D arrays
+		of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		`vsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    Tuple containing arrays to be stacked. The arrays must have the same
-		    shape along all but the first axis.
+		    The arrays must have the same shape along all but the first axis.
+		    1-D arrays must have the same length.
 		
 		Returns
 		-------
 		stacked : ndarray
-		    The array formed by stacking the given arrays.
+		    The array formed by stacking the given arrays, will be at least 2-D.
 		
 		See Also
 		--------
@@ -719,11 +732,6 @@ package scipy.optimize.slsqp;
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -744,75 +752,6 @@ package scipy.optimize.slsqp;
 		       [4]])
 	**/
 	static public function vstack(tup:Dynamic):Dynamic;
-	/**
-		where(condition, [x, y])
-		
-		Return elements, either from `x` or `y`, depending on `condition`.
-		
-		If only `condition` is given, return ``condition.nonzero()``.
-		
-		Parameters
-		----------
-		condition : array_like, bool
-		    When True, yield `x`, otherwise yield `y`.
-		x, y : array_like, optional
-		    Values from which to choose. `x`, `y` and `condition` need to be
-		    broadcastable to some shape.
-		
-		Returns
-		-------
-		out : ndarray or tuple of ndarrays
-		    If both `x` and `y` are specified, the output array contains
-		    elements of `x` where `condition` is True, and elements from
-		    `y` elsewhere.
-		
-		    If only `condition` is given, return the tuple
-		    ``condition.nonzero()``, the indices where `condition` is True.
-		
-		See Also
-		--------
-		nonzero, choose
-		
-		Notes
-		-----
-		If `x` and `y` are given and input arrays are 1-D, `where` is
-		equivalent to::
-		
-		    [xv if c else yv for (c,xv,yv) in zip(condition,x,y)]
-		
-		Examples
-		--------
-		>>> np.where([[True, False], [True, True]],
-		...          [[1, 2], [3, 4]],
-		...          [[9, 8], [7, 6]])
-		array([[1, 8],
-		       [3, 4]])
-		
-		>>> np.where([[0, 1], [1, 0]])
-		(array([0, 1]), array([1, 0]))
-		
-		>>> x = np.arange(9.).reshape(3, 3)
-		>>> np.where( x > 5 )
-		(array([2, 2, 2]), array([0, 1, 2]))
-		>>> x[np.where( x > 3.0 )]               # Note: result is 1D.
-		array([ 4.,  5.,  6.,  7.,  8.])
-		>>> np.where(x < 5, x, -1)               # Note: broadcasting.
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -1.],
-		       [-1., -1., -1.]])
-		
-		Find the indices of elements of `x` that are in `goodvalues`.
-		
-		>>> goodvalues = [3, 4, 7]
-		>>> ix = np.isin(x, goodvalues)
-		>>> ix
-		array([[False, False, False],
-		       [ True,  True, False],
-		       [False,  True, False]], dtype=bool)
-		>>> np.where(ix)
-		(array([1, 1, 2]), array([0, 1, 1]))
-	**/
-	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function wrap_function(_function:Dynamic, args:Dynamic):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
@@ -821,14 +760,15 @@ package scipy.optimize.slsqp;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -838,17 +778,16 @@ package scipy.optimize.slsqp;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.contour;
 @:pythonImport("matplotlib.contour", "QuadContourSet") extern class QuadContourSet {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -40,100 +40,102 @@ package matplotlib.contour;
 	public function __hash__():Dynamic;
 	/**
 		Draw contour lines or filled regions, depending on
-		whether keyword arg 'filled' is *False* (default) or *True*.
+		whether keyword arg *filled* is ``False`` (default) or ``True``.
 		
-		The first three arguments must be:
+		Call signature::
 		
-		  *ax*: axes object.
+		    ContourSet(ax, levels, allsegs, [allkinds], **kwargs)
 		
-		  *levels*: [level0, level1, ..., leveln]
+		Parameters
+		----------
+		ax :
+		    The `~.axes.Axes` object to draw on.
+		
+		levels : [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the contour
 		    levels.
 		
-		  *allsegs*: [level0segs, level1segs, ...]
+		allsegs : [level0segs, level1segs, ...]
 		    List of all the polygon segments for all the *levels*.
 		    For contour lines ``len(allsegs) == len(levels)``, and for
-		    filled contour regions ``len(allsegs) = len(levels)-1``.
+		    filled contour regions ``len(allsegs) = len(levels)-1``. The lists
+		    should look like::
 		
-		    level0segs = [polygon0, polygon1, ...]
+		        level0segs = [polygon0, polygon1, ...]
+		        polygon0 = array_like [[x0,y0], [x1,y1], ...]
 		
-		    polygon0 = array_like [[x0,y0], [x1,y1], ...]
-		
-		  *allkinds*: *None* or [level0kinds, level1kinds, ...]
+		allkinds : [level0kinds, level1kinds, ...], optional
 		    Optional list of all the polygon vertex kinds (code types), as
-		    described and used in Path.   This is used to allow multiply-
+		    described and used in Path. This is used to allow multiply-
 		    connected paths such as holes within filled polygons.
-		    If not *None*, len(allkinds) == len(allsegs).
+		    If not ``None``, ``len(allkinds) == len(allsegs)``. The lists
+		    should look like::
 		
-		    level0kinds = [polygon0kinds, ...]
+		        level0kinds = [polygon0kinds, ...]
+		        polygon0kinds = [vertexcode0, vertexcode1, ...]
 		
-		    polygon0kinds = [vertexcode0, vertexcode1, ...]
+		    If *allkinds* is not ``None``, usually all polygons for a
+		    particular contour level are grouped together so that
+		    ``level0segs = [polygon0]`` and ``level0kinds = [polygon0kinds]``.
 		
-		    If *allkinds* is not *None*, usually all polygons for a particular
-		    contour level are grouped together so that
-		
-		    level0segs = [polygon0] and level0kinds = [polygon0kinds].
-		
-		Keyword arguments are as described in
-		:attr:`matplotlib.contour.QuadContourSet.contour_doc`.
-		
-		**Examples:**
-		
-		.. plot:: mpl_examples/misc/contour_manual.py
+		**kwargs
+		    Keyword arguments are as described in the docstring of
+		    `~axes.Axes.contour`.
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?levels:Dynamic, ?filled:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?alpha:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?colors:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?extend:Dynamic, ?antialiased:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw contour lines or filled regions, depending on
-		whether keyword arg 'filled' is *False* (default) or *True*.
+		whether keyword arg *filled* is ``False`` (default) or ``True``.
 		
-		The first three arguments must be:
+		Call signature::
 		
-		  *ax*: axes object.
+		    ContourSet(ax, levels, allsegs, [allkinds], **kwargs)
 		
-		  *levels*: [level0, level1, ..., leveln]
+		Parameters
+		----------
+		ax :
+		    The `~.axes.Axes` object to draw on.
+		
+		levels : [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the contour
 		    levels.
 		
-		  *allsegs*: [level0segs, level1segs, ...]
+		allsegs : [level0segs, level1segs, ...]
 		    List of all the polygon segments for all the *levels*.
 		    For contour lines ``len(allsegs) == len(levels)``, and for
-		    filled contour regions ``len(allsegs) = len(levels)-1``.
+		    filled contour regions ``len(allsegs) = len(levels)-1``. The lists
+		    should look like::
 		
-		    level0segs = [polygon0, polygon1, ...]
+		        level0segs = [polygon0, polygon1, ...]
+		        polygon0 = array_like [[x0,y0], [x1,y1], ...]
 		
-		    polygon0 = array_like [[x0,y0], [x1,y1], ...]
-		
-		  *allkinds*: *None* or [level0kinds, level1kinds, ...]
+		allkinds : [level0kinds, level1kinds, ...], optional
 		    Optional list of all the polygon vertex kinds (code types), as
-		    described and used in Path.   This is used to allow multiply-
+		    described and used in Path. This is used to allow multiply-
 		    connected paths such as holes within filled polygons.
-		    If not *None*, len(allkinds) == len(allsegs).
+		    If not ``None``, ``len(allkinds) == len(allsegs)``. The lists
+		    should look like::
 		
-		    level0kinds = [polygon0kinds, ...]
+		        level0kinds = [polygon0kinds, ...]
+		        polygon0kinds = [vertexcode0, vertexcode1, ...]
 		
-		    polygon0kinds = [vertexcode0, vertexcode1, ...]
+		    If *allkinds* is not ``None``, usually all polygons for a
+		    particular contour level are grouped together so that
+		    ``level0segs = [polygon0]`` and ``level0kinds = [polygon0kinds]``.
 		
-		    If *allkinds* is not *None*, usually all polygons for a particular
-		    contour level are grouped together so that
-		
-		    level0segs = [polygon0] and level0kinds = [polygon0kinds].
-		
-		Keyword arguments are as described in
-		:attr:`matplotlib.contour.QuadContourSet.contour_doc`.
-		
-		**Examples:**
-		
-		.. plot:: mpl_examples/misc/contour_manual.py
+		**kwargs
+		    Keyword arguments are as described in the docstring of
+		    `~axes.Axes.contour`.
 	**/
-	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?levels:Dynamic, ?filled:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?alpha:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?colors:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?extend:Dynamic, ?antialiased:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -184,7 +186,7 @@ package matplotlib.contour;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -192,6 +194,9 @@ package matplotlib.contour;
 	public function _add_label(t:Dynamic, x:Dynamic, y:Dynamic, lev:Dynamic, cvalue:Dynamic):Dynamic;
 	/**
 		Select contour levels to span the data.
+		
+		The target number of levels, *N*, is used only when the
+		scale is not log and default locator is used.
 		
 		We need two more levels for filled contours than for
 		line contours, because for the latter we need to specify
@@ -211,12 +216,13 @@ package matplotlib.contour;
 	**/
 	public function _check_xyz(args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _contour_args(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public var _contour_doc : Dynamic;
 	/**
 		Determine the contour levels and store in self.levels.
 	**/
 	public function _contour_level_args(z:Dynamic, args:Dynamic):Dynamic;
 	/**
-		Create and return allsegs and allkinds by calling underlying C code.
+		Compute ``allsegs`` and ``allkinds`` using C extension.
 	**/
 	public function _get_allsegs_and_allkinds():Dynamic;
 	public function _get_label_clabeltext(x:Dynamic, y:Dynamic, rotation:Dynamic):Dynamic;
@@ -296,15 +302,18 @@ package matplotlib.contour;
 		specified transform will be used to translate (x, y) into
 		display coordinates.
 		
-		*inline*:
-		  controls whether the underlying contour is removed or
-		  not. Default is *True*.
+		Parameters
+		----------
+		x, y : float
+		    The approximate location of the label.
 		
-		*inline_spacing*:
-		  space in pixels to leave on each side of label when
-		  placing inline.  Defaults to 5.  This spacing will be
-		  exact for labels at locations where the contour is
-		  straight, less so for labels on curved contours.
+		inline : bool, optional, default: True
+		    If *True* remove the segment of the contour beneath the label.
+		
+		inline_spacing : int, optional, default: 5
+		    Space in pixels to leave on each side of label when placing
+		    inline. This spacing will be exact for labels at locations where
+		    the contour is straight, less so for labels on curved contours.
 	**/
 	public function add_label_near(x:Dynamic, y:Dynamic, ?_inline:Dynamic, ?inline_spacing:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
@@ -326,7 +335,7 @@ package matplotlib.contour;
 		not empty (lc defaults to the empty list if None).  *spacing*
 		is the space around the label in pixels to leave empty.
 		
-		Do both of these tasks at once to avoid calling mlab.path_length
+		Do both of these tasks at once to avoid calculating path lengths
 		multiple times, which is relatively costly.
 		
 		The method used here involves calculating the path length
@@ -346,84 +355,114 @@ package matplotlib.contour;
 	**/
 	public function check_update(checker:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelTexts instead.
+		
+		\ 
+	**/
+	public var cl : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelCValues instead.
+		
+		\ 
+	**/
+	public var cl_cvalues : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelXYs instead.
+		
+		\ 
+	**/
+	public var cl_xy : Dynamic;
+	/**
 		Label a contour plot.
 		
 		Call signature::
 		
-		  clabel(cs, **kwargs)
+		  clabel(cs, [levels,] **kwargs)
 		
 		Adds labels to line contours in *cs*, where *cs* is a
 		:class:`~matplotlib.contour.ContourSet` object returned by
-		contour.
+		``contour()``.
 		
-		::
+		Parameters
+		----------
+		cs : `.ContourSet`
+		    The ContourSet to label.
 		
-		  clabel(cs, v, **kwargs)
+		levels : array-like, optional
+		    A list of level values, that should be labeled. The list must be
+		    a subset of ``cs.levels``. If not given, all levels are labeled.
 		
-		only labels contours listed in *v*.
+		fontsize : string or float, optional
+		    Size in points or relative size e.g., 'smaller', 'x-large'.
+		    See `.Text.set_size` for accepted string values.
 		
-		Optional keyword arguments:
+		colors : color-spec, optional
+		    The label colors:
 		
-		  *fontsize*:
-		    size in points or relative size e.g., 'smaller', 'x-large'
+		    - If *None*, the color of each label matches the color of
+		      the corresponding contour.
 		
-		  *colors*:
-		    - if *None*, the color of each label matches the color of
-		      the corresponding contour
+		    - If one string color, e.g., *colors* = 'r' or *colors* =
+		      'red', all labels will be plotted in this color.
 		
-		    - if one string color, e.g., *colors* = 'r' or *colors* =
-		      'red', all labels will be plotted in this color
-		
-		    - if a tuple of matplotlib color args (string, float, rgb, etc),
+		    - If a tuple of matplotlib color args (string, float, rgb, etc),
 		      different labels will be plotted in different colors in the order
-		      specified
+		      specified.
 		
-		  *inline*:
-		    controls whether the underlying contour is removed or
-		    not. Default is *True*.
+		inline : bool, optional
+		    If ``True`` the underlying contour is removed where the label is
+		    placed. Default is ``True``.
 		
-		  *inline_spacing*:
-		    space in pixels to leave on each side of label when
-		    placing inline.  Defaults to 5.  This spacing will be
-		    exact for labels at locations where the contour is
-		    straight, less so for labels on curved contours.
+		inline_spacing : float, optional
+		    Space in pixels to leave on each side of label when
+		    placing inline. Defaults to 5.
 		
-		  *fmt*:
-		    a format string for the label. Default is '%1.3f'
+		    This spacing will be exact for labels at locations where the
+		    contour is straight, less so for labels on curved contours.
+		
+		fmt : string or dict, optional
+		    A format string for the label. Default is '%1.3f'
+		
 		    Alternatively, this can be a dictionary matching contour
 		    levels with arbitrary strings to use for each contour level
 		    (i.e., fmt[level]=string), or it can be any callable, such
 		    as a :class:`~matplotlib.ticker.Formatter` instance, that
 		    returns a string when called with a numeric contour level.
 		
-		  *manual*:
-		    if *True*, contour labels will be placed manually using
-		    mouse clicks.  Click the first button near a contour to
+		manual : bool or iterable, optional
+		    If ``True``, contour labels will be placed manually using
+		    mouse clicks. Click the first button near a contour to
 		    add a label, click the second button (or potentially both
-		    mouse buttons at once) to finish adding labels.  The third
+		    mouse buttons at once) to finish adding labels. The third
 		    button can be used to remove the last label added, but
-		    only if labels are not inline.  Alternatively, the keyboard
+		    only if labels are not inline. Alternatively, the keyboard
 		    can be used to select label locations (enter to end label
 		    placement, delete or backspace act like the third mouse button,
 		    and any other key will select a label location).
 		
-		    *manual* can be an iterable object of x,y tuples. Contour labels
-		    will be created as if mouse is clicked at each x,y positions.
+		    *manual* can also be an iterable object of x,y tuples.
+		    Contour labels will be created as if mouse is clicked at each
+		    x,y positions.
 		
-		  *rightside_up*:
-		    if *True* (default), label rotations will always be plus
-		    or minus 90 degrees from level.
+		rightside_up : bool, optional
+		    If ``True``, label rotations will always be plus
+		    or minus 90 degrees from level. Default is ``True``.
 		
-		  *use_clabeltext*:
-		    if *True* (default is False), ClabelText class (instead of
-		    matplotlib.Text) is used to create labels. ClabelText
-		    recalculates rotation angles of texts during the drawing time,
-		    therefore this can be used if aspect of the axes changes.
+		use_clabeltext : bool, optional
+		    If ``True``, `.ClabelText` class (instead of `.Text`) is used to
+		    create labels. `ClabelText` recalculates rotation angles
+		    of texts during the drawing time, therefore this can be used if
+		    aspect of the axes changes. Default is ``False``.
 		
-		.. plot:: mpl_examples/pylab_examples/contour_demo.py
+		Returns
+		-------
+		labels
+		    A list of `.Text` instances for the labels.
 	**/
-	public function clabel(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var contour_doc : Dynamic;
+	public function clabel(?args:python.VarArgs<Dynamic>, ?fontsize:Dynamic, ?_inline:Dynamic, ?inline_spacing:Dynamic, ?fmt:Dynamic, ?colors:Dynamic, ?use_clabeltext:Dynamic, ?manual:Dynamic, ?rightside_up:Dynamic):Dynamic;
 	/**
 		Finds contour that is closest to a point.  Defaults to
 		measuring distance in pixels (screen space - useful for manual
@@ -476,6 +515,9 @@ package matplotlib.contour;
 	**/
 	public function get_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The get_real_label_width function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		This computes actual onscreen label width.
 		This uses some black magic to determine onscreen extent of non-drawn
 		label.  This magic may not be very robust.
@@ -484,7 +526,7 @@ package matplotlib.contour;
 	**/
 	public function get_real_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
 	/**
-		get the text of the label
+		Get the text of the label.
 	**/
 	public function get_text(lev:Dynamic, fmt:Dynamic):Dynamic;
 	/**
@@ -494,20 +536,31 @@ package matplotlib.contour;
 	public function get_transform():Dynamic;
 	public function labels(_inline:Dynamic, inline_spacing:Dynamic):Dynamic;
 	/**
-		Return a list of artist and labels suitable for passing through
+		Return a list of artists and labels suitable for passing through
 		to :func:`plt.legend` which represent this ContourSet.
 		
-		Args:
+		The labels have the form "0 < x <= 1" stating the data ranges which
+		the artists represent.
 		
-		    *variable_name*: the string used inside the inequality used
-		      on the labels
+		Parameters
+		----------
+		variable_name : str
+		    The string used inside the inequality used on the labels.
 		
-		    *str_format*: function used to format the numbers in the labels
+		str_format : function: float -> str
+		    Function used to format the numbers in the labels.
+		
+		Returns
+		-------
+		artists : List[`.Artist`]
+		    A list of the artists.
+		
+		labels : List[str]
+		    A list of the labels.
 	**/
 	public function legend_elements(?variable_name:Dynamic, ?str_format:Dynamic):Dynamic;
 	/**
-		Find a good place to plot a label (relatively flat
-		part of the contour).
+		Find good place to draw a label (relatively flat part of the contour).
 	**/
 	public function locate_label(linecontour:Dynamic, labelwidth:Dynamic):Dynamic;
 	/**
@@ -519,11 +572,16 @@ package matplotlib.contour;
 	**/
 	public function print_label(linecontour:Dynamic, labelwidth:Dynamic):Dynamic;
 	/**
-		sets alpha for all ContourSet artists
+		Set the alpha blending value for all ContourSet artists.
+		*alpha* must be between 0 (transparent) and 1 (opaque).
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
-		Set the image array from numpy array *A*
+		Set the image array from numpy array *A*.
+		
+		Parameters
+		----------
+		A : ndarray
 	**/
 	public function set_array(A:Dynamic):Dynamic;
 	/**
@@ -531,21 +589,28 @@ package matplotlib.contour;
 		sequence, interpret it as ``(vmin, vmax)`` which is used to
 		support setp
 		
-		ACCEPTS: a length 2 sequence of floats
+		ACCEPTS: a length 2 sequence of floats; may be overridden in methods
+		that have ``vmin`` and ``vmax`` kwargs.
 	**/
 	public function set_clim(?vmin:Dynamic, ?vmax:Dynamic):Dynamic;
 	/**
 		set the colormap for luminance data
 		
-		ACCEPTS: a colormap or registered colormap name
+		Parameters
+		----------
+		cmap : colormap or registered colormap name
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
-		set the label properties - color, fontsize, text
+		Set the label properties - color, fontsize, text.
 	**/
 	public function set_label_props(label:Dynamic, text:Dynamic, color:Dynamic):Dynamic;
 	/**
-		set the normalization instance
+		Set the normalization instance.
+		
+		Parameters
+		----------
+		norm : `.Normalize`
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**
@@ -560,6 +625,9 @@ package matplotlib.contour;
 		If *x* is an ndarray with 3 dimensions,
 		and the last dimension is either 3 or 4, then it will be
 		treated as an rgb or rgba array, and no mapping will be done.
+		The array can be uint8, or it can be floating point with
+		values in the 0-1 range; otherwise a ValueError will be raised.
+		If it is a masked array, the mask will be ignored.
 		If the last dimension is 3, the *alpha* kwarg (defaulting to 1)
 		will be used to fill in the transparency.  If the last dimension
 		is 4, the *alpha* kwarg is ignored; it does not
@@ -571,12 +639,7 @@ package matplotlib.contour;
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
 		If norm is False, no normalization of the input data is
-		performed, and it is assumed to already be in the range (0-1).
-		
-		Note: this method assumes the input is well-behaved; it does
-		not check for anomalies such as *x* being a masked rgba
-		array, or being an integer type other than uint8, or being
-		a floating point rgba array with values outside the 0-1 range.
+		performed, and it is assumed to be in the range (0-1).
 	**/
 	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**

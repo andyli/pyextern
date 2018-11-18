@@ -10,9 +10,10 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _all_equal(tensor0:Dynamic, tensor1:Dynamic):Dynamic;
 	/**
 		Asserts actual_tensor's shape is expected_shape.
+		
+		Note that unknown dimension in `expected_shape` will be ignored.
 		
 		Args:
 		  expected_shape: List of integers defining the expected shape, or tensor of
@@ -35,6 +36,8 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 	/**
 		Returns whether actual_tensor's shape is expected_shape.
 		
+		Note that -1 in `expected_shape` is recognized as unknown dimension.
+		
 		Args:
 		  expected_shape: Integer list defining the expected shape, or tensor of same.
 		  actual_tensor: Tensor to test.
@@ -43,6 +46,18 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		  New tensor.
 	**/
 	static public function _is_shape(expected_shape:Dynamic, actual_tensor:Dynamic, ?actual_shape:Dynamic):Dynamic;
+	/**
+		Returns whether actual_shape is compatible with expected_shape.
+		
+		Note that -1 in `expected_shape` is recognized as unknown dimension.
+		
+		Args:
+		  expected_shape: Integer list defining the expected shape, or tensor of same.
+		  actual_shape: Shape of the tensor to test.
+		Returns:
+		  New tensor.
+	**/
+	static public function _shape_tensor_compatible(expected_shape:Dynamic, actual_shape:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Validate and return float type based on `tensors` and `dtype`.
@@ -94,15 +109,50 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		  RuntimeError: If result type is incompatible with `dtype`.
 	**/
 	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Check whether `x` is of tensor type.
 		
-		Check whether an object is a tensor. Equivalent to
-		`isinstance(x, [tf.Tensor, tf.SparseTensor, tf.Variable])`.
+		Check whether an object is a tensor. This check is equivalent to calling
+		`isinstance(x, (tf.Tensor, tf.SparseTensor, tf.Variable))` and also checks
+		if all the component variables of a MirroredVariable or a TowerLocalVariable
+		are tensors.
 		
 		Args:
-		  x: An python object to check.
+		  x: A python object to check.
 		
 		Returns:
 		  `True` if `x` is a tensor, `False` if not.
@@ -127,7 +177,11 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 	**/
 	static public function reduce_sum_n(tensors:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Squeeze last dim if ranks of `predictions` and `labels` differ by 1.
+		Squeeze last dim if ranks of `predictions` and `labels` differ by 1. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to remove_squeezable_dimensions from tf.confusion_matrix. Note that the order of the inputs and outputs of labels and predictions have also been switched.
 		
 		This will use static shape if available. Otherwise, it will add graph
 		operations, which could result in a performance hit.
@@ -148,7 +202,7 @@ package tensorflow.contrib.framework.python.framework.tensor_util;
 		  expected_tensor: Tensor with expected shape.
 		  tensor: Tensor of actual values.
 		Returns:
-		  Tuple of (actual_tensor, label_tensor), possibly with assert ops added.
+		  The original tensor argument, possibly with assert ops added.
 	**/
 	static public function with_same_shape(expected_tensor:Dynamic, tensor:Dynamic):Dynamic;
 	/**

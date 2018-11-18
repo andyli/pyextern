@@ -26,7 +26,7 @@ package matplotlib.offsetbox;
 	/**
 		Geiven a list of (width, xdescent) of each boxes, calculate the
 		total width and the x-offset positions of each items according to
-		*mode*. xdescent is analagous to the usual descent, but along the
+		*mode*. xdescent is analogous to the usual descent, but along the
 		x-direction. xdescent values are currently ignored.
 		
 		*wd_list* : list of (width, xdescent) of boxes to be packed.
@@ -35,9 +35,7 @@ package matplotlib.offsetbox;
 		*mode* : packing mode. 'fixed', 'expand', or 'equal'.
 	**/
 	static public function _get_packed_offsets(wd_list:Dynamic, total:Dynamic, sep:Dynamic, ?mode:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	static public function bbox_artist(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var division : Dynamic;
 	/**
 		This is a debug function to draw a rectangle around the bounding
 		box returned by
@@ -48,7 +46,5 @@ package matplotlib.offsetbox;
 		'pad' that sets the padding around the bbox in points.
 	**/
 	static public function mbbox_artist(artist:Dynamic, renderer:Dynamic, ?props:Dynamic, ?fill:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

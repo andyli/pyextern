@@ -5,7 +5,7 @@ package theano.sparse.sharedvar;
 		Return aliased transpose of self (read-only)
 	**/
 	public var T : Dynamic;
-	public function __add__(right:Dynamic):Dynamic;
+	static public function __add__(left:Dynamic, right:Dynamic):Dynamic;
 	static public function __class__(name:Dynamic, bases:Dynamic, dct:Dynamic):Dynamic;
 	static public var __count__ : Dynamic;
 	/**
@@ -19,7 +19,7 @@ package theano.sparse.sharedvar;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	public function __dot__(right:Dynamic):Dynamic;
+	static public function __dot__(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Return self==value.
 	**/
@@ -61,7 +61,7 @@ package theano.sparse.sharedvar;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -71,7 +71,7 @@ package theano.sparse.sharedvar;
 	**/
 	public function __lt__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
-	public function __mul__(right:Dynamic):Dynamic;
+	static public function __mul__(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Return self!=value.
 	**/
@@ -81,8 +81,8 @@ package theano.sparse.sharedvar;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function __radd__(left:Dynamic):Dynamic;
-	public function __rdot__(left:Dynamic):Dynamic;
+	static public function __radd__(right:Dynamic, left:Dynamic):Dynamic;
+	static public function __rdot__(right:Dynamic, left:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -107,8 +107,8 @@ package theano.sparse.sharedvar;
 		suitable representation of the test_value.
 	**/
 	public function __repr_test_value__():Dynamic;
-	public function __rmul__(right:Dynamic):Dynamic;
-	public function __rsub__(left:Dynamic):Dynamic;
+	static public function __rmul__(left:Dynamic, right:Dynamic):Dynamic;
+	static public function __rsub__(right:Dynamic, left:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -125,7 +125,7 @@ package theano.sparse.sharedvar;
 		        
 	**/
 	public function __str__():Dynamic;
-	public function __sub__(right:Dynamic):Dynamic;
+	static public function __sub__(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -134,13 +134,14 @@ package theano.sparse.sharedvar;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _value_get():Dynamic;
 	public function _value_set(new_value:Dynamic):Dynamic;
+	static public function append_construction_observer(observer:Dynamic):Dynamic;
 	public function astype(dtype:Dynamic):Dynamic;
 	/**
 		Return a new Variable like self.
@@ -158,6 +159,7 @@ package theano.sparse.sharedvar;
 		Name is copied to the returned instance.
 	**/
 	public function clone():Dynamic;
+	static public var construction_observers : Dynamic;
 	static public var container : Dynamic;
 	public var dtype : Dynamic;
 	/**
@@ -220,6 +222,8 @@ package theano.sparse.sharedvar;
 	**/
 	public function get_value(?borrow:Dynamic, ?return_internal_type:Dynamic):Dynamic;
 	public var ndim : Dynamic;
+	static public function notify_construction_observers(instance:Dynamic):Dynamic;
+	static public function remove_construction_observer(observer:Dynamic):Dynamic;
 	/**
 		Set the non-symbolic value associated with this SharedVariable.
 		
@@ -272,5 +276,5 @@ package theano.sparse.sharedvar;
 		this SharedVariable.
 	**/
 	public function zero(?borrow:Dynamic):Dynamic;
-	public function zeros_like():Dynamic;
+	static public function zeros_like(model:Dynamic):Dynamic;
 }

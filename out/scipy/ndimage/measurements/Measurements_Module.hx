@@ -753,6 +753,33 @@ package scipy.ndimage.measurements;
 		--------
 		label, minimum, median, maximum_position, extrema, sum, mean, variance,
 		standard_deviation
+		
+		Examples
+		--------
+		>>> a = np.array([[10, 20, 30],
+		...               [40, 80, 100],
+		...               [1, 100, 200]])
+		>>> b = np.array([[1, 2, 0, 1],
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
+		
+		>>> from scipy import ndimage
+		
+		>>> ndimage.minimum_position(a)
+		(2, 0)
+		>>> ndimage.minimum_position(b)
+		(0, 2)
+		
+		Features to process can be specified using `labels` and `index`:
+		
+		>>> label, pos = ndimage.label(a)
+		>>> ndimage.minimum_position(a, label, index=np.arange(1, pos+1))
+		[(2, 0)]
+		
+		>>> label, pos = ndimage.label(b)
+		>>> ndimage.minimum_position(b, label, index=np.arange(1, pos+1))
+		[(0, 0), (0, 3), (3, 1)]
 	**/
 	static public function minimum_position(input:Dynamic, ?labels:Dynamic, ?index:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

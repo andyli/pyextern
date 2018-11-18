@@ -4,7 +4,7 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 	static public var CLUSTERS_COVS_VARIABLE : Dynamic;
 	static public var CLUSTERS_VARIABLE : Dynamic;
 	static public var CLUSTERS_WEIGHT : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -83,7 +83,7 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -134,19 +134,15 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
 		Initializes GMM algorithm.
-		
-		Args:
-		  data: a list of Tensors with data, each row is a new example.
-		  initial_means: a Tensor with a matrix of means.
 	**/
-	public function _create_variables(data:Dynamic, ?initial_means:Dynamic):Dynamic;
+	public function _create_variables():Dynamic;
 	/**
 		Defines the diagonal covariance probabilities per example in a class.
 		
@@ -157,13 +153,9 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		Returns a matrix num_examples * num_classes.
 	**/
 	public function _define_diag_covariance_probs(shard_id:Dynamic, shard:Dynamic):Dynamic;
-	/**
-		Defines the Mahalanobis distance to the assigned Gaussian.
-	**/
-	public function _define_distance_to_clusters(data:Dynamic):Dynamic;
 	public function _define_expectation_operation(shard_id:Dynamic):Dynamic;
 	/**
-		Defines the full covariance probabilties per example in a class.
+		Defines the full covariance probabilities per example in a class.
 		
 		Updates a matrix with dimension num_examples X num_classes.
 		
@@ -208,13 +200,25 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 	/**
 		Computes the prior probability of all samples.
 		
-		Updates a vector where each item is the prior probabibility of an
+		Updates a vector where each item is the prior probability of an
 		input example.
 		
 		Args:
 		  shard_id: id of current shard_id.
 	**/
 	public function _define_prior_log_prob_operation(shard_id:Dynamic):Dynamic;
+	/**
+		Defines the likelihood of each data sample.
+	**/
+	public function _define_score_samples():Dynamic;
+	/**
+		Initializes variables.
+		
+		Args:
+		  data: a list of Tensors with data, each row is a new example.
+		  initial_means: a Tensor with a matrix of means.
+	**/
+	public function _initialize_variables(data:Dynamic, ?initial_means:Dynamic):Dynamic;
 	public function alphas():Dynamic;
 	/**
 		Returns a list of Tensors with the matrix of assignments per shard.
@@ -229,12 +233,22 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 	**/
 	public function covariances():Dynamic;
 	/**
-		Returns the distances to each class.
+		Returns the initialization operation.
+	**/
+	public function init_ops():Dynamic;
+	/**
+		Returns a boolean operation for initialized variables.
+	**/
+	public function is_initialized():Dynamic;
+	/**
+		Returns the log-likelihood operation.
+	**/
+	public function log_likelihood_op():Dynamic;
+	/**
+		Returns the per-sample likelihood fo the data.
 		
 		Returns:
-		  A tuple with two Tensors. The first contains the distance to
-		each class. The second contains the distance to the assigned
-		class.
+		  Log probabilities of each data point.
 	**/
 	public function scores():Dynamic;
 	/**

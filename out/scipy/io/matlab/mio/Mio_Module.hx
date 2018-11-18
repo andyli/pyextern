@@ -11,7 +11,10 @@ package scipy.io.matlab.mio;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Open `file_like` and return as file-like object 
+		Open `file_like` and return as file-like object. First, check if object is
+		already file-like; if so, return it as-is. Otherwise, try to pass it
+		to open(). If that fails, and `file_like` is a string, and `appendmat` is true,
+		append '.mat' and try again.
 	**/
 	static public function _open_file(file_like:Dynamic, appendmat:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -150,6 +153,8 @@ package scipy.io.matlab.mio;
 		matreader : MatFileReader object
 		   Initialized instance of MatFileReader class matching the mat file
 		   type detected in `filename`.
+		file_opened : bool
+		   Whether the file was opened by this routine.
 	**/
 	static public function mat_reader_factory(file_name:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

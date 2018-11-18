@@ -14,12 +14,11 @@ package matplotlib.tri.triinterpolate;
 		Returns
 		-------
 		z : np.ma.array
-		    Masked array of the same shape as *x* and *y* ; values
-		    corresponding to (*x*, *y*) points outside of the triangulation
-		    are masked out.
+		    Masked array of the same shape as *x* and *y*; values corresponding
+		    to (*x*, *y*) points outside of the triangulation are masked out.
 	**/
 	public function __call__(x:Dynamic, y:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -70,7 +69,7 @@ package matplotlib.tri.triinterpolate;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,11 +120,13 @@ package matplotlib.tri.triinterpolate;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _docstring__call__ : Dynamic;
+	static public var _docstringgradient : Dynamic;
 	/**
 		Versatile (private) method defined for all TriInterpolators.
 		
@@ -198,8 +199,6 @@ package matplotlib.tri.triinterpolate;
 		    Returned array of the same size as *tri_index*
 	**/
 	public function _interpolate_single_key(return_key:Dynamic, tri_index:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
-	static public var docstring__call__ : Dynamic;
-	static public var docstringgradient : Dynamic;
 	/**
 		Returns a list of 2 masked arrays containing interpolated derivatives
 		at the specified x,y points.
@@ -213,7 +212,7 @@ package matplotlib.tri.triinterpolate;
 		Returns
 		-------
 		dzdx, dzdy : np.ma.array
-		    2  masked arrays of the same shape as *x* and *y* ; values
+		    2 masked arrays of the same shape as *x* and *y*; values
 		    corresponding to (x,y) points outside of the triangulation
 		    are masked out.
 		    The first returned array contains the values of

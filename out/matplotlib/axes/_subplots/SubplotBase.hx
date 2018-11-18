@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.axes._subplots;
 @:pythonImport("matplotlib.axes._subplots", "SubplotBase") extern class SubplotBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,7 +46,6 @@ package matplotlib.axes._subplots;
 		being created.  *plotNum* starts at 1 in the upper left
 		corner and increases to the right.
 		
-		
 		If *numRows* <= *numCols* <= *plotNum* < 10, *args* can be the
 		decimal integer *numRows* * 100 + *numCols* * 10 + *plotNum*.
 	**/
@@ -61,7 +60,6 @@ package matplotlib.axes._subplots;
 		being created.  *plotNum* starts at 1 in the upper left
 		corner and increases to the right.
 		
-		
 		If *numRows* <= *numCols* <= *plotNum* < 10, *args* can be the
 		decimal integer *numRows* * 100 + *numCols* * 10 + *plotNum*.
 	**/
@@ -72,7 +70,7 @@ package matplotlib.axes._subplots;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,13 +121,13 @@ package matplotlib.axes._subplots;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		make a twinx axes of self. This is used for twinx and twiny.
+		Make a twinx axes of self. This is used for twinx and twiny.
 	**/
 	public function _make_twin_axes(?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -141,6 +139,10 @@ package matplotlib.axes._subplots;
 	**/
 	public function get_geometry():Dynamic;
 	/**
+		get the GridSpec instance associated with the subplot
+	**/
+	public function get_gridspec():Dynamic;
+	/**
 		get the SubplotSpec instance associated with the subplot
 	**/
 	public function get_subplotspec():Dynamic;
@@ -149,9 +151,10 @@ package matplotlib.axes._subplots;
 	public function is_last_col():Dynamic;
 	public function is_last_row():Dynamic;
 	/**
-		set the visible property on ticklabels so xticklabels are
-		visible only if the subplot is in the last row and yticklabels
-		are visible only if the subplot is in the first column
+		Only show "outer" labels and tick labels.
+		
+		x-labels are only kept for subplots on the last row; y-labels only for
+		subplots on the first column.
 	**/
 	public function label_outer():Dynamic;
 	/**

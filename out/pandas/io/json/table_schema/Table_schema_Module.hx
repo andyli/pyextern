@@ -86,6 +86,44 @@ package pandas.io.json.table_schema;
 	**/
 	static public function build_table_schema(data:Dynamic, ?index:Dynamic, ?primary_key:Dynamic, ?version:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
+		Converts a JSON field descriptor into its corresponding NumPy / pandas type
+		
+		Parameters
+		----------
+		field
+		    A JSON field descriptor
+		
+		Returns
+		-------
+		dtype
+		
+		Raises
+		-----
+		ValueError
+		    If the type of the provided field is unknown or currently unsupported
+		
+		Examples
+		--------
+		>>> convert_json_field_to_pandas_type({'name': 'an_int',
+		                                       'type': 'integer'})
+		'int64'
+		>>> convert_json_field_to_pandas_type({'name': 'a_categorical',
+		                                       'type': 'any',
+		                                       'contraints': {'enum': [
+		                                                      'a', 'b', 'c']},
+		                                       'ordered': True})
+		'CategoricalDtype(categories=['a', 'b', 'c'], ordered=True)'
+		>>> convert_json_field_to_pandas_type({'name': 'a_datetime',
+		                                       'type': 'datetime'})
+		'datetime64[ns]'
+		>>> convert_json_field_to_pandas_type({'name': 'a_datetime_with_tz',
+		                                       'type': 'datetime',
+		                                       'tz': 'US/Central'})
+		'datetime64[ns, US/Central]'
+	**/
+	static public function convert_json_field_to_pandas_type(field:Dynamic):Dynamic;
+	static public function convert_pandas_type_to_json_field(arr:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
 		Check whether the provided array or dtype is of a boolean dtype.
 		
 		Parameters
@@ -352,9 +390,50 @@ package pandas.io.json.table_schema;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function make_field(arr:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Converts JSON as string to dict object structure. Use precise_float=True to use high precision float decoder.
+	**/
+	static public function loads(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Builds a DataFrame from a given schema
+		
+		Parameters
+		----------
+		json :
+		    A JSON table schema
+		precise_float : boolean
+		    Flag controlling precision when decoding string to double values, as
+		    dictated by ``read_json``
+		
+		Returns
+		-------
+		df : DataFrame
+		
+		Raises
+		------
+		NotImplementedError
+		    If the JSON table schema contains either timezone or timedelta data
+		
+		Notes
+		-----
+		    Because :func:`DataFrame.to_json` uses the string 'index' to denote a
+		    name-less :class:`Index`, this function sets the name of the returned
+		    :class:`DataFrame` to ``None`` when said string is encountered with a
+		    normal :class:`Index`. For a :class:`MultiIndex`, the same limitation
+		    applies to any strings beginning with 'level_'. Therefore, an
+		    :class:`Index` name of 'index'  and :class:`MultiIndex` names starting
+		    with 'level_' are not supported.
+		
+		See also
+		--------
+		build_table_schema : inverse function
+		pandas.read_json
+	**/
+	static public function parse_table_schema(json:Dynamic, precise_float:Dynamic):pandas.DataFrame;
 	/**
 		Sets index names to 'index' for regular, or 'level_x' for Multi
 	**/

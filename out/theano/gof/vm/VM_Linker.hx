@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gof.vm;
 @:pythonImport("theano.gof.vm", "VM_Linker") extern class VM_Linker {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package theano.gof.vm;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,7 +104,7 @@ package theano.gof.vm;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -119,8 +119,33 @@ package theano.gof.vm;
 		fgraph
 		    A PerformLinker can have accepted one FunctionGraph instance
 		    at a time.
+		
 		no_recycling
-		    WRITEME
+		
+		    no_recycling is a list of storage (list of 1 element, the
+		    value corresponding to one variable). Those variable
+		    storage should not be reused after the call that created
+		    them.
+		
+		    This happen for example for output of the graph that we
+		    give to the user. We don't want to reuse those object in
+		    case the user have kept it.
+		
+		    VM_Linker make sure this happen by setting the list
+		    element to None at the start of each call.
+		
+		    Older Linker use not exactly the same mechanism. They will
+		    also modify the c code to don't look up the value in the
+		    storage. This cause duplicate c code compilation for the
+		    same op if they are in the middle of the graph or in the
+		    no_recycling. We don't want that, so compile all c code
+		    the same (middle of the graph vs output).
+		
+		    TODO: change the logic to remove the reference at the end
+		    of the call instead of the start. This will request all VM
+		    implementation (Loop, LoopGC, Stack, CVM).__call__ to
+		    return the user outputs as Function.__call__ won't be able
+		    to find them anymore.
 		
 		Returns
 		-------

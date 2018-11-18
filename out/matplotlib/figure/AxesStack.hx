@@ -2,10 +2,10 @@
 package matplotlib.figure;
 @:pythonImport("matplotlib.figure", "AxesStack") extern class AxesStack {
 	/**
-		return the current element, or None
+		Return the current element, or None.
 	**/
 	public function __call__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __contains__(a:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -58,7 +58,7 @@ package matplotlib.figure;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -110,7 +110,7 @@ package matplotlib.figure;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -119,16 +119,18 @@ package matplotlib.figure;
 	/**
 		Add Axes *a*, with key *key*, to the stack, and return the stack.
 		
+		If *key* is unhashable, replace it by a unique, arbitrary object.
+		
 		If *a* is already on the stack, don't add it again, but
 		return *None*.
 	**/
 	public function add(key:Dynamic, a:Dynamic):Dynamic;
 	/**
-		Return a list of the Axes instances that have been added to the figure
+		Return a list of the Axes instances that have been added to the figure.
 	**/
 	public function as_list():Dynamic;
 	/**
-		move the position back and return the current element
+		Move the position back and return the current element.
 	**/
 	public function back():Dynamic;
 	/**
@@ -137,7 +139,7 @@ package matplotlib.figure;
 	**/
 	public function bubble(a:Dynamic):Dynamic;
 	/**
-		empty the stack
+		Empty the stack.
 	**/
 	public function clear():Dynamic;
 	/**
@@ -146,23 +148,29 @@ package matplotlib.figure;
 		If no axes exists on the stack, then returns ``(None, None)``.
 	**/
 	public function current_key_axes():Dynamic;
+	/**
+		Return whether the stack is empty.
+	**/
 	public function empty():Dynamic;
 	/**
-		move the position forward and return the current element
+		Move the position forward and return the current element.
 	**/
 	public function forward():Dynamic;
 	/**
 		Return the Axes instance that was added with *key*.
-		If it is not present, return None.
+		If it is not present, return *None*.
 	**/
 	public function get(key:Dynamic):Dynamic;
 	/**
-		push the first element onto the top of the stack
+		Push the first element onto the top of the stack.
+		
+		The first element is returned.
 	**/
 	public function home():Dynamic;
 	/**
-		push object onto stack at current position - all elements
-		occurring later than the current position are discarded
+		Push *o* to the stack at current position.  Discard all later elements.
+		
+		*o* is returned.
 	**/
 	public function push(o:Dynamic):Dynamic;
 	/**

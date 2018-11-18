@@ -52,7 +52,7 @@ package tensorflow.contrib.framework.python.ops.ops;
 		  would print the string `scope1/scope2`.
 		
 		Returns:
-		  A string represnting the current name scope.
+		  A string representing the current name scope.
 	**/
 	static public function get_name_scope():Dynamic;
 	static public var print_function : Dynamic;

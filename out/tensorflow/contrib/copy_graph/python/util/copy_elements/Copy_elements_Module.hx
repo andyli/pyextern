@@ -12,7 +12,9 @@ package tensorflow.contrib.copy_graph.python.util.copy_elements;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Given an `Operation` 'org_instance` from one `Graph`,
+		Returns a copy of an operation from another Graph under a specified scope.
+		
+		Given an `Operation` `org_instance` from one `Graph`,
 		initializes and returns a copy of it from another `Graph`,
 		under the specified scope (default `""`).
 		

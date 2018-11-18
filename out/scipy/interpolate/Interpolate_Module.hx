@@ -250,7 +250,7 @@ package scipy.interpolate;
 		      more details.
 		
 		    ``linear``
-		      tesselate the input point set to n-dimensional
+		      tessellate the input point set to n-dimensional
 		      simplices, and interpolate linearly on each simplex.  See
 		      `LinearNDInterpolator` for more details.
 		
@@ -274,6 +274,11 @@ package scipy.interpolate;
 		    incommensurable units and differ by many orders of magnitude.
 		
 		    .. versionadded:: 0.14.0
+		    
+		Returns
+		-------
+		ndarray
+		    Array of interpolated values.
 		
 		Notes
 		-----
@@ -488,8 +493,31 @@ package scipy.interpolate;
 		
 		Returns
 		-------
-		lagrange : numpy.poly1d instance
+		lagrange : `numpy.poly1d` instance
 		    The Lagrange interpolating polynomial.
+		
+		Examples
+		--------
+		Interpolate :math:`f(x) = x^3` by 3 points.
+		
+		>>> from scipy.interpolate import lagrange
+		>>> x = np.array([0, 1, 2])
+		>>> y = x**3
+		>>> poly = lagrange(x, y)
+		
+		Since there are only 3 points, Lagrange polynomial has degree 2. Explicitly,
+		it is given by
+		
+		.. math::
+		
+		    \begin{aligned}
+		        L(x) &= 1\times \frac{x (x - 2)}{-1} + 8\times \frac{x (x-1)}{2} \\
+		             &= x (-2 + 3x)
+		    \end{aligned}
+		
+		>>> from numpy.polynomial.polynomial import Polynomial
+		>>> Polynomial(poly).coef
+		array([ 3., -2.,  0.])
 	**/
 	static public function lagrange(x:Dynamic, w:Dynamic):Dynamic;
 	/**
@@ -517,6 +545,15 @@ package scipy.interpolate;
 		    be an iterable of pairs ``(order, value)`` which gives the values of
 		    derivatives of specified orders at the given edge of the interpolation
 		    interval.
+		    Alternatively, the following string aliases are recognized:
+		
+		    * ``"clamped"``: The first derivatives at the ends are zero. This is
+		       equivalent to ``bc_type=((1, 0.0), (1, 0.0))``.
+		    * ``"natural"``: The second derivatives at ends are zero. This is
+		      equivalent to ``bc_type=((2, 0.0), (2, 0.0))``.
+		    * ``"not-a-knot"`` (default): The first and second segments are the same
+		      polynomial. This is equivalent to having ``bc_type=None``.
+		
 		axis : int, optional
 		    Interpolation axis. Default is 0.
 		check_finite : bool, optional
@@ -554,8 +591,8 @@ package scipy.interpolate;
 		
 		Here we use a 'natural' spline, with zero 2nd derivatives at edges:
 		
-		>>> l, r = [(2, 0)], [(2, 0)]
-		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))
+		>>> l, r = [(2, 0.0)], [(2, 0.0)]
+		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))  # or, bc_type="natural"
 		>>> np.allclose(b_n(x), y)
 		True
 		>>> x0, x1 = x[0], x[-1]
@@ -1216,6 +1253,12 @@ package scipy.interpolate;
 		See `splev` for evaluation of the spline and its derivatives.
 		The number of dimensions N must be smaller than 11.
 		
+		The number of coefficients in the `c` array is ``k+1`` less then the number
+		of knots, ``len(t)``. This is in contrast with `splrep`, which zero-pads
+		the array of coefficients to have the same length as the array of knots.
+		These additional coefficients are ignored by evaluation routines, `splev`
+		and `BSpline`.
+		
 		References
 		----------
 		.. [1] P. Dierckx, "Algorithms for smoothing data with periodic and
@@ -1344,6 +1387,11 @@ package scipy.interpolate;
 		i.e., there must be a subset of data points ``x[j]`` such that
 		``t[j] < x[j] < t[j+k+1]``, for ``j=0, 1,...,n-k-2``.
 		
+		This routine zero-pads the coefficients array ``c`` to have the same length
+		as the array of knots ``t`` (the trailing ``k + 1`` coefficients are ignored
+		by the evaluation routines, `splev` and `BSpline`.) This is in contrast with
+		`splprep`, which does not zero-pad the coefficients.
+		
 		References
 		----------
 		Based on algorithms described in [1]_, [2]_, [3]_, and [4]_:
@@ -1424,66 +1472,5 @@ package scipy.interpolate;
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
 	static public function sproot(tck:Dynamic, ?mest:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 }

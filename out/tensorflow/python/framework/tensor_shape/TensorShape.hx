@@ -5,7 +5,7 @@ package tensorflow.python.framework.tensor_shape;
 		Returns True if this shape contains non-zero information.
 	**/
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,8 +46,8 @@ package tensorflow.python.framework.tensor_shape;
 		  slice.
 		
 		Raises:
-		  ValueError: If `key` is a slice, and any of its elements are negative, or
-		    if `self` is completely unknown and the step is set.
+		  ValueError: If `key` is a slice and `self` is completely unknown and
+		    the step is set.
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	/**
@@ -84,7 +84,7 @@ package tensorflow.python.framework.tensor_shape;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns `self.dims` if the rank is known, otherwise raises ValueError.
 	**/
@@ -117,7 +117,7 @@ package tensorflow.python.framework.tensor_shape;
 	/**
 		helper for pickle
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -147,11 +147,13 @@ package tensorflow.python.framework.tensor_shape;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Returns a list of integers or `None` for each dimension.
 		
@@ -286,6 +288,26 @@ package tensorflow.python.framework.tensor_shape;
 		  ValueError: If `self` and `other` are not compatible.
 	**/
 	public function merge_with(other:Dynamic):Dynamic;
+	/**
+		Returns the most specific TensorShape compatible with `self` and `other`.
+		
+		* TensorShape([None, 1]) is the most specific TensorShape compatible with
+		  both TensorShape([2, 1]) and TensorShape([5, 1]). Note that
+		  TensorShape(None) is also compatible with above mentioned TensorShapes.
+		
+		* TensorShape([1, 2, 3]) is the most specific TensorShape compatible with
+		  both TensorShape([1, 2, 3]) and TensorShape([1, 2, 3]). There are more
+		  less specific TensorShapes compatible with above mentioned TensorShapes,
+		  e.g. TensorShape([1, 2, None]), TensorShape(None).
+		
+		Args:
+		  other: Another `TensorShape`.
+		
+		Returns:
+		  A `TensorShape` which is the most specific compatible shape of `self`
+		  and `other`.
+	**/
+	public function most_specific_compatible_shape(other:Dynamic):Dynamic;
 	/**
 		Returns the rank of this shape, or None if it is unspecified.
 	**/

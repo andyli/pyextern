@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.parsers;
 @:pythonImport("pandas.io.parsers", "FixedWidthFieldParser") extern class FixedWidthFieldParser {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package pandas.io.parsers;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +107,7 @@ package pandas.io.parsers;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -257,7 +257,6 @@ package pandas.io.parsers;
 	public function _search_replace_num_columns(lines:Dynamic, search:Dynamic, replace:Dynamic):Dynamic;
 	public function _set_no_thousands_columns():Dynamic;
 	public function _should_parse_dates(i:Dynamic):Dynamic;
-	public function _to_recarray(data:Dynamic, columns:Dynamic):Dynamic;
 	public function close():Dynamic;
 	public function get_chunk(?size:Dynamic):Dynamic;
 	public function read(?rows:Dynamic):Dynamic;

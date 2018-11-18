@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_tools;
 @:pythonImport("matplotlib.backend_tools", "ToolViewsPositions") extern class ToolViewsPositions {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.backend_tools;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,19 +103,34 @@ package matplotlib.backend_tools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Return the original and modified positions for the specified axes
+		
+		Parameters
+		----------
+		ax : (matplotlib.axes.AxesSubplot)
+		The axes to get the positions for
+		
+		Returns
+		-------
+		limits : (tuple)
+		A tuple of the original and modified positions
+	**/
+	public function _axes_pos(ax:Dynamic):Dynamic;
+	/**
 		Add the current figure to the stack of views and positions
 	**/
-	public function add_figure():Dynamic;
+	public function add_figure(figure:Dynamic):Dynamic;
 	/**
 		Back one step in the stack of views and positions
 	**/
 	public function back():Dynamic;
+	public var canvas : Dynamic;
 	/**
 		Reset the axes stack
 	**/
@@ -144,13 +159,22 @@ package matplotlib.backend_tools;
 	**/
 	public var name : Dynamic;
 	/**
-		push the current view limits and position onto the stack
+		Push the current view limits and position onto their respective stacks
 	**/
-	public function push_current():Dynamic;
+	public function push_current(?figure:Dynamic):Dynamic;
 	/**
 		Redraw the canvases, update the locators
 	**/
 	public function refresh_locators():Dynamic;
+	/**
+		Assign a figure to the tool
+		
+		Parameters
+		----------
+		figure: `Figure`
+	**/
+	public function set_figure(figure:Dynamic):Dynamic;
+	public var toolmanager : Dynamic;
 	/**
 		Called when this tool gets used
 		
@@ -168,8 +192,15 @@ package matplotlib.backend_tools;
 	**/
 	public function trigger(sender:Dynamic, event:Dynamic, ?data:Dynamic):Dynamic;
 	/**
-		Update the viewlim and position from the view and
-		position stack for each axes
+		Make sure that self.home_views has an entry for all axes present in the
+		figure
+	**/
+	public function update_home_views(?figure:Dynamic):Dynamic;
+	/**
+		Update the view limits and position for each axes from the current
+		stack position. If any axes are present in the figure that aren't in
+		the current stack position, use the home view limits for those axes and
+		don't update *any* positions.
 	**/
 	public function update_view():Dynamic;
 }

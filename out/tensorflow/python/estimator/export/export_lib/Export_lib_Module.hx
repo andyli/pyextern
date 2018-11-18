@@ -9,14 +9,13 @@ package tensorflow.python.estimator.export.export_lib;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Build a serving_input_receiver_fn expecting fed tf.Examples.
 		
-		Creates an input_fn that expects a serialized tf.Example fed into a string
-		placeholder.  The function parses the tf.Example according to the provided
-		feature_spec, and returns all parsed Tensors as features.  This input_fn is
-		for use at serving time, so the labels return value is always None.
+		Creates a serving_input_receiver_fn that expects a serialized tf.Example fed
+		into a string placeholder.  The function parses the tf.Example according to
+		the provided feature_spec, and returns all parsed Tensors as features.
 		
 		Args:
 		  feature_spec: a dict of string to `VarLenFeature`/`FixedLenFeature`.
@@ -42,4 +41,6 @@ package tensorflow.python.estimator.export.export_lib;
 		  A serving_input_receiver_fn.
 	**/
 	static public function build_raw_serving_input_receiver_fn(features:Dynamic, ?default_batch_size:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
 }

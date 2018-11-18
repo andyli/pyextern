@@ -67,7 +67,15 @@ package numpy.lib.type_check;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -164,7 +172,7 @@ package numpy.lib.type_check;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -228,9 +236,9 @@ package numpy.lib.type_check;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -291,8 +299,8 @@ package numpy.lib.type_check;
 		an integer array, the minimum precision type that is returned is a
 		64-bit floating point dtype.
 		
-		All input arrays can be safely cast to the returned dtype without loss
-		of information.
+		All input arrays except int64 and uint64 can be safely cast to the
+		returned dtype without loss of information.
 		
 		Parameters
 		----------
@@ -375,7 +383,7 @@ package numpy.lib.type_check;
 		Examples
 		--------
 		>>> np.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])
-		array([ True, False, False, False, False,  True], dtype=bool)
+		array([ True, False, False, False, False,  True])
 	**/
 	static public function iscomplex(x:Dynamic):Dynamic;
 	/**
@@ -433,13 +441,8 @@ package numpy.lib.type_check;
 		Returns
 		-------
 		y : ndarray or bool
-		    For scalar input, the result is a new boolean with value True if
-		    the input is NaN; otherwise the value is False.
-		
-		    For array input, the result is a boolean array of the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is NaN; otherwise the values are
-		    False.
+		    True where ``x`` is NaN, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -457,7 +460,7 @@ package numpy.lib.type_check;
 		>>> np.isnan(np.inf)
 		False
 		>>> np.isnan([np.log(-1.),1.,np.log(0)])
-		array([ True, False, False], dtype=bool)
+		array([ True, False, False])
 	**/
 	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -506,7 +509,7 @@ package numpy.lib.type_check;
 		>>> np.isneginf(np.PINF)
 		array(False, dtype=bool)
 		>>> np.isneginf([-np.inf, 0., np.inf])
-		array([ True, False, False], dtype=bool)
+		array([ True, False, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -561,7 +564,7 @@ package numpy.lib.type_check;
 		>>> np.isposinf(np.NINF)
 		array(False, dtype=bool)
 		>>> np.isposinf([-np.inf, 0., np.inf])
-		array([False, False,  True], dtype=bool)
+		array([False, False,  True])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -595,7 +598,7 @@ package numpy.lib.type_check;
 		Examples
 		--------
 		>>> np.isreal([1+1j, 1+0j, 4.5, 3, 2, 2j])
-		array([False,  True,  True,  True,  True, False], dtype=bool)
+		array([False,  True,  True,  True,  True, False])
 	**/
 	static public function isreal(x:Dynamic):Dynamic;
 	/**
@@ -672,15 +675,20 @@ package numpy.lib.type_check;
 	**/
 	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):String;
 	/**
-		Replace nan with zero and inf with finite numbers.
+		Replace NaN with zero and infinity with large finite numbers.
 		
-		Returns an array or scalar replacing Not a Number (NaN) with zero,
-		(positive) infinity with a very large number and negative infinity
-		with a very small (or negative) number.
+		If `x` is inexact, NaN is replaced by zero, and infinity and -infinity
+		replaced by the respectively largest and most negative finite floating
+		point values representable by ``x.dtype``.
+		
+		For complex dtypes, the above is applied to each of the real and
+		imaginary components of `x` separately.
+		
+		If `x` is not inexact, then no replacements are made.
 		
 		Parameters
 		----------
-		x : array_like
+		x : scalar or array_like
 		    Input data.
 		copy : bool, optional
 		    Whether to create a copy of `x` (True) or to replace values
@@ -693,12 +701,8 @@ package numpy.lib.type_check;
 		Returns
 		-------
 		out : ndarray
-		    New Array with the same shape as `x` and dtype of the element in
-		    `x`  with the greatest precision. If `x` is inexact, then NaN is
-		    replaced by zero, and infinity (-infinity) is replaced by the
-		    largest (smallest or most negative) floating point value that fits
-		    in the output dtype. If `x` is not inexact, then a copy of `x` is
-		    returned.
+		    `x`, with the non-finite values replaced. If `copy` is False, this may
+		    be `x` itself.
 		
 		See Also
 		--------
@@ -713,14 +717,23 @@ package numpy.lib.type_check;
 		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
-		
 		Examples
 		--------
-		>>> np.set_printoptions(precision=8)
+		>>> np.nan_to_num(np.inf)
+		1.7976931348623157e+308
+		>>> np.nan_to_num(-np.inf)
+		-1.7976931348623157e+308
+		>>> np.nan_to_num(np.nan)
+		0.0
 		>>> x = np.array([np.inf, -np.inf, np.nan, -128, 128])
 		>>> np.nan_to_num(x)
 		array([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000,
 		        -1.28000000e+002,   1.28000000e+002])
+		>>> y = np.array([complex(np.inf, np.nan), np.nan, complex(np.nan, np.inf)])
+		>>> np.nan_to_num(y)
+		array([  1.79769313e+308 +0.00000000e+000j,
+		         0.00000000e+000 +0.00000000e+000j,
+		         0.00000000e+000 +1.79769313e+308j])
 	**/
 	static public function nan_to_num(x:Dynamic, ?copy:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
@@ -786,12 +799,12 @@ package numpy.lib.type_check;
 		-----
 		Machine epsilon varies from machine to machine and between data types
 		but Python floats on most platforms have a machine epsilon equal to
-		2.2204460492503131e-16.  You can use 'np.finfo(np.float).eps' to print
+		2.2204460492503131e-16.  You can use 'np.finfo(float).eps' to print
 		out the machine epsilon for floats.
 		
 		Examples
 		--------
-		>>> np.finfo(np.float).eps
+		>>> np.finfo(float).eps
 		2.2204460492503131e-16
 		
 		>>> np.real_if_close([2.1 + 4e-14j], tol=1000)
@@ -855,14 +868,15 @@ package numpy.lib.type_check;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -872,17 +886,16 @@ package numpy.lib.type_check;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

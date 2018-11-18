@@ -9,6 +9,7 @@ package torch.nn.modules.utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _list_with_default(out_size:Dynamic, defaults:Dynamic):Dynamic;
 	static public function _ntuple(n:Dynamic):Dynamic;
 	static public function _pair(x:Dynamic):Dynamic;
 	static public function _quadruple(x:Dynamic):Dynamic;

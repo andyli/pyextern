@@ -129,7 +129,7 @@ package scipy.sparse.linalg.isolve._iterative;
 	**/
 	static public function ccgsrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = cgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob)
+		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = cgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob,tol)
 		
 		Wrapper for ``cgmresrevcom``.
 		
@@ -146,6 +146,7 @@ package scipy.sparse.linalg.isolve._iterative;
 		ndx1 : input int
 		ndx2 : input int
 		ijob : input int
+		tol : input float
 		
 		Returns
 		-------
@@ -190,26 +191,6 @@ package scipy.sparse.linalg.isolve._iterative;
 		ijob : int
 	**/
 	static public function cqmrrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		bnrm2,resid,info = cstoptest2(r,b,bnrm2,tol,info)
-		
-		Wrapper for ``cstoptest2``.
-		
-		Parameters
-		----------
-		r : input rank-1 array('F') with bounds (n)
-		b : input rank-1 array('F') with bounds (n)
-		bnrm2 : input float
-		tol : input float
-		info : input int
-		
-		Returns
-		-------
-		bnrm2 : float
-		resid : float
-		info : int
-	**/
-	static public function cstoptest2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = dbicgrevcom(b,x,work,iter,resid,info,ndx1,ndx2,ijob)
 		
@@ -331,7 +312,7 @@ package scipy.sparse.linalg.isolve._iterative;
 	**/
 	static public function dcgsrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = dgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob)
+		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = dgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob,tol)
 		
 		Wrapper for ``dgmresrevcom``.
 		
@@ -348,6 +329,7 @@ package scipy.sparse.linalg.isolve._iterative;
 		ndx1 : input int
 		ndx2 : input int
 		ijob : input int
+		tol : input float
 		
 		Returns
 		-------
@@ -392,26 +374,6 @@ package scipy.sparse.linalg.isolve._iterative;
 		ijob : int
 	**/
 	static public function dqmrrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		bnrm2,resid,info = dstoptest2(r,b,bnrm2,tol,info)
-		
-		Wrapper for ``dstoptest2``.
-		
-		Parameters
-		----------
-		r : input rank-1 array('d') with bounds (n)
-		b : input rank-1 array('d') with bounds (n)
-		bnrm2 : input float
-		tol : input float
-		info : input int
-		
-		Returns
-		-------
-		bnrm2 : float
-		resid : float
-		info : int
-	**/
-	static public function dstoptest2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = sbicgrevcom(b,x,work,iter,resid,info,ndx1,ndx2,ijob)
 		
@@ -533,7 +495,7 @@ package scipy.sparse.linalg.isolve._iterative;
 	**/
 	static public function scgsrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = sgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob)
+		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = sgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob,tol)
 		
 		Wrapper for ``sgmresrevcom``.
 		
@@ -550,6 +512,7 @@ package scipy.sparse.linalg.isolve._iterative;
 		ndx1 : input int
 		ndx2 : input int
 		ijob : input int
+		tol : input float
 		
 		Returns
 		-------
@@ -594,26 +557,6 @@ package scipy.sparse.linalg.isolve._iterative;
 		ijob : int
 	**/
 	static public function sqmrrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		bnrm2,resid,info = sstoptest2(r,b,bnrm2,tol,info)
-		
-		Wrapper for ``sstoptest2``.
-		
-		Parameters
-		----------
-		r : input rank-1 array('f') with bounds (n)
-		b : input rank-1 array('f') with bounds (n)
-		bnrm2 : input float
-		tol : input float
-		info : input int
-		
-		Returns
-		-------
-		bnrm2 : float
-		resid : float
-		info : int
-	**/
-	static public function sstoptest2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = zbicgrevcom(b,x,work,iter,resid,info,ndx1,ndx2,ijob)
 		
@@ -735,7 +678,7 @@ package scipy.sparse.linalg.isolve._iterative;
 	**/
 	static public function zcgsrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = zgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob)
+		x,iter,resid,info,ndx1,ndx2,sclr1,sclr2,ijob = zgmresrevcom(b,x,restrt,work,work2,iter,resid,info,ndx1,ndx2,ijob,tol)
 		
 		Wrapper for ``zgmresrevcom``.
 		
@@ -752,6 +695,7 @@ package scipy.sparse.linalg.isolve._iterative;
 		ndx1 : input int
 		ndx2 : input int
 		ijob : input int
+		tol : input float
 		
 		Returns
 		-------
@@ -796,24 +740,4 @@ package scipy.sparse.linalg.isolve._iterative;
 		ijob : int
 	**/
 	static public function zqmrrevcom(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		bnrm2,resid,info = zstoptest2(r,b,bnrm2,tol,info)
-		
-		Wrapper for ``zstoptest2``.
-		
-		Parameters
-		----------
-		r : input rank-1 array('D') with bounds (n)
-		b : input rank-1 array('D') with bounds (n)
-		bnrm2 : input float
-		tol : input float
-		info : input int
-		
-		Returns
-		-------
-		bnrm2 : float
-		resid : float
-		info : int
-	**/
-	static public function zstoptest2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

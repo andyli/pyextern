@@ -38,6 +38,7 @@ package tensorflow.contrib.keras.api.keras.datasets.reuters;
 		    oov_char: words that were cut out because of the `num_words`
 		        or `skip_top` limit will be replaced with this character.
 		    index_from: index actual words with this index and higher.
+		    **kwargs: Used for backwards compatibility.
 		
 		Returns:
 		    Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
@@ -48,5 +49,5 @@ package tensorflow.contrib.keras.api.keras.datasets.reuters;
 		Words that were not seen in the training set but are in the test set
 		have simply been skipped.
 	**/
-	static public function load_data(?path:Dynamic, ?num_words:Dynamic, ?skip_top:Dynamic, ?maxlen:Dynamic, ?test_split:Dynamic, ?seed:Dynamic, ?start_char:Dynamic, ?oov_char:Dynamic, ?index_from:Dynamic):Dynamic;
+	static public function load_data(?path:Dynamic, ?num_words:Dynamic, ?skip_top:Dynamic, ?maxlen:Dynamic, ?test_split:Dynamic, ?seed:Dynamic, ?start_char:Dynamic, ?oov_char:Dynamic, ?index_from:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

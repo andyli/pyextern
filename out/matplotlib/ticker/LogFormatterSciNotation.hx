@@ -2,12 +2,12 @@
 package matplotlib.ticker;
 @:pythonImport("matplotlib.ticker", "LogFormatterSciNotation") extern class LogFormatterSciNotation {
 	/**
-		Return the format for tick value `x`.
+		Return the format for tick value *x*.
 		
-		The position `pos` is ignored.
+		The position *pos* is ignored.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -58,7 +58,7 @@ package matplotlib.ticker;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,7 +109,7 @@ package matplotlib.ticker;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -121,7 +121,7 @@ package matplotlib.ticker;
 	public function _num_to_string(x:Dynamic, vmin:Dynamic, vmax:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	/**
-		change the `base` for labeling.
+		Change the *base* for labeling.
 		
 		.. warning::
 		   Should always match the base used for :class:`LogLocator`
@@ -169,7 +169,7 @@ package matplotlib.ticker;
 	/**
 		Use axis view limits to control which ticks are labeled.
 		
-		The ``locs`` parameter is ignored in the present algorithm.
+		The *locs* parameter is ignored in the present algorithm.
 	**/
 	public function set_locs(?locs:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;

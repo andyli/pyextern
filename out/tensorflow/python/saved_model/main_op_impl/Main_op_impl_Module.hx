@@ -36,4 +36,5 @@ package tensorflow.python.saved_model.main_op_impl;
 	**/
 	static public function main_op_with_restore(restore_op_name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.type1font;
 @:pythonImport("matplotlib.type1font", "Type1Font") extern class Type1Font {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package matplotlib.type1font;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,12 +105,9 @@ package matplotlib.type1font;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _comment_re : Dynamic;
-	static public var _delimiter : Dynamic;
 	static public var _instring_re : Dynamic;
-	static public var _name : Dynamic;
-	static public var _number : Dynamic;
 	/**
 		Find the values of various font properties. This limited kind
 		of parsing is described in Chapter 10 "Adobe Type Manager
@@ -130,15 +127,13 @@ package matplotlib.type1font;
 		lines, a cleartomark operator, and possibly something else.
 	**/
 	public function _split(data:Dynamic):Dynamic;
-	static public var _string : Dynamic;
 	static public var _token_re : Dynamic;
 	/**
 		A PostScript tokenizer. Yield (token, value) pairs such as
-		(cls._whitespace, '   ') or (cls._name, '/Foobar').
+		(_TokenType.whitespace, '   ') or (_TokenType.name, '/Foobar').
 	**/
 	static public function _tokens(text:Dynamic):Dynamic;
 	static public function _transformer(tokens:Dynamic, slant:Dynamic, extend:Dynamic):Dynamic;
-	static public var _whitespace : Dynamic;
 	static public var _whitespace_re : Dynamic;
 	public var parts : Dynamic;
 	public var prop : Dynamic;

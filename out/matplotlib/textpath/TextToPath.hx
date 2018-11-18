@@ -3,7 +3,7 @@ package matplotlib.textpath;
 @:pythonImport("matplotlib.textpath", "TextToPath") extern class TextToPath {
 	static public var DPI : Dynamic;
 	static public var FONT_SCALE : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -40,12 +40,12 @@ package matplotlib.textpath;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialization
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
-		Initialization
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new():Void;
 	/**
@@ -54,7 +54,7 @@ package matplotlib.textpath;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,12 +105,11 @@ package matplotlib.textpath;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _get_adobe_standard_encoding():Dynamic;
 	/**
 		Return a unique id for the given font and character-code set.
 	**/
@@ -124,6 +123,7 @@ package matplotlib.textpath;
 	**/
 	public function _get_font(prop:Dynamic):Dynamic;
 	public function _get_hinting_flag():Dynamic;
+	static public function _get_ps_font_and_encoding(texname:Dynamic):Dynamic;
 	/**
 		convert the string *s* to vertices and codes by parsing it with
 		mathtext.
@@ -135,8 +135,7 @@ package matplotlib.textpath;
 	**/
 	public function get_glyphs_tex(prop:Dynamic, s:Dynamic, ?glyph_map:Dynamic, ?return_new_glyphs_only:Dynamic):Dynamic;
 	/**
-		convert the string *s* to vertices and codes using the
-		provided ttf font.
+		Convert string *s* to vertices and codes using the provided ttf font.
 	**/
 	public function get_glyphs_with_font(font:Dynamic, s:Dynamic, ?glyph_map:Dynamic, ?return_new_glyphs_only:Dynamic):Dynamic;
 	/**
@@ -144,20 +143,47 @@ package matplotlib.textpath;
 	**/
 	public function get_texmanager():Dynamic;
 	/**
-		convert text *s* to path (a tuple of vertices and codes for
+		Convert text *s* to path (a tuple of vertices and codes for
 		matplotlib.path.Path).
 		
-		*prop*
-		  font property
+		Parameters
+		----------
 		
-		*s*
-		  text to be converted
+		prop : `matplotlib.font_manager.FontProperties` instance
+		    The font properties for the text.
 		
-		*usetex*
-		  If True, use matplotlib usetex mode.
+		s : str
+		    The text to be converted.
 		
-		*ismath*
-		  If True, use mathtext parser. Effective only if usetex == False.
+		usetex : bool, optional
+		    Whether to use tex rendering. Defaults to ``False``.
+		
+		ismath : bool, optional
+		    If True, use mathtext parser. Effective only if
+		    ``usetex == False``.
+		
+		Returns
+		-------
+		
+		verts, codes : tuple of lists
+		    *verts*  is a list of numpy arrays containing the x and y
+		    coordinates of the vertices. *codes* is a list of path codes.
+		
+		Examples
+		--------
+		
+		Create a list of vertices and codes from a text, and create a `Path`
+		from those::
+		
+		    from matplotlib.path import Path
+		    from matplotlib.textpath import TextToPath
+		    from matplotlib.font_manager import FontProperties
+		
+		    fp = FontProperties(family="Humor Sans", style="italic")
+		    verts, codes = TextToPath().get_text_path(fp, "ABC")
+		    path = Path(verts, codes, closed=False)
+		
+		Also see `TextPath` for a more direct way to create a path from a text.
 	**/
 	public function get_text_path(prop:Dynamic, s:Dynamic, ?ismath:Dynamic, ?usetex:Dynamic):Dynamic;
 	public function get_text_width_height_descent(s:Dynamic, prop:Dynamic, ismath:Dynamic):Dynamic;
@@ -165,4 +191,11 @@ package matplotlib.textpath;
 		convert the ft2font glyph to vertices and codes.
 	**/
 	public function glyph_to_path(font:Dynamic, ?currx:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The tex_font_map function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var tex_font_map : Dynamic;
 }

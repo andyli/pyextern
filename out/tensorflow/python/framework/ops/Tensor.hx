@@ -5,40 +5,46 @@ package tensorflow.python.framework.ops;
 	/**
 		Computes the absolute value of a tensor.
 		
-		Given a tensor of real numbers `x`, this operation returns a tensor
-		containing the absolute value of each element in `x`. For example, if x is
-		an input element and y is an output element, this operation computes
-		\\\\(y = |x|\\\\).
+		Given a tensor `x` of complex numbers, this operation returns a tensor of type
+		`float32` or `float64` that is the absolute value of each element in `x`. All
+		elements in `x` must be complex numbers of the form \\(a + bj\\). The
+		absolute value is computed as \\( \sqrt{a^2 + b^2}\\).  For example:
+		```python
+		x = tf.constant([[-2.25 + 4.75j], [-3.25 + 5.75j]])
+		tf.abs(x)  # [5.25594902, 6.60492229]
+		```
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor` of type `float32`, `float64`, `int32`, or
-		    `int64`.
+		  x: A `Tensor` or `SparseTensor` of type `float16`, `float32`, `float64`,
+		    `int32`, `int64`, `complex64` or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` or `SparseTensor` the same size and type as `x` with absolute
 		    values.
+		  Note, for `complex64` or `complex128` input, the returned `Tensor` will be
+		    of type `float32` or `float64`, respectively.
 	**/
-	public function __abs__(?name:Dynamic):Dynamic;
+	static public function __abs__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns x + y element-wise.
 		
-		*NOTE*: `Add` supports broadcasting. `AddN` does not. More about broadcasting
+		*NOTE*: `math.add` supports broadcasting. `AddN` does not. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __add__(y:Dynamic):Dynamic;
+	static public function __add__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Returns the truth value of x AND y element-wise.
 		
-		*NOTE*: `LogicalAnd` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_and` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -49,7 +55,7 @@ package tensorflow.python.framework.ops;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __and__(y:Dynamic):Dynamic;
+	static public function __and__(x:Dynamic, y:Dynamic):Dynamic;
 	static public var __array_priority__ : Dynamic;
 	/**
 		Dummy method to prevent a tensor from being used as a Python `bool`.
@@ -73,7 +79,8 @@ package tensorflow.python.framework.ops;
 		  `TypeError`.
 	**/
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __copy__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -94,7 +101,7 @@ package tensorflow.python.framework.ops;
 		Returns:
 		  `x / y` returns the quotient of x and y.
 	**/
-	public function __div__(y:Dynamic):Dynamic;
+	static public function __div__(x:Dynamic, y:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
@@ -109,9 +116,6 @@ package tensorflow.python.framework.ops;
 		`x // y` floor division in Python 3 and in Python 2.7 with
 		`from __future__ import division`.
 		
-		Note that for efficiency, `floordiv` uses C semantics for negative numbers
-		(unlike Python and Numpy).
-		
 		`x` and `y` must have the same type, and the result will have the same type
 		as well.
 		
@@ -121,12 +125,12 @@ package tensorflow.python.framework.ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  `x / y` rounded down (except possibly towards zero for negative integers).
+		  `x / y` rounded down.
 		
 		Raises:
 		  TypeError: If the inputs are complex.
 	**/
-	public function __floordiv__(y:Dynamic):Dynamic;
+	static public function __floordiv__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -134,18 +138,18 @@ package tensorflow.python.framework.ops;
 	/**
 		Returns the truth value of (x >= y) element-wise.
 		
-		*NOTE*: `GreaterEqual` supports broadcasting. More about broadcasting
+		*NOTE*: `math.greater_equal` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __ge__(y:Dynamic, ?name:Dynamic):Dynamic;
+	static public function __ge__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
@@ -156,29 +160,34 @@ package tensorflow.python.framework.ops;
 		This operation extracts the specified region from the tensor.
 		The notation is similar to NumPy with the restriction that
 		currently only support basic indexing. That means that
-		using a tensor as input is not currently allowed
+		using a non-scalar tensor as input is not currently allowed.
 		
 		Some useful examples:
 		
 		```python
 		# strip leading and trailing 2 elements
 		foo = tf.constant([1,2,3,4,5,6])
-		print(foo[2:-2].eval()) # => [3,4]
+		print(foo[2:-2].eval())  # => [3,4]
 		
 		# skip every row and reverse every column
 		foo = tf.constant([[1,2,3], [4,5,6], [7,8,9]])
-		print(foo[::2,::-1].eval()) # => [[3,2,1], [9,8,7]]
+		print(foo[::2,::-1].eval())  # => [[3,2,1], [9,8,7]]
+		
+		# Use scalar tensors as indices on both dimensions
+		print(foo[tf.constant(0), tf.constant(2)].eval())  # => 3
 		
 		# Insert another dimension
 		foo = tf.constant([[1,2,3], [4,5,6], [7,8,9]])
-		print(foo[tf.newaxis, :, :].eval()) # => [[[3,2,1], [9,8,7]]]
-		print(foo[:, tf.newaxis, :].eval()) # => [[[3,2,1]], [[9,8,7]]]
-		print(foo[:, :, tf.newaxis].eval()) # => [[[3],[2],[1]], [[9],[8],[7]]]
+		print(foo[tf.newaxis, :, :].eval()) # => [[[1,2,3], [4,5,6], [7,8,9]]]
+		print(foo[:, tf.newaxis, :].eval()) # => [[[1,2,3]], [[4,5,6]], [[7,8,9]]]
+		print(foo[:, :, tf.newaxis].eval()) # => [[[1],[2],[3]], [[4],[5],[6]],
+		[[7],[8],[9]]]
 		
 		# Ellipses (3 equivalent operations)
-		print(foo[tf.newaxis, :, :].eval()) # => [[[3,2,1], [9,8,7]]]
-		print(foo[tf.newaxis, ...].eval()) # => [[[3,2,1], [9,8,7]]]
-		print(foo[tf.newaxis].eval()) # => [[[3,2,1], [9,8,7]]]
+		foo = tf.constant([[1,2,3], [4,5,6], [7,8,9]])
+		print(foo[tf.newaxis, :, :].eval())  # => [[[1,2,3], [4,5,6], [7,8,9]]]
+		print(foo[tf.newaxis, ...].eval())  # => [[[1,2,3], [4,5,6], [7,8,9]]]
+		print(foo[tf.newaxis].eval())  # => [[[1,2,3], [4,5,6], [7,8,9]]]
 		```
 		
 		Notes:
@@ -200,22 +209,22 @@ package tensorflow.python.framework.ops;
 		  ValueError: If a slice range is negative size.
 		  TypeError: If the slice indices aren't int, slice, or Ellipsis.
 	**/
-	public function __getitem__(slice_spec:Dynamic, ?_var:Dynamic):Dynamic;
+	static public function __getitem__(tensor:Dynamic, slice_spec:Dynamic, ?_var:Dynamic):Dynamic;
 	/**
 		Returns the truth value of (x > y) element-wise.
 		
-		*NOTE*: `Greater` supports broadcasting. More about broadcasting
+		*NOTE*: `math.greater` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __gt__(y:Dynamic, ?name:Dynamic):Dynamic;
+	static public function __gt__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Return hash(self).
 	**/
@@ -253,7 +262,7 @@ package tensorflow.python.framework.ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the truth value of NOT x element-wise.
 		
@@ -264,54 +273,44 @@ package tensorflow.python.framework.ops;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __invert__(?name:Dynamic):Dynamic;
-	/**
-		Dummy method to prevent iteration. Do not call.
-		
-		NOTE(mrry): If we register __getitem__ as an overloaded operator,
-		Python will valiantly attempt to iterate over the Tensor from 0 to
-		infinity.  Declaring this method prevents this unintended
-		behavior.
-		
-		Raises:
-		  TypeError: when invoked.
-	**/
+	static public function __invert__(x:Dynamic, ?name:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Returns the truth value of (x <= y) element-wise.
 		
-		*NOTE*: `LessEqual` supports broadcasting. More about broadcasting
+		*NOTE*: `math.less_equal` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __le__(y:Dynamic, ?name:Dynamic):Dynamic;
+	static public function __le__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the truth value of (x < y) element-wise.
 		
-		*NOTE*: `Less` supports broadcasting. More about broadcasting
+		*NOTE*: `math.less` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __lt__(y:Dynamic, ?name:Dynamic):Dynamic;
+	static public function __lt__(x:Dynamic, y:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
-		The inputs must be matrices (or tensors of rank > 2, representing batches of
-		matrices), with matching inner dimensions, possibly after transposition.
+		The inputs must, following any transpositions, be tensors of rank >= 2
+		where the inner 2 dimensions specify valid matrix multiplication arguments,
+		and any further outer dimensions match.
 		
 		Both matrices must be of the same type. The supported types are:
 		`float16`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
@@ -330,35 +329,46 @@ package tensorflow.python.framework.ops;
 		
 		```python
 		# 2-D tensor `a`
-		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3]) => [[1. 2. 3.]
-		                                                      [4. 5. 6.]]
+		# [[1, 2, 3],
+		#  [4, 5, 6]]
+		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3])
+		
 		# 2-D tensor `b`
-		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2]) => [[7. 8.]
-		                                                         [9. 10.]
-		                                                         [11. 12.]]
-		c = tf.matmul(a, b) => [[58 64]
-		                        [139 154]]
+		# [[ 7,  8],
+		#  [ 9, 10],
+		#  [11, 12]]
+		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2])
+		
+		# `a` * `b`
+		# [[ 58,  64],
+		#  [139, 154]]
+		c = tf.matmul(a, b)
 		
 		
 		# 3-D tensor `a`
+		# [[[ 1,  2,  3],
+		#   [ 4,  5,  6]],
+		#  [[ 7,  8,  9],
+		#   [10, 11, 12]]]
 		a = tf.constant(np.arange(1, 13, dtype=np.int32),
-		                shape=[2, 2, 3])                  => [[[ 1.  2.  3.]
-		                                                       [ 4.  5.  6.]],
-		                                                      [[ 7.  8.  9.]
-		                                                       [10. 11. 12.]]]
+		                shape=[2, 2, 3])
 		
 		# 3-D tensor `b`
+		# [[[13, 14],
+		#   [15, 16],
+		#   [17, 18]],
+		#  [[19, 20],
+		#   [21, 22],
+		#   [23, 24]]]
 		b = tf.constant(np.arange(13, 25, dtype=np.int32),
-		                shape=[2, 3, 2])                   => [[[13. 14.]
-		                                                        [15. 16.]
-		                                                        [17. 18.]],
-		                                                       [[19. 20.]
-		                                                        [21. 22.]
-		                                                        [23. 24.]]]
-		c = tf.matmul(a, b) => [[[ 94 100]
-		                         [229 244]],
-		                        [[508 532]
-		                         [697 730]]]
+		                shape=[2, 3, 2])
+		
+		# `a` * `b`
+		# [[[ 94, 100],
+		#   [229, 244]],
+		#  [[508, 532],
+		#   [697, 730]]]
+		c = tf.matmul(a, b)
 		
 		# Since python >= 3.5 the @ operator is supported (see PEP 465).
 		# In TensorFlow, it simply calls the `tf.matmul()` function, so the
@@ -396,7 +406,7 @@ package tensorflow.python.framework.ops;
 		  ValueError: If transpose_a and adjoint_a, or transpose_b and adjoint_b
 		    are both set to True.
 	**/
-	public function __matmul__(y:Dynamic):Dynamic;
+	static public function __matmul__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
 		
@@ -407,19 +417,19 @@ package tensorflow.python.framework.ops;
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `float32`, `float64`.
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `bfloat16`, `half`, `float32`, `float64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __mod__(y:Dynamic):Dynamic;
+	static public function __mod__(x:Dynamic, y:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Dispatches cwise mul for "Dense*Dense" and "Dense*Sparse".
 	**/
-	public function __mul__(y:Dynamic):Dynamic;
+	static public function __mul__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Return self!=value.
 	**/
@@ -430,13 +440,13 @@ package tensorflow.python.framework.ops;
 		I.e., \\(y = -x\\).
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __neg__(?name:Dynamic):Dynamic;
+	static public function __neg__(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
@@ -453,7 +463,7 @@ package tensorflow.python.framework.ops;
 	/**
 		Returns the truth value of x OR y element-wise.
 		
-		*NOTE*: `LogicalOr` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_or` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -464,49 +474,49 @@ package tensorflow.python.framework.ops;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __or__(y:Dynamic):Dynamic;
+	static public function __or__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Computes the power of one value to another.
 		
-		Given a tensor `x` and a tensor `y`, this operation computes \\\\(x^y\\\\) for
+		Given a tensor `x` and a tensor `y`, this operation computes \\(x^y\\) for
 		corresponding elements in `x` and `y`. For example:
 		
-		```
-		# tensor 'x' is [[2, 2], [3, 3]]
-		# tensor 'y' is [[8, 16], [2, 3]]
-		tf.pow(x, y) ==> [[256, 65536], [9, 27]]
+		```python
+		x = tf.constant([[2, 2], [3, 3]])
+		y = tf.constant([[8, 16], [2, 3]])
+		tf.pow(x, y)  # [[256, 65536], [9, 27]]
 		```
 		
 		Args:
-		  x: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
-		  y: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
+		  x: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
+		  y: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`.
 	**/
-	public function __pow__(y:Dynamic):Dynamic;
+	static public function __pow__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Returns x + y element-wise.
 		
-		*NOTE*: `Add` supports broadcasting. `AddN` does not. More about broadcasting
+		*NOTE*: `math.add` supports broadcasting. `AddN` does not. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __radd__(x:Dynamic):Dynamic;
+	static public function __radd__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns the truth value of x AND y element-wise.
 		
-		*NOTE*: `LogicalAnd` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_and` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -517,7 +527,7 @@ package tensorflow.python.framework.ops;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __rand__(x:Dynamic):Dynamic;
+	static public function __rand__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Divide two values using Python 2 semantics. Used for Tensor.__div__.
 		
@@ -528,7 +538,7 @@ package tensorflow.python.framework.ops;
 		Returns:
 		  `x / y` returns the quotient of x and y.
 	**/
-	public function __rdiv__(x:Dynamic):Dynamic;
+	static public function __rdiv__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -550,9 +560,6 @@ package tensorflow.python.framework.ops;
 		`x // y` floor division in Python 3 and in Python 2.7 with
 		`from __future__ import division`.
 		
-		Note that for efficiency, `floordiv` uses C semantics for negative numbers
-		(unlike Python and Numpy).
-		
 		`x` and `y` must have the same type, and the result will have the same type
 		as well.
 		
@@ -562,17 +569,18 @@ package tensorflow.python.framework.ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  `x / y` rounded down (except possibly towards zero for negative integers).
+		  `x / y` rounded down.
 		
 		Raises:
 		  TypeError: If the inputs are complex.
 	**/
-	public function __rfloordiv__(x:Dynamic):Dynamic;
+	static public function __rfloordiv__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
-		The inputs must be matrices (or tensors of rank > 2, representing batches of
-		matrices), with matching inner dimensions, possibly after transposition.
+		The inputs must, following any transpositions, be tensors of rank >= 2
+		where the inner 2 dimensions specify valid matrix multiplication arguments,
+		and any further outer dimensions match.
 		
 		Both matrices must be of the same type. The supported types are:
 		`float16`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
@@ -591,35 +599,46 @@ package tensorflow.python.framework.ops;
 		
 		```python
 		# 2-D tensor `a`
-		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3]) => [[1. 2. 3.]
-		                                                      [4. 5. 6.]]
+		# [[1, 2, 3],
+		#  [4, 5, 6]]
+		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3])
+		
 		# 2-D tensor `b`
-		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2]) => [[7. 8.]
-		                                                         [9. 10.]
-		                                                         [11. 12.]]
-		c = tf.matmul(a, b) => [[58 64]
-		                        [139 154]]
+		# [[ 7,  8],
+		#  [ 9, 10],
+		#  [11, 12]]
+		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2])
+		
+		# `a` * `b`
+		# [[ 58,  64],
+		#  [139, 154]]
+		c = tf.matmul(a, b)
 		
 		
 		# 3-D tensor `a`
+		# [[[ 1,  2,  3],
+		#   [ 4,  5,  6]],
+		#  [[ 7,  8,  9],
+		#   [10, 11, 12]]]
 		a = tf.constant(np.arange(1, 13, dtype=np.int32),
-		                shape=[2, 2, 3])                  => [[[ 1.  2.  3.]
-		                                                       [ 4.  5.  6.]],
-		                                                      [[ 7.  8.  9.]
-		                                                       [10. 11. 12.]]]
+		                shape=[2, 2, 3])
 		
 		# 3-D tensor `b`
+		# [[[13, 14],
+		#   [15, 16],
+		#   [17, 18]],
+		#  [[19, 20],
+		#   [21, 22],
+		#   [23, 24]]]
 		b = tf.constant(np.arange(13, 25, dtype=np.int32),
-		                shape=[2, 3, 2])                   => [[[13. 14.]
-		                                                        [15. 16.]
-		                                                        [17. 18.]],
-		                                                       [[19. 20.]
-		                                                        [21. 22.]
-		                                                        [23. 24.]]]
-		c = tf.matmul(a, b) => [[[ 94 100]
-		                         [229 244]],
-		                        [[508 532]
-		                         [697 730]]]
+		                shape=[2, 3, 2])
+		
+		# `a` * `b`
+		# [[[ 94, 100],
+		#   [229, 244]],
+		#  [[508, 532],
+		#   [697, 730]]]
+		c = tf.matmul(a, b)
 		
 		# Since python >= 3.5 the @ operator is supported (see PEP 465).
 		# In TensorFlow, it simply calls the `tf.matmul()` function, so the
@@ -657,7 +676,7 @@ package tensorflow.python.framework.ops;
 		  ValueError: If transpose_a and adjoint_a, or transpose_b and adjoint_b
 		    are both set to True.
 	**/
-	public function __rmatmul__(x:Dynamic):Dynamic;
+	static public function __rmatmul__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
 		
@@ -668,22 +687,22 @@ package tensorflow.python.framework.ops;
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `float32`, `float64`.
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `bfloat16`, `half`, `float32`, `float64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __rmod__(x:Dynamic):Dynamic;
+	static public function __rmod__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Dispatches cwise mul for "Dense*Dense" and "Dense*Sparse".
 	**/
-	public function __rmul__(x:Dynamic):Dynamic;
+	static public function __rmul__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns the truth value of x OR y element-wise.
 		
-		*NOTE*: `LogicalOr` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_or` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -694,50 +713,50 @@ package tensorflow.python.framework.ops;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __ror__(x:Dynamic):Dynamic;
+	static public function __ror__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Computes the power of one value to another.
 		
-		Given a tensor `x` and a tensor `y`, this operation computes \\\\(x^y\\\\) for
+		Given a tensor `x` and a tensor `y`, this operation computes \\(x^y\\) for
 		corresponding elements in `x` and `y`. For example:
 		
-		```
-		# tensor 'x' is [[2, 2], [3, 3]]
-		# tensor 'y' is [[8, 16], [2, 3]]
-		tf.pow(x, y) ==> [[256, 65536], [9, 27]]
+		```python
+		x = tf.constant([[2, 2], [3, 3]])
+		y = tf.constant([[8, 16], [2, 3]])
+		tf.pow(x, y)  # [[256, 65536], [9, 27]]
 		```
 		
 		Args:
-		  x: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
-		  y: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
+		  x: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
+		  y: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`.
 	**/
-	public function __rpow__(x:Dynamic):Dynamic;
+	static public function __rpow__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Returns x - y element-wise.
 		
-		*NOTE*: `Sub` supports broadcasting. More about broadcasting
+		*NOTE*: `Subtract` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __rsub__(x:Dynamic):Dynamic;
-	public function __rtruediv__(x:Dynamic):Dynamic;
+	static public function __rsub__(y:Dynamic, x:Dynamic):Dynamic;
+	static public function __rtruediv__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		x ^ y = (x | y) & ~(x & y).
 	**/
-	public function __rxor__(x:Dynamic):Dynamic;
+	static public function __rxor__(y:Dynamic, x:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -754,18 +773,18 @@ package tensorflow.python.framework.ops;
 	/**
 		Returns x - y element-wise.
 		
-		*NOTE*: `Sub` supports broadcasting. More about broadcasting
+		*NOTE*: `Subtract` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __sub__(y:Dynamic):Dynamic;
+	static public function __sub__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -774,8 +793,8 @@ package tensorflow.python.framework.ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __truediv__(y:Dynamic):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __truediv__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -783,17 +802,7 @@ package tensorflow.python.framework.ops;
 	/**
 		x ^ y = (x | y) & ~(x & y).
 	**/
-	public function __xor__(y:Dynamic):Dynamic;
-	/**
-		Add a consumer to this tensor.
-		
-		Args:
-		  consumer: an Operation.
-		
-		Raises:
-		  TypeError: if the consumer is not an Operation.
-	**/
-	public function _add_consumer(consumer:Dynamic):Dynamic;
+	static public function __xor__(x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Return a value to use for the NodeDef "input" attribute.
 		
@@ -808,8 +817,27 @@ package tensorflow.python.framework.ops;
 	**/
 	public function _as_node_def_input():Dynamic;
 	public function _as_tf_output():Dynamic;
-	static public function _override_operator(operator:Dynamic, func:Dynamic):Dynamic;
+	/**
+		Returns the TensorShape of this tensor according to the C API.
+	**/
+	public function _c_api_shape():Dynamic;
+	/**
+		Returns ops needing shape inference to compute target_op's shape.
+	**/
+	public function _get_input_ops_without_shapes(target_op:Dynamic):Dynamic;
+	static public function _override_operator(_operator:Dynamic, func:Dynamic):Dynamic;
+	/**
+		Integer rank of this Tensor, if known, else None.
+		
+		Returns:
+		  Integer rank or None
+	**/
+	public function _rank():Dynamic;
+	public var _shape : Dynamic;
 	public function _shape_as_list():Dynamic;
+	public function _shape_tuple():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Returns a list of `Operation`s that consume this tensor.
 		
@@ -838,7 +866,7 @@ package tensorflow.python.framework.ops;
 		
 		Args:
 		  feed_dict: A dictionary that maps `Tensor` objects to feed values.
-		    See @{tf.Session.run} for a
+		    See `tf.Session.run` for a
 		    description of the valid feed values.
 		  session: (Optional.) The `Session` to be used to evaluate this tensor. If
 		    none, the default session will be used.
@@ -863,7 +891,6 @@ package tensorflow.python.framework.ops;
 		The `Operation` that produces this tensor as an output.
 	**/
 	public var op : Dynamic;
-	static public var session : Dynamic;
 	/**
 		Updates the shape of this tensor.
 		
@@ -888,8 +915,14 @@ package tensorflow.python.framework.ops;
 		==> TensorShape([Dimension(28), Dimension(28), Dimension(3)])
 		```
 		
+		NOTE: This shape is not enforced at runtime. Setting incorrect shapes can
+		result in inconsistencies between the statically-known graph and the runtime
+		value of tensors. For runtime validation of the shape, use `tf.ensure_shape`
+		instead.
+		
 		Args:
-		  shape: A `TensorShape` representing the shape of this tensor.
+		  shape: A `TensorShape` representing the shape of this tensor, a
+		  `TensorShapeProto`, a list, a tuple, or None.
 		
 		Raises:
 		  ValueError: If `shape` is not compatible with the current shape of
@@ -901,7 +934,7 @@ package tensorflow.python.framework.ops;
 		
 		The shape is computed using shape inference functions that are
 		registered in the Op for each `Operation`.  See
-		@{tf.TensorShape}
+		`tf.TensorShape`
 		for more details of what a shape represents.
 		
 		The inferred shape of a tensor is used to provide shape

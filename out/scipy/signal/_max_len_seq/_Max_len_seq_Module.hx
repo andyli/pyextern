@@ -50,8 +50,7 @@ package scipy.signal._max_len_seq;
 		The default values for taps are specifically taken from the first
 		option listed for each value of ``nbits`` in:
 		
-		    http://www.newwaveinstruments.com/resources/articles/
-		        m_sequence_linear_feedback_shift_register_lfsr.htm
+		    http://www.newwaveinstruments.com/resources/articles/m_sequence_linear_feedback_shift_register_lfsr.htm
 		
 		.. versionadded:: 0.15.0
 		

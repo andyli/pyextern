@@ -13,7 +13,9 @@ package scipy.special.spfun_stats;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Logarithm of the absolute value of the Gamma function for real inputs.
+		gammaln(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Logarithm of the absolute value of the Gamma function.
 		
 		Parameters
 		----------
@@ -36,14 +38,9 @@ package scipy.special.spfun_stats;
 		for working in logspace on the real axis without having to deal with
 		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
 		
-		Note that `gammaln` currently accepts complex-valued inputs, but it is not
-		the same function as for real-valued inputs, and the branch is not
-		well-defined --- using `gammaln` with complex is deprecated and will be
-		disallowed in future Scipy versions.
-		
 		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function loggam(x:Dynamic):Dynamic;
+	static public function loggam(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the log of multivariate gamma, also sometimes called the
 		generalized gamma.

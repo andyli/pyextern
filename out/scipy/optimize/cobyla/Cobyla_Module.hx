@@ -30,7 +30,7 @@ package scipy.optimize.cobyla;
 		catol : float
 		    Tolerance (absolute) for constraint violations
 	**/
-	static public function _minimize_cobyla(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?constraints:Dynamic, ?rhobeg:Dynamic, ?tol:Dynamic, ?iprint:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?catol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _minimize_cobyla(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?constraints:Dynamic, ?rhobeg:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?catol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -61,10 +61,8 @@ package scipy.optimize.cobyla;
 		rhoend : float, optional
 		    Final accuracy in the optimization (not precisely guaranteed). This
 		    is a lower bound on the size of the trust region.
-		iprint : {0, 1, 2, 3}, optional
-		    Controls the frequency of output; 0 implies no output.  Deprecated.
 		disp : {0, 1, 2, 3}, optional
-		    Over-rides the iprint interface.  Preferred.
+		    Controls the frequency of output; 0 implies no output.
 		maxfun : int, optional
 		    Maximum number of function evaluations.
 		catol : float, optional
@@ -142,6 +140,6 @@ package scipy.optimize.cobyla;
 		
 		The exact solution is (-sqrt(2)/2, sqrt(2)/2).
 	**/
-	static public function fmin_cobyla(func:Dynamic, x0:Dynamic, cons:Dynamic, ?args:Dynamic, ?consargs:Dynamic, ?rhobeg:Dynamic, ?rhoend:Dynamic, ?iprint:Dynamic, ?maxfun:Dynamic, ?disp:Dynamic, ?catol:Dynamic):Dynamic;
+	static public function fmin_cobyla(func:Dynamic, x0:Dynamic, cons:Dynamic, ?args:Dynamic, ?consargs:Dynamic, ?rhobeg:Dynamic, ?rhoend:Dynamic, ?maxfun:Dynamic, ?disp:Dynamic, ?catol:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

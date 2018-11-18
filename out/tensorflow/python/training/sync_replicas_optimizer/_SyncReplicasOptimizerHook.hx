@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.sync_replicas_optimizer;
 @:pythonImport("tensorflow.python.training.sync_replicas_optimizer", "_SyncReplicasOptimizerHook") extern class _SyncReplicasOptimizerHook {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,7 +38,7 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Creates hook to handle SyncReplicaOptimizer initialization ops.
+		Creates hook to handle SyncReplicasOptimizer initialization ops.
 		
 		Args:
 		  sync_optimizer: `SyncReplicasOptimizer` which this hook will initialize.
@@ -48,7 +48,7 @@ package tensorflow.python.training.sync_replicas_optimizer;
 	@:native("__init__")
 	public function ___init__(sync_optimizer:Dynamic, is_chief:Dynamic, num_tokens:Dynamic):Dynamic;
 	/**
-		Creates hook to handle SyncReplicaOptimizer initialization ops.
+		Creates hook to handle SyncReplicasOptimizer initialization ops.
 		
 		Args:
 		  sync_optimizer: `SyncReplicasOptimizer` which this hook will initialize.
@@ -62,7 +62,7 @@ package tensorflow.python.training.sync_replicas_optimizer;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -113,11 +113,13 @@ package tensorflow.python.training.sync_replicas_optimizer;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Runs SyncReplicasOptimizer initialization ops.
 	**/

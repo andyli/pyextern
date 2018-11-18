@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.pool;
 @:pythonImport("theano.gpuarray.pool") extern class Pool_Module {
+	static public function PoolingMode_t(?name:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -52,8 +53,11 @@ package theano.gpuarray.pool;
 		    If `x` cannot be converted to a TensorType Variable.
 	**/
 	static public function as_tensor_variable(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic):Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function gpu_context_type(?name:Dynamic):Dynamic;
 	static public function gpu_contiguous(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	/**
 		Infer the context name to use from the inputs given
 	**/

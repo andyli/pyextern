@@ -7,7 +7,7 @@ package scipy.stats._multivariate;
 		See `multivariate_normal_frozen` for more information.
 	**/
 	public function __call__(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -58,7 +58,7 @@ package scipy.stats._multivariate;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,11 +109,35 @@ package scipy.stats._multivariate;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Parameters
+		----------
+		x : ndarray
+		    Points at which to evaluate the cumulative distribution function.
+		mean : ndarray
+		    Mean of the distribution
+		cov : array_like
+		    Covariance matrix of the distribution
+		maxpts: integer
+		    The maximum number of points to use for integration
+		abseps: float
+		    Absolute error tolerance
+		releps: float
+		    Relative error tolerance
+		
+		Notes
+		-----
+		As this function does no argument checking, it should not be
+		called directly; use 'cdf' instead.
+		
+		.. versionadded:: 1.0.0
+	**/
+	public function _cdf(x:Dynamic, mean:Dynamic, cov:Dynamic, maxpts:Dynamic, abseps:Dynamic, releps:Dynamic):Dynamic;
 	public function _get_random_state(random_state:Dynamic):Dynamic;
 	/**
 		Parameters
@@ -148,6 +172,44 @@ package scipy.stats._multivariate;
 	**/
 	public function _process_quantiles(x:Dynamic, dim:Dynamic):Dynamic;
 	/**
+		Multivariate normal cumulative distribution function.
+		
+		Parameters
+		----------
+		x : array_like
+		    Quantiles, with the last axis of `x` denoting the components.
+		mean : array_like, optional
+		    Mean of the distribution (default zero)
+		cov : array_like, optional
+		    Covariance matrix of the distribution (default one)
+		allow_singular : bool, optional
+		    Whether to allow a singular covariance matrix.  (Default: False)
+		maxpts: integer, optional
+		    The maximum number of points to use for integration
+		    (default `1000000*dim`)
+		abseps: float, optional
+		    Absolute error tolerance (default 1e-5)
+		releps: float, optional
+		    Relative error tolerance (default 1e-5)
+		
+		Returns
+		-------
+		cdf : ndarray or scalar
+		    Cumulative distribution function evaluated at `x`
+		
+		Notes
+		-----
+		Setting the parameter `mean` to `None` is equivalent to having `mean`
+		    be the zero-vector. The parameter `cov` can be a scalar, in which case
+		    the covariance matrix is the identity times that value, a vector of
+		    diagonal entries for the covariance matrix, or a two-dimensional
+		    array_like.
+		    
+		
+		.. versionadded:: 1.0.0
+	**/
+	public function cdf(x:Dynamic, ?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?maxpts:Dynamic, ?abseps:Dynamic, ?releps:Dynamic):Dynamic;
+	/**
 		Compute the differential entropy of the multivariate normal.
 		
 		Parameters
@@ -165,6 +227,44 @@ package scipy.stats._multivariate;
 	**/
 	public function entropy(?mean:Dynamic, ?cov:Dynamic):Dynamic;
 	/**
+		Log of the multivariate normal cumulative distribution function.
+		
+		Parameters
+		----------
+		x : array_like
+		    Quantiles, with the last axis of `x` denoting the components.
+		mean : array_like, optional
+		    Mean of the distribution (default zero)
+		cov : array_like, optional
+		    Covariance matrix of the distribution (default one)
+		allow_singular : bool, optional
+		    Whether to allow a singular covariance matrix.  (Default: False)
+		maxpts: integer, optional
+		    The maximum number of points to use for integration
+		    (default `1000000*dim`)
+		abseps: float, optional
+		    Absolute error tolerance (default 1e-5)
+		releps: float, optional
+		    Relative error tolerance (default 1e-5)
+		
+		Returns
+		-------
+		cdf : ndarray or scalar
+		    Log of the cumulative distribution function evaluated at `x`
+		
+		Notes
+		-----
+		Setting the parameter `mean` to `None` is equivalent to having `mean`
+		    be the zero-vector. The parameter `cov` can be a scalar, in which case
+		    the covariance matrix is the identity times that value, a vector of
+		    diagonal entries for the covariance matrix, or a two-dimensional
+		    array_like.
+		    
+		
+		.. versionadded:: 1.0.0
+	**/
+	public function logcdf(x:Dynamic, ?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?maxpts:Dynamic, ?abseps:Dynamic, ?releps:Dynamic):Dynamic;
+	/**
 		Log of the multivariate normal probability density function.
 		
 		Parameters
@@ -180,7 +280,7 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		pdf : ndarray
+		pdf : ndarray or scalar
 		    Log of the probability density function evaluated at `x`
 		
 		Notes
@@ -209,7 +309,7 @@ package scipy.stats._multivariate;
 		
 		Returns
 		-------
-		pdf : ndarray
+		pdf : ndarray or scalar
 		    Probability density function evaluated at `x`
 		
 		Notes

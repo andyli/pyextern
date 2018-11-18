@@ -5,19 +5,21 @@ package tensorflow.contrib.cudnn_rnn.python.ops.cudnn_rnn_ops;
 		Runs the forward step for the RNN model.
 		
 		Args:
-		  input_data: the input sequence to the RNN model.
-		  input_h: the initial hidden state for h.
+		  input_data: the input sequence to the RNN model. A Tensor of shape [?,
+		    batch_size, input_size].
+		  input_h: the initial hidden state for h. A Tensor of shape [num_layers,
+		    batch_size, num_units].
 		  input_c: the initial hidden state for c. This is only relevant for LSTM.
+		    A Tensor of the same shape as input_h.
 		  params: the parameter buffer created for this model.
 		  is_training: whether this operation will be used in training or inference.
-		
 		Returns:
-		  output: the output sequuence.
+		  output: the output sequence.
 		  output_h: the final state for h.
 		  output_c: the final state for c. This is only relevant for LSTM.
 	**/
 	public function __call__(input_data:Dynamic, input_h:Dynamic, input_c:Dynamic, params:Dynamic, ?is_training:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -73,12 +75,15 @@ package tensorflow.contrib.cudnn_rnn.python.ops.cudnn_rnn_ops;
 		      otherwise, it implies 'linear_input'.
 		  direction: the direction model that the model operates. Could be either
 		      'unidirectional' or 'bidirectional'
+		  dtype: dtype of params, tf.float32 or tf.float64.
 		  dropout: whether to enable dropout. With it is 0, dropout is disabled.
-		  seed: the op seed used for initializing dropout. See @{tf.set_random_seed}
+		  seed: the op seed used for initializing dropout. See `tf.set_random_seed`
 		      for behavior.
+		Raises:
+		  ValueError: if direction is invalid.
 	**/
 	@:native("__init__")
-	public function ___init__(rnn_mode:Dynamic, num_layers:Dynamic, num_units:Dynamic, input_size:Dynamic, ?input_mode:Dynamic, ?direction:Dynamic, ?dropout:Dynamic, ?seed:Dynamic):Dynamic;
+	public function ___init__(rnn_mode:Dynamic, num_layers:Dynamic, num_units:Dynamic, input_size:Dynamic, ?input_mode:Dynamic, ?direction:Dynamic, ?dtype:Dynamic, ?dropout:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Creates a CudnnRNN model from model spec.
 		
@@ -99,18 +104,21 @@ package tensorflow.contrib.cudnn_rnn.python.ops.cudnn_rnn_ops;
 		      otherwise, it implies 'linear_input'.
 		  direction: the direction model that the model operates. Could be either
 		      'unidirectional' or 'bidirectional'
+		  dtype: dtype of params, tf.float32 or tf.float64.
 		  dropout: whether to enable dropout. With it is 0, dropout is disabled.
-		  seed: the op seed used for initializing dropout. See @{tf.set_random_seed}
+		  seed: the op seed used for initializing dropout. See `tf.set_random_seed`
 		      for behavior.
+		Raises:
+		  ValueError: if direction is invalid.
 	**/
-	public function new(rnn_mode:Dynamic, num_layers:Dynamic, num_units:Dynamic, input_size:Dynamic, ?input_mode:Dynamic, ?direction:Dynamic, ?dropout:Dynamic, ?seed:Dynamic):Void;
+	public function new(rnn_mode:Dynamic, num_layers:Dynamic, num_units:Dynamic, input_size:Dynamic, ?input_mode:Dynamic, ?direction:Dynamic, ?dtype:Dynamic, ?dropout:Dynamic, ?seed:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -161,7 +169,7 @@ package tensorflow.contrib.cudnn_rnn.python.ops.cudnn_rnn_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -177,6 +185,11 @@ package tensorflow.contrib.cudnn_rnn.python.ops.cudnn_rnn_ops;
 		  A function for the canonical-to-params-to-specific conversion..
 	**/
 	public function canonical_to_params(weights:Dynamic, biases:Dynamic):Dynamic;
+	public var direction : Dynamic;
+	public var input_mode : Dynamic;
+	public var input_size : Dynamic;
+	public var num_layers : Dynamic;
+	public var num_units : Dynamic;
 	/**
 		Calculates the size of the opaque parameter buffer needed for this model.
 		
@@ -194,4 +207,5 @@ package tensorflow.contrib.cudnn_rnn.python.ops.cudnn_rnn_ops;
 		  A function for the specific-to-canonical conversion.
 	**/
 	public function params_to_canonical(params:Dynamic):Dynamic;
+	public var rnn_mode : Dynamic;
 }

@@ -220,68 +220,7 @@ package scipy.spatial;
 		0.0
 	**/
 	static public function procrustes(data1:Dynamic, data2:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		tsearch(tri, xi)
 		
@@ -314,6 +253,9 @@ package scipy.spatial;
 		    Specifies the line width for polygon boundaries
 		line_alpha: float, optional
 		    Specifies the line alpha for polygon boundaries
+		point_size: float, optional
+		    Specifies the size of points
+		
 		
 		Returns
 		-------
@@ -327,6 +269,28 @@ package scipy.spatial;
 		Notes
 		-----
 		Requires Matplotlib.
+		
+		Examples
+		--------
+		Set of point:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> points = np.random.rand(10,2) #random
+		
+		Voronoi diagram of the points:
+		
+		>>> from scipy.spatial import Voronoi, voronoi_plot_2d
+		>>> vor = Voronoi(points)
+		
+		using `voronoi_plot_2d` for visualisation:
+		
+		>>> fig = voronoi_plot_2d(vor)
+		
+		using `voronoi_plot_2d` for visualisation with enhancements:
+		
+		>>> fig = voronoi_plot_2d(vor, show_vertices=False, line_colors='orange',
+		...                 line_width=2, line_alpha=0.6, point_size=2)
+		>>> plt.show()
 	**/
 	static public function voronoi_plot_2d(vor:Dynamic, ?ax:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 }

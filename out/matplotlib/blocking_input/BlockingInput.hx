@@ -2,10 +2,10 @@
 package matplotlib.blocking_input;
 @:pythonImport("matplotlib.blocking_input", "BlockingInput") extern class BlockingInput {
 	/**
-		Blocking call to retrieve n events
+		Blocking call to retrieve *n* events.
 	**/
 	public function __call__(?n:Dynamic, ?timeout:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package matplotlib.blocking_input;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +107,7 @@ package matplotlib.blocking_input;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -117,32 +117,29 @@ package matplotlib.blocking_input;
 	**/
 	public function add_event(event:Dynamic):Dynamic;
 	/**
-		Disconnect all callbacks
+		Disconnect all callbacks.
 	**/
 	public function cleanup():Dynamic;
 	/**
-		Event handler that will be passed to the current figure to
-		retrieve events.
+		Event handler; will be passed to the current figure to retrieve events.
 	**/
 	public function on_event(event:Dynamic):Dynamic;
 	/**
-		This removes an event from the event list.  Defaults to
-		removing last event, but an index can be supplied.  Note that
-		this does not check that there are events, much like the
-		normal pop method.  If not events exist, this will throw an
-		exception.
+		Remove an event from the event list -- by default, the last.
+		
+		Note that this does not check that there are events, much like the
+		normal pop method.  If no events exist, this will throw an exception.
 	**/
 	public function pop(?index:Dynamic):Dynamic;
 	/**
-		This removes an event from the event list.  Defaults to
-		removing last event, but an index can be supplied.  Note that
-		this does not check that there are events, much like the
-		normal pop method.  If not events exist, this will throw an
-		exception.
+		Remove an event from the event list -- by default, the last.
+		
+		Note that this does not check that there are events, much like the
+		normal pop method.  If no events exist, this will throw an exception.
 	**/
 	public function pop_event(?index:Dynamic):Dynamic;
 	/**
-		For baseclass, do nothing but collect events
+		For baseclass, do nothing but collect events.
 	**/
 	public function post_event():Dynamic;
 }

@@ -25,7 +25,7 @@ package pandas.core.indexes.datetimes;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return a boolean if this key is IN the index
 		
@@ -50,14 +50,20 @@ package pandas.core.indexes.datetimes;
 		Only provide 'public' methods
 	**/
 	public function __dir__():Dynamic;
-	public function __divmod__(other:Dynamic):Dynamic;
+	public function __divmod__(?other:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	public function __floordiv__(?other:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self>=value.
+	**/
 	public function __ge__(other:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
@@ -68,8 +74,14 @@ package pandas.core.indexes.datetimes;
 		only handle list-likes, slices, and integer scalars
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
 	public function __gt__(other:Dynamic):Dynamic;
-	static public var __hash__ : Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
 	public function __iadd__(other:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
@@ -86,7 +98,7 @@ package pandas.core.indexes.datetimes;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __inv__(?other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	/**
@@ -97,21 +109,30 @@ package pandas.core.indexes.datetimes;
 		Timestamps : ndarray
 	**/
 	public function __iter__():Dynamic;
+	/**
+		Return self<=value.
+	**/
 	public function __le__(other:Dynamic):Dynamic;
 	/**
 		return the length of the Index
 	**/
 	public function __len__():Dynamic;
+	/**
+		Return self<value.
+	**/
 	public function __lt__(other:Dynamic):Dynamic;
-	public function __mod__(other:Dynamic):Dynamic;
+	public function __mod__(?other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(?other:Dynamic):Dynamic;
+	/**
+		Return self!=value.
+	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	public function __neg__(?other:Dynamic):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?verify_integrity:Dynamic, ?normalize:Dynamic, ?closed:Dynamic, ?ambiguous:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?closed:Dynamic, ?ambiguous:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?verify_integrity:Dynamic):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__(?other:Dynamic):Dynamic;
@@ -146,7 +167,7 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -166,7 +187,7 @@ package pandas.core.indexes.datetimes;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(?other:Dynamic):Dynamic;
 	/**
 		Return a string representation for this object.
@@ -180,6 +201,7 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		add in comparison methods 
 	**/
@@ -190,8 +212,34 @@ package pandas.core.indexes.datetimes;
 		superclass)
 	**/
 	static public function _add_datetimelike_methods():Dynamic;
-	public function _add_delta(delta:Dynamic):Dynamic;
+	/**
+		Add a timedelta-like, DateOffset, or TimedeltaIndex-like object
+		to self.
+		
+		Parameters
+		----------
+		delta : {timedelta, np.timedelta64, DateOffset,
+		         TimedelaIndex, ndarray[timedelta64]}
+		
+		Returns
+		-------
+		result : DatetimeIndex
+		
+		Notes
+		-----
+		The result's name is set outside of _add_delta by the calling
+		method (__add__ or __sub__)
+	**/
+	public function _add_delta(delta:Dynamic):pandas.DatetimeIndex;
+	/**
+		Add a delta of a timedeltalike
+		return the i8 result view
+	**/
 	public function _add_delta_td(other:Dynamic):Dynamic;
+	/**
+		Add a delta of a TimedeltaIndex
+		return the i8 result view
+	**/
 	public function _add_delta_tdi(other:Dynamic):Dynamic;
 	/**
 		add in logical methods 
@@ -201,6 +249,10 @@ package pandas.core.indexes.datetimes;
 		add in logical methods to disable 
 	**/
 	static public function _add_logical_methods_disabled():Dynamic;
+	/**
+		Add pd.NaT to self
+	**/
+	public function _add_nat():Dynamic;
 	static public function _add_numeric_methods():Dynamic;
 	/**
 		add in the numeric add/sub methods to disable 
@@ -219,14 +271,20 @@ package pandas.core.indexes.datetimes;
 	**/
 	static public function _add_numeric_methods_unary():Dynamic;
 	public function _add_offset(offset:Dynamic):Dynamic;
-	static public var _allow_datetime_index_ops : Dynamic;
-	static public var _allow_index_ops : Dynamic;
-	static public var _allow_period_index_ops : Dynamic;
 	/**
-		Concatenate to_concat which has the same class
+		Add or subtract array-like of DateOffset objects
+		
+		Parameters
+		----------
+		other : Index, np.ndarray
+		    object-dtype containing pd.DateOffset objects
+		op : {operator.add, operator.sub}
+		
+		Returns
+		-------
+		result : same class as self
 	**/
-	public function _append_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
-	static public var _arrmap : Dynamic;
+	public function _addsub_offset_array(other:Dynamic, op:Dynamic):Dynamic;
 	/**
 		Check value is valid for scalar op 
 	**/
@@ -240,19 +298,32 @@ package pandas.core.indexes.datetimes;
 		Internal method to handle NA filling of take 
 	**/
 	public function _assert_take_fillable(values:Dynamic, indices:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?na_value:Dynamic):Dynamic;
+	public function _assert_tzawareness_compat(other:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _bool_ops : Dynamic;
 	/**
 		box function to get object from internal representation
 	**/
 	public var _box_func : Dynamic;
-	static public var _box_scalars : Dynamic;
 	/**
 		apply box func to passed values
 	**/
 	public function _box_values(values:Dynamic):Dynamic;
-	static public function _cached_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?offset:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		return object Index which contains boxed values
+	**/
+	public function _box_values_as_index():Dynamic;
+	static public function _cached_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):Dynamic;
 	public function _can_fast_union(other:Dynamic):Dynamic;
+	/**
+		Faster check for ``name in self`` when we know `name` is a Python
+		identifier (e.g. in NDFrame.__getattr__, which hits this to support
+		. key lookup). For indexes that can't hold identifiers (everything
+		but object & categorical) we just return False.
+		
+		https://github.com/pandas-dev/pandas/issues/19764
+	**/
+	public function _can_hold_identifiers_and_holds_name(name:Dynamic):Dynamic;
 	static public var _can_hold_na : Dynamic;
 	/**
 		*this is an internal non-public method*
@@ -268,6 +339,7 @@ package pandas.core.indexes.datetimes;
 		ValueError if its a duplicate axis
 	**/
 	public function _can_reindex(indexer:Dynamic):Dynamic;
+	static public var _ceil_example : Dynamic;
 	public function _cleanup():Dynamic;
 	/**
 		we need to coerce a scalar to a compat for our index type
@@ -283,7 +355,12 @@ package pandas.core.indexes.datetimes;
 	**/
 	static public function _coerce_to_ndarray(data:Dynamic):Dynamic;
 	static public var _comparables : Dynamic;
-	static public var _constructor : Dynamic;
+	public function _concat(to_concat:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Concatenate to_concat which has the same class
+	**/
+	public function _concat_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		Convert an array-like indexer to the appropriate dtype.
 		
@@ -364,7 +441,7 @@ package pandas.core.indexes.datetimes;
 		kind : {'ix', 'loc', 'getitem', 'iloc'} or None
 	**/
 	public function _convert_slice_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
-	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
+	public function _convert_tolerance(tolerance:Dynamic, target:Dynamic):Dynamic;
 	static public var _data : Dynamic;
 	static public var _datetimelike_methods : Dynamic;
 	static public var _datetimelike_ops : Dynamic;
@@ -389,12 +466,19 @@ package pandas.core.indexes.datetimes;
 	/**
 		64-bit integer. Character code 'l'. Python int compatible.
 	**/
-	static public function _default_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _default_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _defer_to_indexing : Dynamic;
+	static public var _deprecations : Dynamic;
+	/**
+		add additional __dir__ for this object 
+	**/
 	public function _dir_additions():Dynamic;
+	/**
+		delete unwanted __dir__ for this object 
+	**/
 	public function _dir_deletions():Dynamic;
-	static public var _engine : Dynamic;
-	static public function _engine_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _engine : Dynamic;
+	public function _engine_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ensure that we are re-localized
 		
@@ -416,12 +500,12 @@ package pandas.core.indexes.datetimes;
 		now warn about NaT comparisons
 	**/
 	public function _evaluate_compare(other:Dynamic, op:Dynamic):Dynamic;
-	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
-	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
-	public function _evalute_compare(op:Dynamic):Dynamic;
+	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic):Dynamic;
+	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic):Dynamic;
 	public function _fast_union(other:Dynamic):Dynamic;
 	static public var _field_ops : Dynamic;
 	public function _filter_indexer_tolerance(target:Dynamic, indexer:Dynamic, tolerance:Dynamic):Dynamic;
+	static public var _floor_example : Dynamic;
 	/**
 		Return a list of tuples of the (attr,formatted_value)
 	**/
@@ -429,7 +513,7 @@ package pandas.core.indexes.datetimes;
 	/**
 		Return the formatted data as a unicode string
 	**/
-	public function _format_data():Dynamic;
+	public function _format_data(?name:Dynamic):Dynamic;
 	/**
 		actually format my specific types 
 	**/
@@ -440,7 +524,8 @@ package pandas.core.indexes.datetimes;
 		Return the formatted data as a unicode string
 	**/
 	public var _formatter_func : Dynamic;
-	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, offset:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?ambiguous:Dynamic, ?closed:Dynamic):Dynamic;
+	static public var _freq : Dynamic;
+	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?ambiguous:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
 		return an attributes dict for my class 
 	**/
@@ -451,14 +536,12 @@ package pandas.core.indexes.datetimes;
 		Return a new object if we are resetting the name
 	**/
 	public function _get_consensus_name(other:Dynamic):Dynamic;
-	public function _get_duplicates():Dynamic;
 	public function _get_fill_indexer(target:Dynamic, method:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):Dynamic;
 	/**
 		Fallback pad/backfill get_indexer that works for monotonic decreasing
 		indexes and non-monotonic targets
 	**/
 	public function _get_fill_indexer_searchsorted(target:Dynamic, method:Dynamic, ?limit:Dynamic):Dynamic;
-	public function _get_freq():Dynamic;
 	/**
 		Get index grouper corresponding to an index level
 		
@@ -482,19 +565,27 @@ package pandas.core.indexes.datetimes;
 	public function _get_level_number(level:Dynamic):Dynamic;
 	/**
 		Return an Index of values for requested level, equal to the length
-		of the index
+		of the index.
 		
 		Parameters
 		----------
-		level : int
+		level : int or str
+		    ``level`` is either the integer position of the level in the
+		    MultiIndex, or the name of the level.
 		
 		Returns
 		-------
 		values : Index
+		    ``self``, as there is only one level in the Index.
+		
+		See also
+		---------
+		pandas.MultiIndex.get_level_values : get values for a level of a
+		                                     MultiIndex
 	**/
 	public function _get_level_values(level:Dynamic):pandas.Index;
 	/**
-		This is overriden on subclasses (namely, IntervalIndex) to control
+		This is overridden on subclasses (namely, IntervalIndex) to control
 		get_slice_bound.
 	**/
 	public function _get_loc_only_exact_matches(key:Dynamic):Dynamic;
@@ -529,7 +620,7 @@ package pandas.core.indexes.datetimes;
 		consistent invalid indexer message 
 	**/
 	public function _invalid_indexer(form:Dynamic, key:Dynamic):Dynamic;
-	static public var _is_dates_only : Dynamic;
+	public var _is_dates_only : Dynamic;
 	/**
 		return a boolean if we need a qualified .info display 
 	**/
@@ -563,11 +654,14 @@ package pandas.core.indexes.datetimes;
 		False
 	**/
 	public var _is_strictly_monotonic_increasing : Dynamic;
-	static public var _isnan : Dynamic;
+	/**
+		return if each value is nan
+	**/
+	public var _isnan : Dynamic;
 	/**
 		create the join wrapper methods 
 	**/
-	public function _join_i8_wrapper(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _join_i8_wrapper(joinf:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The join method *only* affects the level of the resulting
 		MultiIndex. Otherwise it just exactly aligns the Index data to the
@@ -583,7 +677,26 @@ package pandas.core.indexes.datetimes;
 	static public function _left_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	static public function _left_indexer_unique(left:Dynamic, right:Dynamic):Dynamic;
 	public function _local_timestamps():Dynamic;
-	public function _make_str_accessor():Dynamic;
+	/**
+		An internal function that maps values using the input
+		correspondence (which can be a dict, Series, or function).
+		
+		Parameters
+		----------
+		mapper : function, dict, or Series
+		    The input correspondence object
+		na_action : {None, 'ignore'}
+		    If 'ignore', propagate NA values, without passing them to the
+		    mapping function
+		
+		Returns
+		-------
+		applied : Union[Index, MultiIndex], inferred
+		    The output of the mapping function applied to the index.
+		    If the function returns a tuple with more than one element
+		    a MultiIndex will be returned.
+	**/
+	public function _map_values(mapper:Dynamic, ?na_action:Dynamic):Dynamic;
 	/**
 		If we have a float key and are not a floating index
 		then try to cast to an int if equivalent
@@ -631,7 +744,7 @@ package pandas.core.indexes.datetimes;
 	public function _maybe_utc_convert(other:Dynamic):Dynamic;
 	public function _mpl_repr():Dynamic;
 	static public var _na_value : Dynamic;
-	static public var _nan_idxs : Dynamic;
+	public var _nan_idxs : Dynamic;
 	/**
 		Return Index or ndarray filled with NaT which has the same
 		length as the caller.
@@ -643,6 +756,15 @@ package pandas.core.indexes.datetimes;
 		    - If False returns ndarray of np.int64.
 	**/
 	public function _nat_new(?box:Dynamic):Dynamic;
+	/**
+		The data as an ndarray, possibly losing information.
+		
+		The expectation is that this is cheap to compute, and is primarily
+		used for interacting with our indexers.
+		
+		- categorical -> codes
+	**/
+	public var _ndarray_values : Dynamic;
 	static public var _object_ops : Dynamic;
 	static public var _other_ops : Dynamic;
 	static public function _outer_indexer(left:Dynamic, right:Dynamic):Dynamic;
@@ -692,12 +814,27 @@ package pandas.core.indexes.datetimes;
 		Initializes or resets ``_id`` attribute with new object
 	**/
 	public function _reset_identity():Dynamic;
-	static public var _resolution : Dynamic;
+	public var _resolution : Dynamic;
 	public function _round(freq:Dynamic, rounder:Dynamic):Dynamic;
 	static public var _round_doc : Dynamic;
+	static public var _round_example : Dynamic;
 	static public function _scalar_data_error(data:Dynamic):Dynamic;
 	public function _searchsorted_monotonic(label:Dynamic, ?side:Dynamic):Dynamic;
-	public function _set_freq(value:Dynamic):Dynamic;
+	/**
+		Set new names on index. Each name has to be a hashable type.
+		
+		Parameters
+		----------
+		values : str or sequence
+		    name(s) to set
+		level : int, level name, or sequence of int/level names (default None)
+		    If the index is a MultiIndex (hierarchical), level(s) to set (None
+		    for all levels).  Otherwise level must be None
+		
+		Raises
+		------
+		TypeError if each name is not hashable.
+	**/
 	public function _set_names(values:Dynamic, ?level:Dynamic):Dynamic;
 	/**
 		create a new Index with the same class as the caller, don't copy the
@@ -740,14 +877,34 @@ package pandas.core.indexes.datetimes;
 		subtraction of two DatetimeIndexes
 	**/
 	public function _sub_datelike_dti(other:Dynamic):Dynamic;
+	/**
+		Subtract pd.NaT from self
+	**/
+	public function _sub_nat():Dynamic;
 	public function _sub_period(other:Dynamic):Dynamic;
-	static public var _timezone : Dynamic;
+	/**
+		Return a summarized representation
+		
+		Parameters
+		----------
+		name : str
+		    name to use in the summary representation
+		
+		Returns
+		-------
+		String with a summarized representation of the index
+	**/
+	public function _summary(?name:Dynamic):Dynamic;
+	/**
+		Comparable timezone both for pytz / dateutil
+	**/
+	public var _timezone : Dynamic;
 	/**
 		return an array repr of this object, potentially casting to object
 		
 		This is for internal compat
 	**/
-	public function _to_embed(?keep_tz:Dynamic):Dynamic;
+	public function _to_embed(?keep_tz:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		convert to object if we are a categorical 
 	**/
@@ -770,7 +927,7 @@ package pandas.core.indexes.datetimes;
 		------
 		ValueError if the conversion was not successful.
 	**/
-	static public function _try_convert_to_int_index(data:Dynamic, copy:Dynamic, name:Dynamic):Dynamic;
+	static public function _try_convert_to_int_index(data:Dynamic, copy:Dynamic, name:Dynamic, dtype:Dynamic):Dynamic;
 	static public var _typ : Dynamic;
 	/**
 		Necessary for making this object picklable
@@ -783,11 +940,23 @@ package pandas.core.indexes.datetimes;
 		
 		internal method called by ops
 	**/
-	public function _validate_for_numeric_binop(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
+	public function _validate_for_numeric_binop(other:Dynamic, op:Dynamic):Dynamic;
 	/**
 		validate if we can perform a numeric unary operation 
 	**/
 	public function _validate_for_numeric_unaryop(op:Dynamic, opstr:Dynamic):Dynamic;
+	/**
+		Validate that a frequency is compatible with the values of a given
+		DatetimeIndex or TimedeltaIndex
+		
+		Parameters
+		----------
+		index : DatetimeIndex or TimedeltaIndex
+		    The index on which to determine if the given frequency is valid
+		freq : DateOffset
+		    The frequency to validate
+	**/
+	static public function _validate_frequency(index:Dynamic, freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Validate index level.
 		
@@ -807,7 +976,33 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function _validate_names(?name:Dynamic, ?names:Dynamic, ?deep:Dynamic):Dynamic;
 	/**
-		the internal implementation 
+		The best array representation.
+		
+		This is an ndarray, ExtensionArray, or Index subclass. This differs
+		from ``_ndarray_values``, which always returns an ndarray.
+		
+		Both ``_values`` and ``_ndarray_values`` are consistent between
+		``Series`` and ``Index``.
+		
+		It may differ from the public '.values' method.
+		
+		index             | values          | _values     | _ndarray_values |
+		----------------- | -------------- -| ----------- | --------------- |
+		CategoricalIndex  | Categorical     | Categorical | codes           |
+		DatetimeIndex[tz] | ndarray[M8ns]   | DTI[tz]     | ndarray[M8ns]   |
+		
+		For the following, the ``._values`` is currently ``ndarray[object]``,
+		but will soon be an ``ExtensionArray``
+		
+		index             | values          | _values      | _ndarray_values |
+		----------------- | --------------- | ------------ | --------------- |
+		PeriodIndex       | ndarray[object] | ndarray[obj] | ndarray[int]    |
+		IntervalIndex     | ndarray[object] | ndarray[obj] | ndarray[object] |
+		
+		See Also
+		--------
+		values
+		_ndarray_values
 	**/
 	public var _values : Dynamic;
 	public function _wrap_joined_index(joined:Dynamic, other:Dynamic):Dynamic;
@@ -847,21 +1042,46 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function argmin(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Returns the indices that would sort the index and its
-		underlying data.
+		Return the integer indicies that would sort the index.
+		
+		Parameters
+		----------
+		*args
+		    Passed to `numpy.ndarray.argsort`.
+		**kwargs
+		    Passed to `numpy.ndarray.argsort`.
 		
 		Returns
 		-------
-		argsorted : numpy array
+		numpy.ndarray
+		    Integer indicies that would sort the index if used as
+		    an indexer.
 		
 		See also
 		--------
-		numpy.ndarray.argsort
+		numpy.argsort : Similar method for NumPy arrays.
+		Index.sort_values : Return sorted copy of Index.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(['b', 'a', 'd', 'c'])
+		>>> idx
+		Index(['b', 'a', 'd', 'c'], dtype='object')
+		
+		>>> order = idx.argsort()
+		>>> order
+		array([1, 0, 3, 2])
+		
+		>>> idx[order]
+		Index(['a', 'b', 'c', 'd'], dtype='object')
 	**/
 	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var asi8 : Dynamic;
 	/**
-		return object Index which contains boxed values
+		Return object Index which contains boxed values.
+		
+		.. deprecated:: 0.23.0
+		    Use ``astype(object)`` instead.
 		
 		*this is an internal non-public method*
 	**/
@@ -903,19 +1123,47 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var base : Dynamic;
 	/**
-		ceil the index to the specified freq
+		ceil the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to ceil the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.ceil('H')
+		DatetimeIndex(['2018-01-01 12:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 13:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.ceil("H")
+		0   2018-01-01 12:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 13:00:00
+		dtype: datetime64[ns]
 	**/
 	public function ceil(freq:Dynamic):Dynamic;
 	/**
@@ -964,6 +1212,22 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var day : Dynamic;
 	/**
+		Return the day names of the DateTimeIndex with specified locale.
+		
+		Parameters
+		----------
+		locale : string, default None (English locale)
+		    locale determining the language in which to return the day name
+		
+		Returns
+		-------
+		month_names : Index
+		    Index of day names
+		
+		.. versionadded:: 0.23.0
+	**/
+	public function day_name(?locale:Dynamic):pandas.Index;
+	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
 	public var dayofweek : Dynamic;
@@ -973,14 +1237,10 @@ package pandas.core.indexes.datetimes;
 	public var dayofyear : Dynamic;
 	/**
 		The number of days in the month
-		
-		.. versionadded:: 0.16.0
 	**/
 	public var days_in_month : Dynamic;
 	/**
 		The number of days in the month
-		
-		.. versionadded:: 0.16.0
 	**/
 	public var daysinmonth : Dynamic;
 	/**
@@ -1032,23 +1292,57 @@ package pandas.core.indexes.datetimes;
 		Returns
 		-------
 		dropped : Index
+		
+		Raises
+		------
+		KeyError
+		    If not all of the labels are found in the selected axis
 	**/
 	public function drop(labels:Dynamic, ?errors:Dynamic):pandas.Index;
 	/**
-		Return Index with duplicate values removed
+		Return Index with duplicate values removed.
 		
 		Parameters
 		----------
-		
-		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Drop duplicates except for the first occurrence.
-		    - ``last`` : Drop duplicates except for the last occurrence.
-		    - False : Drop all duplicates.
-		
+		keep : {'first', 'last', ``False``}, default 'first'
+		    - 'first' : Drop duplicates except for the first occurrence.
+		    - 'last' : Drop duplicates except for the last occurrence.
+		    - ``False`` : Drop all duplicates.
 		
 		Returns
 		-------
 		deduplicated : Index
+		
+		See Also
+		--------
+		Series.drop_duplicates : equivalent method on Series
+		DataFrame.drop_duplicates : equivalent method on DataFrame
+		Index.duplicated : related method on Index, indicating duplicate
+		    Index values.
+		
+		Examples
+		--------
+		Generate an pandas.Index with duplicate values.
+		
+		>>> idx = pd.Index(['lama', 'cow', 'lama', 'beetle', 'lama', 'hippo'])
+		
+		The `keep` parameter controls  which duplicate values are removed.
+		The value 'first' keeps the first occurrence for each
+		set of duplicated entries. The default value of keep is 'first'.
+		
+		>>> idx.drop_duplicates(keep='first')
+		Index(['lama', 'cow', 'beetle', 'hippo'], dtype='object')
+		
+		The value 'last' keeps the last occurrence for each set of duplicated
+		entries.
+		
+		>>> idx.drop_duplicates(keep='last')
+		Index(['cow', 'beetle', 'lama', 'hippo'], dtype='object')
+		
+		The value ``False`` discards all sets of duplicated entries.
+		
+		>>> idx.drop_duplicates(keep=False)
+		Index(['cow', 'beetle', 'hippo'], dtype='object')
 	**/
 	public function drop_duplicates(?keep:Dynamic):pandas.Index;
 	/**
@@ -1065,23 +1359,63 @@ package pandas.core.indexes.datetimes;
 		valid : Index
 	**/
 	public function dropna(?how:Dynamic):pandas.Index;
-	static public var dtype : Dynamic;
-	static public var dtype_str : Dynamic;
+	public var dtype : Dynamic;
 	/**
-		Return boolean np.ndarray denoting duplicate values
+		return the dtype str of the underlying data 
+	**/
+	public var dtype_str : Dynamic;
+	/**
+		Indicate duplicate index values.
+		
+		Duplicated values are indicated as ``True`` values in the resulting
+		array. Either all duplicates, all except the first, or all except the
+		last occurrence of duplicates can be indicated.
 		
 		Parameters
 		----------
 		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Mark duplicates as ``True`` except for the first
+		    The value or values in a set of duplicates to mark as missing.
+		
+		    - 'first' : Mark duplicates as ``True`` except for the first
 		      occurrence.
-		    - ``last`` : Mark duplicates as ``True`` except for the last
+		    - 'last' : Mark duplicates as ``True`` except for the last
 		      occurrence.
-		    - False : Mark all duplicates as ``True``.
+		    - ``False`` : Mark all duplicates as ``True``.
+		
+		Examples
+		--------
+		By default, for each set of duplicated values, the first occurrence is
+		set to False and all others to True:
+		
+		>>> idx = pd.Index(['lama', 'cow', 'lama', 'beetle', 'lama'])
+		>>> idx.duplicated()
+		array([False, False,  True, False,  True])
+		
+		which is equivalent to
+		
+		>>> idx.duplicated(keep='first')
+		array([False, False,  True, False,  True])
+		
+		By using 'last', the last occurrence of each set of duplicated values
+		is set on False and all others on True:
+		
+		>>> idx.duplicated(keep='last')
+		array([ True, False,  True, False, False])
+		
+		By setting keep on ``False``, all duplicates are True:
+		
+		>>> idx.duplicated(keep=False)
+		array([ True, False,  True, False,  True])
 		
 		Returns
 		-------
-		duplicated : np.ndarray
+		numpy.ndarray
+		
+		See Also
+		--------
+		pandas.Series.duplicated : Equivalent method on pandas.Series
+		pandas.DataFrame.duplicated : Equivalent method on pandas.DataFrame
+		pandas.Index.drop_duplicates : Remove duplicate values from Index
 	**/
 	public function duplicated(?keep:Dynamic):Dynamic;
 	public var empty : Dynamic;
@@ -1090,21 +1424,99 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function equals(other:Dynamic):Dynamic;
 	/**
-		Encode the object as an enumerated type or categorical variable
+		Encode the object as an enumerated type or categorical variable.
+		
+		This method is useful for obtaining a numeric representation of an
+		array when all that matters is identifying distinct values. `factorize`
+		is available as both a top-level function :func:`pandas.factorize`,
+		and as a method :meth:`Series.factorize` and :meth:`Index.factorize`.
 		
 		Parameters
 		----------
 		sort : boolean, default False
-		    Sort by values
-		na_sentinel: int, default -1
-		    Value to mark "not found"
+		    Sort `uniques` and shuffle `labels` to maintain the
+		    relationship.
+		
+		na_sentinel : int, default -1
+		    Value to mark "not found".
 		
 		Returns
 		-------
-		labels : the indexer to the original array
-		uniques : the unique Index
+		labels : ndarray
+		    An integer ndarray that's an indexer into `uniques`.
+		    ``uniques.take(labels)`` will have the same values as `values`.
+		uniques : ndarray, Index, or Categorical
+		    The unique valid values. When `values` is Categorical, `uniques`
+		    is a Categorical. When `values` is some other pandas object, an
+		    `Index` is returned. Otherwise, a 1-D ndarray is returned.
+		
+		    .. note ::
+		
+		       Even if there's a missing value in `values`, `uniques` will
+		       *not* contain an entry for it.
+		
+		See Also
+		--------
+		pandas.cut : Discretize continuous-valued array.
+		pandas.unique : Find the unique valuse in an array.
+		
+		Examples
+		--------
+		These examples all show factorize as a top-level method like
+		``pd.factorize(values)``. The results are identical for methods like
+		:meth:`Series.factorize`.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'])
+		>>> labels
+		array([0, 0, 1, 2, 0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		With ``sort=True``, the `uniques` will be sorted, and `labels` will be
+		shuffled so that the relationship is the maintained.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'], sort=True)
+		>>> labels
+		array([1, 1, 0, 2, 1])
+		>>> uniques
+		array(['a', 'b', 'c'], dtype=object)
+		
+		Missing values are indicated in `labels` with `na_sentinel`
+		(``-1`` by default). Note that missing values are never
+		included in `uniques`.
+		
+		>>> labels, uniques = pd.factorize(['b', None, 'a', 'c', 'b'])
+		>>> labels
+		array([ 0, -1,  1,  2,  0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		Thus far, we've only factorized lists (which are internally coerced to
+		NumPy arrays). When factorizing pandas objects, the type of `uniques`
+		will differ. For Categoricals, a `Categorical` is returned.
+		
+		>>> cat = pd.Categorical(['a', 'a', 'c'], categories=['a', 'b', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		[a, c]
+		Categories (3, object): [a, b, c]
+		
+		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		present in ``cat.values``.
+		
+		For all other pandas objects, an Index of the appropriate type is
+		returned.
+		
+		>>> cat = pd.Series(['a', 'a', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		Index(['a', 'c'], dtype='object')
 	**/
-	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):Dynamic;
+	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):numpy.Ndarray;
 	/**
 		Fill NA/NaN values with the specified value
 		
@@ -1128,19 +1540,47 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var flags : Dynamic;
 	/**
-		floor the index to the specified freq
+		floor the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to floor the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.floor('H')
+		DatetimeIndex(['2018-01-01 11:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.floor("H")
+		0   2018-01-01 11:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 12:00:00
+		dtype: datetime64[ns]
 	**/
 	public function floor(freq:Dynamic):Dynamic;
 	/**
@@ -1148,13 +1588,68 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		get/set the frequency of the Index
+		Return the frequency object if it is set, otherwise None
 	**/
 	public var freq : Dynamic;
 	/**
-		Return the frequency object as a string if its set, otherwise None
+		Return the frequency object as a string if it is set, otherwise None
 	**/
 	public var freqstr : Dynamic;
+	/**
+		Extract duplicated index elements.
+		
+		Returns a sorted list of index elements which appear more than once in
+		the index.
+		
+		.. deprecated:: 0.23.0
+		    Use idx[idx.duplicated()].unique() instead
+		
+		Returns
+		-------
+		array-like
+		    List of duplicated indexes.
+		
+		See Also
+		--------
+		Index.duplicated : Return boolean array denoting duplicates.
+		Index.drop_duplicates : Return Index with duplicates removed.
+		
+		Examples
+		--------
+		
+		Works on different Index of types.
+		
+		>>> pd.Index([1, 2, 2, 3, 3, 3, 4]).get_duplicates()
+		[2, 3]
+		>>> pd.Index([1., 2., 2., 3., 3., 3., 4.]).get_duplicates()
+		[2.0, 3.0]
+		>>> pd.Index(['a', 'b', 'b', 'c', 'c', 'c', 'd']).get_duplicates()
+		['b', 'c']
+		
+		Note that for a DatetimeIndex, it does not return a list but a new
+		DatetimeIndex:
+		
+		>>> dates = pd.to_datetime(['2018-01-01', '2018-01-02', '2018-01-03',
+		...                         '2018-01-03', '2018-01-04', '2018-01-04'],
+		...                        format='%Y-%m-%d')
+		>>> pd.Index(dates).get_duplicates()
+		DatetimeIndex(['2018-01-03', '2018-01-04'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		Sorts duplicated elements even when indexes are unordered.
+		
+		>>> pd.Index([1, 2, 3, 2, 3, 4, 3]).get_duplicates()
+		[2, 3]
+		
+		Return empty array-like structure when all elements are unique.
+		
+		>>> pd.Index([1, 2, 3, 4]).get_duplicates()
+		[]
+		>>> dates = pd.to_datetime(['2018-01-01', '2018-01-02', '2018-01-03'],
+		...                        format='%Y-%m-%d')
+		>>> pd.Index(dates).get_duplicates()
+		DatetimeIndex([], dtype='datetime64[ns]', freq=None)
+	**/
 	public function get_duplicates():Dynamic;
 	/**
 		Compute indexer and mask for new index given the current index. The
@@ -1178,7 +1673,13 @@ package pandas.core.indexes.datetimes;
 		    matches. The values of the index at the matching locations most
 		    satisfy the equation ``abs(index[indexer] - target) <= tolerance``.
 		
-		    .. versionadded:: 0.17.0
+		    Tolerance may be a scalar value, which applies the same tolerance
+		    to all values, or list-like, which applies variable tolerance per
+		    element. List-like includes list, tuple, array, Series, and must be
+		    the same size as the index and its dtype must exactly match the
+		    index's type.
+		
+		    .. versionadded:: 0.21.0 (list-like tolerance)
 		
 		Examples
 		--------
@@ -1220,15 +1721,23 @@ package pandas.core.indexes.datetimes;
 	public function get_indexer_non_unique(target:Dynamic):Dynamic;
 	/**
 		Return an Index of values for requested level, equal to the length
-		of the index
+		of the index.
 		
 		Parameters
 		----------
-		level : int
+		level : int or str
+		    ``level`` is either the integer position of the level in the
+		    MultiIndex, or the name of the level.
 		
 		Returns
 		-------
 		values : Index
+		    ``self``, as there is only one level in the Index.
+		
+		See also
+		---------
+		pandas.MultiIndex.get_level_values : get values for a level of a
+		                                     MultiIndex
 	**/
 	public function get_level_values(level:Dynamic):pandas.Index;
 	/**
@@ -1259,7 +1768,45 @@ package pandas.core.indexes.datetimes;
 	public function get_value(series:Dynamic, key:Dynamic):Dynamic;
 	public function get_value_maybe_box(series:Dynamic, key:Dynamic):Dynamic;
 	/**
-		return the underlying data as an ndarray 
+		Return `Index` data as an `numpy.ndarray`.
+		
+		Returns
+		-------
+		numpy.ndarray
+		    A one-dimensional numpy array of the `Index` values.
+		
+		See Also
+		--------
+		Index.values : The attribute that get_values wraps.
+		
+		Examples
+		--------
+		Getting the `Index` values of a `DataFrame`:
+		
+		>>> df = pd.DataFrame([[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+		...                    index=['a', 'b', 'c'], columns=['A', 'B', 'C'])
+		>>> df
+		   A  B  C
+		a  1  2  3
+		b  4  5  6
+		c  7  8  9
+		>>> df.index.get_values()
+		array(['a', 'b', 'c'], dtype=object)
+		
+		Standalone `Index` values:
+		
+		>>> idx = pd.Index(['1', '2', '3'])
+		>>> idx.get_values()
+		array(['1', '2', '3'], dtype=object)
+		
+		`MultiIndex` arrays also have only one dimension:
+		
+		>>> midx = pd.MultiIndex.from_arrays([[1, 2, 3], ['a', 'b', 'c']],
+		...                                  names=('number', 'letter'))
+		>>> midx.get_values()
+		array([(1, 'a'), (2, 'b'), (3, 'c')], dtype=object)
+		>>> midx.get_values().ndim
+		1
 	**/
 	public function get_values():Dynamic;
 	/**
@@ -1277,7 +1824,10 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function groupby(values:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public var has_duplicates : Dynamic;
-	static public var hasnans : Dynamic;
+	/**
+		return if I have any nans; enables various perf speedups 
+	**/
+	public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
 	/**
 		The hours of the datetime
@@ -1289,39 +1839,56 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function identical(other:Dynamic):Dynamic;
 	/**
-		Select values at particular time of day (e.g. 9:30AM)
+		Returns index locations of index values at particular time of day
+		(e.g. 9:30AM).
 		
 		Parameters
 		----------
 		time : datetime.time or string
+		    datetime.time or string in appropriate format ("%H:%M", "%H%M",
+		    "%I:%M%p", "%I%M%p", "%H:%M:%S", "%H%M%S", "%I:%M:%S%p",
+		    "%I%M%S%p").
 		
 		Returns
 		-------
-		values_at_time : TimeSeries
+		values_at_time : array of integers
+		
+		See Also
+		--------
+		indexer_between_time, DataFrame.at_time
 	**/
 	public function indexer_at_time(time:Dynamic, ?asof:Dynamic):Dynamic;
 	/**
-		Select values between particular times of day (e.g., 9:00-9:30AM).
-		
-		Return values of the index between two times.  If start_time or
-		end_time are strings then tseres.tools.to_time is used to convert to
-		a time object.
+		Return index locations of values between particular times of day
+		(e.g., 9:00-9:30AM).
 		
 		Parameters
 		----------
 		start_time, end_time : datetime.time, str
 		    datetime.time or string in appropriate format ("%H:%M", "%H%M",
 		    "%I:%M%p", "%I%M%p", "%H:%M:%S", "%H%M%S", "%I:%M:%S%p",
-		    "%I%M%S%p")
+		    "%I%M%S%p").
 		include_start : boolean, default True
 		include_end : boolean, default True
 		
 		Returns
 		-------
-		values_between_time : TimeSeries
+		values_between_time : array of integers
+		
+		See Also
+		--------
+		indexer_at_time, DataFrame.between_time
 	**/
 	public function indexer_between_time(start_time:Dynamic, end_time:Dynamic, ?include_start:Dynamic, ?include_end:Dynamic):Dynamic;
-	static public var inferred_freq : Dynamic;
+	/**
+		Tries to return a string representing a frequency guess,
+		generated by infer_freq.  Returns None if it can't autodetect the
+		frequency.
+	**/
+	public var inferred_freq : Dynamic;
+	/**
+		Always 'integer' for ``Int64Index``
+	**/
 	public var inferred_type : Dynamic;
 	/**
 		Make new Index inserting new item at location
@@ -1372,12 +1939,79 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var is_all_dates : Dynamic;
 	public function is_boolean():Dynamic;
+	/**
+		Check if the Index holds categorical data.
+		
+		Returns
+		-------
+		boolean
+		    True if the Index is categorical.
+		
+		See Also
+		--------
+		CategoricalIndex : Index for categorical data.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(["Watermelon", "Orange", "Apple",
+		...                 "Watermelon"]).astype("category")
+		>>> idx.is_categorical()
+		True
+		
+		>>> idx = pd.Index([1, 3, 5, 7])
+		>>> idx.is_categorical()
+		False
+		
+		>>> s = pd.Series(["Peter", "Victor", "Elisabeth", "Mar"])
+		>>> s
+		0        Peter
+		1       Victor
+		2    Elisabeth
+		3          Mar
+		dtype: object
+		>>> s.index.is_categorical()
+		False
+	**/
 	public function is_categorical():Dynamic;
 	public function is_floating():Dynamic;
 	public function is_integer():Dynamic;
 	public function is_interval():Dynamic;
 	/**
-		Logical indicating if the date belongs to a leap year
+		Boolean indicator if the date belongs to a leap year.
+		
+		A leap year is a year, which has 366 days (instead of 365) including
+		29th of February as an intercalary day.
+		Leap years are years which are multiples of four with the exception
+		of years divisible by 100 but not by 400.
+		
+		Returns
+		-------
+		Series or ndarray
+		     Booleans indicating if dates belong to a leap year.
+		
+		Examples
+		--------
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
+		
+		>>> idx = pd.date_range("2012-01-01", "2015-01-01", freq="Y")
+		>>> idx
+		DatetimeIndex(['2012-12-31', '2013-12-31', '2014-12-31'],
+		              dtype='datetime64[ns]', freq='A-DEC')
+		>>> idx.is_leap_year
+		array([ True, False, False], dtype=bool)
+		
+		>>> dates = pd.Series(idx)
+		>>> dates_series
+		0   2012-12-31
+		1   2013-12-31
+		2   2014-12-31
+		dtype: datetime64[ns]
+		>>> dates_series.dt.is_leap_year
+		0     True
+		1    False
+		2    False
+		dtype: bool
 	**/
 	public var is_leap_year : Dynamic;
 	public function is_lexsorted_for_tuple(tup:Dynamic):Dynamic;
@@ -1415,32 +2049,214 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var is_monotonic_increasing : Dynamic;
 	/**
-		Logical indicating if last day of month (defined by frequency)
+		Indicator for whether the date is the last day of the month.
+		
+		Returns
+		-------
+		Series or array
+		    For Series, returns a Series with boolean values. For
+		    DatetimeIndex, returns a boolean array.
+		
+		See Also
+		--------
+		is_month_start : Indicator for whether the date is the first day
+		    of the month.
+		
+		Examples
+		--------
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
+		
+		>>> dates = pd.Series(pd.date_range("2018-02-27", periods=3))
+		>>> dates
+		0   2018-02-27
+		1   2018-02-28
+		2   2018-03-01
+		dtype: datetime64[ns]
+		>>> dates.dt.is_month_end
+		0    False
+		1    True
+		2    False
+		dtype: bool
+		
+		>>> idx = pd.date_range("2018-02-27", periods=3)
+		>>> idx.is_month_end
+		array([False,  True, False], dtype=bool)
 	**/
 	public var is_month_end : Dynamic;
 	/**
 		Logical indicating if first day of month (defined by frequency)
 	**/
 	public var is_month_start : Dynamic;
-	static public var is_normalized : Dynamic;
+	/**
+		Returns True if all of the dates are at midnight ("no time")
+	**/
+	public var is_normalized : Dynamic;
 	public function is_numeric():Dynamic;
 	public function is_object():Dynamic;
 	/**
-		Logical indicating if last day of quarter (defined by frequency)
+		Indicator for whether the date is the last day of a quarter.
+		
+		Returns
+		-------
+		is_quarter_end : Series or DatetimeIndex
+		    The same type as the original data with boolean values. Series will
+		    have the same name and index. DatetimeIndex will have the same
+		    name.
+		
+		See Also
+		--------
+		quarter : Return the quarter of the date.
+		is_quarter_start : Similar property indicating the quarter start.
+		
+		Examples
+		--------
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
+		
+		>>> df = pd.DataFrame({'dates': pd.date_range("2017-03-30",
+		...                    periods=4)})
+		>>> df.assign(quarter=df.dates.dt.quarter,
+		...           is_quarter_end=df.dates.dt.is_quarter_end)
+		       dates  quarter    is_quarter_end
+		0 2017-03-30        1             False
+		1 2017-03-31        1              True
+		2 2017-04-01        2             False
+		3 2017-04-02        2             False
+		
+		>>> idx = pd.date_range('2017-03-30', periods=4)
+		>>> idx
+		DatetimeIndex(['2017-03-30', '2017-03-31', '2017-04-01', '2017-04-02'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		>>> idx.is_quarter_end
+		array([False,  True, False, False])
 	**/
 	public var is_quarter_end : Dynamic;
 	/**
-		Logical indicating if first day of quarter (defined by frequency)
+		Indicator for whether the date is the first day of a quarter.
+		
+		Returns
+		-------
+		is_quarter_start : Series or DatetimeIndex
+		    The same type as the original data with boolean values. Series will
+		    have the same name and index. DatetimeIndex will have the same
+		    name.
+		
+		See Also
+		--------
+		quarter : Return the quarter of the date.
+		is_quarter_end : Similar property for indicating the quarter start.
+		
+		Examples
+		--------
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
+		
+		>>> df = pd.DataFrame({'dates': pd.date_range("2017-03-30",
+		...                   periods=4)})
+		>>> df.assign(quarter=df.dates.dt.quarter,
+		...           is_quarter_start=df.dates.dt.is_quarter_start)
+		       dates  quarter  is_quarter_start
+		0 2017-03-30        1             False
+		1 2017-03-31        1             False
+		2 2017-04-01        2              True
+		3 2017-04-02        2             False
+		
+		>>> idx = pd.date_range('2017-03-30', periods=4)
+		>>> idx
+		DatetimeIndex(['2017-03-30', '2017-03-31', '2017-04-01', '2017-04-02'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		>>> idx.is_quarter_start
+		array([False, False,  True, False])
 	**/
 	public var is_quarter_start : Dynamic;
 	public function is_type_compatible(typ:Dynamic):Dynamic;
-	static public var is_unique : Dynamic;
 	/**
-		Logical indicating if last day of year (defined by frequency)
+		return if the index has unique values 
+	**/
+	public var is_unique : Dynamic;
+	/**
+		Indicate whether the date is the last day of the year.
+		
+		Returns
+		-------
+		Series or DatetimeIndex
+		    The same type as the original data with boolean values. Series will
+		    have the same name and index. DatetimeIndex will have the same
+		    name.
+		
+		See Also
+		--------
+		is_year_start : Similar property indicating the start of the year.
+		
+		Examples
+		--------
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
+		
+		>>> dates = pd.Series(pd.date_range("2017-12-30", periods=3))
+		>>> dates
+		0   2017-12-30
+		1   2017-12-31
+		2   2018-01-01
+		dtype: datetime64[ns]
+		
+		>>> dates.dt.is_year_end
+		0    False
+		1     True
+		2    False
+		dtype: bool
+		
+		>>> idx = pd.date_range("2017-12-30", periods=3)
+		>>> idx
+		DatetimeIndex(['2017-12-30', '2017-12-31', '2018-01-01'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		>>> idx.is_year_end
+		array([False,  True, False])
 	**/
 	public var is_year_end : Dynamic;
 	/**
-		Logical indicating if first day of year (defined by frequency)
+		Indicate whether the date is the first day of a year.
+		
+		Returns
+		-------
+		Series or DatetimeIndex
+		    The same type as the original data with boolean values. Series will
+		    have the same name and index. DatetimeIndex will have the same
+		    name.
+		
+		See Also
+		--------
+		is_year_end : Similar property indicating the last day of the year.
+		
+		Examples
+		--------
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
+		
+		>>> dates = pd.Series(pd.date_range("2017-12-30", periods=3))
+		>>> dates
+		0   2017-12-30
+		1   2017-12-31
+		2   2018-01-01
+		dtype: datetime64[ns]
+		
+		>>> dates.dt.is_year_start
+		0    False
+		1    False
+		2    True
+		dtype: bool
+		
+		>>> idx = pd.date_range("2017-12-30", periods=3)
+		>>> idx
+		DatetimeIndex(['2017-12-30', '2017-12-31', '2018-01-01'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		>>> idx.is_year_start
+		array([False, False,  True])
 	**/
 	public var is_year_start : Dynamic;
 	/**
@@ -1457,17 +2273,113 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function isin(values:Dynamic):Dynamic;
 	/**
-		Detect missing values
+		Detect missing values.
+		
+		Return a boolean same-sized object indicating if the values are NA.
+		NA values, such as ``None``, :attr:`numpy.NaN` or :attr:`pd.NaT`, get
+		mapped to ``True`` values.
+		Everything else get mapped to ``False`` values. Characters such as
+		empty strings `''` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
 		
 		.. versionadded:: 0.20.0
 		
 		Returns
 		-------
-		a boolean array of whether my values are null
+		numpy.ndarray
+		    A boolean array of whether my values are NA
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : pandas version
+		pandas.Index.notna : boolean inverse of isna.
+		pandas.Index.dropna : omit entries with missing values.
+		pandas.isna : top-level isna.
+		Series.isna : detect missing values in Series object.
+		
+		Examples
+		--------
+		Show which entries in a pandas.Index are NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.isna()
+		array([False, False,  True], dtype=bool)
+		
+		Empty strings are not considered NA values. None is considered an NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.isna()
+		array([False, False, False,  True], dtype=bool)
+		
+		For datetimes, `NaT` (Not a Time) is considered as an NA value.
+		
+		>>> idx = pd.DatetimeIndex([pd.Timestamp('1940-04-25'),
+		...                         pd.Timestamp(''), None, pd.NaT])
+		>>> idx
+		DatetimeIndex(['1940-04-25', 'NaT', 'NaT', 'NaT'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> idx.isna()
+		array([False,  True,  True,  True], dtype=bool)
+	**/
+	public function isna():Dynamic;
+	/**
+		Detect missing values.
+		
+		Return a boolean same-sized object indicating if the values are NA.
+		NA values, such as ``None``, :attr:`numpy.NaN` or :attr:`pd.NaT`, get
+		mapped to ``True`` values.
+		Everything else get mapped to ``False`` values. Characters such as
+		empty strings `''` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
+		
+		.. versionadded:: 0.20.0
+		
+		Returns
+		-------
+		numpy.ndarray
+		    A boolean array of whether my values are NA
+		
+		See Also
+		--------
+		pandas.Index.notna : boolean inverse of isna.
+		pandas.Index.dropna : omit entries with missing values.
+		pandas.isna : top-level isna.
+		Series.isna : detect missing values in Series object.
+		
+		Examples
+		--------
+		Show which entries in a pandas.Index are NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.isna()
+		array([False, False,  True], dtype=bool)
+		
+		Empty strings are not considered NA values. None is considered an NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.isna()
+		array([False, False, False,  True], dtype=bool)
+		
+		For datetimes, `NaT` (Not a Time) is considered as an NA value.
+		
+		>>> idx = pd.DatetimeIndex([pd.Timestamp('1940-04-25'),
+		...                         pd.Timestamp(''), None, pd.NaT])
+		>>> idx
+		DatetimeIndex(['1940-04-25', 'NaT', 'NaT', 'NaT'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> idx.isna()
+		array([False,  True,  True,  True], dtype=bool)
 	**/
 	public function isnull():Dynamic;
 	/**
@@ -1494,7 +2406,7 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function max(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Memory usage of my values
+		Memory usage of the values
 		
 		Parameters
 		----------
@@ -1509,7 +2421,7 @@ package pandas.core.indexes.datetimes;
 		Notes
 		-----
 		Memory usage does not include memory consumed by elements that
-		are not components of the array if deep=False
+		are not components of the array if deep=False or if used on PyPy
 		
 		See Also
 		--------
@@ -1537,6 +2449,22 @@ package pandas.core.indexes.datetimes;
 		The month as January=1, December=12
 	**/
 	public var month : Dynamic;
+	/**
+		Return the month names of the DateTimeIndex with specified locale.
+		
+		Parameters
+		----------
+		locale : string, default None (English locale)
+		    locale determining the language in which to return the month name
+		
+		Returns
+		-------
+		month_names : Index
+		    Index of month names
+		
+		.. versionadded:: 0.23.0
+	**/
+	public function month_name(?locale:Dynamic):pandas.Index;
 	static public var name : Dynamic;
 	public var names : Dynamic;
 	/**
@@ -1554,25 +2482,129 @@ package pandas.core.indexes.datetimes;
 	public var ndim : Dynamic;
 	public var nlevels : Dynamic;
 	/**
-		Return DatetimeIndex with times to midnight. Length is unaltered
+		Convert times to midnight.
+		
+		The time component of the date-timeise converted to midnight i.e.
+		00:00:00. This is useful in cases, when the time does not matter.
+		Length is unaltered. The timezones are unaffected.
+		
+		This method is available on Series with datetime values under
+		the ``.dt`` accessor, and directly on DatetimeIndex.
 		
 		Returns
 		-------
-		normalized : DatetimeIndex
+		DatetimeIndex or Series
+		    The same type as the original data. Series will have the same
+		    name and index. DatetimeIndex will have the same name.
+		
+		See Also
+		--------
+		floor : Floor the datetimes to the specified freq.
+		ceil : Ceil the datetimes to the specified freq.
+		round : Round the datetimes to the specified freq.
+		
+		Examples
+		--------
+		>>> idx = pd.DatetimeIndex(start='2014-08-01 10:00', freq='H',
+		...                        periods=3, tz='Asia/Calcutta')
+		>>> idx
+		DatetimeIndex(['2014-08-01 10:00:00+05:30',
+		               '2014-08-01 11:00:00+05:30',
+		               '2014-08-01 12:00:00+05:30'],
+		                dtype='datetime64[ns, Asia/Calcutta]', freq='H')
+		>>> idx.normalize()
+		DatetimeIndex(['2014-08-01 00:00:00+05:30',
+		               '2014-08-01 00:00:00+05:30',
+		               '2014-08-01 00:00:00+05:30'],
+		               dtype='datetime64[ns, Asia/Calcutta]', freq=None)
 	**/
-	public function normalize():pandas.DatetimeIndex;
+	public function normalize():Dynamic;
 	/**
-		Reverse of isnull
+		Detect existing (non-missing) values.
+		
+		Return a boolean same-sized object indicating if the values are not NA.
+		Non-missing values get mapped to ``True``. Characters such as empty
+		strings ``''`` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
+		NA values, such as None or :attr:`numpy.NaN`, get mapped to ``False``
+		values.
 		
 		.. versionadded:: 0.20.0
 		
 		Returns
 		-------
-		a boolean array of whether my values are not null
+		numpy.ndarray
+		    Boolean array to indicate which entries are not NA.
 		
 		See also
 		--------
-		pandas.notnull : pandas version
+		Index.notnull : alias of notna
+		Index.isna: inverse of notna
+		pandas.notna : top-level notna
+		
+		Examples
+		--------
+		Show which entries in an Index are not NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.notna()
+		array([ True,  True, False])
+		
+		Empty strings are not considered NA values. None is considered a NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.notna()
+		array([ True,  True,  True, False])
+	**/
+	public function notna():Dynamic;
+	/**
+		Detect existing (non-missing) values.
+		
+		Return a boolean same-sized object indicating if the values are not NA.
+		Non-missing values get mapped to ``True``. Characters such as empty
+		strings ``''`` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
+		NA values, such as None or :attr:`numpy.NaN`, get mapped to ``False``
+		values.
+		
+		.. versionadded:: 0.20.0
+		
+		Returns
+		-------
+		numpy.ndarray
+		    Boolean array to indicate which entries are not NA.
+		
+		See also
+		--------
+		Index.notnull : alias of notna
+		Index.isna: inverse of notna
+		pandas.notna : top-level notna
+		
+		Examples
+		--------
+		Show which entries in an Index are not NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.notna()
+		array([ True,  True, False])
+		
+		Empty strings are not considered NA values. None is considered a NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.notna()
+		array([ True,  True,  True, False])
 	**/
 	public function notnull():Dynamic;
 	/**
@@ -1590,7 +2622,10 @@ package pandas.core.indexes.datetimes;
 		nunique : int
 	**/
 	public function nunique(?dropna:Dynamic):Int;
-	static public var offset : Dynamic;
+	/**
+		get/set the frequency of the Index
+	**/
+	public var offset : Dynamic;
 	/**
 		return a new Index of the values set with the mask
 		
@@ -1646,27 +2681,51 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		NOT IMPLEMENTED: do not call this method, as reshaping is not
-		supported for Index objects and will raise an error.
-		
-		Reshape an Index.
+		Returns day, hour, minute, second, millisecond or microsecond
 	**/
-	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var resolution : Dynamic;
+	public var resolution : Dynamic;
 	/**
-		round the index to the specified freq
+		round the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to round the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.round('H')
+		DatetimeIndex(['2018-01-01 12:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.round("H")
+		0   2018-01-01 12:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 12:00:00
+		dtype: datetime64[ns]
 	**/
 	public function round(freq:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1723,21 +2782,16 @@ package pandas.core.indexes.datetimes;
 		>>> x.searchsorted([1, 3], side='right')
 		array([1, 3])
 		
-		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
+		>>> x = pd.Categorical(['apple', 'bread', 'bread',
+		                        'cheese', 'milk'], ordered=True)
 		[apple, bread, bread, cheese, milk]
 		Categories (4, object): [apple < bread < cheese < milk]
 		
 		>>> x.searchsorted('bread')
 		array([1])     # Note: an array, not a scalar
 		
-		>>> x.searchsorted(['bread'])
-		array([1])
-		
-		>>> x.searchsorted(['bread', 'eggs'])
-		array([1, 4])
-		
-		>>> x.searchsorted(['bread', 'eggs'], side='right')
-		array([3, 4])    # eggs before milk
+		>>> x.searchsorted(['bread'], side='right')
+		array([3])
 	**/
 	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
@@ -1764,9 +2818,9 @@ package pandas.core.indexes.datetimes;
 		Examples
 		--------
 		>>> Index([1, 2, 3, 4]).set_names('foo')
-		Int64Index([1, 2, 3, 4], dtype='int64')
+		Int64Index([1, 2, 3, 4], dtype='int64', name='foo')
 		>>> Index([1, 2, 3, 4]).set_names(['foo'])
-		Int64Index([1, 2, 3, 4], dtype='int64')
+		Int64Index([1, 2, 3, 4], dtype='int64', name='foo')
 		>>> idx = MultiIndex.from_tuples([(1, u'one'), (1, u'two'),
 		                                  (2, u'one'), (2, u'two')],
 		                                  names=['foo', 'bar'])
@@ -1836,6 +2890,20 @@ package pandas.core.indexes.datetimes;
 		Returns
 		-------
 		start, end : int
+		
+		Notes
+		-----
+		This method only works if the index is monotonic or unique.
+		
+		Examples
+		---------
+		>>> idx = pd.Index(list('abcd'))
+		>>> idx.slice_locs(start='b', end='c')
+		(1, 3)
+		
+		See Also
+		--------
+		Index.get_loc : Get location for a single label
 	**/
 	public function slice_locs(?start:Dynamic, ?end:Dynamic, ?step:Dynamic, ?kind:Dynamic):Dynamic;
 	/**
@@ -1876,20 +2944,37 @@ package pandas.core.indexes.datetimes;
 	**/
 	static public function str(data:Dynamic):Dynamic;
 	/**
-		Return an array of formatted strings specified by date_format, which
-		supports the same string format as the python standard library. Details
-		of the string format can be found in `python string format doc <https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior>`__
+		Convert to Index using specified date_format.
 		
-		.. versionadded:: 0.17.0
+		Return an Index of formatted strings specified by date_format, which
+		supports the same string format as the python standard library. Details
+		of the string format can be found in `python string format doc <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior>`__
 		
 		Parameters
 		----------
 		date_format : str
-		    date format string (e.g. "%Y-%m-%d")
+		    Date format string (e.g. "%Y-%m-%d").
 		
 		Returns
 		-------
-		ndarray of formatted strings
+		Index
+		    Index of formatted strings
+		
+		See Also
+		--------
+		pandas.to_datetime : Convert the given argument to datetime
+		DatetimeIndex.normalize : Return DatetimeIndex with times to midnight.
+		DatetimeIndex.round : Round the DatetimeIndex to the specified freq.
+		DatetimeIndex.floor : Floor the DatetimeIndex to the specified freq.
+		
+		Examples
+		--------
+		>>> rng = pd.date_range(pd.Timestamp("2018-03-10 09:00"),
+		...                     periods=3, freq='s')
+		>>> rng.strftime('%B %d, %Y, %r')
+		Index(['March 10, 2018, 09:00:00 AM', 'March 10, 2018, 09:00:01 AM',
+		       'March 10, 2018, 09:00:02 AM'],
+		      dtype='object')
 	**/
 	public function strftime(date_format:Dynamic):Dynamic;
 	/**
@@ -1897,10 +2982,10 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var strides : Dynamic;
 	/**
-		return a summarized representation
+		Return a summarized representation
+		.. deprecated:: 0.23.0
 	**/
 	public function summary(?name:Dynamic):Dynamic;
-	public function sym_diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the symmetric difference of two Index objects.
 		It's sorted if sorting is possible.
@@ -1960,12 +3045,44 @@ package pandas.core.indexes.datetimes;
 	**/
 	public var time : Dynamic;
 	/**
-		DEPRECATED: use :meth:`pandas.to_datetime` instead.
+		Create a DataFrame with a column containing the Index.
 		
-		For an Index containing strings or datetime.datetime objects, attempt
-		conversion to DatetimeIndex
+		.. versionadded:: 0.21.0
+		
+		Parameters
+		----------
+		index : boolean, default True
+		    Set the index of the returned DataFrame as the original Index.
+		
+		Returns
+		-------
+		DataFrame
+		    DataFrame containing the original Index data.
+		
+		See Also
+		--------
+		Index.to_series : Convert an Index to a Series.
+		Series.to_frame : Convert Series to DataFrame.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(['Ant', 'Bear', 'Cow'], name='animal')
+		>>> idx.to_frame()
+		       animal
+		animal
+		Ant       Ant
+		Bear     Bear
+		Cow       Cow
+		
+		By default, the original Index is reused. To enforce a new Index:
+		
+		>>> idx.to_frame(index=False)
+		    animal
+		0   Ant
+		1  Bear
+		2   Cow
 	**/
-	public function to_datetime(?dayfirst:Dynamic):Dynamic;
+	public function to_frame(?index:Dynamic):Dynamic;
 	/**
 		Convert DatetimeIndex to Float64Index of Julian Dates.
 		0 Julian date is noon January 1, 4713 BC.
@@ -1993,23 +3110,61 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function to_native_types(?slicer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Cast to PeriodIndex at a particular frequency
-	**/
-	public function to_period(?freq:Dynamic):Dynamic;
-	/**
-		Calcuates TimedeltaIndex of difference between index
-		values and index converted to PeriodIndex at specified
-		freq.  Used for vectorized offsets
+		Cast to PeriodIndex at a particular frequency.
 		
-		.. versionadded:: 0.17.0
+		Converts DatetimeIndex to PeriodIndex.
 		
 		Parameters
 		----------
-		freq : Period frequency
+		freq : string or Offset, optional
+		    One of pandas' :ref:`offset strings <timeseries.offset_aliases>`
+		    or an Offset object. Will be inferred by default.
 		
 		Returns
 		-------
-		y : TimedeltaIndex
+		PeriodIndex
+		
+		Raises
+		------
+		ValueError
+		    When converting a DatetimeIndex with non-regular values, so that a
+		    frequency cannot be inferred.
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame({"y": [1,2,3]},
+		...                   index=pd.to_datetime(["2000-03-31 00:00:00",
+		...                                         "2000-05-31 00:00:00",
+		...                                         "2000-08-31 00:00:00"]))
+		>>> df.index.to_period("M")
+		PeriodIndex(['2000-03', '2000-05', '2000-08'],
+		            dtype='period[M]', freq='M')
+		
+		Infer the daily frequency
+		
+		>>> idx = pd.date_range("2017-01-01", periods=2)
+		>>> idx.to_period()
+		PeriodIndex(['2017-01-01', '2017-01-02'],
+		            dtype='period[D]', freq='D')
+		
+		See also
+		--------
+		pandas.PeriodIndex: Immutable ndarray holding ordinal values
+		pandas.DatetimeIndex.to_pydatetime: Return DatetimeIndex as object
+	**/
+	public function to_period(?freq:Dynamic):Dynamic;
+	/**
+		Calculate TimedeltaIndex of difference between index
+		values and index converted to periodIndex at specified
+		freq. Used for vectorized offsets
+		
+		Parameters
+		----------
+		freq: Period frequency
+		
+		Returns
+		-------
+		y: TimedeltaIndex
 	**/
 	public function to_perioddelta(freq:Dynamic):pandas.TimedeltaIndex;
 	/**
@@ -2041,12 +3196,17 @@ package pandas.core.indexes.datetimes;
 		
 		      Series will have a datetime64[ns] dtype. TZ aware
 		      objects will have the tz removed.
+		index : Index, optional
+		    index of resulting Series. If None, defaults to original index
+		name : string, optional
+		    name of resulting Series. If None, defaults to name of original
+		    index
 		
 		Returns
 		-------
 		Series
 	**/
-	public function to_series(?keep_tz:Dynamic):Dynamic;
+	public function to_series(?keep_tz:Dynamic, ?index:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		return a list of the underlying data
 	**/
@@ -2055,17 +3215,16 @@ package pandas.core.indexes.datetimes;
 		return the transpose, which is by definition self 
 	**/
 	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var tz : Dynamic;
+	public var tz : Dynamic;
 	/**
-		Convert tz-aware DatetimeIndex from one time zone to another (using
-		pytz/dateutil)
+		Convert tz-aware DatetimeIndex from one time zone to another.
 		
 		Parameters
 		----------
 		tz : string, pytz.timezone, dateutil.tz.tzfile or None
-		    Time zone for time. Corresponding timestamps would be converted to
-		    time zone of the TimeSeries.
-		    None will remove timezone holding UTC time.
+		    Time zone for time. Corresponding timestamps would be converted
+		    to this time zone of the DatetimeIndex. A `tz` of None will
+		    convert to UTC and remove the timezone information.
 		
 		Returns
 		-------
@@ -2075,19 +3234,67 @@ package pandas.core.indexes.datetimes;
 		------
 		TypeError
 		    If DatetimeIndex is tz-naive.
+		
+		See Also
+		--------
+		DatetimeIndex.tz : A timezone that has a variable offset from UTC
+		DatetimeIndex.tz_localize : Localize tz-naive DatetimeIndex to a
+		    given time zone, or remove timezone from a tz-aware DatetimeIndex.
+		
+		Examples
+		--------
+		With the `tz` parameter, we can change the DatetimeIndex
+		to other time zones:
+		
+		>>> dti = pd.DatetimeIndex(start='2014-08-01 09:00',
+		...                        freq='H', periods=3, tz='Europe/Berlin')
+		
+		>>> dti
+		DatetimeIndex(['2014-08-01 09:00:00+02:00',
+		               '2014-08-01 10:00:00+02:00',
+		               '2014-08-01 11:00:00+02:00'],
+		              dtype='datetime64[ns, Europe/Berlin]', freq='H')
+		
+		>>> dti.tz_convert('US/Central')
+		DatetimeIndex(['2014-08-01 02:00:00-05:00',
+		               '2014-08-01 03:00:00-05:00',
+		               '2014-08-01 04:00:00-05:00'],
+		              dtype='datetime64[ns, US/Central]', freq='H')
+		
+		With the ``tz=None``, we can remove the timezone (after converting
+		to UTC if necessary):
+		
+		>>> dti = pd.DatetimeIndex(start='2014-08-01 09:00',freq='H',
+		...                        periods=3, tz='Europe/Berlin')
+		
+		>>> dti
+		DatetimeIndex(['2014-08-01 09:00:00+02:00',
+		               '2014-08-01 10:00:00+02:00',
+		               '2014-08-01 11:00:00+02:00'],
+		                dtype='datetime64[ns, Europe/Berlin]', freq='H')
+		
+		>>> dti.tz_convert(None)
+		DatetimeIndex(['2014-08-01 07:00:00',
+		               '2014-08-01 08:00:00',
+		               '2014-08-01 09:00:00'],
+		                dtype='datetime64[ns]', freq='H')
 	**/
 	public function tz_convert(tz:Dynamic):pandas.DatetimeIndex;
 	/**
-		Localize tz-naive DatetimeIndex to given time zone (using
-		pytz/dateutil), or remove timezone from tz-aware DatetimeIndex
+		Localize tz-naive DatetimeIndex to tz-aware DatetimeIndex.
+		
+		This method takes a time zone (tz) naive DatetimeIndex object and
+		makes this time zone aware. It does not move the time to another
+		time zone.
+		Time zone localization helps to switch from time zone aware to time
+		zone unaware objects.
 		
 		Parameters
 		----------
 		tz : string, pytz.timezone, dateutil.tz.tzfile or None
-		    Time zone for time. Corresponding timestamps would be converted to
-		    time zone of the TimeSeries.
-		    None will remove timezone holding local time.
-		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
+		    Time zone to convert timestamps to. Passing ``None`` will
+		    remove the time zone information preserving local time.
+		ambiguous : str {'infer', 'NaT', 'raise'} or bool array, default 'raise'
 		    - 'infer' will attempt to infer fall dst-transition hours based on
 		      order
 		    - bool-ndarray where True signifies a DST time, False signifies a
@@ -2096,28 +3303,56 @@ package pandas.core.indexes.datetimes;
 		    - 'NaT' will return NaT where there are ambiguous times
 		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
 		      times
-		errors : 'raise', 'coerce', default 'raise'
+		errors : {'raise', 'coerce'}, default 'raise'
 		    - 'raise' will raise a NonExistentTimeError if a timestamp is not
-		       valid in the specified timezone (e.g. due to a transition from
+		       valid in the specified time zone (e.g. due to a transition from
 		       or to DST time)
 		    - 'coerce' will return NaT if the timestamp can not be converted
-		      into the specified timezone
+		      to the specified time zone
 		
 		    .. versionadded:: 0.19.0
 		
-		infer_dst : boolean, default False (DEPRECATED)
-		    Attempt to infer fall dst-transition hours based on order
-		
 		Returns
 		-------
-		localized : DatetimeIndex
+		DatetimeIndex
+		    Index converted to the specified time zone.
 		
 		Raises
 		------
 		TypeError
 		    If the DatetimeIndex is tz-aware and tz is not None.
+		
+		See Also
+		--------
+		DatetimeIndex.tz_convert : Convert tz-aware DatetimeIndex from
+		    one time zone to another.
+		
+		Examples
+		--------
+		>>> tz_naive = pd.date_range('2018-03-01 09:00', periods=3)
+		>>> tz_naive
+		DatetimeIndex(['2018-03-01 09:00:00', '2018-03-02 09:00:00',
+		               '2018-03-03 09:00:00'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		Localize DatetimeIndex in US/Eastern time zone:
+		
+		>>> tz_aware = tz_naive.tz_localize(tz='US/Eastern')
+		>>> tz_aware
+		DatetimeIndex(['2018-03-01 09:00:00-05:00',
+		               '2018-03-02 09:00:00-05:00',
+		               '2018-03-03 09:00:00-05:00'],
+		              dtype='datetime64[ns, US/Eastern]', freq='D')
+		
+		With the ``tz=None``, we can remove the time zone information
+		while keeping the local time (not converted to UTC):
+		
+		>>> tz_aware.tz_localize(None)
+		DatetimeIndex(['2018-03-01 09:00:00', '2018-03-02 09:00:00',
+		               '2018-03-03 09:00:00'],
+		              dtype='datetime64[ns]', freq='D')
 	**/
-	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic, ?errors:Dynamic):pandas.DatetimeIndex;
+	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
 		Alias for tz attribute
 	**/
@@ -2141,27 +3376,26 @@ package pandas.core.indexes.datetimes;
 	**/
 	public function union_many(others:Dynamic):Dynamic;
 	/**
-		Return unique values in the object. Uniques are returned in order
-		of appearance, this does NOT sort. Hash table-based unique.
+		Return unique values in the index. Uniques are returned in order
+		of appearance, this does NOT sort.
 		
 		Parameters
 		----------
-		values : 1d array-like
+		level : int or str, optional, default None
+		    Only return values from specified level (for MultiIndex)
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
-		unique values.
-		  - If the input is an Index, the return is an Index
-		  - If the input is a Categorical dtype, the return is a Categorical
-		  - If the input is a Series/ndarray, the return will be an ndarray
+		Index without duplicates
 		
 		See Also
 		--------
 		unique
-		Index.unique
 		Series.unique
 	**/
-	public function unique():Dynamic;
+	public function unique(?level:Dynamic):Dynamic;
 	/**
 		Returns object containing counts of unique values.
 		
@@ -2205,7 +3439,7 @@ package pandas.core.indexes.datetimes;
 	/**
 		The name of day in a week (ex: Friday)
 		
-		.. versionadded:: 0.18.1
+		.. deprecated:: 0.23.0
 	**/
 	public var weekday_name : Dynamic;
 	/**

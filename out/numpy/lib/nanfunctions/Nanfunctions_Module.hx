@@ -75,18 +75,41 @@ package numpy.lib.nanfunctions;
 	**/
 	static public function _nanmedian_small(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic):Dynamic;
 	/**
+		Private function for rank 1 arrays. Compute quantile ignoring NaNs.
+		See nanpercentile for parameter usage
+	**/
+	static public function _nanquantile_1d(arr1d:Dynamic, q:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic):Dynamic;
+	/**
+		Assumes that q is in [0, 1], and is an ndarray
+	**/
+	static public function _nanquantile_unchecked(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
+	/**
 		Private function that doesn't support extended axis or keepdims.
 		These methods are extended to this function using _ureduce
 		See nanpercentile for parameter usage
 	**/
-	static public function _nanpercentile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic):Dynamic;
+	static public function _nanquantile_ureduce_func(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic):Dynamic;
 	/**
-		Private function for rank 1 arrays. Compute percentile ignoring
-		NaNs.
+		Equivalent to arr1d[~arr1d.isnan()], but in a different order
 		
-		See nanpercentile for parameter usage
+		Presumably faster as it incurs fewer copies
+		
+		Parameters
+		----------
+		arr1d : ndarray
+		    Array to remove nans from
+		overwrite_input : bool
+		    True if `arr1d` can be modified in place
+		
+		Returns
+		-------
+		res : ndarray
+		    Array with nan elements removed
+		overwrite_input : bool
+		    True if `res` can be modified in place, given the constraint on the
+		    input
 	**/
-	static public function _nanpercentile1d(arr1d:Dynamic, q:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic):Dynamic;
+	static public function _remove_nan_1d(arr1d:Dynamic, ?overwrite_input:Dynamic):numpy.Ndarray;
 	/**
 		If `a` is of inexact type, make a copy of `a`, replace NaNs with
 		the `val` value, and return the copy together with a boolean mask
@@ -114,31 +137,6 @@ package numpy.lib.nanfunctions;
 		    NaNs, otherwise return None.
 	**/
 	static public function _replace_nan(a:Dynamic, val:Dynamic):numpy.Ndarray;
-	/**
-		Internal Function.
-		Call `func` with `a` as first argument swapping the axes to use extended
-		axis on functions that don't support it natively.
-		
-		Returns result and a.shape with axis dims set to 1.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array or object that can be converted to an array.
-		func : callable
-		    Reduction function capable of receiving a single axis argument.
-		    It is is called with `a` as first argument followed by `kwargs`.
-		kwargs : keyword arguments
-		    additional keyword arguments to pass to `func`.
-		
-		Returns
-		-------
-		result : tuple
-		    Result of func(a, **kwargs) and a.shape with axis dims set to 1
-		    which can be used to reshape the result to the same shape a ufunc with
-		    keepdims=True would produce.
-	**/
-	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):python.Tuple<Dynamic>;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -337,8 +335,8 @@ package numpy.lib.nanfunctions;
 		a : array_like
 		    Array containing numbers whose maximum is desired. If `a` is not an
 		    array, a conversion is attempted.
-		axis : int, optional
-		    Axis along which the maximum is computed. The default is to compute
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the maximum is computed. The default is to compute
 		    the maximum of the flattened array.
 		out : ndarray, optional
 		    Alternate output array in which to place the result.  The default
@@ -426,8 +424,8 @@ package numpy.lib.nanfunctions;
 		a : array_like
 		    Array containing numbers whose mean is desired. If `a` is not an
 		    array, a conversion is attempted.
-		axis : int, optional
-		    Axis along which the means are computed. The default is to compute
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the means are computed. The default is to compute
 		    the mean of the flattened array.
 		dtype : data-type, optional
 		    Type to use in computing the mean.  For integer inputs, the default
@@ -576,8 +574,8 @@ package numpy.lib.nanfunctions;
 		a : array_like
 		    Array containing numbers whose minimum is desired. If `a` is not an
 		    array, a conversion is attempted.
-		axis : int, optional
-		    Axis along which the minimum is computed. The default is to compute
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the minimum is computed. The default is to compute
 		    the minimum of the flattened array.
 		out : ndarray, optional
 		    Alternate output array in which to place the result.  The default
@@ -660,40 +658,35 @@ package numpy.lib.nanfunctions;
 		Parameters
 		----------
 		a : array_like
-		    Input array or object that can be converted to an array.
-		q : float in range of [0,100] (or sequence of floats)
-		    Percentile to compute, which must be between 0 and 100
-		    inclusive.
-		axis : {int, sequence of int, None}, optional
+		    Input array or object that can be converted to an array, containing
+		    nan values to be ignored.
+		q : array_like of float
+		    Percentile or sequence of percentiles to compute, which must be between
+		    0 and 100 inclusive.
+		axis : {int, tuple of int, None}, optional
 		    Axis or axes along which the percentiles are computed. The
 		    default is to compute the percentile(s) along a flattened
-		    version of the array. A sequence of axes is supported since
-		    version 1.9.0.
+		    version of the array.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must
 		    have the same shape and buffer length as the expected output,
 		    but the type (of the output) will be cast if necessary.
 		overwrite_input : bool, optional
-		    If True, then allow use of memory of input array `a` for
-		    calculations. The input array will be modified by the call to
-		    `percentile`. This will save memory when you do not need to
-		    preserve the contents of the input array. In this case you
-		    should not make any assumptions about the contents of the input
-		    `a` after this function completes -- treat it as undefined.
-		    Default is False. If `a` is not already an array, this parameter
-		    will have no effect as `a` will be converted to an array
-		    internally regardless of the value of this parameter.
+		    If True, then allow the input array `a` to be modified by intermediate
+		    calculations, to save memory. In this case, the contents of the input
+		    `a` after this function completes is undefined.
 		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
 		    This optional parameter specifies the interpolation method to
-		    use when the desired quantile lies between two data points
+		    use when the desired percentile lies between two data points
 		    ``i < j``:
-		        * linear: ``i + (j - i) * fraction``, where ``fraction`` is
-		          the fractional part of the index surrounded by ``i`` and
-		          ``j``.
-		        * lower: ``i``.
-		        * higher: ``j``.
-		        * nearest: ``i`` or ``j``, whichever is nearest.
-		        * midpoint: ``(i + j) / 2``.
+		
+		    * 'linear': ``i + (j - i) * fraction``, where ``fraction``
+		      is the fractional part of the index surrounded by ``i``
+		      and ``j``.
+		    * 'lower': ``i``.
+		    * 'higher': ``j``.
+		    * 'nearest': ``i`` or ``j``, whichever is nearest.
+		    * 'midpoint': ``(i + j) / 2``.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left in
 		    the result as dimensions with size one. With this option, the
@@ -719,7 +712,10 @@ package numpy.lib.nanfunctions;
 		
 		See Also
 		--------
-		nanmean, nanmedian, percentile, median, mean
+		nanmean
+		nanmedian : equivalent to ``nanpercentile(..., 50)``
+		percentile, median, mean
+		nanquantile : equivalent to nanpercentile, but with q in the range [0, 1].
 		
 		Notes
 		-----
@@ -772,10 +768,10 @@ package numpy.lib.nanfunctions;
 		Parameters
 		----------
 		a : array_like
-		    Array containing numbers whose sum is desired. If `a` is not an
+		    Array containing numbers whose product is desired. If `a` is not an
 		    array, a conversion is attempted.
-		axis : int, optional
-		    Axis along which the product is computed. The default is to compute
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the product is computed. The default is to compute
 		    the product of the flattened array.
 		dtype : data-type, optional
 		    The type of the returned array and of the accumulator in which the
@@ -822,6 +818,101 @@ package numpy.lib.nanfunctions;
 	**/
 	static public function nanprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
+		Compute the qth quantile of the data along the specified axis,
+		while ignoring nan values.
+		Returns the qth quantile(s) of the array elements.
+		.. versionadded:: 1.15.0
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array or object that can be converted to an array, containing
+		    nan values to be ignored
+		q : array_like of float
+		    Quantile or sequence of quantiles to compute, which must be between
+		    0 and 1 inclusive.
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the quantiles are computed. The
+		    default is to compute the quantile(s) along a flattened
+		    version of the array.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output,
+		    but the type (of the output) will be cast if necessary.
+		overwrite_input : bool, optional
+		    If True, then allow the input array `a` to be modified by intermediate
+		    calculations, to save memory. In this case, the contents of the input
+		    `a` after this function completes is undefined.
+		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+		    This optional parameter specifies the interpolation method to
+		    use when the desired quantile lies between two data points
+		    ``i < j``:
+		        * linear: ``i + (j - i) * fraction``, where ``fraction``
+		          is the fractional part of the index surrounded by ``i``
+		          and ``j``.
+		        * lower: ``i``.
+		        * higher: ``j``.
+		        * nearest: ``i`` or ``j``, whichever is nearest.
+		        * midpoint: ``(i + j) / 2``.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left in
+		    the result as dimensions with size one. With this option, the
+		    result will broadcast correctly against the original array `a`.
+		
+		    If this is anything but the default value it will be passed
+		    through (in the special case of an empty array) to the
+		    `mean` function of the underlying array.  If the array is
+		    a sub-class and `mean` does not have the kwarg `keepdims` this
+		    will raise a RuntimeError.
+		
+		Returns
+		-------
+		quantile : scalar or ndarray
+		    If `q` is a single percentile and `axis=None`, then the result
+		    is a scalar. If multiple quantiles are given, first axis of
+		    the result corresponds to the quantiles. The other axes are
+		    the axes that remain after the reduction of `a`. If the input
+		    contains integers or floats smaller than ``float64``, the output
+		    data-type is ``float64``. Otherwise, the output data-type is the
+		    same as that of the input. If `out` is specified, that array is
+		    returned instead.
+		
+		See Also
+		--------
+		quantile
+		nanmean, nanmedian
+		nanmedian : equivalent to ``nanquantile(..., 0.5)``
+		nanpercentile : same as nanquantile, but with q in the range [0, 100].
+		
+		Examples
+		--------
+		>>> a = np.array([[10., 7., 4.], [3., 2., 1.]])
+		>>> a[0][1] = np.nan
+		>>> a
+		array([[ 10.,  nan,   4.],
+		      [  3.,   2.,   1.]])
+		>>> np.quantile(a, 0.5)
+		nan
+		>>> np.nanquantile(a, 0.5)
+		3.5
+		>>> np.nanquantile(a, 0.5, axis=0)
+		array([ 6.5,  2.,   2.5])
+		>>> np.nanquantile(a, 0.5, axis=1, keepdims=True)
+		array([[ 7.],
+		       [ 2.]])
+		>>> m = np.nanquantile(a, 0.5, axis=0)
+		>>> out = np.zeros_like(m)
+		>>> np.nanquantile(a, 0.5, axis=0, out=out)
+		array([ 6.5,  2.,   2.5])
+		>>> m
+		array([ 6.5,  2. ,  2.5])
+		>>> b = a.copy()
+		>>> np.nanquantile(b, 0.5, axis=1, overwrite_input=True)
+		array([  7.,  2.])
+		>>> assert not np.all(a==b)
+	**/
+	static public function nanquantile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
+	/**
 		Compute the standard deviation along the specified axis, while
 		ignoring NaNs.
 		
@@ -839,8 +930,8 @@ package numpy.lib.nanfunctions;
 		----------
 		a : array_like
 		    Calculate the standard deviation of the non-NaN values.
-		axis : int, optional
-		    Axis along which the standard deviation is computed. The default is
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the standard deviation is computed. The default is
 		    to compute the standard deviation of the flattened array.
 		dtype : dtype, optional
 		    Type to use in computing the standard deviation. For arrays of
@@ -918,7 +1009,7 @@ package numpy.lib.nanfunctions;
 		Return the sum of array elements over a given axis treating Not a
 		Numbers (NaNs) as zero.
 		
-		In NumPy versions <= 1.8.0 Nan is returned for slices that are all-NaN or
+		In NumPy versions <= 1.9.0 Nan is returned for slices that are all-NaN or
 		empty. In later versions zero is returned.
 		
 		Parameters
@@ -926,8 +1017,8 @@ package numpy.lib.nanfunctions;
 		a : array_like
 		    Array containing numbers whose sum is desired. If `a` is not an
 		    array, a conversion is attempted.
-		axis : int, optional
-		    Axis along which the sum is computed. The default is to compute the
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the sum is computed. The default is to compute the
 		    sum of the flattened array.
 		dtype : data-type, optional
 		    The type of the returned array and of the accumulator in which the
@@ -1016,8 +1107,8 @@ package numpy.lib.nanfunctions;
 		a : array_like
 		    Array containing numbers whose variance is desired.  If `a` is not an
 		    array, a conversion is attempted.
-		axis : int, optional
-		    Axis along which the variance is computed.  The default is to compute
+		axis : {int, tuple of int, None}, optional
+		    Axis or axes along which the variance is computed.  The default is to compute
 		    the variance of the flattened array.
 		dtype : data-type, optional
 		    Type to use in computing the variance.  For arrays of integer type

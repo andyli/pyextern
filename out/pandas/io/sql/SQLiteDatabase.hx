@@ -8,7 +8,7 @@ package pandas.io.sql;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -48,18 +48,18 @@ package pandas.io.sql;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(con:Dynamic, ?flavor:Dynamic, ?is_cursor:Dynamic):Dynamic;
+	public function ___init__(con:Dynamic, ?is_cursor:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(con:Dynamic, ?flavor:Dynamic, ?is_cursor:Dynamic):Void;
+	public function new(con:Dynamic, ?is_cursor:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -96,7 +96,7 @@ package pandas.io.sql;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -115,7 +115,7 @@ package pandas.io.sql;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -127,13 +127,15 @@ package pandas.io.sql;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
 	public function _create_sql_schema(frame:Dynamic, table_name:Dynamic, ?keys:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -162,11 +164,12 @@ package pandas.io.sql;
 		Parameters
 		----------
 		frame: DataFrame
-		name: name of SQL table
+		name: string
+		    Name of SQL table.
 		if_exists: {'fail', 'replace', 'append'}, default 'fail'
 		    fail: If table exists, do nothing.
 		    replace: If table exists, drop it, recreate it, and insert data.
-		    append: If table exists, insert data. Create if does not exist.
+		    append: If table exists, insert data. Create if it does not exist.
 		index : boolean, default True
 		    Write DataFrame index as a column
 		index_label : string or sequence, default None
@@ -174,7 +177,7 @@ package pandas.io.sql;
 		    `index` is True, then the index names are used.
 		    A sequence should be given if the DataFrame uses MultiIndex.
 		schema : string, default None
-		    Ignored parameter included for compatability with SQLAlchemy
+		    Ignored parameter included for compatibility with SQLAlchemy
 		    version of ``to_sql``.
 		chunksize : int, default None
 		    If not None, then rows will be written in batches of this

@@ -9,6 +9,10 @@ package tensorflow.python.framework.load_library;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Check the file to see if it is a shared object, only using extension.
+	**/
+	static public function _is_shared_object(filename:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -29,6 +33,26 @@ package tensorflow.python.framework.load_library;
 		  RuntimeError: when unable to load the library.
 	**/
 	static public function load_file_system_library(library_filename:Dynamic):Dynamic;
+	/**
+		Loads a TensorFlow plugin.
+		
+		"library_location" can be a path to a specific shared object, or a folder.
+		If it is a folder, all sahred objects that are named "libtfkernel*" will be
+		loaded. When the library is loaded, kernels registered in the library via the
+		`REGISTER_*` macros are made available in the TensorFlow process.
+		
+		Args:
+		  library_location: Path to the plugin or the folder of plugins.
+		    Relative or absolute filesystem path to a dynamic library file or folder.
+		
+		Returns:
+		  None
+		
+		Raises:
+		  OSError: When the file to be loaded is not found.
+		  RuntimeError: when unable to load the library.
+	**/
+	static public function load_library(library_location:Dynamic):Dynamic;
 	/**
 		Loads a TensorFlow plugin, containing custom ops and kernels.
 		
@@ -53,4 +77,5 @@ package tensorflow.python.framework.load_library;
 	**/
 	static public function load_op_library(library_filename:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

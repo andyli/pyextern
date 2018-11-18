@@ -9,7 +9,9 @@ package tensorflow.python.util.compat;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var _tf_api_constants : Dynamic;
+	static public var _tf_api_constants_v1 : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Converts either bytes or unicode to `bytes`, using utf-8 encoding for text.
 		
@@ -28,7 +30,7 @@ package tensorflow.python.util.compat;
 		Returns the given argument as a unicode string.
 		
 		Args:
-		  bytes_or_text: A `bytes`, `str, or `unicode` object.
+		  bytes_or_text: A `bytes`, `str`, or `unicode` object.
 		  encoding: A string indicating the charset for decoding unicode.
 		
 		Returns:
@@ -52,7 +54,7 @@ package tensorflow.python.util.compat;
 		Returns the given argument as a unicode string.
 		
 		Args:
-		  bytes_or_text: A `bytes`, `str, or `unicode` object.
+		  bytes_or_text: A `bytes`, `str`, or `unicode` object.
 		  encoding: A string indicating the charset for decoding unicode.
 		
 		Returns:
@@ -64,6 +66,19 @@ package tensorflow.python.util.compat;
 	static public function as_text(bytes_or_text:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public var bytes_or_text_types : Dynamic;
 	static public var complex_types : Dynamic;
+	static public var division : Dynamic;
 	static public var integral_types : Dynamic;
+	/**
+		Returns the file system path representation of a `PathLike` object, else as it is.
+		
+		Args:
+		  path: An object that can be converted to path representation.
+		
+		Returns:
+		  A `str` object.
+	**/
+	static public function path_to_str(path:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public var real_types : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

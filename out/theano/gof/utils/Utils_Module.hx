@@ -30,10 +30,11 @@ package theano.gof.utils;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
 	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
+	static public var c_cpp_keywords : Dynamic;
 	static public function comm_guard(type1:Dynamic, type2:Dynamic):Dynamic;
 	static public var config : Dynamic;
 	/**
@@ -64,7 +65,7 @@ package theano.gof.utils;
 	static public function give_variables_names(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function hash_from_code(msg:Dynamic):Dynamic;
 	/**
-		Return the MD5 hash of a file.
+		Return the SHA256 hash of a file.
 	**/
 	static public function hash_from_file(file_path:Dynamic):Dynamic;
 	static public function hashtype(self:Dynamic):Dynamic;

@@ -78,30 +78,56 @@ package scipy.signal._savitzky_golay;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		weights : ndarray
 		    One-dimensional sequence of numbers.
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right.
 		
 		Returns
 		-------
 		convolve1d : ndarray
 		    Convolved array with same shape as input
+		
+		Examples
+		--------
+		>>> from scipy.ndimage import convolve1d
+		>>> convolve1d([2, 8, 0, 4, 1, 9, 9, 0], weights=[1, 3])
+		array([14, 24,  4, 13, 12, 36, 27,  0])
 	**/
 	static public function convolve1d(input:Dynamic, weights:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -134,7 +160,7 @@ package scipy.signal._savitzky_golay;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		lapack_driver: str, optional
+		lapack_driver : str, optional
 		    Which LAPACK driver is used to solve the least-squares problem.
 		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
 		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
@@ -147,11 +173,11 @@ package scipy.signal._savitzky_golay;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : () or (1,) or (K,) ndarray
+		residues : (0,) or () or (K,) ndarray
 		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``> M``, or ``'gelsy'`` is used,
-		    this is an empty array. If b was 1-D, this is an (1,) shape array,
-		    otherwise the shape is (K,).
+		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
+		    this is a length zero array. If b was 1-D, this is a () shape array
+		    (numpy scalar), otherwise the shape is (K,).
 		rank : int
 		    Effective rank of matrix `a`.
 		s : (min(M,N),) ndarray or None
@@ -169,6 +195,50 @@ package scipy.signal._savitzky_golay;
 		See Also
 		--------
 		optimize.nnls : linear least squares with non-negativity constraint
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lstsq
+		>>> import matplotlib.pyplot as plt
+		
+		Suppose we have the following data:
+		
+		>>> x = np.array([1, 2.5, 3.5, 4, 5, 7, 8.5])
+		>>> y = np.array([0.3, 1.1, 1.5, 2.0, 3.2, 6.6, 8.6])
+		
+		We want to fit a quadratic polynomial of the form ``y = a + b*x**2``
+		to this data.  We first form the "design matrix" M, with a constant
+		column of 1s and a column containing ``x**2``:
+		
+		>>> M = x[:, np.newaxis]**[0, 2]
+		>>> M
+		array([[  1.  ,   1.  ],
+		       [  1.  ,   6.25],
+		       [  1.  ,  12.25],
+		       [  1.  ,  16.  ],
+		       [  1.  ,  25.  ],
+		       [  1.  ,  49.  ],
+		       [  1.  ,  72.25]])
+		
+		We want to find the least-squares solution to ``M.dot(p) = y``,
+		where ``p`` is a vector with length 2 that holds the parameters
+		``a`` and ``b``.
+		
+		>>> p, res, rnk, s = lstsq(M, y)
+		>>> p
+		array([ 0.20925829,  0.12013861])
+		
+		Plot the data and the fitted curve.
+		
+		>>> plt.plot(x, y, 'o', label='data')
+		>>> xx = np.linspace(0, 9, 101)
+		>>> yy = p[0] + p[1]*xx**2
+		>>> plt.plot(xx, yy, label='least squares fit, $y = a + bx^2$')
+		>>> plt.xlabel('x')
+		>>> plt.ylabel('y')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.show()
 	**/
 	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -261,7 +331,8 @@ package scipy.signal._savitzky_golay;
 		    before filtering.
 		window_length : int
 		    The length of the filter window (i.e. the number of coefficients).
-		    `window_length` must be a positive odd integer.
+		    `window_length` must be a positive odd integer. If `mode` is 'interp',
+		    `window_length` must be less than or equal to the size of `x`.
 		polyorder : int
 		    The order of the polynomial used to fit the samples.
 		    `polyorder` must be less than `window_length`.

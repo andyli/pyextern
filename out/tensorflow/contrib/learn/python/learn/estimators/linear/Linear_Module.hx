@@ -71,6 +71,8 @@ package tensorflow.contrib.learn.python.learn.estimators.linear;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -79,7 +81,7 @@ package tensorflow.contrib.learn.python.learn.estimators.linear;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	/**
 		Decorator for marking specific function argument values as deprecated.
 		
@@ -102,6 +104,9 @@ package tensorflow.contrib.learn.python.learn.estimators.linear;
 		    Must be ISO 8601 (YYYY-MM-DD), or None
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: If `True`, warn only the first time this function is called with
+		    deprecated argument values. Otherwise, every call (with a deprecated
+		    argument value) will log a warning.
 		  **deprecated_kwargs: The deprecated argument values.
 		
 		Returns:
@@ -111,7 +116,7 @@ package tensorflow.contrib.learn.python.learn.estimators.linear;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated_arg_values(date:Dynamic, instructions:Dynamic, ?deprecated_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecated_arg_values(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic, ?deprecated_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**

@@ -10,62 +10,7 @@ package numpy.linalg;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _numpy_tester():Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		Run benchmarks for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the benchmarks to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow benchmarks as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for benchmark outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		
-		Returns
-		-------
-		success : bool
-		    Returns True if running the benchmarks works, False if an error
-		    occurred.
-		
-		Notes
-		-----
-		Benchmarks are like tests, but have names starting with "bench" instead
-		of "test", and can be found under the "benchmarks" sub-directory of the
-		module.
-		
-		Each NumPy module exposes `bench` in its namespace to run all benchmarks
-		for it.
-		
-		Examples
-		--------
-		>>> success = np.lib.bench() #doctest: +SKIP
-		Running benchmarks for numpy.lib
-		...
-		using 562341 items:
-		unique:
-		0.11
-		unique1d:
-		0.11
-		ratio: 1.0
-		nUnique: 56230 == 56230
-		...
-		OK
-		
-		>>> success #doctest: +SKIP
-		True
-	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Cholesky decomposition.
 		
@@ -231,7 +176,7 @@ package numpy.linalg;
 		
 		See Also
 		--------
-		slogdet : Another way to representing the determinant, more suitable
+		slogdet : Another way to represent the determinant, more suitable
 		  for large matrices where underflow/overflow may occur.
 		
 		Notes
@@ -711,12 +656,19 @@ package numpy.linalg;
 		    as zero if they are smaller than `rcond` times the largest singular
 		    value of `a`.
 		
+		    .. versionchanged:: 1.14.0
+		       If not set, a FutureWarning is given. The previous default
+		       of ``-1`` will use the machine precision as `rcond` parameter,
+		       the new default will use the machine precision times `max(M, N)`.
+		       To silence the warning and use the new default, use ``rcond=None``,
+		       to keep using the old behavior, use ``rcond=-1``.
+		
 		Returns
 		-------
 		x : {(N,), (N, K)} ndarray
 		    Least-squares solution. If `b` is two-dimensional,
 		    the solutions are in the `K` columns of `x`.
-		residuals : {(), (1,), (K,)} ndarray
+		residuals : {(1,), (K,), (0,)} ndarray
 		    Sums of residuals; squared Euclidean 2-norm for each column in
 		    ``b - a*x``.
 		    If the rank of `a` is < N or M <= N, this is an empty array.
@@ -756,7 +708,7 @@ package numpy.linalg;
 		       [ 2.,  1.],
 		       [ 3.,  1.]])
 		
-		>>> m, c = np.linalg.lstsq(A, y)[0]
+		>>> m, c = np.linalg.lstsq(A, y, rcond=None)[0]
 		>>> print(m, c)
 		1.0 -0.95
 		
@@ -777,18 +729,19 @@ package numpy.linalg;
 		of the same shape as M is returned. If ``n < 0``, the inverse
 		is computed and then raised to the ``abs(n)``.
 		
+		.. note:: Stacks of object matrices are not currently supported.
+		
 		Parameters
 		----------
-		M : ndarray or matrix object
-		    Matrix to be "powered."  Must be square, i.e. ``M.shape == (m, m)``,
-		    with `m` a positive integer.
+		a : (..., M, M) array_like
+		    Matrix to be "powered."
 		n : int
 		    The exponent can be any integer or long integer, positive,
 		    negative, or zero.
 		
 		Returns
 		-------
-		M**n : ndarray or matrix object
+		a**n : (..., M, M) ndarray or matrix object
 		    The return value is the same shape and type as `M`;
 		    if the exponent is positive or zero then the type of the
 		    elements is the same as those of `M`. If the exponent is
@@ -797,28 +750,20 @@ package numpy.linalg;
 		Raises
 		------
 		LinAlgError
-		    If the matrix is not numerically invertible.
-		
-		See Also
-		--------
-		matrix
-		    Provides an equivalent function as the exponentiation operator
-		    (``**``, not ``^``).
+		    For matrices that are not square or that (for negative powers) cannot
+		    be inverted numerically.
 		
 		Examples
 		--------
-		>>> from numpy import linalg as LA
+		>>> from numpy.linalg import matrix_power
 		>>> i = np.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit
-		>>> LA.matrix_power(i, 3) # should = -i
+		>>> matrix_power(i, 3) # should = -i
 		array([[ 0, -1],
 		       [ 1,  0]])
-		>>> LA.matrix_power(np.matrix(i), 3) # matrix arg returns matrix
-		matrix([[ 0, -1],
-		        [ 1,  0]])
-		>>> LA.matrix_power(i, 0)
+		>>> matrix_power(i, 0)
 		array([[1, 0],
 		       [0, 1]])
-		>>> LA.matrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements
+		>>> matrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements
 		array([[ 0.,  1.],
 		       [-1.,  0.]])
 		
@@ -832,28 +777,40 @@ package numpy.linalg;
 		       [ 1.,  0.,  0.,  0.],
 		       [ 0.,  0.,  0.,  1.],
 		       [ 0.,  0., -1.,  0.]])
-		>>> LA.matrix_power(q, 2) # = -np.eye(4)
+		>>> matrix_power(q, 2) # = -np.eye(4)
 		array([[-1.,  0.,  0.,  0.],
 		       [ 0., -1.,  0.,  0.],
 		       [ 0.,  0., -1.,  0.],
 		       [ 0.,  0.,  0., -1.]])
 	**/
-	static public function matrix_power(M:Dynamic, n:Dynamic):Dynamic;
+	static public function matrix_power(a:Dynamic, n:Dynamic):Dynamic;
 	/**
 		Return matrix rank of array using SVD method
 		
-		Rank of the array is the number of SVD singular values of the array that are
+		Rank of the array is the number of singular values of the array that are
 		greater than `tol`.
+		
+		.. versionchanged:: 1.14
+		   Can now operate on stacks of matrices
 		
 		Parameters
 		----------
 		M : {(M,), (..., M, N)} array_like
 		    input vector or stack of matrices
-		tol : {None, float}, optional
-		   threshold below which SVD values are considered zero. If `tol` is
-		   None, and ``S`` is an array with singular values for `M`, and
-		   ``eps`` is the epsilon value for datatype of ``S``, then `tol` is
-		   set to ``S.max() * max(M.shape) * eps``.
+		tol : (...) array_like, float, optional
+		    threshold below which SVD values are considered zero. If `tol` is
+		    None, and ``S`` is an array with singular values for `M`, and
+		    ``eps`` is the epsilon value for datatype of ``S``, then `tol` is
+		    set to ``S.max() * max(M.shape) * eps``.
+		
+		    .. versionchanged:: 1.14
+		       Broadcasted against the stack of matrices
+		hermitian : bool, optional
+		    If True, `M` is assumed to be Hermitian (symmetric if real-valued),
+		    enabling a more efficient method for finding singular values.
+		    Defaults to False.
+		
+		    .. versionadded:: 1.14
 		
 		Notes
 		-----
@@ -914,7 +871,7 @@ package numpy.linalg;
 		>>> matrix_rank(np.zeros((4,)))
 		0
 	**/
-	static public function matrix_rank(M:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function matrix_rank(M:Dynamic, ?tol:Dynamic, ?hermitian:Dynamic):Dynamic;
 	/**
 		Compute the dot product of two or more arrays in a single function call,
 		while automatically selecting the fastest evaluation order.
@@ -1010,6 +967,9 @@ package numpy.linalg;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will
@@ -1133,26 +1093,29 @@ package numpy.linalg;
 		singular-value decomposition (SVD) and including all
 		*large* singular values.
 		
+		.. versionchanged:: 1.14
+		   Can now operate on stacks of matrices
+		
 		Parameters
 		----------
-		a : (M, N) array_like
-		  Matrix to be pseudo-inverted.
-		rcond : float
-		  Cutoff for small singular values.
-		  Singular values smaller (in modulus) than
-		  `rcond` * largest_singular_value (again, in modulus)
-		  are set to zero.
+		a : (..., M, N) array_like
+		    Matrix or stack of matrices to be pseudo-inverted.
+		rcond : (...) array_like of float
+		    Cutoff for small singular values.
+		    Singular values smaller (in modulus) than
+		    `rcond` * largest_singular_value (again, in modulus)
+		    are set to zero. Broadcasts against the stack of matrices
 		
 		Returns
 		-------
-		B : (N, M) ndarray
-		  The pseudo-inverse of `a`. If `a` is a `matrix` instance, then so
-		  is `B`.
+		B : (..., N, M) ndarray
+		    The pseudo-inverse of `a`. If `a` is a `matrix` instance, then so
+		    is `B`.
 		
 		Raises
 		------
 		LinAlgError
-		  If the SVD computation does not converge.
+		    If the SVD computation does not converge.
 		
 		Notes
 		-----
@@ -1202,15 +1165,15 @@ package numpy.linalg;
 		mode : {'reduced', 'complete', 'r', 'raw', 'full', 'economic'}, optional
 		    If K = min(M, N), then
 		
-		    'reduced'  : returns q, r with dimensions (M, K), (K, N) (default)
-		    'complete' : returns q, r with dimensions (M, M), (M, N)
-		    'r'        : returns r only with dimensions (K, N)
-		    'raw'      : returns h, tau with dimensions (N, M), (K,)
-		    'full'     : alias of 'reduced', deprecated
-		    'economic' : returns h from 'raw', deprecated.
+		    * 'reduced'  : returns q, r with dimensions (M, K), (K, N) (default)
+		    * 'complete' : returns q, r with dimensions (M, M), (M, N)
+		    * 'r'        : returns r only with dimensions (K, N)
+		    * 'raw'      : returns h, tau with dimensions (N, M), (K,)
+		    * 'full'     : alias of 'reduced', deprecated
+		    * 'economic' : returns h from 'raw', deprecated.
 		
 		    The options 'reduced', 'complete, and 'raw' are new in numpy 1.8,
-		    see the notes for more information. The default is 'reduced' and to
+		    see the notes for more information. The default is 'reduced', and to
 		    maintain backward compatibility with earlier versions of numpy both
 		    it and the old default 'full' can be omitted. Note that array h
 		    returned in 'raw' mode is transposed for calling Fortran. The
@@ -1440,31 +1403,40 @@ package numpy.linalg;
 	/**
 		Singular Value Decomposition.
 		
-		Factors the matrix `a` as ``u * np.diag(s) * v``, where `u` and `v`
-		are unitary and `s` is a 1-d array of `a`'s singular values.
+		When `a` is a 2D array, it is factorized as ``u @ np.diag(s) @ vh
+		= (u * s) @ vh``, where `u` and `vh` are 2D unitary arrays and `s` is a 1D
+		array of `a`'s singular values. When `a` is higher-dimensional, SVD is
+		applied in stacked mode as explained below.
 		
 		Parameters
 		----------
 		a : (..., M, N) array_like
-		    A real or complex matrix of shape (`M`, `N`) .
+		    A real or complex array with ``a.ndim >= 2``.
 		full_matrices : bool, optional
-		    If True (default), `u` and `v` have the shapes (`M`, `M`) and
-		    (`N`, `N`), respectively.  Otherwise, the shapes are (`M`, `K`)
-		    and (`K`, `N`), respectively, where `K` = min(`M`, `N`).
+		    If True (default), `u` and `vh` have the shapes ``(..., M, M)`` and
+		    ``(..., N, N)``, respectively.  Otherwise, the shapes are
+		    ``(..., M, K)`` and ``(..., K, N)``, respectively, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether or not to compute `u` and `v` in addition to `s`.  True
+		    Whether or not to compute `u` and `vh` in addition to `s`.  True
 		    by default.
 		
 		Returns
 		-------
 		u : { (..., M, M), (..., M, K) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		s : (..., K) array
-		    The singular values for every matrix, sorted in descending order.
-		v : { (..., N, N), (..., K, N) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Vector(s) with the singular values, within each vector sorted in
+		    descending order. The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`.
+		vh : { (..., N, N), (..., K, N) } array
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		
 		Raises
 		------
@@ -1474,48 +1446,79 @@ package numpy.linalg;
 		Notes
 		-----
 		
-		.. versionadded:: 1.8.0
+		.. versionchanged:: 1.8.0
+		   Broadcasting rules apply, see the `numpy.linalg` documentation for
+		   details.
 		
-		Broadcasting rules apply, see the `numpy.linalg` documentation for
-		details.
+		The decomposition is performed using LAPACK routine ``_gesdd``.
 		
-		The decomposition is performed using LAPACK routine _gesdd
+		SVD is usually described for the factorization of a 2D matrix :math:`A`.
+		The higher-dimensional case will be discussed below. In the 2D case, SVD is
+		written as :math:`A = U S V^H`, where :math:`A = a`, :math:`U= u`,
+		:math:`S= \mathtt{np.diag}(s)` and :math:`V^H = vh`. The 1D array `s`
+		contains the singular values of `a` and `u` and `vh` are unitary. The rows
+		of `vh` are the eigenvectors of :math:`A^H A` and the columns of `u` are
+		the eigenvectors of :math:`A A^H`. In both cases the corresponding
+		(possibly non-zero) eigenvalues are given by ``s**2``.
 		
-		The SVD is commonly written as ``a = U S V.H``.  The `v` returned
-		by this function is ``V.H`` and ``u = U``.
+		If `a` has more than two dimensions, then broadcasting rules apply, as
+		explained in :ref:`routines.linalg-broadcasting`. This means that SVD is
+		working in "stacked" mode: it iterates over all indices of the first
+		``a.ndim - 2`` dimensions and for each combination SVD is applied to the
+		last two indices. The matrix `a` can be reconstructed from the
+		decomposition with either ``(u * s[..., None, :]) @ vh`` or
+		``u @ (s[..., None] * vh)``. (The ``@`` operator can be replaced by the
+		function ``np.matmul`` for python versions below 3.5.)
 		
-		If ``U`` is a unitary matrix, it means that it
-		satisfies ``U.H = inv(U)``.
-		
-		The rows of `v` are the eigenvectors of ``a.H a``. The columns
-		of `u` are the eigenvectors of ``a a.H``.  For row ``i`` in
-		`v` and column ``i`` in `u`, the corresponding eigenvalue is
-		``s[i]**2``.
-		
-		If `a` is a `matrix` object (as opposed to an `ndarray`), then so
-		are all the return values.
+		If `a` is a ``matrix`` object (as opposed to an ``ndarray``), then so are
+		all the return values.
 		
 		Examples
 		--------
 		>>> a = np.random.randn(9, 6) + 1j*np.random.randn(9, 6)
+		>>> b = np.random.randn(2, 7, 8, 3) + 1j*np.random.randn(2, 7, 8, 3)
 		
-		Reconstruction based on full SVD:
+		Reconstruction based on full SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=True)
-		>>> U.shape, V.shape, s.shape
-		((9, 9), (6, 6), (6,))
-		>>> S = np.zeros((9, 6), dtype=complex)
-		>>> S[:6, :6] = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((9, 9), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u[:, :6] * s, vh))
+		True
+		>>> smat = np.zeros((9, 6), dtype=complex)
+		>>> smat[:6, :6] = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
 		True
 		
-		Reconstruction based on reduced SVD:
+		Reconstruction based on reduced SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=False)
-		>>> U.shape, V.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u * s, vh))
+		True
+		>>> smat = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
+		True
+		
+		Reconstruction based on full SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 8), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u[..., :3] * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u[..., :3], s[..., None] * vh))
+		True
+		
+		Reconstruction based on reduced SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 3), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u, s[..., None] * vh))
 		True
 	**/
 	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic):Dynamic;
@@ -1617,66 +1620,5 @@ package numpy.linalg;
 		True
 	**/
 	static public function tensorsolve(a:Dynamic, b:Dynamic, ?axes:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?durations:Dynamic, ?tests:Dynamic):Dynamic;
 }

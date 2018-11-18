@@ -74,6 +74,7 @@ package scipy.special._logsumexp;
 		    as NaN. Default is False (no sign information).
 		
 		    .. versionadded:: 0.16.0
+		
 		Returns
 		-------
 		res : ndarray

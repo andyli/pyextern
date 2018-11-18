@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.rnn.ops.gen_gru_ops;
 @:pythonImport("tensorflow.contrib.rnn.ops.gen_gru_ops") extern class Gen_gru_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,6 +13,23 @@ package tensorflow.contrib.rnn.ops.gen_gru_ops;
 	static public var _gru_block_cell_grad_outputs : Dynamic;
 	static public var _gru_block_cell_outputs : Dynamic;
 	static public var _op_def_lib : Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Computes the GRU cell forward propagation for 1 time step.
 		
@@ -37,7 +54,7 @@ package tensorflow.contrib.rnn.ops.gen_gru_ops;
 		Element-wise dot product is represented by \circ
 		Matrix multiplication is represented by *
 		
-		Baises are initialized with :
+		Biases are initialized with :
 		`b_ru` - constant_initializer(1.0)
 		`b_c` - constant_initializer(0.0)
 		
@@ -79,6 +96,11 @@ package tensorflow.contrib.rnn.ops.gen_gru_ops;
 		  h: A `Tensor`. Has the same type as `x`.
 	**/
 	static public function gru_block_cell(x:Dynamic, h_prev:Dynamic, w_ru:Dynamic, w_c:Dynamic, b_ru:Dynamic, b_c:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function gru_block_cell
+	**/
+	static public function gru_block_cell_eager_fallback(x:Dynamic, h_prev:Dynamic, w_ru:Dynamic, w_c:Dynamic, b_ru:Dynamic, b_c:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the GRU cell back-propagation for 1 time step.
 		
@@ -185,4 +207,10 @@ package tensorflow.contrib.rnn.ops.gen_gru_ops;
 		  d_r_bar_u_bar: A `Tensor`. Has the same type as `x`.
 	**/
 	static public function gru_block_cell_grad(x:Dynamic, h_prev:Dynamic, w_ru:Dynamic, w_c:Dynamic, b_ru:Dynamic, b_c:Dynamic, r:Dynamic, u:Dynamic, c:Dynamic, d_h:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function gru_block_cell_grad
+	**/
+	static public function gru_block_cell_grad_eager_fallback(x:Dynamic, h_prev:Dynamic, w_ru:Dynamic, w_c:Dynamic, b_ru:Dynamic, b_c:Dynamic, r:Dynamic, u:Dynamic, c:Dynamic, d_h:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

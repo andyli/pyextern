@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.client.timeline;
 @:pythonImport("tensorflow.python.client.timeline", "_TensorTracker") extern class _TensorTracker {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -47,7 +47,7 @@ package tensorflow.python.client.timeline;
 		  name:  The name of the Tensor as a string.
 		  object_id:  Chrome Trace object identifier assigned for this Tensor.
 		  timestamp:  The creation timestamp of this event as a long integer.
-		  pid:  Process identifier of the assicaiated device, as an integer.
+		  pid:  Process identifier of the associated device, as an integer.
 		  allocator:  Name of the allocator used to create the Tensor.
 		  num_bytes:  Number of bytes allocated (long integer).
 		
@@ -66,7 +66,7 @@ package tensorflow.python.client.timeline;
 		  name:  The name of the Tensor as a string.
 		  object_id:  Chrome Trace object identifier assigned for this Tensor.
 		  timestamp:  The creation timestamp of this event as a long integer.
-		  pid:  Process identifier of the assicaiated device, as an integer.
+		  pid:  Process identifier of the associated device, as an integer.
 		  allocator:  Name of the allocator used to create the Tensor.
 		  num_bytes:  Number of bytes allocated (long integer).
 		
@@ -80,7 +80,7 @@ package tensorflow.python.client.timeline;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -131,7 +131,7 @@ package tensorflow.python.client.timeline;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

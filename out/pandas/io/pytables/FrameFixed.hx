@@ -8,7 +8,7 @@ package pandas.io.pytables;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -48,18 +48,18 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,7 +115,7 @@ package pandas.io.pytables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return a pretty representation of myself 
 	**/
@@ -166,30 +166,65 @@ package pandas.io.pytables;
 		Two-dimensional size-mutable, potentially heterogeneous tabular data
 		structure with labeled axes (rows and columns). Arithmetic operations
 		align on both row and column labels. Can be thought of as a dict-like
-		container for Series objects. The primary pandas data structure
+		container for Series objects. The primary pandas data structure.
 		
 		Parameters
 		----------
 		data : numpy ndarray (structured or homogeneous), dict, or DataFrame
 		    Dict can contain Series, arrays, constants, or list-like objects
+		
+		    .. versionchanged :: 0.23.0
+		       If data is a dict, argument order is maintained for Python 3.6
+		       and later.
+		
 		index : Index or array-like
-		    Index to use for resulting frame. Will default to np.arange(n) if
+		    Index to use for resulting frame. Will default to RangeIndex if
 		    no indexing information part of input data and no index provided
 		columns : Index or array-like
 		    Column labels to use for resulting frame. Will default to
-		    np.arange(n) if no column labels are provided
+		    RangeIndex (0, 1, 2, ..., n) if no column labels are provided
 		dtype : dtype, default None
-		    Data type to force, otherwise infer
+		    Data type to force. Only a single dtype is allowed. If None, infer
 		copy : boolean, default False
 		    Copy data from inputs. Only affects DataFrame / 2d ndarray input
 		
 		Examples
 		--------
-		>>> d = {'col1': ts1, 'col2': ts2}
-		>>> df = DataFrame(data=d, index=index)
-		>>> df2 = DataFrame(np.random.randn(10, 5))
-		>>> df3 = DataFrame(np.random.randn(10, 5),
-		...                 columns=['a', 'b', 'c', 'd', 'e'])
+		Constructing DataFrame from a dictionary.
+		
+		>>> d = {'col1': [1, 2], 'col2': [3, 4]}
+		>>> df = pd.DataFrame(data=d)
+		>>> df
+		   col1  col2
+		0     1     3
+		1     2     4
+		
+		Notice that the inferred dtype is int64.
+		
+		>>> df.dtypes
+		col1    int64
+		col2    int64
+		dtype: object
+		
+		To enforce a single dtype:
+		
+		>>> df = pd.DataFrame(data=d, dtype=np.int8)
+		>>> df.dtypes
+		col1    int8
+		col2    int8
+		dtype: object
+		
+		Constructing DataFrame from numpy ndarray:
+		
+		>>> df2 = pd.DataFrame(np.random.randint(low=0, high=10, size=(5, 5)),
+		...                    columns=['a', 'b', 'c', 'd', 'e'])
+		>>> df2
+		    a   b   c   d   e
+		0   2   8   8   3   4
+		1   4   2   9   0   9
+		2   1   0   7   8   0
+		3   5   1   7   1   3
+		4   6   0   2   4   2
 		
 		See also
 		--------

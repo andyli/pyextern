@@ -8,9 +8,9 @@ package pandas.io.pytables;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		check for existance of this key
+		check for existence of this key
 		can match the exact pathname or the pathnm w/o the leading '/'
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
@@ -36,6 +36,7 @@ package pandas.io.pytables;
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __fspath__():Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -72,7 +73,7 @@ package pandas.io.pytables;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -131,7 +132,7 @@ package pandas.io.pytables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __unicode__():Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -155,7 +156,7 @@ package pandas.io.pytables;
 		Parameters
 		----------
 		key : object
-		value : {Series, DataFrame, Panel, Panel4D}
+		value : {Series, DataFrame, Panel}
 		format: 'table' is the default
 		    table(t) : table format
 		               Write as a PyTables Table structure which may perform
@@ -277,6 +278,12 @@ package pandas.io.pytables;
 	**/
 	public function groups():Dynamic;
 	/**
+		print detailed information on the store
+		
+		.. versionadded:: 0.21.0
+	**/
+	public function info():Dynamic;
+	/**
 		return a boolean indicating whether the file is open
 	**/
 	public var is_open : Dynamic;
@@ -335,7 +342,7 @@ package pandas.io.pytables;
 		----------
 		key : string
 		    Node to remove or delete rows from
-		where : list of Term (or convertable) objects, optional
+		where : list of Term (or convertible) objects, optional
 		start : integer (defaults to None), row number to start selection
 		stop  : integer (defaults to None), row number to stop selection
 		
@@ -359,7 +366,7 @@ package pandas.io.pytables;
 		Parameters
 		----------
 		key : object
-		where : list of Term (or convertable) objects, optional
+		where : list of Term (or convertible) objects, optional
 		start : integer (defaults to None), row number to start selection
 		stop  : integer (defaults to None), row number to stop selection
 		columns : a list of columns that if not None, will limit the return
@@ -380,7 +387,7 @@ package pandas.io.pytables;
 		Parameters
 		----------
 		key : object
-		where : list of Term (or convertable) objects, optional
+		where : list of Term (or convertible) objects, optional
 		start : integer (defaults to None), row number to start selection
 		stop  : integer (defaults to None), row number to stop selection
 	**/

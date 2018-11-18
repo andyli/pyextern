@@ -16,6 +16,7 @@ package theano.tensor.blas_c;
 	static public function blas_header_text():Dynamic;
 	static public function blas_header_version():Dynamic;
 	static public var blas_optdb : Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public function cgemv_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function cgemv_no_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function cger_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -28,11 +29,11 @@ package theano.tensor.blas_c;
 		
 		where A is a matrix, y and x are vectors (ergo z is vector)
 	**/
-	static public function gemv_c_code(y:Dynamic, A:Dynamic, x:Dynamic, z:Dynamic, alpha:Dynamic, beta:Dynamic, destructive:Dynamic, fail:Dynamic, ?force_init_beta:Dynamic):Dynamic;
+	static public function gemv_c_code(y:Dynamic, A:Dynamic, x:Dynamic, z:Dynamic, alpha:Dynamic, beta:Dynamic, fail:Dynamic, ?force_init_beta:Dynamic, ?params:Dynamic):Dynamic;
 	static public function gemv_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gemv_no_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function ger(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function ger_c_code(A:Dynamic, a:Dynamic, x:Dynamic, y:Dynamic, Z:Dynamic, destructive:Dynamic, fail:Dynamic):Dynamic;
+	static public function ger_c_code(A:Dynamic, a:Dynamic, x:Dynamic, y:Dynamic, Z:Dynamic, fail:Dynamic, params:Dynamic):Dynamic;
 	static public function ger_destructive(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Uses the TopoOptimizer from the input nodes to output nodes of the graph.

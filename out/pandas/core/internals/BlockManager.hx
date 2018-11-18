@@ -9,7 +9,7 @@ package pandas.core.internals;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __contains__(item:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -51,18 +51,18 @@ package pandas.core.internals;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(blocks:Dynamic, axes:Dynamic, ?do_integrity_check:Dynamic, ?fastpath:Dynamic):Dynamic;
+	public function ___init__(blocks:Dynamic, axes:Dynamic, ?do_integrity_check:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(blocks:Dynamic, axes:Dynamic, ?do_integrity_check:Dynamic, ?fastpath:Dynamic):Void;
+	public function new(blocks:Dynamic, axes:Dynamic, ?do_integrity_check:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -102,7 +102,7 @@ package pandas.core.internals;
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -122,7 +122,7 @@ package pandas.core.internals;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -134,6 +134,7 @@ package pandas.core.internals;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	public var _blklocs : Dynamic;
 	public var _blknos : Dynamic;
 	public function _consolidate_check():Dynamic;
@@ -142,8 +143,9 @@ package pandas.core.internals;
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -193,6 +195,10 @@ package pandas.core.internals;
 	public function add_prefix(prefix:Dynamic):Dynamic;
 	public function add_suffix(suffix:Dynamic):Dynamic;
 	/**
+		Whether any of the blocks in this manager are extension blocks
+	**/
+	public var any_extension_types : Dynamic;
+	/**
 		iterate over the blocks, collect and create a new block manager
 		
 		Parameters
@@ -211,7 +217,22 @@ package pandas.core.internals;
 		Block Manager (new object)
 	**/
 	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function as_matrix(?items:Dynamic):Dynamic;
+	/**
+		Convert the blockmanager data into an numpy array.
+		
+		Parameters
+		----------
+		transpose : boolean, default False
+		    If True, transpose the return array
+		items : list of strings or None
+		    Names of block items that will be included in the returned
+		    array. ``None`` means that all block items will be used
+		
+		Returns
+		-------
+		arr : ndarray
+	**/
+	public function as_array(?transpose:Dynamic, ?items:Dynamic):numpy.Ndarray;
 	public function astype(dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var axes : Dynamic;
 	public var blocks : Dynamic;
@@ -316,7 +337,7 @@ package pandas.core.internals;
 		return a boolean if we are a single block and are a view 
 	**/
 	public var is_view : Dynamic;
-	public function isnull(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function isna(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var items : Dynamic;
 	/**
 		return an empty BlockManager with the items axis of len 0 
@@ -396,6 +417,35 @@ package pandas.core.internals;
 		Take items along any axis.
 	**/
 	public function take(indexer:Dynamic, ?axis:Dynamic, ?verify:Dynamic, ?convert:Dynamic):Dynamic;
+	/**
+		Return a dict of str(dtype) -> BlockManager
+		
+		Parameters
+		----------
+		copy : boolean, default True
+		
+		Returns
+		-------
+		values : a dict of dtype -> BlockManager
+		
+		Notes
+		-----
+		This consolidates based on str(dtype)
+	**/
+	public function to_dict(?copy:Dynamic):Dynamic;
+	/**
+		Return a blockmanager with all blocks unstacked.
+		
+		Parameters
+		----------
+		unstacker_func : callable
+		    A (partially-applied) ``pd.core.reshape._Unstacker`` class.
+		
+		Returns
+		-------
+		unstacked : BlockManager
+	**/
+	public function unstack(unstacker_func:Dynamic):Dynamic;
 	public function where(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function xs(key:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?takeable:Dynamic):Dynamic;
 }

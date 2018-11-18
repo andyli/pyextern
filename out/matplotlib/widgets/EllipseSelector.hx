@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.widgets;
 @:pythonImport("matplotlib.widgets", "EllipseSelector") extern class EllipseSelector {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -63,6 +63,8 @@ package matplotlib.widgets;
 		a box or nothing between click and actual position by setting
 		
 		``drawtype = 'line'``, ``drawtype='box'`` or ``drawtype = 'none'``.
+		Drawing a line would result in a line from vertex A to vertex C in
+		a rectangle ABCD.
 		
 		*spancoords* is one of 'data' or 'pixels'.  If 'data', *minspanx*
 		and *minspanx* will be interpreted in the same coordinates as
@@ -122,6 +124,8 @@ package matplotlib.widgets;
 		a box or nothing between click and actual position by setting
 		
 		``drawtype = 'line'``, ``drawtype='box'`` or ``drawtype = 'none'``.
+		Drawing a line would result in a line from vertex A to vertex C in
+		a rectangle ABCD.
 		
 		*spancoords* is one of 'data' or 'pixels'.  If 'data', *minspanx*
 		and *minspanx* will be interpreted in the same coordinates as
@@ -160,7 +164,7 @@ package matplotlib.widgets;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -211,7 +215,7 @@ package matplotlib.widgets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -301,6 +305,13 @@ package matplotlib.widgets;
 		Return (xmin, xmax, ymin, ymax).
 	**/
 	public var extents : Dynamic;
+	/**
+		Returns numpy.ndarray of shape (2,5) containing
+		x (``RectangleSelector.geometry[1,:]``) and
+		y (``RectangleSelector.geometry[0,:]``)
+		coordinates of the four corners of the rectangle starting
+		and ending in the top left corner.
+	**/
 	public var geometry : Dynamic;
 	/**
 		Get whether the widget is active.

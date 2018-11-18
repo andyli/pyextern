@@ -28,7 +28,7 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 	/**
 		Reads multiple records in parallel from data_sources using n readers.
 		
-		It uses a ParallelReader to read from multiple files in  parallel using
+		It uses a ParallelReader to read from multiple files in parallel using
 		multiple readers created using `reader_class` with `reader_kwargs'.
 		
 		If shuffle is True the common_queue would be a RandomShuffleQueue otherwise
@@ -46,7 +46,7 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		      the data will be cycled through indefinitely.
 		  num_readers: a integer, number of Readers to create.
 		  reader_kwargs: an optional dict, of kwargs for the reader.
-		  shuffle: boolean, wether should shuffle the files and the records by using
+		  shuffle: boolean, whether should shuffle the files and the records by using
 		    RandomShuffleQueue as common_queue.
 		  dtypes:  A list of types.  The length of dtypes must equal the number
 		      of elements in each record. If it is None it will default to

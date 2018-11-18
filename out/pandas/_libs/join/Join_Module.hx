@@ -6,6 +6,7 @@ package pandas._libs.join;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public function _get_result_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -130,11 +131,7 @@ package pandas._libs.join;
 	static public function asof_join_nearest_uint8_t_by_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function asof_join_nearest_uint8_t_by_uint64_t(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function ffill_by_group(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ffill_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var float16 : Dynamic;
-	static public var float32 : Dynamic;
-	static public var float64 : Dynamic;
 	static public function full_outer_join(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		compute a 1-d indexer that is an ordering of the passed index,
@@ -176,10 +173,6 @@ package pandas._libs.join;
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
 	static public function inner_join_indexer_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var int16 : Dynamic;
-	static public var int32 : Dynamic;
-	static public var int64 : Dynamic;
-	static public var int8 : Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
@@ -220,13 +213,16 @@ package pandas._libs.join;
 	/**
 		Specialized Cython take which sets NaN values in one pass
 		
+		This dispatches to ``take`` defined on ExtensionArrays. It does not
+		currently dispatch to ``SparseArray.take`` for sparse ``arr``.
+		
 		Parameters
 		----------
-		arr : ndarray
-		    Input array
+		arr : array-like
+		    Input array.
 		indexer : ndarray
 		    1-D array of indices to take, subarrays corresponding to -1 value
-		    indicies are filed with fill_value
+		    indices are filed with fill_value
 		axis : int, default 0
 		    Axis to take from
 		out : ndarray or None, default None
@@ -243,6 +239,11 @@ package pandas._libs.join;
 		    If False, indexer is assumed to contain no -1 values so no filling
 		    will be done.  This short-circuits computation of a mask.  Result is
 		    undefined if allow_fill == False and -1 is present in indexer.
+		
+		Returns
+		-------
+		subarray : array-like
+		    May be the same type as the input, or cast to an ndarray.
 	**/
 	static public function take_nd(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 }

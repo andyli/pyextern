@@ -36,7 +36,7 @@ package numpy.core.fromnumeric;
 		
 		Examples
 		--------
-		>>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
+		>>> for sctype in [np.int32, float, complex, np.string_, np.ndarray]:
 		...     print(np.sctype2char(sctype))
 		l
 		d
@@ -61,6 +61,7 @@ package numpy.core.fromnumeric;
 	static public function _sum_(iterable:Dynamic, ?start:Dynamic):Dynamic;
 	static public function _wrapfunc(obj:Dynamic, method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function _wrapit(obj:Dynamic, method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _wrapreduction(obj:Dynamic, ufunc:Dynamic, method:Dynamic, axis:Dynamic, dtype:Dynamic, out:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Return the length of the first dimension of the input array.
@@ -120,7 +121,7 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -146,7 +147,7 @@ package numpy.core.fromnumeric;
 		False
 		
 		>>> np.all([[True,False],[True,True]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.all([-1, 4, 5])
 		True
@@ -157,7 +158,7 @@ package numpy.core.fromnumeric;
 		>>> o=np.array([False])
 		>>> z=np.all([-1, 4, 5], out=o)
 		>>> id(z), id(o), z                             # doctest: +SKIP
-		(28293632, 28293632, array([ True], dtype=bool))
+		(28293632, 28293632, array([ True]))
 	**/
 	static public function all(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
@@ -167,7 +168,7 @@ package numpy.core.fromnumeric;
 		--------
 		numpy.all : Equivalent function; see for details.
 	**/
-	static public function alltrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function alltrue(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the maximum of an array or maximum along an axis.
 		
@@ -196,8 +197,15 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The minimum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
 		
 		Returns
 		-------
@@ -244,14 +252,29 @@ package numpy.core.fromnumeric;
 		>>> np.amax(a, axis=1)   # Maxima along the second axis
 		array([1, 3])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amax(b)
 		nan
 		>>> np.nanmax(b)
 		4.0
+		
+		You can use an initial value to compute the maximum of an empty slice, or
+		to initialize it to a different value:
+		
+		>>> np.max([[-50], [10]], axis=-1, initial=0)
+		array([ 0, 10])
+		
+		Notice that the initial value is used as one of the elements for which the
+		maximum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		>>> np.max([5], initial=6)
+		6
+		>>> max([5], default=6)
+		5
 	**/
-	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Return the minimum of an array or minimum along an axis.
 		
@@ -280,8 +303,14 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The maximum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -328,14 +357,28 @@ package numpy.core.fromnumeric;
 		>>> np.amin(a, axis=1)   # Minima along the second axis
 		array([0, 2])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amin(b)
 		nan
 		>>> np.nanmin(b)
 		0.0
+		
+		>>> np.min([[-50], [10]], axis=-1, initial=0)
+		array([-50,   0])
+		
+		Notice that the initial value is used as one of the elements for which the
+		minimum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		Notice that this isn't the same as Python's ``default`` argument.
+		
+		>>> np.min([6], initial=5)
+		5
+		>>> min([6], default=5)
+		6
 	**/
-	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Test whether any array element along a given axis evaluates to True.
 		
@@ -370,7 +413,7 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -396,7 +439,7 @@ package numpy.core.fromnumeric;
 		True
 		
 		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.any([-1, 0, 5])
 		True
@@ -407,7 +450,7 @@ package numpy.core.fromnumeric;
 		>>> o=np.array([False])
 		>>> z=np.any([-1, 4, 5], out=o)
 		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
+		(array([ True]), array([ True]))
 		>>> # Check now that z is a reference to o
 		>>> z is o
 		True
@@ -459,11 +502,19 @@ package numpy.core.fromnumeric;
 		>>> np.argmax(a, axis=1)
 		array([2, 2])
 		
+		Indexes of the maximal elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argmax(a, axis=None), a.shape)
+		>>> ind
+		(1, 2)
+		>>> a[ind]
+		5
+		
 		>>> b = np.arange(6)
 		>>> b[1] = 5
 		>>> b
 		array([0, 5, 2, 3, 4, 5])
-		>>> np.argmax(b) # Only the first occurrence is returned.
+		>>> np.argmax(b)  # Only the first occurrence is returned.
 		1
 	**/
 	static public function argmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -511,11 +562,19 @@ package numpy.core.fromnumeric;
 		>>> np.argmin(a, axis=1)
 		array([0, 0])
 		
+		Indices of the minimum elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argmin(a, axis=None), a.shape)
+		>>> ind
+		(0, 0)
+		>>> a[ind]
+		0
+		
 		>>> b = np.arange(6)
 		>>> b[4] = 0
 		>>> b
 		array([0, 1, 2, 3, 0, 5])
-		>>> np.argmin(b) # Only the first occurrence is returned.
+		>>> np.argmin(b)  # Only the first occurrence is returned.
 		0
 	**/
 	static public function argmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -554,7 +613,9 @@ package numpy.core.fromnumeric;
 		-------
 		index_array : ndarray, int
 		    Array of indices that partition `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a partitioned `a`.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a partitioned `a`.
+		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
+		    yields the partitioned `a`, irrespective of dimensionality.
 		
 		See Also
 		--------
@@ -595,7 +656,7 @@ package numpy.core.fromnumeric;
 		axis : int or None, optional
 		    Axis along which to sort.  The default is -1 (the last axis). If None,
 		    the flattened array is used.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -609,6 +670,8 @@ package numpy.core.fromnumeric;
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
 		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
+		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
+		    yields the sorted `a`, irrespective of dimensionality.
 		
 		See Also
 		--------
@@ -639,13 +702,21 @@ package numpy.core.fromnumeric;
 		array([[0, 3],
 		       [2, 2]])
 		
-		>>> np.argsort(x, axis=0)
+		>>> np.argsort(x, axis=0)  # sorts along first axis (down)
 		array([[0, 1],
 		       [1, 0]])
 		
-		>>> np.argsort(x, axis=1)
+		>>> np.argsort(x, axis=1)  # sorts along last axis (across)
 		array([[0, 1],
 		       [0, 1]])
+		
+		Indices of the sorted elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argsort(x, axis=None), x.shape)
+		>>> ind
+		(array([0, 1, 1, 0]), array([0, 0, 1, 1]))
+		>>> x[ind]  # same as np.sort(x, axis=None)
+		array([0, 2, 2, 3])
 		
 		Sorting with keys:
 		
@@ -779,7 +850,15 @@ package numpy.core.fromnumeric;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -874,7 +953,7 @@ package numpy.core.fromnumeric;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -938,9 +1017,9 @@ package numpy.core.fromnumeric;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -1178,7 +1257,7 @@ package numpy.core.fromnumeric;
 	**/
 	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -1188,7 +1267,12 @@ package numpy.core.fromnumeric;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -1228,6 +1312,8 @@ package numpy.core.fromnumeric;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -1312,12 +1398,11 @@ package numpy.core.fromnumeric;
 	/**
 		Return the cumulative product over the given axis.
 		
-		
 		See Also
 		--------
 		cumprod : equivalent function; see for details.
 	**/
-	static public function cumproduct(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function cumproduct(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the cumulative sum of the elements along a given axis.
 		
@@ -1431,13 +1516,14 @@ package numpy.core.fromnumeric;
 		Returns
 		-------
 		array_of_diagonals : ndarray
-		    If `a` is 2-D and not a matrix, a 1-D array of the same type as `a`
-		    containing the diagonal is returned. If `a` is a matrix, a 1-D
-		    array containing the diagonal is returned in order to maintain
-		    backward compatibility.  If the dimension of `a` is greater than
-		    two, then an array of diagonals is returned, "packed" from
-		    left-most dimension to right-most (e.g., if `a` is 3-D, then the
-		    diagonals are "packed" along rows).
+		    If `a` is 2-D, then a 1-D array containing the diagonal and of the
+		    same type as `a` is returned unless `a` is a `matrix`, in which case
+		    a 1-D array rather than a (2-D) `matrix` is returned in order to
+		    maintain backward compatibility.
+		    
+		    If ``a.ndim > 2``, then the dimensions specified by `axis1` and `axis2`
+		    are removed, and a new axis inserted at the end corresponding to the
+		    diagonal.
 		
 		Raises
 		------
@@ -1525,7 +1611,7 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `mean` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -1653,14 +1739,15 @@ package numpy.core.fromnumeric;
 		       [0, 2, 0],
 		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
+		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 		
 		>>> x[np.nonzero(x)]
-		array([ 1.,  1.,  1.])
+		array([1, 2, 1, 1])
 		>>> np.transpose(np.nonzero(x))
 		array([[0, 0],
 		       [1, 1],
-		       [2, 2]])
+		       [2, 0],
+		       [2, 1])
 		
 		A common use for ``nonzero`` is to find the indices of an array, where
 		a condition is True.  Given an array `a`, the condition `a` > 3 is a
@@ -1671,7 +1758,7 @@ package numpy.core.fromnumeric;
 		>>> a > 3
 		array([[False, False, False],
 		       [ True,  True,  True],
-		       [ True,  True,  True]], dtype=bool)
+		       [ True,  True,  True]])
 		>>> np.nonzero(a > 3)
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 		
@@ -1701,7 +1788,7 @@ package numpy.core.fromnumeric;
 		    Element index to partition by. The k-th value of the element
 		    will be in its final sorted position and all smaller elements
 		    will be moved before it and all equal or greater elements behind
-		    it. The order all elements in the partitions is undefined. If
+		    it. The order of all elements in the partitions is undefined. If
 		    provided with a sequence of k-th it will partition all elements
 		    indexed by k-th  of them into their sorted position at once.
 		axis : int or None, optional
@@ -1799,8 +1886,12 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `prod` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		initial : scalar, optional
+		    The starting value for this product. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -1819,7 +1910,7 @@ package numpy.core.fromnumeric;
 		raised on overflow.  That means that, on a 32-bit platform:
 		
 		>>> x = np.array([536870910, 536870910, 536870910, 536870910])
-		>>> np.prod(x) #random
+		>>> np.prod(x)  # random
 		16
 		
 		The product of an empty array is the neutral element 1:
@@ -1855,10 +1946,15 @@ package numpy.core.fromnumeric;
 		is the default platform integer:
 		
 		>>> x = np.array([1, 2, 3], dtype=np.int8)
-		>>> np.prod(x).dtype == np.int
+		>>> np.prod(x).dtype == int
 		True
+		
+		You can also start the product with a value other than one:
+		
+		>>> np.prod([1, 2], initial=5)
+		10
 	**/
-	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Return the product of array elements over a given axis.
 		
@@ -1866,7 +1962,7 @@ package numpy.core.fromnumeric;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Range of values (maximum - minimum) along an axis.
 		
@@ -1876,13 +1972,30 @@ package numpy.core.fromnumeric;
 		----------
 		a : array_like
 		    Input values.
-		axis : int, optional
+		axis : None or int or tuple of ints, optional
 		    Axis along which to find the peaks.  By default, flatten the
-		    array.
+		    array.  `axis` may be negative, in
+		    which case it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.15.0
+		
+		    If this is a tuple of ints, a reduction is performed on multiple
+		    axes, instead of a single axis or all the axes as before.
 		out : array_like
 		    Alternative output array in which to place the result. It must
 		    have the same shape and buffer length as the expected output,
 		    but the type of the output values will be cast if necessary.
+		
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `ptp` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-class' method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -1903,7 +2016,7 @@ package numpy.core.fromnumeric;
 		>>> np.ptp(x, axis=1)
 		array([1, 1])
 	**/
-	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
+	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Replaces specified elements of an array with given values.
 		
@@ -1937,6 +2050,7 @@ package numpy.core.fromnumeric;
 		See Also
 		--------
 		putmask, place
+		put_along_axis : Put elements by matching the array and the index arrays
 		
 		Examples
 		--------
@@ -1954,47 +2068,21 @@ package numpy.core.fromnumeric;
 	/**
 		Return the number of dimensions of an array.
 		
-		If `a` is not already an array, a conversion is attempted.
-		Scalars are zero dimensional.
-		
 		.. note::
 		    This function is deprecated in NumPy 1.9 to avoid confusion with
 		    `numpy.linalg.matrix_rank`. The ``ndim`` attribute or function
 		    should be used instead.
 		
-		Parameters
-		----------
-		a : array_like
-		    Array whose number of dimensions is desired. If `a` is not an array,
-		    a conversion is attempted.
-		
-		Returns
-		-------
-		number_of_dimensions : int
-		    The number of dimensions in the array.
-		
 		See Also
 		--------
-		ndim : equivalent function
-		ndarray.ndim : equivalent property
-		shape : dimensions of array
-		ndarray.shape : dimensions of array
+		ndim : equivalent non-deprecated function
 		
 		Notes
 		-----
 		In the old Numeric package, `rank` was the term used for the number of
 		dimensions, but in NumPy `ndim` is used instead.
-		
-		Examples
-		--------
-		>>> np.rank([1,2,3])
-		1
-		>>> np.rank(np.array([[1,2,3],[4,5,6]]))
-		2
-		>>> np.rank(1)
-		0
 	**/
-	static public function rank(a:Dynamic):Int;
+	static public function rank(a:Dynamic):Dynamic;
 	/**
 		Return a contiguous flattened array.
 		
@@ -2030,10 +2118,9 @@ package numpy.core.fromnumeric;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -2176,11 +2263,11 @@ package numpy.core.fromnumeric;
 		Notes
 		-----
 		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
+		copying the data. If you want an error to be raised when the data is copied,
 		you should assign the new shape to the shape attribute of the array::
 		
 		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
+		 # A transpose makes the array non-contiguous
 		 >>> b = a.T
 		 # Taking a view makes it possible to modify the shape without modifying
 		 # the initial object.
@@ -2287,6 +2374,15 @@ package numpy.core.fromnumeric;
 		corresponding elements in `v` were inserted before the indices, the
 		order of `a` would be preserved.
 		
+		Assuming that `a` is sorted:
+		
+		======  ============================
+		`side`  returned index `i` satisfies
+		======  ============================
+		left    ``a[i-1] < v <= a[i]``
+		right   ``a[i-1] <= v < a[i]``
+		======  ============================
+		
 		Parameters
 		----------
 		a : 1-D array_like
@@ -2321,6 +2417,10 @@ package numpy.core.fromnumeric;
 		
 		As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing
 		`nan` values. The enhanced sort order is documented in `sort`.
+		
+		This function is a faster version of the builtin python `bisect.bisect_left`
+		(``side='left'``) and `bisect.bisect_right` (``side='right'``) functions,
+		which is also vectorized in the `v` argument.
 		
 		Examples
 		--------
@@ -2409,9 +2509,9 @@ package numpy.core.fromnumeric;
 		
 		See Also
 		--------
-		any : equivalent function
+		any : equivalent function; see for details.
 	**/
-	static public function sometrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sometrue(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a sorted copy of an array.
 		
@@ -2422,7 +2522,7 @@ package numpy.core.fromnumeric;
 		axis : int or None, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm. Default is 'quicksort'.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -2452,13 +2552,13 @@ package numpy.core.fromnumeric;
 		order. The three available algorithms have the following
 		properties:
 		
-		=========== ======= ============= ============ =======
-		   kind      speed   worst case    work space  stable
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
+		   kind      speed   worst case    work space   stable
+		=========== ======= ============= ============ ========
 		'quicksort'    1     O(n^2)            0          no
 		'mergesort'    2     O(n*log(n))      ~n/2        yes
 		'heapsort'     3     O(n*log(n))       0          no
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
 		
 		All the sort algorithms make temporary copies of the data when
 		sorting along any but the last axis.  Consequently, sorting along
@@ -2486,6 +2586,10 @@ package numpy.core.fromnumeric;
 		quicksort has been changed to an introsort which will switch
 		heapsort when it does not make enough progress. This makes its
 		worst case O(n*log(n)).
+		
+		'stable' automatically choses the best stable sorting algorithm
+		for the data type being sorted. It is currently mapped to
+		merge sort.
 		
 		Examples
 		--------
@@ -2606,7 +2710,7 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `std` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -2704,8 +2808,12 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		initial : scalar, optional
+		    Starting value for the sum. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -2752,8 +2860,13 @@ package numpy.core.fromnumeric;
 		
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
+		
+		You can also start the sum with a value other than zero:
+		
+		>>> np.sum([10], initial=5)
+		15
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):numpy.Ndarray;
 	/**
 		Interchange two axes of an array.
 		
@@ -2799,15 +2912,28 @@ package numpy.core.fromnumeric;
 	/**
 		Take elements from an array along an axis.
 		
-		This function does the same thing as "fancy" indexing (indexing arrays
-		using arrays); however, it can be easier to use if you need elements
-		along a given axis.
+		When axis is not None, this function does the same thing as "fancy"
+		indexing (indexing arrays using arrays); however, it can be easier to use
+		if you need elements along a given axis. A call such as
+		``np.take(arr, indices, axis=3)`` is equivalent to
+		``arr[:,:,:,indices,...]``.
+		
+		Explained without fancy indexing, this is equivalent to the following use
+		of `ndindex`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of
+		indices::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    Nj = indices.shape
+		    for ii in ndindex(Ni):
+		        for jj in ndindex(Nj):
+		            for kk in ndindex(Nk):
+		                out[ii + jj + kk] = a[ii + (indices[jj],) + kk]
 		
 		Parameters
 		----------
-		a : array_like
+		a : array_like (Ni..., M, Nk...)
 		    The source array.
-		indices : array_like
+		indices : array_like (Nj...)
 		    The indices of the values to extract.
 		
 		    .. versionadded:: 1.8.0
@@ -2816,7 +2942,7 @@ package numpy.core.fromnumeric;
 		axis : int, optional
 		    The axis over which to select values. By default, the flattened
 		    input array is used.
-		out : ndarray, optional
+		out : ndarray, optional (Ni..., Nj..., Nk...)
 		    If provided, the result will be placed in this array. It should
 		    be of the appropriate shape and dtype.
 		mode : {'raise', 'wrap', 'clip'}, optional
@@ -2832,13 +2958,31 @@ package numpy.core.fromnumeric;
 		
 		Returns
 		-------
-		subarray : ndarray
+		out : ndarray (Ni..., Nj..., Nk...)
 		    The returned array has the same type as `a`.
 		
 		See Also
 		--------
 		compress : Take elements using a boolean mask
 		ndarray.take : equivalent method
+		take_along_axis : Take elements by matching the array and the index arrays
+		
+		Notes
+		-----
+		
+		By eliminating the inner loop in the description above, and using `s_` to
+		build simple slice objects, `take` can be expressed  in terms of applying
+		fancy indexing to each 1-d slice::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nj):
+		            out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]
+		
+		For this reason, it is equivalent to (but faster than) the following use
+		of `apply_along_axis`::
+		
+		    out = np.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)
 		
 		Examples
 		--------
@@ -2859,7 +3003,7 @@ package numpy.core.fromnumeric;
 		array([[4, 3],
 		       [5, 7]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
+	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Return the sum along diagonals of the array.
 		
@@ -3000,7 +3144,7 @@ package numpy.core.fromnumeric;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `var` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns

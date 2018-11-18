@@ -13,7 +13,7 @@ package matplotlib.projections.polar;
 		Array interface to get at this Transform's affine matrix.
 	**/
 	public function __array__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function __deepcopy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -51,15 +51,15 @@ package matplotlib.projections.polar;
 	static public var __hash__ : Dynamic;
 	/**
 		*limits* is the view limit of the data.  The only part of
-		its bounds that is used is ymax (for the radius maximum).
-		The theta range is always fixed to (0, 2pi).
+		its bounds that is used is the y limits (for the radius limits).
+		The theta range is handled by the non-affine transform.
 	**/
 	@:native("__init__")
 	public function ___init__(scale_transform:Dynamic, limits:Dynamic):Dynamic;
 	/**
 		*limits* is the view limit of the data.  The only part of
-		its bounds that is used is ymax (for the radius maximum).
-		The theta range is always fixed to (0, 2pi).
+		its bounds that is used is the y limits (for the radius limits).
+		The theta range is handled by the non-affine transform.
 	**/
 	public function new(scale_transform:Dynamic, limits:Dynamic):Void;
 	/**
@@ -68,7 +68,7 @@ package matplotlib.projections.polar;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -146,7 +146,7 @@ package matplotlib.projections.polar;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -185,7 +185,7 @@ package matplotlib.projections.polar;
 	public function contains_branch(other:Dynamic):Dynamic;
 	/**
 		Returns whether the given branch is a sub-tree of this transform on
-		each seperate dimension.
+		each separate dimension.
 		
 		A common use for this method is to identify if a transform is a blended
 		transform containing an axes' data transform. e.g.::

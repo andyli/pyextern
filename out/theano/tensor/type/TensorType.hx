@@ -71,7 +71,7 @@ package theano.tensor.type;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,7 +123,7 @@ package theano.tensor.type;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -164,6 +164,16 @@ package theano.tensor.type;
 		Override `CLinkerType.c_declare`.
 	**/
 	public function c_declare(name:Dynamic, sub:Dynamic, ?check_input:Dynamic):Dynamic;
+	/**
+		Optional: Return the name of the primitive C type of items into variables
+		handled by this type.
+		
+		e.g:
+		
+		 - For ``TensorType(dtype='int64', ...)``: should return ``"npy_int64"``.
+		 - For ``GpuArrayType(dtype='int32', ...)``: should return ``"ga_int"``.
+	**/
+	public function c_element_type():Dynamic;
 	/**
 		Override `CLinkerType.c_extract`.
 	**/
@@ -343,10 +353,9 @@ package theano.tensor.type;
 	/**
 		Convert a symbolic Variable into a TensorType, if compatible.
 		
-		For the moment, only a TensorType, GpuArrayType and
-		CudaNdarrayType will be
-		converted, provided they have the same number of dimensions and
-		dtype and have "compatible" broadcastable pattern.
+		For the moment, only a TensorType and GpuArrayType will be
+		converted, provided they have the same number of dimensions
+		and dtype and have "compatible" broadcastable pattern.
 	**/
 	public function filter_variable(other:Dynamic, ?allow_convert:Dynamic):Dynamic;
 	/**

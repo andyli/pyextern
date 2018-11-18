@@ -2,11 +2,8 @@
 package pandas.tseries.offsets;
 @:pythonImport("pandas.tseries.offsets", "SemiMonthEnd") extern class SemiMonthEnd {
 	public function __add__(other:Dynamic):Dynamic;
-	/**
-		Call self as a function.
-	**/
 	public function __call__(other:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,18 +43,18 @@ package pandas.tseries.offsets;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?n:Dynamic, ?day_of_month:Dynamic, ?normalize:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?n:Dynamic, ?normalize:Dynamic, ?day_of_month:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?n:Dynamic, ?day_of_month:Dynamic, ?normalize:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
+	public function new(?n:Dynamic, ?normalize:Dynamic, ?day_of_month:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -67,7 +64,7 @@ package pandas.tseries.offsets;
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
-	public function __mul__(someInt:Dynamic):Dynamic;
+	public function __mul__(other:Dynamic):Dynamic;
 	/**
 		Return self!=value.
 	**/
@@ -86,16 +83,17 @@ package pandas.tseries.offsets;
 		helper for pickle
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return repr(self).
-	**/
 	public function __repr__():Dynamic;
-	public function __rmul__(someInt:Dynamic):Dynamic;
+	public function __rmul__(other:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Reconstruct an instance from a pickled state
+	**/
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -114,7 +112,7 @@ package pandas.tseries.offsets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -125,21 +123,24 @@ package pandas.tseries.offsets;
 	**/
 	public function _apply(n:Dynamic, other:Dynamic):Dynamic;
 	/**
-		Apply the correct day for each date in i
+		Add days portion of offset to DatetimeIndex i
+		
+		Parameters
+		----------
+		i : DatetimeIndex
+		roll : ndarray[int64_t]
+		
+		Returns
+		-------
+		result : DatetimeIndex
 	**/
-	public function _apply_index_days(i:Dynamic, roll:Dynamic):Dynamic;
-	/**
-		Offsets index to beginning of Period frequency
-	**/
-	public function _beg_apply_index(i:Dynamic, freq:Dynamic):Dynamic;
+	public function _apply_index_days(i:Dynamic, roll:Dynamic):pandas.DatetimeIndex;
+	static public var _attributes : Dynamic;
 	static public var _cacheable : Dynamic;
+	static public var _day_opt : Dynamic;
 	static public var _default_day_of_month : Dynamic;
-	public function _determine_offset():Dynamic;
-	/**
-		Offsets index to end of Period frequency
-	**/
-	public function _end_apply_index(i:Dynamic, freq:Dynamic):Dynamic;
 	static public function _from_name(?suffix:Dynamic):Dynamic;
+	public function _get_offset_day(other:Dynamic):Dynamic;
 	/**
 		Return an array with the correct n for each date in i.
 		
@@ -147,33 +148,38 @@ package pandas.tseries.offsets;
 		the first day of the month.
 	**/
 	public function _get_roll(i:Dynamic, before_day_of_month:Dynamic, after_day_of_month:Dynamic):Dynamic;
-	static public var _kwds_use_relativedelta : Dynamic;
 	static public var _min_day_of_month : Dynamic;
 	static public var _normalize_cache : Dynamic;
+	public function _offset_str():Dynamic;
 	public function _params():Dynamic;
 	static public var _prefix : Dynamic;
+	public function _repr_attrs():Dynamic;
 	public function _should_cache():Dynamic;
+	static public var _typ : Dynamic;
 	static public var _use_relativedelta : Dynamic;
-	public function apply(other:Dynamic):Dynamic;
 	/**
-		Vectorized apply of DateOffset to DatetimeIndex,
-		raises NotImplentedError for offsets without a
-		vectorized implementation
-		
-		.. versionadded:: 0.17.0
+		Require that `n` be a nonzero integer.
 		
 		Parameters
 		----------
-		i : DatetimeIndex
+		n : int
 		
 		Returns
 		-------
-		y : DatetimeIndex
+		nint : int
+		
+		Raises
+		------
+		TypeError if `int(n)` raises
+		ValueError if n != int(n)
 	**/
-	public function apply_index(i:Dynamic):pandas.DatetimeIndex;
+	public function _validate_n(n:Dynamic):Int;
+	public function apply(other:Dynamic):Dynamic;
+	public function apply_index(other:Dynamic):Dynamic;
 	public function copy():Dynamic;
 	public var freqstr : Dynamic;
 	public function isAnchored():Dynamic;
+	public var kwds : Dynamic;
 	public var name : Dynamic;
 	public var nanos : Dynamic;
 	static public var normalize : Dynamic;

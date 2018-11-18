@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.parsers.rst.directives.tables;
 @:pythonImport("docutils.parsers.rst.directives.tables", "ListTable") extern class ListTable {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.parsers.rst.directives.tables;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.parsers.rst.directives.tables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -119,7 +119,7 @@ package docutils.parsers.rst.directives.tables;
 		have contents.
 	**/
 	public function assert_has_content():Dynamic;
-	public function build_table_from_list(table_data:Dynamic, widths:Dynamic, col_widths:Dynamic, header_rows:Dynamic, stub_columns:Dynamic):Dynamic;
+	public function build_table_from_list(table_data:Dynamic, col_widths:Dynamic, header_rows:Dynamic, stub_columns:Dynamic):Dynamic;
 	public function check_list_content(node:Dynamic):Dynamic;
 	public function check_table_dimensions(rows:Dynamic, header_rows:Dynamic, stub_columns:Dynamic):Dynamic;
 	public function debug(message:Dynamic):Dynamic;

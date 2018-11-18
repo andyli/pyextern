@@ -12,14 +12,18 @@ package matplotlib.backends.backend_ps;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
-	static public function _fn_name():Dynamic;
 	static public function _get_papertype(w:Dynamic, h:Dynamic):Dynamic;
+	static public var _log : Dynamic;
+	/**
+		Move the contents of file at *src* to path-or-filelike *dst*.
+		
+		If *dst* is a path, the metadata of *src* are *not* copied.
+	**/
+	static public function _move_path_to_path_or_stream(src:Dynamic, dst:Dynamic):Dynamic;
 	static public function _num_to_str(val:Dynamic):Dynamic;
 	static public function _nums_to_str(?args:python.VarArgs<Dynamic>):Dynamic;
-	static public var absolute_import : Dynamic;
 	static public var backend_version : Dynamic;
 	static public function checkdep_ghostscript():Dynamic;
-	static public var cmd_split : Dynamic;
 	/**
 		When we want to use the LaTeX backend with postscript, we write PSFrag tags
 		to a temporary postscript file, each one marking a position for LaTeX to
@@ -40,7 +44,7 @@ package matplotlib.backends.backend_ps;
 	**/
 	static public function convert_ttf_to_ps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var debugPS : Dynamic;
-	static public var division : Dynamic;
+	static public function draw_if_interactive():Dynamic;
 	/**
 		Returns `True` if the given writable file-like object requires Unicode
 		to be written to it.
@@ -48,8 +52,12 @@ package matplotlib.backends.backend_ps;
 	static public function file_requires_unicode(x:Dynamic):Dynamic;
 	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Use ghostscript's bbox device to find the center of the bounding box. Return
-		an appropriately sized bbox centered around that point. A bit of a hack.
+		.. deprecated:: 3.0
+		    The get_bbox function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		Use ghostscript's bbox device to find the center of the bounding box.
+		Return an appropriately sized bbox centered around that point. A bit of a
+		hack.
 	**/
 	static public function get_bbox(tmpfile:Dynamic, bbox:Dynamic):Dynamic;
 	/**
@@ -57,34 +65,7 @@ package matplotlib.backends.backend_ps;
 		Optionally, return rotate command.
 	**/
 	static public function get_bbox_header(lbrt:Dynamic, ?rotated:Dynamic):Dynamic;
-	/**
-		FT2Font(ttffile)
-		
-		Create a new FT2Font object
-		The following global font attributes are defined:
-		  num_faces              number of faces in file
-		  face_flags             face flags  (int type); see the ft2font constants
-		  style_flags            style flags  (int type); see the ft2font constants
-		  num_glyphs             number of glyphs in the face
-		  family_name            face family name
-		  style_name             face syle name
-		  num_fixed_sizes        number of bitmap in the face
-		  scalable               face is scalable
-		
-		The following are available, if scalable is true:
-		  bbox                   face global bounding box (xmin, ymin, xmax, ymax)
-		  units_per_EM           number of font units covered by the EM
-		  ascender               ascender in 26.6 units
-		  descender              descender in 26.6 units
-		  height                 height in 26.6 units; used to compute a default
-		                         line spacing (baseline-to-baseline distance)
-		  max_advance_width      maximum horizontal cursor advance for all glyphs
-		  max_advance_height     same for vertical layout
-		  underline_position     vertical position of the underline bar
-		  underline_thickness    vertical thickness of the underline
-		  postscript_name        PostScript name of the font
-	**/
-	static public function get_font(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function get_font(filename:Dynamic, ?hinting_factor:Dynamic):Dynamic;
 	static public function get_realpath_and_stat(path:Dynamic):Dynamic;
 	/**
 		Use ghostscript's pswrite or epswrite device to distill a file.
@@ -99,54 +80,20 @@ package matplotlib.backends.backend_ps;
 	**/
 	static public function is_opentype_cff_font(filename:Dynamic):Dynamic;
 	/**
-		Return True if *obj* looks like a string
-	**/
-	static public function is_string_like(obj:Dynamic):Dynamic;
-	/**
 		return true if *obj* looks like a file object with a *write* method
 	**/
 	static public function is_writable_file_like(obj:Dynamic):Dynamic;
 	/**
-		Returns a md5 hash object; optionally initialized with a string
+		Create a new figure manager instance.
+		        
 	**/
-	static public function md5(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		User-callable function to create and return a unique temporary
-		file.  The return value is a pair (fd, name) where fd is the
-		file descriptor returned by os.open, and name is the filename.
-		
-		If 'suffix' is not None, the file name will end with that suffix,
-		otherwise there will be no suffix.
-		
-		If 'prefix' is not None, the file name will begin with that prefix,
-		otherwise a default prefix is used.
-		
-		If 'dir' is not None, the file will be created in that directory,
-		otherwise a default directory is used.
-		
-		If 'text' is specified and true, the file is opened in text
-		mode.  Else (the default) the file is opened in binary mode.  On
-		some operating systems, this makes no difference.
-		
-		If any of 'suffix', 'prefix' and 'dir' are not None, they must be the
-		same type.  If they are bytes, the returned name will be bytes; str
-		otherwise.
-		
-		The file is readable and writable only by the creating user ID.
-		If the operating system uses permission bits to indicate whether a
-		file is executable, the file is executable by no one. The file
-		descriptor is not inherited by children of this process.
-		
-		Caller is responsible for deleting the file when done with it.
-	**/
-	static public function mkstemp(?suffix:Dynamic, ?prefix:Dynamic, ?dir:Dynamic, ?text:Dynamic):Dynamic;
 	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
+		        
 	**/
 	static public function new_figure_manager_given_figure(num:Dynamic, figure:Dynamic):Dynamic;
 	static public var papersize : Dynamic;
-	static public var print_function : Dynamic;
 	static public var psDefs : Dynamic;
 	static public var ps_backend_helper : Dynamic;
 	/**
@@ -160,15 +107,16 @@ package matplotlib.backends.backend_ps;
 	**/
 	static public function quote_ps_string(s:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
+	static public var required_interactive_framework : Dynamic;
 	/**
-		seq1 and seq2 are either None or sequences or arrays
-		Return True if both are None or both are seqs with identical
-		elements
+		Show all figures.
+		
+		`show` blocks by calling `mainloop` if *block* is ``True``, or if it
+		is ``None`` and we are neither in IPython's ``%pylab`` mode, nor in
+		`interactive` mode.
 	**/
-	static public function seq_allequal(seq1:Dynamic, seq2:Dynamic):Dynamic;
+	static public function show(?block:Dynamic):Dynamic;
 	static public var uni2type1 : Dynamic;
-	static public var unicode_literals : Dynamic;
-	static public var verbose : Dynamic;
 	/**
 		Use ghostscript's ps2pdf and xpdf's/poppler's pdftops to distill a file.
 		This yields smaller files without illegal encapsulated postscript

@@ -94,6 +94,31 @@ package numpy.core.records;
 		a string
 	**/
 	static public function fromstring(datastring:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?offset:Dynamic, ?formats:Dynamic, ?names:Dynamic, ?titles:Dynamic, ?aligned:Dynamic, ?byteorder:Dynamic):Dynamic;
+	/**
+		Return the current print options.
+		
+		Returns
+		-------
+		print_opts : dict
+		    Dictionary of current print options with keys
+		
+		      - precision : int
+		      - threshold : int
+		      - edgeitems : int
+		      - linewidth : int
+		      - suppress : bool
+		      - nanstr : str
+		      - infstr : str
+		      - formatter : dict of callables
+		      - sign : str
+		
+		    For a full description of these options, see `set_printoptions`.
+		
+		See Also
+		--------
+		set_printoptions, set_string_function
+	**/
+	static public function get_printoptions():python.Dict<Dynamic, Dynamic>;
 	static public function get_remaining_size(fd:Dynamic):Dynamic;
 	static public function isfileobj(f:Dynamic):Dynamic;
 	static public var numfmt : Dynamic;

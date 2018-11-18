@@ -63,6 +63,12 @@ package docutils.frontend;
 	static public function validate_encoding_and_error_handler(setting:Dynamic, value:Dynamic, option_parser:Dynamic, ?config_parser:Dynamic, ?config_section:Dynamic):Dynamic;
 	static public function validate_encoding_error_handler(setting:Dynamic, value:Dynamic, option_parser:Dynamic, ?config_parser:Dynamic, ?config_section:Dynamic):Dynamic;
 	static public function validate_nonnegative_int(setting:Dynamic, value:Dynamic, option_parser:Dynamic, ?config_parser:Dynamic, ?config_section:Dynamic):Dynamic;
+	/**
+		Check/normalize a comma separated list of smart quote definitions.
+		
+		Return a list of (language-tag, quotes) string tuples.
+	**/
+	static public function validate_smartquotes_locales(setting:Dynamic, value:Dynamic, option_parser:Dynamic, ?config_parser:Dynamic, ?config_section:Dynamic):Dynamic;
 	static public function validate_strip_class(setting:Dynamic, value:Dynamic, option_parser:Dynamic, ?config_parser:Dynamic, ?config_section:Dynamic):Dynamic;
 	/**
 		Check/normalize three-value settings:

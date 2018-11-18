@@ -62,13 +62,15 @@ package theano.configparser;
 	**/
 	static public function fetch_val_for_key(key:Dynamic, ?delete_key:Dynamic):Dynamic;
 	/**
-		Return a string md5 of the current config options. It should be such that
-		we can safely assume that two different config setups will lead to two
-		different strings.
+		Return a string sha256 of the current config options. In the past,
+		it was md5.
+		
+		The string should be such that we can safely assume that two different
+		config setups will lead to two different strings.
 		
 		We only take into account config options for which `in_c_key` is True.
 	**/
-	static public function get_config_md5():Dynamic;
+	static public function get_config_hash():Dynamic;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
 	**/

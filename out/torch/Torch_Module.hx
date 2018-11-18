@@ -2,142 +2,300 @@
 package torch;
 @:pythonImport("torch") extern class Torch_Module {
 	static public var __all__ : Dynamic;
+	static public function __and__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
+	/**
+		Implement delattr(self, name).
+	**/
+	static public function __delattr__(self:Dynamic, name:Dynamic):Dynamic;
+	/**
+		__dir__() -> list
+		default dir() implementation
+	**/
+	static public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
+	static public function __eq__(self:Dynamic, value:Dynamic):Dynamic;
 	static public var __file__ : Dynamic;
+	/**
+		default object formatter
+	**/
+	static public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self>=value.
+	**/
+	static public function __ge__(self:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Return getattr(self, name).
+	**/
+	static public function __getattribute__(self:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
+	static public function __gt__(self:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Return hash(self).
+	**/
+	static public function __hash__(self:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	@:native("__init__")
+	static public function ___init__(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self<=value.
+	**/
+	static public function __le__(self:Dynamic, value:Dynamic):Dynamic;
 	static public var __loader__ : Dynamic;
+	static public function __lshift__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self<value.
+	**/
+	static public function __lt__(self:Dynamic, value:Dynamic):Dynamic;
 	static public var __name__ : Dynamic;
+	/**
+		Return self!=value.
+	**/
+	static public function __ne__(self:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Create and return a new object.  See help(type) for accurate signature.
+	**/
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __or__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
+	/**
+		helper for pickle
+	**/
+	static public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		helper for pickle
+	**/
+	static public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return repr(self).
+	**/
+	static public function __repr__(self:Dynamic):Dynamic;
+	static public function __rshift__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Implement setattr(self, name, value).
+	**/
+	static public function __setattr__(self:Dynamic, name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		__sizeof__() -> int
+		size of object in memory, in bytes
+	**/
+	static public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Return str(self).
+	**/
+	static public function __str__(self:Dynamic):Dynamic;
+	/**
+		Abstract classes can override this to customize issubclass().
+		
+		This is invoked early on by abc.ABCMeta.__subclasscheck__().
+		It should return True, False or NotImplemented.  If it returns
+		NotImplemented, the normal algorithm is used.  Otherwise, it
+		overrides the normal algorithm (and the outcome is cached).
+	**/
+	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __version__ : Dynamic;
+	static public function __xor__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _acos(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _addmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _addr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _argmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _argmin(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _asin(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _atan(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Byte(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Char(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Double(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Float(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Half(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Long(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cast_Short(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _convolution_nogroup(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cudnn_init_dropout_state(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cudnn_rnn(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cudnn_rnn_flatten_weight(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cufft_clear_plan_cache(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cufft_get_plan_cache_max_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cufft_get_plan_cache_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _cufft_set_plan_cache_max_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _dim_arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _dirichlet_grad(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _embedding_bag(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _fft_with_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ger(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _import_dotted_name(name:Dynamic):Dynamic;
+	static public function _log(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _log10(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _log2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _mm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _mv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _promote_types(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _round(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _rsqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _s_where(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sparse_coo_tensor_unsafe(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _standard_gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _standard_gamma_grad(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _storage_classes : Dynamic;
+	static public var _string_classes : Dynamic;
+	static public function _tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _tensor_classes : Dynamic;
+	static public function _trilinear(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _trunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		abs(input, out=None) -> Tensor
 		
-		Computes the element-wise absolute value of the given :attr:`input` a tensor.
+		Computes the element-wise absolute value of the given :attr:`input` tensor.
+		
+		.. math::
+		    \text{out}_{i} = |\text{input}_{i}|
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> torch.abs(torch.FloatTensor([-1, -2, 3]))
-		    FloatTensor([1, 2, 3])
+		    >>> torch.abs(torch.tensor([-1, -2, 3]))
+		    tensor([ 1,  2,  3])
 	**/
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function abs_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		acos(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the arccosine  of the elements of :attr:`input`.
+		Returns a new tensor with the arccosine  of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \cos^{-1}(\text{input}_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.3348, -0.5889,  0.2005, -0.1584])
 		    >>> torch.acos(a)
-		     2.2608
-		     1.2956
-		     1.1075
-		        nan
-		    [torch.FloatTensor of size 4]
+		    tensor([ 1.2294,  2.2004,  1.3690,  1.7298])
 	**/
 	static public function acos(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function acos_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		adaptive_avg_pool1d(input, output_size) -> Tensor
+		
+		Applies a 1D adaptive average pooling over an input signal composed of
+		several input planes.
+		
+		See :class:`~torch.nn.AdaptiveAvgPool1d` for details and output shape.
+		
+		Args:
+		    output_size: the target output size (single integer)
+	**/
+	static public function adaptive_avg_pool1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function adaptive_max_pool1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		.. function:: add(input, value, out=None)
 		
 		Adds the scalar :attr:`value` to each element of the input :attr:`input`
 		and returns a new resulting tensor.
 		
-		:math:`out = tensor + value`
+		.. math::
+		    out = input + value
 		
-		If :attr:`input` is of type FloatTensor or DoubleTensor, :attr:`value` must be a real number, otherwise it should be an
-		integer
+		If :attr:`input` is of type FloatTensor or DoubleTensor, :attr:`value` must be
+		a real number, otherwise it should be an integer.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    value (Number): the number to be added to each element of :attr:`input`
-		    out (Tensor, optional): The result `Tensor`
+		
+		Keyword arguments:
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     0.4050
-		    -1.2227
-		     1.8688
-		    -0.4185
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.0202,  1.0985,  1.3506, -0.6056])
 		    >>> torch.add(a, 20)
-		
-		     20.4050
-		     18.7773
-		     21.8688
-		     19.5815
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 20.0202,  21.0985,  21.3506,  19.3944])
 		
 		.. function:: add(input, value=1, other, out=None)
 		
-		Each element of the Tensor :attr:`other` is multiplied by the scalar
-		:attr:`value` and added to each element of the Tensor :attr:`input`.
-		The resulting Tensor is returned.
+		Each element of the tensor :attr:`other` is multiplied by the scalar
+		:attr:`value` and added to each element of the tensor :attr:`input`.
+		The resulting tensor is returned.
 		
-		The shapes of :attr:`input` and :attr:`other` don't need to match.
-		The total number of elements in each Tensor need to be the same.
+		The shapes of :attr:`input` and :attr:`other` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
 		
-		.. note:: When the shapes do not match, the shape of :attr:`input`
-		          is used as the shape for the returned output Tensor
+		.. math::
+		    out = input + value \times other
 		
-		:math:`out = input + (other * value)`
-		
-		If :attr:`other` is of type FloatTensor or DoubleTensor, :attr:`value` must be a real number, otherwise it should be an
-		integer
+		If :attr:`other` is of type FloatTensor or DoubleTensor, :attr:`value` must be
+		a real number, otherwise it should be an integer.
 		
 		Args:
-		    input (Tensor): the first input `Tensor`
+		    input (Tensor): the first input tensor
 		    value (Number): the scalar multiplier for :attr:`other`
-		    other (Tensor): the second input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    other (Tensor): the second input tensor
+		
+		Keyword arguments:
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> import torch
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		    -0.9310
-		     2.0330
-		     0.0852
-		    -0.2941
-		    [torch.FloatTensor of size 4]
-		
-		    >>> b = torch.randn(2, 2)
+		    tensor([-0.9732, -0.3497,  0.6245,  0.4022])
+		    >>> b = torch.randn(4, 1)
 		    >>> b
-		
-		     1.0663  0.2544
-		    -0.1513  0.0749
-		    [torch.FloatTensor of size 2x2]
-		
+		    tensor([[ 0.3743],
+		            [-1.7724],
+		            [-0.5811],
+		            [-0.8017]])
 		    >>> torch.add(a, 10, b)
-		     9.7322
-		     4.5770
-		    -1.4279
-		     0.4552
-		    [torch.FloatTensor of size 4]
+		    tensor([[  2.7695,   3.3930,   4.3672,   4.1450],
+		            [-18.6971, -18.0736, -17.0994, -17.3216],
+		            [ -6.7845,  -6.1610,  -5.1868,  -5.4090],
+		            [ -8.9902,  -8.3667,  -7.3925,  -7.6147]])
 	**/
 	static public function add(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -149,25 +307,27 @@ package torch;
 		along the first dimension).
 		:attr:`mat` is added to the final result.
 		
-		:attr:`batch1` and :attr:`batch2` must be 3D Tensors each containing the
+		:attr:`batch1` and :attr:`batch2` must be 3-D tensors each containing the
 		same number of matrices.
 		
-		If :attr:`batch1` is a `b x n x m` Tensor, :attr:`batch2` is a `b x m x p`
-		Tensor, :attr:`out` and :attr:`mat` will be `n x p` Tensors.
+		If :attr:`batch1` is a :math:`(b \times n \times m)` tensor, :attr:`batch2` is a
+		:math:`(b \times m \times p)` tensor, :attr:`mat` must be
+		:ref:`broadcastable <broadcasting-semantics>` with a :math:`(n \times p)` tensor
+		and :attr:`out` will be a :math:`(n \times p)` tensor.
 		
-		In other words,
-		:math:`res = (beta * M) + (alpha * sum(batch1_i @ batch2_i, i = 0, b))`
+		.. math::
+		    out = \beta\ mat + \alpha\ (\sum_{i=0}^{b} batch1_i \mathbin{@} batch2_i)
 		
-		For inputs of type `FloatTensor` or `DoubleTensor`, args `beta` and `alpha` must be real numbers, otherwise they should
-		be integers
+		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and :attr:`alpha`
+		must be real numbers, otherwise they should be integers.
 		
 		Args:
-		    beta (Number, optional): multiplier for :attr:`mat`
+		    beta (Number, optional): multiplier for :attr:`mat` (:math:`\beta`)
 		    mat (Tensor): matrix to be added
-		    alpha (Number, optional): multiplier for `batch1 @ batch2`
-		    batch1 (Tensor): First batch of matrices to be multiplied
-		    batch2 (Tensor): Second batch of matrices to be multiplied
-		    out (Tensor, optional): Output tensor
+		    alpha (Number, optional): multiplier for `batch1 @ batch2` (:math:`\alpha`)
+		    batch1 (Tensor): the first batch of matrices to be multiplied
+		    batch2 (Tensor): the second batch of matrices to be multiplied
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
@@ -175,11 +335,9 @@ package torch;
 		    >>> batch1 = torch.randn(10, 3, 4)
 		    >>> batch2 = torch.randn(10, 4, 5)
 		    >>> torch.addbmm(M, batch1, batch2)
-		
-		     -3.1162  11.0071   7.3102   0.1824  -7.6892
-		      1.8265   6.0739   0.4589  -0.5641  -5.4283
-		     -9.3387  -0.1794  -1.2318  -6.8841  -4.7239
-		    [torch.FloatTensor of size 3x5]
+		    tensor([[  6.6311,   0.0503,   6.9768, -12.0362,  -2.1653],
+		            [ -4.8185,  -1.4255,  -6.6760,   8.9453,   2.5743],
+		            [ -3.8202,   4.3691,   1.0943,  -1.1109,   5.4730]])
 	**/
 	static public function addbmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -188,27 +346,31 @@ package torch;
 		Performs the element-wise division of :attr:`tensor1` by :attr:`tensor2`,
 		multiply the result by the scalar :attr:`value` and add it to :attr:`tensor`.
 		
-		The number of elements must match, but sizes do not matter.
+		.. math::
+		    out_i = tensor_i + value \times \frac{tensor1_i}{tensor2_i}
 		
-		For inputs of type `FloatTensor` or `DoubleTensor`, :attr:`value` must be a real number, otherwise an integer
+		The shapes of :attr:`tensor`, :attr:`tensor1`, and :attr:`tensor2` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
+		
+		For inputs of type `FloatTensor` or `DoubleTensor`, :attr:`value` must be
+		a real number, otherwise an integer.
 		
 		Args:
 		    tensor (Tensor): the tensor to be added
-		    value (Number, optional): multiplier for `tensor1 ./ tensor2`
-		    tensor1 (Tensor): Numerator tensor
-		    tensor2 (Tensor): Denominator tensor
-		    out (Tensor, optional): Output tensor
+		    value (Number, optional): multiplier for :math:`tensor1 ./ tensor2`
+		    tensor1 (Tensor): the numerator tensor
+		    tensor2 (Tensor): the denominator tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> t = torch.randn(2, 3)
-		    >>> t1 = torch.randn(1, 6)
-		    >>> t2 = torch.randn(6, 1)
+		    >>> t = torch.randn(1, 3)
+		    >>> t1 = torch.randn(3, 1)
+		    >>> t2 = torch.randn(1, 3)
 		    >>> torch.addcdiv(t, 0.1, t1, t2)
-		
-		     0.0122 -0.0188 -0.2354
-		     0.7396 -1.5721  1.2878
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[-0.2312, -3.6496,  0.1312],
+		            [-1.0428,  3.4292, -0.1030],
+		            [-0.5369, -0.9829,  0.0430]])
 	**/
 	static public function addcdiv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -218,27 +380,31 @@ package torch;
 		by :attr:`tensor2`, multiply the result by the scalar :attr:`value`
 		and add it to :attr:`tensor`.
 		
-		The number of elements must match, but sizes do not matter.
+		.. math::
+		    out_i = tensor_i + value \times tensor1_i \times tensor2_i
 		
-		For inputs of type `FloatTensor` or `DoubleTensor`, :attr:`value` must be a real number, otherwise an integer
+		The shapes of :attr:`tensor`, :attr:`tensor1`, and :attr:`tensor2` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
+		
+		For inputs of type `FloatTensor` or `DoubleTensor`, :attr:`value` must be
+		a real number, otherwise an integer.
 		
 		Args:
 		    tensor (Tensor): the tensor to be added
-		    value (Number, optional): multiplier for `tensor1 .* tensor2`
-		    tensor1 (Tensor): tensor to be multiplied
-		    tensor2 (Tensor): tensor to be multiplied
-		    out (Tensor, optional): Output tensor
+		    value (Number, optional): multiplier for :math:`tensor1 .* tensor2`
+		    tensor1 (Tensor): the tensor to be multiplied
+		    tensor2 (Tensor): the tensor to be multiplied
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> t = torch.randn(2, 3)
-		    >>> t1 = torch.randn(1, 6)
-		    >>> t2 = torch.randn(6, 1)
+		    >>> t = torch.randn(1, 3)
+		    >>> t1 = torch.randn(3, 1)
+		    >>> t2 = torch.randn(1, 3)
 		    >>> torch.addcmul(t, 0.1, t1, t2)
-		
-		     0.0122 -0.0188 -0.2354
-		     0.7396 -1.5721  1.2878
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[-0.8635, -0.6391,  1.6174],
+		            [-0.7617, -0.5879,  1.7388],
+		            [-0.8353, -0.6249,  1.6511]])
 	**/
 	static public function addcmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -247,24 +413,27 @@ package torch;
 		Performs a matrix multiplication of the matrices :attr:`mat1` and :attr:`mat2`.
 		The matrix :attr:`mat` is added to the final result.
 		
-		If :attr:`mat1` is a `n x m` Tensor, :attr:`mat2` is a `m x p` Tensor,
-		:attr:`out` and :attr:`mat` will be `n x p` Tensors.
+		If :attr:`mat1` is a :math:`(n \times m)` tensor, :attr:`mat2` is a
+		:math:`(m \times p)` tensor, then :attr:`mat` must be
+		:ref:`broadcastable <broadcasting-semantics>` with a :math:`(n \times p)` tensor
+		and :attr:`out` will be a :math:`(n \times p)` tensor.
 		
-		`alpha` and `beta` are scaling factors on `mat1 @ mat2` and `mat` respectively.
+		:attr:`alpha` and :attr:`beta` are scaling factors on matrix-vector product between
+		:attr:`mat1` and :attr`mat2` and the added matrix :attr:`mat` respectively.
 		
-		In other words,
-		:math:`out = (beta * M) + (alpha * mat1 @ mat2)`
+		.. math::
+		    out = \beta\ mat + \alpha\ (mat1_i \mathbin{@} mat2_i)
 		
-		For inputs of type `FloatTensor` or `DoubleTensor`, args :attr:`beta` and :attr:`alpha` must be real numbers, otherwise
-		they should be integers
+		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and
+		:attr:`alpha` must be real numbers, otherwise they should be integers.
 		
 		Args:
-		    beta (Number, optional): multiplier for :attr:`mat`
+		    beta (Number, optional): multiplier for :attr:`mat` (:math:`\beta`)
 		    mat (Tensor): matrix to be added
-		    alpha (Number, optional): multiplier for `mat1 @ mat2`
-		    mat1 (Tensor): First matrix to be multiplied
-		    mat2 (Tensor): Second matrix to be multiplied
-		    out (Tensor, optional): Output tensor
+		    alpha (Number, optional): multiplier for :math:`mat1 @ mat2` (:math:`\alpha`)
+		    mat1 (Tensor): the first matrix to be multiplied
+		    mat2 (Tensor): the second matrix to be multiplied
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
@@ -272,10 +441,8 @@ package torch;
 		    >>> mat1 = torch.randn(2, 3)
 		    >>> mat2 = torch.randn(3, 3)
 		    >>> torch.addmm(M, mat1, mat2)
-		
-		    -0.4095 -1.9703  1.3561
-		     5.7674 -4.9760  2.7378
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[-4.8716,  1.4671, -1.3746],
+		            [ 0.7573, -3.9555, -2.8681]])
 	**/
 	static public function addmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -285,25 +452,27 @@ package torch;
 		the vector :attr:`vec`.
 		The vector :attr:`tensor` is added to the final result.
 		
-		If :attr:`mat` is a `n x m` Tensor, :attr:`vec` is a 1D Tensor of size `m`,
-		:attr:`out` and :attr:`tensor` will be 1D of size `n`.
+		If :attr:`mat` is a :math:`(n \times m)` tensor, :attr:`vec` is a 1-D tensor of
+		size `m`, then :attr:`tensor` must be
+		:ref:`broadcastable <broadcasting-semantics>` with a 1-D tensor of size `n` and
+		:attr:`out` will be 1-D tensor of size `n`.
 		
-		`alpha` and `beta` are scaling factors on `mat * vec` and `tensor` respectively.
+		:attr:`alpha` and :attr:`beta` are scaling factors on matrix-vector product between
+		:attr:`mat` and :attr:`vec` and the added tensor :attr:`tensor` respectively.
 		
-		In other words:
+		.. math::
+		    out = \beta\ tensor + \alpha\ (mat \mathbin{@} vec)
 		
-		:math:`out = (beta * tensor) + (alpha * (mat @ vec2))`
-		
-		For inputs of type `FloatTensor` or `DoubleTensor`, args :attr:`beta` and :attr:`alpha` must be real numbers, otherwise
-		they should be integers
+		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and
+		:attr:`alpha` must be real numbers, otherwise they should be integers
 		
 		Args:
-		    beta (Number, optional): multiplier for :attr:`tensor`
+		    beta (Number, optional): multiplier for :attr:`tensor` (:math:`\beta`)
 		    tensor (Tensor): vector to be added
-		    alpha (Number, optional): multiplier for `mat @ vec`
+		    alpha (Number, optional): multiplier for :math:`mat @ vec` (:math:`\alpha`)
 		    mat (Tensor): matrix to be multiplied
 		    vec (Tensor): vector to be multiplied
-		    out (Tensor, optional): Output tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
@@ -311,162 +480,282 @@ package torch;
 		    >>> mat = torch.randn(2, 3)
 		    >>> vec = torch.randn(3)
 		    >>> torch.addmv(M, mat, vec)
-		
-		    -2.0939
-		    -2.2950
-		    [torch.FloatTensor of size 2]
+		    tensor([-0.3768, -5.5565])
 	**/
 	static public function addmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function addmv_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		addr(beta=1, mat, alpha=1, vec1, vec2, out=None) -> Tensor
 		
 		Performs the outer-product of vectors :attr:`vec1` and :attr:`vec2`
 		and adds it to the matrix :attr:`mat`.
 		
-		Optional values :attr:`beta` and :attr:`alpha` are scalars that multiply
-		:attr:`mat` and :math:`(vec1 \otimes vec2)` respectively
+		Optional values :attr:`beta` and :attr:`alpha` are scaling factors on the
+		outer product between :attr:`vec1` and :attr:`vec2` and the added matrix
+		:attr:`mat` respectively.
 		
-		In other words,
-		:math:`out = (beta * mat) + (alpha * vec1 \otimes vec2)`
+		.. math::
+		    out = \beta\ mat + \alpha\ (vec1 \otimes vec2)
 		
-		If :attr:`vec1` is a vector of size `n` and :attr:`vec2` is a vector of size `m`,
-		then :attr:`mat` must be a matrix of size `n x m`
+		If :attr:`vec1` is a vector of size `n` and :attr:`vec2` is a vector
+		of size `m`, then :attr:`mat` must be
+		:ref:`broadcastable <broadcasting-semantics>` with a matrix of size
+		:math:`(n \times m)` and :attr:`out` will be a matrix of size
+		:math:`(n \times m)`.
 		
-		For inputs of type `FloatTensor` or `DoubleTensor`, args :attr:`beta` and :attr:`alpha` must be real numbers, otherwise
-		they should be integers
+		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and
+		:attr:`alpha` must be real numbers, otherwise they should be integers
 		
 		Args:
-		    beta (Number, optional): Multiplier for :attr:`mat`
-		    mat (Tensor): Matrix to be added
-		    alpha (Number, optional): Multiplier for outer product of for :attr:`vec1` and :attr:`vec2`
-		    vec1 (Tensor): First vector of the outer product
-		    vec2 (Tensor): Second vector of the outer product
-		    out (Tensor, optional): Output tensor
+		    beta (Number, optional): multiplier for :attr:`mat` (:math:`\beta`)
+		    mat (Tensor): matrix to be added
+		    alpha (Number, optional): multiplier for :math:`vec1 \otimes vec2` (:math:`\alpha`)
+		    vec1 (Tensor): the first vector of the outer product
+		    vec2 (Tensor): the second vector of the outer product
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> vec1 = torch.arange(1, 4)
-		    >>> vec2 = torch.arange(1, 3)
+		    >>> vec1 = torch.arange(1., 4.)
+		    >>> vec2 = torch.arange(1., 3.)
 		    >>> M = torch.zeros(3, 2)
 		    >>> torch.addr(M, vec1, vec2)
-		     1  2
-		     2  4
-		     3  6
-		    [torch.FloatTensor of size 3x2]
+		    tensor([[ 1.,  2.],
+		            [ 2.,  4.],
+		            [ 3.,  6.]])
 	**/
 	static public function addr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function all(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function allclose(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function any(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		arange(start, end, step=1, out=None) -> Tensor
+		arange(start=0, end, step=1, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
-		Teturns a 1D Tensor of size :math:`floor((end - start) / step)` with values
-		from the interval ``[start, end)`` taken with step :attr:`step` starting from `start`.
+		Returns a 1-D tensor of size :math:`\left\lfloor \frac{end - start}{step} \right\rfloor`
+		with values from the interval ``[start, end)`` taken with common difference
+		:attr:`step` beginning from `start`.
+		
+		Note that non-integer :attr:`step` is subject to floating point rounding errors when
+		comparing against :attr:`end`; to avoid inconsistency, we advise adding a small epsilon to :attr:`end`
+		in such cases.
+		
+		.. math::
+		    \text{out}_{i+1} = \text{out}_{i} + \text{step}
 		
 		Args:
-		    start (float): The starting value for the set of points
-		    end (float): The ending value for the set of points
-		    step (float): The gap between each pair of adjacent points
-		    out (Tensor, optional): The result `Tensor`
+		    start (Number): the starting value for the set of points. Default: ``0``.
+		    end (Number): the ending value for the set of points
+		    step (Number): the gap between each pair of adjacent points. Default: ``1``.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`). If `dtype` is not given, infer the data type from the other input
+		        arguments. If any of `start`, `end`, or `stop` are floating-point, the
+		        `dtype` is inferred to be the default dtype, see
+		        :meth:`~torch.get_default_dtype`. Otherwise, the `dtype` is inferred to
+		        be `torch.int64`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
+		    >>> torch.arange(5)
+		    tensor([ 0,  1,  2,  3,  4])
 		    >>> torch.arange(1, 4)
-		
-		     1
-		     2
-		     3
-		    [torch.FloatTensor of size 3]
-		
+		    tensor([ 1,  2,  3])
 		    >>> torch.arange(1, 2.5, 0.5)
-		
-		     1.0000
-		     1.5000
-		     2.0000
-		    [torch.FloatTensor of size 3]
+		    tensor([ 1.0000,  1.5000,  2.0000])
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		asin(input, out=None) -> Tensor
+		Returns the indices of the maximum values of a tensor across a dimension.
 		
-		Returns a new `Tensor` with the arcsine  of the elements of :attr:`input`.
+		This is the second value returned by :meth:`torch.max`. See its
+		documentation for the exact semantics of this method.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    dim (int): the dimension to reduce. If ``None``, the argmax of the
+		        flattened input is returned.
+		    keepdim (bool): whether the output tensors have :attr:`dim`
+		        retained or not. Ignored if ``dim=None``.
+		
+		Example::
+		
+		    >>> a = torch.randn(4, 4)
+		    >>> a
+		    tensor([[ 1.3398,  0.2663, -0.2686,  0.2450],
+		            [-0.7401, -0.8805, -0.3402, -1.1936],
+		            [ 0.4907, -1.3948, -1.0691, -0.3132],
+		            [-1.6092,  0.5419, -0.2993,  0.3195]])
+		
+		
+		    >>> torch.argmax(a, dim=1)
+		    tensor([ 0,  2,  0,  1])
+	**/
+	static public function argmax(input:Dynamic, ?dim:Dynamic, ?keepdim:Dynamic):Dynamic;
+	/**
+		Returns the indices of the minimum values of a tensor across a dimension.
+		
+		This is the second value returned by :meth:`torch.min`. See its
+		documentation for the exact semantics of this method.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    dim (int): the dimension to reduce. If ``None``, the argmin of the
+		        flattened input is returned.
+		    keepdim (bool): whether the output tensors have :attr:`dim`
+		        retained or not. Ignored if ``dim=None``.
+		
+		Example::
+		
+		    >>> a = torch.randn(4, 4)
+		    >>> a
+		    tensor([[ 0.1139,  0.2254, -0.1381,  0.3687],
+		            [ 1.0100, -1.1975, -0.0102, -0.4732],
+		            [-0.9240,  0.1207, -0.7506, -1.0213],
+		            [ 1.7809, -1.2960,  0.9384,  0.1438]])
+		
+		
+		    >>> torch.argmin(a, dim=1)
+		    tensor([ 2,  1,  3,  1])
+	**/
+	static public function argmin(input:Dynamic, ?dim:Dynamic, ?keepdim:Dynamic):Dynamic;
+	static public function as_strided(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function as_strided_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		as_tensor(data, dtype=None, device=None) -> Tensor
+		
+		Convert the data into a `torch.Tensor`.  If the data is already a `Tensor` of the same `dtype` and `device`, no copy
+		will be performed.  Similarly, if the data is an ``ndarray`` of the corresponding `dtype` and the `device` is the cpu,
+		no copy will be performed.
+		
+		Args:
+		    data (array_like): Initial data for the tensor. Can be a list, tuple,
+		        NumPy ``ndarray``, scalar, and other types.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, infers data type from :attr:`data`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		
+		Example::
+		
+		    >>> torch.tensor([[0.1, 1.2], [2.2, 3.1], [4.9, 5.2]])
+		    tensor([[ 0.1000,  1.2000],
+		            [ 2.2000,  3.1000],
+		            [ 4.9000,  5.2000]])
+		
+		    >>> a = numpy.array([1, 2, 3])
+		    >>> t = torch.from_numpy(a)
+		    >>> t
+		    tensor([ 1,  2,  3])
+		    >>> t[0] = -1
+		    >>> a
+		    array([-1,  2,  3])
+	**/
+	static public function as_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		asin(input, out=None) -> Tensor
+		
+		Returns a new tensor with the arcsine  of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \sin^{-1}(\text{input}_{i})
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-0.5962,  1.4985, -0.4396,  1.4525])
 		    >>> torch.asin(a)
-		    -0.6900
-		     0.2752
-		     0.4633
-		        nan
-		    [torch.FloatTensor of size 4]
+		    tensor([-0.6387,     nan, -0.4552,     nan])
 	**/
 	static public function asin(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function asin_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		atan(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the arctangent  of the elements of :attr:`input`.
+		Returns a new tensor with the arctangent  of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \tan^{-1}(\text{input}_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.2341,  0.2539, -0.6256, -0.6448])
 		    >>> torch.atan(a)
-		    -0.5669
-		     0.2653
-		     0.4203
-		     0.9196
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.2299,  0.2487, -0.5591, -0.5727])
 	**/
 	static public function atan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		atan2(input1, input2, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the arctangent of the elements of :attr:`input1`
+		Returns a new tensor with the arctangent of the elements of :attr:`input1`
 		and :attr:`input2`.
 		
+		The shapes of :attr:`input1` and :attr:`input2` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
+		
 		Args:
-		    input1 (Tensor): the first input `Tensor`
-		    input2 (Tensor): the second input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input1 (Tensor): the first input tensor
+		    input2 (Tensor): the second input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.9041,  0.0196, -0.3108, -2.4423])
 		    >>> torch.atan2(a, torch.randn(4))
-		    -2.4167
-		     2.9755
-		     0.9363
-		     1.6613
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.9833,  0.0811, -1.9743, -1.4151])
 	**/
 	static public function atan2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function atan_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		avg_pool1d(input, kernel_size, stride=None, padding=0, ceil_mode=False, count_include_pad=True) -> Tensor
+		
+		Applies a 1D average pooling over an input signal composed of several
+		input planes.
+		
+		See :class:`~torch.nn.AvgPool1d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iW`)
+		    kernel_size: the size of the window. Can be a single number or a
+		      tuple `(kW,)`
+		    stride: the stride of the window. Can be a single number or a tuple
+		      `(sW,)`. Default: :attr:`kernel_size`
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padW,)`. Default: 0
+		    ceil_mode: when True, will use `ceil` instead of `floor` to compute the
+		        output shape. Default: ``False``
+		    count_include_pad: when True, will include the zero-padding in the
+		        averaging calculation. Default: ``True``
+		
+		Example::
+		    >>> # pool of square window of size=3, stride=2
+		    >>> input = torch.tensor([[[1,2,3,4,5,6,7]]])
+		    >>> F.avg_pool1d(input, kernel_size=3, stride=2)
+		    tensor([[[ 2.,  4.,  6.]]])
+	**/
+	static public function avg_pool1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		baddbmm(beta=1, mat, alpha=1, batch1, batch2, out=None) -> Tensor
 		
@@ -474,25 +763,29 @@ package torch;
 		and :attr:`batch2`.
 		:attr:`mat` is added to the final result.
 		
-		:attr:`batch1` and :attr:`batch2` must be 3D Tensors each containing the same
+		:attr:`batch1` and :attr:`batch2` must be 3-D tensors each containing the same
 		number of matrices.
 		
-		If :attr:`batch1` is a `b x n x m` Tensor, :attr:`batch2` is a `b x m x p`
-		Tensor, :attr:`out` and :attr:`mat` will be `b x n x p` Tensors.
+		If :attr:`batch1` is a :math:`(b \times n \times m)` tensor, :attr:`batch2` is a
+		:math:`(b \times m \times p)` tensor, then :attr:`mat` must be
+		:ref:`broadcastable <broadcasting-semantics>` with a
+		:math:`(b \times n \times p)` tensor and :attr:`out` will be a
+		:math:`(b \times n \times p)` tensor. Both :attr:`alpha` and :attr:`beta` mean the
+		same as the scaling factors used in :meth:`torch.addbmm`.
 		
-		In other words,
-		:math:`res_i = (beta * M_i) + (alpha * batch1_i \times batch2_i)`
+		.. math::
+		    out_i = \beta\ mat_i + \alpha\ (batch1_i \mathbin{@} batch2_i)
 		
-		For inputs of type `FloatTensor` or `DoubleTensor`, args :attr:`beta` and :attr:`alpha` must be real numbers, otherwise
-		they should be integers
+		For inputs of type `FloatTensor` or `DoubleTensor`, arguments :attr:`beta` and
+		:attr:`alpha` must be real numbers, otherwise they should be integers.
 		
 		Args:
-		    beta (Number, optional): multiplier for :attr:`mat`
-		    mat (Tensor): tensor to be added
-		    alpha (Number, optional): multiplier for `batch1 @ batch2`
-		    batch1 (Tensor): First batch of matrices to be multiplied
-		    batch2 (Tensor): Second batch of matrices to be multiplied
-		    out (Tensor, optional): Output tensor
+		    beta (Number, optional): multiplier for :attr:`mat` (:math:`\beta`)
+		    mat (Tensor): the tensor to be added
+		    alpha (Number, optional): multiplier for `batch1 @ batch2` (:math:`\alpha`)
+		    batch1 (Tensor): the first batch of matrices to be multiplied
+		    batch2 (Tensor): the second batch of matrices to be multiplied
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
@@ -504,73 +797,199 @@ package torch;
 	**/
 	static public function baddbmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		bartlett_window(window_length, periodic=True, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Bartlett window function.
+		
+		.. math::
+		    w[n] = 1 - \left| \frac{2n}{N-1} - 1 \right| = \begin{cases}
+		        \frac{2n}{N - 1} & \text{if } 0 \leq n \leq \frac{N - 1}{2} \\
+		        2 - \frac{2n}{N - 1} & \text{if } \frac{N - 1}{2} < n < N \\
+		    \end{cases},
+		
+		where :math:`N` is the full window size.
+		
+		The input :attr:`window_length` is a positive integer controlling the
+		returned window size. :attr:`periodic` flag determines whether the returned
+		window trims off the last duplicate value from the symmetric window and is
+		ready to be used as a periodic window with functions like
+		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
+		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		``torch.bartlett_window(L, periodic=True)`` equal to
+		``torch.bartlett_window(L + 1, periodic=False)[:-1])``.
+		
+		.. note::
+		    If :attr:`window_length` :math:`=1`, the returned window contains a single value 1.
+		
+		Arguments:
+		    window_length (int): the size of returned window
+		    periodic (bool, optional): If True, returns a window to be used as periodic
+		        function. If False, return a symmetric window.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`). Only floating point types are supported.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned window tensor. Only
+		          ``torch.strided`` (dense layout) is supported.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Returns:
+		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+	**/
+	static public function bartlett_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function batch_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		bernoulli(input, out=None) -> Tensor
 		
-		Draws binary random numbers (0 or 1) from a bernoulli distribution.
+		Draws binary random numbers (0 or 1) from a Bernoulli distribution.
 		
-		The :attr:`input` Tensor should be a tensor containing probabilities
+		The :attr:`input` tensor should be a tensor containing probabilities
 		to be used for drawing the binary random number.
 		Hence, all values in :attr:`input` have to be in the range:
-		:math:`0 <= input_i <= 1`
+		:math:`0 \leq \text{input}_i \leq 1`.
 		
-		The `i-th` element of the output tensor will draw a value `1` according
-		to the `i-th` probability value given in :attr:`input`.
+		The :math:`\text{i}^{th}` element of the output tensor will draw a
+		value `1` according to the :math:`\text{i}^{th}` probability value given
+		in :attr:`input`.
 		
-		The returned :attr:`out` Tensor only has values 0 or 1 and is of the same
+		.. math::
+		    \text{out}_{i} \sim \mathrm{Bernoulli}(p = \text{input}_{i})
+		
+		The returned :attr:`out` tensor only has values 0 or 1 and is of the same
 		shape as :attr:`input`
 		
 		Args:
-		    input (Tensor): Probability values for the bernoulli distribution
-		    out (Tensor, optional): Output tensor
+		    input (Tensor): the input tensor of probability values for the Bernoulli distribution
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> a = torch.Tensor(3, 3).uniform_(0, 1) # generate a uniform random matrix with range [0, 1]
+		    >>> a = torch.empty(3, 3).uniform_(0, 1) # generate a uniform random matrix with range [0, 1]
 		    >>> a
-		
-		     0.7544  0.8140  0.9842
-		     0.5282  0.0595  0.6445
-		     0.1925  0.9553  0.9732
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[ 0.1737,  0.0950,  0.3609],
+		            [ 0.7148,  0.0289,  0.2676],
+		            [ 0.9456,  0.8937,  0.7202]])
 		    >>> torch.bernoulli(a)
-		
-		     1  1  1
-		     0  0  1
-		     0  1  1
-		    [torch.FloatTensor of size 3x3]
+		    tensor([[ 1.,  0.,  0.],
+		            [ 0.,  0.,  0.],
+		            [ 1.,  1.,  1.]])
 		
 		    >>> a = torch.ones(3, 3) # probability of drawing "1" is 1
 		    >>> torch.bernoulli(a)
-		
-		     1  1  1
-		     1  1  1
-		     1  1  1
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[ 1.,  1.,  1.],
+		            [ 1.,  1.,  1.],
+		            [ 1.,  1.,  1.]])
 		    >>> a = torch.zeros(3, 3) # probability of drawing "1" is 0
 		    >>> torch.bernoulli(a)
-		
-		     0  0  0
-		     0  0  0
-		     0  0  0
-		    [torch.FloatTensor of size 3x3]
+		    tensor([[ 0.,  0.,  0.],
+		            [ 0.,  0.,  0.],
+		            [ 0.,  0.,  0.]])
 	**/
 	static public function bernoulli(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function bernoulli_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function bilinear(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		bincount(self, weights=None, minlength=0) -> Tensor
+		
+		Count the frequency of each value in an array of non-negative ints.
+		
+		The number of bins (size 1) is one larger than the largest value in
+		:attr:`input`. If :attr:`minlength` is specified, the number of bins is at least
+		:attr:`minlength`. If ``n`` is the value at position ``i``,
+		:math:`out[n] += weights[i]` if :attr:`weights` is specified else
+		:math:`out[n] += 1`.
+		
+		Arguments:
+		    input (Tensor): 1-d int tensor
+		    weights (Tensor): optional, weight for each value in the input tensor.
+		        Should be of same size as input tensor.
+		    minlength (int): optional, min number of bins. Should be non-negative.
+		
+		Shape:
+		    output (Tensor): ``Size([max(input) + 1])``
+		
+		Example::
+		
+		    >>> input = torch.randint(0, 8, (5,), dtype=torch.int64)
+		    >>> weights = torch.linspace(0, 1, steps=5)
+		    >>> input, weights
+		    (tensor([4, 3, 6, 3, 4]),
+		     tensor([ 0.0000,  0.2500,  0.5000,  0.7500,  1.0000])
+		
+		    >>> torch.bincount(input)
+		    tensor([0, 0, 0, 2, 2, 0, 1])
+		
+		    >>> input.bincount(weights)
+		    tensor([0.0000, 0.0000, 0.0000, 1.0000, 1.0000, 0.0000, 0.5000])
+	**/
+	static public function bincount(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		blackman_window(window_length, periodic=True, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Blackman window function.
+		
+		.. math::
+		    w[n] = 0.42 - 0.5 \cos \left( \frac{2 \pi n}{N - 1} \right) + 0.08 \cos \left( \frac{4 \pi n}{N - 1} \right)
+		
+		where :math:`N` is the full window size.
+		
+		The input :attr:`window_length` is a positive integer controlling the
+		returned window size. :attr:`periodic` flag determines whether the returned
+		window trims off the last duplicate value from the symmetric window and is
+		ready to be used as a periodic window with functions like
+		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
+		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		``torch.blackman_window(L, periodic=True)`` equal to
+		``torch.blackman_window(L + 1, periodic=False)[:-1])``.
+		
+		.. note::
+		    If :attr:`window_length` :math:`=1`, the returned window contains a single value 1.
+		
+		Arguments:
+		    window_length (int): the size of returned window
+		    periodic (bool, optional): If True, returns a window to be used as periodic
+		        function. If False, return a symmetric window.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`). Only floating point types are supported.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned window tensor. Only
+		          ``torch.strided`` (dense layout) is supported.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Returns:
+		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+	**/
+	static public function blackman_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		bmm(batch1, batch2, out=None) -> Tensor
 		
-		Performs a batch matrix-matrix product of matrices stored in :attr:`batch1` and :attr:`batch2`.
+		Performs a batch matrix-matrix product of matrices stored in :attr:`batch1`
+		and :attr:`batch2`.
 		
-		:attr:`batch1` and :attr:`batch2` must be 3D Tensors each containing the same number of matrices.
+		:attr:`batch1` and :attr:`batch2` must be 3-D tensors each containing
+		the same number of matrices.
 		
-		If :attr:`batch1` is a `b x n x m` Tensor, :attr:`batch2` is a `b x m x p` Tensor,
-		:attr:`out` will be a `b x n x p` Tensor.
+		If :attr:`batch1` is a :math:`(b \times n \times m)` tensor, :attr:`batch2` is a
+		:math:`(b \times m \times p)` tensor, :attr:`out` will be a
+		:math:`(b \times n \times p)` tensor.
+		
+		.. math::
+		    out_i = batch1_i \mathbin{@} batch2_i
+		
+		.. note:: This function does not :ref:`broadcast <broadcasting-semantics>`.
+		          For broadcasting matrix products, see :func:`torch.matmul`.
 		
 		Args:
-		    batch1 (Tensor): First batch of matrices to be multiplied
-		    batch2 (Tensor): Second batch of matrices to be multiplied
-		    out (Tensor, optional): Output tensor
+		    batch1 (Tensor): the first batch of matrices to be multiplied
+		    batch2 (Tensor): the second batch of matrices to be multiplied
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
@@ -582,663 +1001,886 @@ package torch;
 	**/
 	static public function bmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		btrifact(A, info=None) -> Tensor, IntTensor
-		
 		Batch LU factorization.
 		
-		Returns a tuple containing the LU factorization and pivots.
-		The optional argument `info` provides information if the
-		factorization succeeded for each minibatch example.
-		The info values are from dgetrf and a non-zero value indicates an error occurred.
-		The specific values are from cublas if cuda is being used, otherwise LAPACK.
+		Returns a tuple containing the LU factorization and pivots. Pivoting is done if
+		:attr:`pivot` is set.
+		
+		The optional argument :attr:`info` stores information if the factorization
+		succeeded for each minibatch example. The :attr:`info` is provided as an
+		`IntTensor`, its values will be filled from dgetrf and a non-zero value
+		indicates an error occurred. Specifically, the values are from cublas if cuda is
+		being used, otherwise LAPACK.
+		
+		.. warning::
+		    The :attr:`info` argument is deprecated in favor of :meth:`torch.btrifact_with_info`.
 		
 		Arguments:
-		    A (Tensor): tensor to factor.
+		    A (Tensor): the tensor to factor
+		    info (IntTensor, optional): (deprecated) an `IntTensor` to store values
+		        indicating whether factorization succeeds
+		    pivot (bool, optional): controls whether pivoting is done
+		
+		Returns:
+		    A tuple containing factorization and pivots.
 		
 		Example::
 		
 		    >>> A = torch.randn(2, 3, 3)
-		    >>> A_LU = A.btrifact()
+		    >>> A_LU, pivots = torch.btrifact(A)
+		    >>> A_LU
+		    tensor([[[ 1.3506,  2.5558, -0.0816],
+		             [ 0.1684,  1.1551,  0.1940],
+		             [ 0.1193,  0.6189, -0.5497]],
+		
+		            [[ 0.4526,  1.2526, -0.3285],
+		             [-0.7988,  0.7175, -0.9701],
+		             [ 0.2634, -0.9255, -0.3459]]])
+		
+		    >>> pivots
+		    tensor([[ 3,  3,  3],
+		            [ 3,  3,  3]], dtype=torch.int32)
 	**/
-	static public function btrifact(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function btrifact(A:Dynamic, ?info:Dynamic, ?pivot:Dynamic):Dynamic;
+	/**
+		btrifact_with_info(A, pivot=True) -> (Tensor, IntTensor, IntTensor)
+		
+		Batch LU factorization with additional error information.
+		
+		This is a version of :meth:`torch.btrifact` that always creates an info
+		`IntTensor`, and returns it as the third return value.
+		
+		Arguments:
+		    A (Tensor): the tensor to factor
+		    pivot (bool, optional): controls whether pivoting is done
+		
+		Returns:
+		    A tuple containing factorization, pivots, and an `IntTensor` where non-zero
+		    values indicate whether factorization for each minibatch sample succeeds.
+		
+		Example::
+		
+		    >>> A = torch.randn(2, 3, 3)
+		    >>> A_LU, pivots, info = A.btrifact_with_info()
+		    >>> if info.nonzero().size(0) == 0:
+		    >>>   print('LU factorization succeeded for all samples!')
+		    LU factorization succeeded for all samples!
+	**/
+	static public function btrifact_with_info(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		btrisolve(b, LU_data, LU_pivots) -> Tensor
 		
 		Batch LU solve.
 		
-		Returns the LU solve of the linear system Ax = b.
+		Returns the LU solve of the linear system :math:`Ax = b`.
 		
 		Arguments:
-		    b (Tensor): RHS tensor.
-		    LU_data (Tensor): Pivoted LU factorization of A from btrifact.
-		    LU_pivots (IntTensor): Pivots of the LU factorization.
+		    b (Tensor): the RHS tensor
+		    LU_data (Tensor): the pivoted LU factorization of A from :meth:`btrifact`.
+		    LU_pivots (IntTensor): the pivots of the LU factorization
 		
 		Example::
 		
 		    >>> A = torch.randn(2, 3, 3)
 		    >>> b = torch.randn(2, 3)
 		    >>> A_LU = torch.btrifact(A)
-		    >>> x = b.btrisolve(*A_LU)
-		    >>> torch.norm(A.bmm(x.unsqueeze(2)) - b)
-		    6.664001874625056e-08
+		    >>> x = torch.btrisolve(b, *A_LU)
+		    >>> torch.norm(torch.bmm(A, x.unsqueeze(2)) - b.unsqueeze(2))
+		    tensor(1.00000e-07 *
+		           2.8312)
 	**/
 	static public function btrisolve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Unpacks the data and pivots from a batched LU factorization (btrifact) of a tensor.
 		
-		Returns a tuple indexed by:
-		  0: The pivots.
-		  1: The L tensor.
-		  2: The U tensor.
+		Returns a tuple of tensors as ``(the pivots, the L tensor, the U tensor)``.
 		
 		Arguments:
-		    LU_data (Tensor): The packed LU factorization data.
-		    LU_pivots (Tensor): The packed LU factorization pivots.
-		    unpack_data (bool): Flag indicating if the data should be unpacked.
-		    unpack_pivots (bool): Flag indicating if the pivots should be unpacked.
+		    LU_data (Tensor): the packed LU factorization data
+		    LU_pivots (Tensor): the packed LU factorization pivots
+		    unpack_data (bool): flag indicating if the data should be unpacked
+		    unpack_pivots (bool): flag indicating if the pivots should be unpacked
+		
+		Example::
+		
+		    >>> A = torch.randn(2, 3, 3)
+		    >>> A_LU, pivots = A.btrifact()
+		    >>> P, A_L, A_U = torch.btriunpack(A_LU, pivots)
+		    >>>
+		    >>> # can recover A from factorization
+		    >>> A_ = torch.bmm(P, torch.bmm(A_L, A_U))
 	**/
 	static public function btriunpack(LU_data:Dynamic, LU_pivots:Dynamic, ?unpack_data:Dynamic, ?unpack_pivots:Dynamic):Dynamic;
 	/**
-		cat(seq, dim=0) -> Tensor
+		cat(seq, dim=0, out=None) -> Tensor
 		
-		Concatenates the given sequence of :attr:`seq` Tensors in the given dimension.
+		Concatenates the given sequence of :attr:`seq` tensors in the given dimension.
+		All tensors must either have the same shape (except in the concatenating
+		dimension) or be empty.
 		
-		:func:`torch.cat` can be seen as an inverse operation for :func:`torch.split` and :func:`torch.chunk`
+		:func:`torch.cat` can be seen as an inverse operation for :func:`torch.split`
+		and :func:`torch.chunk`.
 		
-		:func:`cat` can be best understood via examples.
+		:func:`torch.cat` can be best understood via examples.
 		
 		Args:
-		    seq (sequence of Tensors): Can be any python sequence of `Tensor` of the same type.
-		    dim (int, optional): The dimension over which the tensors are concatenated
+		    seq (sequence of Tensors): any python sequence of tensors of the same type.
+		        Non-empty tensors provided must have the same shape, except in the
+		        cat dimension.
+		    dim (int, optional): the dimension over which the tensors are concatenated
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> x = torch.randn(2, 3)
 		    >>> x
-		
-		     0.5983 -0.0341  2.4918
-		     1.5981 -0.5265 -0.8735
-		    [torch.FloatTensor of size 2x3]
-		
+		    tensor([[ 0.6580, -1.0969, -0.4614],
+		            [-0.1034, -0.5790,  0.1497]])
 		    >>> torch.cat((x, x, x), 0)
-		
-		     0.5983 -0.0341  2.4918
-		     1.5981 -0.5265 -0.8735
-		     0.5983 -0.0341  2.4918
-		     1.5981 -0.5265 -0.8735
-		     0.5983 -0.0341  2.4918
-		     1.5981 -0.5265 -0.8735
-		    [torch.FloatTensor of size 6x3]
-		
+		    tensor([[ 0.6580, -1.0969, -0.4614],
+		            [-0.1034, -0.5790,  0.1497],
+		            [ 0.6580, -1.0969, -0.4614],
+		            [-0.1034, -0.5790,  0.1497],
+		            [ 0.6580, -1.0969, -0.4614],
+		            [-0.1034, -0.5790,  0.1497]])
 		    >>> torch.cat((x, x, x), 1)
-		
-		     0.5983 -0.0341  2.4918  0.5983 -0.0341  2.4918  0.5983 -0.0341  2.4918
-		     1.5981 -0.5265 -0.8735  1.5981 -0.5265 -0.8735  1.5981 -0.5265 -0.8735
-		    [torch.FloatTensor of size 2x9]
+		    tensor([[ 0.6580, -1.0969, -0.4614,  0.6580, -1.0969, -0.4614,  0.6580,
+		             -1.0969, -0.4614],
+		            [-0.1034, -0.5790,  0.1497, -0.1034, -0.5790,  0.1497, -0.1034,
+		             -0.5790,  0.1497]])
 	**/
 	static public function cat(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ceil(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the ceil of the elements of :attr:`input`,
+		Returns a new tensor with the ceil of the elements of :attr:`input`,
 		the smallest integer greater than or equal to each element.
 		
+		.. math::
+		    \text{out}_{i} = \left\lceil \text{input}_{i} \right\rceil = \left\lfloor \text{input}_{i} \right\rfloor + 1
+		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-0.6341, -1.4208, -1.0900,  0.5826])
 		    >>> torch.ceil(a)
-		
-		     2
-		     1
-		    -0
-		    -0
-		    [torch.FloatTensor of size 4]
+		    tensor([-0., -1., -1.,  1.])
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function ceil_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Splits a tensor into a number of chunks along a given dimension.
+		chunk(tensor, chunks, dim=0) -> List of Tensors
+		
+		Splits a tensor into a specific number of chunks.
+		
+		Last chunk will be smaller if the tensor size along the given dimension
+		:attr:`dim` is not divisible by :attr:`chunks`.
 		
 		Arguments:
-		    tensor (Tensor): tensor to split.
-		    chunks (int): number of chunks to return.
-		    dim (int): dimension along which to split the tensor.
+		    tensor (Tensor): the tensor to split
+		    chunks (int): number of chunks to return
+		    dim (int): dimension along which to split the tensor
 	**/
-	static public function chunk(tensor:Dynamic, chunks:Dynamic, ?dim:Dynamic):Dynamic;
+	static public function chunk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		clamp(input, min, max, out=None) -> Tensor
 		
-		Clamp all elements in :attr:`input` into the range `[min, max]` and return a resulting Tensor.
+		Clamp all elements in :attr:`input` into the range `[` :attr:`min`, :attr:`max` `]` and return
+		a resulting tensor:
 		
-		::
+		.. math::
+		    y_i = \begin{cases}
+		        \text{min} & \text{if } x_i < \text{min} \\
+		        x_i & \text{if } \text{min} \leq x_i \leq \text{max} \\
+		        \text{max} & \text{if } x_i > \text{max}
+		    \end{cases}
 		
-		          | min, if x_i < min
-		    y_i = | x_i, if min <= x_i <= max
-		          | max, if x_i > max
-		
-		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, args :attr:`min` and :attr:`max` must be real numbers,
-		otherwise they should be integers
+		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, args :attr:`min`
+		and :attr:`max` must be real numbers, otherwise they should be integers.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    min (Number): lower-bound of the range to be clamped to
 		    max (Number): upper-bound of the range to be clamped to
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-1.7120,  0.1734, -0.0478, -0.0922])
 		    >>> torch.clamp(a, min=-0.5, max=0.5)
-		
-		     0.5000
-		     0.3912
-		    -0.5000
-		    -0.5000
-		    [torch.FloatTensor of size 4]
+		    tensor([-0.5000,  0.1734, -0.0478, -0.0922])
 		
 		.. function:: clamp(input, *, min, out=None) -> Tensor
 		
 		Clamps all elements in :attr:`input` to be larger or equal :attr:`min`.
 		
-		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value` should be a real number, otherwise it should
-		be an integer
+		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value`
+		should be a real number, otherwise it should be an integer.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    value (Number): minimal value of each element in the output
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-0.0299, -2.3184,  2.1593, -0.8883])
 		    >>> torch.clamp(a, min=0.5)
-		
-		     1.3869
-		     0.5000
-		     0.5000
-		     0.5000
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.5000,  0.5000,  2.1593,  0.5000])
 		
 		.. function:: clamp(input, *, max, out=None) -> Tensor
 		
 		Clamps all elements in :attr:`input` to be smaller or equal :attr:`max`.
 		
-		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value` should be a real number, otherwise it should
-		be an integer
+		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value`
+		should be a real number, otherwise it should be an integer.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    value (Number): maximal value of each element in the output
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.7753, -0.4702, -0.4599,  1.1899])
 		    >>> torch.clamp(a, max=0.5)
-		
-		     0.5000
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.5000, -0.4702, -0.4599,  0.5000])
 	**/
 	static public function clamp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function clone(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		conv1d(input, weight, bias=None, stride=1, padding=0, dilation=1, groups=1) -> Tensor
+		
+		Applies a 1D convolution over an input signal composed of several input
+		planes.
+		
+		See :class:`~torch.nn.Conv1d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape :math:`minibatch \times in\_channels \times iW`
+		    weight: filters of shape :math:`out\_channels \times \frac{in\_channels}{groups} \times kW`
+		    bias: optional bias of shape (:math:`out\_channels`). Default: ``None``
+		    stride: the stride of the convolving kernel. Can be a single number or
+		      a one-element tuple `(sW,)`. Default: 1
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a one-element tuple `(padW,)`. Default: 0
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a one-element tuple `(dW,)`. Default: 1
+		    groups: split input into groups, :math:`in\_channels` should be divisible by
+		      the number of groups. Default: 1
+		
+		Examples::
+		
+		    >>> filters = torch.randn(33, 16, 3)
+		    >>> inputs = torch.randn(20, 16, 50)
+		    >>> F.conv1d(inputs, filters)
+	**/
+	static public function conv1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		conv2d(input, weight, bias=None, stride=1, padding=0, dilation=1, groups=1) -> Tensor
+		
+		Applies a 2D convolution over an input image composed of several input
+		planes.
+		
+		See :class:`~torch.nn.Conv2d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iH \times iW`)
+		    weight: filters of shape (:math:`out\_channels \times \frac{in\_channels}{groups} \times kH \times kW`)
+		    bias: optional bias tensor of shape (:math:`out\_channels`). Default: ``None``
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple `(sH, sW)`. Default: 1
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padH, padW)`. Default: 0
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple `(dH, dW)`. Default: 1
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
+		
+		Examples::
+		
+		    >>> # With square kernels and equal stride
+		    >>> filters = torch.randn(8,4,3,3)
+		    >>> inputs = torch.randn(1,4,5,5)
+		    >>> F.conv2d(inputs, filters, padding=1)
+	**/
+	static public function conv2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		conv3d(input, weight, bias=None, stride=1, padding=0, dilation=1, groups=1) -> Tensor
+		
+		Applies a 3D convolution over an input image composed of several input
+		planes.
+		
+		See :class:`~torch.nn.Conv3d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iT \times iH \times iW`)
+		    weight: filters of shape (:math:`out\_channels \times \frac{in\_channels}{groups} \times kT \times kH \times kW`)
+		    bias: optional bias tensor of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple `(sT, sH, sW)`. Default: 1
+		    padding: implicit zero paddings on both sides of the input. Can be a
+		      single number or a tuple `(padT, padH, padW)`. Default: 0
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple `(dT, dH, dW)`. Default: 1
+		    groups: split input into groups, :math:`in\_channels` should be divisible by
+		      the number of groups. Default: 1
+		
+		Examples::
+		
+		    >>> filters = torch.randn(33, 16, 3, 3, 3)
+		    >>> inputs = torch.randn(20, 16, 50, 10, 20)
+		    >>> F.conv3d(inputs, filters)
+	**/
+	static public function conv3d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function conv_tbc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		conv_transpose1d(input, weight, bias=None, stride=1, padding=0, output_padding=0, groups=1, dilation=1) -> Tensor
+		
+		Applies a 1D transposed convolution operator over an input signal
+		composed of several input planes, sometimes also called "deconvolution".
+		
+		See :class:`~torch.nn.ConvTranspose1d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iW`)
+		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kW`)
+		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple ``(sW,)``. Default: 1
+		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
+		      sides of each dimension in the input. Can be a single number or a tuple
+		      ``(padW,)``. Default: 0
+		    output_padding: additional size added to one side of each dimension in the
+		      output shape. Can be a single number or a tuple ``(out_padW)``. Default: 0
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple ``(dW,)``. Default: 1
+		
+		Examples::
+		
+		    >>> inputs = torch.randn(20, 16, 50)
+		    >>> weights = torch.randn(16, 33, 5)
+		    >>> F.conv_transpose1d(inputs, weights)
+	**/
+	static public function conv_transpose1d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		conv_transpose2d(input, weight, bias=None, stride=1, padding=0, output_padding=0, groups=1, dilation=1) -> Tensor
+		
+		Applies a 2D transposed convolution operator over an input image
+		composed of several input planes, sometimes also called "deconvolution".
+		
+		See :class:`~torch.nn.ConvTranspose2d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iH \times iW`)
+		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kH \times kW`)
+		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple ``(sH, sW)``. Default: 1
+		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
+		      sides of each dimension in the input. Can be a single number or a tuple
+		      ``(padH, padW)``. Default: 0
+		    output_padding: additional size added to one side of each dimension in the
+		      output shape. Can be a single number or a tuple ``(out_padH, out_padW)``.
+		      Default: 0
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple ``(dH, dW)``. Default: 1
+		
+		Examples::
+		
+		    >>> # With square kernels and equal stride
+		    >>> inputs = torch.randn(1, 4, 5, 5)
+		    >>> weights = torch.randn(4, 8, 3, 3)
+		    >>> F.conv_transpose2d(inputs, weights, padding=1)
+	**/
+	static public function conv_transpose2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		conv_transpose3d(input, weight, bias=None, stride=1, padding=0, output_padding=0, groups=1, dilation=1) -> Tensor
+		
+		Applies a 3D transposed convolution operator over an input image
+		composed of several input planes, sometimes also called "deconvolution"
+		
+		See :class:`~torch.nn.ConvTranspose3d` for details and output shape.
+		
+		Args:
+		    input: input tensor of shape (:math:`minibatch \times in\_channels \times iT \times iH \times iW`)
+		    weight: filters of shape (:math:`in\_channels \times \frac{out\_channels}{groups} \times kT \times kH \times kW`)
+		    bias: optional bias of shape (:math:`out\_channels`). Default: None
+		    stride: the stride of the convolving kernel. Can be a single number or a
+		      tuple ``(sT, sH, sW)``. Default: 1
+		    padding: ``kernel_size - 1 - padding`` zero-padding will be added to both
+		      sides of each dimension in the input. Can be a single number or a tuple
+		      ``(padT, padH, padW)``. Default: 0
+		    output_padding: additional size added to one side of each dimension in the
+		      output shape. Can be a single number or a tuple
+		      ``(out_padT, out_padH, out_padW)``. Default: 0
+		    groups: split input into groups, :math:`in\_channels` should be divisible by the
+		      number of groups. Default: 1
+		    dilation: the spacing between kernel elements. Can be a single number or
+		      a tuple `(dT, dH, dW)`. Default: 1
+		
+		Examples::
+		
+		    >>> inputs = torch.randn(20, 16, 50, 10, 20)
+		    >>> weights = torch.randn(16, 33, 3, 3, 3)
+		    >>> F.conv_transpose3d(inputs, weights)
+	**/
+	static public function conv_transpose3d(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		cos(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the cosine  of the elements of :attr:`input`.
+		Returns a new tensor with the cosine  of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \cos(\text{input}_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 1.4309,  1.2706, -0.8562,  0.9796])
 		    >>> torch.cos(a)
-		     0.8041
-		     0.9633
-		     0.9018
-		     0.2557
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.1395,  0.2957,  0.6553,  0.5574])
 	**/
 	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cos_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		cosh(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the hyperbolic cosine  of the elements of :attr:`input`.
+		Returns a new tensor with the hyperbolic cosine  of the elements of
+		:attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \cosh(\text{input}_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.1632,  1.1835, -0.6979, -0.7325])
 		    >>> torch.cosh(a)
-		     1.2095
-		     1.0372
-		     1.1015
-		     1.9917
-		    [torch.FloatTensor of size 4]
+		    tensor([ 1.0133,  1.7860,  1.2536,  1.2805])
 	**/
 	static public function cosh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cosh_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cosine_embedding_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		cross(input, other, dim=-1, out=None) -> Tensor
 		
 		
-		Returns the cross product of vectors in dimension :attr:`dim` of :attr:`input` and :attr:`other`.
+		Returns the cross product of vectors in dimension :attr:`dim` of :attr:`input`
+		and :attr:`other`.
 		
-		:attr:`input` and :attr:`other` must have the same size, and the size of their :attr:`dim` dimension should be 3.
+		:attr:`input` and :attr:`other` must have the same size, and the size of their
+		:attr:`dim` dimension should be 3.
 		
-		If :attr:`dim` is not given, it defaults to the first dimension found with the size 3.
+		If :attr:`dim` is not given, it defaults to the first dimension found with the
+		size 3.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    other (Tensor): the second input `Tensor`
+		    input (Tensor): the input tensor
+		    other (Tensor): the second input tensor
 		    dim  (int, optional): the dimension to take the cross-product in.
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4, 3)
 		    >>> a
-		
-		    -0.6652 -1.0116 -0.6857
-		     0.2286  0.4446 -0.5272
-		     0.0476  0.2321  1.9991
-		     0.6199  1.1924 -0.9397
-		    [torch.FloatTensor of size 4x3]
-		
+		    tensor([[-0.3956,  1.1455,  1.6895],
+		            [-0.5849,  1.3672,  0.3599],
+		            [-1.1626,  0.7180, -0.0521],
+		            [-0.1339,  0.9902, -2.0225]])
 		    >>> b = torch.randn(4, 3)
 		    >>> b
-		
-		    -0.1042 -1.1156  0.1947
-		     0.9947  0.1149  0.4701
-		    -1.0108  0.8319 -0.0750
-		     0.9045 -1.3754  1.0976
-		    [torch.FloatTensor of size 4x3]
-		
+		    tensor([[-0.0257, -1.4725, -1.2251],
+		            [-1.1479, -0.7005, -1.9757],
+		            [-1.3904,  0.3726, -1.1836],
+		            [-0.9688, -0.7153,  0.2159]])
 		    >>> torch.cross(a, b, dim=1)
-		
-		    -0.9619  0.2009  0.6367
-		     0.2696 -0.6318 -0.4160
-		    -1.6805 -2.0171  0.2741
-		     0.0163 -1.5304 -1.9311
-		    [torch.FloatTensor of size 4x3]
-		
+		    tensor([[ 1.0844, -0.5281,  0.6120],
+		            [-2.4490, -1.5687,  1.9792],
+		            [-0.8304, -1.3037,  0.5650],
+		            [-1.2329,  1.9883,  1.0551]])
 		    >>> torch.cross(a, b)
-		
-		    -0.9619  0.2009  0.6367
-		     0.2696 -0.6318 -0.4160
-		    -1.6805 -2.0171  0.2741
-		     0.0163 -1.5304 -1.9311
-		    [torch.FloatTensor of size 4x3]
+		    tensor([[ 1.0844, -0.5281,  0.6120],
+		            [-2.4490, -1.5687,  1.9792],
+		            [-0.8304, -1.3037,  0.5650],
+		            [-1.2329,  1.9883,  1.0551]])
 	**/
 	static public function cross(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cudnn_affine_grid_generator(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cudnn_batch_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cudnn_convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cudnn_convolution_transpose(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cudnn_grid_sampler(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cudnn_is_acceptable(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cumprod(input, dim, out=None) -> Tensor
+		cumprod(input, dim, dtype=None) -> Tensor
 		
-		Returns the cumulative product of elements of :attr:`input` in the dimension :attr:`dim`.
+		Returns the cumulative product of elements of :attr:`input` in the dimension
+		:attr:`dim`.
 		
-		For example, if :attr:`input` is a vector of size N, the result will also be a vector of size N, with elements:
-		:math:`y_i = x_1 * x_2 * x_3 * ... * x_i`
+		For example, if :attr:`input` is a vector of size N, the result will also be
+		a vector of size N, with elements.
+		
+		.. math::
+		    y_i = x_1 \times x_2\times x_3\times \dots \times x_i
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    dim  (int): the dimension to do the operation over
-		    out (Tensor, optional): The result `Tensor`
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        If specified, the input tensor is casted to :attr:`dtype` before the operation
+		        is performed. This is useful for preventing data type overflows. Default: None.
 		
 		Example::
 		
 		    >>> a = torch.randn(10)
 		    >>> a
-		
-		     1.1148
-		     1.8423
-		     1.4143
-		    -0.4403
-		     1.2859
-		    -1.2514
-		    -0.4748
-		     1.1735
-		    -1.6332
-		    -0.4272
-		    [torch.FloatTensor of size 10]
-		
+		    tensor([ 0.6001,  0.2069, -0.1919,  0.9792,  0.6727,  1.0062,  0.4126,
+		            -0.2129, -0.4206,  0.1968])
 		    >>> torch.cumprod(a, dim=0)
-		
-		     1.1148
-		     2.0537
-		     2.9045
-		    -1.2788
-		    -1.6444
-		     2.0578
-		    -0.9770
-		    -1.1466
-		     1.8726
-		    -0.8000
-		    [torch.FloatTensor of size 10]
+		    tensor([ 0.6001,  0.1241, -0.0238, -0.0233, -0.0157, -0.0158, -0.0065,
+		             0.0014, -0.0006, -0.0001])
 		
 		    >>> a[5] = 0.0
 		    >>> torch.cumprod(a, dim=0)
-		
-		     1.1148
-		     2.0537
-		     2.9045
-		    -1.2788
-		    -1.6444
-		    -0.0000
-		     0.0000
-		     0.0000
-		    -0.0000
-		     0.0000
-		    [torch.FloatTensor of size 10]
+		    tensor([ 0.6001,  0.1241, -0.0238, -0.0233, -0.0157, -0.0000, -0.0000,
+		             0.0000, -0.0000, -0.0000])
 	**/
 	static public function cumprod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		cumsum(input, dim, out=None) -> Tensor
 		
-		Returns the cumulative sum of elements of :attr:`input` in the dimension :attr:`dim`.
+		Returns the cumulative sum of elements of :attr:`input` in the dimension
+		:attr:`dim`.
 		
-		For example, if :attr:`input` is a vector of size N, the result will also be a vector of size N, with elements:
-		:math:`y_i = x_1 + x_2 + x_3 + ... + x_i`
+		For example, if :attr:`input` is a vector of size N, the result will also be
+		a vector of size N, with elements.
+		
+		.. math::
+		    y_i = x_1 + x_2 + x_3 + \dots + x_i
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    dim  (int): the dimension to do the operation over
-		    out (Tensor, optional): The result `Tensor`
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        If specified, the input tensor is casted to :attr:`dtype` before the operation
+		        is performed. This is useful for preventing data type overflows. Default: None.
 		
 		Example::
 		
 		    >>> a = torch.randn(10)
 		    >>> a
-		
-		    -0.6039
-		    -0.2214
-		    -0.3705
-		    -0.0169
-		     1.3415
-		    -0.1230
-		     0.9719
-		     0.6081
-		    -0.1286
-		     1.0947
-		    [torch.FloatTensor of size 10]
-		
+		    tensor([-0.8286, -0.4890,  0.5155,  0.8443,  0.1865, -0.1752, -2.0595,
+		             0.1850, -1.1571, -0.4243])
 		    >>> torch.cumsum(a, dim=0)
-		
-		    -0.6039
-		    -0.8253
-		    -1.1958
-		    -1.2127
-		     0.1288
-		     0.0058
-		     0.9777
-		     1.5858
-		     1.4572
-		     2.5519
-		    [torch.FloatTensor of size 10]
+		    tensor([-0.8286, -1.3175, -0.8020,  0.0423,  0.2289,  0.0537, -2.0058,
+		            -1.8209, -2.9780, -3.4022])
 	**/
 	static public function cumsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var default_generator : Dynamic;
 	/**
+		det(A) -> Tensor
+		
+		Calculates determinant of a 2D square tensor.
+		
+		.. note::
+		    Backward through :meth:`det` internally uses SVD results when :attr:`A` is
+		    not invertible. In this case, double backward through :meth:`det` will be
+		    unstable in when :attr:`A` doesn't have distinct singular values. See
+		    :meth:`~torch.svd` for details.
+		
+		Arguments:
+		    A (Tensor): The input 2D square tensor
+		
+		Example::
+		
+		    >>> A = torch.randn(3, 3)
+		    >>> torch.det(A)
+		    tensor(3.7641)
+	**/
+	static public function det(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		diag(input, diagonal=0, out=None) -> Tensor
 		
-		- If :attr:`input` is a vector (1D Tensor), then returns a 2D square Tensor with the elements of :attr:`input`
-		  as the diagonal.
-		- If :attr:`input` is a matrix (2D Tensor), then returns a 1D Tensor with the diagonal elements of :attr:`input`.
+		- If :attr:`input` is a vector (1-D tensor), then returns a 2-D square tensor
+		  with the elements of :attr:`input` as the diagonal.
+		- If :attr:`input` is a matrix (2-D tensor), then returns a 1-D tensor with
+		  the diagonal elements of :attr:`input`.
 		
-		The argument :attr:`diagonal` controls which diagonal to consider.
+		The argument :attr:`diagonal` controls which diagonal to consider:
 		
-		- :attr:`diagonal` = 0, is the main diagonal.
-		- :attr:`diagonal` > 0, is above the main diagonal.
-		- :attr:`diagonal` < 0, is below the main diagonal.
+		- If :attr:`diagonal` = 0, it is the main diagonal.
+		- If :attr:`diagonal` > 0, it is above the main diagonal.
+		- If :attr:`diagonal` < 0, it is below the main diagonal.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    diagonal (int, optional): the diagonal to consider
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
-		Example:
+		.. seealso::
+		
+		        :func:`torch.diagonal` always returns the diagonal of its input.
+		
+		        :func:`torch.diagflat` always constructs a tensor with diagonal elements
+		        specified by the input.
+		
+		Examples:
 		
 		Get the square matrix where the input vector is the diagonal::
 		
 		    >>> a = torch.randn(3)
 		    >>> a
-		
-		     1.0480
-		    -2.3405
-		    -1.1138
-		    [torch.FloatTensor of size 3]
-		
+		    tensor([ 0.5950,-0.0872, 2.3298])
 		    >>> torch.diag(a)
-		
-		     1.0480  0.0000  0.0000
-		     0.0000 -2.3405  0.0000
-		     0.0000  0.0000 -1.1138
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[ 0.5950, 0.0000, 0.0000],
+		            [ 0.0000,-0.0872, 0.0000],
+		            [ 0.0000, 0.0000, 2.3298]])
 		    >>> torch.diag(a, 1)
-		
-		     0.0000  1.0480  0.0000  0.0000
-		     0.0000  0.0000 -2.3405  0.0000
-		     0.0000  0.0000  0.0000 -1.1138
-		     0.0000  0.0000  0.0000  0.0000
-		    [torch.FloatTensor of size 4x4]
-		
+		    tensor([[ 0.0000, 0.5950, 0.0000, 0.0000],
+		            [ 0.0000, 0.0000,-0.0872, 0.0000],
+		            [ 0.0000, 0.0000, 0.0000, 2.3298],
+		            [ 0.0000, 0.0000, 0.0000, 0.0000]])
 		
 		Get the k-th diagonal of a given matrix::
 		
 		    >>> a = torch.randn(3, 3)
 		    >>> a
-		
-		    -1.5328 -1.3210 -1.5204
-		     0.8596  0.0471 -0.2239
-		    -0.6617  0.0146 -1.0817
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[-0.4264, 0.0255,-0.1064],
+		            [ 0.8795,-0.2429, 0.1374],
+		            [ 0.1029,-0.6482,-1.6300]])
 		    >>> torch.diag(a, 0)
-		
-		    -1.5328
-		     0.0471
-		    -1.0817
-		    [torch.FloatTensor of size 3]
-		
+		    tensor([-0.4264,-0.2429,-1.6300])
 		    >>> torch.diag(a, 1)
-		
-		    -1.3210
-		    -0.2239
-		    [torch.FloatTensor of size 2]
+		    tensor([ 0.0255, 0.1374])
 	**/
 	static public function diag(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dist(input, other, p=2, out=None) -> Tensor
+		diagflat(input, diagonal=0) -> Tensor
+		
+		- If :attr:`input` is a vector (1-D tensor), then returns a 2-D square tensor
+		  with the elements of :attr:`input` as the diagonal.
+		- If :attr:`input` is a tensor with more than one dimension, then returns a
+		  2-D tensor with diagonal elements equal to a flattened :attr:`input`.
+		
+		The argument :attr:`offset` controls which diagonal to consider:
+		
+		- If :attr:`offset` = 0, it is the main diagonal.
+		- If :attr:`offset` > 0, it is above the main diagonal.
+		- If :attr:`offset` < 0, it is below the main diagonal.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    offset (int, optional): the diagonal to consider. Default: 0 (main
+		        diagonal).
+		
+		Examples::
+		
+		    >>> a = torch.randn(3)
+		    >>> a
+		    tensor([-0.2956, -0.9068,  0.1695])
+		    >>> torch.diagflat(a)
+		    tensor([[-0.2956,  0.0000,  0.0000],
+		            [ 0.0000, -0.9068,  0.0000],
+		            [ 0.0000,  0.0000,  0.1695]])
+		    >>> torch.diagflat(a, 1)
+		    tensor([[ 0.0000, -0.2956,  0.0000,  0.0000],
+		            [ 0.0000,  0.0000, -0.9068,  0.0000],
+		            [ 0.0000,  0.0000,  0.0000,  0.1695],
+		            [ 0.0000,  0.0000,  0.0000,  0.0000]])
+		
+		    >>> a = torch.randn(2, 2)
+		    >>> a
+		    tensor([[ 0.2094, -0.3018],
+		            [-0.1516,  1.9342]])
+		    >>> torch.diagflat(a)
+		    tensor([[ 0.2094,  0.0000,  0.0000,  0.0000],
+		            [ 0.0000, -0.3018,  0.0000,  0.0000],
+		            [ 0.0000,  0.0000, -0.1516,  0.0000],
+		            [ 0.0000,  0.0000,  0.0000,  1.9342]])
+	**/
+	static public function diagflat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		diagonal(input, offset=0, dim1=0, dim2=1) -> Tensor
+		
+		Returns a partial view of :attr:`input` with the its diagonal elements
+		with respect to :attr:`dim1` and :attr:`dim2` appended as a dimension
+		at the end of the shape.
+		
+		The argument :attr:`offset` controls which diagonal to consider:
+		
+		- If :attr:`offset` = 0, it is the main diagonal.
+		- If :attr:`offset` > 0, it is above the main diagonal.
+		- If :attr:`offset` < 0, it is below the main diagonal.
+		
+		Args:
+		    input (Tensor): the input tensor. Must be at least 2-dimensional.
+		    offset (int, optional): which diagonal to consider. Default: 0
+		        (main diagonal).
+		    dim1 (int, optional): first dimension with respect to which to
+		        take diagonal. Default: 0.
+		    dim2 (int, optional): second dimension with respect to which to
+		        take diagonal. Default: 1.
+		
+		.. note::  To take a batch diagonal, pass in dim1=-2, dim2=-1.
+		
+		Examples::
+		
+		    >>> a = torch.randn(3, 3)
+		    >>> a
+		    tensor([[-1.0854,  1.1431, -0.1752],
+		            [ 0.8536, -0.0905,  0.0360],
+		            [ 0.6927, -0.3735, -0.4945]])
+		
+		
+		    >>> torch.diagonal(a, 0)
+		    tensor([-1.0854, -0.0905, -0.4945])
+		
+		
+		    >>> torch.diagonal(a, 1)
+		    tensor([ 1.1431,  0.0360])
+		
+		
+		    >>> x = torch.randn(2, 5, 4, 2)
+		    >>> torch.diagonal(x, offset=-1, dim1=1, dim2=2)
+		    tensor([[[-1.2631,  0.3755, -1.5977, -1.8172],
+		             [-1.1065,  1.0401, -0.2235, -0.7938]],
+		
+		            [[-1.7325, -0.3081,  0.6166,  0.2335],
+		             [ 1.0500,  0.7336, -0.3836, -1.1015]]])
+	**/
+	static public function diagonal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function digamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		dist(input, other, p=2) -> Tensor
 		
 		Returns the p-norm of (:attr:`input` - :attr:`other`)
 		
+		The shapes of :attr:`input` and :attr:`other` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
+		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    other (Tensor): the Right-hand-side input `Tensor`
-		    p (float, optional): The norm to be computed.
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    other (Tensor): the Right-hand-side input tensor
+		    p (float, optional): the norm to be computed
 		
 		Example::
 		
 		    >>> x = torch.randn(4)
 		    >>> x
-		
-		     0.2505
-		    -0.4571
-		    -0.3733
-		     0.7807
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-1.5393, -0.8675,  0.5916,  1.6321])
 		    >>> y = torch.randn(4)
 		    >>> y
-		
-		     0.7782
-		    -0.5185
-		     1.4106
-		    -2.4063
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.0967, -1.0511,  0.6295,  0.8360])
 		    >>> torch.dist(x, y, 3.5)
-		    3.302832063224223
+		    tensor(1.6727)
 		    >>> torch.dist(x, y, 3)
-		    3.3677282206393286
+		    tensor(1.6973)
 		    >>> torch.dist(x, y, 0)
-		    inf
+		    tensor(inf)
 		    >>> torch.dist(x, y, 1)
-		    5.560028076171875
+		    tensor(2.6537)
 	**/
 	static public function dist(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: div(input, value, out=None)
+		.. function:: div(input, value, out=None) -> Tensor
 		
-		Divides each element of the input :attr:`input` with the scalar :attr:`value` and returns a new resulting tensor.
+		Divides each element of the input :attr:`input` with the scalar :attr:`value`
+		and returns a new resulting tensor.
 		
-		:math:`out = tensor / value`
+		.. math::
+		    out_i = \frac{input_i}{value}
 		
-		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value` should be a real number, otherwise it should
-		be an integer
+		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value`
+		should be a real number, otherwise it should be an integer
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    value (Number): the number to be divided to each element of :attr:`input`
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(5)
 		    >>> a
-		
-		    -0.6147
-		    -1.1237
-		    -0.1604
-		    -0.6853
-		     0.1063
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([ 0.3810,  1.2774, -0.2972, -0.3719,  0.4637])
 		    >>> torch.div(a, 0.5)
+		    tensor([ 0.7620,  2.5548, -0.5944, -0.7439,  0.9275])
 		
-		    -1.2294
-		    -2.2474
-		    -0.3208
-		    -1.3706
-		     0.2126
-		    [torch.FloatTensor of size 5]
+		.. function:: div(input, other, out=None) -> Tensor
 		
+		Each element of the tensor :attr:`input` is divided by each element
+		of the tensor :attr:`other`. The resulting tensor is returned. The shapes of
+		:attr:`input` and :attr:`other` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
 		
-		.. function:: div(input, other, out=None)
-		
-		Each element of the Tensor :attr:`input` is divided by each element of the Tensor :attr:`other`.
-		The resulting Tensor is returned. The shapes of :attr:`input` and :attr:`other` don't need to match.
-		The total number of elements in each Tensor need to be the same.
-		
-		.. note:: When the shapes do not match, the shape of :attr:`input` is used as the shape for the returned output Tensor
-		
-		:math:`out_i = input_i / other_i`
+		.. math::
+		    out_i = \frac{input_i}{other_i}
 		
 		Args:
-		    input (Tensor): the numerator `Tensor`
-		    other (Tensor): the denominator `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the numerator tensor
+		    other (Tensor): the denominator tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> a = torch.randn(4,4)
+		    >>> a = torch.randn(4, 4)
 		    >>> a
-		
-		    -0.1810  0.4017  0.2863 -0.1013
-		     0.6183  2.0696  0.9012 -1.5933
-		     0.5679  0.4743 -0.0117 -0.1266
-		    -0.1213  0.9629  0.2682  1.5968
-		    [torch.FloatTensor of size 4x4]
-		
-		    >>> b = torch.randn(8, 2)
+		    tensor([[-0.3711, -1.9353, -0.4605, -0.2917],
+		            [ 0.1815, -1.0111,  0.9805, -1.5923],
+		            [ 0.1062,  1.4581,  0.7759, -1.2344],
+		            [-0.1830, -0.0313,  1.1908, -1.4757]])
+		    >>> b = torch.randn(4)
 		    >>> b
-		
-		     0.8774  0.7650
-		     0.8866  1.4805
-		    -0.6490  1.1172
-		     1.4259 -0.8146
-		     1.4633 -0.1228
-		     0.4643 -0.6029
-		     0.3492  1.5270
-		     1.6103 -0.6291
-		    [torch.FloatTensor of size 8x2]
-		
+		    tensor([ 0.8032,  0.2930, -0.8113, -0.2308])
 		    >>> torch.div(a, b)
-		
-		    -0.2062  0.5251  0.3229 -0.0684
-		    -0.9528  1.8525  0.6320  1.9559
-		     0.3881 -3.8625 -0.0253  0.2099
-		    -0.3473  0.6306  0.1666 -2.5381
-		    [torch.FloatTensor of size 4x4]
+		    tensor([[-0.4620, -6.6051,  0.5676,  1.2637],
+		            [ 0.2260, -3.4507, -1.2086,  6.8988],
+		            [ 0.1322,  4.9764, -0.9564,  5.3480],
+		            [-0.2278, -0.1068, -1.4678,  6.3936]])
 	**/
 	static public function div(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dot(tensor1, tensor2) -> float
+		dot(tensor1, tensor2) -> Tensor
 		
-		Computes the dot product (inner product) of two tensors. Both tensors are
-		treated as 1-D vectors.
+		Computes the dot product (inner product) of two tensors.
+		
+		.. note:: This function does not :ref:`broadcast <broadcasting-semantics>`.
 		
 		Example::
 		
-		    >>> torch.dot(torch.Tensor([2, 3]), torch.Tensor([2, 1]))
-		    7.0
+		    >>> torch.dot(torch.tensor([2, 3]), torch.tensor([2, 1]))
+		    tensor(7)
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var double : Dynamic;
 	static public function dsmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		eig(a, eigenvectors=False, out=None) -> (Tensor, Tensor)
@@ -1246,154 +1888,527 @@ package torch;
 		Computes the eigenvalues and eigenvectors of a real square matrix.
 		
 		Args:
-		    a (Tensor): A square matrix for which the eigenvalues and eigenvectors will
-		                be computed
-		    eigenvectors (bool): `True` to compute both eigenvalues and eigenvectors.
-		                         Otherwise, only eigenvalues will be computed.
-		    out (tuple, optional): Output tensors
+		    a (Tensor): the square matrix for which the eigenvalues and eigenvectors will be computed
+		    eigenvectors (bool): ``True`` to compute both eigenvalues and eigenvectors;
+		        otherwise, only eigenvalues will be computed
+		    out (tuple, optional): the output tensors
 		
 		Returns:
-		    (Tensor, Tensor): tuple containing
+		    (Tensor, Tensor): A tuple containing
 		
 		        - **e** (*Tensor*): the right eigenvalues of ``a``
-		        - **v** (*Tensor*): the eigenvectors of ``a`` if ``eigenvectors` is ``True``; otherwise an empty tensor
+		        - **v** (*Tensor*): the eigenvectors of ``a`` if ``eigenvectors`` is ``True``; otherwise an empty tensor
 	**/
 	static public function eig(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		einsum(equation, operands) -> Tensor
+		
+		This function provides a way of computing multilinear expressions (i.e. sums of products) using the
+		Einstein summation convention.
+		
+		Args:
+		    equation (string): The equation is given in terms of lower case letters (indices) to be associated
+		           with each dimension of the operands and result. The left hand side lists the operands
+		           dimensions, separated by commas. There should be one index letter per tensor dimension.
+		           The right hand side follows after `->` and gives the indices for the output.
+		           If the `->` and right hand side are omitted, it implicitly defined as the alphabetically
+		           sorted list of all indices appearing exactly once in the left hand side.
+		           The indices not apprearing in the output are summed over after multiplying the operands
+		           entries.
+		           If an index appears several times for the same operand, a diagonal is taken.
+		           Ellipses `...` represent a fixed number of dimensions. If the right hand side is inferred,
+		           the ellipsis dimensions are at the beginning of the output.
+		    operands (list of Tensors): The operands to compute the Einstein sum of.
+		           Note that the operands are passed as a list, not as individual arguments.
+		
+		Examples::
+		
+		    >>> x = torch.randn(5)
+		    >>> y = torch.randn(4)
+		    >>> torch.einsum('i,j->ij', (x,y))  # outer product
+		    tensor([[-0.0570, -0.0286, -0.0231,  0.0197],
+		            [ 1.2616,  0.6335,  0.5113, -0.4351],
+		            [ 1.4452,  0.7257,  0.5857, -0.4984],
+		            [-0.4647, -0.2333, -0.1883,  0.1603],
+		            [-1.1130, -0.5588, -0.4510,  0.3838]])
+		
+		
+		    >>> A = torch.randn(3,5,4)
+		    >>> l = torch.randn(2,5)
+		    >>> r = torch.randn(2,4)
+		    >>> torch.einsum('bn,anm,bm->ba', (l,A,r)) # compare torch.nn.functional.bilinear
+		    tensor([[-0.3430, -5.2405,  0.4494],
+		            [ 0.3311,  5.5201, -3.0356]])
+		
+		
+		    >>> As = torch.randn(3,2,5)
+		    >>> Bs = torch.randn(3,5,4)
+		    >>> torch.einsum('bij,bjk->bik', (As, Bs)) # batch matrix multiplication
+		    tensor([[[-1.0564, -1.5904,  3.2023,  3.1271],
+		             [-1.6706, -0.8097, -0.8025, -2.1183]],
+		
+		            [[ 4.2239,  0.3107, -0.5756, -0.2354],
+		             [-1.4558, -0.3460,  1.5087, -0.8530]],
+		
+		            [[ 2.8153,  1.8787, -4.3839, -1.2112],
+		             [ 0.3728, -2.1131,  0.0921,  0.8305]]])
+		
+		    >>> A = torch.randn(3, 3)
+		    >>> torch.einsum('ii->i', (A,)) # diagonal
+		    tensor([-0.7825,  0.8291, -0.1936])
+		
+		    >>> A = torch.randn(4, 3, 3)
+		    >>> torch.einsum('...ii->...i', (A,)) # batch diagonal
+		    tensor([[-1.0864,  0.7292,  0.0569],
+		            [-0.9725, -1.0270,  0.6493],
+		            [ 0.5832, -1.1716, -1.5084],
+		            [ 0.4041, -1.1690,  0.8570]])
+		
+		    >>> A = torch.randn(2, 3, 4, 5)
+		    >>> torch.einsum('...ij->...ji', (A,)).shape # batch permute
+		    torch.Size([2, 3, 5, 4])
+	**/
+	static public function einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function embedding(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function embedding_bag(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function embedding_renorm_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		empty(*sizes, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor filled with uninitialized data. The shape of the tensor is
+		defined by the variable argument :attr:`sizes`.
+		
+		Args:
+		    sizes (int...): a sequence of integers defining the shape of the output tensor.
+		        Can be a variable number of arguments or a collection like a list or tuple.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Example::
+		
+		    >>> torch.empty(2, 3)
+		    tensor(1.00000e-08 *
+		           [[ 6.3984,  0.0000,  0.0000],
+		            [ 0.0000,  0.0000,  0.0000]])
+	**/
+	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		empty_like(input, dtype=None, layout=None, device=None, requires_grad=False) -> Tensor
+		
+		Returns an uninitialized tensor with the same size as :attr:`input`.
+		``torch.empty_like(input)`` is equivalent to
+		``torch.empty(input.size(), dtype=input.dtype, layout=input.layout, device=input.device)``.
+		
+		Args:
+		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned Tensor.
+		        Default: if ``None``, defaults to the dtype of :attr:`input`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned tensor.
+		        Default: if ``None``, defaults to the layout of :attr:`input`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, defaults to the device of :attr:`input`.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Example::
+		
+		    >>> input = torch.empty((2,3), dtype=torch.int64)
+		    >>> input.new(input.size())
+		    tensor([[ 9.4064e+13,  2.8000e+01,  9.3493e+13],
+		            [ 7.5751e+18,  7.1428e+18,  7.5955e+18]])
+	**/
+	static public function empty_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		eq(input, other, out=None) -> Tensor
 		
 		Computes element-wise equality
 		
-		The second argument can be a number or a tensor of the same shape and
-		type as the first argument.
+		The second argument can be a number or a tensor whose shape is
+		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
 		
 		Args:
-		    input (Tensor): Tensor to compare
-		    other (Tensor or float): Tensor or value to compare
-		    out (Tensor, optional): Output tensor. Must be a `ByteTensor` or the same type as `tensor`.
+		    input (Tensor): the tensor to compare
+		    other (Tensor or float): the tensor or value to compare
+		    out (Tensor, optional): the output tensor. Must be a `ByteTensor`
 		
 		Returns:
-		    Tensor: a ``torch.ByteTensor`` containing a 1 at each location where the tensors are equal and
-		            a 0 at every other location
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location where comparison is true
 		
 		Example::
 		
-		    >>> torch.eq(torch.Tensor([[1, 2], [3, 4]]), torch.Tensor([[1, 1], [4, 4]]))
-		    1  0
-		    0  1
-		    [torch.ByteTensor of size 2x2]
+		    >>> torch.eq(torch.tensor([[1, 2], [3, 4]]), torch.tensor([[1, 1], [4, 4]]))
+		    tensor([[ 1,  0],
+		            [ 0,  1]], dtype=torch.uint8)
 	**/
 	static public function eq(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		equal(tensor1, tensor2) -> bool
 		
-		True if two tensors have the same size and elements, False otherwise.
+		``True`` if two tensors have the same size and elements, ``False`` otherwise.
 		
 		Example::
 		
-		    >>> torch.equal(torch.Tensor([1, 2]), torch.Tensor([1, 2]))
+		    >>> torch.equal(torch.tensor([1, 2]), torch.tensor([1, 2]))
 		    True
 	**/
 	static public function equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		exp(tensor, out=None) -> Tensor
+		erf(tensor, out=None) -> Tensor
 		
-		Computes the exponential of each element.
+		Computes the error function of each element. The error function is defined as follows:
+		
+		.. math::
+		    \mathrm{erf}(x) = \frac{2}{\sqrt{\pi}} \int_{0}^{x} e^{-t^2} dt
+		
+		Args:
+		    tensor (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> torch.exp(torch.Tensor([0, math.log(2)]))
-		    torch.FloatTensor([1, 2])
+		    >>> torch.erf(torch.tensor([0, -1., 10.]))
+		    tensor([ 0.0000, -0.8427,  1.0000])
+	**/
+	static public function erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function erf_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		erfc(tensor, out=None) -> Tensor
+		
+		Computes the complementary error function of each element. The complementary error function is defined as follows:
+		
+		.. math::
+		    \mathrm{erfc}(x) = 1 - \frac{2}{\sqrt{\pi}} \int_{0}^{x} e^{-t^2} dt
+		
+		Args:
+		    tensor (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Example::
+		
+		    >>> torch.erfc(torch.tensor([0, -1., 10.]))
+		    tensor([ 1.0000, 1.8427,  0.0000])
+	**/
+	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function erfc_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		erfinv(tensor, out=None) -> Tensor
+		
+		Computes the inverse error function of each element. The inverse error function is defined
+		in the range :math:`(-1, 1)` as:
+		
+		.. math::
+		    \mathrm{erfinv}(\mathrm{erf}(x)) = x
+		
+		Args:
+		    tensor (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Example::
+		
+		    >>> torch.erfinv(torch.tensor([0, 0.5, -1.]))
+		    tensor([ 0.0000,  0.4769,    -inf])
+	**/
+	static public function erfinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		exp(tensor, out=None) -> Tensor
+		
+		Returns a new tensor with the exponential of the elements
+		of :attr:`input`.
+		
+		.. math::
+		    y_{i} = e^{x_{i}}
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Args:
+		    tensor (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Example::
+		
+		    >>> torch.exp(torch.tensor([0, math.log(2)]))
+		    tensor([ 1.,  2.])
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function exp_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		eye(n, m=None, out=None)
+		expm1(tensor, out=None) -> Tensor
+		
+		Returns a new tensor with the exponential of the elements minus 1
+		of :attr:`input`.
+		
+		.. math::
+		    y_{i} = e^{x_{i}} - 1
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Args:
+		    tensor (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Example::
+		
+		    >>> torch.expm1(torch.tensor([0, math.log(2)]))
+		    tensor([ 0.,  1.])
+	**/
+	static public function expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expm1_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		eye(n, m=None, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
 		Returns a 2-D tensor with ones on the diagonal and zeros elsewhere.
 		
 		Args:
-		    n (int): Number of rows
-		    m (int, optional): Number of columns. If None, defaults to `n`
-		    out (Tensor, optional): Output tensor
+		    n (int): the number of rows
+		    m (int, optional): the number of columns with default being :attr:`n`
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Returns:
-		    Tensor: a 2-D tensor with ones on the diagonal and zeros elsewhere
+		    Tensor: A 2-D tensor with ones on the diagonal and zeros elsewhere
 		
 		Example::
 		
 		    >>> torch.eye(3)
-		     1  0  0
-		     0  1  0
-		     0  0  1
-		    [torch.FloatTensor of size 3x3]
+		    tensor([[ 1.,  0.,  0.],
+		            [ 0.,  1.,  0.],
+		            [ 0.,  0.,  1.]])
 	**/
 	static public function eye(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		floor(input, out=None) -> Tensor
+		fft(input, signal_ndim, normalized=False) -> Tensor
 		
-		Returns a new `Tensor` with the floor of the elements of :attr:`input`,
-		the largest integer less than or equal to each element.
+		Complex-to-complex Discrete Fourier Transform
+		
+		This method computes the complex-to-complex discrete Fourier transform.
+		Ignoring the batch dimensions, it computes the following expression:
+		
+		.. math::
+		    X[\omega_1, \dots, \omega_d] =
+		        \frac{1}{\prod_{i=1}^d N_i} \sum_{n_1=0}^{N_1} \dots \sum_{n_d=0}^{N_d} x[n_1, \dots, n_d]
+		         e^{-j\ 2 \pi \sum_{i=0}^d \frac{\omega_i n_i}{N_i}},
+		
+		where :math:`d` = :attr:`signal_ndim` is number of dimensions for the
+		signal, and :math:`N_i` is the size of signal dimension :math:`i`.
+		
+		This method supports 1D, 2D and 3D complex-to-complex transforms, indicated
+		by :attr:`signal_ndim`. :attr:`input` must be a tensor with last dimension
+		of size 2, representing the real and imaginary components of complex
+		numbers, and should have at least ``signal_ndim + 1`` dimensions with optionally
+		arbitrary number of leading batch dimensions. If :attr:`normalized` is set to
+		``True``, this normalizes the result by dividing it with
+		:math:`\sqrt{\prod_{i=1}^K N_i}` so that the operator is unitary.
+		
+		Returns the real and the imaginary parts together as one tensor of the same
+		shape of :attr:`input`.
+		
+		The inverse of this function is :func:`~torch.ifft`.
+		
+		.. note::
+		    For CUDA tensors, an LRU cache is used for cuFFT plans to speed up
+		    repeatedly running FFT methods on tensors of same geometry with same
+		    same configuration.
+		
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
+		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
+		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
+		    the number of plans currently in cache, and
+		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
+		
+		.. warning::
+		    For CPU tensors, this method is currently only available with MKL. Use
+		    :func:`torch.backends.mkl.is_available` to check if MKL is installed.
+		
+		Arguments:
+		    input (Tensor): the input tensor of at least :attr:`signal_ndim` ``+ 1``
+		        dimensions
+		    signal_ndim (int): the number of dimensions in each signal.
+		        :attr:`signal_ndim` can only be 1, 2 or 3
+		    normalized (bool, optional): controls whether to return normalized results.
+		        Default: ``False``
+		
+		Returns:
+		    Tensor: A tensor containing the complex-to-complex Fourier transform result
+		
+		Example::
+		
+		    >>> # unbatched 2D FFT
+		    >>> x = torch.randn(4, 3, 2)
+		    >>> torch.fft(x, 2)
+		    tensor([[[-0.0876,  1.7835],
+		             [-2.0399, -2.9754],
+		             [ 4.4773, -5.0119]],
+		
+		            [[-1.5716,  2.7631],
+		             [-3.8846,  5.2652],
+		             [ 0.2046, -0.7088]],
+		
+		            [[ 1.9938, -0.5901],
+		             [ 6.5637,  6.4556],
+		             [ 2.9865,  4.9318]],
+		
+		            [[ 7.0193,  1.1742],
+		             [-1.3717, -2.1084],
+		             [ 2.0289,  2.9357]]])
+		    >>> # batched 1D FFT
+		    >>> torch.fft(x, 1)
+		    tensor([[[ 1.8385,  1.2827],
+		             [-0.1831,  1.6593],
+		             [ 2.4243,  0.5367]],
+		
+		            [[-0.9176, -1.5543],
+		             [-3.9943, -2.9860],
+		             [ 1.2838, -2.9420]],
+		
+		            [[-0.8854, -0.6860],
+		             [ 2.4450,  0.0808],
+		             [ 1.3076, -0.5768]],
+		
+		            [[-0.1231,  2.7411],
+		             [-0.3075, -1.7295],
+		             [-0.5384, -2.0299]]])
+		    >>> # arbitrary number of batch dimensions, 2D FFT
+		    >>> x = torch.randn(3, 3, 5, 5, 2)
+		    >>> y = torch.fft(x, 2)
+		    >>> y.shape
+		    torch.Size([3, 3, 5, 5, 2])
+	**/
+	static public function fft(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function fill_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		flatten(input, start_dim=0, end_dim=-1) -> Tensor
+		
+		Flattens a contiguous range of dims in a tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    start_dim (int): the first dim to flatten
+		    end_dim (int): the last dim to flatten
+		
+		Example::
+		
+		    >>> t = torch.tensor([[[1, 2],
+		                           [3, 4]],
+		                          [[5, 6],
+		                           [7, 8]]])
+		    >>> torch.flatten(t)
+		    tensor([1, 2, 3, 4, 5, 6, 7, 8])
+		    >>> torch.flatten(t, start_dim=1)
+		    tensor([[1, 2, 3, 4],
+		            [5, 6, 7, 8]])
+	**/
+	static public function flatten(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		flip(input, dims) -> Tensor
+		
+		Reverse the order of a n-D tensor along given axis in dims.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    dims (a list or tuple): axis to flip on
+		
+		Example::
+		
+		    >>> x = torch.arange(8).view(2, 2, 2)
+		    >>> x
+		    tensor([[[ 0,  1],
+		             [ 2,  3]],
+		
+		            [[ 4,  5],
+		             [ 6,  7]]])
+		    >>> torch.flip(x, [0, 1])
+		    tensor([[[ 6,  7],
+		             [ 4,  5]],
+		
+		            [[ 2,  3],
+		             [ 0,  1]]])
+	**/
+	static public function flip(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var float : Dynamic;
+	static public var float16 : Dynamic;
+	static public var float32 : Dynamic;
+	static public var float64 : Dynamic;
+	/**
+		floor(input, out=None) -> Tensor
+		
+		Returns a new tensor with the floor of the elements of :attr:`input`,
+		the largest integer less than or equal to each element.
+		
+		.. math::
+		    \text{out}_{i} = \left\lfloor \text{input}_{i} \right\rfloor
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-0.8166,  1.5308, -0.2530, -0.2091])
 		    >>> torch.floor(a)
-		
-		     1
-		     0
-		    -1
-		    -1
-		    [torch.FloatTensor of size 4]
+		    tensor([-1.,  1., -1., -1.])
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function floor_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		fmod(input, divisor, out=None) -> Tensor
 		
 		Computes the element-wise remainder of division.
 		
 		The dividend and divisor may contain both for integer and floating point
-		numbers. The remainder has the same sign as the dividend `tensor`.
+		numbers. The remainder has the same sign as the dividend :attr:`input`.
+		
+		When :attr:`divisor` is a tensor, the shapes of :attr:`input` and
+		:attr:`divisor` must be :ref:`broadcastable <broadcasting-semantics>`.
 		
 		Args:
-		    input (Tensor): The dividend
-		    divisor (Tensor or float): The divisor. This may be either a number or a
-		                               tensor of the same shape as the dividend.
-		    out (Tensor, optional): Output tensor
+		    input (Tensor): the dividend
+		    divisor (Tensor or float): the divisor, which may be either a number or a tensor of the same shape as the dividend
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> torch.fmod(torch.Tensor([-3, -2, -1, 1, 2, 3]), 2)
-		    torch.FloatTensor([-1, -0, -1, 1, 0, 1])
-		    >>> torch.fmod(torch.Tensor([1, 2, 3, 4, 5]), 1.5)
-		    torch.FloatTensor([1.0, 0.5, 0.0, 1.0, 0.5])
-		
-		.. seealso::
-		
-		        :func:`torch.remainder`, which computes the element-wise remainder of
-		        division equivalently to Python's `%` operator
+		    >>> torch.fmod(torch.tensor([-3., -2, -1, 1, 2, 3]), 2)
+		    tensor([-1., -0., -1.,  1.,  0.,  1.])
+		    >>> torch.fmod(torch.tensor([1., 2, 3, 4, 5]), 1.5)
+		    tensor([ 1.0000,  0.5000,  0.0000,  1.0000,  0.5000])
 	**/
 	static public function fmod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		frac(tensor, out=None) -> Tensor
 		
-		Computes the fractional portion of each element in `tensor`.
+		Computes the fractional portion of each element in :attr:`tensor`.
+		
+		.. math::
+		    \text{out}_{i} = \text{input}_{i} - \left\lfloor \text{input}_{i} \right\rfloor
 		
 		Example::
 		
-		    >>> torch.frac(torch.Tensor([1, 2.5, -3.2])
-		    torch.FloatTensor([0, 0.5, -0.2])
+		    >>> torch.frac(torch.tensor([1, 2.5, -3.2]))
+		    tensor([ 0.0000,  0.5000, -0.2000])
 	**/
 	static public function frac(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1401,21 +2416,69 @@ package torch;
 		
 		Creates a :class:`Tensor` from a :class:`numpy.ndarray`.
 		
-		The returned tensor and `ndarray` share the same memory. Modifications to the
-		tensor will be reflected in the `ndarray` and vice versa. The returned tensor
-		is not resizable.
+		The returned tensor and :attr:`ndarray` share the same memory. Modifications to
+		the tensor will be reflected in the :attr:`ndarray` and vice versa. The returned
+		tensor is not resizable.
 		
 		Example::
 		
 		    >>> a = numpy.array([1, 2, 3])
 		    >>> t = torch.from_numpy(a)
 		    >>> t
-		    torch.LongTensor([1, 2, 3])
+		    tensor([ 1,  2,  3])
 		    >>> t[0] = -1
 		    >>> a
 		    array([-1,  2,  3])
 	**/
 	static public function from_numpy(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		full(size, fill_value, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor of size :attr:`size` filled with :attr:`fill_value`.
+		
+		Args:
+		    size (int...): a list, tuple, or :class:`torch.Size` of integers defining the
+		        shape of the output tensor.
+		    fill_value: the number to fill the output tensor with.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Example::
+		
+		    >>> torch.full((2, 3), 3.141592)
+		    tensor([[ 3.1416,  3.1416,  3.1416],
+		            [ 3.1416,  3.1416,  3.1416]])
+	**/
+	static public function full(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		full_like(input, fill_value, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor with the same size as :attr:`input` filled with :attr:`fill_value`.
+		``torch.full_like(input, fill_value)`` is equivalent to
+		``torch.full_like(input.size(), fill_value, dtype=input.dtype, layout=input.layout, device=input.device)``.
+		
+		Args:
+		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
+		    fill_value: the number to fill the output tensor with.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned Tensor.
+		        Default: if ``None``, defaults to the dtype of :attr:`input`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned tensor.
+		        Default: if ``None``, defaults to the layout of :attr:`input`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, defaults to the device of :attr:`input`.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+	**/
+	static public function full_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		gather(input, dim, index, out=None) -> Tensor
 		
@@ -1423,61 +2486,66 @@ package torch;
 		
 		For a 3-D tensor the output is specified by::
 		
-		    out[i][j][k] = input[index[i][j][k]][j][k]  # dim=0
-		    out[i][j][k] = input[i][index[i][j][k]][k]  # dim=1
-		    out[i][j][k] = input[i][j][index[i][j][k]]  # dim=2
+		    out[i][j][k] = input[index[i][j][k]][j][k]  # if dim == 0
+		    out[i][j][k] = input[i][index[i][j][k]][k]  # if dim == 1
+		    out[i][j][k] = input[i][j][index[i][j][k]]  # if dim == 2
+		
+		If :attr:`input` is an n-dimensional tensor with size
+		:math:`(x_0, x_1..., x_{i-1}, x_i, x_{i+1}, ..., x_{n-1})`
+		and :attr:`dim` :math:`= i`, then :attr:`index` must be an :math:`n`-dimensional tensor with
+		size :math:`(x_0, x_1, ..., x_{i-1}, y, x_{i+1}, ..., x_{n-1})` where :math:`y \geq 1`
+		and :attr:`out` will have the same size as :attr:`index`.
 		
 		Args:
-		    input (Tensor): The source tensor
-		    dim (int): The axis along which to index
-		    index (LongTensor): The indices of elements to gather
-		    out (Tensor, optional): Destination tensor
+		    input (Tensor): the source tensor
+		    dim (int): the axis along which to index
+		    index (LongTensor): the indices of elements to gather
+		    out (Tensor, optional): the destination tensor
 		
 		Example::
 		
-		    >>> t = torch.Tensor([[1,2],[3,4]])
-		    >>> torch.gather(t, 1, torch.LongTensor([[0,0],[1,0]]))
-		     1  1
-		     4  3
-		    [torch.FloatTensor of size 2x2]
+		    >>> t = torch.tensor([[1,2],[3,4]])
+		    >>> torch.gather(t, 1, torch.tensor([[0,0],[1,0]]))
+		    tensor([[ 1,  1],
+		            [ 4,  3]])
 	**/
 	static public function gather(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ge(input, other, out=None) -> Tensor
 		
-		Computes `tensor >= other` element-wise.
+		Computes :math:`input \geq other` element-wise.
 		
-		The second argument can be a number or a tensor of the same shape and
-		type as the first argument.
+		The second argument can be a number or a tensor whose shape is
+		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
 		
 		Args:
-		    input (Tensor): Tensor to compare
-		    other (Tensor or float): Tensor or value to compare
-		    out (Tensor, optional): Output tensor. Must be a `ByteTensor` or the same type as `tensor`.
+		    input (Tensor): the tensor to compare
+		    other (Tensor or float): the tensor or value to compare
+		    out (Tensor, optional): the output tensor that must be a `ByteTensor`
 		
 		Returns:
-		    Tensor: a ``torch.ByteTensor`` containing a 1 at each location where comparison is true.
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location where comparison is true
 		
 		Example::
 		
-		    >>> torch.ge(torch.Tensor([[1, 2], [3, 4]]), torch.Tensor([[1, 1], [4, 4]]))
-		     1  1
-		     0  1
-		    [torch.ByteTensor of size 2x2]
+		    >>> torch.ge(torch.tensor([[1, 2], [3, 4]]), torch.tensor([[1, 1], [4, 4]]))
+		    tensor([[ 1,  1],
+		            [ 0,  1]], dtype=torch.uint8)
 	**/
 	static public function ge(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		gels(B, A, out=None) -> Tensor
 		
 		Computes the solution to the least squares and least norm problems for a full
-		rank :math:`m` by :math:`n` matrix :math:`A`.
+		rank matrix :math:`A` of size :math:`(m \times n)` and a matrix :math:`B` of
+		size :math:`(n \times k)`.
 		
-		If :math:`m >= n`, :func:`gels` solves the least-squares problem:
+		If :math:`m \geq n`, :func:`gels` solves the least-squares problem:
 		
 		.. math::
 		
 		   \begin{array}{ll}
-		   \mbox{minimize} & \|AX-B\|_F.
+		   \min_X & \|AX-B\|_2.
 		   \end{array}
 		
 		If :math:`m < n`, :func:`gels` solves the least-norm problem:
@@ -1485,50 +2553,50 @@ package torch;
 		.. math::
 		
 		   \begin{array}{ll}
-		   \mbox{minimize} & \|X\|_F & \mbox{subject to} & AX = B.
+		   \min_X & \|X\|_2 & \mbox{subject to} & AX = B.
 		   \end{array}
 		
-		The first :math:`n` rows of the returned matrix :math:`X` contains the
-		solution. The remaining rows contain residual information: the euclidean norm
-		of each column starting at row :math:`n` is the residual for the corresponding
-		column.
+		Returned tensor :math:`X` has shape :math:`(\max(m, n) \times k)`. The first :math:`n`
+		rows of :math:`X` contains the solution. If :math`m \geq n`, the residual sum of squares
+		for the solution in each column is given by the sum of squares of elements in the
+		remaining :math:`m - n` rows of that column.
 		
 		Args:
-		    B (Tensor): The matrix :math:`B`
-		    A (Tensor): The :math:`m` by :math:`n` matrix :math:`A`
-		    out (tuple, optional): Optional destination tensor
+		    B (Tensor): the matrix :math:`B`
+		    A (Tensor): the :math:`m` by :math:`n` matrix :math:`A`
+		    out (tuple, optional): the optional destination tensor
 		
 		Returns:
-		    (Tensor, Tensor): tuple containing:
+		    (Tensor, Tensor): A tuple containing:
 		
 		        - **X** (*Tensor*): the least squares solution
 		        - **qr** (*Tensor*): the details of the QR factorization
 		
 		.. note::
 		
-		    The returned matrices will always be tranposed, irrespective of the strides
+		    The returned matrices will always be transposed, irrespective of the strides
 		    of the input matrices. That is, they will have stride `(1, m)` instead of
 		    `(m, 1)`.
 		
 		Example::
 		
-		
-		    >>> A = torch.Tensor([[1, 1, 1],
-		    ...                   [2, 3, 4],
-		    ...                   [3, 5, 2],
-		    ...                   [4, 2, 5],
-		    ...                   [5, 4, 3]])
-		    >>> B = torch.Tensor([[-10, -3],
+		    >>> A = torch.tensor([[1., 1, 1],
+		                          [2, 3, 4],
+		                          [3, 5, 2],
+		                          [4, 2, 5],
+		                          [5, 4, 3]])
+		    >>> B = torch.tensor([[-10., -3],
 		                          [ 12, 14],
 		                          [ 14, 12],
 		                          [ 16, 16],
 		                          [ 18, 16]])
 		    >>> X, _ = torch.gels(B, A)
 		    >>> X
-		    2.0000  1.0000
-		    1.0000  1.0000
-		    1.0000  2.0000
-		    [torch.FloatTensor of size 3x2]
+		    tensor([[  2.0000,   1.0000],
+		            [  1.0000,   1.0000],
+		            [  1.0000,   2.0000],
+		            [ 10.9635,   4.8501],
+		            [  8.9332,   5.2418]])
 	**/
 	static public function gels(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1538,18 +2606,19 @@ package torch;
 		
 		You'll generally want to use :func:`torch.qr` instead.
 		
-		Computes a QR decomposition of :attr:`input`, but without constructing `Q` and `R` as explicit separate matrices.
+		Computes a QR decomposition of :attr:`input`, but without constructing
+		:math:`Q` and :math:`R` as explicit separate matrices.
 		
 		Rather, this directly calls the underlying LAPACK function `?geqrf`
 		which produces a sequence of 'elementary reflectors'.
 		
-		See `LAPACK documentation`_ for further details.
+		See `LAPACK documentation for geqrf`_ for further details.
 		
 		Args:
 		    input (Tensor): the input matrix
-		    out (tuple, optional): The result tuple of (Tensor, Tensor)
+		    out (tuple, optional): the output tuple of (Tensor, Tensor)
 		
-		.. _LAPACK documentation:
+		.. _LAPACK documentation for geqrf:
 		    https://software.intel.com/en-us/node/521004
 	**/
 	static public function geqrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -1557,66 +2626,102 @@ package torch;
 		ger(vec1, vec2, out=None) -> Tensor
 		
 		Outer product of :attr:`vec1` and :attr:`vec2`.
-		If :attr:`vec1` is a vector of size `n` and :attr:`vec2` is a vector of size `m`,
-		then :attr:`out` must be a matrix of size `n x m`.
+		If :attr:`vec1` is a vector of size :math:`n` and :attr:`vec2` is a vector of
+		size :math:`m`, then :attr:`out` must be a matrix of size :math:`(n \times m)`.
+		
+		.. note:: This function does not :ref:`broadcast <broadcasting-semantics>`.
 		
 		Args:
-		    vec1 (Tensor): 1D input vector
-		    vec2 (Tensor): 1D input vector
+		    vec1 (Tensor): 1-D input vector
+		    vec2 (Tensor): 1-D input vector
 		    out (Tensor, optional): optional output matrix
 		
 		Example::
 		
-		    >>> v1 = torch.arange(1, 5)
-		    >>> v2 = torch.arange(1, 4)
+		    >>> v1 = torch.arange(1., 5.)
+		    >>> v2 = torch.arange(1., 4.)
 		    >>> torch.ger(v1, v2)
-		
-		      1   2   3
-		      2   4   6
-		      3   6   9
-		      4   8  12
-		    [torch.FloatTensor of size 4x3]
+		    tensor([[  1.,   2.,   3.],
+		            [  2.,   4.,   6.],
+		            [  3.,   6.,   9.],
+		            [  4.,   8.,  12.]])
 	**/
 	static public function ger(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gesv(B, A, out=None) -> (Tensor, Tensor)
+		torch.gesv(B, A) -> (Tensor, Tensor)
 		
-		`X, LU = torch.gesv(B, A)` returns the solution to the system of linear
-		equations represented by :math:`AX = B`
+		This function returns the solution to the system of linear
+		equations represented by :math:`AX = B` and the LU factorization of
+		A, in order as a tuple `X, LU`.
 		
 		`LU` contains `L` and `U` factors for LU factorization of `A`.
 		
-		:attr:`A` has to be a square and non-singular matrix (2D Tensor).
+		`torch.gesv(B, A)` can take in 2D inputs `B, A` or inputs that are
+		batches of 2D matrices. If the inputs are batches, then returns
+		batched outputs `X, LU`.
 		
-		If `A` is an `m x m` matrix and `B` is `m x k`,
-		the result `LU` is `m x m` and `X` is `m x k` .
+		.. note::
+		
+		    The `out` keyword only supports 2D matrix inputs, that is,
+		    `B, A` must be 2D matrices.
 		
 		.. note::
 		
 		    Irrespective of the original strides, the returned matrices
-		    `X` and `LU` will be transposed, i.e. with strides `(1, m)`
-		    instead of `(m, 1)`.
+		    `X` and `LU` will be transposed, i.e. with strides like
+		    `B.contiguous().transpose(-1, -2).strides()` and
+		    `A.contiguous().transpose(-1, -2).strides()` respectively.
 		
 		Args:
-		    B (Tensor): input matrix of `m x k` dimensions
-		    A (Tensor): input square matrix of `m x m` dimensions
-		    out (Tensor, optional): optional output matrix
+		    B (Tensor): input matrix of size :math:`(*, m, k)` , where `*`
+		    is zero or more batch dimensions.
+		    A (Tensor): input square matrix of size :math:`(*, m, m)`, where
+		    `*` is zero or more batch dimensions.
+		    out ((Tensor, Tensor), optional): optional output tuple.
 		
 		Example::
 		
-		    >>> A = torch.Tensor([[6.80, -2.11,  5.66,  5.97,  8.23],
-		    ...                   [-6.05, -3.30,  5.36, -4.44,  1.08],
-		    ...                   [-0.45,  2.58, -2.70,  0.27,  9.04],
-		    ...                   [8.32,  2.71,  4.35,  -7.17,  2.14],
-		    ...                   [-9.67, -5.14, -7.26,  6.08, -6.87]]).t()
-		    >>> B = torch.Tensor([[4.02,  6.19, -8.22, -7.57, -3.03],
-		    ...                   [-1.56,  4.00, -8.67,  1.75,  2.86],
-		    ...                   [9.81, -4.09, -4.57, -8.61,  8.99]]).t()
+		    >>> A = torch.tensor([[6.80, -2.11,  5.66,  5.97,  8.23],
+		                          [-6.05, -3.30,  5.36, -4.44,  1.08],
+		                          [-0.45,  2.58, -2.70,  0.27,  9.04],
+		                          [8.32,  2.71,  4.35,  -7.17,  2.14],
+		                          [-9.67, -5.14, -7.26,  6.08, -6.87]]).t()
+		    >>> B = torch.tensor([[4.02,  6.19, -8.22, -7.57, -3.03],
+		                          [-1.56,  4.00, -8.67,  1.75,  2.86],
+		                          [9.81, -4.09, -4.57, -8.61,  8.99]]).t()
 		    >>> X, LU = torch.gesv(B, A)
 		    >>> torch.dist(B, torch.mm(A, X))
-		    9.250057093890353e-06
+		    tensor(1.00000e-06 *
+		           7.0977)
+		
+		    >>> # Batched solver example
+		    >>> A = torch.randn(2, 3, 1, 4, 4)
+		    >>> B = torch.randn(2, 3, 1, 4, 6)
+		    >>> X, LU = torch.gesv(B, A)
+		    >>> torch.dist(B, A.matmul(X))
+		    tensor(1.00000e-06 *
+		       3.6386)
 	**/
 	static public function gesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		get_default_dtype() -> :class:`torch.dtype`
+		
+		Get the current default floating point :class:`torch.dtype`.
+		
+		Example::
+		
+		    >>> torch.get_default_dtype()  # initial default for floating point is torch.float32
+		    torch.float32
+		    >>> torch.set_default_dtype(torch.float64)
+		    >>> torch.get_default_dtype()  # default is now changed to torch.float64
+		    torch.float64
+		    >>> torch.set_default_tensor_type(torch.FloatTensor)  # setting tensor type also affects this
+		    >>> torch.get_default_dtype()  # changed to torch.float32, the dtype for torch.FloatTensor
+		    torch.float32
+	**/
+	static public function get_default_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function get_device(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function get_file_path(?path_components:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		get_num_threads() -> int
 		
@@ -1624,105 +2729,286 @@ package torch;
 	**/
 	static public function get_num_threads(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns the random number generator state as a ByteTensor.
+		Returns the random number generator state as a `torch.ByteTensor`.
 	**/
 	static public function get_rng_state():Dynamic;
+	static public function grid_sampler(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function group_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		gt(input, other, out=None) -> Tensor
 		
-		Computes `tensor > other` element-wise.
+		Computes :math:`input > other` element-wise.
 		
-		The second argument can be a number or a tensor of the same shape and
-		type as the first argument.
+		The second argument can be a number or a tensor whose shape is
+		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
 		
 		Args:
-		    input (Tensor): Tensor to compare
-		    other (Tensor or float): Tensor or value to compare
-		    out (Tensor, optional): Output tensor. Must be a `ByteTensor` or the same type as `tensor`.
+		    input (Tensor): the tensor to compare
+		    other (Tensor or float): the tensor or value to compare
+		    out (Tensor, optional): the output tensor that must be a `ByteTensor`
 		
 		Returns:
-		    Tensor: a ``torch.ByteTensor`` containing a 1 at each location where comparison is true.
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location where comparison is true
 		
 		Example::
 		
-		    >>> torch.gt(torch.Tensor([[1, 2], [3, 4]]), torch.Tensor([[1, 1], [4, 4]]))
-		     0  1
-		     0  0
-		    [torch.ByteTensor of size 2x2]
+		    >>> torch.gt(torch.tensor([[1, 2], [3, 4]]), torch.tensor([[1, 1], [4, 4]]))
+		    tensor([[ 0,  1],
+		            [ 0,  0]], dtype=torch.uint8)
 	**/
 	static public function gt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var half : Dynamic;
+	/**
+		hamming_window(window_length, periodic=True, alpha=0.54, beta=0.46, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Hamming window function.
+		
+		.. math::
+		    w[n] = \alpha - \beta\ \cos \left( \frac{2 \pi n}{N - 1} \right),
+		
+		where :math:`N` is the full window size.
+		
+		The input :attr:`window_length` is a positive integer controlling the
+		returned window size. :attr:`periodic` flag determines whether the returned
+		window trims off the last duplicate value from the symmetric window and is
+		ready to be used as a periodic window with functions like
+		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
+		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		``torch.hamming_window(L, periodic=True)`` equal to
+		``torch.hamming_window(L + 1, periodic=False)[:-1])``.
+		
+		.. note::
+		    If :attr:`window_length` :math:`=1`, the returned window contains a single value 1.
+		
+		.. note::
+		    This is a generalized version of :meth:`torch.hann_window`.
+		
+		Arguments:
+		    window_length (int): the size of returned window
+		    periodic (bool, optional): If True, returns a window to be used as periodic
+		        function. If False, return a symmetric window.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`). Only floating point types are supported.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned window tensor. Only
+		          ``torch.strided`` (dense layout) is supported.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Returns:
+		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+	**/
+	static public function hamming_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		hann_window(window_length, periodic=True, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Hann window function.
+		
+		.. math::
+		    w[n] = \frac{1}{2}\ \left[1 - \cos \left( \frac{2 \pi n}{N - 1} \right)\right] =
+		            \sin^2 \left( \frac{\pi n}{N - 1} \right),
+		
+		where :math:`N` is the full window size.
+		
+		The input :attr:`window_length` is a positive integer controlling the
+		returned window size. :attr:`periodic` flag determines whether the returned
+		window trims off the last duplicate value from the symmetric window and is
+		ready to be used as a periodic window with functions like
+		:meth:`torch.stft`. Therefore, if :attr:`periodic` is true, the :math:`N` in
+		above formula is in fact :math:`\text{window_length} + 1`. Also, we always have
+		``torch.hann_window(L, periodic=True)`` equal to
+		``torch.hann_window(L + 1, periodic=False)[:-1])``.
+		
+		.. note::
+		    If :attr:`window_length` :math:`=1`, the returned window contains a single value 1.
+		
+		Arguments:
+		    window_length (int): the size of returned window
+		    periodic (bool, optional): If True, returns a window to be used as periodic
+		        function. If False, return a symmetric window.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`). Only floating point types are supported.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned window tensor. Only
+		          ``torch.strided`` (dense layout) is supported.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Returns:
+		    Tensor: A 1-D tensor of size :math:`(\text{window_length},)` containing the window
+	**/
+	static public function hann_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function hardshrink(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var has_cudnn : Dynamic;
+	static public var has_mkl : Dynamic;
+	static public function hinge_embedding_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		histc(input, bins=100, min=0, max=0, out=None) -> Tensor
 		
 		Computes the histogram of a tensor.
 		
-		The elements are sorted into equal width bins between `min` and `max`. If `min`
-		and `max` are both zero, the minimum and maximum values of the data are used.
+		The elements are sorted into equal width bins between :attr:`min` and
+		:attr:`max`. If :attr:`min` and :attr:`max` are both zero, the minimum and
+		maximum values of the data are used.
 		
 		Args:
-		    input (Tensor): Input data
-		    bins (int): Number of histogram bins
-		    min (int): Lower end of the range (inclusive)
-		    max (int): Upper end of the range (inclusive)
-		    out (Tensor, optional): Output argument
+		    input (Tensor): the input tensor
+		    bins (int): number of histogram bins
+		    min (int): lower end of the range (inclusive)
+		    max (int): upper end of the range (inclusive)
+		    out (Tensor, optional): the output tensor
 		
 		Returns:
-		    Tensor: the histogram
+		    Tensor: Histogram represented as a tensor
 		
 		Example::
 		
-		    >>> torch.histc(torch.FloatTensor([1, 2, 1]), bins=4, min=0, max=3)
-		    FloatTensor([0, 2, 1, 0])
+		    >>> torch.histc(torch.tensor([1., 2, 1]), bins=4, min=0, max=3)
+		    tensor([ 0.,  2.,  1.,  0.])
 	**/
 	static public function histc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function hsmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function hspmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ifft(input, signal_ndim, normalized=False) -> Tensor
+		
+		Complex-to-complex Inverse Discrete Fourier Transform
+		
+		This method computes the complex-to-complex inverse discrete Fourier
+		transform. Ignoring the batch dimensions, it computes the following
+		expression:
+		
+		.. math::
+		    X[\omega_1, \dots, \omega_d] =
+		        \frac{1}{\prod_{i=1}^d N_i} \sum_{n_1=0}^{N_1} \dots \sum_{n_d=0}^{N_d} x[n_1, \dots, n_d]
+		         e^{\ j\ 2 \pi \sum_{i=0}^d \frac{\omega_i n_i}{N_i}},
+		
+		where :math:`d` = :attr:`signal_ndim` is number of dimensions for the
+		signal, and :math:`N_i` is the size of signal dimension :math:`i`.
+		
+		The argument specifications are almost identical with :func:`~torch.fft`.
+		However, if :attr:`normalized` is set to ``True``, this instead returns the
+		results multiplied by :math:`\sqrt{\prod_{i=1}^d N_i}`, to become a unitary
+		operator. Therefore, to invert a :func:`~torch.fft`, the :attr:`normalized`
+		argument should be set identically for :func:`~torch.fft`.
+		
+		Returns the real and the imaginary parts together as one tensor of the same
+		shape of :attr:`input`.
+		
+		The inverse of this function is :func:`~torch.fft`.
+		
+		.. note::
+		    For CUDA tensors, an LRU cache is used for cuFFT plans to speed up
+		    repeatedly running FFT methods on tensors of same geometry with same
+		    same configuration.
+		
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
+		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
+		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
+		    the number of plans currently in cache, and
+		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
+		
+		.. warning::
+		    For CPU tensors, this method is currently only available with MKL. Use
+		    :func:`torch.backends.mkl.is_available` to check if MKL is installed.
+		
+		Arguments:
+		    input (Tensor): the input tensor of at least :attr:`signal_ndim` ``+ 1``
+		        dimensions
+		    signal_ndim (int): the number of dimensions in each signal.
+		        :attr:`signal_ndim` can only be 1, 2 or 3
+		    normalized (bool, optional): controls whether to return normalized results.
+		        Default: ``False``
+		
+		Returns:
+		    Tensor: A tensor containing the complex-to-complex inverse Fourier transform result
+		
+		Example::
+		
+		    >>> x = torch.randn(3, 3, 2)
+		    >>> x
+		    tensor([[[ 1.2766,  1.3680],
+		             [-0.8337,  2.0251],
+		             [ 0.9465, -1.4390]],
+		
+		            [[-0.1890,  1.6010],
+		             [ 1.1034, -1.9230],
+		             [-0.9482,  1.0775]],
+		
+		            [[-0.7708, -0.8176],
+		             [-0.1843, -0.2287],
+		             [-1.9034, -0.2196]]])
+		    >>> y = torch.fft(x, 2)
+		    >>> torch.ifft(y, 2)  # recover x
+		    tensor([[[ 1.2766,  1.3680],
+		             [-0.8337,  2.0251],
+		             [ 0.9465, -1.4390]],
+		
+		            [[-0.1890,  1.6010],
+		             [ 1.1034, -1.9230],
+		             [-0.9482,  1.0775]],
+		
+		            [[-0.7708, -0.8176],
+		             [-0.1843, -0.2287],
+		             [-1.9034, -0.2196]]])
+	**/
+	static public function ifft(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function index_put(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function index_put_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		index_select(input, dim, index, out=None) -> Tensor
 		
-		Returns a new `Tensor` which indexes the :attr:`input` `Tensor` along dimension :attr:`dim`
-		using the entries in :attr:`index` which is a `LongTensor`.
+		Returns a new tensor which indexes the :attr:`input` tensor along dimension
+		:attr:`dim` using the entries in :attr:`index` which is a `LongTensor`.
 		
-		The returned `Tensor` has the same number of dimensions as the original `Tensor`.
+		The returned tensor has the same number of dimensions as the original tensor
+		(:attr:`input`).  The :attr:`dim`\ th dimension has the same size as the length
+		of :attr:`index`; other dimensions have the same size as in the original tensor.
 		
-		.. note:: The returned `Tensor` does **not** use the same storage as the original `Tensor`
+		.. note:: The returned tensor does **not** use the same storage as the original
+		          tensor.  If :attr:`out` has a different shape than expected, we
+		          silently change it to the correct shape, reallocating the underlying
+		          storage if necessary.
 		
 		Args:
-		    input (Tensor): Input data
+		    input (Tensor): the input tensor
 		    dim (int): the dimension in which we index
-		    index (LongTensor): the 1D tensor containing the indices to index
-		    out (Tensor, optional): Output argument
+		    index (LongTensor): the 1-D tensor containing the indices to index
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> x = torch.randn(3, 4)
 		    >>> x
-		
-		     1.2045  2.4084  0.4001  1.1372
-		     0.5596  1.5677  0.6219 -0.7954
-		     1.3635 -1.2313 -0.5414 -1.8478
-		    [torch.FloatTensor of size 3x4]
-		
-		    >>> indices = torch.LongTensor([0, 2])
+		    tensor([[ 0.1427,  0.0231, -0.5414, -1.0009],
+		            [-0.4664,  0.2647, -0.1228, -1.1068],
+		            [-1.1734, -0.6571,  0.7230, -0.6004]])
+		    >>> indices = torch.tensor([0, 2])
 		    >>> torch.index_select(x, 0, indices)
-		
-		     1.2045  2.4084  0.4001  1.1372
-		     1.3635 -1.2313 -0.5414 -1.8478
-		    [torch.FloatTensor of size 2x4]
-		
+		    tensor([[ 0.1427,  0.0231, -0.5414, -1.0009],
+		            [-1.1734, -0.6571,  0.7230, -0.6004]])
 		    >>> torch.index_select(x, 1, indices)
-		
-		     1.2045  0.4001
-		     0.5596  0.6219
-		     1.3635 -0.5414
-		    [torch.FloatTensor of size 3x2]
+		    tensor([[ 0.1427, -0.5414],
+		            [-0.4664, -0.1228],
+		            [-1.1734,  0.7230]])
 	**/
 	static public function index_select(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the initial seed for generating random numbers as a
-		python `long`.
+		Python `long`.
 	**/
 	static public function initial_seed():Dynamic;
+	static public var int : Dynamic;
+	static public var int16 : Dynamic;
+	static public var int32 : Dynamic;
+	static public var int64 : Dynamic;
+	static public var int8 : Dynamic;
 	/**
 		inverse(input, out=None) -> Tensor
 		
@@ -1730,1207 +3016,1385 @@ package torch;
 		
 		.. note::
 		
-		    Irrespective of the original strides, the returned matrix will be transposed,
-		    i.e. with strides `(1, m)` instead of `(m, 1)`
+		    Irrespective of the original strides, the returned matrix will be
+		    transposed, i.e. with strides `(1, m)` instead of `(m, 1)`
 		
 		Args:
-		    input (Tensor): the input 2D square `Tensor`
-		    out (Tensor, optional): the optional output `Tensor`
+		    input (Tensor): the input 2-D square tensor
+		    out (Tensor, optional): the optional output tensor
 		
 		Example::
 		
-		    >>> x = torch.rand(10, 10)
-		    >>> x
-		
-		     0.7800  0.2267  0.7855  0.9479  0.5914  0.7119  0.4437  0.9131  0.1289  0.1982
-		     0.0045  0.0425  0.2229  0.4626  0.6210  0.0207  0.6338  0.7067  0.6381  0.8196
-		     0.8350  0.7810  0.8526  0.9364  0.7504  0.2737  0.0694  0.5899  0.8516  0.3883
-		     0.6280  0.6016  0.5357  0.2936  0.7827  0.2772  0.0744  0.2627  0.6326  0.9153
-		     0.7897  0.0226  0.3102  0.0198  0.9415  0.9896  0.3528  0.9397  0.2074  0.6980
-		     0.5235  0.6119  0.6522  0.3399  0.3205  0.5555  0.8454  0.3792  0.4927  0.6086
-		     0.1048  0.0328  0.5734  0.6318  0.9802  0.4458  0.0979  0.3320  0.3701  0.0909
-		     0.2616  0.3485  0.4370  0.5620  0.5291  0.8295  0.7693  0.1807  0.0650  0.8497
-		     0.1655  0.2192  0.6913  0.0093  0.0178  0.3064  0.6715  0.5101  0.2561  0.3396
-		     0.4370  0.4695  0.8333  0.1180  0.4266  0.4161  0.0699  0.4263  0.8865  0.2578
-		    [torch.FloatTensor of size 10x10]
-		
-		    >>> x = torch.rand(10, 10)
+		    >>> x = torch.rand(4, 4)
 		    >>> y = torch.inverse(x)
 		    >>> z = torch.mm(x, y)
 		    >>> z
-		
-		     1.0000  0.0000  0.0000 -0.0000  0.0000  0.0000  0.0000  0.0000 -0.0000 -0.0000
-		     0.0000  1.0000 -0.0000  0.0000  0.0000  0.0000 -0.0000 -0.0000 -0.0000 -0.0000
-		     0.0000  0.0000  1.0000 -0.0000 -0.0000  0.0000  0.0000  0.0000 -0.0000 -0.0000
-		     0.0000  0.0000  0.0000  1.0000  0.0000  0.0000  0.0000 -0.0000 -0.0000  0.0000
-		     0.0000  0.0000 -0.0000 -0.0000  1.0000  0.0000  0.0000 -0.0000 -0.0000 -0.0000
-		     0.0000  0.0000  0.0000 -0.0000  0.0000  1.0000 -0.0000 -0.0000 -0.0000 -0.0000
-		     0.0000  0.0000  0.0000 -0.0000  0.0000  0.0000  1.0000  0.0000 -0.0000  0.0000
-		     0.0000  0.0000 -0.0000 -0.0000  0.0000  0.0000 -0.0000  1.0000 -0.0000  0.0000
-		    -0.0000  0.0000 -0.0000 -0.0000  0.0000  0.0000 -0.0000 -0.0000  1.0000 -0.0000
-		    -0.0000  0.0000 -0.0000 -0.0000 -0.0000  0.0000 -0.0000 -0.0000  0.0000  1.0000
-		    [torch.FloatTensor of size 10x10]
-		
-		    >>> torch.max(torch.abs(z - torch.eye(10))) # Max nonzero
-		    5.096662789583206e-07
+		    tensor([[ 1.0000, -0.0000, -0.0000,  0.0000],
+		            [ 0.0000,  1.0000,  0.0000,  0.0000],
+		            [ 0.0000,  0.0000,  1.0000,  0.0000],
+		            [ 0.0000, -0.0000, -0.0000,  1.0000]])
+		    >>> torch.max(torch.abs(z - torch.eye(4))) # Max nonzero
+		    tensor(1.00000e-07 *
+		           1.1921)
 	**/
 	static public function inverse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns True if `obj` is a pytorch storage object.
+		irfft(input, signal_ndim, normalized=False, onesided=True, signal_sizes=None) -> Tensor
+		
+		Complex-to-real Inverse Discrete Fourier Transform
+		
+		This method computes the complex-to-real inverse discrete Fourier transform.
+		It is mathematically equivalent with :func:`ifft` with differences only in
+		formats of the input and output.
+		
+		The argument specifications are almost identical with :func:`~torch.ifft`.
+		Similar to :func:`~torch.ifft`, if :attr:`normalized` is set to ``True``,
+		this normalizes the result by multiplying it with
+		:math:`\sqrt{\prod_{i=1}^K N_i}` so that the operator is unitary, where
+		:math:`N_i` is the size of signal dimension :math:`i`.
+		
+		Due to the conjugate symmetry, :attr:`input` do not need to contain the full
+		complex frequency values. Roughly half of the values will be sufficient, as
+		is the case when :attr:`input` is given by :func:`~torch.rfft` with
+		``rfft(signal, onesided=True)``. In such case, set the :attr:`onesided`
+		argument of this method to ``True``. Moreover, the original signal shape
+		information can sometimes be lost, optionally set :attr:`signal_sizes` to be
+		the size of the original signal (without the batch dimensions if in batched
+		mode) to recover it with correct shape.
+		
+		Therefore, to invert an :func:`~torch.rfft`, the :attr:`normalized` and
+		:attr:`onesided` arguments should be set identically for :func:`~torch.irfft`,
+		and preferrably a :attr:`signal_sizes` is given to avoid size mismatch. See the
+		example below for a case of size mismatch.
+		
+		See :func:`~torch.rfft` for details on conjugate symmetry.
+		
+		The inverse of this function is :func:`~torch.rfft`.
+		
+		.. warning::
+		    Generally speaking, the input of this function should contain values
+		    following conjugate symmetry. Note that even if :attr:`onesided` is
+		    ``True``, often symmetry on some part is still needed. When this
+		    requirement is not satisfied, the behavior of :func:`~torch.irfft` is
+		    undefined. Since :func:`torch.autograd.gradcheck` estimates numerical
+		    Jacobian with point perturbations, :func:`~torch.irfft` will almost
+		    certainly fail the check.
+		
+		.. note::
+		    For CUDA tensors, an LRU cache is used for cuFFT plans to speed up
+		    repeatedly running FFT methods on tensors of same geometry with same
+		    same configuration.
+		
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
+		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
+		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
+		    the number of plans currently in cache, and
+		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
+		
+		.. warning::
+		    For CPU tensors, this method is currently only available with MKL. Use
+		    :func:`torch.backends.mkl.is_available` to check if MKL is installed.
+		
+		Arguments:
+		    input (Tensor): the input tensor of at least :attr:`signal_ndim` ``+ 1``
+		        dimensions
+		    signal_ndim (int): the number of dimensions in each signal.
+		        :attr:`signal_ndim` can only be 1, 2 or 3
+		    normalized (bool, optional): controls whether to return normalized results.
+		        Default: ``False``
+		    onesided (bool, optional): controls whether :attr:`input` was halfed to avoid
+		        redundancy, e.g., by :func:`rfft`. Default: ``True``
+		    signal_sizes (list or :class:`torch.Size`, optional): the size of the original
+		        signal (without batch dimension). Default: ``None``
+		
+		Returns:
+		    Tensor: A tensor containing the complex-to-real inverse Fourier transform result
+		
+		Example::
+		
+		    >>> x = torch.randn(4, 4)
+		    >>> torch.rfft(x, 2, onesided=True).shape
+		    torch.Size([4, 3, 2])
+		    >>>
+		    >>> # notice that with onesided=True, output size does not determine the original signal size
+		    >>> x = torch.randn(4, 5)
+		
+		    >>> torch.rfft(x, 2, onesided=True).shape
+		    torch.Size([4, 3, 2])
+		    >>>
+		    >>> # now we use the original shape to recover x
+		    >>> x
+		    tensor([[-0.8992,  0.6117, -1.6091, -0.4155, -0.8346],
+		            [-2.1596, -0.0853,  0.7232,  0.1941, -0.0789],
+		            [-2.0329,  1.1031,  0.6869, -0.5042,  0.9895],
+		            [-0.1884,  0.2858, -1.5831,  0.9917, -0.8356]])
+		    >>> y = torch.rfft(x, 2, onesided=True)
+		    >>> torch.irfft(y, 2, onesided=True, signal_sizes=x.shape)  # recover x
+		    tensor([[-0.8992,  0.6117, -1.6091, -0.4155, -0.8346],
+		            [-2.1596, -0.0853,  0.7232,  0.1941, -0.0789],
+		            [-2.0329,  1.1031,  0.6869, -0.5042,  0.9895],
+		            [-0.1884,  0.2858, -1.5831,  0.9917, -0.8356]])
+	**/
+	static public function irfft(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_anomaly_enabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_distributed(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_floating_point(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_grad_enabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_same_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_signed(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns True if `obj` is a PyTorch storage object.
 		
 		Args:
 		    obj (Object): Object to test
 	**/
 	static public function is_storage(obj:Dynamic):Dynamic;
 	/**
-		Returns True if `obj` is a pytorch tensor.
+		Returns True if `obj` is a PyTorch tensor.
 		
 		Args:
 		    obj (Object): Object to test
 	**/
 	static public function is_tensor(obj:Dynamic):Dynamic;
+	static public function isclose(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		kthvalue(input, k, dim=None, out=None) -> (Tensor, LongTensor)
+		Returns a new tensor with boolean elements representing if each element is `Finite` or not.
 		
-		Returns the :attr:`k`th smallest element of the given :attr:`input` Tensor along a given dimension.
+		Arguments:
+		    tensor (Tensor): A tensor to check
+		
+		Returns:
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location of finite elements and 0 otherwise
+		
+		Example::
+		
+		    >>> torch.isfinite(torch.Tensor([1, float('inf'), 2, float('-inf'), float('nan')]))
+		    tensor([ 1,  0,  1,  0,  0], dtype=torch.uint8)
+	**/
+	static public function isfinite(tensor:Dynamic):Dynamic;
+	/**
+		Returns a new tensor with boolean elements representing if each element is `+/-INF` or not.
+		
+		Arguments:
+		    tensor (Tensor): A tensor to check
+		
+		Returns:
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location of `+/-INF` elements and 0 otherwise
+		
+		Example::
+		
+		    >>> torch.isinf(torch.Tensor([1, float('inf'), 2, float('-inf'), float('nan')]))
+		    tensor([ 0,  1,  0,  1,  0], dtype=torch.uint8)
+	**/
+	static public function isinf(tensor:Dynamic):Dynamic;
+	/**
+		Returns a new tensor with boolean elements representing if each element is `NaN` or not.
+		
+		Arguments:
+		    tensor (Tensor): A tensor to check
+		
+		Returns:
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location of `NaN` elements.
+		
+		Example::
+		
+		    >>> torch.isnan(torch.tensor([1, float('nan'), 2]))
+		    tensor([ 0,  1,  0], dtype=torch.uint8)
+	**/
+	static public function isnan(tensor:Dynamic):Dynamic;
+	/**
+		kthvalue(input, k, dim=None, keepdim=False, out=None) -> (Tensor, LongTensor)
+		
+		Returns the :attr:`k` th smallest element of the given :attr:`input` tensor
+		along a given dimension.
 		
 		If :attr:`dim` is not given, the last dimension of the `input` is chosen.
 		
-		A tuple of `(values, indices)` is returned, where the `indices` is the indices of
-		the kth-smallest element in the original `input` Tensor in dimention `dim`.
+		A tuple of `(values, indices)` is returned, where the `indices` is the indices
+		of the kth-smallest element in the original `input` tensor in dimension `dim`.
+		
+		If :attr:`keepdim` is ``True``, both the :attr:`values` and :attr:`indices` tensors
+		are the same size as :attr:`input`, except in the dimension :attr:`dim` where
+		they are of size 1. Otherwise, :attr:`dim` is squeezed
+		(see :func:`torch.squeeze`), resulting in both the :attr:`values` and
+		:attr:`indices` tensors having 1 fewer dimension than the :attr:`input` tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    k (int): k for the k-th smallest element
-		    dim (int, optional): The dimension to sort along
-		    out (tuple, optional): The output tuple of (Tensor, LongTensor)
+		    dim (int, optional): the dimension to find the kth value along
+		    keepdim (bool): whether the output tensors have :attr:`dim` retained or not
+		    out (tuple, optional): the output tuple of (Tensor, LongTensor)
 		                           can be optionally given to be used as output buffers
 		
 		Example::
 		
-		    >>> x = torch.arange(1, 6)
+		    >>> x = torch.arange(1., 6.)
 		    >>> x
-		
-		     1
-		     2
-		     3
-		     4
-		     5
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([ 1.,  2.,  3.,  4.,  5.])
 		    >>> torch.kthvalue(x, 4)
-		    (
-		     4
-		    [torch.FloatTensor of size 1]
-		    ,
-		     3
-		    [torch.LongTensor of size 1]
-		    )
+		    (tensor(4.), tensor(3))
+		
+		    >>> x=torch.arange(1.,7.).resize_(2,3)
+		    >>> x
+		    tensor([[ 1.,  2.,  3.],
+		            [ 4.,  5.,  6.]])
+		    >>> torch.kthvalue(x,2,0,True)
+		    (tensor([[ 4.,  5.,  6.]]), tensor([[ 1,  1,  1]]))
 	**/
 	static public function kthvalue(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function layer_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		le(input, other, out=None) -> Tensor
 		
-		Computes `tensor <= other` element-wise.
+		Computes :math:`input \leq other` element-wise.
 		
-		The second argument can be a number or a tensor of the same shape and
-		type as the first argument.
+		The second argument can be a number or a tensor whose shape is
+		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
 		
 		Args:
-		    input (Tensor): Tensor to compare
-		    other (Tensor or float): Tensor or value to compare
-		    out (Tensor, optional): Output tensor. Must be a `ByteTensor` or the same type as `tensor`.
+		    input (Tensor): the tensor to compare
+		    other (Tensor or float): the tensor or value to compare
+		    out (Tensor, optional): the output tensor that must be a `ByteTensor`
 		
 		Returns:
-		    Tensor: a ``torch.ByteTensor`` containing a 1 at each location where comparison is true.
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location where comparison is true
 		
 		Example::
 		
-		    >>> torch.le(torch.Tensor([[1, 2], [3, 4]]), torch.Tensor([[1, 1], [4, 4]]))
-		     1  0
-		     1  1
-		    [torch.ByteTensor of size 2x2]
+		    >>> torch.le(torch.tensor([[1, 2], [3, 4]]), torch.tensor([[1, 1], [4, 4]]))
+		    tensor([[ 1,  0],
+		            [ 1,  1]], dtype=torch.uint8)
 	**/
 	static public function le(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		lerp(start, end, weight, out=None)
 		
 		Does a linear interpolation of two tensors :attr:`start` and :attr:`end` based
-		on a scalar :attr:`weight`: and returns the resulting :attr:`out` Tensor.
+		on a scalar :attr:`weight` and returns the resulting :attr:`out` tensor.
 		
-		:math:`out_i = start_i + weight * (end_i - start_i)`
+		.. math::
+		    out_i = start_i + weight \times (end_i - start_i)
+		
+		The shapes of :attr:`start` and :attr:`end` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
 		
 		Args:
-		    start (Tensor): the `Tensor` with the starting points
-		    end (Tensor): the `Tensor` with the ending points
+		    start (Tensor): the tensor with the starting points
+		    end (Tensor): the tensor with the ending points
 		    weight (float): the weight for the interpolation formula
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> start = torch.arange(1, 5)
-		    >>> end = torch.Tensor(4).fill_(10)
+		    >>> start = torch.arange(1., 5.)
+		    >>> end = torch.empty(4).fill_(10)
 		    >>> start
-		
-		     1
-		     2
-		     3
-		     4
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 1.,  2.,  3.,  4.])
 		    >>> end
-		
-		     10
-		     10
-		     10
-		     10
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 10.,  10.,  10.,  10.])
 		    >>> torch.lerp(start, end, 0.5)
-		
-		     5.5000
-		     6.0000
-		     6.5000
-		     7.0000
-		    [torch.FloatTensor of size 4]
+		    tensor([ 5.5000,  6.0000,  6.5000,  7.0000])
 	**/
 	static public function lerp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function lgamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		linspace(start, end, steps=100, out=None) -> Tensor
+		linspace(start, end, steps=100, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
-		Returns a one-dimensional Tensor of :attr:`steps`
-		equally spaced points between :attr:`start` and :attr:`end`
+		Returns a one-dimensional tensor of :attr:`steps`
+		equally spaced points between :attr:`start` and :attr:`end`.
 		
-		The output tensor is 1D of size :attr:`steps`
+		The output tensor is 1-D of size :attr:`steps`.
 		
 		Args:
-		    start (float): The starting value for the set of points
-		    end (float): The ending value for the set of points
-		    steps (int): Number of points to sample between :attr:`start` and :attr:`end`
-		    out (Tensor, optional): The result `Tensor`
+		    start (float): the starting value for the set of points
+		    end (float): the ending value for the set of points
+		    steps (int): number of points to sample between :attr:`start`
+		        and :attr:`end`. Default: ``100``.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
 		
 		Example::
 		
 		    >>> torch.linspace(3, 10, steps=5)
-		
-		      3.0000
-		      4.7500
-		      6.5000
-		      8.2500
-		     10.0000
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([  3.0000,   4.7500,   6.5000,   8.2500,  10.0000])
 		    >>> torch.linspace(-10, 10, steps=5)
-		
-		    -10
-		     -5
-		      0
-		      5
-		     10
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([-10.,  -5.,   0.,   5.,  10.])
 		    >>> torch.linspace(start=-10, end=10, steps=5)
-		
-		    -10
-		     -5
-		      0
-		      5
-		     10
-		    [torch.FloatTensor of size 5]
+		    tensor([-10.,  -5.,   0.,   5.,  10.])
 	**/
 	static public function linspace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Loads an object saved with :func:`torch.save` from a file.
 		
-		torch.load can dynamically remap storages to be loaded on a different device
-		using the map_location argument. If it's a callable, it will be called with
-		two arguments: storage and location tag. It's expected to either return a
-		storage that's been moved to a different location, or None (and the location
-		will be resolved using the default method). If this argument is a dict it's
-		expected to be a mapping from location tags used in a file, to location
-		tags of the current system.
+		:meth:`torch.load` uses Python's unpickling facilities but treats storages,
+		which underlie tensors, specially. They are first deserialized on the
+		CPU and are then moved to the device they were saved from. If this fails
+		(e.g. because the run time system doesn't have certain devices), an exception
+		is raised. However, storages can be dynamically remapped to an alternative
+		set of devices using the `map_location` argument.
 		
-		By default the location tags are 'cpu' for host tensors and 'cuda:device_id'
-		(e.g. 'cuda:2') for cuda tensors. User extensions can register their own
-		tagging and deserialization methods using register_package.
+		If `map_location` is a callable, it will be called once for each serialized
+		storage with two arguments: storage and location. The storage argument
+		will be the initial deserialization of the storage, residing on the CPU.
+		Each serialized storage has a location tag associated with it which
+		identifies the device it was saved from, and this tag is the second
+		argument passed to map_location. The builtin location tags are `'cpu'` for
+		CPU tensors and `'cuda:device_id'` (e.g. `'cuda:2'`) for CUDA tensors.
+		`map_location` should return either None or a storage. If `map_location` returns
+		a storage, it will be used as the final deserialized object, already moved to
+		the right device. Otherwise, :math:`torch.load` will fall back to the default
+		behavior, as if `map_location` wasn't specified.
+		
+		If `map_location` is a string, it should be a device tag, where all tensors
+		should be loaded.
+		
+		Otherwise, if `map_location` is a dict, it will be used to remap location tags
+		appearing in the file (keys), to ones that specify where to put the
+		storages (values).
+		
+		User extensions can register their own location tags and tagging and
+		deserialization methods using `register_package`.
 		
 		Args:
-		    f: a file-like object (has to implement fileno that returns a file descriptor,
-		        and must implement seek), or a string containing a file name
-		    map_location: a function or a dict specifying how to remap storage locations
-		    pickle_module: module used for unpickling metadata and objects (has to match
-		        the pickle_module used to serialize file)
+		    f: a file-like object (has to implement read, readline, tell, and seek),
+		        or a string containing a file name
+		    map_location: a function, torch.device, string or a dict specifying how to remap storage
+		        locations
+		    pickle_module: module used for unpickling metadata and objects (has to
+		        match the pickle_module used to serialize file)
+		
+		.. note::
+		    When you call :meth:`torch.load()` on a file which contains GPU tensors, those tensors
+		    will be loaded to GPU by default. You can call `torch.load(.., map_location='cpu')`
+		    and then :meth:`load_state_dict` to avoid GPU RAM surge when loading a model checkpoint.
 		
 		Example:
 		    >>> torch.load('tensors.pt')
 		    # Load all tensors onto the CPU
+		    >>> torch.load('tensors.pt', map_location=torch.device('cpu'))
+		    # Load all tensors onto the CPU, using a function
 		    >>> torch.load('tensors.pt', map_location=lambda storage, loc: storage)
+		    # Load all tensors onto GPU 1
+		    >>> torch.load('tensors.pt', map_location=lambda storage, loc: storage.cuda(1))
 		    # Map tensors from GPU 1 to GPU 0
 		    >>> torch.load('tensors.pt', map_location={'cuda:1':'cuda:0'})
+		    # Load tensor from io.BytesIO object
+		    >>> with open('tensor.pt') as f:
+		            buffer = io.BytesIO(f.read())
+		    >>> torch.load(buffer)
 	**/
 	static public function load(f:Dynamic, ?map_location:Dynamic, ?pickle_module:Dynamic):Dynamic;
 	/**
 		log(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the natural logarithm of the elements of :attr:`input`.
+		Returns a new tensor with the natural logarithm of the elements
+		of :attr:`input`.
+		
+		.. math::
+		    y_{i} = \log_{e} (x_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(5)
 		    >>> a
-		
-		    -0.4183
-		     0.3722
-		    -0.3091
-		     0.4149
-		     0.5857
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([-0.7168, -0.5471, -0.8933, -1.4428, -0.1190])
 		    >>> torch.log(a)
-		
-		        nan
-		    -0.9883
-		        nan
-		    -0.8797
-		    -0.5349
-		    [torch.FloatTensor of size 5]
+		    tensor([ nan,  nan,  nan,  nan,  nan])
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		log1p(input, out=None) -> Tensor
+		log10(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the natural logarithm of (1 + :attr:`input`).
+		Returns a new tensor with the logarithm to the base 10 of the elements
+		of :attr:`input`.
 		
-		:math:`y_i = log(x_i + 1)`
-		
-		.. note:: This function is more accurate than :func:`torch.log` for small values of :attr:`input`
+		.. math::
+		    y_{i} = \log_{10} (x_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Example::
+		
+		    >>> a = torch.rand(5)
+		    >>> a
+		    tensor([ 0.5224,  0.9354,  0.7257,  0.1301,  0.2251])
+		
+		
+		    >>> torch.log10(a)
+		    tensor([-0.2820, -0.0290, -0.1392, -0.8857, -0.6476])
+	**/
+	static public function log10(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function log10_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		log1p(input, out=None) -> Tensor
+		
+		Returns a new tensor with the natural logarithm of (1 + :attr:`input`).
+		
+		.. math::
+		    y_i = \log_{e} (x_i + 1)
+		
+		.. note:: This function is more accurate than :func:`torch.log` for small
+		          values of :attr:`input`
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(5)
 		    >>> a
-		
-		    -0.4183
-		     0.3722
-		    -0.3091
-		     0.4149
-		     0.5857
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([-1.0090, -0.9923,  1.0249, -0.5372,  0.2492])
 		    >>> torch.log1p(a)
-		
-		    -0.5418
-		     0.3164
-		    -0.3697
-		     0.3471
-		     0.4611
-		    [torch.FloatTensor of size 5]
+		    tensor([    nan, -4.8653,  0.7055, -0.7705,  0.2225])
 	**/
 	static public function log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function log1p_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		logspace(start, end, steps=100, out=None) -> Tensor
+		log2(input, out=None) -> Tensor
 		
-		Returns a one-dimensional Tensor of :attr:`steps` points
-		logarithmically spaced between :math:`10^{start}` and :math:`10^{end}`
+		Returns a new tensor with the logarithm to the base 2 of the elements
+		of :attr:`input`.
 		
-		The output is a 1D tensor of size :attr:`steps`
+		.. math::
+		    y_{i} = \log_{2} (x_{i})
 		
 		Args:
-		    start (float): The starting value for the set of points
-		    end (float): The ending value for the set of points
-		    steps (int): Number of points to sample between :attr:`start` and :attr:`end`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Example::
+		
+		    >>> a = torch.rand(5)
+		    >>> a
+		    tensor([ 0.8419,  0.8003,  0.9971,  0.5287,  0.0490])
+		
+		
+		    >>> torch.log2(a)
+		    tensor([-0.2483, -0.3213, -0.0042, -0.9196, -4.3504])
+	**/
+	static public function log2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function log2_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function log_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function log_softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function log_softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		logdet(A) -> Tensor
+		
+		Calculates log determinant of a 2D square tensor.
+		
+		.. note::
+		    Result is ``-inf`` if :attr:`A` has zero log determinant, and is ``nan`` if
+		    :attr:`A` has negative determinant.
+		
+		.. note::
+		    Backward through :meth:`logdet` internally uses SVD results when :attr:`A`
+		    is not invertible. In this case, double backward through :meth:`logdet` will
+		    be unstable in when :attr:`A` doesn't have distinct singular values. See
+		    :meth:`~torch.svd` for details.
+		
+		Arguments:
+		    A (Tensor): The input 2D square tensor
+		
+		Example::
+		
+		    >>> A = torch.randn(3, 3)
+		    >>> torch.det(A)
+		    tensor(0.2611)
+		    >>> torch.logdet(A)
+		    tensor(-1.3430)
+	**/
+	static public function logdet(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		logspace(start, end, steps=100, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a one-dimensional tensor of :attr:`steps` points
+		logarithmically spaced between :math:`10^{\text{start}}` and :math:`10^{\text{end}}`.
+		
+		The output tensor is 1-D of size :attr:`steps`.
+		
+		Args:
+		    start (float): the starting value for the set of points
+		    end (float): the ending value for the set of points
+		    steps (int): number of points to sample between :attr:`start`
+		        and :attr:`end`. Default: ``100``.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
 		    >>> torch.logspace(start=-10, end=10, steps=5)
-		
-		     1.0000e-10
-		     1.0000e-05
-		     1.0000e+00
-		     1.0000e+05
-		     1.0000e+10
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([ 1.0000e-10,  1.0000e-05,  1.0000e+00,  1.0000e+05,  1.0000e+10])
 		    >>> torch.logspace(start=0.1, end=1.0, steps=5)
-		
-		      1.2589
-		      2.1135
-		      3.5481
-		      5.9566
-		     10.0000
-		    [torch.FloatTensor of size 5]
+		    tensor([  1.2589,   2.1135,   3.5481,   5.9566,  10.0000])
 	**/
 	static public function logspace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		lt(input, other, out=None) -> Tensor
+		logsumexp(input, dim, keepdim=False, out=None)
 		
-		Computes `tensor < other` element-wise.
+		Returns the log of summed exponentials of each row of the :attr:`input`
+		tensor in the given dimension :attr:`dim`. The computation is numerically
+		stabilized.
 		
-		The second argument can be a number or a tensor of the same shape and
-		type as the first argument.
+		For summation index :math:`j` given by `dim` and other indices :math:`i`, the result is
+		
+		    .. math::
+		        \text{logsumexp}(x)_{i} = \log \sum_j \exp(x_{ij})
+		
+		If :attr:`keepdim` is ``True``, the output tensor is of the same size
+		as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in
+		the output tensor having 1 fewer dimension than :attr:`input`.
 		
 		Args:
-		    input (Tensor): Tensor to compare
-		    other (Tensor or float): Tensor or value to compare
-		    out (Tensor, optional): Output tensor. Must be a `ByteTensor` or the same type as `tensor`.
+		    input (Tensor): the input tensor
+		    dim (int or tuple of ints): the dimension or dimensions to reduce
+		    keepdim (bool): whether the output tensor has :attr:`dim` retained or not
+		    out (Tensor, optional): the output tensor
+		
+		
+		Example::
+		    >>> a = torch.randn(3, 3)
+		    >>> torch.logsumexp(a, 1)
+		    tensor([ 0.8442,  1.4322,  0.8711])
+	**/
+	static public function logsumexp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var long : Dynamic;
+	/**
+		lt(input, other, out=None) -> Tensor
+		
+		Computes :math:`input < other` element-wise.
+		
+		The second argument can be a number or a tensor whose shape is
+		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
+		
+		Args:
+		    input (Tensor): the tensor to compare
+		    other (Tensor or float): the tensor or value to compare
+		    out (Tensor, optional): the output tensor that must be a `ByteTensor`
 		
 		Returns:
-		    Tensor: a ``torch.ByteTensor`` containing a 1 at each location where comparison is true.
+		    Tensor: A `torch.ByteTensor` containing a 1 at each location where comparison is true
 		
 		Example::
 		
-		    >>> torch.lt(torch.Tensor([[1, 2], [3, 4]]), torch.Tensor([[1, 1], [4, 4]]))
-		     0  0
-		     1  0
-		    [torch.ByteTensor of size 2x2]
+		    >>> torch.lt(torch.tensor([[1, 2], [3, 4]]), torch.tensor([[1, 1], [4, 4]]))
+		    tensor([[ 0,  0],
+		            [ 1,  0]], dtype=torch.uint8)
 	**/
 	static public function lt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Sets the seed for generating random numbers. And returns a
+		Sets the seed for generating random numbers. Returns a
 		`torch._C.Generator` object.
 		
 		Args:
-		    seed (int or long): The desired seed.
+		    seed (int): The desired seed.
 	**/
 	static public function manual_seed(seed:Dynamic):Dynamic;
+	static public function margin_ranking_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		masked_select(input, mask, out=None) -> Tensor
 		
-		Returns a new 1D `Tensor` which indexes the :attr:`input` `Tensor` according to
+		Returns a new 1-D tensor which indexes the :attr:`input` tensor according to
 		the binary mask :attr:`mask` which is a `ByteTensor`.
 		
-		The :attr:`mask` tensor needs to have the same number of elements as
-		:attr:`input`, but it's shape or dimensionality are irrelevant.
+		The shapes of the :attr:`mask` tensor and the :attr:`input` tensor don't need
+		to match, but they must be :ref:`broadcastable <broadcasting-semantics>`.
 		
-		.. note:: The returned `Tensor` does **not** use the same storage as the original `Tensor`
+		.. note:: The returned tensor does **not** use the same storage
+		          as the original tensor
 		
 		Args:
-		    input (Tensor): Input data
+		    input (Tensor): the input data
 		    mask  (ByteTensor): the tensor containing the binary mask to index with
-		    out (Tensor, optional): Output argument
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> x = torch.randn(3, 4)
 		    >>> x
-		
-		     1.2045  2.4084  0.4001  1.1372
-		     0.5596  1.5677  0.6219 -0.7954
-		     1.3635 -1.2313 -0.5414 -1.8478
-		    [torch.FloatTensor of size 3x4]
-		
+		    tensor([[ 0.3552, -2.3825, -0.8297,  0.3477],
+		            [-1.2035,  1.2252,  0.5002,  0.6248],
+		            [ 0.1307, -2.0608,  0.1244,  2.0139]])
 		    >>> mask = x.ge(0.5)
 		    >>> mask
-		
-		     1  1  0  1
-		     1  1  1  0
-		     1  0  0  0
-		    [torch.ByteTensor of size 3x4]
-		
+		    tensor([[ 0,  0,  0,  0],
+		            [ 0,  1,  1,  1],
+		            [ 0,  0,  0,  1]], dtype=torch.uint8)
 		    >>> torch.masked_select(x, mask)
-		
-		     1.2045
-		     2.4084
-		     1.1372
-		     0.5596
-		     1.5677
-		     0.6219
-		     1.3635
-		    [torch.FloatTensor of size 7]
+		    tensor([ 1.2252,  0.5002,  0.6248,  2.0139])
 	**/
 	static public function masked_select(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: max(input) -> float
+		matmul(tensor1, tensor2, out=None) -> Tensor
 		
-		Returns the maximum value of all elements in the :attr:`input` Tensor.
+		Matrix product of two tensors.
 		
-		Args:
-		    input (Tensor): the input `Tensor`
+		The behavior depends on the dimensionality of the tensors as follows:
 		
-		Example::
+		- If both tensors are 1-dimensional, the dot product (scalar) is returned.
+		- If both arguments are 2-dimensional, the matrix-matrix product is returned.
+		- If the first argument is 1-dimensional and the second argument is 2-dimensional,
+		  a 1 is prepended to its dimension for the purpose of the matrix multiply.
+		  After the matrix multiply, the prepended dimension is removed.
+		- If the first argument is 2-dimensional and the second argument is 1-dimensional,
+		  the matrix-vector product is returned.
+		- If both arguments are at least 1-dimensional and at least one argument is
+		  N-dimensional (where N > 2), then a batched matrix multiply is returned.  If the first
+		  argument is 1-dimensional, a 1 is prepended to its dimension for the purpose of the
+		  batched matrix multiply and removed after.  If the second argument is 1-dimensional, a
+		  1 is appended to its dimension for the purpose of the batched matrix multiple and removed after.
+		  The non-matrix (i.e. batch) dimensions are :ref:`broadcasted <broadcasting-semantics>` (and thus
+		  must be broadcastable).  For example, if :attr:`tensor1` is a
+		  :math:`(j \times 1 \times n \times m)` tensor and :attr:`tensor2` is a :math:`(k \times m \times p)`
+		  tensor, :attr:`out` will be an :math:`(j \times k \times n \times p)` tensor.
 		
-		    >>> a = torch.randn(1, 3)
-		    >>> a
+		.. note::
 		
-		     0.4729 -0.2266 -0.2085
-		    [torch.FloatTensor of size 1x3]
+		    The 1-dimensional dot product version of this function does not support an :attr:`out` parameter.
 		
-		    >>> torch.max(a)
-		    0.4729
-		
-		
-		.. function:: max(input, dim, max=None, max_indices=None) -> (Tensor, LongTensor)
-		
-		Returns the maximum value of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		Also returns the index location of each maximum value found.
-		
-		The output Tensors are of the same size as :attr:`input` except in the dimension :attr:`dim` where they are of size 1.
-		
-		Args:
-		    input (Tensor): the input `Tensor`
-		    dim (int): the dimension to reduce
-		    max (Tensor, optional): the result Tensor with maximum values in dimension :attr:`dim`
-		    max_indices (LongTensor, optional): the result Tensor with the index locations of the
-		                                        maximum values in dimension :attr:`dim`
-		
-		Example::
-		
-		    >> a = torch.randn(4, 4)
-		    >> a
-		
-		    0.0692  0.3142  1.2513 -0.5428
-		    0.9288  0.8552 -0.2073  0.6409
-		    1.0695 -0.0101 -2.4507 -1.2230
-		    0.7426 -0.7666  0.4862 -0.6628
-		    torch.FloatTensor of size 4x4]
-		
-		    >>> torch.max(a, 1)
-		    (
-		     1.2513
-		     0.9288
-		     1.0695
-		     0.7426
-		    [torch.FloatTensor of size 4x1]
-		    ,
-		     2
-		     0
-		     0
-		     0
-		    [torch.LongTensor of size 4x1]
-		    )
-		
-		.. function:: max(input, other, out=None) -> Tensor
-		
-		Each element of the Tensor :attr:`input` is compared with the corresponding element of the Tensor :attr:`other`
-		and an element-wise `max` is taken.
-		
-		The shapes of :attr:`input` and :attr:`other` don't need to match.
-		The total number of elements in each Tensor need to be the same.
-		
-		.. note:: When the shapes do not match, the shape of :attr:`input` is used as the shape for the returned output Tensor
-		
-		:math:`out_i = max(tensor_i, other_i)`
-		
-		Args:
-		    input (Tensor): the input `Tensor`
-		    other (Tensor): the second input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		Arguments:
+		    tensor1 (Tensor): the first tensor to be multiplied
+		    tensor2 (Tensor): the second tensor to be multiplied
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> a = torch.randn(4)
-		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
-		    >>> b = torch.randn(4)
-		    >>> b
-		
-		     1.0067
-		    -0.8010
-		     0.6258
-		     0.3627
-		    [torch.FloatTensor of size 4]
-		
-		    >>> torch.max(a, b)
-		
-		     1.3869
-		     0.3912
-		     0.6258
-		     0.3627
-		    [torch.FloatTensor of size 4]
+		    >>> # vector x vector
+		    >>> tensor1 = torch.randn(3)
+		    >>> tensor2 = torch.randn(3)
+		    >>> torch.matmul(tensor1, tensor2).size()
+		    torch.Size([])
+		    >>> # matrix x vector
+		    >>> tensor1 = torch.randn(3, 4)
+		    >>> tensor2 = torch.randn(4)
+		    >>> torch.matmul(tensor1, tensor2).size()
+		    torch.Size([3])
+		    >>> # batched matrix x broadcasted vector
+		    >>> tensor1 = torch.randn(10, 3, 4)
+		    >>> tensor2 = torch.randn(4)
+		    >>> torch.matmul(tensor1, tensor2).size()
+		    torch.Size([10, 3])
+		    >>> # batched matrix x batched matrix
+		    >>> tensor1 = torch.randn(10, 3, 4)
+		    >>> tensor2 = torch.randn(10, 4, 5)
+		    >>> torch.matmul(tensor1, tensor2).size()
+		    torch.Size([10, 3, 5])
+		    >>> # batched matrix x broadcasted matrix
+		    >>> tensor1 = torch.randn(10, 3, 4)
+		    >>> tensor2 = torch.randn(4, 5)
+		    >>> torch.matmul(tensor1, tensor2).size()
+		    torch.Size([10, 3, 5])
 	**/
-	static public function max(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: mean(input) -> float
+		.. function:: max(input) -> Tensor
 		
-		Returns the mean value of all elements in the :attr:`input` Tensor.
+		Returns the maximum value of all elements in the :attr:`input` tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(1, 3)
 		    >>> a
+		    tensor([[ 0.6763,  0.7445, -2.2369]])
+		    >>> torch.max(a)
+		    tensor(0.7445)
 		
-		    -0.2946 -0.9143  2.1809
-		    [torch.FloatTensor of size 1x3]
+		.. function:: max(input, dim, keepdim=False, out=None) -> (Tensor, LongTensor)
 		
-		    >>> torch.mean(a)
-		    0.32398951053619385
+		Returns the maximum value of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`. The second return value is the index location of each
+		maximum value found (argmax).
 		
-		
-		.. function:: mean(input, dim, out=None) -> Tensor
-		
-		Returns the mean value of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		
-		The output Tensor is of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		If :attr:`keepdim` is ``True``, the output tensors are of the same size
+		as :attr:`input` except in the dimension :attr:`dim` where they are of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting
+		in the output tensors having 1 fewer dimension than :attr:`input`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    dim (int): the dimension to reduce
-		    out (Tensor, optional): the result Tensor
+		    keepdim (bool): whether the output tensors have :attr:`dim` retained or not
+		    out (tuple, optional): the result tuple of two output tensors (max, max_indices)
 		
 		Example::
 		
 		    >>> a = torch.randn(4, 4)
 		    >>> a
+		    tensor([[-1.2360, -0.2942, -0.1222,  0.8475],
+		            [ 1.1949, -1.1127, -2.2379, -0.6702],
+		            [ 1.5717, -0.9207,  0.1297, -1.8768],
+		            [-0.6172,  1.0036, -0.6060, -0.2432]])
+		    >>> torch.max(a, 1)
+		    (tensor([ 0.8475,  1.1949,  1.5717,  1.0036]), tensor([ 3,  0,  0,  1]))
 		
-		    -1.2738 -0.3058  0.1230 -1.9615
-		     0.8771 -0.5430 -0.9233  0.9879
-		     1.4107  0.0317 -0.6823  0.2255
-		    -1.3854  0.4953 -0.2160  0.2435
-		    [torch.FloatTensor of size 4x4]
+		.. function:: max(input, other, out=None) -> Tensor
 		
-		    >>> torch.mean(a, 1)
+		Each element of the tensor :attr:`input` is compared with the corresponding
+		element of the tensor :attr:`other` and an element-wise maximum is taken.
 		
-		    -0.8545
-		     0.0997
-		     0.2464
-		    -0.2157
-		    [torch.FloatTensor of size 4x1]
-	**/
-	static public function mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		median(input, dim=-1, values=None, indices=None) -> (Tensor, LongTensor)
+		The shapes of :attr:`input` and :attr:`other` don't need to match,
+		but they must be :ref:`broadcastable <broadcasting-semantics>`.
 		
-		Returns the median value of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		Also returns the index location of the median value as a `LongTensor`.
+		.. math::
+		    out_i = \max(tensor_i, other_i)
 		
-		By default, :attr:`dim` is the last dimension of the :attr:`input` Tensor.
-		
-		The output Tensors are of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
-		
-		.. note:: This function is not defined for ``torch.cuda.Tensor`` yet.
+		.. note:: When the shapes do not match, the shape of the returned output tensor
+		          follows the :ref:`broadcasting rules <broadcasting-semantics>`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    dim (int): the dimension to reduce
-		    values (Tensor, optional): the result Tensor
-		    indices (Tensor, optional): the result index Tensor
-		
-		Example::
-		
-		    >>> a
-		
-		     -0.6891 -0.6662
-		     0.2697  0.7412
-		     0.5254 -0.7402
-		     0.5528 -0.2399
-		    [torch.FloatTensor of size 4x2]
-		
-		    >>> a = torch.randn(4, 5)
-		    >>> a
-		
-		     0.4056 -0.3372  1.0973 -2.4884  0.4334
-		     2.1336  0.3841  0.1404 -0.1821 -0.7646
-		    -0.2403  1.3975 -2.0068  0.1298  0.0212
-		    -1.5371 -0.7257 -0.4871 -0.2359 -1.1724
-		    [torch.FloatTensor of size 4x5]
-		
-		    >>> torch.median(a, 1)
-		    (
-		     0.4056
-		     0.1404
-		     0.0212
-		    -0.7257
-		    [torch.FloatTensor of size 4x1]
-		    ,
-		     0
-		     2
-		     4
-		     1
-		    [torch.LongTensor of size 4x1]
-		    )
-	**/
-	static public function median(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		.. function:: min(input) -> float
-		
-		Returns the minimum value of all elements in the :attr:`input` Tensor.
-		
-		Args:
-		    input (Tensor): the input `Tensor`
-		
-		Example::
-		
-		    >>> a = torch.randn(1, 3)
-		    >>> a
-		
-		     0.4729 -0.2266 -0.2085
-		    [torch.FloatTensor of size 1x3]
-		
-		    >>> torch.min(a)
-		    -0.22663167119026184
-		
-		
-		.. function:: min(input, dim, min=None, min_indices=None) -> (Tensor, LongTensor)
-		
-		Returns the minimum value of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		Also returns the index location of each minimum value found.
-		
-		The output Tensors are of the same size as :attr:`input` except in the dimension :attr:`dim` where they are of size 1.
-		
-		Args:
-		    input (Tensor): the input `Tensor`
-		    dim (int): the dimension to reduce
-		    min (Tensor, optional): the result Tensor with minimum values in dimension :attr:`dim`
-		    min_indices (LongTensor, optional): the result Tensor with the index locations of the
-		                                        minimum values in dimension :attr:`dim`
-		
-		Example::
-		
-		    >> a = torch.randn(4, 4)
-		    >> a
-		
-		    0.0692  0.3142  1.2513 -0.5428
-		    0.9288  0.8552 -0.2073  0.6409
-		    1.0695 -0.0101 -2.4507 -1.2230
-		    0.7426 -0.7666  0.4862 -0.6628
-		    torch.FloatTensor of size 4x4]
-		
-		    >> torch.min(a, 1)
-		
-		    0.5428
-		    0.2073
-		    2.4507
-		    0.7666
-		    torch.FloatTensor of size 4x1]
-		
-		    3
-		    2
-		    2
-		    1
-		    torch.LongTensor of size 4x1]
-		
-		.. function:: min(input, other, out=None) -> Tensor
-		
-		Each element of the Tensor :attr:`input` is compared with the corresponding element of the Tensor :attr:`other`
-		and an element-wise `min` is taken. The resulting Tensor is returned.
-		
-		The shapes of :attr:`input` and :attr:`other` don't need to match.
-		The total number of elements in each Tensor need to be the same.
-		
-		.. note:: When the shapes do not match, the shape of :attr:`input` is used as the shape for the returned output Tensor
-		
-		:math:`out_i = min(tensor_i, other_i)`
-		
-		Args:
-		    input (Tensor): the input `Tensor`
-		    other (Tensor): the second input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    other (Tensor): the second input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.2942, -0.7416,  0.2653, -0.1584])
 		    >>> b = torch.randn(4)
 		    >>> b
+		    tensor([ 0.8722, -1.7421, -0.4141, -0.5055])
+		    >>> torch.max(a, b)
+		    tensor([ 0.8722, -0.7416,  0.2653, -0.1584])
+	**/
+	static public function max(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function max_pool1d_with_indices(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		.. function:: mean(input) -> Tensor
 		
-		     1.0067
-		    -0.8010
-		     0.6258
-		     0.3627
-		    [torch.FloatTensor of size 4]
+		Returns the mean value of all elements in the :attr:`input` tensor.
 		
+		Args:
+		    input (Tensor): the input tensor
+		
+		Example::
+		
+		    >>> a = torch.randn(1, 3)
+		    >>> a
+		    tensor([[ 0.2294, -0.5481,  1.3288]])
+		    >>> torch.mean(a)
+		    tensor(0.3367)
+		
+		.. function:: mean(input, dim, keepdim=False, out=None) -> Tensor
+		
+		Returns the mean value of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`.
+		
+		If :attr:`keepdim` is ``True``, the output tensor is of the same size
+		as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in the
+		output tensor having 1 fewer dimension.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    dim (int): the dimension to reduce
+		    keepdim (bool, optional): whether the output tensor has :attr:`dim` retained or not
+		    out (Tensor): the output tensor
+		
+		Example::
+		
+		    >>> a = torch.randn(4, 4)
+		    >>> a
+		    tensor([[-0.3841,  0.6320,  0.4254, -0.7384],
+		            [-0.9644,  1.0131, -0.6549, -1.4279],
+		            [-0.2951, -1.3350, -0.7694,  0.5600],
+		            [ 1.0842, -0.9580,  0.3623,  0.2343]])
+		    >>> torch.mean(a, 1)
+		    tensor([-0.0163, -0.5085, -0.4599,  0.1807])
+		    >>> torch.mean(a, 1, True)
+		    tensor([[-0.0163],
+		            [-0.5085],
+		            [-0.4599],
+		            [ 0.1807]])
+	**/
+	static public function mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		.. function:: median(input) -> Tensor
+		
+		Returns the median value of all elements in the :attr:`input` tensor.
+		
+		Args:
+		    input (Tensor): the input tensor
+		
+		Example::
+		
+		    >>> a = torch.randn(1, 3)
+		    >>> a
+		    tensor([[ 1.5219, -1.5212,  0.2202]])
+		    >>> torch.median(a)
+		    tensor(0.2202)
+		
+		.. function:: median(input, dim=-1, keepdim=False, values=None, indices=None) -> (Tensor, LongTensor)
+		
+		Returns the median value of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`. Also returns the index location of the median value
+		as a `LongTensor`.
+		
+		By default, :attr:`dim` is the last dimension of the :attr:`input` tensor.
+		
+		If :attr:`keepdim` is ``True``, the output tensors are of the same size
+		as :attr:`input` except in the dimension :attr:`dim` where they are of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in
+		the outputs tensor having 1 fewer dimension than :attr:`input`.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    dim (int): the dimension to reduce
+		    keepdim (bool): whether the output tensors have :attr:`dim` retained or not
+		    values (Tensor, optional): the output tensor
+		    indices (Tensor, optional): the output index tensor
+		
+		Example::
+		
+		    >>> a = torch.randn(4, 5)
+		    >>> a
+		    tensor([[ 0.2505, -0.3982, -0.9948,  0.3518, -1.3131],
+		            [ 0.3180, -0.6993,  1.0436,  0.0438,  0.2270],
+		            [-0.2751,  0.7303,  0.2192,  0.3321,  0.2488],
+		            [ 1.0778, -1.9510,  0.7048,  0.4742, -0.7125]])
+		    >>> torch.median(a, 1)
+		    (tensor([-0.3982,  0.2270,  0.2488,  0.4742]), tensor([ 1,  4,  4,  3]))
+	**/
+	static public function median(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		meshgrid(seq) -> seq
+		
+		Take a sequence of :math:`N` tensors, each of which can be either scalar or 1-dimensional
+		vector, and create :math:`N` N-dimensional grids, where the :math:`i`th grid is defined by
+		expanding the :math:`i`th input over dimensions defined by other inputs.
+		
+		Arguments:
+		    seq (sequence of Tensors): sequence of scalars or 1 dimensional tensors. Scalars will be
+		        treated as tensors of size :math:`(1,)` automatically.
+		
+		Returns:
+		    seq (sequence of Tensors): If the input has :math:`k` tensors of size
+		        :math:`(N_1,), (N_2,), \ldots , (N_k,)`, then the output would also has :math:`k` tensors,
+		        where all tensors are of size :math:`(N_1, N_2, \ldots , N_k)`.
+		
+		Example::
+		
+		    >>> x = torch.tensor([1, 2, 3])
+		    >>> y = torch.tensor([4, 5, 6])
+		    >>> grid_x, grid_y = torch.meshgrid([x, y])
+		    >>> grid_x
+		    tensor([[1, 1, 1],
+		            [2, 2, 2],
+		            [3, 3, 3]])
+		    >>> grid_y
+		    tensor([[4, 5, 6],
+		            [4, 5, 6],
+		            [4, 5, 6]])
+	**/
+	static public function meshgrid(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		.. function:: min(input) -> Tensor
+		
+		Returns the minimum value of all elements in the :attr:`input` tensor.
+		
+		Args:
+		    input (Tensor): the input tensor
+		
+		Example::
+		
+		    >>> a = torch.randn(1, 3)
+		    >>> a
+		    tensor([[ 0.6750,  1.0857,  1.7197]])
+		    >>> torch.min(a)
+		    tensor(0.6750)
+		
+		.. function:: min(input, dim, keepdim=False, out=None) -> (Tensor, LongTensor)
+		
+		Returns the minimum value of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`. The second return value is the index location of each
+		minimum value found (argmin).
+		
+		If :attr:`keepdim` is ``True``, the output tensors are of the same size as
+		:attr:`input` except in the dimension :attr:`dim` where they are of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in
+		the output tensors having 1 fewer dimension than :attr:`input`.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    dim (int): the dimension to reduce
+		    keepdim (bool): whether the output tensors have :attr:`dim` retained or not
+		    out (tuple, optional): the tuple of two output tensors (min, min_indices)
+		
+		Example::
+		
+		    >>> a = torch.randn(4, 4)
+		    >>> a
+		    tensor([[-0.6248,  1.1334, -1.1899, -0.2803],
+		            [-1.4644, -0.2635, -0.3651,  0.6134],
+		            [ 0.2457,  0.0384,  1.0128,  0.7015],
+		            [-0.1153,  2.9849,  2.1458,  0.5788]])
+		    >>> torch.min(a, 1)
+		    (tensor([-1.1899, -1.4644,  0.0384, -0.1153]), tensor([ 2,  0,  1,  0]))
+		
+		.. function:: min(input, other, out=None) -> Tensor
+		
+		Each element of the tensor :attr:`input` is compared with the corresponding
+		element of the tensor :attr:`other` and an element-wise minimum is taken.
+		The resulting tensor is returned.
+		
+		The shapes of :attr:`input` and :attr:`other` don't need to match,
+		but they must be :ref:`broadcastable <broadcasting-semantics>`.
+		
+		.. math::
+		    out_i = \min(tensor_i, other_i)
+		
+		.. note:: When the shapes do not match, the shape of the returned output tensor
+		          follows the :ref:`broadcasting rules <broadcasting-semantics>`.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    other (Tensor): the second input tensor
+		    out (Tensor, optional): the output tensor
+		
+		Example::
+		
+		    >>> a = torch.randn(4)
+		    >>> a
+		    tensor([ 0.8137, -1.1740, -0.6460,  0.6308])
+		    >>> b = torch.randn(4)
+		    >>> b
+		    tensor([-0.1369,  0.1555,  0.4019, -0.1929])
 		    >>> torch.min(a, b)
-		
-		     1.0067
-		    -0.8010
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
+		    tensor([-0.1369, -1.1740, -0.6460, -0.1929])
 	**/
 	static public function min(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function mkldnn_convolution(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function mkldnn_convolution_backward_weights(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mm(mat1, mat2, out=None) -> Tensor
 		
 		Performs a matrix multiplication of the matrices :attr:`mat1` and :attr:`mat2`.
 		
-		If :attr:`mat1` is a `n x m` Tensor, :attr:`mat2` is a `m x p` Tensor, :attr:`out` will be a `n x p` Tensor.
+		If :attr:`mat1` is a :math:`(n \times m)` tensor, :attr:`mat2` is a
+		:math:`(m \times p)` tensor, :attr:`out` will be a :math:`(n \times p)` tensor.
+		
+		.. note:: This function does not :ref:`broadcast <broadcasting-semantics>`.
+		          For broadcasting matrix products, see :func:`torch.matmul`.
 		
 		Args:
-		    mat1 (Tensor): First matrix to be multiplied
-		    mat2 (Tensor): Second matrix to be multiplied
-		    out (Tensor, optional): Output tensor
+		    mat1 (Tensor): the first matrix to be multiplied
+		    mat2 (Tensor): the second matrix to be multiplied
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> mat1 = torch.randn(2, 3)
 		    >>> mat2 = torch.randn(3, 3)
 		    >>> torch.mm(mat1, mat2)
-		     0.0519 -0.3304  1.2232
-		     4.3910 -5.1498  2.7571
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[ 0.4851,  0.5037, -0.3633],
+		            [-0.0760, -3.6705,  2.4784]])
 	**/
 	static public function mm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		mode(input, dim=-1, values=None, indices=None) -> (Tensor, LongTensor)
+		mode(input, dim=-1, keepdim=False, values=None, indices=None) -> (Tensor, LongTensor)
 		
-		Returns the mode value of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		Also returns the index location of the mode value as a `LongTensor`.
+		Returns the mode value of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`. Also returns the index location of the mode value
+		as a `LongTensor`.
 		
-		By default, :attr:`dim` is the last dimension of the :attr:`input` Tensor.
+		By default, :attr:`dim` is the last dimension of the :attr:`input` tensor.
 		
-		The output Tensors are of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		If :attr:`keepdim` is ``True``, the output tensors are of the same size as
+		:attr:`input` except in the dimension :attr:`dim` where they are of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting
+		in the output tensors having 1 fewer dimension than :attr:`input`.
 		
 		.. note:: This function is not defined for ``torch.cuda.Tensor`` yet.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    dim (int): the dimension to reduce
-		    values (Tensor, optional): the result Tensor
-		    indices (Tensor, optional): the result index Tensor
+		    keepdim (bool): whether the output tensors have :attr:`dim` retained or not
+		    values (Tensor, optional): the output tensor
+		    indices (Tensor, optional): the output index tensor
 		
 		Example::
 		
-		    >>> a
-		
-		     -0.6891 -0.6662
-		     0.2697  0.7412
-		     0.5254 -0.7402
-		     0.5528 -0.2399
-		    [torch.FloatTensor of size 4x2]
-		
 		    >>> a = torch.randn(4, 5)
 		    >>> a
-		
-		     0.4056 -0.3372  1.0973 -2.4884  0.4334
-		     2.1336  0.3841  0.1404 -0.1821 -0.7646
-		    -0.2403  1.3975 -2.0068  0.1298  0.0212
-		    -1.5371 -0.7257 -0.4871 -0.2359 -1.1724
-		    [torch.FloatTensor of size 4x5]
-		
+		    tensor([[-1.2808, -1.0966, -1.5946, -0.1148,  0.3631],
+		            [ 1.1395,  1.1452, -0.6383,  0.3667,  0.4545],
+		            [-0.4061, -0.3074,  0.4579, -1.3514,  1.2729],
+		            [-1.0130,  0.3546, -1.4689, -0.1254,  0.0473]])
 		    >>> torch.mode(a, 1)
-		    (
-		    -2.4884
-		    -0.7646
-		    -2.0068
-		    -1.5371
-		    [torch.FloatTensor of size 4x1]
-		    ,
-		     3
-		     4
-		     2
-		     0
-		    [torch.LongTensor of size 4x1]
-		    )
+		    (tensor([-1.5946, -0.6383, -1.3514, -1.4689]), tensor([ 2,  2,  3,  2]))
 	**/
 	static public function mode(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		.. function:: mul(input, value, out=None)
 		
-		Multiplies each element of the input :attr:`input` with the scalar :attr:`value` and returns a new resulting tensor.
+		Multiplies each element of the input :attr:`input` with the scalar
+		:attr:`value` and returns a new resulting tensor.
 		
-		:math:`out = tensor * value`
+		.. math::
+		    out_i = value \times input_i
 		
-		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value` should be a real number, otherwise it should
-		be an integer
+		If :attr:`input` is of type `FloatTensor` or `DoubleTensor`, :attr:`value`
+		should be a real number, otherwise it should be an integer
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    value (Number): the number to be multiplied to each element of :attr:`input`
-		    out (Tensor, optional): The result `Tensor`
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(3)
 		    >>> a
-		
-		    -0.9374
-		    -0.5254
-		    -0.6069
-		    [torch.FloatTensor of size 3]
-		
+		    tensor([ 0.2015, -0.4255,  2.6087])
 		    >>> torch.mul(a, 100)
-		
-		    -93.7411
-		    -52.5374
-		    -60.6908
-		    [torch.FloatTensor of size 3]
-		
+		    tensor([  20.1494,  -42.5491,  260.8663])
 		
 		.. function:: mul(input, other, out=None)
 		
-		Each element of the Tensor :attr:`input` is multiplied by each element of the Tensor :attr:`other`.
-		The resulting Tensor is returned. The shapes of :attr:`input` and :attr:`other` don't need to match.
-		The total number of elements in each Tensor need to be the same.
+		Each element of the tensor :attr:`input` is multiplied by each element of the
+		Tensor :attr:`other`. The resulting tensor is returned.
 		
-		.. note:: When the shapes do not match, the shape of :attr:`input` is used as the shape for the returned output Tensor
+		The shapes of :attr:`input` and :attr:`other` must be
+		:ref:`broadcastable <broadcasting-semantics>`.
 		
-		:math:`out_i = input_i * other_i`
+		.. math::
+		    out_i = input_i \times other_i
 		
 		Args:
-		    input (Tensor): the first multiplicand `Tensor`
-		    other (Tensor): the second multiplicand `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the first multiplicand tensor
+		    other (Tensor): the second multiplicand tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> a = torch.randn(4,4)
+		    >>> a = torch.randn(4, 1)
 		    >>> a
-		
-		    -0.7280  0.0598 -1.4327 -0.5825
-		    -0.1427 -0.0690  0.0821 -0.3270
-		    -0.9241  0.5110  0.4070 -1.1188
-		    -0.8308  0.7426 -0.6240 -1.1582
-		    [torch.FloatTensor of size 4x4]
-		
-		    >>> b = torch.randn(2, 8)
+		    tensor([[ 1.1207],
+		            [-0.3137],
+		            [ 0.0700],
+		            [ 0.8378]])
+		    >>> b = torch.randn(1, 4)
 		    >>> b
-		
-		     0.0430 -1.0775  0.6015  1.1647 -0.6549  0.0308 -0.1670  1.0742
-		    -1.2593  0.0292 -0.0849  0.4530  1.2404 -0.4659 -0.1840  0.5974
-		    [torch.FloatTensor of size 2x8]
-		
+		    tensor([[ 0.5146,  0.1216, -0.5244,  2.2382]])
 		    >>> torch.mul(a, b)
-		
-		    -0.0313 -0.0645 -0.8618 -0.6784
-		     0.0934 -0.0021 -0.0137 -0.3513
-		     1.1638  0.0149 -0.0346 -0.5068
-		    -1.0304 -0.3460  0.1148 -0.6919
-		    [torch.FloatTensor of size 4x4]
+		    tensor([[ 0.5767,  0.1363, -0.5877,  2.5083],
+		            [-0.1614, -0.0382,  0.1645, -0.7021],
+		            [ 0.0360,  0.0085, -0.0367,  0.1567],
+		            [ 0.4312,  0.1019, -0.4394,  1.8753]])
 	**/
 	static public function mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		multinomial(input, num_samples, replacement=False, out=None) -> LongTensor
 		
-		Returns a Tensor where each row
-		contains :attr:`num_samples` indices sampled from the multinomial probability distribution
-		located in the corresponding row of Tensor :attr:`input`.
+		Returns a tensor where each row contains :attr:`num_samples` indices sampled
+		from the multinomial probability distribution located in the corresponding row
+		of tensor :attr:`input`.
 		
 		.. note::
-		    The rows of :attr:`input` do not need to sum to one (in which case we use the values
-		    as weights), but must be non-negative and have a non-zero sum.
+		    The rows of :attr:`input` do not need to sum to one (in which case we use
+		    the values as weights), but must be non-negative, finite and have
+		    a non-zero sum.
 		
 		Indices are ordered from left to right according to when each was sampled
 		(first samples are placed in first column).
 		
-		If :attr:`input` is a vector, :attr:`out` is a vector of size `num_samples`.
+		If :attr:`input` is a vector, :attr:`out` is a vector of size :attr:`num_samples`.
 		
-		If :attr:`input` is a matrix with `m` rows, :attr:`out` is an matrix of shape `m × n`.
+		If :attr:`input` is a matrix with `m` rows, :attr:`out` is an matrix of shape
+		:math:`(m \times num\_samples)`.
 		
-		If replacement is `True`, samples are drawn with replacement.
+		If replacement is ``True``, samples are drawn with replacement.
 		
 		If not, they are drawn without replacement, which means that when a
 		sample index is drawn for a row, it cannot be drawn again for that row.
 		
-		This implies the constraint that :attr:`num_samples` must be lower than :attr:`input` length
-		(or number of columns of :attr:`input` if it is a matrix).
+		This implies the constraint that :attr:`num_samples` must be lower than
+		:attr:`input` length (or number of columns of :attr:`input` if it is a matrix).
 		
 		Args:
-		    input (Tensor): Tensor containing probabilities
+		    input (Tensor): the input tensor containing probabilities
 		    num_samples (int): number of samples to draw
-		    replacement (bool, optional): Whether to draw with replacement or not
-		    out (Tensor, optional): The result `Tensor`
+		    replacement (bool, optional): whether to draw with replacement or not
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> weights = torch.Tensor([0, 10, 3, 0]) # create a Tensor of weights
+		    >>> weights = torch.tensor([0, 10, 3, 0], dtype=torch.float) # create a tensor of weights
 		    >>> torch.multinomial(weights, 4)
-		
-		     1
-		     2
-		     0
-		     0
-		    [torch.LongTensor of size 4]
-		
+		    tensor([ 1,  2,  0,  0])
 		    >>> torch.multinomial(weights, 4, replacement=True)
-		
-		     1
-		     2
-		     1
-		     2
-		    [torch.LongTensor of size 4]
+		    tensor([ 2,  1,  1,  1])
 	**/
 	static public function multinomial(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mv(mat, vec, out=None) -> Tensor
 		
-		Performs a matrix-vector product of the matrix :attr:`mat` and the vector :attr:`vec`.
+		Performs a matrix-vector product of the matrix :attr:`mat` and the vector
+		:attr:`vec`.
 		
-		If :attr:`mat` is a `n x m` Tensor, :attr:`vec` is a 1D Tensor of size `m`, :attr:`out` will be 1D of size `n`.
+		If :attr:`mat` is a :math:`(n \times m)` tensor, :attr:`vec` is a 1-D tensor of
+		size :math:`m`, :attr:`out` will be 1-D of size :math:`n`.
+		
+		.. note:: This function does not :ref:`broadcast <broadcasting-semantics>`.
 		
 		Args:
 		    mat (Tensor): matrix to be multiplied
 		    vec (Tensor): vector to be multiplied
-		    out (Tensor, optional): Output tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> mat = torch.randn(2, 3)
 		    >>> vec = torch.randn(3)
 		    >>> torch.mv(mat, vec)
-		    -2.0939
-		    -2.2950
-		    [torch.FloatTensor of size 2]
+		    tensor([ 1.0404, -0.6361])
 	**/
 	static public function mv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var name : Dynamic;
+	static public function narrow(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_clone(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_div_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_get_device(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_mul_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_pow(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_resize_as_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function native_zero_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ne(input, other, out=None) -> Tensor
 		
-		Computes `tensor != other` element-wise.
+		Computes :math:`input \neq other` element-wise.
 		
-		The second argument can be a number or a tensor of the same shape and
-		type as the first argument.
+		The second argument can be a number or a tensor whose shape is
+		:ref:`broadcastable <broadcasting-semantics>` with the first argument.
 		
 		Args:
-		    input (Tensor): Tensor to compare
-		    other (Tensor or float): Tensor or value to compare
-		    out (Tensor, optional): Output tensor. Must be a `ByteTensor` or the same type as `tensor`.
+		    input (Tensor): the tensor to compare
+		    other (Tensor or float): the tensor or value to compare
+		    out (Tensor, optional): the output tensor that must be a `ByteTensor`
 		
 		Returns:
-		    Tensor: a ``torch.ByteTensor`` containing a 1 at each location where comparison is true.
+		    Tensor: A ``torch.ByteTensor`` containing a 1 at each location where comparison is true.
 		
 		Example::
 		
-		    >>> torch.ne(torch.Tensor([[1, 2], [3, 4]]), torch.Tensor([[1, 1], [4, 4]]))
-		     0  1
-		     1  0
-		    [torch.ByteTensor of size 2x2]
+		    >>> torch.ne(torch.tensor([[1, 2], [3, 4]]), torch.tensor([[1, 1], [4, 4]]))
+		    tensor([[ 0,  1],
+		            [ 1,  0]], dtype=torch.uint8)
 	**/
 	static public function ne(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		neg(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the negative of the elements of :attr:`input`.
+		Returns a new tensor with the negative of the elements of :attr:`input`.
 		
-		:math:`out = -1 * input`
+		.. math::
+		    out = -1 \times input
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(5)
 		    >>> a
-		
-		    -0.4430
-		     1.1690
-		    -0.8836
-		    -0.4565
-		     0.2968
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([ 0.0090, -0.2262, -0.0682, -0.2866,  0.3940])
 		    >>> torch.neg(a)
-		
-		     0.4430
-		    -1.1690
-		     0.8836
-		     0.4565
-		    -0.2968
-		    [torch.FloatTensor of size 5]
+		    tensor([-0.0090,  0.2262,  0.0682,  0.2866, -0.3940])
 	**/
 	static public function neg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		nonzero(input, out=None) -> LongTensor
 		
-		Returns a tensor containing the indices of all non-zero elements of :attr:`input`.
-		Each row in the result contains the indices of a non-zero element in :attr:`input`.
+		Returns a tensor containing the indices of all non-zero elements of
+		:attr:`input`.  Each row in the result contains the indices of a non-zero
+		element in :attr:`input`.
 		
-		If :attr:`input` has `n` dimensions, then the resulting indices Tensor
-		:attr:`out` is of size `z x n`, where `z` is the total number of non-zero
-		elements in the :attr:`input` Tensor.
+		If :attr:`input` has `n` dimensions, then the resulting indices tensor
+		:attr:`out` is of size :math:`(z \times n)`, where :math:`z` is the total number of
+		non-zero elements in the :attr:`input` tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (LongTensor, optional): The result `Tensor` containing indices
+		    input (Tensor): the input tensor
+		    out (LongTensor, optional): the output tensor containing indices
 		
 		Example::
 		
-		    >>> torch.nonzero(torch.Tensor([1, 1, 1, 0, 1]))
-		
-		     0
-		     1
-		     2
-		     4
-		    [torch.LongTensor of size 4x1]
-		
-		    >>> torch.nonzero(torch.Tensor([[0.6, 0.0, 0.0, 0.0],
-		    ...                             [0.0, 0.4, 0.0, 0.0],
-		    ...                             [0.0, 0.0, 1.2, 0.0],
-		    ...                             [0.0, 0.0, 0.0,-0.4]]))
-		
-		     0  0
-		     1  1
-		     2  2
-		     3  3
-		    [torch.LongTensor of size 4x2]
+		    >>> torch.nonzero(torch.tensor([1, 1, 1, 0, 1]))
+		    tensor([[ 0],
+		            [ 1],
+		            [ 2],
+		            [ 4]])
+		    >>> torch.nonzero(torch.tensor([[0.6, 0.0, 0.0, 0.0],
+		                                    [0.0, 0.4, 0.0, 0.0],
+		                                    [0.0, 0.0, 1.2, 0.0],
+		                                    [0.0, 0.0, 0.0,-0.4]]))
+		    tensor([[ 0,  0],
+		            [ 1,  1],
+		            [ 2,  2],
+		            [ 3,  3]])
 	**/
 	static public function nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: norm(input, p=2) -> float
+		.. function:: norm(input, p=2) -> Tensor
 		
-		Returns the p-norm of the :attr:`input` Tensor.
+		Returns the p-norm of the :attr:`input` tensor.
+		
+		.. math::
+		    ||x||_{p} = \sqrt[p]{x_{1}^{p} + x_{2}^{p} + \ldots + x_{N}^{p}}
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    p (float, optional): the exponent value in the norm formulation
 		Example::
 		
 		    >>> a = torch.randn(1, 3)
 		    >>> a
-		
-		    -0.4376 -0.5328  0.9547
-		    [torch.FloatTensor of size 1x3]
-		
+		    tensor([[-0.5192, -1.0782, -1.0448]])
 		    >>> torch.norm(a, 3)
-		    1.0338925067372466
+		    tensor(1.3633)
 		
+		.. function:: norm(input, p, dim, keepdim=False, out=None) -> Tensor
 		
-		.. function:: norm(input, p, dim, out=None) -> Tensor
+		Returns the p-norm of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`.
 		
-		Returns the p-norm of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		
-		The output Tensor is of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		If :attr:`keepdim` is ``True``, the output tensor is of the same size as
+		:attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting
+		in the output tensor having 1 fewer dimension than :attr:`input`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    p (float):  the exponent value in the norm formulation
 		    dim (int): the dimension to reduce
-		    out (Tensor, optional): the result Tensor
+		    keepdim (bool): whether the output tensor has :attr:`dim` retained or not
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4, 2)
 		    >>> a
-		
-		    -0.6891 -0.6662
-		     0.2697  0.7412
-		     0.5254 -0.7402
-		     0.5528 -0.2399
-		    [torch.FloatTensor of size 4x2]
-		
+		    tensor([[ 2.1983,  0.4141],
+		            [ 0.8734,  1.9710],
+		            [-0.7778,  0.7938],
+		            [-0.1342,  0.7347]])
 		    >>> torch.norm(a, 2, 1)
-		
-		     0.9585
-		     0.7888
-		     0.9077
-		     0.6026
-		    [torch.FloatTensor of size 4x1]
-		
-		    >>> torch.norm(a, 0, 1)
-		
-		     2
-		     2
-		     2
-		     2
-		    [torch.FloatTensor of size 4x1]
+		    tensor([ 2.2369,  2.1558,  1.1113,  0.7469])
+		    >>> torch.norm(a, 0, 1, True)
+		    tensor([[ 2.],
+		            [ 2.],
+		            [ 2.],
+		            [ 2.]])
 	**/
 	static public function norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: normal(means, std, out=None)
+		.. function:: normal(mean, std, out=None) -> Tensor
 		
-		Returns a Tensor of random numbers drawn from separate normal distributions
-		who's mean and standard deviation are given.
+		Returns a tensor of random numbers drawn from separate normal distributions
+		whose mean and standard deviation are given.
 		
-		The :attr:`means` is a Tensor with the mean of
+		The :attr:`mean` is a tensor with the mean of
 		each output element's normal distribution
 		
-		The :attr:`std` is a Tensor with the standard deviation of
+		The :attr:`std` is a tensor with the standard deviation of
 		each output element's normal distribution
 		
-		The shapes of :attr:`means` and :attr:`std` don't need to match.
-		The total number of elements in each Tensor need to be the same.
+		The shapes of :attr:`mean` and :attr:`std` don't need to match, but the
+		total number of elements in each tensor need to be the same.
 		
-		.. note:: When the shapes do not match, the shape of :attr:`means`
-		          is used as the shape for the returned output Tensor
+		.. note:: When the shapes do not match, the shape of :attr:`mean`
+		          is used as the shape for the returned output tensor
 		
 		Args:
-		    means (Tensor): the Tensor of per-element means
-		    std (Tensor): the Tensor of per-element standard deviations
-		    out (Tensor): the optional result Tensor
+		    mean (Tensor): the tensor of per-element means
+		    std (Tensor): the tensor of per-element standard deviations
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    torch.normal(means=torch.arange(1, 11), std=torch.arange(1, 0, -0.1))
+		    >>> torch.normal(mean=torch.arange(1., 11.), std=torch.arange(1, 0, -0.1))
+		    tensor([  1.0425,   3.5672,   2.7969,   4.2925,   4.7229,   6.2134,
+		              8.0505,   8.1408,   9.0563,  10.0566])
 		
-		     1.5104
-		     1.6955
-		     2.4895
-		     4.9185
-		     4.9895
-		     6.9155
-		     7.3683
-		     8.1836
-		     8.7164
-		     9.8916
-		    [torch.FloatTensor of size 10]
+		.. function:: normal(mean=0.0, std, out=None) -> Tensor
 		
-		.. function:: normal(mean=0.0, std, out=None)
-		
-		Similar to the function above, but the means are shared among all drawn elements.
+		Similar to the function above, but the means are shared among all drawn
+		elements.
 		
 		Args:
-		    means (float, optional): the mean for all distributions
-		    std (Tensor): the Tensor of per-element standard deviations
-		    out (Tensor): the optional result Tensor
+		    mean (float, optional): the mean for all distributions
+		    std (Tensor): the tensor of per-element standard deviations
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> torch.normal(mean=0.5, std=torch.arange(1, 6))
+		    >>> torch.normal(mean=0.5, std=torch.arange(1., 6.))
+		    tensor([-1.2793, -1.0732, -2.0687,  5.1177, -1.2303])
 		
-		      0.5723
-		      0.0871
-		     -0.3783
-		     -2.5689
-		     10.7893
-		    [torch.FloatTensor of size 5]
+		.. function:: normal(mean, std=1.0, out=None) -> Tensor
 		
-		.. function:: normal(means, std=1.0, out=None)
-		
-		Similar to the function above, but the standard-deviations are shared among all drawn elements.
+		Similar to the function above, but the standard-deviations are shared among
+		all drawn elements.
 		
 		Args:
-		    means (Tensor): the Tensor of per-element means
+		    mean (Tensor): the tensor of per-element means
 		    std (float, optional): the standard deviation for all distributions
-		    out (Tensor): the optional result Tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> torch.normal(means=torch.arange(1, 6))
-		
-		     1.1681
-		     2.8884
-		     3.7718
-		     2.5616
-		     4.2500
-		    [torch.FloatTensor of size 5]
+		    >>> torch.normal(mean=torch.arange(1., 6.))
+		    tensor([ 1.1552,  2.6148,  2.6535,  5.8318,  4.2361])
 	**/
 	static public function normal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		numel(input) -> int
 		
-		Returns the total number of elements in the :attr:`input` Tensor.
+		Returns the total number of elements in the :attr:`input` tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		
 		Example::
 		
-		    >>> a = torch.randn(1,2,3,4,5)
+		    >>> a = torch.randn(1, 2, 3, 4, 5)
 		    >>> torch.numel(a)
 		    120
 		    >>> a = torch.zeros(4,4)
@@ -2939,383 +4403,756 @@ package torch;
 	**/
 	static public function numel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ones(*sizes, out=None) -> Tensor
+		ones(*sizes, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
-		Returns a Tensor filled with the scalar value `1`, with the shape defined
-		by the varargs :attr:`sizes`.
+		Returns a tensor filled with the scalar value `1`, with the shape defined
+		by the variable argument :attr:`sizes`.
 		
 		Args:
-		    sizes (int...): a set of ints defining the shape of the output Tensor.
-		    out (Tensor, optional): the result Tensor
+		    sizes (int...): a sequence of integers defining the shape of the output tensor.
+		        Can be a variable number of arguments or a collection like a list or tuple.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
 		    >>> torch.ones(2, 3)
-		
-		     1  1  1
-		     1  1  1
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[ 1.,  1.,  1.],
+		            [ 1.,  1.,  1.]])
 		
 		    >>> torch.ones(5)
-		
-		     1
-		     1
-		     1
-		     1
-		     1
-		    [torch.FloatTensor of size 5]
+		    tensor([ 1.,  1.,  1.,  1.,  1.])
 	**/
 	static public function ones(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ones_like(input, dtype=None, layout=None, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor filled with the scalar value `1`, with the same size as
+		:attr:`input`. ``torch.ones_like(input)`` is equivalent to
+		``torch.ones(input.size(), dtype=input.dtype, layout=input.layout, device=input.device)``.
+		
+		.. warning::
+		    As of 0.4, this function does not support an :attr:`out` keyword. As an alternative,
+		    the old ``torch.ones_like(input, out=output)`` is equivalent to
+		    ``torch.ones(input.size(), out=output)``.
+		
+		Args:
+		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned Tensor.
+		        Default: if ``None``, defaults to the dtype of :attr:`input`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned tensor.
+		        Default: if ``None``, defaults to the layout of :attr:`input`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, defaults to the device of :attr:`input`.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Example::
+		
+		    >>> input = torch.empty(2, 3)
+		    >>> torch.ones_like(input)
+		    tensor([[ 1.,  1.,  1.],
+		            [ 1.,  1.,  1.]])
+	**/
+	static public function ones_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		orgqr(a, tau) -> Tensor
+		
+		Computes the orthogonal matrix `Q` of a QR factorization, from the `(a, tau)`
+		tuple returned by :func:`torch.geqrf`.
+		
+		This directly calls the underlying LAPACK function `?orgqr`.
+		See `LAPACK documentation for orgqr`_ for further details.
+		
+		Args:
+		    a (Tensor): the `a` from :func:`torch.geqrf`.
+		    tau (Tensor): the `tau` from :func:`torch.geqrf`.
+		
+		.. _LAPACK documentation for orgqr:
+		    https://software.intel.com/en-us/mkl-developer-reference-c-orgqr
+	**/
 	static public function orgqr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		ormqr(a, tau, mat, left=True, transpose=False) -> (Tensor, Tensor)
+		
+		Multiplies `mat` by the orthogonal `Q` matrix of the QR factorization
+		formed by :func:`torch.geqrf` that is represented by `(a, tau)`.
+		
+		This directly calls the underlying LAPACK function `?ormqr`.
+		See `LAPACK documentation for ormqr`_ for further details.
+		
+		Args:
+		    a (Tensor): the `a` from :func:`torch.geqrf`.
+		    tau (Tensor): the `tau` from :func:`torch.geqrf`.
+		    mat (Tensor): the matrix to be multiplied.
+		
+		.. _LAPACK documentation for ormqr:
+		    https://software.intel.com/en-us/mkl-developer-reference-c-ormqr
+	**/
 	static public function ormqr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function pairwise_distance(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function pin_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		pinverse(input, rcond=1e-15) -> Tensor
+		
+		Calculates the pseudo-inverse (also known as the Moore-Penrose inverse) of a 2D tensor.
+		Please look at `Moore-Penrose inverse`_ for more details
+		
+		.. note::
+		    This method is implemented using the Singular Value Decomposition.
+		
+		.. note::
+		    The pseudo-inverse is not necessarily a continuous function in the elements of the matrix `[1]`_.
+		    Therefore, derivatives are not always existent, and exist for a constant rank only `[2]`_.
+		    However, this method is backprop-able due to the implementation by using SVD results, and
+		    could be unstable. Double-backward will also be unstable due to the usage of SVD internally.
+		    See :meth:`~torch.svd` for more details.
+		
+		Arguments:
+		    input (Tensor): The input 2D tensor of dimensions :math:`m \times n`
+		    rcond (float): A floating point value to determine the cutoff for small singular values.
+		                   Default: 1e-15
+		
+		Returns:
+		    The pseudo-inverse of :attr:`input` of dimensions :math:`n \times m`
+		
+		Example::
+		
+		    >>> input = torch.randn(3, 5)
+		    >>> input
+		    tensor([[ 0.5495,  0.0979, -1.4092, -0.1128,  0.4132],
+		            [-1.1143, -0.3662,  0.3042,  1.6374, -0.9294],
+		            [-0.3269, -0.5745, -0.0382, -0.5922, -0.6759]])
+		    >>> torch.pinverse(input)
+		    tensor([[ 0.0600, -0.1933, -0.2090],
+		            [-0.0903, -0.0817, -0.4752],
+		            [-0.7124, -0.1631, -0.2272],
+		            [ 0.1356,  0.3933, -0.5023],
+		            [-0.0308, -0.1725, -0.5216]])
+		
+		.. _Moore-Penrose inverse: https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse
+		
+		.. _[1]: https://epubs.siam.org/doi/10.1137/0117004
+		
+		.. _[2]: https://www.jstor.org/stable/2156365
+	**/
+	static public function pinverse(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function poisson(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function polygamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		potrf(a, upper=True, out=None) -> Tensor
+		
+		Computes the Cholesky decomposition of a symmetric positive-definite
+		matrix :math:`A`.
+		
+		If :attr:`upper` is ``True``, the returned matrix `U` is upper-triangular, and
+		the decomposition has the form:
+		
+		.. math::
+		
+		  A = U^TU
+		
+		If :attr:`upper` is ``False``, the returned matrix `L` is lower-triangular, and
+		the decomposition has the form:
+		
+		.. math::
+		
+		    A = LL^T
+		
+		Args:
+		    a (Tensor): the input 2-D tensor, a symmetric positive-definite matrix
+		    upper (bool, optional): flag that indicates whether to return the
+		                            upper or lower triangular matrix
+		    out (Tensor, optional): the output matrix
+		
+		Example::
+		
+		    >>> a = torch.randn(3, 3)
+		    >>> a = torch.mm(a, a.t()) # make symmetric positive definite
+		    >>> u = torch.potrf(a)
+		    >>> a
+		    tensor([[ 2.4112, -0.7486,  1.4551],
+		            [-0.7486,  1.3544,  0.1294],
+		            [ 1.4551,  0.1294,  1.6724]])
+		    >>> u
+		    tensor([[ 1.5528, -0.4821,  0.9371],
+		            [ 0.0000,  1.0592,  0.5486],
+		            [ 0.0000,  0.0000,  0.7023]])
+		    >>> torch.mm(u.t(), u)
+		    tensor([[ 2.4112, -0.7486,  1.4551],
+		            [-0.7486,  1.3544,  0.1294],
+		            [ 1.4551,  0.1294,  1.6724]])
+	**/
 	static public function potrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		potri(u, upper=True, out=None) -> Tensor
+		
+		Computes the inverse of a positive semidefinite matrix given its
+		Cholesky factor :attr:`u`: returns matrix `inv`
+		
+		If :attr:`upper` is ``True`` or not provided, :attr:`u` is upper
+		triangular such that:
+		
+		.. math::
+		    inv = (u^T u)^{-1}
+		
+		If :attr:`upper` is ``False``, :attr:`u` is lower triangular
+		such that:
+		
+		.. math::
+		    inv = (uu^{T})^{-1}
+		
+		Args:
+		    u (Tensor): the input 2-D tensor, a upper or lower triangular
+		           Cholesky factor
+		    upper (bool, optional): whether to return a upper (default) or lower triangular matrix
+		    out (Tensor, optional): the output tensor for `inv`
+		
+		Example::
+		
+		    >>> a = torch.randn(3, 3)
+		    >>> a = torch.mm(a, a.t()) # make symmetric positive definite
+		    >>> u = torch.potrf(a)
+		    >>> a
+		    tensor([[  0.9935,  -0.6353,   1.5806],
+		            [ -0.6353,   0.8769,  -1.7183],
+		            [  1.5806,  -1.7183,  10.6618]])
+		    >>> torch.potri(u)
+		    tensor([[ 1.9314,  1.2251, -0.0889],
+		            [ 1.2251,  2.4439,  0.2122],
+		            [-0.0889,  0.2122,  0.1412]])
+		    >>> a.inverse()
+		    tensor([[ 1.9314,  1.2251, -0.0889],
+		            [ 1.2251,  2.4439,  0.2122],
+		            [-0.0889,  0.2122,  0.1412]])
+	**/
 	static public function potri(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		potrs(b, u, upper=True, out=None) -> Tensor
+		
+		Solves a linear system of equations with a positive semidefinite
+		matrix to be inverted given its Cholesky factor matrix :attr:`u`.
+		
+		If :attr:`upper` is ``True`` or not provided, :attr:`u` is upper triangular
+		and `c` is returned such that:
+		
+		.. math::
+		    c = (u^T u)^{-1} b
+		
+		If :attr:`upper` is ``False``, :attr:`u` is and lower triangular and `c` is
+		returned such that:
+		
+		.. math::
+		    c = (u u^T)^{-1} b
+		
+		.. note:: :attr:`b` is always a 2-D tensor, use `b.unsqueeze(1)` to convert a vector.
+		
+		Args:
+		    b (Tensor): the right hand side 2-D tensor
+		    u (Tensor): the input 2-D tensor, a upper or lower triangular Cholesky factor
+		    upper (bool, optional): whether to return a upper (default) or lower triangular matrix
+		    out (Tensor, optional): the output tensor for `c`
+		
+		Example::
+		
+		    >>> a = torch.randn(3, 3)
+		    >>> a = torch.mm(a, a.t()) # make symmetric positive definite
+		    >>> u = torch.potrf(a)
+		    >>> a
+		    tensor([[ 0.7747, -1.9549,  1.3086],
+		            [-1.9549,  6.7546, -5.4114],
+		            [ 1.3086, -5.4114,  4.8733]])
+		    >>> b = torch.randn(3, 2)
+		    >>> b
+		    tensor([[-0.6355,  0.9891],
+		            [ 0.1974,  1.4706],
+		            [-0.4115, -0.6225]])
+		    >>> torch.potrs(b,u)
+		    tensor([[ -8.1625,  19.6097],
+		            [ -5.8398,  14.2387],
+		            [ -4.3771,  10.4173]])
+		    >>> torch.mm(a.inverse(),b)
+		    tensor([[ -8.1626,  19.6097],
+		            [ -5.8398,  14.2387],
+		            [ -4.3771,  10.4173]])
+	**/
 	static public function potrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: pow(input, exponent, out=None)
+		.. function:: pow(input, exponent, out=None) -> Tensor
 		
-		Takes the power of each element in :attr:`input` with :attr:`exponent` and returns a Tensor with the result.
+		Takes the power of each element in :attr:`input` with :attr:`exponent` and
+		returns a tensor with the result.
 		
-		:attr:`exponent` can be either a single ``float`` number or a ``Tensor``
+		:attr:`exponent` can be either a single ``float`` number or a `Tensor`
 		with the same number of elements as :attr:`input`.
 		
 		When :attr:`exponent` is a scalar value, the operation applied is:
 		
-		:math:`out_i = x_i ^ {exponent}`
+		.. math::
+		    out_i = x_i ^ {exponent}
 		
-		When :attr:`exponent` is a Tensor, the operation applied is:
+		When :attr:`exponent` is a tensor, the operation applied is:
 		
-		:math:`out_i = x_i ^ {exponent_i}`
+		.. math::
+		    out_i = x_i ^ {exponent_i}
+		
+		When :attr:`exponent` is a tensor, the shapes of :attr:`input`
+		and :attr:`exponent` must be :ref:`broadcastable <broadcasting-semantics>`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    exponent (float or Tensor): the exponent value
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    exponent (float or tensor): the exponent value
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		    -0.5274
-		    -0.8232
-		    -2.1128
-		     1.7558
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.4331,  1.2475,  0.6834, -0.2791])
 		    >>> torch.pow(a, 2)
+		    tensor([ 0.1875,  1.5561,  0.4670,  0.0779])
+		    >>> exp = torch.arange(1., 5.)
 		
-		     0.2781
-		     0.6776
-		     4.4640
-		     3.0829
-		    [torch.FloatTensor of size 4]
-		
-		    >>> exp = torch.arange(1, 5)
-		    >>> a = torch.arange(1, 5)
+		    >>> a = torch.arange(1., 5.)
 		    >>> a
-		
-		     1
-		     2
-		     3
-		     4
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 1.,  2.,  3.,  4.])
 		    >>> exp
-		
-		     1
-		     2
-		     3
-		     4
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 1.,  2.,  3.,  4.])
 		    >>> torch.pow(a, exp)
+		    tensor([   1.,    4.,   27.,  256.])
 		
-		       1
-		       4
-		      27
-		     256
-		    [torch.FloatTensor of size 4]
+		.. function:: pow(base, input, out=None) -> Tensor
 		
-		
-		.. function:: pow(base, input, out=None)
-		
-		:attr:`base` is a scalar ``float`` value, and :attr:`input` is a Tensor.
-		The returned Tensor :attr:`out` is of the same shape as :attr:`input`
+		:attr:`base` is a scalar ``float`` value, and :attr:`input` is a tensor.
+		The returned tensor :attr:`out` is of the same shape as :attr:`input`
 		
 		The operation applied is:
 		
-		:math:`out_i = base ^ {input_i}`
+		.. math::
+		    out_i = base ^ {input_i}
 		
 		Args:
 		    base (float): the scalar base value for the power operation
-		    input (Tensor): the exponent `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the exponent tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> exp = torch.arange(1, 5)
+		    >>> exp = torch.arange(1., 5.)
 		    >>> base = 2
 		    >>> torch.pow(base, exp)
-		
-		      2
-		      4
-		      8
-		     16
-		    [torch.FloatTensor of size 4]
+		    tensor([  2.,   4.,   8.,  16.])
 	**/
 	static public function pow(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function prepare_multiprocessing_environment(path:Dynamic):Dynamic;
 	/**
-		.. function:: prod(input) -> float
+		.. function:: prod(input, dtype=None) -> Tensor
 		
-		Returns the product of all elements in the :attr:`input` Tensor.
+		Returns the product of all elements in the :attr:`input` tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        If specified, the input tensor is casted to :attr:`dtype` before the operation
+		        is performed. This is useful for preventing data type overflows. Default: None.
 		
 		Example::
 		
 		    >>> a = torch.randn(1, 3)
 		    >>> a
-		
-		     0.6170  0.3546  0.0253
-		    [torch.FloatTensor of size 1x3]
-		
+		    tensor([[-0.8020,  0.5428, -1.5854]])
 		    >>> torch.prod(a)
-		    0.005537458061418483
+		    tensor(0.6902)
 		
+		.. function:: prod(input, dim, keepdim=False, dtype=None) -> Tensor
 		
-		.. function:: prod(input, dim, out=None) -> Tensor
+		Returns the product of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`.
 		
-		Returns the product of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		
-		The output Tensor is of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		If :attr:`keepdim` is ``True``, the output tensor is of the same size as
+		:attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting
+		in the output tensor having 1 fewer dimension than :attr:`input`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    dim (int): the dimension to reduce
-		    out (Tensor, optional): the result Tensor
+		    keepdim (bool): whether the output tensor has :attr:`dim` retained or not
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        If specified, the input tensor is casted to :attr:`dtype` before the operation
+		        is performed. This is useful for preventing data type overflows. Default: None.
 		
 		Example::
 		
 		    >>> a = torch.randn(4, 2)
 		    >>> a
-		
-		     0.1598 -0.6884
-		    -0.1831 -0.4412
-		    -0.9925 -0.6244
-		    -0.2416 -0.8080
-		    [torch.FloatTensor of size 4x2]
-		
+		    tensor([[ 0.5261, -0.3837],
+		            [ 1.1857, -0.2498],
+		            [-1.1646,  0.0705],
+		            [ 1.1131, -1.0629]])
 		    >>> torch.prod(a, 1)
-		
-		    -0.1100
-		     0.0808
-		     0.6197
-		     0.1952
-		    [torch.FloatTensor of size 4x1]
+		    tensor([-0.2018, -0.2962, -0.0821, -1.1831])
 	**/
 	static public function prod(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		pstrf(a, upper=True, out=None) -> (Tensor, Tensor)
+		
+		Computes the pivoted Cholesky decomposition of a positive semidefinite
+		matrix :attr:`a`. returns matrices `u` and `piv`.
+		
+		If :attr:`upper` is ``True`` or not provided, `u` is upper triangular
+		such that :math:`a = p^T u^T u p`, with `p` the permutation given by `piv`.
+		
+		If :attr:`upper` is ``False``, `u` is lower triangular such that
+		:math:`a = p^T u u^T p`.
+		
+		Args:
+		    a (Tensor): the input 2-D tensor
+		    upper (bool, optional): whether to return a upper (default) or lower triangular matrix
+		    out (tuple, optional): tuple of `u` and `piv` tensors
+		
+		Example::
+		
+		    >>> a = torch.randn(3, 3)
+		    >>> a = torch.mm(a, a.t()) # make symmetric positive definite
+		    >>> a
+		    tensor([[ 3.5405, -0.4577,  0.8342],
+		            [-0.4577,  1.8244, -0.1996],
+		            [ 0.8342, -0.1996,  3.7493]])
+		    >>> u,piv = torch.pstrf(a)
+		    >>> u
+		    tensor([[ 1.9363,  0.4308, -0.1031],
+		            [ 0.0000,  1.8316, -0.2256],
+		            [ 0.0000,  0.0000,  1.3277]])
+		    >>> piv
+		    tensor([ 2,  0,  1], dtype=torch.int32)
+		    >>> p = torch.eye(3).index_select(0,piv.long()).index_select(0,piv.long()).t() # make pivot permutation
+		    >>> torch.mm(torch.mm(p.t(),torch.mm(u.t(),u)),p) # reconstruct
+		    tensor([[ 3.5405, -0.4577,  0.8342],
+		            [-0.4577,  1.8244, -0.1996],
+		            [ 0.8342, -0.1996,  3.7493]])
+	**/
 	static public function pstrf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		qr(input, out=None) -> (Tensor, Tensor)
 		
-		Computes the QR decomposition of a matrix :attr:`input`: returns matrices
-		`q` and `r` such that :math:`x = q * r`, with `q` being an orthogonal matrix
-		and `r` being an upper triangular matrix.
+		Computes the QR decomposition of a matrix :attr:`input`, and returns matrices
+		`Q` and `R` such that :math:`\text{input} = Q R`, with :math:`Q` being an
+		orthogonal matrix and :math:`R` being an upper triangular matrix.
 		
 		This returns the thin (reduced) QR factorization.
 		
-		.. note:: precision may be lost if the magnitudes of the elements of `input` are large
+		.. note:: precision may be lost if the magnitudes of the elements of :attr:`input`
+		          are large
 		
-		.. note:: while it should always give you a valid decomposition, it may not
+		.. note:: While it should always give you a valid decomposition, it may not
 		          give you the same one across platforms - it will depend on your
 		          LAPACK implementation.
 		
-		.. note:: Irrespective of the original strides, the returned matrix `q` will be
+		.. note:: Irrespective of the original strides, the returned matrix :math:`Q` will be
 		          transposed, i.e. with strides `(1, m)` instead of `(m, 1)`.
 		
 		Args:
-		    input (Tensor): the input 2D `Tensor`
-		    out (tuple, optional): A tuple of Q and R Tensors
+		    input (Tensor): the input 2-D tensor
+		    out (tuple, optional): tuple of `Q` and `R` tensors
 		
 		Example::
 		
-		    >>> a = torch.Tensor([[12, -51, 4], [6, 167, -68], [-4, 24, -41]])
+		    >>> a = torch.tensor([[12., -51, 4], [6, 167, -68], [-4, 24, -41]])
 		    >>> q, r = torch.qr(a)
 		    >>> q
-		
-		    -0.8571  0.3943  0.3314
-		    -0.4286 -0.9029 -0.0343
-		     0.2857 -0.1714  0.9429
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[-0.8571,  0.3943,  0.3314],
+		            [-0.4286, -0.9029, -0.0343],
+		            [ 0.2857, -0.1714,  0.9429]])
 		    >>> r
-		
-		     -14.0000  -21.0000   14.0000
-		       0.0000 -175.0000   70.0000
-		       0.0000    0.0000  -35.0000
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[ -14.0000,  -21.0000,   14.0000],
+		            [   0.0000, -175.0000,   70.0000],
+		            [   0.0000,    0.0000,  -35.0000]])
 		    >>> torch.mm(q, r).round()
-		
-		      12  -51    4
-		       6  167  -68
-		      -4   24  -41
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[  12.,  -51.,    4.],
+		            [   6.,  167.,  -68.],
+		            [  -4.,   24.,  -41.]])
 		    >>> torch.mm(q.t(), q).round()
-		
-		     1 -0  0
-		    -0  1  0
-		     0  0  1
-		    [torch.FloatTensor of size 3x3]
+		    tensor([[ 1.,  0.,  0.],
+		            [ 0.,  1., -0.],
+		            [ 0., -0.,  1.]])
 	**/
 	static public function qr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		rand(*sizes, out=None) -> Tensor
+		rand(*sizes, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
-		Returns a Tensor filled with random numbers from a uniform distribution
+		Returns a tensor filled with random numbers from a uniform distribution
 		on the interval :math:`[0, 1)`
 		
-		The shape of the Tensor is defined by the varargs :attr:`sizes`.
+		The shape of the tensor is defined by the variable argument :attr:`sizes`.
 		
 		Args:
-		    sizes (int...): a set of ints defining the shape of the output Tensor.
-		    out (Tensor, optional): the result Tensor
+		    sizes (int...): a sequence of integers defining the shape of the output tensor.
+		        Can be a variable number of arguments or a collection like a list or tuple.
+		    {out}
+		    {dtype}
+		    {layout}
+		    {device}
+		    {requires_grad}
 		
 		Example::
 		
 		    >>> torch.rand(4)
-		
-		     0.9193
-		     0.3347
-		     0.3232
-		     0.7715
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.5204,  0.2503,  0.3525,  0.5673])
 		    >>> torch.rand(2, 3)
-		
-		     0.5010  0.5140  0.0719
-		     0.1435  0.5636  0.0538
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[ 0.8237,  0.5781,  0.6879],
+		            [ 0.3816,  0.7249,  0.0998]])
 	**/
 	static public function rand(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		randn(*sizes, out=None) -> Tensor
+		rand_like(input, dtype=None, layout=None, device=None, requires_grad=False) -> Tensor
 		
-		Returns a Tensor filled with random numbers from a normal distribution
-		with zero mean and variance of one.
-		
-		The shape of the Tensor is defined by the varargs :attr:`sizes`.
+		Returns a tensor with the same size as :attr:`input` that is filled with
+		random numbers from a uniform distribution on the interval :math:`[0, 1)`.
+		``torch.rand_like(input)`` is equivalent to
+		``torch.rand(input.size(), dtype=input.dtype, layout=input.layout, device=input.device)``.
 		
 		Args:
-		    sizes (int...): a set of ints defining the shape of the output Tensor.
-		    out (Tensor, optional): the result Tensor
+		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned Tensor.
+		        Default: if ``None``, defaults to the dtype of :attr:`input`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned tensor.
+		        Default: if ``None``, defaults to the layout of :attr:`input`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, defaults to the device of :attr:`input`.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+	**/
+	static public function rand_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		randint(low=0, high, size, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor filled with random integers generated uniformly
+		between :attr:`low` (inclusive) and :attr:`high` (exclusive).
+		
+		The shape of the tensor is defined by the variable argument :attr:`size`.
+		
+		.. note:
+		    With the global dtype default (`torch.float32`), this function returns
+		    a tensor with dtype `torch.float32`, NOT an integer dtype.
+		
+		Args:
+		    low (int, optional): Lowest integer to be drawn from the distribution. Default: 0.
+		    high (int): One above the highest integer to be drawn from the distribution.
+		    size (tuple): a tuple defining the shape of the output tensor.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Example::
+		
+		    >>> torch.randint(3, 5, (3,))
+		    tensor([ 4.,  3.,  4.])
+		
+		
+		    >>> torch.randint(10, (2,2))
+		    tensor([[ 0.,  2.],
+		            [ 5.,  5.]])
+		
+		
+		    >>> torch.randint(3, 10, (2,2))
+		    tensor([[ 4.,  5.],
+		            [ 6.,  7.]])
+	**/
+	static public function randint(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		randint_like(input, low=0, high, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor with the same shape as Tensor :attr:`input` filled with
+		random integers generated uniformly between :attr:`low` (inclusive) and
+		:attr:`high` (exclusive).
+		
+		.. note:
+		    With the global dtype default (`torch.float32`), this function returns
+		    a tensor with dtype `torch.float32`, NOT an integer dtype.
+		
+		Args:
+		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
+		    low (int, optional): Lowest integer to be drawn from the distribution. Default: 0.
+		    high (int): One above the highest integer to be drawn from the distribution.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned Tensor.
+		        Default: if ``None``, defaults to the dtype of :attr:`input`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned tensor.
+		        Default: if ``None``, defaults to the layout of :attr:`input`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, defaults to the device of :attr:`input`.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+	**/
+	static public function randint_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		randn(*sizes, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor filled with random numbers from a normal distribution
+		with mean `0` and variance `1` (also called the standard normal
+		distribution).
+		
+		.. math::
+		    \text{out}_{i} \sim \mathcal{N}(0, 1)
+		
+		The shape of the tensor is defined by the variable argument :attr:`sizes`.
+		
+		Args:
+		    sizes (int...): a sequence of integers defining the shape of the output tensor.
+		        Can be a variable number of arguments or a collection like a list or tuple.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
 		    >>> torch.randn(4)
-		
-		    -0.1145
-		     0.0094
-		    -1.1717
-		     0.9846
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-2.1436,  0.9966,  2.3426, -0.6366])
 		    >>> torch.randn(2, 3)
-		
-		     1.4339  0.3351 -1.0999
-		     1.5458 -0.9643 -0.3558
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[ 1.5954,  2.8929, -1.0923],
+		            [ 1.1719, -0.4709, -0.1996]])
 	**/
 	static public function randn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		randperm(n, out=None) -> LongTensor
+		randn_like(input, dtype=None, layout=None, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor with the same size as :attr:`input` that is filled with
+		random numbers from a normal distribution with mean 0 and variance 1.
+		``torch.randn_like(input)`` is equivalent to
+		``torch.randn(input.size(), dtype=input.dtype, layout=input.layout, device=input.device)``.
+		
+		Args:
+		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned Tensor.
+		        Default: if ``None``, defaults to the dtype of :attr:`input`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned tensor.
+		        Default: if ``None``, defaults to the layout of :attr:`input`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, defaults to the device of :attr:`input`.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+	**/
+	static public function randn_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		randperm(n, out=None, dtype=torch.int64, layout=torch.strided, device=None, requires_grad=False) -> LongTensor
 		
 		Returns a random permutation of integers from ``0`` to ``n - 1``.
 		
 		Args:
 		    n (int): the upper bound (exclusive)
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: ``torch.int64``.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
 		    >>> torch.randperm(4)
-		
-		     2
-		     1
-		     3
-		     0
-		    [torch.LongTensor of size 4]
+		    tensor([ 2,  1,  0,  3])
 	**/
 	static public function randperm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		range(start, end, step=1, out=None) -> Tensor
+		range(start=0, end, step=1, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
 		
-		returns a 1D Tensor of size :math:`floor((end - start) / step) + 1` with values
-		from :attr:`start` to :attr:`end` with step :attr:`step`. Step is the gap between two values in the tensor.
-		:math:`x_{i+1} = x_i + step`
+		Returns a 1-D tensor of size :math:`\left\lfloor \frac{end - start}{step} \right\rfloor + 1`
+		with values from :attr:`start` to :attr:`end` with step :attr:`step`. Step is
+		the gap between two values in the tensor.
 		
-		Warning:
+		.. math::
+		    \text{out}_{i+1} = \text{out}_i + step.
+		
+		.. warning::
 		    This function is deprecated in favor of :func:`torch.arange`.
 		
 		Args:
-		    start (float): The starting value for the set of points
-		    end (float): The ending value for the set of points
-		    step (float): The gap between each pair of adjacent points
-		    out (Tensor, optional): The result `Tensor`
+		    start (float): the starting value for the set of points. Default: ``0``.
+		    end (float): the ending value for the set of points
+		    step (float): the gap between each pair of adjacent points. Default: ``1``.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
 		    >>> torch.range(1, 4)
-		
-		     1
-		     2
-		     3
-		     4
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 1.,  2.,  3.,  4.])
 		    >>> torch.range(1, 4, 0.5)
-		
-		     1.0000
-		     1.5000
-		     2.0000
-		     2.5000
-		     3.0000
-		     3.5000
-		     4.0000
-		    [torch.FloatTensor of size 7]
+		    tensor([ 1.0000,  1.5000,  2.0000,  2.5000,  3.0000,  3.5000,  4.0000])
 	**/
 	static public function range(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function raw_copy_sparse_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		reciprocal(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the reciprocal of the elements of :attr:`input`, i.e. :math:`1.0 / x`
+		Returns a new tensor with the reciprocal of the elements of :attr:`input`
+		
+		.. math::
+		    \text{out}_{i} = \frac{1}{\text{input}_{i}}
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.3869
-		     0.3912
-		    -0.8634
-		    -0.5468
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-0.4595, -2.1219, -1.4314,  0.7298])
 		    >>> torch.reciprocal(a)
-		
-		     0.7210
-		     2.5565
-		    -1.1583
-		    -1.8289
-		    [torch.FloatTensor of size 4]
+		    tensor([-2.1763, -0.4713, -0.6986,  1.3702])
 	**/
 	static public function reciprocal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		register_batch_operator(arg0: str, arg1: torch._C.Graph) -> None
+	**/
+	static public function register_batch_operator(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function relu(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		relu_(input) -> Tensor
+		
+		In-place version of :func:`~relu`.
+	**/
+	static public function relu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		remainder(input, divisor, out=None) -> Tensor
 		
@@ -3324,118 +5161,214 @@ package torch;
 		The divisor and dividend may contain both for integer and floating point
 		numbers. The remainder has the same sign as the divisor.
 		
+		When :attr:`divisor` is a tensor, the shapes of :attr:`input` and
+		:attr:`divisor` must be :ref:`broadcastable <broadcasting-semantics>`.
+		
 		Args:
-		    input (Tensor): The dividend
-		    divisor (Tensor or float): The divisor. This may be either a number or a
-		                               tensor of the same shape as the dividend.
-		    out (Tensor, optional): Output tensor
+		    input (Tensor): the dividend
+		    divisor (Tensor or float): the divisor that may be either a number or a
+		                               Tensor of the same shape as the dividend
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> torch.remainder(torch.Tensor([-3, -2, -1, 1, 2, 3]), 2)
-		    torch.FloatTensor([1, 0, 1, 1, 0, 1])
-		    >>> torch.remainder(torch.Tensor([1, 2, 3, 4, 5]), 1.5)
-		    torch.FloatTensor([1.0, 0.5, 0.0, 1.0, 0.5])
+		    >>> torch.remainder(torch.tensor([-3., -2, -1, 1, 2, 3]), 2)
+		    tensor([ 1.,  0.,  1.,  1.,  0.,  1.])
+		    >>> torch.remainder(torch.tensor([1., 2, 3, 4, 5]), 1.5)
+		    tensor([ 1.0000,  0.5000,  0.0000,  1.0000,  0.5000])
 		
 		.. seealso::
 		
 		        :func:`torch.fmod`, which computes the element-wise remainder of
-		        division equivalently to the C library function ``fmod()``
+		        division equivalently to the C library function ``fmod()``.
 	**/
 	static public function remainder(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		renorm(input, p, dim, maxnorm, out=None) -> Tensor
 		
-		Returns a Tensor where each sub-tensor of :attr:`input` along dimension :attr:`dim`
-		is normalized such that the `p`-norm of the sub-tensor is lower than the value :attr:`maxnorm`
+		Returns a tensor where each sub-tensor of :attr:`input` along dimension
+		:attr:`dim` is normalized such that the `p`-norm of the sub-tensor is lower
+		than the value :attr:`maxnorm`
 		
 		.. note:: If the norm of a row is lower than `maxnorm`, the row is unchanged
 		
 		Args:
-		    input (Tensor): The input Tensor
-		    p (float): The power for the norm computation
-		    dim (int): The dimension to slice over to get the sub-tensors
-		    maxnorm (float): The maximum norm to keep each sub-tensor under
-		    out (Tensor, optional): Output tensor
+		    input (Tensor): the input tensor
+		    p (float): the power for the norm computation
+		    dim (int): the dimension to slice over to get the sub-tensors
+		    maxnorm (float): the maximum norm to keep each sub-tensor under
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> x = torch.ones(3, 3)
 		    >>> x[1].fill_(2)
+		    tensor([ 2.,  2.,  2.])
 		    >>> x[2].fill_(3)
+		    tensor([ 3.,  3.,  3.])
 		    >>> x
-		
-		     1  1  1
-		     2  2  2
-		     3  3  3
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[ 1.,  1.,  1.],
+		            [ 2.,  2.,  2.],
+		            [ 3.,  3.,  3.]])
 		    >>> torch.renorm(x, 1, 0, 5)
-		
-		     1.0000  1.0000  1.0000
-		     1.6667  1.6667  1.6667
-		     1.6667  1.6667  1.6667
-		    [torch.FloatTensor of size 3x3]
+		    tensor([[ 1.0000,  1.0000,  1.0000],
+		            [ 1.6667,  1.6667,  1.6667],
+		            [ 1.6667,  1.6667,  1.6667]])
 	**/
 	static public function renorm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		round(input, out=None) -> Tensor
+		reshape(input, shape) -> Tensor
 		
-		Returns a new `Tensor` with each of the elements of :attr:`input` rounded to the closest integer.
+		Returns a tensor with the same data and number of elements as :attr:`input`,
+		but with the specified shape. When possible, the returned tensor will be a view
+		of :attr:`input`. Otherwise, it will be a copy. Contiguous inputs and inputs
+		with compatible strides can be reshaped without copying, but you should not
+		depend on the copying vs. viewing behavior.
+		
+		A single dimension may be -1, in which case it's inferred from the remaining
+		dimensions and the number of elements in :attr:`input`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the tensor to be reshaped
+		    shape (tuple of ints): the new shape
+		
+		Example::
+		
+		    >>> a = torch.arange(4.)
+		    >>> torch.reshape(a, (2, 2))
+		    tensor([[ 0.,  1.],
+		            [ 2.,  3.]])
+		    >>> b = torch.tensor([[0, 1], [2, 3]])
+		    >>> torch.reshape(b, (-1,))
+		    tensor([ 0,  1,  2,  3])
+	**/
+	static public function reshape(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function resize_as_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rfft(input, signal_ndim, normalized=False, onesided=True) -> Tensor
+		
+		Real-to-complex Discrete Fourier Transform
+		
+		This method computes the real-to-complex discrete Fourier transform. It is
+		mathematically equivalent with :func:`~torch.fft` with differences only in
+		formats of the input and output.
+		
+		This method supports 1D, 2D and 3D real-to-complex transforms, indicated
+		by :attr:`signal_ndim`. :attr:`input` must be a tensor with at least
+		``signal_ndim`` dimensions with optionally arbitrary number of leading batch
+		dimensions. If :attr:`normalized` is set to ``True``, this normalizes the result
+		by multiplying it with :math:`\sqrt{\prod_{i=1}^K N_i}` so that the operator is
+		unitary, where :math:`N_i` is the size of signal dimension :math:`i`.
+		
+		The real-to-complex Fourier transform results follow conjugate symmetry:
+		
+		.. math::
+		    X[\omega_1, \dots, \omega_d] = X^*[N_1 - \omega_1, \dots, N_d - \omega_d],
+		
+		where the index arithmetic is computed modulus the size of the corresponding
+		dimension, :math:`\ ^*` is the conjugate operator, and
+		:math:`d` = :attr:`signal_ndim`. :attr:`onesided` flag controls whether to avoid
+		redundancy in the output results. If set to ``True`` (default), the output will
+		not be full complex result of shape :math:`(*, 2)`, where :math:`*` is the shape
+		of :attr:`input`, but instead the last dimension will be halfed as of size
+		:math:`\lfloor \frac{N_d}{2} \rfloor + 1`.
+		
+		The inverse of this function is :func:`~torch.irfft`.
+		
+		.. note::
+		    For CUDA tensors, an LRU cache is used for cuFFT plans to speed up
+		    repeatedly running FFT methods on tensors of same geometry with same
+		    same configuration.
+		
+		    Changing ``torch.backends.cuda.cufft_plan_cache.max_size`` (default 1023)
+		    controls the capacity of this cache. Some cuFFT plans may allocate GPU
+		    memory. You may use ``torch.backends.cuda.cufft_plan_cache.size`` to query
+		    the number of plans currently in cache, and
+		    ``torch.backends.cuda.cufft_plan_cache.clear()`` to clear the cache.
+		
+		.. warning::
+		    For CPU tensors, this method is currently only available with MKL. Use
+		    :func:`torch.backends.mkl.is_available` to check if MKL is installed.
+		
+		Arguments:
+		    input (Tensor): the input tensor of at least :attr:`signal_ndim` dimensions
+		    signal_ndim (int): the number of dimensions in each signal.
+		        :attr:`signal_ndim` can only be 1, 2 or 3
+		    normalized (bool, optional): controls whether to return normalized results.
+		        Default: ``False``
+		    onesided (bool, optional): controls whether to return half of results to
+		        avoid redundancy. Default: ``True``
+		
+		Returns:
+		    Tensor: A tensor containing the real-to-complex Fourier transform result
+		
+		Example::
+		
+		    >>> x = torch.randn(5, 5)
+		    >>> torch.rfft(x, 2).shape
+		    torch.Size([5, 3, 2])
+		    >>> torch.rfft(x, 2, onesided=False).shape
+		    torch.Size([5, 5, 2])
+	**/
+	static public function rfft(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		round(input, out=None) -> Tensor
+		
+		Returns a new tensor with each of the elements of :attr:`input` rounded
+		to the closest integer.
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.2290
-		     1.3409
-		    -0.5662
-		    -0.0899
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.9920,  0.6077,  0.9734, -1.0362])
 		    >>> torch.round(a)
-		
-		     1
-		     1
-		    -1
-		    -0
-		    [torch.FloatTensor of size 4]
+		    tensor([ 1.,  1.,  1., -1.])
 	**/
 	static public function round(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function round_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rrelu(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		rrelu_(input, lower=1./8, upper=1./3, training=False) -> Tensor
+		
+		In-place version of :func:`~rrelu`.
+	**/
+	static public function rrelu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		rsqrt(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the reciprocal of the square-root of each of the elements of :attr:`input`.
+		Returns a new tensor with the reciprocal of the square-root of each of
+		the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \frac{1}{\sqrt{\text{input}_{i}}}
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.2290
-		     1.3409
-		    -0.5662
-		    -0.0899
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-0.0370,  0.2970,  1.5420, -0.9105])
 		    >>> torch.rsqrt(a)
-		
-		     0.9020
-		     0.8636
-		        nan
-		        nan
-		    [torch.FloatTensor of size 4]
+		    tensor([    nan,  1.8351,  0.8053,     nan])
 	**/
 	static public function rsqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rsqrt_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_add(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_add_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_addmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_addmm_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_mul_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_sub(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function s_native_sub_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function saddmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Saves an object to a disk file.
@@ -3444,13 +5377,99 @@ package torch;
 		
 		Args:
 		    obj: saved object
-		    f: a file-like object (has to implement fileno that returns a file descriptor)
-		        or a string containing a file name
+		    f: a file-like object (has to implement write and flush) or a string
+		       containing a file name
 		    pickle_module: module used for pickling metadata and objects
 		    pickle_protocol: can be specified to override the default protocol
+		
+		.. warning::
+		    If you are using Python 2, torch.save does NOT support StringIO.StringIO
+		    as a valid file-like object. This is because the write method should return
+		    the number of bytes written; StringIO.write() does not do this.
+		
+		    Please use something like io.BytesIO instead.
+		
+		Example:
+		    >>> # Save to file
+		    >>> x = torch.tensor([0, 1, 2, 3, 4])
+		    >>> torch.save(x, 'tensor.pt')
+		    >>> # Save to io.BytesIO buffer
+		    >>> buffer = io.BytesIO()
+		    >>> torch.save(x, buffer)
 	**/
 	static public function save(obj:Dynamic, f:Dynamic, ?pickle_module:Dynamic, ?pickle_protocol:Dynamic):Dynamic;
+	static public function select(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function selu(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		selu_(input) -> Tensor
+		
+		In-place version of :func:`~selu`.
+	**/
+	static public function selu_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function set_anomaly_enabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the default floating point dtype to :attr:`d`. This type will be
+		used as default floating point type for type inference in
+		:func:`torch.tensor`.
+		
+		The default floating point dtype is initially ``torch.float32``.
+		
+		Args:
+		    d (:class:`torch.dtype`): the floating point dtype to make the default
+		
+		Example::
+		
+		    >>> torch.tensor([1.2, 3]).dtype           # initial default for floating point is torch.float32
+		    torch.float32
+		    >>> torch.set_default_dtype(torch.float64)
+		    >>> torch.tensor([1.2, 3]).dtype           # a new floating point tensor
+		    torch.float64
+	**/
+	static public function set_default_dtype(d:Dynamic):Dynamic;
+	/**
+		Sets the default ``torch.Tensor`` type to floating point tensor type
+		:attr:`t`. This type will also be used as default floating point type for
+		type inference in :func:`torch.tensor`.
+		
+		The default floating point tensor type is initially ``torch.FloatTensor``.
+		
+		Args:
+		    t (type or string): the floating point tensor type or its name
+		
+		Example::
+		
+		    >>> torch.tensor([1.2, 3]).dtype    # initial default for floating point is torch.float32
+		    torch.float32
+		    >>> torch.set_default_tensor_type(torch.DoubleTensor)
+		    >>> torch.tensor([1.2, 3]).dtype    # a new floating point tensor
+		    torch.float64
+	**/
 	static public function set_default_tensor_type(t:Dynamic):Dynamic;
+	/**
+		set_flush_denormal(mode) -> bool
+		
+		Disables denormal floating numbers on CPU.
+		
+		Returns ``True`` if your system supports flushing denormal numbers and it
+		successfully configures flush denormal mode.  :meth:`~torch.set_flush_denormal`
+		is only supported on x86 architectures supporting SSE3.
+		
+		Args:
+		    mode (bool): Controls whether to enable flush denormal mode or not
+		
+		Example::
+		
+		    >>> torch.set_flush_denormal(True)
+		    True
+		    >>> torch.tensor([1e-323], dtype=torch.float64)
+		    tensor([ 0.], dtype=torch.float64)
+		    >>> torch.set_flush_denormal(False)
+		    True
+		    >>> torch.tensor([1e-323], dtype=torch.float64)
+		    tensor(9.88131e-324 *
+		           [ 1.0000], dtype=torch.float64)
+	**/
+	static public function set_flush_denormal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		set_num_threads(int)
 		
@@ -3458,20 +5477,20 @@ package torch;
 	**/
 	static public function set_num_threads(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Set options for printing. Items shamelessly taken from Numpy
+		Set options for printing. Items shamelessly taken from NumPy
 		
 		Args:
 		    precision: Number of digits of precision for floating point output
-		        (default 8).
+		        (default = 8).
 		    threshold: Total number of array elements which trigger summarization
-		        rather than full repr (default 1000).
+		        rather than full `repr` (default = 1000).
 		    edgeitems: Number of array items in summary at beginning and end of
-		        each dimension (default 3).
+		        each dimension (default = 3).
 		    linewidth: The number of characters per line for the purpose of
-		        inserting line breaks (default 80). Thresholded matricies will
+		        inserting line breaks (default = 80). Thresholded matrices will
 		        ignore this parameter.
 		    profile: Sane defaults for pretty printing. Can override with any of
-		        the above options. (default, short, full)
+		        the above options. (any one of `default`, `short`, `full`)
 	**/
 	static public function set_printoptions(?precision:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?linewidth:Dynamic, ?profile:Dynamic):Dynamic;
 	/**
@@ -3481,455 +5500,605 @@ package torch;
 		    new_state (torch.ByteTensor): The desired state
 	**/
 	static public function set_rng_state(new_state:Dynamic):Dynamic;
+	static public var short : Dynamic;
 	/**
 		sigmoid(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the sigmoid of the elements of :attr:`input`.
+		Returns a new tensor with the sigmoid of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \frac{1}{1 + e^{-\text{input}_{i}}}
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		    -0.4972
-		     1.3512
-		     0.1056
-		    -0.2650
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.9213,  1.0887, -0.8858, -1.7683])
 		    >>> torch.sigmoid(a)
-		
-		     0.3782
-		     0.7943
-		     0.5264
-		     0.4341
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.7153,  0.7481,  0.2920,  0.1458])
 	**/
 	static public function sigmoid(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function sigmoid_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		sign(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the sign of the elements of :attr:`input`.
+		Returns a new tensor with the sign of the elements of :attr:`input`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 1.0382, -1.4526, -0.9709,  0.4542])
 		    >>> torch.sign(a)
-		
-		    -1
-		     1
-		     1
-		     1
-		    [torch.FloatTensor of size 4]
+		    tensor([ 1., -1., -1.,  1.])
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		sin(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the sine of the elements of :attr:`input`.
+		Returns a new tensor with the sine of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \sin(\text{input}_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-0.5461,  0.1347, -2.7266, -0.2746])
 		    >>> torch.sin(a)
-		    -0.5944
-		     0.2684
-		     0.4322
-		     0.9667
-		    [torch.FloatTensor of size 4]
+		    tensor([-0.5194,  0.1343, -0.4032, -0.2711])
 	**/
 	static public function sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function sin_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		sinh(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the hyperbolic sine of the elements of :attr:`input`.
+		Returns a new tensor with the hyperbolic sine of the elements of
+		:attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \sinh(\text{input}_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.5380, -0.8632, -0.1265,  0.9399])
 		    >>> torch.sinh(a)
-		    -0.6804
-		     0.2751
-		     0.4619
-		     1.7225
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.5644, -0.9744, -0.1268,  1.0845])
 	**/
 	static public function sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function sinh_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		slogdet(A) -> (Tensor, Tensor)
+		
+		Calculates the sign and log value of a 2D square tensor's determinant.
+		
+		.. note::
+		    If ``A`` has zero determinant, this returns ``(0, -inf)``.
+		
+		.. note::
+		    Backward through :meth:`slogdet` internally uses SVD results when :attr:`A`
+		    is not invertible. In this case, double backward through :meth:`slogdet`
+		    will be unstable in when :attr:`A` doesn't have distinct singular values.
+		    See :meth:`~torch.svd` for details.
+		
+		Arguments:
+		    A (Tensor): The input 2D square tensor
+		
+		Returns:
+		    A tuple containing the sign of the determinant, and the log value of the
+		    absolute determinant.
+		
+		Example::
+		
+		    >>> A = torch.randn(3, 3)
+		    >>> torch.det(A)
+		    tensor(-4.8215)
+		    >>> torch.logdet(A)
+		    tensor(nan)
+		    >>> torch.slogdet(A)
+		    (tensor(-1.), tensor(1.5731))
+	**/
+	static public function slogdet(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function smm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function softmax(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function softmax_backward_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		sort(input, dim=None, descending=False, out=None) -> (Tensor, LongTensor)
 		
-		Sorts the elements of the :attr:`input` Tensor along a given dimension in ascending order by value.
+		Sorts the elements of the :attr:`input` tensor along a given dimension
+		in ascending order by value.
 		
 		If :attr:`dim` is not given, the last dimension of the `input` is chosen.
 		
-		If :attr:`descending` is `True` then the elements are sorted in descending order by value.
+		If :attr:`descending` is ``True`` then the elements are sorted in descending
+		order by value.
 		
-		A tuple of (sorted_tensor, sorted_indices) is returned, where the sorted_indices are the
-		indices of the elements in the original `input` Tensor.
+		A tuple of (sorted_tensor, sorted_indices) is returned, where the
+		sorted_indices are the indices of the elements in the original `input` tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    dim (int, optional): The dimension to sort along
-		    descending (bool, optional): Controls the sorting order (ascending or descending)
-		    out (tuple, optional): The output tuple of (Tensor, LongTensor)
-		                           can be optionally given to be used as output buffers
+		    input (Tensor): the input tensor
+		    dim (int, optional): the dimension to sort along
+		    descending (bool, optional): controls the sorting order (ascending or descending)
+		    out (tuple, optional): the output tuple of (`Tensor`, `LongTensor`) that can
+		        be optionally given to be used as output buffers
 		
 		Example::
 		
 		    >>> x = torch.randn(3, 4)
 		    >>> sorted, indices = torch.sort(x)
 		    >>> sorted
-		
-		    -1.6747  0.0610  0.1190  1.4137
-		    -1.4782  0.7159  1.0341  1.3678
-		    -0.3324 -0.0782  0.3518  0.4763
-		    [torch.FloatTensor of size 3x4]
-		
+		    tensor([[-0.2162,  0.0608,  0.6719,  2.3332],
+		            [-0.5793,  0.0061,  0.6058,  0.9497],
+		            [-0.5071,  0.3343,  0.9553,  1.0960]])
 		    >>> indices
-		
-		     0  1  3  2
-		     2  1  0  3
-		     3  1  0  2
-		    [torch.LongTensor of size 3x4]
+		    tensor([[ 1,  0,  2,  3],
+		            [ 3,  1,  0,  2],
+		            [ 0,  3,  1,  2]])
 		
 		    >>> sorted, indices = torch.sort(x, 0)
 		    >>> sorted
-		
-		    -1.6747 -0.0782 -1.4782 -0.3324
-		     0.3518  0.0610  0.4763  0.1190
-		     1.0341  0.7159  1.4137  1.3678
-		    [torch.FloatTensor of size 3x4]
-		
+		    tensor([[-0.5071, -0.2162,  0.6719, -0.5793],
+		            [ 0.0608,  0.0061,  0.9497,  0.3343],
+		            [ 0.6058,  0.9553,  1.0960,  2.3332]])
 		    >>> indices
-		
-		     0  2  1  2
-		     2  0  2  0
-		     1  1  0  1
-		    [torch.LongTensor of size 3x4]
+		    tensor([[ 2,  0,  0,  1],
+		            [ 0,  1,  1,  2],
+		            [ 1,  2,  2,  0]])
 	**/
 	static public function sort(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var sparse_coo : Dynamic;
 	/**
-		Splits the tensor into equally sized chunks (if possible).
+		sparse_coo_tensor(indices, values, size=None, dtype=None, device=None, requires_grad=False) -> Tensor
 		
-		Last chunk will be smaller if the tensor size along a given dimension
-		is not divisible by ``split_size``.
+		Constructs a sparse_coo_tensor with non-zero elements at the given :attr:`indices` with the given
+		:attr:`values`.
+		
+		Args:
+		    indices (array_like): Initial data for the tensor. Can be a list, tuple,
+		        NumPy ``ndarray``, scalar, and other types. Will be cast to a :class:`torch.LongTensor`
+		        internally. The indices are the coordinates of the non-zero values in the matrix, and thus
+		        should be two-dimensional where the first dimension is the number of tensor dimensions and
+		        the second dimension is the number of non-zero values.
+		    values (array_like): Initial values for the tensor. Can be a list, tuple,
+		        NumPy ``ndarray``, scalar, and other types.
+		    size (list, tuple, or :class:`torch.Size`, optional): Size of the sparse tensor. If not
+		        provided the size will be inferred as the minimum size big enough to hold all non-zero
+		        elements.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if None, infers data type from :attr:`values`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if None, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		
+		Example::
+		
+		    >>> i = torch.LongTensor([[0, 1, 1],
+		                              [2, 0, 2]])
+		    >>> v = torch.FloatTensor([3, 4, 5])
+		    >>> torch.sparse_coo_tensor(i, v, torch.Size([2,4]))
+		    torch.sparse.FloatTensor of size (2,4) with indices:
+		    tensor([[ 0,  1,  1],
+		            [ 2,  0,  2]])
+		    and values:
+		    tensor([ 3.,  4.,  5.])
+		
+		    >>> torch.sparse_coo_tensor(i, v)  # Shape inference
+		    torch.sparse.FloatTensor of size (2,3) with indices:
+		    tensor([[ 0,  1,  1],
+		            [ 2,  0,  2]])
+		    and values:
+		    tensor([ 3.,  4.,  5.])
+		
+		    >>> torch.sparse_coo_tensor(i, v, torch.Size([2,4]), dtype=torch.float64,
+		                                device=torch.device('cuda:0'))
+		    torch.cuda.sparse.DoubleTensor of size (2,4) with indices:
+		    tensor([[ 0,  1,  1],
+		            [ 2,  0,  2]], device='cuda:0')
+		    and values:
+		    tensor([ 3.,  4.,  5.], dtype=torch.float64, device='cuda:0')
+		
+		    >>> torch.sparse_coo_tensor([], [], torch.Size([])) # Create an empty tensor (of size (0,))
+		    torch.sparse.FloatTensor of size () with indices:
+		    tensor([], dtype=torch.int64)
+		    and values:
+		    tensor([])
+	**/
+	static public function sparse_coo_tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Splits the tensor into chunks.
+		
+		If :attr:`split_size_or_sections` is an integer type, then :attr:`tensor` will
+		be split into equally sized chunks (if possible). Last chunk will be smaller if
+		the tensor size along the given dimension :attr:`dim= is not divisible by
+		:attr:`split_size`.
+		
+		If :attr:`split_size_or_sections` is a list, then :attr:`tensor` will be split
+		into ``len(split_size_or_sections)`` chunks with sizes in :attr:`dim` according
+		to :attr:`split_size_or_sections`.
 		
 		Arguments:
 		    tensor (Tensor): tensor to split.
-		    split_size (int): size of a single chunk.
+		    split_size_or_sections (int) or (list(int)): size of a single chunk or
+		        list of sizes for each chunk
 		    dim (int): dimension along which to split the tensor.
 	**/
-	static public function split(tensor:Dynamic, split_size:Dynamic, ?dim:Dynamic):Dynamic;
+	static public function split(tensor:Dynamic, split_size_or_sections:Dynamic, ?dim:Dynamic):Dynamic;
+	static public function split_with_sizes(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function spmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		sqrt(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the square-root of the elements of :attr:`input`.
+		Returns a new tensor with the square-root of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \sqrt{\text{input}_{i}}
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		     1.2290
-		     1.3409
-		    -0.5662
-		    -0.0899
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-2.0755,  1.0226,  0.0831,  0.4806])
 		    >>> torch.sqrt(a)
-		
-		     1.1086
-		     1.1580
-		        nan
-		        nan
-		    [torch.FloatTensor of size 4]
+		    tensor([    nan,  1.0112,  0.2883,  0.6933])
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function sqrt_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		squeeze(input, dim=None, out=None)
+		squeeze(input, dim=None, out=None) -> Tensor
 		
-		Returns a `Tensor` with all the dimensions of :attr:`input` of size `1` removed.
+		Returns a tensor with all the dimensions of :attr:`input` of size `1` removed.
 		
-		If `input` is of shape: :math:`(A x 1 x B x C x 1 x D)` then the `out` Tensor
-		will be of shape: :math:`(A x B x C x D)`
+		For example, if `input` is of shape:
+		:math:`(A \times 1 \times B \times C \times 1 \times D)` then the `out` tensor
+		will be of shape: :math:`(A \times B \times C \times D)`.
 		
-		When :attr:`dim` is given, a squeeze operation is done only in the given dimension.
-		If `input` is of shape: :math:`(A x 1 x B)`, `squeeze(input, 0)` leaves the Tensor unchanged,
-		but `squeeze(input, 1)` will squeeze the tensor to the shape :math:`(A x B)`.
+		When :attr:`dim` is given, a squeeze operation is done only in the given
+		dimension. If `input` is of shape: :math:`(A \times 1 \times B)`,
+		`squeeze(input, 0)` leaves the tensor unchanged, but :func:`squeeze(input, 1)` will
+		squeeze the tensor to the shape :math:`(A \times B)`.
 		
-		.. note:: The returned Tensor shares the storage with the input Tensor,
+		.. note:: The returned tensor shares the storage with the input tensor,
 		          so changing the contents of one will change the contents of the other.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    dim (int, optional): if given, the input will be squeezed only in this dimension
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    dim (int, optional): if given, the input will be squeezed only in
+		           this dimension
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> x = torch.zeros(2,1,2,1,2)
+		    >>> x = torch.zeros(2, 1, 2, 1, 2)
 		    >>> x.size()
-		    (2L, 1L, 2L, 1L, 2L)
+		    torch.Size([2, 1, 2, 1, 2])
 		    >>> y = torch.squeeze(x)
 		    >>> y.size()
-		    (2L, 2L, 2L)
+		    torch.Size([2, 2, 2])
 		    >>> y = torch.squeeze(x, 0)
 		    >>> y.size()
-		    (2L, 1L, 2L, 1L, 2L)
+		    torch.Size([2, 1, 2, 1, 2])
 		    >>> y = torch.squeeze(x, 1)
 		    >>> y.size()
-		    (2L, 2L, 1L, 2L)
+		    torch.Size([2, 2, 1, 2])
 	**/
 	static public function squeeze(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function sspaddmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		stack(seq, dim=0, out=None) -> Tensor
+		
 		Concatenates sequence of tensors along a new dimension.
 		
 		All tensors need to be of the same size.
 		
 		Arguments:
-		    sequence (Sequence): sequence of tensors to concatenate.
+		    seq (sequence of Tensors): sequence of tensors to concatenate
 		    dim (int): dimension to insert. Has to be between 0 and the number
-		        of dimensions of concatenated tensors (inclusive).
+		        of dimensions of concatenated tensors (inclusive)
+		    out (Tensor, optional): the output tensor
 	**/
-	static public function stack(sequence:Dynamic, ?dim:Dynamic, ?out:Dynamic):Dynamic;
+	static public function stack(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: std(input) -> float
+		.. function:: std(input, unbiased=True) -> Tensor
 		
-		Returns the standard-deviation of all elements in the :attr:`input` Tensor.
+		Returns the standard-deviation of all elements in the :attr:`input` tensor.
+		
+		If :attr:`unbiased` is ``False``, then the standard-deviation will be calculated
+		via the biased estimator. Otherwise, Bessel's correction will be used.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
+		    unbiased (bool): whether to use the unbiased estimation or not
 		
 		Example::
 		
 		    >>> a = torch.randn(1, 3)
 		    >>> a
-		
-		    -1.3063  1.4182 -0.3061
-		    [torch.FloatTensor of size 1x3]
-		
+		    tensor([[-0.8166, -1.3802, -0.3560]])
 		    >>> torch.std(a)
-		    1.3782334731508061
+		    tensor(0.5130)
 		
+		.. function:: std(input, dim, keepdim=False, unbiased=True, out=None) -> Tensor
 		
-		.. function:: std(input, dim, out=None) -> Tensor
+		Returns the standard-deviation of each row of the :attr:`input` tensor in the
+		given dimension :attr:`dim`.
 		
-		Returns the standard-deviation of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
+		If :attr:`keepdim` is ``True``, the output tensor is of the same size as
+		:attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting
+		in the output tensor having 1 fewer dimension than :attr:`input`.
 		
-		The output Tensor is of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		If :attr:`unbiased` is ``False``, then the standard-deviation will be calculated
+		via the biased estimator. Otherwise, Bessel's correction will be used.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    dim (int): the dimension to reduce
-		    out (Tensor, optional): the result Tensor
+		    keepdim (bool): whether the output tensor has :attr:`dim` retained or not
+		    unbiased (bool): whether to use the unbiased estimation or not
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4, 4)
 		    >>> a
-		
-		     0.1889 -2.4856  0.0043  1.8169
-		    -0.7701 -0.4682 -2.2410  0.4098
-		     0.1919 -1.1856 -1.0361  0.9085
-		     0.0173  1.0662  0.2143 -0.5576
-		    [torch.FloatTensor of size 4x4]
-		
+		    tensor([[ 0.2035,  1.2959,  1.8101, -0.4644],
+		            [ 1.5027, -0.3270,  0.5905,  0.6538],
+		            [-1.5745,  1.3330, -0.5596, -0.6548],
+		            [ 0.1264, -0.5080,  1.6420,  0.1992]])
 		    >>> torch.std(a, dim=1)
-		
-		     1.7756
-		     1.1025
-		     1.0045
-		     0.6725
-		    [torch.FloatTensor of size 4x1]
+		    tensor([ 1.0311,  0.7477,  1.2204,  0.9087])
 	**/
 	static public function std(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: sum(input) -> float
+		Short-time Fourier transform (STFT).
 		
-		Returns the sum of all elements in the :attr:`input` Tensor.
+		Ignoring the optional batch dimension, this method computes the following
+		expression:
+		
+		.. math::
+		    X[m, \omega] = \sum_{k = 0}^{\text{win_length}}%
+		                        window[k]\ input[m \times hop_length + k]\ %
+		                        e^{- j \frac{2 \pi \cdot \omega k}{\text{win_length}}},
+		
+		where :math:`m` is the index of the sliding window, and :math:`\omega` is
+		the frequency that :math:`0 \leq \omega < \text{n_fft}`. When
+		:attr:`onesided` is the default value ``True``,
+		
+		* :attr:`input` must be either a 1-D time sequenceor 2-D a batch of time
+		  sequences.
+		
+		* If :attr:`hop_length` is ``None`` (default), it is treated as equal to
+		  ``floor(n_fft / 4)``.
+		
+		* If :attr:`win_length` is ``None`` (default), it is treated as equal to
+		  :attr:`n_fft`.
+		
+		* :attr:`window` can be a 1-D tensor of size :attr:`win_length`, e.g., from
+		  :meth:`torch.hann_window`. If :attr:`window` is ``None`` (default), it is
+		  treated as if having :math:`1` everywhere in the window. If
+		  :math:`\text{win_length} < \text{n_fft}`, :attr:`window` will be padded on
+		  both sides to length :attr:`n_fft` before being applied.
+		
+		* If :attr:`center` is ``True`` (default), :attr:`input` will be padded on
+		  both sides so that the :math:`t`-th frame is centered at time
+		  :math:`t \times \text{hop_length}`. Otherwise, the :math:`t`-th frame
+		  begins at time  :math:`t \times \text{hop_length}`.
+		
+		* :attr:`pad_mode` determines the padding method used on :attr:`input` when
+		  :attr:`center` is ``True``. See :meth:`torch.nn.functional.pad` for
+		  all available options. Default is ``"reflect"``.
+		
+		* If :attr:`onesided` is ``True`` (default), only values for :math:`\omega`
+		  in :math:`\left[0, 1, 2, \dots, \left\lfloor \frac{\text{n_fft}}{2} \right\rfloor + 1\right]`
+		  are returned because the real-to-complex Fourier transform satisfies the
+		  conjugate symmetry, i.e., :math:`X[m, \omega] = X[m, \text{n_fft} - \omega]^*`.
+		
+		* If :attr:`normalized` is ``True`` (default is ``False``), the function
+		  returns the normalized STFT results, i.e., multiplied by :math:`(\text{frame_length})^{-0.5}`.
+		
+		Returns the real and the imaginary parts together as one tensor of size
+		:math:`(* \times N \times T \times 2)`, where :math:`*` is the optional
+		batch size of :attr:`input`, :math:`N` is the number of frequencies where
+		STFT is applied, :math:`T` is the total number of frames used, and each pair
+		in the last dimension represents a complex number as the real part and the
+		imaginary part.
+		
+		.. warning::
+		  This function changed signature at version 0.4.1. Calling with the
+		  previous signature may cause error or return incorrect result.
+		
+		Arguments:
+		    input (Tensor): the input tensor
+		    n_fft (int, optional): size of Fourier transform
+		    hop_length (int): the distance between neighboring sliding window
+		        frames. Default: ``None`` (treated as equal to ``floor(n_fft / 4)``)
+		    win_length (int): the size of window frame and STFT filter.
+		        Default: ``None``  (treated as equal to :attr:`n_fft`)
+		    window (Tensor, optional): the optional window function.
+		        Default: ``None`` (treated as window of all :math:`1`s)
+		    center (bool, optional): whether to pad :attr:`input` on both sides so
+		        that the :math:`t`-th frame is centered at time :math:`t \times \text{hop_length}`.
+		        Default: ``True``
+		    pad_mode (string, optional): controls the padding method used when
+		        :attr:`center` is ``True``. Default: ``"reflect"``
+		    normalized (bool, optional): controls whether to return the normalized STFT results
+		         Default: ``False``
+		    onesided (bool, optional): controls whether to return half of results to
+		        avoid redundancy Default: ``True``
+		
+		Returns:
+		    Tensor: A tensor containing the STFT result with shape described above
+	**/
+	static public function stft(input:Dynamic, n_fft:Dynamic, ?hop_length:Dynamic, ?win_length:Dynamic, ?window:Dynamic, ?center:Dynamic, ?pad_mode:Dynamic, ?normalized:Dynamic, ?onesided:Dynamic):Dynamic;
+	static public var strided : Dynamic;
+	static public function sub(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		.. function:: sum(input, dtype=None) -> Tensor
+		
+		Returns the sum of all elements in the :attr:`input` tensor.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        If specified, the input tensor is casted to :attr:`dtype` before the operation
+		        is performed. This is useful for preventing data type overflows. Default: None.
 		
 		Example::
 		
 		    >>> a = torch.randn(1, 3)
 		    >>> a
-		
-		     0.6170  0.3546  0.0253
-		    [torch.FloatTensor of size 1x3]
-		
+		    tensor([[ 0.1133, -0.9567,  0.2958]])
 		    >>> torch.sum(a)
-		    0.9969287421554327
+		    tensor(-0.5475)
 		
+		.. function:: sum(input, dim, keepdim=False, dtype=None) -> Tensor
 		
-		.. function:: sum(input, dim, out=None) -> Tensor
+		Returns the sum of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`. If :attr::`dim` is a list of dimensions,
+		reduce over all of them.
 		
-		Returns the sum of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
-		
-		The output Tensor is of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		If :attr:`keepdim` is ``True``, the output tensor is of the same size
+		as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in
+		the output tensor having 1 fewer dimension than :attr:`input`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    dim (int): the dimension to reduce
-		    out (Tensor, optional): the result Tensor
+		    input (Tensor): the input tensor
+		    dim (int or tuple of ints): the dimension or dimensions to reduce
+		    keepdim (bool): whether the output tensor has :attr:`dim` retained or not
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        If specified, the input tensor is casted to :attr:`dtype` before the operation
+		        is performed. This is useful for preventing data type overflows. Default: None.
 		
 		Example::
 		
 		    >>> a = torch.randn(4, 4)
 		    >>> a
-		
-		    -0.4640  0.0609  0.1122  0.4784
-		    -1.3063  1.6443  0.4714 -0.7396
-		    -1.3561 -0.1959  1.0609 -1.9855
-		     2.6833  0.5746 -0.5709 -0.4430
-		    [torch.FloatTensor of size 4x4]
-		
+		    tensor([[ 0.0569, -0.2475,  0.0737, -0.3429],
+		            [-0.2993,  0.9138,  0.9337, -1.6864],
+		            [ 0.1132,  0.7892, -0.1003,  0.5688],
+		            [ 0.3637, -0.9906, -0.4752, -1.5197]])
 		    >>> torch.sum(a, 1)
-		
-		     0.1874
-		     0.0698
-		    -2.4767
-		     2.2440
-		    [torch.FloatTensor of size 4x1]
+		    tensor([-0.4598, -0.1381,  1.3708, -2.6217])
+		    >>> b = torch.arange(4 * 5 * 6).view(4, 5, 6)
+		    >>> torch.sum(b, (2, 1))
+		    tensor([  435.,  1335.,  2235.,  3135.])
 	**/
 	static public function sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		svd(input, some=True, out=None) -> (Tensor, Tensor, Tensor)
 		
 		`U, S, V = torch.svd(A)` returns the singular value decomposition of a
-		real matrix `A` of size `(n x m)` such that :math:`A = USV'*`.
+		real matrix `A` of size `(n x m)` such that :math:`A = USV^T`.
 		
-		`U` is of shape `n x n`
+		`U` is of shape :math:`(n \times n)`.
 		
-		`S` is of shape `n x m`
+		`S` is a diagonal matrix of shape :math:`(n \times m)`, represented as a vector
+		of size :math:`\min(n, m)` containing the non-negative diagonal entries.
 		
-		`V` is of shape `m x m`.
+		`V` is of shape :math:`(m \times m)`.
 		
-		:attr:`some` represents the number of singular values to be computed.
-		If `some=True`, it computes some and `some=False` computes all.
+		If :attr:`some` is ``True`` (default), the returned `U` and `V` matrices will
+		contain only :math:`min(n, m)` orthonormal columns.
 		
 		.. note:: Irrespective of the original strides, the returned matrix `U`
 		          will be transposed, i.e. with strides `(1, n)` instead of `(n, 1)`.
 		
+		.. note:: Extra care needs to be taken when backward through `U` and `V`
+		          outputs. Such operation is really only stable when :attr:`input` is
+		          full rank with all distinct singular values. Otherwise, ``NaN`` can
+		          appear as the gradients are not properly defined. Also, notice that
+		          double backward will usually do an additional backward through `U` and
+		          `V` even if the original backward is only on `S`.
+		
+		.. note:: When :attr:`some` = ``False``, the gradients on ``U[:, min(n, m):]``
+		          and ``V[:, min(n, m):]`` will be ignored in backward as those vectors
+		          can be arbitrary bases of the subspaces.
+		
 		Args:
-		    input (Tensor): the input 2D Tensor
-		    some (bool, optional): controls the number of singular values to be computed
-		    out (tuple, optional): the result tuple
+		    input (Tensor): the input 2-D tensor
+		    some (bool, optional): controls the shape of returned `U` and `V`
+		    out (tuple, optional): the output tuple of tensors
 		
 		Example::
 		
-		    >>> a = torch.Tensor([[8.79,  6.11, -9.15,  9.57, -3.49,  9.84],
-		    ...                   [9.93,  6.91, -7.93,  1.64,  4.02,  0.15],
-		    ...                   [9.83,  5.04,  4.86,  8.83,  9.80, -8.99],
-		    ...                   [5.45, -0.27,  4.85,  0.74, 10.00, -6.02],
-		    ...                   [3.16,  7.98,  3.01,  5.80,  4.27, -5.31]]).t()
-		    >>> a
-		
-		      8.7900   9.9300   9.8300   5.4500   3.1600
-		      6.1100   6.9100   5.0400  -0.2700   7.9800
-		     -9.1500  -7.9300   4.8600   4.8500   3.0100
-		      9.5700   1.6400   8.8300   0.7400   5.8000
-		     -3.4900   4.0200   9.8000  10.0000   4.2700
-		      9.8400   0.1500  -8.9900  -6.0200  -5.3100
-		    [torch.FloatTensor of size 6x5]
+		    >>> a = torch.tensor([[8.79,  6.11, -9.15,  9.57, -3.49,  9.84],
+		                          [9.93,  6.91, -7.93,  1.64,  4.02,  0.15],
+		                          [9.83,  5.04,  4.86,  8.83,  9.80, -8.99],
+		                          [5.45, -0.27,  4.85,  0.74, 10.00, -6.02],
+		                          [3.16,  7.98,  3.01,  5.80,  4.27, -5.31]]).t()
 		
 		    >>> u, s, v = torch.svd(a)
 		    >>> u
-		
-		    -0.5911  0.2632  0.3554  0.3143  0.2299
-		    -0.3976  0.2438 -0.2224 -0.7535 -0.3636
-		    -0.0335 -0.6003 -0.4508  0.2334 -0.3055
-		    -0.4297  0.2362 -0.6859  0.3319  0.1649
-		    -0.4697 -0.3509  0.3874  0.1587 -0.5183
-		     0.2934  0.5763 -0.0209  0.3791 -0.6526
-		    [torch.FloatTensor of size 6x5]
-		
+		    tensor([[-0.5911,  0.2632,  0.3554,  0.3143,  0.2299],
+		            [-0.3976,  0.2438, -0.2224, -0.7535, -0.3636],
+		            [-0.0335, -0.6003, -0.4508,  0.2334, -0.3055],
+		            [-0.4297,  0.2362, -0.6859,  0.3319,  0.1649],
+		            [-0.4697, -0.3509,  0.3874,  0.1587, -0.5183],
+		            [ 0.2934,  0.5763, -0.0209,  0.3791, -0.6526]])
 		    >>> s
-		
-		     27.4687
-		     22.6432
-		      8.5584
-		      5.9857
-		      2.0149
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([ 27.4687,  22.6432,   8.5584,   5.9857,   2.0149])
 		    >>> v
-		
-		    -0.2514  0.8148 -0.2606  0.3967 -0.2180
-		    -0.3968  0.3587  0.7008 -0.4507  0.1402
-		    -0.6922 -0.2489 -0.2208  0.2513  0.5891
-		    -0.3662 -0.3686  0.3859  0.4342 -0.6265
-		    -0.4076 -0.0980 -0.4932 -0.6227 -0.4396
-		    [torch.FloatTensor of size 5x5]
-		
+		    tensor([[-0.2514,  0.8148, -0.2606,  0.3967, -0.2180],
+		            [-0.3968,  0.3587,  0.7008, -0.4507,  0.1402],
+		            [-0.6922, -0.2489, -0.2208,  0.2513,  0.5891],
+		            [-0.3662, -0.3686,  0.3859,  0.4342, -0.6265],
+		            [-0.4076, -0.0980, -0.4933, -0.6227, -0.4396]])
 		    >>> torch.dist(a, torch.mm(torch.mm(u, torch.diag(s)), v.t()))
-		    8.934150226306685e-06
+		    tensor(1.00000e-06 *
+		           9.3738)
 	**/
 	static public function svd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		symeig(input, eigenvectors=False, upper=True, out=None) -> (Tensor, Tensor)
 		
-		`e, V = torch.symeig(input)` returns eigenvalues and eigenvectors
-		of a symmetric real matrix :attr:`input`.
+		This function returns eigenvalues and eigenvectors
+		of a real symmetric matrix :attr:`input`, represented by a tuple :math:`(e, V)`.
 		
-		`input` and `V` are `m x m` matrices and `e` is a `m` dimensional vector.
+		:attr:`input` and :math:`V` are :math:`(m \times m)` matrices and :math:`e` is a
+		:math:`m` dimensional vector.
 		
-		This function calculates all eigenvalues (and vectors) of `input`
-		such that `input = V diag(e) V'`
+		This function calculates all eigenvalues (and vectors) of :attr:`input`
+		such that :math:`input = V diag(e) V^T`.
 		
 		The boolean argument :attr:`eigenvectors` defines computation of
 		eigenvectors or eigenvalues only.
 		
-		If it is `False`, only eigenvalues are computed. If it is `True`,
+		If it is ``False``, only eigenvalues are computed. If it is ``True``,
 		both eigenvalues and eigenvectors are computed.
 		
-		Since the input matrix `input` is supposed to be symmetric,
+		Since the input matrix :attr:`input` is supposed to be symmetric,
 		only the upper triangular portion is used by default.
 		
-		If :attr:`upper` is `False`, then lower triangular portion is used.
+		If :attr:`upper` is ``False``, then lower triangular portion is used.
 		
 		Note: Irrespective of the original strides, the returned matrix `V` will
 		be transposed, i.e. with strides `(1, m)` instead of `(m, 1)`.
@@ -3938,482 +6107,686 @@ package torch;
 		    input (Tensor): the input symmetric matrix
 		    eigenvectors(boolean, optional): controls whether eigenvectors have to be computed
 		    upper(boolean, optional): controls whether to consider upper-triangular or lower-triangular region
-		    out (tuple, optional): The result tuple of (Tensor, Tensor)
+		    out (tuple, optional): the output tuple of (Tensor, Tensor)
 		
 		Examples::
 		
 		
-		    >>> a = torch.Tensor([[ 1.96,  0.00,  0.00,  0.00,  0.00],
-		    ...                   [-6.49,  3.80,  0.00,  0.00,  0.00],
-		    ...                   [-0.47, -6.39,  4.17,  0.00,  0.00],
-		    ...                   [-7.20,  1.50, -1.51,  5.70,  0.00],
-		    ...                   [-0.65, -6.34,  2.67,  1.80, -7.10]]).t()
-		
+		    >>> a = torch.tensor([[ 1.96,  0.00,  0.00,  0.00,  0.00],
+		                          [-6.49,  3.80,  0.00,  0.00,  0.00],
+		                          [-0.47, -6.39,  4.17,  0.00,  0.00],
+		                          [-7.20,  1.50, -1.51,  5.70,  0.00],
+		                          [-0.65, -6.34,  2.67,  1.80, -7.10]]).t()
 		    >>> e, v = torch.symeig(a, eigenvectors=True)
 		    >>> e
-		
-		    -11.0656
-		     -6.2287
-		      0.8640
-		      8.8655
-		     16.0948
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([-11.0656,  -6.2287,   0.8640,   8.8655,  16.0948])
 		    >>> v
-		
-		    -0.2981 -0.6075  0.4026 -0.3745  0.4896
-		    -0.5078 -0.2880 -0.4066 -0.3572 -0.6053
-		    -0.0816 -0.3843 -0.6600  0.5008  0.3991
-		    -0.0036 -0.4467  0.4553  0.6204 -0.4564
-		    -0.8041  0.4480  0.1725  0.3108  0.1622
-		    [torch.FloatTensor of size 5x5]
+		    tensor([[-0.2981, -0.6075,  0.4026, -0.3745,  0.4896],
+		            [-0.5078, -0.2880, -0.4066, -0.3572, -0.6053],
+		            [-0.0816, -0.3843, -0.6600,  0.5008,  0.3991],
+		            [-0.0036, -0.4467,  0.4553,  0.6204, -0.4564],
+		            [-0.8041,  0.4480,  0.1725,  0.3108,  0.1622]])
 	**/
 	static public function symeig(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		t(input, out=None) -> Tensor
+		t(input) -> Tensor
 		
-		Expects :attr:`input` to be a matrix (2D Tensor) and transposes dimensions 0 and 1.
+		Expects :attr:`input` to be a matrix (2-D tensor) and transposes dimensions 0
+		and 1.
 		
-		Can be seen as a short-hand function for `transpose(input, 0, 1)`
+		Can be seen as a short-hand function for :meth:`transpose(input, 0, 1)`
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
 		
 		Example::
 		
 		    >>> x = torch.randn(2, 3)
 		    >>> x
-		
-		     0.4834  0.6907  1.3417
-		    -0.1300  0.5295  0.2321
-		    [torch.FloatTensor of size 2x3]
-		
+		    tensor([[ 0.4875,  0.9158, -0.5872],
+		            [ 0.3938, -0.6929,  0.6932]])
 		    >>> torch.t(x)
-		
-		     0.4834 -0.1300
-		     0.6907  0.5295
-		     1.3417  0.2321
-		    [torch.FloatTensor of size 3x2]
+		    tensor([[ 0.4875,  0.3938],
+		            [ 0.9158, -0.6929],
+		            [-0.5872,  0.6932]])
 	**/
 	static public function t(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tan(input, out=None) -> Tensor
+		take(input, indices) -> Tensor
 		
-		Returns a new `Tensor` with the tangent of the elements of :attr:`input`.
+		Returns a new tensor with the elements of :attr:`input` at the given indices.
+		The input tensor is treated as if it were viewed as a 1-D tensor. The result
+		takes the same shape as the indices.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    indices (LongTensor): the indices into tensor
+		
+		Example::
+		
+		    >>> src = torch.tensor([[4, 3, 5],
+		                            [6, 7, 8]])
+		    >>> torch.take(src, torch.tensor([0, 2, 5]))
+		    tensor([ 4,  5,  8])
+	**/
+	static public function take(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		tan(input, out=None) -> Tensor
+		
+		Returns a new tensor with the tangent of the elements of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \tan(\text{input}_{i})
+		
+		Args:
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([-1.2027, -1.7687,  0.4412, -1.3856])
 		    >>> torch.tan(a)
-		    -0.7392
-		     0.2786
-		     0.4792
-		     3.7801
-		    [torch.FloatTensor of size 4]
+		    tensor([-2.5930,  4.9859,  0.4722, -5.3366])
 	**/
 	static public function tan(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function tan_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		tanh(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the hyperbolic tangent of the elements of :attr:`input`.
+		Returns a new tensor with the hyperbolic tangent of the elements
+		of :attr:`input`.
+		
+		.. math::
+		    \text{out}_{i} = \tanh(\text{input}_{i})
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		    -0.6366
-		     0.2718
-		     0.4469
-		     1.3122
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 0.8986, -0.7279,  1.1745,  0.2611])
 		    >>> torch.tanh(a)
-		    -0.5625
-		     0.2653
-		     0.4193
-		     0.8648
-		    [torch.FloatTensor of size 4]
+		    tensor([ 0.7156, -0.6218,  0.8257,  0.2553])
 	**/
 	static public function tanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function tanh_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		tensor(data, dtype=None, device=None, requires_grad=False) -> Tensor
+		
+		Constructs a tensor with :attr:`data`.
+		
+		.. warning::
+		
+		    :func:`torch.tensor` always copies :attr:`data`. If you have a Tensor
+		    ``data`` and want to avoid a copy, use :func:`torch.Tensor.requires_grad_`
+		    or :func:`torch.Tensor.detach`.
+		    If you have a NumPy ``ndarray`` and want to avoid a copy, use
+		    :func:`torch.from_numpy`.
+		
+		Args:
+		    data (array_like): Initial data for the tensor. Can be a list, tuple,
+		        NumPy ``ndarray``, scalar, and other types.
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, infers data type from :attr:`data`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		
+		Example::
+		
+		    >>> torch.tensor([[0.1, 1.2], [2.2, 3.1], [4.9, 5.2]])
+		    tensor([[ 0.1000,  1.2000],
+		            [ 2.2000,  3.1000],
+		            [ 4.9000,  5.2000]])
+		
+		    >>> torch.tensor([0, 1])  # Type inference on data
+		    tensor([ 0,  1])
+		
+		    >>> torch.tensor([[0.11111, 0.222222, 0.3333333]],
+		                     dtype=torch.float64,
+		                     device=torch.device('cuda:0'))  # creates a torch.cuda.DoubleTensor
+		    tensor([[ 0.1111,  0.2222,  0.3333]], dtype=torch.float64, device='cuda:0')
+		
+		    >>> torch.tensor(3.14159)  # Create a scalar (zero-dimensional tensor)
+		    tensor(3.1416)
+		
+		    >>> torch.tensor([])  # Create an empty tensor (of size (0,))
+		    tensor([])
+	**/
+	static public function tensor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_add(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_add_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_addmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_addmm_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_clone(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_div_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_mul(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_mul_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_pow(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_resize_as_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_sub(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_sub_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function th_zero_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		to_batch_graph(arg0: torch._C.Graph) -> torch._C.Graph
+	**/
+	static public function to_batch_graph(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		topk(input, k, dim=None, largest=True, sorted=True, out=None) -> (Tensor, LongTensor)
 		
-		Returns the :attr:`k` largest elements of the given :attr:`input` Tensor along a given dimension.
+		Returns the :attr:`k` largest elements of the given :attr:`input` tensor along
+		a given dimension.
 		
 		If :attr:`dim` is not given, the last dimension of the `input` is chosen.
 		
-		If :attr:`largest` is `False` then the `k` smallest elements are returned.
+		If :attr:`largest` is ``False`` then the `k` smallest elements are returned.
 		
-		A tuple of `(values, indices)` is returned, where the `indices` are the indices of
-		the elements in the original `input` Tensor.
+		A tuple of `(values, indices)` is returned, where the `indices` are the indices
+		of the elements in the original `input` tensor.
 		
-		The boolean option :attr:`sorted` if `True`, will make sure that the returned `k`
-		elements are themselves sorted
+		The boolean option :attr:`sorted` if ``True``, will make sure that the returned
+		`k` elements are themselves sorted
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    k (int): the k in "top-k"
-		    dim (int, optional): The dimension to sort along
-		    largest (bool, optional): Controls whether to return largest or smallest elements
-		    sorted (bool, optional): Controls whether to return the elements in sorted order
-		    out (tuple, optional): The output tuple of (Tensor, LongTensor)
-		                           can be optionally given to be used as output buffers
+		    dim (int, optional): the dimension to sort along
+		    largest (bool, optional): controls whether to return largest or
+		           smallest elements
+		    sorted (bool, optional): controls whether to return the elements
+		           in sorted order
+		    out (tuple, optional): the output tuple of (Tensor, LongTensor) that can be
+		        optionally given to be used as output buffers
 		
 		Example::
 		
-		    >>> x = torch.arange(1, 6)
+		    >>> x = torch.arange(1., 6.)
 		    >>> x
-		
-		     1
-		     2
-		     3
-		     4
-		     5
-		    [torch.FloatTensor of size 5]
-		
+		    tensor([ 1.,  2.,  3.,  4.,  5.])
 		    >>> torch.topk(x, 3)
-		    (
-		     5
-		     4
-		     3
-		    [torch.FloatTensor of size 3]
-		    ,
-		     4
-		     3
-		     2
-		    [torch.LongTensor of size 3]
-		    )
-		    >>> torch.topk(x, 3, 0, largest=False)
-		    (
-		     1
-		     2
-		     3
-		    [torch.FloatTensor of size 3]
-		    ,
-		     0
-		     1
-		     2
-		    [torch.LongTensor of size 3]
-		    )
+		    (tensor([ 5.,  4.,  3.]), tensor([ 4,  3,  2]))
 	**/
 	static public function topk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		trace(input) -> float
+		trace(input) -> Tensor
 		
-		Returns the sum of the elements of the diagonal of the input 2D matrix.
+		Returns the sum of the elements of the diagonal of the input 2-D matrix.
 		
 		Example::
 		
-		    >>> x = torch.arange(1, 10).view(3, 3)
+		    >>> x = torch.arange(1., 10.).view(3, 3)
 		    >>> x
-		
-		     1  2  3
-		     4  5  6
-		     7  8  9
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[ 1.,  2.,  3.],
+		            [ 4.,  5.,  6.],
+		            [ 7.,  8.,  9.]])
 		    >>> torch.trace(x)
-		    15.0
+		    tensor(15.)
 	**/
 	static public function trace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		transpose(input, dim0, dim1, out=None) -> Tensor
+		transpose(input, dim0, dim1) -> Tensor
 		
-		Returns a `Tensor` that is a transposed version of :attr:`input`.
+		Returns a tensor that is a transposed version of :attr:`input`.
 		The given dimensions :attr:`dim0` and :attr:`dim1` are swapped.
 		
-		The resulting :attr:`out` Tensor shares it's underlying storage with the
-		:attr:`input` Tensor, so changing the content of one would change the content
+		The resulting :attr:`out` tensor shares it's underlying storage with the
+		:attr:`input` tensor, so changing the content of one would change the content
 		of the other.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    dim0 (int): The first dimension to be transposed
-		    dim1 (int): The second dimension to be transposed
+		    input (Tensor): the input tensor
+		    dim0 (int): the first dimension to be transposed
+		    dim1 (int): the second dimension to be transposed
 		
 		Example::
 		
 		    >>> x = torch.randn(2, 3)
 		    >>> x
-		
-		     0.5983 -0.0341  2.4918
-		     1.5981 -0.5265 -0.8735
-		    [torch.FloatTensor of size 2x3]
-		
+		    tensor([[ 1.0028, -0.9893,  0.5809],
+		            [-0.1669,  0.7299,  0.4942]])
 		    >>> torch.transpose(x, 0, 1)
-		
-		     0.5983  1.5981
-		    -0.0341 -0.5265
-		     2.4918 -0.8735
-		    [torch.FloatTensor of size 3x2]
+		    tensor([[ 1.0028, -0.1669],
+		            [-0.9893,  0.7299],
+		            [ 0.5809,  0.4942]])
 	**/
 	static public function transpose(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		tril(input, k=0, out=None) -> Tensor
+		tril(input, diagonal=0, out=None) -> Tensor
 		
-		Returns the lower triangular part of the matrix (2D Tensor) :attr:`input`,
-		the other elements of the result Tensor :attr:`out` are set to 0.
+		Returns the lower triangular part of the matrix (2-D tensor) :attr:`input`,
+		the other elements of the result tensor :attr:`out` are set to 0.
 		
-		The lower triangular part of the matrix is defined as the elements on and below the diagonal.
+		The lower triangular part of the matrix is defined as the elements on and
+		below the diagonal.
 		
-		The argument :attr:`k` controls which diagonal to consider.
-		
-		- :attr:`k` = 0, is the main diagonal.
-		- :attr:`k` > 0, is above the main diagonal.
-		- :attr:`k` < 0, is below the main diagonal.
+		The argument :attr:`diagonal` controls which diagonal to consider. If
+		:attr:`diagonal` = 0, all elements on and below the main diagonal are
+		retained. A positive value includes just as many diagonals above the main
+		diagonal, and similarly a negative value excludes just as many diagonals below
+		the main diagonal. The main diagonal are the set of indices
+		:math:`\lbrace (i, i) \rbrace` for :math:`i \in [0, \min\{d_{1}, d_{2}\} - 1]` where
+		:math:`d_{1}, d_{2}` are the dimensions of the matrix.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    k (int, optional): the diagonal to consider
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    diagonal (int, optional): the diagonal to consider
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> a = torch.randn(3,3)
+		    >>> a = torch.randn(3, 3)
 		    >>> a
-		
-		     1.3225  1.7304  1.4573
-		    -0.3052 -0.3111 -0.1809
-		     1.2469  0.0064 -1.6250
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[-1.0813, -0.8619,  0.7105],
+		            [ 0.0935,  0.1380,  2.2112],
+		            [-0.3409, -0.9828,  0.0289]])
 		    >>> torch.tril(a)
+		    tensor([[-1.0813,  0.0000,  0.0000],
+		            [ 0.0935,  0.1380,  0.0000],
+		            [-0.3409, -0.9828,  0.0289]])
 		
-		     1.3225  0.0000  0.0000
-		    -0.3052 -0.3111  0.0000
-		     1.2469  0.0064 -1.6250
-		    [torch.FloatTensor of size 3x3]
-		
-		    >>> torch.tril(a, k=1)
-		
-		     1.3225  1.7304  0.0000
-		    -0.3052 -0.3111 -0.1809
-		     1.2469  0.0064 -1.6250
-		    [torch.FloatTensor of size 3x3]
-		
-		    >>> torch.tril(a, k=-1)
-		
-		     0.0000  0.0000  0.0000
-		    -0.3052  0.0000  0.0000
-		     1.2469  0.0064  0.0000
-		    [torch.FloatTensor of size 3x3]
+		    >>> b = torch.randn(4, 6)
+		    >>> b
+		    tensor([[ 1.2219,  0.5653, -0.2521, -0.2345,  1.2544,  0.3461],
+		            [ 0.4785, -0.4477,  0.6049,  0.6368,  0.8775,  0.7145],
+		            [ 1.1502,  3.2716, -1.1243, -0.5413,  0.3615,  0.6864],
+		            [-0.0614, -0.7344, -1.3164, -0.7648, -1.4024,  0.0978]])
+		    >>> torch.tril(b, diagonal=1)
+		    tensor([[ 1.2219,  0.5653,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [ 0.4785, -0.4477,  0.6049,  0.0000,  0.0000,  0.0000],
+		            [ 1.1502,  3.2716, -1.1243, -0.5413,  0.0000,  0.0000],
+		            [-0.0614, -0.7344, -1.3164, -0.7648, -1.4024,  0.0000]])
+		    >>> torch.tril(b, diagonal=-1)
+		    tensor([[ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [ 0.4785,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [ 1.1502,  3.2716,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [-0.0614, -0.7344, -1.3164,  0.0000,  0.0000,  0.0000]])
 	**/
 	static public function tril(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function triplet_margin_loss(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		triu(input, k=0, out=None) -> Tensor
+		triu(input, diagonal=0, out=None) -> Tensor
 		
-		Returns the upper triangular part of the matrix (2D Tensor) :attr:`input`,
-		the other elements of the result Tensor :attr:`out` are set to 0.
+		Returns the upper triangular part of the matrix (2-D tensor) :attr:`input`,
+		the other elements of the result tensor :attr:`out` are set to 0.
 		
-		The upper triangular part of the matrix is defined as the elements on and above the diagonal.
+		The upper triangular part of the matrix is defined as the elements on and
+		above the diagonal.
 		
-		The argument :attr:`k` controls which diagonal to consider.
-		
-		- :attr:`k` = 0, is the main diagonal.
-		- :attr:`k` > 0, is above the main diagonal.
-		- :attr:`k` < 0, is below the main diagonal.
+		The argument :attr:`diagonal` controls which diagonal to consider. If
+		:attr:`diagonal` = 0, all elements on and below the main diagonal are
+		retained. A positive value excludes just as many diagonals above the main
+		diagonal, and similarly a negative value includes just as many diagonals below
+		the main diagonal. The main diagonal are the set of indices
+		:math:`\lbrace (i, i) \rbrace` for :math:`i \in [0, \min\{d_{1}, d_{2}\} - 1]` where
+		:math:`d_{1}, d_{2}` are the dimensions of the matrix.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    k (int, optional): the diagonal to consider
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    diagonal (int, optional): the diagonal to consider
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
-		    >>> a = torch.randn(3,3)
+		    >>> a = torch.randn(3, 3)
 		    >>> a
-		
-		     1.3225  1.7304  1.4573
-		    -0.3052 -0.3111 -0.1809
-		     1.2469  0.0064 -1.6250
-		    [torch.FloatTensor of size 3x3]
-		
+		    tensor([[ 0.2309,  0.5207,  2.0049],
+		            [ 0.2072, -1.0680,  0.6602],
+		            [ 0.3480, -0.5211, -0.4573]])
 		    >>> torch.triu(a)
+		    tensor([[ 0.2309,  0.5207,  2.0049],
+		            [ 0.0000, -1.0680,  0.6602],
+		            [ 0.0000,  0.0000, -0.4573]])
+		    >>> torch.triu(a, diagonal=1)
+		    tensor([[ 0.0000,  0.5207,  2.0049],
+		            [ 0.0000,  0.0000,  0.6602],
+		            [ 0.0000,  0.0000,  0.0000]])
+		    >>> torch.triu(a, diagonal=-1)
+		    tensor([[ 0.2309,  0.5207,  2.0049],
+		            [ 0.2072, -1.0680,  0.6602],
+		            [ 0.0000, -0.5211, -0.4573]])
 		
-		     1.3225  1.7304  1.4573
-		     0.0000 -0.3111 -0.1809
-		     0.0000  0.0000 -1.6250
-		    [torch.FloatTensor of size 3x3]
-		
-		    >>> torch.triu(a, k=1)
-		
-		     0.0000  1.7304  1.4573
-		     0.0000  0.0000 -0.1809
-		     0.0000  0.0000  0.0000
-		    [torch.FloatTensor of size 3x3]
-		
-		    >>> torch.triu(a, k=-1)
-		
-		     1.3225  1.7304  1.4573
-		    -0.3052 -0.3111 -0.1809
-		     0.0000  0.0064 -1.6250
-		    [torch.FloatTensor of size 3x3]
+		    >>> b = torch.randn(4, 6)
+		    >>> b
+		    tensor([[ 0.5876, -0.0794, -1.8373,  0.6654,  0.2604,  1.5235],
+		            [-0.2447,  0.9556, -1.2919,  1.3378, -0.1768, -1.0857],
+		            [ 0.4333,  0.3146,  0.6576, -1.0432,  0.9348, -0.4410],
+		            [-0.9888,  1.0679, -1.3337, -1.6556,  0.4798,  0.2830]])
+		    >>> torch.tril(b, diagonal=1)
+		    tensor([[ 0.5876, -0.0794,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [-0.2447,  0.9556, -1.2919,  0.0000,  0.0000,  0.0000],
+		            [ 0.4333,  0.3146,  0.6576, -1.0432,  0.0000,  0.0000],
+		            [-0.9888,  1.0679, -1.3337, -1.6556,  0.4798,  0.0000]])
+		    >>> torch.tril(b, diagonal=-1)
+		    tensor([[ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [-0.2447,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [ 0.4333,  0.3146,  0.0000,  0.0000,  0.0000,  0.0000],
+		            [-0.9888,  1.0679, -1.3337,  0.0000,  0.0000,  0.0000]])
 	**/
 	static public function triu(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		trtrs(b, A, upper=True, transpose=False, unitriangular=False) -> (Tensor, Tensor)
+		
+		Solves a system of equations with a triangular coefficient matrix `A`
+		and multiple right-hand sides `b`.
+		
+		In particular, solves :math:`AX = b` and assumes `A` is upper-triangular
+		with the default keyword arguments.
+		
+		Args:
+		    A (Tensor): the input triangular coefficient matrix
+		    b (Tensor): multiple right-hand sides. Each column of `b` is a
+		        right-hand side for the system of equations.
+		    upper (bool, optional): whether to solve the upper-triangular system
+		        of equations (default) or the lower-triangular system of equations. Default: True.
+		    transpose (bool, optional): whether `A` should be transposed before
+		        being sent into the solver. Default: False.
+		    unitriangular (bool, optional): whether `A` is unit triangular.
+		        If True, the diagonal elements of `A` are assumed to be
+		        1 and not referenced from `A`. Default: False.
+		
+		Returns:
+		    A tuple (X, M) where `M` is a clone of `A` and `X` is the solution to
+		    `AX = b` (or whatever variant of the system of equations, depending on
+		    the keyword arguments.)
+		
+		Shape:
+		    - A: :math:`(N, N)`
+		    - b: :math:`(N, C)`
+		    - output[0]: :math:`(N, C)`
+		    - output[1]: :math:`(N, N)`
+		
+		Examples::
+		
+		    >>> A = torch.randn(2, 2).triu()
+		    >>> A
+		    tensor([[ 1.1527, -1.0753],
+		            [ 0.0000,  0.7986]])
+		    >>> b = torch.randn(2, 3)
+		    >>> b
+		    tensor([[-0.0210,  2.3513, -1.5492],
+		            [ 1.5429,  0.7403, -1.0243]])
+		    >>> torch.trtrs(b, A)
+		    (tensor([[ 1.7840,  2.9045, -2.5405],
+		            [ 1.9319,  0.9269, -1.2826]]), tensor([[ 1.1527, -1.0753],
+		            [ 0.0000,  0.7986]]))
+	**/
 	static public function trtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		trunc(input, out=None) -> Tensor
 		
-		Returns a new `Tensor` with the truncated integer values of the elements of :attr:`input`.
+		Returns a new tensor with the truncated integer values of
+		the elements of :attr:`input`.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4)
 		    >>> a
-		
-		    -0.4972
-		     1.3512
-		     0.1056
-		    -0.2650
-		    [torch.FloatTensor of size 4]
-		
+		    tensor([ 3.4742,  0.5466, -0.8008, -0.9079])
 		    >>> torch.trunc(a)
-		
-		    -0
-		     1
-		     0
-		    -0
-		    [torch.FloatTensor of size 4]
+		    tensor([ 3.,  0., -0., -0.])
 	**/
 	static public function trunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function trunc_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function typename(o:Dynamic):Dynamic;
+	static public var uint8 : Dynamic;
 	/**
+		unbind(tensor, dim=0) -> seq
+		
 		Removes a tensor dimension.
 		
 		Returns a tuple of all slices along a given dimension, already without it.
 		
 		Arguments:
-		    tensor (Tensor): tensor to unbind.
-		    dim (int): dimension to remove.
+		    tensor (Tensor): the tensor to unbind
+		    dim (int): dimension to remove
+		
+		Example::
+		
+		    >>> torch.unbind(torch.tensor([[1, 2, 3],
+		    >>>                            [4, 5, 6],
+		    >>>                            [7, 8, 9]]))
+		    (tensor([1, 2, 3]), tensor([4, 5, 6]), tensor([7, 8, 9]))
 	**/
-	static public function unbind(tensor:Dynamic, ?dim:Dynamic):Dynamic;
+	static public function unbind(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		unsqueeze(input, dim, out=None)
+		Returns the unique scalar elements of the input tensor as a 1-D tensor.
+		
+		Arguments:
+		    input (Tensor): the input tensor
+		    sorted (bool): Whether to sort the unique elements in ascending order
+		        before returning as output.
+		    return_inverse (bool): Whether to also return the indices for where
+		        elements in the original input ended up in the returned unique list.
+		
+		Returns:
+		    (Tensor, Tensor (optional)): A tensor or a tuple of tensors containing
+		
+		        - **output** (*Tensor*): the output list of unique scalar elements.
+		        - **inverse_indices** (*Tensor*): (optional) if
+		          :attr:`return_inverse` is True, there will be a
+		          2nd returned tensor (same shape as input) representing the indices
+		          for where elements in the original input map to in the output;
+		          otherwise, this function will only return a single tensor.
+		
+		Example::
+		
+		    >>> output = torch.unique(torch.tensor([1, 3, 2, 3], dtype=torch.long))
+		    >>> output
+		    tensor([ 2,  3,  1])
+		
+		    >>> output, inverse_indices = torch.unique(
+		            torch.tensor([1, 3, 2, 3], dtype=torch.long), sorted=True, return_inverse=True)
+		    >>> output
+		    tensor([ 1,  2,  3])
+		    >>> inverse_indices
+		    tensor([ 0,  2,  1,  2])
+		
+		    >>> output, inverse_indices = torch.unique(
+		            torch.tensor([[1, 3], [2, 3]], dtype=torch.long), sorted=True, return_inverse=True)
+		    >>> output
+		    tensor([ 1,  2,  3])
+		    >>> inverse_indices
+		    tensor([[ 0,  2],
+		            [ 1,  2]])
+	**/
+	static public function unique(input:Dynamic, ?sorted:Dynamic, ?return_inverse:Dynamic):Dynamic;
+	/**
+		unsqueeze(input, dim, out=None) -> Tensor
 		
 		Returns a new tensor with a dimension of size one inserted at the
 		specified position.
 		
 		The returned tensor shares the same underlying data with this tensor.
 		
-		A negative dim value can be used and will correspond to :math:`dim + input.dim() + 1`
+		A :attr:`dim` value within the range ``[-input.dim() - 1, input.dim() + 1)``
+		can be used. Negative :attr:`dim` will correspond to :meth:`unsqueeze`
+		applied at :attr:`dim` = ``dim + input.dim() + 1``.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
-		    dim (int): The index at which to insert the singleton dimension
-		    out (Tensor, optional): The result `Tensor`
+		    input (Tensor): the input tensor
+		    dim (int): the index at which to insert the singleton dimension
+		    out (Tensor, optional): the output tensor
 		
-		Example:
-		    >>> x = torch.Tensor([1, 2, 3, 4])
+		Example::
+		
+		    >>> x = torch.tensor([1, 2, 3, 4])
 		    >>> torch.unsqueeze(x, 0)
-		     1  2  3  4
-		    [torch.FloatTensor of size 1x4]
+		    tensor([[ 1,  2,  3,  4]])
 		    >>> torch.unsqueeze(x, 1)
-		     1
-		     2
-		     3
-		     4
-		    [torch.FloatTensor of size 4x1]
+		    tensor([[ 1],
+		            [ 2],
+		            [ 3],
+		            [ 4]])
 	**/
 	static public function unsqueeze(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. function:: var(input) -> float
+		.. function:: var(input, unbiased=True) -> Tensor
 		
-		Returns the variance of all elements in the :attr:`input` Tensor.
+		Returns the variance of all elements in the :attr:`input` tensor.
+		
+		If :attr:`unbiased` is ``False``, then the variance will be calculated via the
+		biased estimator. Otherwise, Bessel's correction will be used.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
+		    unbiased (bool): whether to use the unbiased estimation or not
 		
 		Example::
 		
 		    >>> a = torch.randn(1, 3)
 		    >>> a
-		
-		    -1.3063  1.4182 -0.3061
-		    [torch.FloatTensor of size 1x3]
-		
+		    tensor([[-0.3425, -1.2636, -0.4864]])
 		    >>> torch.var(a)
-		    1.899527506513334
+		    tensor(0.2455)
 		
 		
-		.. function:: var(input, dim, out=None) -> Tensor
+		.. function:: var(input, dim, keepdim=False, unbiased=True, out=None) -> Tensor
 		
-		Returns the variance of each row of the :attr:`input` Tensor in the given dimension :attr:`dim`.
+		Returns the variance of each row of the :attr:`input` tensor in the given
+		dimension :attr:`dim`.
 		
-		The output Tensor is of the same size as :attr:`input` except in the dimension :attr:`dim` where it is of size 1.
+		If :attr:`keepdim` is ``True``, the output tensors are of the same size
+		as :attr:`input` except in the dimension :attr:`dim` where they are of size 1.
+		Otherwise, :attr:`dim` is squeezed (see :func:`torch.squeeze`), resulting in
+		the outputs tensor having 1 fewer dimension than :attr:`input`.
+		
+		If :attr:`unbiased` is ``False``, then the variance will be calculated via the
+		biased estimator. Otherwise, Bessel's correction will be used.
 		
 		Args:
-		    input (Tensor): the input `Tensor`
+		    input (Tensor): the input tensor
 		    dim (int): the dimension to reduce
-		    out (Tensor, optional): the result Tensor
+		    keepdim (bool): whether the output tensor has :attr:`dim` retained or not
+		    unbiased (bool): whether to use the unbiased estimation or not
+		    out (Tensor, optional): the output tensor
 		
 		Example::
 		
 		    >>> a = torch.randn(4, 4)
 		    >>> a
-		
-		    -1.2738 -0.3058  0.1230 -1.9615
-		     0.8771 -0.5430 -0.9233  0.9879
-		     1.4107  0.0317 -0.6823  0.2255
-		    -1.3854  0.4953 -0.2160  0.2435
-		    [torch.FloatTensor of size 4x4]
-		
+		    tensor([[-0.3567,  1.7385, -1.3042,  0.7423],
+		            [ 1.3436, -0.1015, -0.9834, -0.8438],
+		            [ 0.6056,  0.1089, -0.3112, -1.4085],
+		            [-0.7700,  0.6074, -0.1469,  0.7777]])
 		    >>> torch.var(a, 1)
-		
-		     0.8859
-		     0.9509
-		     0.7548
-		     0.6949
-		    [torch.FloatTensor of size 4x1]
+		    tensor([ 1.7444,  1.1363,  0.7356,  0.5112])
 	**/
 	@:native("var")
 	static public function _var(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function zero(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zeros(*sizes, out=None) -> Tensor
+		where(condition, x, y) -> Tensor
 		
-		Returns a Tensor filled with the scalar value `0`, with the shape defined
-		by the varargs :attr:`sizes`.
+		Return a tensor of elements selected from either :attr:`x` or :attr:`y`, depending on :attr:`condition`.
+		
+		The operation is defined as:
+		
+		.. math::
+		    out_i = \begin{cases}
+		        x_i & \text{if } condition_i \\
+		        y_i & \text{otherwise} \\
+		    \end{cases}
+		
+		.. note::
+		    The tensors :attr:`condition`, :attr:`x`, :attr:`y` must be :ref:`broadcastable <broadcasting-semantics>`.
+		
+		Arguments:
+		    condition (ByteTensor): When True (nonzero), yield x, otherwise yield y
+		    x (Tensor): values selected at indices where :attr:`condition` is ``True``
+		    y (Tensor): values selected at indices where :attr:`condition` is ``False``
+		
+		Returns:
+		    Tensor: A tensor of shape equal to the broadcasted shape of :attr:`condition`, :attr:`x`, :attr:`y`
+		
+		Example::
+		
+		    >>> x = torch.randn(3, 2)
+		    >>> y = torch.ones(3, 2)
+		    >>> x
+		    tensor([[-0.4620,  0.3139],
+		            [ 0.3898, -0.7197],
+		            [ 0.0478, -0.1657]])
+		    >>> torch.where(x > 0, x, y)
+		    tensor([[ 1.0000,  0.3139],
+		            [ 0.3898,  1.0000],
+		            [ 0.0478,  1.0000]])
+	**/
+	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function zero_(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		zeros(*sizes, out=None, dtype=None, layout=torch.strided, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor filled with the scalar value `0`, with the shape defined
+		by the variable argument :attr:`sizes`.
 		
 		Args:
-		    sizes (int...): a set of ints defining the shape of the output Tensor.
-		    out (Tensor, optional): the result Tensor
+		    sizes (int...): a sequence of integers defining the shape of the output tensor.
+		        Can be a variable number of arguments or a collection like a list or tuple.
+		    out (Tensor, optional): the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned tensor.
+		        Default: if ``None``, uses a global default (see :func:`torch.set_default_tensor_type`).
+		    layout (:class:`torch.layout`, optional): the desired layout of returned Tensor.
+		        Default: ``torch.strided``.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, uses the current device for the default tensor type
+		        (see :func:`torch.set_default_tensor_type`). :attr:`device` will be the CPU
+		        for CPU tensor types and the current CUDA device for CUDA tensor types.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
 		
 		Example::
 		
 		    >>> torch.zeros(2, 3)
-		
-		     0  0  0
-		     0  0  0
-		    [torch.FloatTensor of size 2x3]
+		    tensor([[ 0.,  0.,  0.],
+		            [ 0.,  0.,  0.]])
 		
 		    >>> torch.zeros(5)
-		
-		     0
-		     0
-		     0
-		     0
-		     0
-		    [torch.FloatTensor of size 5]
+		    tensor([ 0.,  0.,  0.,  0.,  0.])
 	**/
 	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		zeros_like(input, dtype=None, layout=None, device=None, requires_grad=False) -> Tensor
+		
+		Returns a tensor filled with the scalar value `0`, with the same size as
+		:attr:`input`. ``torch.zeros_like(input)`` is equivalent to
+		``torch.zeros(input.size(), dtype=input.dtype, layout=input.layout, device=input.device)``.
+		
+		.. warning::
+		    As of 0.4, this function does not support an :attr:`out` keyword. As an alternative,
+		    the old ``torch.zeros_like(input, out=output)`` is equivalent to
+		    ``torch.zeros(input.size(), out=output)``.
+		
+		Args:
+		    input (Tensor): the size of :attr:`input` will determine size of the output tensor
+		    dtype (:class:`torch.dtype`, optional): the desired data type of returned Tensor.
+		        Default: if ``None``, defaults to the dtype of :attr:`input`.
+		    layout (:class:`torch.layout`, optional): the desired layout of returned tensor.
+		        Default: if ``None``, defaults to the layout of :attr:`input`.
+		    device (:class:`torch.device`, optional): the desired device of returned tensor.
+		        Default: if ``None``, defaults to the device of :attr:`input`.
+		    requires_grad (bool, optional): If autograd should record operations on the
+		        returned tensor. Default: ``False``.
+		
+		Example::
+		
+		    >>> input = torch.empty(2, 3)
+		    >>> torch.zeros_like(input)
+		    tensor([[ 0.,  0.,  0.],
+		            [ 0.,  0.,  0.]])
+	**/
+	static public function zeros_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

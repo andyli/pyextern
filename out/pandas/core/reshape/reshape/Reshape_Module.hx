@@ -28,9 +28,7 @@ package pandas.core.reshape.reshape;
 		    a CategoricalIndex keeping the categories and order of `values`.
 	**/
 	static public function _factorize_from_iterable(values:Dynamic):Dynamic;
-	static public function _get_dummies_1d(data:Dynamic, prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic):Dynamic;
-	static public function _get_na_value(dtype:Dynamic):Dynamic;
-	static public var _shared_docs : Dynamic;
+	static public function _get_dummies_1d(data:Dynamic, prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Produce 'pivot' table based on 3 columns of this DataFrame.
 		Uses unique values from index / columns and fills with values.
@@ -49,7 +47,7 @@ package pandas.core.reshape.reshape;
 	static public function _slow_pivot(index:Dynamic, columns:Dynamic, values:Dynamic):Dynamic;
 	static public function _stack_multi_columns(frame:Dynamic, ?level_num:Dynamic, ?dropna:Dynamic):Dynamic;
 	static public function _unstack_frame(obj:Dynamic, level:Dynamic, ?fill_value:Dynamic):Dynamic;
-	static public function _unstack_multiple(data:Dynamic, clocs:Dynamic):Dynamic;
+	static public function _unstack_multiple(data:Dynamic, clocs:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Group_index is offsets into cartesian product of all possible labels. This
 		space can be huge, so this function compresses it, by computing offsets
@@ -87,9 +85,9 @@ package pandas.core.reshape.reshape;
 		----------
 		data : array-like, Series, or DataFrame
 		prefix : string, list of strings, or dict of strings, default None
-		    String to append DataFrame column names
+		    String to append DataFrame column names.
 		    Pass a list with length equal to the number of columns
-		    when calling get_dummies on a DataFrame. Alternativly, `prefix`
+		    when calling get_dummies on a DataFrame. Alternatively, `prefix`
 		    can be a dictionary mapping column names to prefixes.
 		prefix_sep : string, default '_'
 		    If appending prefix, separator/delimiter to use. Or pass a
@@ -104,13 +102,17 @@ package pandas.core.reshape.reshape;
 		    Whether the dummy columns should be sparse or not.  Returns
 		    SparseDataFrame if `data` is a Series or if all columns are included.
 		    Otherwise returns a DataFrame with some SparseBlocks.
-		
-		    .. versionadded:: 0.16.1
 		drop_first : bool, default False
 		    Whether to get k-1 dummies out of k categorical levels by removing the
 		    first level.
 		
 		    .. versionadded:: 0.18.0
+		
+		dtype : dtype, default np.uint8
+		    Data type for new columns. Only a single dtype is allowed.
+		
+		    .. versionadded:: 0.23.0
+		
 		Returns
 		-------
 		dummies : DataFrame or SparseDataFrame
@@ -142,7 +144,7 @@ package pandas.core.reshape.reshape;
 		2  0  0    1
 		
 		>>> df = pd.DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
-		                    'C': [1, 2, 3]})
+		...                    'C': [1, 2, 3]})
 		
 		>>> pd.get_dummies(df, prefix=['col1', 'col2'])
 		   C  col1_a  col1_b  col2_a  col2_b  col2_c
@@ -158,7 +160,7 @@ package pandas.core.reshape.reshape;
 		3  1  0  0
 		4  1  0  0
 		
-		>>> pd.get_dummies(pd.Series(list('abcaa')), drop_first=True))
+		>>> pd.get_dummies(pd.Series(list('abcaa')), drop_first=True)
 		   b  c
 		0  0  0
 		1  1  0
@@ -166,11 +168,17 @@ package pandas.core.reshape.reshape;
 		3  0  0
 		4  0  0
 		
+		>>> pd.get_dummies(pd.Series(list('abc')), dtype=float)
+		     a    b    c
+		0  1.0  0.0  0.0
+		1  0.0  1.0  0.0
+		2  0.0  0.0  1.0
+		
 		See Also
 		--------
 		Series.str.get_dummies
 	**/
-	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic):Dynamic;
+	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		For the particular label_list, gets the offsets into the hypothetical list
 		representing the totally ordered cartesian product of all possible label
@@ -260,38 +268,60 @@ package pandas.core.reshape.reshape;
 	**/
 	static public function is_list_like(obj:Dynamic):Bool;
 	/**
-		Reshape long-format data to wide. Generalized inverse of DataFrame.pivot
+		Check whether an array-like or dtype is of the object dtype.
 		
 		Parameters
 		----------
-		data : DataFrame
-		groups : dict
-		    {new_name : list_of_columns}
-		dropna : boolean, default True
-		
-		Examples
-		--------
-		>>> import pandas as pd
-		>>> data = pd.DataFrame({'hr1': [514, 573], 'hr2': [545, 526],
-		...                      'team': ['Red Sox', 'Yankees'],
-		...                      'year1': [2007, 2008], 'year2': [2008, 2008]})
-		>>> data
-		   hr1  hr2     team  year1  year2
-		0  514  545  Red Sox   2007   2008
-		1  573  526  Yankees   2007   2008
-		
-		>>> pd.lreshape(data, {'year': ['year1', 'year2'], 'hr': ['hr1', 'hr2']})
-		      team   hr  year
-		0  Red Sox  514  2007
-		1  Yankees  573  2007
-		2  Red Sox  545  2008
-		3  Yankees  526  2008
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
 		
 		Returns
 		-------
-		reshaped : DataFrame
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
 	**/
-	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):pandas.DataFrame;
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like is a pandas sparse array.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a pandas sparse array.
+		
+		Examples
+		--------
+		>>> is_sparse(np.array([1, 2, 3]))
+		False
+		>>> is_sparse(pd.SparseArray([1, 2, 3]))
+		True
+		>>> is_sparse(pd.SparseSeries([1, 2, 3]))
+		True
+		
+		This function checks only for pandas sparse array instances, so
+		sparse arrays from other libraries will return False.
+		
+		>>> from scipy.sparse import bsr_matrix
+		>>> is_sparse(bsr_matrix([1, 2, 3]))
+		False
+	**/
+	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
 		Construct 1-0 dummy variables corresponding to designated axis
 		labels
@@ -314,98 +344,6 @@ package pandas.core.reshape.reshape;
 	**/
 	static public function make_axis_dummies(frame:Dynamic, ?axis:Dynamic, ?transform:Dynamic):pandas.DataFrame;
 	static public function maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
-	/**
-		"Unpivots" a DataFrame from wide format to long format, optionally
-		leaving identifier variables set.
-		
-		This function is useful to massage a DataFrame into a format where one
-		or more columns are identifier variables (`id_vars`), while all other
-		columns, considered measured variables (`value_vars`), are "unpivoted" to
-		the row axis, leaving just two non-identifier columns, 'variable' and
-		'value'.
-		
-		
-		Parameters
-		----------
-		frame : DataFrame
-		id_vars : tuple, list, or ndarray, optional
-		    Column(s) to use as identifier variables.
-		value_vars : tuple, list, or ndarray, optional
-		    Column(s) to unpivot. If not specified, uses all columns that
-		    are not set as `id_vars`.
-		var_name : scalar
-		    Name to use for the 'variable' column. If None it uses
-		    ``frame.columns.name`` or 'variable'.
-		value_name : scalar, default 'value'
-		    Name to use for the 'value' column.
-		col_level : int or string, optional
-		    If columns are a MultiIndex then use this level to melt.
-		
-		See also
-		--------
-		DataFrame.melt
-		pivot_table
-		DataFrame.pivot
-		
-		Examples
-		--------
-		>>> import pandas as pd
-		>>> df = pd.DataFrame({'A': {0: 'a', 1: 'b', 2: 'c'},
-		...                    'B': {0: 1, 1: 3, 2: 5},
-		...                    'C': {0: 2, 1: 4, 2: 6}})
-		>>> df
-		   A  B  C
-		0  a  1  2
-		1  b  3  4
-		2  c  5  6
-		
-		>>> pd.melt(df, id_vars=['A'], value_vars=['B'])
-		   A variable  value
-		0  a        B      1
-		1  b        B      3
-		2  c        B      5
-		
-		>>> pd.melt(df, id_vars=['A'], value_vars=['B', 'C'])
-		   A variable  value
-		0  a        B      1
-		1  b        B      3
-		2  c        B      5
-		3  a        C      2
-		4  b        C      4
-		5  c        C      6
-		
-		The names of 'variable' and 'value' columns can be customized:
-		
-		>>> pd.melt(df, id_vars=['A'], value_vars=['B'],
-		...         var_name='myVarname', value_name='myValname')
-		   A myVarname  myValname
-		0  a         B          1
-		1  b         B          3
-		2  c         B          5
-		
-		If you have multi-index columns:
-		
-		>>> df.columns = [list('ABC'), list('DEF')]
-		>>> df
-		   A  B  C
-		   D  E  F
-		0  a  1  2
-		1  b  3  4
-		2  c  5  6
-		
-		>>> pd.melt(df, col_level=0, id_vars=['A'], value_vars=['B'])
-		   A variable  value
-		0  a        B      1
-		1  b        B      3
-		2  c        B      5
-		
-		>>> pd.melt(df, id_vars=[('A', 'D')], value_vars=[('B', 'E')])
-		  (A, D) variable_0 variable_1  value
-		0      a          B          E      1
-		1      b          B          E      3
-		2      c          B          E      5
-	**/
-	static public function melt(frame:Dynamic, ?id_vars:Dynamic, ?value_vars:Dynamic, ?var_name:Dynamic, ?value_name:Dynamic, ?col_level:Dynamic):Dynamic;
 	/**
 		Check whether the array or dtype should be converted to int64.
 		
@@ -440,25 +378,79 @@ package pandas.core.reshape.reshape;
 	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : boolean inverse of pandas.notnull
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
 	**/
-	static public function notnull(obj:Dynamic):Dynamic;
+	static public function notna(obj:Dynamic):Dynamic;
 	/**
 		See DataFrame.pivot
 	**/
@@ -501,183 +493,4 @@ package pandas.core.reshape.reshape;
 	static public function stack(frame:Dynamic, ?level:Dynamic, ?dropna:Dynamic):pandas.Series;
 	static public function stack_multiple(frame:Dynamic, level:Dynamic, ?dropna:Dynamic):Dynamic;
 	static public function unstack(obj:Dynamic, level:Dynamic, ?fill_value:Dynamic):Dynamic;
-	/**
-		Wide panel to long format. Less flexible but more user-friendly than melt.
-		
-		With stubnames ['A', 'B'], this function expects to find one or more
-		group of columns with format Asuffix1, Asuffix2,..., Bsuffix1, Bsuffix2,...
-		You specify what you want to call this suffix in the resulting long format
-		with `j` (for example `j='year'`)
-		
-		Each row of these wide variables are assumed to be uniquely identified by
-		`i` (can be a single column name or a list of column names)
-		
-		All remaining variables in the data frame are left intact.
-		
-		Parameters
-		----------
-		df : DataFrame
-		    The wide-format DataFrame
-		stubnames : str or list-like
-		    The stub name(s). The wide format variables are assumed to
-		    start with the stub names.
-		i : str or list-like
-		    Column(s) to use as id variable(s)
-		j : str
-		    The name of the subobservation variable. What you wish to name your
-		    suffix in the long format.
-		sep : str, default ""
-		    A character indicating the separation of the variable names
-		    in the wide format, to be stripped from the names in the long format.
-		    For example, if your column names are A-suffix1, A-suffix2, you
-		    can strip the hypen by specifying `sep='-'`
-		
-		    .. versionadded:: 0.20.0
-		
-		suffix : str, default '\\d+'
-		    A regular expression capturing the wanted suffixes. '\\d+' captures
-		    numeric suffixes. Suffixes with no numbers could be specified with the
-		    negated character class '\\D+'. You can also further disambiguate
-		    suffixes, for example, if your wide variables are of the form
-		    Aone, Btwo,.., and you have an unrelated column Arating, you can
-		    ignore the last one by specifying `suffix='(!?one|two)'`
-		
-		    .. versionadded:: 0.20.0
-		
-		Returns
-		-------
-		DataFrame
-		    A DataFrame that contains each stub name as a variable, with new index
-		    (i, j)
-		
-		Examples
-		--------
-		>>> import pandas as pd
-		>>> import numpy as np
-		>>> np.random.seed(123)
-		>>> df = pd.DataFrame({"A1970" : {0 : "a", 1 : "b", 2 : "c"},
-		...                    "A1980" : {0 : "d", 1 : "e", 2 : "f"},
-		...                    "B1970" : {0 : 2.5, 1 : 1.2, 2 : .7},
-		...                    "B1980" : {0 : 3.2, 1 : 1.3, 2 : .1},
-		...                    "X"     : dict(zip(range(3), np.random.randn(3)))
-		...                   })
-		>>> df["id"] = df.index
-		>>> df
-		A1970 A1980  B1970  B1980         X  id
-		0     a     d    2.5    3.2 -1.085631   0
-		1     b     e    1.2    1.3  0.997345   1
-		2     c     f    0.7    0.1  0.282978   2
-		>>> pd.wide_to_long(df, ["A", "B"], i="id", j="year")
-		                X  A    B
-		id year
-		0  1970 -1.085631  a  2.5
-		1  1970  0.997345  b  1.2
-		2  1970  0.282978  c  0.7
-		0  1980 -1.085631  d  3.2
-		1  1980  0.997345  e  1.3
-		2  1980  0.282978  f  0.1
-		
-		With multuple id columns
-		
-		>>> df = pd.DataFrame({
-		...     'famid': [1, 1, 1, 2, 2, 2, 3, 3, 3],
-		...     'birth': [1, 2, 3, 1, 2, 3, 1, 2, 3],
-		...     'ht1': [2.8, 2.9, 2.2, 2, 1.8, 1.9, 2.2, 2.3, 2.1],
-		...     'ht2': [3.4, 3.8, 2.9, 3.2, 2.8, 2.4, 3.3, 3.4, 2.9]
-		... })
-		>>> df
-		   birth  famid  ht1  ht2
-		0      1      1  2.8  3.4
-		1      2      1  2.9  3.8
-		2      3      1  2.2  2.9
-		3      1      2  2.0  3.2
-		4      2      2  1.8  2.8
-		5      3      2  1.9  2.4
-		6      1      3  2.2  3.3
-		7      2      3  2.3  3.4
-		8      3      3  2.1  2.9
-		>>> l = pd.wide_to_long(df, stubnames='ht', i=['famid', 'birth'], j='age')
-		>>> l
-		                  ht
-		famid birth age
-		1     1     1    2.8
-		            2    3.4
-		      2     1    2.9
-		            2    3.8
-		      3     1    2.2
-		            2    2.9
-		2     1     1    2.0
-		            2    3.2
-		      2     1    1.8
-		            2    2.8
-		      3     1    1.9
-		            2    2.4
-		3     1     1    2.2
-		            2    3.3
-		      2     1    2.3
-		            2    3.4
-		      3     1    2.1
-		            2    2.9
-		
-		Going from long back to wide just takes some creative use of `unstack`
-		
-		>>> w = l.reset_index().set_index(['famid', 'birth', 'age']).unstack()
-		>>> w.columns = pd.Index(w.columns).str.join('')
-		>>> w.reset_index()
-		   famid  birth  ht1  ht2
-		0      1      1  2.8  3.4
-		1      1      2  2.9  3.8
-		2      1      3  2.2  2.9
-		3      2      1  2.0  3.2
-		4      2      2  1.8  2.8
-		5      2      3  1.9  2.4
-		6      3      1  2.2  3.3
-		7      3      2  2.3  3.4
-		8      3      3  2.1  2.9
-		
-		Less wieldy column names are also handled
-		
-		>>> df = pd.DataFrame({'A(quarterly)-2010': np.random.rand(3),
-		...                    'A(quarterly)-2011': np.random.rand(3),
-		...                    'B(quarterly)-2010': np.random.rand(3),
-		...                    'B(quarterly)-2011': np.random.rand(3),
-		...                    'X' : np.random.randint(3, size=3)})
-		>>> df['id'] = df.index
-		>>> df
-		  A(quarterly)-2010 A(quarterly)-2011 B(quarterly)-2010 B(quarterly)-2011
-		0          0.531828          0.724455          0.322959          0.293714
-		1          0.634401          0.611024          0.361789          0.630976
-		2          0.849432          0.722443          0.228263          0.092105
-		\
-		   X  id
-		0  0   0
-		1  1   1
-		2  2   2
-		>>> pd.wide_to_long(df, ['A(quarterly)', 'B(quarterly)'],
-		                    i='id', j='year', sep='-')
-		         X     A(quarterly)  B(quarterly)
-		id year
-		0  2010  0       0.531828       0.322959
-		1  2010  2       0.634401       0.361789
-		2  2010  2       0.849432       0.228263
-		0  2011  0       0.724455       0.293714
-		1  2011  2       0.611024       0.630976
-		2  2011  2       0.722443       0.092105
-		
-		If we have many columns, we could also use a regex to find our
-		stubnames and pass that list on to wide_to_long
-		
-		>>> stubnames = set([match[0] for match in
-		                    df.columns.str.findall('[A-B]\(.*\)').values
-		                    if match != [] ])
-		>>> list(stubnames)
-		['B(quarterly)', 'A(quarterly)']
-		
-		Notes
-		-----
-		All extra variables are left untouched. This simply uses
-		`pandas.melt` under the hood, but is hard-coded to "do the right thing"
-		in a typicaly case.
-	**/
-	static public function wide_to_long(df:Dynamic, stubnames:Dynamic, i:Dynamic, j:Dynamic, ?sep:Dynamic, ?suffix:Dynamic):Dynamic;
 }

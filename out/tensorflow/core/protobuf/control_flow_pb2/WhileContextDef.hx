@@ -39,7 +39,7 @@ package tensorflow.core.protobuf.control_flow_pb2;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -58,6 +58,7 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var MAXIMUM_ITERATIONS_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Merges a protocol message into the current message.
 	**/
@@ -66,6 +67,7 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		Merges a serialized message into the current message.
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var NESTED_CONTEXTS_FIELD_NUMBER : Dynamic;
 	static public var PARALLEL_ITERATIONS_FIELD_NUMBER : Dynamic;
 	static public var PIVOT_FOR_BODY_NAME_FIELD_NUMBER : Dynamic;
 	static public var PIVOT_FOR_PRED_NAME_FIELD_NUMBER : Dynamic;
@@ -77,7 +79,7 @@ package tensorflow.core.protobuf.control_flow_pb2;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var SWAP_MEMORY_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
@@ -139,7 +141,7 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -194,7 +196,7 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -250,7 +252,7 @@ package tensorflow.core.protobuf.control_flow_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/

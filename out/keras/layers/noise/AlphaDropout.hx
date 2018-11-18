@@ -27,7 +27,7 @@ package keras.layers.noise;
 		        for its `build` call.
 	**/
 	public function __call__(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -78,7 +78,7 @@ package keras.layers.noise;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -129,7 +129,7 @@ package keras.layers.noise;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -141,7 +141,8 @@ package keras.layers.noise;
 		    input_tensors: list of input tensors.
 		    output_tensors: list of output tensors.
 		    input_masks: list of input masks (a mask can be a tensor, or None).
-		    output_masks: list of output masks (a mask can be a tensor, or None).
+		    output_masks: list of output masks
+		        (a mask can be a tensor, or None).
 		    input_shapes: list of input shape tuples.
 		    output_shapes: list of output shape tuples.
 		    arguments: dictionary of keyword arguments that were passed to the
@@ -173,7 +174,21 @@ package keras.layers.noise;
 	public function _get_node_attribute_at_index(node_index:Dynamic, attr:Dynamic, attr_name:Dynamic):Dynamic;
 	public function _get_noise_shape(inputs:Dynamic):Dynamic;
 	/**
-		Add losses to the layer.
+		Converts a layer and its index to a unique (immutable type) name.
+		
+		This function is used internally with `self._network_nodes`.
+		
+		# Arguments
+		    layer: The layer.
+		    node_index: The layer's position (e.g. via enumerate) in a list of
+		        nodes.
+		
+		# Returns
+		    The unique name.
+	**/
+	static public function _node_key(layer:Dynamic, node_index:Dynamic):Dynamic;
+	/**
+		Adds losses to the layer.
 		
 		The loss may potentially be conditional on some inputs tensors,
 		for instance activity losses are conditional on the layer's inputs.
@@ -189,7 +204,7 @@ package keras.layers.noise;
 	**/
 	public function add_loss(losses:Dynamic, ?inputs:Dynamic):Dynamic;
 	/**
-		Add updates to the layer.
+		Adds updates to the layer.
 		
 		The updates may potentially be conditional on some inputs tensors,
 		for instance batch norm updates are conditional on the layer's inputs.
@@ -286,9 +301,8 @@ package keras.layers.noise;
 		    An input shape tuple.
 	**/
 	public function compute_output_shape(input_shape:Dynamic):Dynamic;
-	public var constraints : Dynamic;
 	/**
-		Count the total number of scalars composing the weights.
+		Counts the total number of scalars composing the weights.
 		
 		# Returns
 		    An integer count.
@@ -304,7 +318,7 @@ package keras.layers.noise;
 		This method is the reverse of `get_config`,
 		capable of instantiating the same layer from the config
 		dictionary. It does not handle layer connectivity
-		(handled by Container), nor weights (handled by `set_weights`).
+		(handled by Network), nor weights (handled by `set_weights`).
 		
 		# Arguments
 		    config: A Python dictionary, typically the
@@ -324,7 +338,7 @@ package keras.layers.noise;
 		
 		The config of a layer does not include connectivity
 		information, nor the layer class name. These are handled
-		by `Container` (one layer of abstraction above).
+		by `Network` (one layer of abstraction above).
 		
 		# Returns
 		    Python dictionary.

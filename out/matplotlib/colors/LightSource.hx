@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.colors;
 @:pythonImport("matplotlib.colors", "LightSource") extern class LightSource {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -90,7 +90,7 @@ package matplotlib.colors;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -141,7 +141,7 @@ package matplotlib.colors;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -218,13 +218,15 @@ package matplotlib.colors;
 	**/
 	public function blend_soft_light(rgb:Dynamic, intensity:Dynamic):Dynamic;
 	/**
+		The unit vector direction towards the light source 
+	**/
+	public var direction : Dynamic;
+	/**
 		Calculates the illumination intensity for a surface using the defined
 		azimuth and elevation for the light source.
 		
-		Imagine an artificial sun placed at infinity in some azimuth and
-		elevation position illuminating our surface. The parts of the surface
-		that slope toward the sun should brighten while those sides facing away
-		should become darker.
+		This computes the normal vectors for the surface, and then passes them
+		on to `shade_normals`
 		
 		Parameters
 		----------
@@ -314,6 +316,31 @@ package matplotlib.colors;
 		    An MxNx4 array of floats ranging between 0-1.
 	**/
 	public function shade(data:Dynamic, cmap:Dynamic, ?norm:Dynamic, ?blend_mode:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?vert_exag:Dynamic, ?dx:Dynamic, ?dy:Dynamic, ?fraction:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Calculates the illumination intensity for the normal vectors of a
+		surface using the defined azimuth and elevation for the light source.
+		
+		Imagine an artificial sun placed at infinity in some azimuth and
+		elevation position illuminating our surface. The parts of the surface
+		that slope toward the sun should brighten while those sides facing away
+		should become darker.
+		
+		Parameters
+		----------
+		fraction : number, optional
+		    Increases or decreases the contrast of the hillshade.  Values
+		    greater than one will cause intermediate values to move closer to
+		    full illumination or shadow (and clipping any values that move
+		    beyond 0 or 1). Note that this is not visually or mathematically
+		    the same as vertical exaggeration.
+		
+		Returns
+		-------
+		intensity : ndarray
+		    A 2d array of illumination values between 0-1, where 0 is
+		    completely in shadow and 1 is completely illuminated.
+	**/
+	public function shade_normals(normals:Dynamic, ?fraction:Dynamic):Dynamic;
 	/**
 		Take the input RGB array (ny*nx*3) adjust their color values
 		to given the impression of a shaded relief map with a

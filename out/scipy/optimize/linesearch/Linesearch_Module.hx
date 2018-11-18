@@ -107,7 +107,7 @@ package scipy.optimize.linesearch;
 	/**
 		Part of the optimization algorithm in `scalar_search_wolfe2`.
 	**/
-	static public function _zoom(a_lo:Dynamic, a_hi:Dynamic, phi_lo:Dynamic, phi_hi:Dynamic, derphi_lo:Dynamic, phi:Dynamic, derphi:Dynamic, phi0:Dynamic, derphi0:Dynamic, c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _zoom(a_lo:Dynamic, a_hi:Dynamic, phi_lo:Dynamic, phi_hi:Dynamic, derphi_lo:Dynamic, phi:Dynamic, derphi:Dynamic, phi0:Dynamic, derphi0:Dynamic, c1:Dynamic, c2:Dynamic, extra_condition:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -238,6 +238,17 @@ package scipy.optimize.linesearch;
 		    Parameter for curvature condition rule.
 		amax : float, optional
 		    Maximum step size
+		extra_condition : callable, optional
+		    A callable of the form ``extra_condition(alpha, x, f, g)``
+		    returning a boolean. Arguments are the proposed step ``alpha``
+		    and the corresponding ``x``, ``f`` and ``g`` values. The line search 
+		    accepts the value of ``alpha`` only if this 
+		    callable returns ``True``. If the callable returns ``False`` 
+		    for the step length, the algorithm will continue with 
+		    new iterates. The callable is only called for iterates 
+		    satisfying the strong Wolfe conditions.
+		maxiter : int, optional
+		    Maximum number of iterations to perform
 		
 		Returns
 		-------
@@ -267,7 +278,7 @@ package scipy.optimize.linesearch;
 		
 		For the zoom phase it uses an algorithm by [...].
 	**/
-	static public function line_search_wolfe2(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic):Dynamic;
+	static public function line_search_wolfe2(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?extra_condition:Dynamic, ?maxiter:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Minimize over alpha, the function ``phi(alpha)``.
@@ -345,6 +356,16 @@ package scipy.optimize.linesearch;
 		    Parameter for curvature condition rule.
 		amax : float, optional
 		    Maximum step size
+		extra_condition : callable, optional
+		    A callable of the form ``extra_condition(alpha, phi_value)``
+		    returning a boolean. The line search accepts the value
+		    of ``alpha`` only if this callable returns ``True``.
+		    If the callable returns ``False`` for the step length,
+		    the algorithm will continue with new iterates.
+		    The callable is only called for iterates satisfying
+		    the strong Wolfe conditions.
+		maxiter : int, optional
+		    Maximum number of iterations to perform
 		
 		Returns
 		-------
@@ -366,7 +387,7 @@ package scipy.optimize.linesearch;
 		
 		For the zoom phase it uses an algorithm by [...].
 	**/
-	static public function scalar_search_wolfe2(phi:Dynamic, ?derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic):Dynamic;
+	static public function scalar_search_wolfe2(phi:Dynamic, ?derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?extra_condition:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.
 	**/

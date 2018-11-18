@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.estimators.dnn;
 @:pythonImport("tensorflow.contrib.learn.python.learn.estimators.dnn") extern class Dnn_Module {
+	static public var _ACTIVATION_FUNCTIONS : Dynamic;
 	static public var _LEARNING_RATE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -30,7 +31,9 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		        optimizer to use for training. If `None`, will use the Adagrad
 		        optimizer with a default learning rate of 0.05.
 		    * activation_fn: Activation function applied to each layer. If `None`,
-		        will use `tf.nn.relu`.
+		        will use `tf.nn.relu`. Note that a string containing the unqualified
+		        name of the op may also be provided, e.g., "relu", "tanh", or
+		        "sigmoid".
 		    * dropout: When not `None`, the probability we will drop out a given
 		        coordinate.
 		    * gradient_clip_norm: A float > 0. If provided, gradients are
@@ -48,6 +51,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		  train_op: The op for training.
 	**/
 	static public function _dnn_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic, params:Dynamic, ?config:Dynamic):Dynamic;
+	static public function _get_activation_fn(activation_fn:Dynamic):Dynamic;
 	static public function _get_feature_dict(features:Dynamic):Dynamic;
 	static public function _get_optimizer(optimizer:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -73,6 +77,8 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -81,7 +87,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	/**
 		Decorator for marking specific function argument values as deprecated.
 		
@@ -104,6 +110,9 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		    Must be ISO 8601 (YYYY-MM-DD), or None
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: If `True`, warn only the first time this function is called with
+		    deprecated argument values. Otherwise, every call (with a deprecated
+		    argument value) will log a warning.
 		  **deprecated_kwargs: The deprecated argument values.
 		
 		Returns:
@@ -113,7 +122,7 @@ package tensorflow.contrib.learn.python.learn.estimators.dnn;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated_arg_values(date:Dynamic, instructions:Dynamic, ?deprecated_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecated_arg_values(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic, ?deprecated_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

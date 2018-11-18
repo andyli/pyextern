@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.queue_runner_impl;
 @:pythonImport("tensorflow.python.training.queue_runner_impl", "QueueRunner") extern class QueueRunner {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,7 +38,11 @@ package tensorflow.python.training.queue_runner_impl;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create a QueueRunner.
+		Create a QueueRunner. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		To construct input pipelines, use the `tf.data` module.
 		
 		On construction the `QueueRunner` adds an op to close the queue.  That op
 		will be run if the enqueue ops raise exceptions.
@@ -69,11 +73,16 @@ package tensorflow.python.training.queue_runner_impl;
 		  ValueError: If both `queue_runner_def` and `queue` are both specified.
 		  ValueError: If `queue` or `enqueue_ops` are not provided when not
 		    restoring from `queue_runner_def`.
+		  RuntimeError: If eager execution is enabled.
 	**/
 	@:native("__init__")
 	public function ___init__(?queue:Dynamic, ?enqueue_ops:Dynamic, ?close_op:Dynamic, ?cancel_op:Dynamic, ?queue_closed_exception_types:Dynamic, ?queue_runner_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
-		Create a QueueRunner.
+		Create a QueueRunner. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		To construct input pipelines, use the `tf.data` module.
 		
 		On construction the `QueueRunner` adds an op to close the queue.  That op
 		will be run if the enqueue ops raise exceptions.
@@ -104,6 +113,7 @@ package tensorflow.python.training.queue_runner_impl;
 		  ValueError: If both `queue_runner_def` and `queue` are both specified.
 		  ValueError: If `queue` or `enqueue_ops` are not provided when not
 		    restoring from `queue_runner_def`.
+		  RuntimeError: If eager execution is enabled.
 	**/
 	public function new(?queue:Dynamic, ?enqueue_ops:Dynamic, ?close_op:Dynamic, ?cancel_op:Dynamic, ?queue_closed_exception_types:Dynamic, ?queue_runner_def:Dynamic, ?import_scope:Dynamic):Void;
 	/**
@@ -112,7 +122,7 @@ package tensorflow.python.training.queue_runner_impl;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -163,7 +173,7 @@ package tensorflow.python.training.queue_runner_impl;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -213,6 +223,8 @@ package tensorflow.python.training.queue_runner_impl;
 		    for stop conditions.
 	**/
 	public function _run(sess:Dynamic, enqueue_op:Dynamic, ?coord:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public var cancel_op : Dynamic;
 	public var close_op : Dynamic;
 	/**

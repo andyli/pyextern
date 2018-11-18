@@ -16,7 +16,7 @@ package scipy.stats._continuous_distns;
 		    The frozen distribution.
 	**/
 	public function __call__(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -68,7 +68,7 @@ package scipy.stats._continuous_distns;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,7 +120,7 @@ package scipy.stats._continuous_distns;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -353,11 +353,9 @@ package scipy.stats._continuous_distns;
 		
 		Notes
 		-----
-		This fit is computed by maximizing a log-likelihood function, with
-		penalty applied for samples outside of range of the distribution. The
-		returned answer is not guaranteed to be the globally optimal MLE, it
-		may only be locally optimal, or the optimization may fail altogether.
-		
+		This function uses explicit formulas for the maximum likelihood
+		estimation of the normal distribution parameters, so the
+		`optimizer` argument is ignored.
 		
 		Examples
 		--------
@@ -396,10 +394,6 @@ package scipy.stats._continuous_distns;
 		>>> loc1, scale1 = norm.fit(x)
 		>>> loc1, scale1
 		(0.92087172783841631, 2.0015750750324668)
-		
-		This function (norm_gen.fit) uses explicit formulas for the maximum
-		likelihood estimation of the parameters, so the `optimizer` argument
-		is ignored.
 	**/
 	public function fit(data:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**

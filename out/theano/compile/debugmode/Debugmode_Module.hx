@@ -118,7 +118,7 @@ package theano.compile.debugmode;
 		    instances already installed.
 	**/
 	static public function _optcheck_fgraph(input_specs:Dynamic, output_specs:Dynamic, ?accept_inplace:Dynamic):Dynamic;
-	static public function _pickle_DebugMode_Maker(maker:Dynamic):Dynamic;
+	static public function _output_guard(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Converts number to string by rendering it in base 26 using
@@ -187,7 +187,7 @@ package theano.compile.debugmode;
 		as any of the specified variables. Used internally by function,
 		FunctionMaker.
 		
-		This list (or set) is also refered to as no_recycling sometimes,
+		This list (or set) is also referred to as no_recycling sometimes,
 		especially by linker code.
 	**/
 	static public function infer_reuse_pattern(fgraph:Dynamic, outputs_to_disown:Dynamic):Dynamic;

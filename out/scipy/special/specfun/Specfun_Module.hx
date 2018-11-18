@@ -193,44 +193,6 @@ package scipy.special.specfun;
 	**/
 	static public function cpbdn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		nm,csi,cdi,csk,cdk = csphik(n,z)
-		
-		Wrapper for ``csphik``.
-		
-		Parameters
-		----------
-		n : input int
-		z : input complex
-		
-		Returns
-		-------
-		nm : int
-		csi : rank-1 array('D') with bounds (n + 1)
-		cdi : rank-1 array('D') with bounds (n + 1)
-		csk : rank-1 array('D') with bounds (n + 1)
-		cdk : rank-1 array('D') with bounds (n + 1)
-	**/
-	static public function csphik(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		nm,csj,cdj,csy,cdy = csphjy(n,z)
-		
-		Wrapper for ``csphjy``.
-		
-		Parameters
-		----------
-		n : input int
-		z : input complex
-		
-		Returns
-		-------
-		nm : int
-		csj : rank-1 array('D') with bounds (n + 1)
-		cdj : rank-1 array('D') with bounds (n + 1)
-		csy : rank-1 array('D') with bounds (n + 1)
-		cdy : rank-1 array('D') with bounds (n + 1)
-	**/
-	static public function csphjy(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		cv = cva1(kd,m,q)
 		
 		Wrapper for ``cva1``.
@@ -690,72 +652,4 @@ package scipy.special.specfun;
 		eg : rank-1 array('d') with bounds (n-m+2)
 	**/
 	static public function segv(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		nm,si,di = sphi(n,x)
-		
-		Wrapper for ``sphi``.
-		
-		Parameters
-		----------
-		n : input int
-		x : input float
-		
-		Returns
-		-------
-		nm : int
-		si : rank-1 array('d') with bounds (n + 1)
-		di : rank-1 array('d') with bounds (n + 1)
-	**/
-	static public function sphi(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		nm,sj,dj = sphj(n,x)
-		
-		Wrapper for ``sphj``.
-		
-		Parameters
-		----------
-		n : input int
-		x : input float
-		
-		Returns
-		-------
-		nm : int
-		sj : rank-1 array('d') with bounds (n + 1)
-		dj : rank-1 array('d') with bounds (n + 1)
-	**/
-	static public function sphj(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		nm,sk,dk = sphk(n,x)
-		
-		Wrapper for ``sphk``.
-		
-		Parameters
-		----------
-		n : input int
-		x : input float
-		
-		Returns
-		-------
-		nm : int
-		sk : rank-1 array('d') with bounds (n + 1)
-		dk : rank-1 array('d') with bounds (n + 1)
-	**/
-	static public function sphk(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		nm,sy,dy = sphy(n,x)
-		
-		Wrapper for ``sphy``.
-		
-		Parameters
-		----------
-		n : input int
-		x : input float
-		
-		Returns
-		-------
-		nm : int
-		sy : rank-1 array('d') with bounds (n + 1)
-		dy : rank-1 array('d') with bounds (n + 1)
-	**/
-	static public function sphy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -6,7 +6,7 @@ package tensorflow.python.ops.data_flow_grad;
 	**/
 	static public function _DynamicPartitionGrads(op:Dynamic, ?grads:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Gradients for DynamicStitch.
+		Gradients for DynamicStitch and ParallelDynamicStitch.
 	**/
 	static public function _DynamicStitchGrads(op:Dynamic, grad:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;

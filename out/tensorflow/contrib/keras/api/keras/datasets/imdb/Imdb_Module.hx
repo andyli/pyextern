@@ -30,13 +30,14 @@ package tensorflow.contrib.keras.api.keras.datasets.imdb;
 		        the most frequent words are kept
 		    skip_top: skip the top N most frequently occurring words
 		        (which may not be informative).
-		    maxlen: truncate sequences after this length.
+		    maxlen: sequences longer than this will be filtered out.
 		    seed: random seed for sample shuffling.
 		    start_char: The start of a sequence will be marked with this character.
 		        Set to 1 because 0 is usually the padding character.
 		    oov_char: words that were cut out because of the `num_words`
 		        or `skip_top` limit will be replaced with this character.
 		    index_from: index actual words with this index and higher.
+		    **kwargs: Used for backwards compatibility.
 		
 		Returns:
 		    Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
@@ -51,5 +52,5 @@ package tensorflow.contrib.keras.api.keras.datasets.imdb;
 		Words that were not seen in the training set but are in the test set
 		have simply been skipped.
 	**/
-	static public function load_data(?path:Dynamic, ?num_words:Dynamic, ?skip_top:Dynamic, ?maxlen:Dynamic, ?seed:Dynamic, ?start_char:Dynamic, ?oov_char:Dynamic, ?index_from:Dynamic):Dynamic;
+	static public function load_data(?path:Dynamic, ?num_words:Dynamic, ?skip_top:Dynamic, ?maxlen:Dynamic, ?seed:Dynamic, ?start_char:Dynamic, ?oov_char:Dynamic, ?index_from:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

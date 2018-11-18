@@ -2,6 +2,7 @@
 package torch.legacy.optim.cg;
 @:pythonImport("torch.legacy.optim.cg") extern class Cg_Module {
 	static public var INFINITY : Dynamic;
+	static public var NAN : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

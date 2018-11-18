@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.cbook;
 @:pythonImport("matplotlib.cbook", "Bunch") extern class Bunch {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -33,26 +33,17 @@ package matplotlib.cbook;
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
-	/**
-		Return hash(self).
-	**/
-	public function __hash__():Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
+	static public var __hash__ : Dynamic;
 	@:native("__init__")
-	public function ___init__(?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
-	public function new(?kwds:python.KwArgs<Dynamic>):Void;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -71,7 +62,7 @@ package matplotlib.cbook;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Return state information for pickling
 	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -103,7 +94,7 @@ package matplotlib.cbook;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

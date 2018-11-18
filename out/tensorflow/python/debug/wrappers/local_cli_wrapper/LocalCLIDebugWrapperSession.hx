@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.wrappers.local_cli_wrapper;
 @:pythonImport("tensorflow.python.debug.wrappers.local_cli_wrapper", "LocalCLIDebugWrapperSession") extern class LocalCLIDebugWrapperSession {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -88,7 +89,7 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -139,7 +140,7 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -183,12 +184,24 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 	public function _initialize_argparsers():Dynamic;
 	public function _is_disabled_thread():Dynamic;
 	/**
+		Indicates whether disk usage is reset after each Session.run.
+		
+		Subclasses that clean up the disk usage after every run should
+		override this protected method.
+		
+		Returns:
+		  (`bool`) Whether the disk usage amount is reset to zero after
+		    each Session.run.
+	**/
+	public function _is_disk_usage_reset_each_run():Dynamic;
+	/**
 		Launch the interactive command-line interface.
 		
 		Returns:
 		  The OnRunStartResponse specified by the user using the "run" command.
 	**/
 	public function _launch_cli():Dynamic;
+	public function _make_callable_from_options(callable_options:Dynamic):Dynamic;
 	/**
 		Command handler for "invoke_stepper" command during on-run-start.
 	**/
@@ -207,9 +220,13 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 		    (if any).
 		  passed_filter: (None or str) Name of the tensor filter that just passed
 		    and caused the preparation of this run-end CLI (if any).
+		  passed_filter_exclude_node_names: (None or str) Regular expression used
+		    with the tensor filter to exclude ops with names matching the regular
+		    expresssion.
 	**/
-	public function _prep_debug_cli_for_run_end(debug_dump:Dynamic, tf_error:Dynamic, passed_filter:Dynamic):Dynamic;
+	public function _prep_debug_cli_for_run_end(debug_dump:Dynamic, tf_error:Dynamic, passed_filter:Dynamic, passed_filter_exclude_node_names:Dynamic):Dynamic;
 	public function _prep_profile_cli_for_run_end(py_graph:Dynamic, run_metadata:Dynamic):Dynamic;
+	public function _print_feed_handler(args:Dynamic, ?screen_info:Dynamic):Dynamic;
 	public function _register_this_run_info(curses_cli:Dynamic):Dynamic;
 	public function _remove_dump_root():Dynamic;
 	/**
@@ -227,8 +244,10 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 		    call.
 		  feed_dict: None of a dict. This is the feed_dict argument to the run()
 		    call.
+		  is_callable_runner: (bool) whether a runner returned by
+		    Session.make_callable is being run.
 	**/
-	public function _update_run_calls_state(run_call_count:Dynamic, fetches:Dynamic, feed_dict:Dynamic):Dynamic;
+	public function _update_run_calls_state(run_call_count:Dynamic, fetches:Dynamic, feed_dict:Dynamic, ?is_callable_runner:Dynamic):Dynamic;
 	/**
 		Add a tensor filter.
 		
@@ -245,6 +264,7 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 	**/
 	public var graph : Dynamic;
 	public var graph_def : Dynamic;
+	public function increment_run_call_count():Dynamic;
 	/**
 		Overrides method in base class to implement interactive node stepper.
 		
@@ -260,6 +280,8 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 		    the NodeStepper.
 	**/
 	public function invoke_node_stepper(node_stepper:Dynamic, ?restore_variable_values_on_exit:Dynamic):Dynamic;
+	public function list_devices(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function make_callable(fetches:Dynamic, ?feed_list:Dynamic, ?accept_options:Dynamic):Dynamic;
 	/**
 		Overrides on-run-end callback.
 		
@@ -305,6 +327,7 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 		Sets up the feeds and fetches for partial runs in the session.
 	**/
 	public function partial_run_setup(fetches:Dynamic, ?feeds:Dynamic):Dynamic;
+	public function reset(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper around Session.run() that inserts tensor watch options.
 		
@@ -313,17 +336,29 @@ package tensorflow.python.debug.wrappers.local_cli_wrapper;
 		  feed_dict: Same as the `feed_dict` arg to regular `Session.run()`.
 		  options: Same as the `options` arg to regular `Session.run()`.
 		  run_metadata: Same as the `run_metadata` arg to regular `Session.run()`.
+		  callable_runner: A `callable` returned by `Session.make_callable()`.
+		    If not `None`, `fetches` and `feed_dict` must both be `None`.
+		    Mutually exclusive with `callable_options`.
+		  callable_runner_args: An optional list of arguments to `callable_runner`
+		    or for `callable_options`.
+		  callable_options: An instance of `config_pb2.CallableOptions`, to be
+		    used with `Session._make_callable_from_options()`. Mutually exclusive
+		    with `callable_runner`.
 		
 		Returns:
 		  Simply forwards the output of the wrapped `Session.run()` call.
 		
 		Raises:
-		  ValueError: On invalid `OnRunStartAction` value.
+		  ValueError: On invalid `OnRunStartAction` value. Or if `callable_runner`
+		    is not `None` and either or both of `fetches` and `feed_dict` is `None`.
 	**/
-	public function run(fetches:Dynamic, ?feed_dict:Dynamic, ?options:Dynamic, ?run_metadata:Dynamic):Dynamic;
+	public function run(fetches:Dynamic, ?feed_dict:Dynamic, ?options:Dynamic, ?run_metadata:Dynamic, ?callable_runner:Dynamic, ?callable_runner_args:Dynamic, ?callable_options:Dynamic):Dynamic;
+	public var run_call_count : Dynamic;
+	public function run_step_fn(step_fn:Dynamic):Dynamic;
 	/**
 		The TensorFlow process to which this session will connect.
 	**/
 	public var sess_str : Dynamic;
 	public var session : Dynamic;
+	public function should_stop():Dynamic;
 }

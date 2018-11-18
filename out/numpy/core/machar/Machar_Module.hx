@@ -45,7 +45,7 @@ package numpy.core.machar;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -71,7 +71,7 @@ package numpy.core.machar;
 		True
 		
 		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.any([-1, 0, 5])
 		True
@@ -82,7 +82,7 @@ package numpy.core.machar;
 		>>> o=np.array([False])
 		>>> z=np.any([-1, 4, 5], out=o)
 		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
+		(array([ True]), array([ True]))
 		>>> # Check now that z is a reference to o
 		>>> z is o
 		True

@@ -11,10 +11,6 @@ package matplotlib.mlab;
 	static public var __spec__ : Dynamic;
 	static public var _coh_error : Dynamic;
 	/**
-		Return sqrt(x dot x).
-	**/
-	static public function _norm(x:Dynamic):Dynamic;
-	/**
 		This is a helper function that implements the commonality between the
 		complex, magnitude, angle, and phase spectrums.
 		It is *NOT* meant to be used outside of mlab and may change at any time.
@@ -26,8 +22,10 @@ package matplotlib.mlab;
 		It is *NOT* meant to be used outside of mlab and may change at any time.
 	**/
 	static public function _spectral_helper(x:Dynamic, ?y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?detrend_func:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The amap function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.array(list(map(...))) instead.
+		
 		amap(function, sequence[, sequence, ...]) -> array.
 		
 		Works like :func:`map`, but it returns an array.  This is just a
@@ -59,13 +57,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  While not increasing the actual resolution of
 		    the spectrum (the minimum distance between resolvable peaks),
@@ -120,10 +118,16 @@ package matplotlib.mlab;
 	**/
 	static public function apply_window(x:Dynamic, window:Dynamic, ?axis:Dynamic, ?return_window:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The base_repr function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return the representation of a *number* in any given *base*.
 	**/
 	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The binary_repr function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return the binary representation of the input *number* as a
 		string.
 		
@@ -135,6 +139,9 @@ package matplotlib.mlab;
 	**/
 	static public function binary_repr(number:Dynamic, ?max_length:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The bivariate_normal function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Bivariate Gaussian distribution for equal shape *X*, *Y*.
 		
 		See `bivariate normal
@@ -143,6 +150,9 @@ package matplotlib.mlab;
 	**/
 	static public function bivariate_normal(X:Dynamic, Y:Dynamic, ?sigmax:Dynamic, ?sigmay:Dynamic, ?mux:Dynamic, ?muy:Dynamic, ?sigmaxy:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The center_matrix function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return the matrix *M* with each row having zero mean and unit std.
 		
 		If *dim* = 1 operate on columns instead of rows.  (*dim* is
@@ -177,13 +187,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -193,7 +203,7 @@ package matplotlib.mlab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		NFFT : integer
+		NFFT : int
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
@@ -203,17 +213,17 @@ package matplotlib.mlab;
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
-		    matplotlib is it a function.  The :mod:`~matplotlib.pylab`
-		    module defines :func:`~matplotlib.pylab.detrend_none`,
-		    :func:`~matplotlib.pylab.detrend_mean`, and
-		    :func:`~matplotlib.pylab.detrend_linear`, but you can use
+		    matplotlib is it a function.  The :mod:`~matplotlib.mlab`
+		    module defines :func:`~matplotlib.mlab.detrend_none`,
+		    :func:`~matplotlib.mlab.detrend_mean`, and
+		    :func:`~matplotlib.mlab.detrend_linear`, but you can use
 		    a custom function as well.  You can also use a string to choose
 		    one of the functions.  'default', 'constant', and 'mean' call
-		    :func:`~matplotlib.pylab.detrend_mean`.  'linear' calls
-		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
-		    :func:`~matplotlib.pylab.detrend_none`.
+		    :func:`~matplotlib.mlab.detrend_mean`.  'linear' calls
+		    :func:`~matplotlib.mlab.detrend_linear`.  'none' calls
+		    :func:`~matplotlib.mlab.detrend_none`.
 		
-		scale_by_freq : boolean, optional
+		scale_by_freq : bool, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
@@ -238,6 +248,9 @@ package matplotlib.mlab;
 	**/
 	static public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    scipy.signal.coherence
+		
 		Compute the coherence and phase for all pairs *ij*, in *X*.
 		
 		*X* is a *numSamples* * *numCols* array
@@ -256,7 +269,7 @@ package matplotlib.mlab;
 		False, limits the caching by only making one, rather than two,
 		complex cache arrays. This is useful if memory becomes critical.
 		Even when *preferSpeedOverMemory* is False, :func:`cohere_pairs`
-		will still give significant performace gains over calling
+		will still give significant performance gains over calling
 		:func:`cohere` for each pair, and will use subtantially less
 		memory than if *preferSpeedOverMemory* is True.  In my tests with
 		a 43000,64 array over all nonredundant pairs,
@@ -330,13 +343,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  While not increasing the actual resolution of
 		    the spectrum (the minimum distance between resolvable peaks),
@@ -371,11 +384,17 @@ package matplotlib.mlab;
 	**/
 	static public function complex_spectrum(x:Dynamic, ?Fs:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    Moved to matplotlib.cbook
+		
 		return a list of (ind0, ind1) such that mask[ind0:ind1].all() is
 		True and we cover all such regions
 	**/
 	static public function contiguous_regions(mask:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The cross_from_above function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		return the indices into *x* where *x* crosses some threshold from
 		below, e.g., the i's where::
 		
@@ -387,6 +406,9 @@ package matplotlib.mlab;
 	**/
 	static public function cross_from_above(x:Dynamic, threshold:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The cross_from_below function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		return the indices into *x* where *x* crosses some threshold from
 		below, e.g., the i's where::
 		
@@ -399,8 +421,7 @@ package matplotlib.mlab;
 		    t = np.arange(0.0, 2.0, 0.1)
 		    s = np.sin(2*np.pi*t)
 		
-		    fig = plt.figure()
-		    ax = fig.add_subplot(111)
+		    fig, ax = plt.subplots()
 		    ax.plot(t, s, '-o')
 		    ax.axhline(0.5)
 		    ax.axhline(-0.5)
@@ -459,13 +480,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -475,7 +496,7 @@ package matplotlib.mlab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		NFFT : integer
+		NFFT : int
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
@@ -485,17 +506,17 @@ package matplotlib.mlab;
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
-		    matplotlib is it a function.  The :mod:`~matplotlib.pylab`
-		    module defines :func:`~matplotlib.pylab.detrend_none`,
-		    :func:`~matplotlib.pylab.detrend_mean`, and
-		    :func:`~matplotlib.pylab.detrend_linear`, but you can use
+		    matplotlib is it a function.  The :mod:`~matplotlib.mlab`
+		    module defines :func:`~matplotlib.mlab.detrend_none`,
+		    :func:`~matplotlib.mlab.detrend_mean`, and
+		    :func:`~matplotlib.mlab.detrend_linear`, but you can use
 		    a custom function as well.  You can also use a string to choose
 		    one of the functions.  'default', 'constant', and 'mean' call
-		    :func:`~matplotlib.pylab.detrend_mean`.  'linear' calls
-		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
-		    :func:`~matplotlib.pylab.detrend_none`.
+		    :func:`~matplotlib.mlab.detrend_mean`.  'linear' calls
+		    :func:`~matplotlib.mlab.detrend_linear`.  'none' calls
+		    :func:`~matplotlib.mlab.detrend_none`.
 		
-		scale_by_freq : boolean, optional
+		scale_by_freq : bool, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
@@ -525,6 +546,9 @@ package matplotlib.mlab;
 	**/
 	static public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The csv2rec function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Load data from comma/space/tab delimited file in *fname* into a
 		numpy record array and return the record array.
 		
@@ -573,12 +597,16 @@ package matplotlib.mlab;
 		  http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
 		  for further information.
 		
-		  If no rows are found, *None* is returned -- see
-		  :file:`examples/loadrec.py`
+		  If no rows are found, *None* is returned
 	**/
 	static public function csv2rec(fname:Dynamic, ?comments:Dynamic, ?skiprows:Dynamic, ?checkrows:Dynamic, ?delimiter:Dynamic, ?converterd:Dynamic, ?names:Dynamic, ?missing:Dynamic, ?missingd:Dynamic, ?use_mrecords:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 2.2
+		    The csvformat_factory function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
+		\ 
+	**/
 	static public function csvformat_factory(format:Dynamic):Dynamic;
-	static public var defaultformatd : Dynamic;
 	/**
 		Return x minus its mean along the specified axis.
 		
@@ -721,10 +749,16 @@ package matplotlib.mlab;
 	**/
 	static public function detrend_none(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.hypot
+		
 		Return the distance between two points.
 	**/
 	static public function dist(x:Dynamic, y:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The dist_point_to_segment function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Get the distance of a point to a segment.
 		
 		  *p*, *s0*, *s1* are *xy* sequences
@@ -734,6 +768,9 @@ package matplotlib.mlab;
 	**/
 	static public function dist_point_to_segment(p:Dynamic, s0:Dynamic, s1:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The distances_along_curve function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Computes the distance between a set of successive points in *N* dimensions.
 		
 		Where *X* is an *M* x *N* array or matrix.  The distances between
@@ -741,9 +778,17 @@ package matplotlib.mlab;
 		distance.
 	**/
 	static public function distances_along_curve(X:Dynamic):Dynamic;
-	static public var division : Dynamic;
+	/**
+		.. deprecated:: 2.2
+		    The donothing_callback function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
+		\ 
+	**/
 	static public function donothing_callback(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    scipy.stats.entropy
+		
 		Return the entropy of the data in *y* in units of nat.
 		
 		.. math::
@@ -761,6 +806,9 @@ package matplotlib.mlab;
 	**/
 	static public function entropy(y:Dynamic, bins:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.exp
+		
 		Compute exponentials which safely underflow to zero.
 		
 		Slow, but convenient to use. Note that numpy provides proper
@@ -771,14 +819,23 @@ package matplotlib.mlab;
 	static public var exp_safe_MAX : Dynamic;
 	static public var exp_safe_MIN : Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The fftsurr function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Compute an FFT phase randomized surrogate of *x*.
 	**/
 	static public function fftsurr(x:Dynamic, ?detrend:Dynamic, ?window:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The find function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return the indices where ravel(condition) is true
 	**/
 	static public function find(condition:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.arange
+		
 		frange([start,] stop[, step, keywords]) -> array of floats
 		
 		Return a numpy ndarray containing a progression of floats. Similar to
@@ -818,15 +875,24 @@ package matplotlib.mlab;
 	**/
 	static public function frange(xini:Dynamic, ?xfin:Dynamic, ?delta:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The get_formatd function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		build a formatd guaranteed to have a key for every dtype name
 	**/
 	static public function get_formatd(r:Dynamic, ?formatd:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The get_sparse_matrix function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return a *M* x *N* sparse matrix with *frac* elements randomly
 		filled.
 	**/
 	static public function get_sparse_matrix(M:Dynamic, N:Dynamic, ?frac:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The get_xyz_where function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		*Z* and *Cond* are *M* x *N* matrices.  *Z* are data and *Cond* is
 		a boolean matrix where some condition is satisfied.  Return value
 		is (*x*, *y*, *z*) where *x* and *y* are the indices into *Z* and
@@ -835,8 +901,10 @@ package matplotlib.mlab;
 	**/
 	static public function get_xyz_where(Z:Dynamic, Cond:Dynamic):Dynamic;
 	/**
-		Interpolates from a nonuniformly spaced grid to some other
-		grid.
+		.. deprecated:: 2.2
+		    The griddata function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use scipy.interpolate.griddata instead.
+		
+		Interpolates from a nonuniformly spaced grid to some other grid.
 		
 		Fits a surface of the form z = f(`x`, `y`) to the data in the
 		(usually) nonuniformly spaced vectors (`x`, `y`, `z`), then
@@ -878,6 +946,9 @@ package matplotlib.mlab;
 	**/
 	static public function griddata(x:Dynamic, y:Dynamic, z:Dynamic, xi:Dynamic, yi:Dynamic, ?interp:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.identity
+		
 		Returns the identity matrix of shape (*n*, *n*, ..., *n*) (rank *r*).
 		
 		For ranks higher than 2, this object is simply a multi-index Kronecker
@@ -895,6 +966,9 @@ package matplotlib.mlab;
 	**/
 	static public function identity(n:Dynamic, ?rank:Dynamic, ?dtype:Dynamic, ?typecode:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The inside_poly function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		*points* is a sequence of *x*, *y* points.
 		*verts* is a sequence of *x*, *y* vertices of a polygon.
 		
@@ -903,18 +977,27 @@ package matplotlib.mlab;
 	**/
 	static public function inside_poly(points:Dynamic, verts:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The is_closed_polygon function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Tests whether first and last object in a sequence are the same.  These are
 		presumably coordinates on a polygonal curve, in which case this function
 		tests if that curve is closed.
 	**/
 	static public function is_closed_polygon(X:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The ispower2 function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Returns the log base 2 of *n* if *n* is a power of 2, zero otherwise.
 		
 		Note the potential ambiguity if *n* == 1: 2**0 == 1, interpret accordingly.
 	**/
 	static public function ispower2(n:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The isvector function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Like the MATLAB function with the same name, returns *True*
 		if the supplied numpy array or matrix *X* looks like a vector,
 		meaning it has a one non-singleton axis (i.e., it can have
@@ -925,18 +1008,27 @@ package matplotlib.mlab;
 	**/
 	static public function isvector(X:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The l1norm function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.linalg.norm(a, ord=1) instead.
+		
 		Return the *l1* norm of *a*, flattened out.
 		
 		Implemented as a separate function (not a call to :func:`norm` for speed).
 	**/
 	static public function l1norm(a:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The l2norm function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.linalg.norm(a, ord=2) instead.
+		
 		Return the *l2* norm of *a*, flattened out.
 		
 		Implemented as a separate function (not a call to :func:`norm` for speed).
 	**/
 	static public function l2norm(a:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The less_simple_linear_interpolation function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.interp instead.
+		
 		This function provides simple (but somewhat less so than
 		:func:`cbook.simple_linear_interpolation`) linear interpolation.
 		:func:`simple_linear_interpolation` will give a list of point
@@ -949,6 +1041,9 @@ package matplotlib.mlab;
 	**/
 	static public function less_simple_linear_interpolation(x:Dynamic, y:Dynamic, xi:Dynamic, ?extrap:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.log2
+		
 		Return the log(*x*) in base 2.
 		
 		This is a _slow_ function but which is guaranteed to return the correct
@@ -956,16 +1051,25 @@ package matplotlib.mlab;
 	**/
 	static public function log2(x:Dynamic, ?ln2:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The logspace function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.logspace or numpy.geomspace instead.
+		
 		Return N values logarithmically spaced between xmin and xmax.
 	**/
 	static public function logspace(xmin:Dynamic, xmax:Dynamic, N:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The longest_contiguous_ones function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return the indices of the longest stretch of contiguous ones in *x*,
 		assuming *x* is a vector of zeros and ones.  If there are two
 		equally long stretches, pick the first.
 	**/
 	static public function longest_contiguous_ones(x:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The longest_ones function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		alias for longest_contiguous_ones
 	**/
 	static public function longest_ones(x:Dynamic):Dynamic;
@@ -994,13 +1098,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  While not increasing the actual resolution of
 		    the spectrum (the minimum distance between resolvable peaks),
@@ -1039,10 +1143,16 @@ package matplotlib.mlab;
 	**/
 	static public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The movavg function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Compute the len(*n*) moving average of *x*.
 	**/
 	static public function movavg(x:Dynamic, n:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The norm_flat function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.linalg.norm(a.flat, ord=p) instead.
+		
 		norm(a,p=2) -> l-p norm of a.flat
 		
 		Return the l-p norm of *a*, considered as a flat array.  This is NOT a true
@@ -1052,10 +1162,16 @@ package matplotlib.mlab;
 	**/
 	static public function norm_flat(a:Dynamic, ?p:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    scipy.stats.norm.pdf
+		
 		Return the normal pdf evaluated at *x*; args provides *mu*, *sigma*
 	**/
 	static public function normpdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The offset_line function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Offsets an array *y* by +/- an error and returns a tuple
 		(y - err, y + err).
 		
@@ -1067,16 +1183,21 @@ package matplotlib.mlab;
 		* A tuple of length 2. In this case, yerr[0] is the error below *y* and
 		  yerr[1] is error above *y*. For example::
 		
-		    from pylab import *
-		    x = linspace(0, 2*pi, num=100, endpoint=True)
-		    y = sin(x)
+		    import numpy as np
+		    import matplotlib.pyplot as plt
+		
+		    x = np.linspace(0, 2*np.pi, num=100, endpoint=True)
+		    y = np.sin(x)
 		    y_minus, y_plus = mlab.offset_line(y, 0.1)
-		    plot(x, y)
-		    fill_between(x, ym, y2=yp)
-		    show()
+		    plt.plot(x, y)
+		    plt.fill_between(x, y_minus, y2=y_plus)
+		    plt.show()
 	**/
 	static public function offset_line(y:Dynamic, yerr:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The path_length function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Computes the distance travelled along a polygonal curve in *N* dimensions.
 		
 		Where *X* is an *M* x *N* array or matrix.  Returns an array of
@@ -1109,13 +1230,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  While not increasing the actual resolution of
 		    the spectrum (the minimum distance between resolvable peaks),
@@ -1150,6 +1271,9 @@ package matplotlib.mlab;
 	**/
 	static public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The poly_below function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Given a sequence of *xs* and *ys*, return the vertices of a
 		polygon that has a horizontal base at *xmin* and an upper bound at
 		the *ys*.  *xmin* is a scalar.
@@ -1161,6 +1285,9 @@ package matplotlib.mlab;
 	**/
 	static public function poly_below(xmin:Dynamic, xs:Dynamic, ys:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The poly_between function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Given a sequence of *x*, *ylower* and *yupper*, return the polygon
 		that fills the regions between them.  *ylower* or *yupper* can be
 		scalar or iterable.  If they are iterable, they must be equal in
@@ -1171,6 +1298,9 @@ package matplotlib.mlab;
 	**/
 	static public function poly_between(x:Dynamic, ylower:Dynamic, yupper:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.percentile
+		
 		Return the percentiles of *x*.  *p* can either be a sequence of
 		percentile values or a scalar.  If *p* is a sequence, the ith
 		element of the return sequence is the *p*(i)-th percentile of *x*.
@@ -1179,6 +1309,9 @@ package matplotlib.mlab;
 	**/
 	static public function prctile(x:Dynamic, ?p:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The prctile_rank function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return the rank for each element in *x*, return the rank
 		0..len(*p*).  e.g., if *p* = (25, 50, 75), the return value will be a
 		len(*x*) array with values in [0,1,2,3] where 0 indicates the
@@ -1190,7 +1323,6 @@ package matplotlib.mlab;
 		indicates how many quantiles of data you want ranked.
 	**/
 	static public function prctile_rank(x:Dynamic, p:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Compute the power spectral density.
 		
@@ -1229,13 +1361,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -1245,7 +1377,7 @@ package matplotlib.mlab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		NFFT : integer
+		NFFT : int
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
@@ -1255,17 +1387,17 @@ package matplotlib.mlab;
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
-		    matplotlib is it a function.  The :mod:`~matplotlib.pylab`
-		    module defines :func:`~matplotlib.pylab.detrend_none`,
-		    :func:`~matplotlib.pylab.detrend_mean`, and
-		    :func:`~matplotlib.pylab.detrend_linear`, but you can use
+		    matplotlib is it a function.  The :mod:`~matplotlib.mlab`
+		    module defines :func:`~matplotlib.mlab.detrend_none`,
+		    :func:`~matplotlib.mlab.detrend_mean`, and
+		    :func:`~matplotlib.mlab.detrend_linear`, but you can use
 		    a custom function as well.  You can also use a string to choose
 		    one of the functions.  'default', 'constant', and 'mean' call
-		    :func:`~matplotlib.pylab.detrend_mean`.  'linear' calls
-		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
-		    :func:`~matplotlib.pylab.detrend_none`.
+		    :func:`~matplotlib.mlab.detrend_mean`.  'linear' calls
+		    :func:`~matplotlib.mlab.detrend_linear`.  'none' calls
+		    :func:`~matplotlib.mlab.detrend_none`.
 		
-		scale_by_freq : boolean, optional
+		scale_by_freq : bool, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
@@ -1303,6 +1435,9 @@ package matplotlib.mlab;
 	**/
 	static public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The quad2cubic function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Converts a quadratic Bezier curve to a cubic approximation.
 		
 		The inputs are the *x* and *y* coordinates of the three control
@@ -1311,6 +1446,9 @@ package matplotlib.mlab;
 	**/
 	static public function quad2cubic(q0x:Dynamic, q0y:Dynamic, q1x:Dynamic, q1y:Dynamic, q2x:Dynamic, q2y:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec2csv function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.recarray.tofile instead.
+		
 		Save the data from numpy recarray *r* into a
 		comma-/space-/tab-delimited file.  The record array dtype names
 		will be used for column headers.
@@ -1332,6 +1470,9 @@ package matplotlib.mlab;
 	**/
 	static public function rec2csv(r:Dynamic, fname:Dynamic, ?delimiter:Dynamic, ?formatd:Dynamic, ?missing:Dynamic, ?missingd:Dynamic, ?withheader:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec2txt function was deprecated in Matplotlib 2.2 and will be removed in 3.1. Use numpy.recarray.tofile instead.
+		
 		Returns a textual representation of a record array.
 		
 		Parameters
@@ -1365,6 +1506,9 @@ package matplotlib.mlab;
 	**/
 	static public function rec2txt(r:Dynamic, ?header:Dynamic, ?padding:Dynamic, ?precision:Dynamic, ?fields:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec_append_fields function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return a new record array with field names populated with data
 		from arrays in *arrs*.  If appending a single field, then *names*,
 		*arrs* and *dtypes* do not have to be lists. They can just be the
@@ -1372,10 +1516,16 @@ package matplotlib.mlab;
 	**/
 	static public function rec_append_fields(rec:Dynamic, names:Dynamic, arrs:Dynamic, ?dtypes:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec_drop_fields function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return a new numpy record array with fields in *names* dropped.
 	**/
 	static public function rec_drop_fields(rec:Dynamic, names:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec_groupby function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		*r* is a numpy record array
 		
 		*groupby* is a sequence of record array attribute names that
@@ -1394,6 +1544,9 @@ package matplotlib.mlab;
 	**/
 	static public function rec_groupby(r:Dynamic, groupby:Dynamic, stats:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec_join function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Join record arrays *r1* and *r2* on *key*; *key* is a tuple of
 		field names -- if *key* is a string it is assumed to be a single
 		attribute name. If *r1* and *r2* have equal values on all the keys
@@ -1414,10 +1567,16 @@ package matplotlib.mlab;
 	**/
 	static public function rec_join(key:Dynamic, r1:Dynamic, r2:Dynamic, ?jointype:Dynamic, ?defaults:Dynamic, ?r1postfix:Dynamic, ?r2postfix:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec_keep_fields function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return a new numpy record array with only fields listed in names
 	**/
 	static public function rec_keep_fields(rec:Dynamic, names:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rec_summarize function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		*r* is a numpy record array
 		
 		*summaryfuncs* is a list of (*attr*, *func*, *outname*) tuples
@@ -1428,6 +1587,9 @@ package matplotlib.mlab;
 	**/
 	static public function rec_summarize(r:Dynamic, summaryfuncs:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The recs_join function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Join a sequence of record arrays on single column key.
 		
 		This function only joins a single column of the multiple record arrays
@@ -1460,6 +1622,9 @@ package matplotlib.mlab;
 	**/
 	static public function recs_join(key:Dynamic, name:Dynamic, recs:Dynamic, ?jointype:Dynamic, ?missing:Dynamic, ?postfixes:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    scipy.integrate.ode
+		
 		Integrate 1D or ND system of ODEs using 4-th order Runge-Kutta.
 		This is a toy implementation which may be useful if you find
 		yourself stranded on a system w/o scipy.  Otherwise use
@@ -1505,18 +1670,30 @@ package matplotlib.mlab;
 	**/
 	static public function rk4(derivs:Dynamic, y0:Dynamic, t:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The rms_flat function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return the root mean square of all the elements of *a*, flattened out.
 	**/
 	static public function rms_flat(a:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.isinf
+		
 		:func:`numpy.isinf` for arbitrary types
 	**/
 	static public function safe_isinf(x:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    numpy.isnan
+		
 		:func:`numpy.isnan` for arbitrary types
 	**/
 	static public function safe_isnan(x:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The segments_intersect function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Return *True* if *s1* and *s2* intersect.
 		*s1* and *s2* are defined as::
 		
@@ -1525,6 +1702,9 @@ package matplotlib.mlab;
 	**/
 	static public function segments_intersect(s1:Dynamic, s2:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The slopes function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		:func:`slopes` calculates the slope *y*'(*x*)
 		
 		The slope is estimated using the slope obtained from that of a
@@ -1579,13 +1759,13 @@ package matplotlib.mlab;
 		    argument, it must take a data segment as an argument and
 		    return the windowed version of the segment.
 		
-		sides : [ 'default' | 'onesided' | 'twosided' ]
+		sides : {'default', 'onesided', 'twosided'}
 		    Specifies which sides of the spectrum to return.  Default gives the
 		    default behavior, which returns one-sided for real data and both
 		    for complex data.  'onesided' forces the return of a one-sided
 		    spectrum, while 'twosided' forces two-sided.
 		
-		pad_to : integer
+		pad_to : int
 		    The number of points to which the data segment is padded when
 		    performing the FFT.  This can be different from *NFFT*, which
 		    specifies the number of data points used.  While not increasing
@@ -1595,7 +1775,7 @@ package matplotlib.mlab;
 		    in the call to fft(). The default is None, which sets *pad_to*
 		    equal to *NFFT*
 		
-		NFFT : integer
+		NFFT : int
 		    The number of data points used in each block for the FFT.
 		    A power 2 is most efficient.  The default value is 256.
 		    This should *NOT* be used to get zero padding, or the scaling of the
@@ -1605,17 +1785,17 @@ package matplotlib.mlab;
 		    The function applied to each segment before fft-ing,
 		    designed to remove the mean or linear trend.  Unlike in
 		    MATLAB, where the *detrend* parameter is a vector, in
-		    matplotlib is it a function.  The :mod:`~matplotlib.pylab`
-		    module defines :func:`~matplotlib.pylab.detrend_none`,
-		    :func:`~matplotlib.pylab.detrend_mean`, and
-		    :func:`~matplotlib.pylab.detrend_linear`, but you can use
+		    matplotlib is it a function.  The :mod:`~matplotlib.mlab`
+		    module defines :func:`~matplotlib.mlab.detrend_none`,
+		    :func:`~matplotlib.mlab.detrend_mean`, and
+		    :func:`~matplotlib.mlab.detrend_linear`, but you can use
 		    a custom function as well.  You can also use a string to choose
 		    one of the functions.  'default', 'constant', and 'mean' call
-		    :func:`~matplotlib.pylab.detrend_mean`.  'linear' calls
-		    :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
-		    :func:`~matplotlib.pylab.detrend_none`.
+		    :func:`~matplotlib.mlab.detrend_mean`.  'linear' calls
+		    :func:`~matplotlib.mlab.detrend_linear`.  'none' calls
+		    :func:`~matplotlib.mlab.detrend_none`.
 		
-		scale_by_freq : boolean, optional
+		scale_by_freq : bool, optional
 		    Specifies whether the resulting density values should be scaled
 		    by the scaling frequency, which gives density in units of Hz^-1.
 		    This allows for integration over the returned frequency values.
@@ -1667,6 +1847,9 @@ package matplotlib.mlab;
 	**/
 	static public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The stineman_interp function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Given data vectors *x* and *y*, the slope vector *yp* and a new
 		abscissa vector *xi*, the function :func:`stineman_interp` uses
 		Stineman interpolation to calculate a vector *yi* corresponding to
@@ -1767,8 +1950,10 @@ package matplotlib.mlab;
 		<http://stackoverflow.com/a/4947453>`_
 	**/
 	static public function stride_windows(x:Dynamic, n:Dynamic, ?noverlap:Dynamic, ?axis:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The vector_lengths function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		Finds the length of a set of vectors in *n* dimensions.  This is
 		like the :func:`numpy.norm` function for vectors, but has the ability to
 		work over a particular axis of the supplied array or matrix.
@@ -1778,7 +1963,6 @@ package matplotlib.mlab;
 		compute over all elements of *X*.
 	**/
 	static public function vector_lengths(X:Dynamic, ?P:Dynamic, ?axis:Dynamic):Dynamic;
-	static public var verbose : Dynamic;
 	/**
 		Return x times the hanning window of len(x).
 		

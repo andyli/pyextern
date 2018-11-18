@@ -1,9 +1,13 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.client.session;
 @:pythonImport("tensorflow.python.client.session", "BaseSession") extern class BaseSession {
+	/**
+		Experimental wrapper for the C++ `Session::MakeCallable()` API.
+	**/
+	static public function _Callable(session:Dynamic, callable_options:Dynamic):Dynamic;
 	static public var _DEAD_HANDLES_THRESHOLD : Dynamic;
 	static public var _NODEDEF_NAME_RE : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -77,7 +81,7 @@ package tensorflow.python.client.session;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -128,23 +132,22 @@ package tensorflow.python.client.session;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _call_tf_sessionprun(handle:Dynamic, feed_dict:Dynamic, fetch_list:Dynamic):Dynamic;
+	public function _call_tf_sessionrun(options:Dynamic, feed_dict:Dynamic, fetch_list:Dynamic, target_list:Dynamic, run_metadata:Dynamic):Dynamic;
 	public function _do_call(fn:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Runs a step based on the given fetches and feeds.
 		
 		Args:
 		  handle: a handle for partial_run. None if this is just a call to run().
-		  target_list: A list of byte arrays corresponding to names of tensors
-		    or operations to be run to, but not fetched.
-		  fetch_list: A list of byte arrays corresponding to names of tensors to
-		    be fetched and operations to be run.
-		  feed_dict: A dictionary that maps tensor names (as byte arrays) to
-		    numpy ndarrays.
+		  target_list: A list of operations to be run, but not fetched.
+		  fetch_list: A list of tensors to be fetched.
+		  feed_dict: A dictionary that maps tensors to numpy ndarrays.
 		  options: A (pointer to a) [`RunOptions`] protocol buffer, or None
 		  run_metadata: A (pointer to a) [`RunMetadata`] protocol buffer, or None
 		
@@ -159,6 +162,17 @@ package tensorflow.python.client.session;
 	**/
 	public function _do_run(handle:Dynamic, target_list:Dynamic, fetch_list:Dynamic, feed_dict:Dynamic, options:Dynamic, run_metadata:Dynamic):Dynamic;
 	public function _extend_graph():Dynamic;
+	/**
+		Returns a handle to a "callable" with the given options.
+		
+		Args:
+		  callable_options: A `CallableOptions` protocol buffer message describing
+		    the computation that will be performed by the callable.
+		
+		Returns:
+		  A handle to the new callable.
+	**/
+	public function _make_callable_from_options(callable_options:Dynamic):Dynamic;
 	public function _register_dead_handle(handle:Dynamic):Dynamic;
 	/**
 		Perform either run or partial_run, depending the presence of `handle`.
@@ -169,7 +183,7 @@ package tensorflow.python.client.session;
 		Returns a context manager that makes this object the default session.
 		
 		Use with the `with` keyword to specify that calls to
-		@{tf.Operation.run} or @{tf.Tensor.eval} should be executed in
+		`tf.Operation.run` or `tf.Tensor.eval` should be executed in
 		this session.
 		
 		```python
@@ -181,7 +195,7 @@ package tensorflow.python.client.session;
 		  print(c.eval())
 		```
 		
-		To get the current default session, use @{tf.get_default_session}.
+		To get the current default session, use `tf.get_default_session`.
 		
 		*N.B.* The `as_default` context manager *does not* close the
 		session when you exit the context, and you must close the session
@@ -210,7 +224,7 @@ package tensorflow.python.client.session;
 		
 		*N.B.* Entering a `with sess.as_default():` block does not affect
 		the current default graph. If you are using multiple graphs, and
-		`sess.graph` is different from the value of @{tf.get_default_graph},
+		`sess.graph` is different from the value of `tf.get_default_graph`,
 		you must explicitly enter a `with sess.graph.as_default():` block
 		to make `sess.graph` the default graph.
 		
@@ -241,6 +255,30 @@ package tensorflow.python.client.session;
 	**/
 	public var graph_def : Dynamic;
 	/**
+		Lists available devices in this session.
+		
+		```python
+		devices = sess.list_devices()
+		for d in devices:
+		  print(d.name)
+		```
+		
+		Each element in the list has the following properties:
+		 - `name`: A string with the full name of the device. ex:
+		      `/job:worker/replica:0/task:3/device:CPU:0`
+		 - `device_type`: The type of the device (e.g. `CPU`, `GPU`, `TPU`.)
+		 - `memory_limit`: The maximum amount of memory available on the device.
+		      Note: depending on the device, it is possible the usable memory could
+		      be substantially less.
+		Raises:
+		  tf.errors.OpError: If it encounters an error (e.g. session is in an
+		  invalid state, or network errors occur).
+		
+		Returns:
+		  A list of devices in the session.
+	**/
+	public function list_devices():Dynamic;
+	/**
 		Returns a Python callable that runs a particular step.
 		
 		The returned callable will take `len(feed_list)` arguments whose types
@@ -248,7 +286,7 @@ package tensorflow.python.client.session;
 		For example, if element `i` of `feed_list` is a `tf.Tensor`, the `i`th
 		argument to the returned callable must be a numpy ndarray (or something
 		convertible to an ndarray) with matching element type and shape. See
-		@{tf.Session.run} for details of the allowable feed key and value types.
+		`tf.Session.run` for details of the allowable feed key and value types.
 		
 		The returned callable will have the same return type as
 		`tf.Session.run(fetches, ...)`. For example, if `fetches` is a `tf.Tensor`,
@@ -256,10 +294,16 @@ package tensorflow.python.client.session;
 		it will return `None`.
 		
 		Args:
-		  fetches: A value or list of values to fetch. See @{tf.Session.run}
+		  fetches: A value or list of values to fetch. See `tf.Session.run`
 		    for details of the allowable fetch types.
 		  feed_list: (Optional.) A list of `feed_dict` keys. See
-		    @{tf.Session.run} for details of the allowable feed key types.
+		    `tf.Session.run` for details of the allowable feed key types.
+		  accept_options: (Optional.) If `True`, the returned `Callable` will be
+		    able to accept `tf.RunOptions` and `tf.RunMetadata` as optional
+		    keyword arguments `options` and `run_metadata`, respectively, with
+		    the same syntax and semantics as `tf.Session.run`, which is useful
+		    for certain use cases (profiling and debugging) but will result in
+		    measurable slowdown of the `Callable`'s performance. Default: `False`.
 		
 		Returns:
 		  A function that when called will execute the step defined by
@@ -267,9 +311,9 @@ package tensorflow.python.client.session;
 		
 		Raises:
 		  TypeError: If `fetches` or `feed_list` cannot be interpreted
-		    as arguments to @{tf.Session.run}.
+		    as arguments to `tf.Session.run`.
 	**/
-	public function make_callable(fetches:Dynamic, ?feed_list:Dynamic):Dynamic;
+	public function make_callable(fetches:Dynamic, ?feed_list:Dynamic, ?accept_options:Dynamic):Dynamic;
 	/**
 		Continues the execution with more feeds and fetches.
 		
@@ -349,14 +393,14 @@ package tensorflow.python.client.session;
 		nested list, tuple, namedtuple, dict, or OrderedDict containing graph
 		elements at its leaves.  A graph element can be one of the following types:
 		
-		* An @{tf.Operation}.
+		* An `tf.Operation`.
 		  The corresponding fetched value will be `None`.
-		* A @{tf.Tensor}.
+		* A `tf.Tensor`.
 		  The corresponding fetched value will be a numpy ndarray containing the
 		  value of that tensor.
-		* A @{tf.SparseTensor}.
+		* A `tf.SparseTensor`.
 		  The corresponding fetched value will be a
-		  @{tf.SparseTensorValue}
+		  `tf.SparseTensorValue`
 		  containing the value of that sparse tensor.
 		* A `get_tensor_handle` op.  The corresponding fetched value will be a
 		  numpy ndarray containing the handle of that tensor.
@@ -392,16 +436,16 @@ package tensorflow.python.client.session;
 		the value of tensors in the graph. Each key in `feed_dict` can be
 		one of the following types:
 		
-		* If the key is a @{tf.Tensor}, the
+		* If the key is a `tf.Tensor`, the
 		  value may be a Python scalar, string, list, or numpy ndarray
 		  that can be converted to the same `dtype` as that
 		  tensor. Additionally, if the key is a
-		  @{tf.placeholder}, the shape of
+		  `tf.placeholder`, the shape of
 		  the value will be checked for compatibility with the placeholder.
 		* If the key is a
-		  @{tf.SparseTensor},
+		  `tf.SparseTensor`,
 		  the value should be a
-		  @{tf.SparseTensorValue}.
+		  `tf.SparseTensorValue`.
 		* If the key is a nested tuple of `Tensor`s or `SparseTensor`s, the value
 		  should be a nested tuple with the same structure that maps to their
 		  corresponding values as above.
@@ -431,6 +475,8 @@ package tensorflow.python.client.session;
 		  Either a single value if `fetches` is a single graph element, or
 		  a list of values if `fetches` is a list, or a dictionary with the
 		  same keys as `fetches` if that is a dictionary (described above).
+		  Order in which `fetches` operations are evaluated inside the call
+		  is undefined.
 		
 		Raises:
 		  RuntimeError: If this `Session` is in an invalid state (e.g. has been

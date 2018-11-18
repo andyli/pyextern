@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 @:pythonImport("tensorflow.contrib.slim.python.slim.data.dataset_data_provider", "DatasetDataProvider") extern class DatasetDataProvider {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -39,7 +39,9 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 	public function __hash__():Dynamic;
 	/**
 		Creates a DatasetDataProvider.
-		
+		Note: if `num_epochs` is not `None`,  local counter `epochs` will be created
+		by relevant function. Use `local_variables_initializer()` to initialize
+		local variables.
 		Args:
 		  dataset: An instance of the Dataset class.
 		  num_readers: The number of parallel readers to use.
@@ -62,7 +64,9 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 	public function ___init__(dataset:Dynamic, ?num_readers:Dynamic, ?reader_kwargs:Dynamic, ?shuffle:Dynamic, ?num_epochs:Dynamic, ?common_queue_capacity:Dynamic, ?common_queue_min:Dynamic, ?record_key:Dynamic, ?seed:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		Creates a DatasetDataProvider.
-		
+		Note: if `num_epochs` is not `None`,  local counter `epochs` will be created
+		by relevant function. Use `local_variables_initializer()` to initialize
+		local variables.
 		Args:
 		  dataset: An instance of the Dataset class.
 		  num_readers: The number of parallel readers to use.
@@ -88,7 +92,7 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -110,7 +114,7 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -153,7 +157,7 @@ package tensorflow.contrib.slim.python.slim.data.dataset_data_provider;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

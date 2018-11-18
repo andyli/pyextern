@@ -36,6 +36,7 @@ package theano.gof.destroyhandler;
 	**/
 	static public function _contains_cycle(fgraph:Dynamic, orderings:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	static public var config : Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the variables in inputs that are posible candidate for as inputs of

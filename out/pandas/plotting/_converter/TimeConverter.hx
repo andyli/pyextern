@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.plotting._converter;
 @:pythonImport("pandas.plotting._converter", "TimeConverter") extern class TimeConverter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package pandas.plotting._converter;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,33 +103,32 @@ package pandas.plotting._converter;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		return an units.AxisInfo instance for axis with the specified units
+		Return an `~units.AxisInfo` instance for the axis with the
+		specified units.
 	**/
 	static public function axisinfo(unit:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		convert obj using unit for the specified axis.  If obj is a sequence,
-		return the converted sequence.  The ouput must be a sequence of scalars
-		that can be used by the numpy array layer
+		Convert *obj* using *unit* for the specified *axis*.
+		If *obj* is a sequence, return the converted sequence.
+		The output must be a sequence of scalars that can be used by the numpy
+		array layer.
 	**/
 	static public function convert(value:Dynamic, unit:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		return the default unit for x or None for the given axis
+		Return the default unit for *x* or ``None`` for the given axis.
 	**/
 	static public function default_units(x:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		The matplotlib datalim, autoscaling, locators etc work with
+		The Matplotlib datalim, autoscaling, locators etc work with
 		scalars which are the units converted to floats given the
 		current unit.  The converter may be passed these floats, or
-		arrays of them, even when units are set.  Derived conversion
-		interfaces may opt to pass plain-ol unitless numbers through
-		the conversion interface and this is a helper function for
-		them.
+		arrays of them, even when units are set.
 	**/
 	static public function is_numlike(x:Dynamic):Dynamic;
 }

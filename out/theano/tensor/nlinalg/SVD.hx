@@ -100,7 +100,7 @@ package theano.tensor.nlinalg;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -150,7 +150,7 @@ package theano.tensor.nlinalg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -167,31 +167,40 @@ package theano.tensor.nlinalg;
 	/**
 		Singular Value Decomposition.
 		
-		Factors the matrix `a` as ``u * np.diag(s) * v``, where `u` and `v`
-		are unitary and `s` is a 1-d array of `a`'s singular values.
+		When `a` is a 2D array, it is factorized as ``u @ np.diag(s) @ vh
+		= (u * s) @ vh``, where `u` and `vh` are 2D unitary arrays and `s` is a 1D
+		array of `a`'s singular values. When `a` is higher-dimensional, SVD is
+		applied in stacked mode as explained below.
 		
 		Parameters
 		----------
 		a : (..., M, N) array_like
-		    A real or complex matrix of shape (`M`, `N`) .
+		    A real or complex array with ``a.ndim >= 2``.
 		full_matrices : bool, optional
-		    If True (default), `u` and `v` have the shapes (`M`, `M`) and
-		    (`N`, `N`), respectively.  Otherwise, the shapes are (`M`, `K`)
-		    and (`K`, `N`), respectively, where `K` = min(`M`, `N`).
+		    If True (default), `u` and `vh` have the shapes ``(..., M, M)`` and
+		    ``(..., N, N)``, respectively.  Otherwise, the shapes are
+		    ``(..., M, K)`` and ``(..., K, N)``, respectively, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether or not to compute `u` and `v` in addition to `s`.  True
+		    Whether or not to compute `u` and `vh` in addition to `s`.  True
 		    by default.
 		
 		Returns
 		-------
 		u : { (..., M, M), (..., M, K) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		s : (..., K) array
-		    The singular values for every matrix, sorted in descending order.
-		v : { (..., N, N), (..., K, N) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Vector(s) with the singular values, within each vector sorted in
+		    descending order. The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`.
+		vh : { (..., N, N), (..., K, N) } array
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		
 		Raises
 		------
@@ -201,48 +210,79 @@ package theano.tensor.nlinalg;
 		Notes
 		-----
 		
-		.. versionadded:: 1.8.0
+		.. versionchanged:: 1.8.0
+		   Broadcasting rules apply, see the `numpy.linalg` documentation for
+		   details.
 		
-		Broadcasting rules apply, see the `numpy.linalg` documentation for
-		details.
+		The decomposition is performed using LAPACK routine ``_gesdd``.
 		
-		The decomposition is performed using LAPACK routine _gesdd
+		SVD is usually described for the factorization of a 2D matrix :math:`A`.
+		The higher-dimensional case will be discussed below. In the 2D case, SVD is
+		written as :math:`A = U S V^H`, where :math:`A = a`, :math:`U= u`,
+		:math:`S= \mathtt{np.diag}(s)` and :math:`V^H = vh`. The 1D array `s`
+		contains the singular values of `a` and `u` and `vh` are unitary. The rows
+		of `vh` are the eigenvectors of :math:`A^H A` and the columns of `u` are
+		the eigenvectors of :math:`A A^H`. In both cases the corresponding
+		(possibly non-zero) eigenvalues are given by ``s**2``.
 		
-		The SVD is commonly written as ``a = U S V.H``.  The `v` returned
-		by this function is ``V.H`` and ``u = U``.
+		If `a` has more than two dimensions, then broadcasting rules apply, as
+		explained in :ref:`routines.linalg-broadcasting`. This means that SVD is
+		working in "stacked" mode: it iterates over all indices of the first
+		``a.ndim - 2`` dimensions and for each combination SVD is applied to the
+		last two indices. The matrix `a` can be reconstructed from the
+		decomposition with either ``(u * s[..., None, :]) @ vh`` or
+		``u @ (s[..., None] * vh)``. (The ``@`` operator can be replaced by the
+		function ``np.matmul`` for python versions below 3.5.)
 		
-		If ``U`` is a unitary matrix, it means that it
-		satisfies ``U.H = inv(U)``.
-		
-		The rows of `v` are the eigenvectors of ``a.H a``. The columns
-		of `u` are the eigenvectors of ``a a.H``.  For row ``i`` in
-		`v` and column ``i`` in `u`, the corresponding eigenvalue is
-		``s[i]**2``.
-		
-		If `a` is a `matrix` object (as opposed to an `ndarray`), then so
-		are all the return values.
+		If `a` is a ``matrix`` object (as opposed to an ``ndarray``), then so are
+		all the return values.
 		
 		Examples
 		--------
 		>>> a = np.random.randn(9, 6) + 1j*np.random.randn(9, 6)
+		>>> b = np.random.randn(2, 7, 8, 3) + 1j*np.random.randn(2, 7, 8, 3)
 		
-		Reconstruction based on full SVD:
+		Reconstruction based on full SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=True)
-		>>> U.shape, V.shape, s.shape
-		((9, 9), (6, 6), (6,))
-		>>> S = np.zeros((9, 6), dtype=complex)
-		>>> S[:6, :6] = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((9, 9), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u[:, :6] * s, vh))
+		True
+		>>> smat = np.zeros((9, 6), dtype=complex)
+		>>> smat[:6, :6] = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
 		True
 		
-		Reconstruction based on reduced SVD:
+		Reconstruction based on reduced SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=False)
-		>>> U.shape, V.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u * s, vh))
+		True
+		>>> smat = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
+		True
+		
+		Reconstruction based on full SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 8), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u[..., :3] * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u[..., :3], s[..., None] * vh))
+		True
+		
+		Reconstruction based on reduced SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 3), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u, s[..., None] * vh))
 		True
 	**/
 	static public function _numop(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic):Dynamic;
@@ -272,10 +312,10 @@ package theano.tensor.nlinalg;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	/**
 		Optional: return a code string specific to the apply to be
 		inserted in the struct cleanup code.
@@ -571,7 +611,7 @@ package theano.tensor.nlinalg;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -635,6 +675,8 @@ package theano.tensor.nlinalg;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
+	public function infer_shape(node:Dynamic, shapes:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
 		
@@ -723,7 +765,7 @@ package theano.tensor.nlinalg;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

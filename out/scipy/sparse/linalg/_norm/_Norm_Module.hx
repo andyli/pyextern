@@ -17,6 +17,8 @@ package scipy.sparse.linalg._norm;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -39,6 +41,7 @@ package scipy.sparse.linalg._norm;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -65,6 +68,33 @@ package scipy.sparse.linalg._norm;
 	static public function abs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function issparse(x:Dynamic):Dynamic;
 	/**
 		Norm of a sparse matrix
@@ -157,7 +187,7 @@ package scipy.sparse.linalg._norm;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -184,6 +214,7 @@ package scipy.sparse.linalg._norm;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------

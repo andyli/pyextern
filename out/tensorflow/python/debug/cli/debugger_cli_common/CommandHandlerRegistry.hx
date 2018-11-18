@@ -3,7 +3,9 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 @:pythonImport("tensorflow.python.debug.cli.debugger_cli_common", "CommandHandlerRegistry") extern class CommandHandlerRegistry {
 	static public var HELP_COMMAND : Dynamic;
 	static public var HELP_COMMAND_ALIASES : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var VERSION_COMMAND : Dynamic;
+	static public var VERSION_COMMAND_ALIASES : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -54,7 +56,7 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,7 +107,7 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -147,6 +149,7 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 		  If not resolvable, None.
 	**/
 	public function _resolve_prefix(token:Dynamic):Dynamic;
+	public function _version_handler(args:Dynamic, ?screen_info:Dynamic):Dynamic;
 	/**
 		Handles a command by dispatching it to a registered command handler.
 		

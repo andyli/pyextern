@@ -44,5 +44,6 @@ package theano.gof.compiledir;
 	**/
 	static public function print_compiledir_content():Dynamic;
 	static public var print_function : Dynamic;
+	static public function print_title(title:Dynamic, ?overline:Dynamic, ?underline:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 }

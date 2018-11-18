@@ -1,9 +1,9 @@
 /* This file is generated, do not edit! */
 package scipy.spatial.distance;
 @:pythonImport("scipy.spatial.distance") extern class Distance_Module {
+	static public var _METRICS : Dynamic;
 	static public var _METRICS_NAMES : Dynamic;
-	static public var _SIMPLE_CDIST : Dynamic;
-	static public var _SIMPLE_PDIST : Dynamic;
+	static public var _METRIC_ALIAS : Dynamic;
 	static public var _TEST_METRICS : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -14,25 +14,65 @@ package scipy.spatial.distance;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _convert_to_bool(X:Dynamic):Dynamic;
-	static public function _convert_to_double(X:Dynamic):Dynamic;
 	/**
-		Copies the array if its base points to a parent array.
+		Convert legacy positional arguments to keyword arguments for pdist/cdist.
+	**/
+	static public function _args_to_kwargs_xdist(args:Dynamic, kwargs:Dynamic, metric:Dynamic, func_name:Dynamic):Dynamic;
+	/**
+		Helper function for scipy argument validation.
+		
+		Many scipy linear algebra functions do support arbitrary array-like
+		input arguments.  Examples of commonly unsupported inputs include
+		matrices containing inf/nan, sparse matrix representations, and
+		matrices with complicated elements.
+		
+		Parameters
+		----------
+		a : array_like
+		    The array-like input.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    Default: True
+		sparse_ok : bool, optional
+		    True if scipy sparse matrices are allowed.
+		objects_ok : bool, optional
+		    True if arrays with dype('O') are allowed.
+		mask_ok : bool, optional
+		    True if masked arrays are allowed.
+		as_inexact : bool, optional
+		    True to convert the input array to a np.inexact dtype.
+		
+		Returns
+		-------
+		ret : ndarray
+		    The converted validated array.
+	**/
+	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
+	static public function _convert_to_bool(X:Dynamic, ?out_type:Dynamic):Dynamic;
+	static public function _convert_to_double(X:Dynamic, ?out_type:Dynamic):Dynamic;
+	static public function _convert_to_type(X:Dynamic, out_type:Dynamic):Dynamic;
+	/**
+		Copy the array if its base points to a parent array.
 	**/
 	static public function _copy_array_if_base_present(a:Dynamic):Dynamic;
-	static public function _cosine_cdist(XA:Dynamic, XB:Dynamic, dm:Dynamic):Dynamic;
-	static public function _filter_deprecated_kwargs(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function _nbool_correspond_all(u:Dynamic, v:Dynamic):Dynamic;
-	static public function _nbool_correspond_ft_tf(u:Dynamic, v:Dynamic):Dynamic;
-	static public function _row_norms(X:Dynamic):Dynamic;
-	static public function _validate_mahalanobis_args(X:Dynamic, m:Dynamic, n:Dynamic, VI:Dynamic):Dynamic;
-	static public function _validate_minkowski_args(p:Dynamic):Dynamic;
-	static public function _validate_seuclidean_args(X:Dynamic, n:Dynamic, V:Dynamic):Dynamic;
+	static public function _correlation_cdist_wrap(XA:Dynamic, XB:Dynamic, dm:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _correlation_pdist_wrap(X:Dynamic, dm:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _filter_deprecated_kwargs(kwargs:Dynamic, args_blacklist:Dynamic):Dynamic;
+	static public function _nbool_correspond_all(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
+	static public function _nbool_correspond_ft_tf(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
+	static public function _validate_cdist_input(XA:Dynamic, XB:Dynamic, mA:Dynamic, mB:Dynamic, n:Dynamic, metric_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _validate_mahalanobis_kwargs(X:Dynamic, m:Dynamic, n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _validate_minkowski_kwargs(X:Dynamic, m:Dynamic, n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _validate_pdist_input(X:Dynamic, m:Dynamic, n:Dynamic, metric_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _validate_seuclidean_kwargs(X:Dynamic, m:Dynamic, n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _validate_vector(u:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function _validate_wminkowski_args(p:Dynamic, w:Dynamic):Dynamic;
+	static public function _validate_weights(w:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function _validate_wminkowski_kwargs(X:Dynamic, m:Dynamic, n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Computes the Bray-Curtis distance between two 1-D arrays.
+		Compute the Bray-Curtis distance between two 1-D arrays.
 		
 		Bray-Curtis distance is defined as
 		
@@ -49,16 +89,27 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		braycurtis : double
 		    The Bray-Curtis distance between 1-D arrays `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.braycurtis([1, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.braycurtis([1, 1, 0], [0, 1, 0])
+		0.33333333333333331
 	**/
-	static public function braycurtis(u:Dynamic, v:Dynamic):Dynamic;
+	static public function braycurtis(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
 	/**
-		Computes the Canberra distance between two 1-D arrays.
+		Compute the Canberra distance between two 1-D arrays.
 		
 		The Canberra distance is defined as
 		
@@ -73,6 +124,9 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
@@ -83,10 +137,18 @@ package scipy.spatial.distance;
 		-----
 		When `u[i]` and `v[i]` are 0 for given i, then the fraction 0/0 = 0 is
 		used in the calculation.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.canberra([1, 0, 0], [0, 1, 0])
+		2.0
+		>>> distance.canberra([1, 1, 0], [0, 1, 0])
+		1.0
 	**/
-	static public function canberra(u:Dynamic, v:Dynamic):Dynamic;
+	static public function canberra(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes distance between each pair of the two collections of inputs.
+		Compute distance between each pair of the two collections of inputs.
 		
 		See Notes for common calling conventions.
 		
@@ -107,18 +169,34 @@ package scipy.spatial.distance;
 		    'mahalanobis', 'matching', 'minkowski', 'rogerstanimoto', 'russellrao',
 		    'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',
 		    'wminkowski', 'yule'.
-		p : double, optional
-		    The p-norm to apply
-		    Only for Minkowski, weighted and unweighted. Default: 2.
-		w : ndarray, optional
-		    The weight vector.
-		    Only for weighted Minkowski. Mandatory
-		V : ndarray, optional
-		    The variance vector
-		    Only for standardized Euclidean. Default: var(vstack([XA, XB]), axis=0, ddof=1)
-		VI : ndarray, optional
-		    The inverse of the covariance matrix
-		    Only for Mahalanobis. Default: inv(cov(vstack([XA, XB]).T)).T
+		*args : tuple. Deprecated.
+		    Additional arguments should be passed as keyword arguments
+		**kwargs : dict, optional
+		    Extra arguments to `metric`: refer to each metric documentation for a
+		    list of all possible arguments.
+		
+		    Some possible arguments:
+		
+		    p : scalar
+		    The p-norm to apply for Minkowski, weighted and unweighted.
+		    Default: 2.
+		
+		    w : ndarray
+		    The weight vector for metrics that support weights (e.g., Minkowski).
+		
+		    V : ndarray
+		    The variance vector for standardized Euclidean.
+		    Default: var(vstack([XA, XB]), axis=0, ddof=1)
+		
+		    VI : ndarray
+		    The inverse of the covariance matrix for Mahalanobis.
+		    Default: inv(cov(vstack([XA, XB].T))).T
+		
+		    out : ndarray
+		    The output array
+		    If not None, the distance matrix Y is stored in this array.
+		    Note: metric independent, it will become a regular keyword arg in a
+		    future scipy version
 		
 		Returns
 		-------
@@ -145,7 +223,7 @@ package scipy.spatial.distance;
 		   points. The points are arranged as :math:`m`
 		   :math:`n`-dimensional row vectors in the matrix X.
 		
-		2. ``Y = cdist(XA, XB, 'minkowski', p)``
+		2. ``Y = cdist(XA, XB, 'minkowski', p=2.)``
 		
 		   Computes the distances using the Minkowski distance
 		   :math:`||u-v||_p` (:math:`p`-norm) where :math:`p \geq 1`.
@@ -292,7 +370,7 @@ package scipy.spatial.distance;
 		   `sokalsneath` function documentation)
 		
 		
-		22. ``Y = cdist(XA, XB, 'wminkowski')``
+		22. ``Y = cdist(XA, XB, 'wminkowski', p=2., w=w)``
 		
 		   Computes the weighted Minkowski distance between the
 		   vectors. (see `wminkowski` function documentation)
@@ -357,10 +435,9 @@ package scipy.spatial.distance;
 		       [ 2.1],
 		       [ 2.3]])
 	**/
-	static public function cdist(XA:Dynamic, XB:Dynamic, ?metric:Dynamic, ?p:Dynamic, ?V:Dynamic, ?VI:Dynamic, ?w:Dynamic):Dynamic;
-	static public function cdist_fn(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function cdist(XA:Dynamic, XB:Dynamic, ?metric:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Computes the Chebyshev distance.
+		Compute the Chebyshev distance.
 		
 		Computes the Chebyshev distance between two 1-D arrays `u` and `v`,
 		which is defined as
@@ -375,15 +452,26 @@ package scipy.spatial.distance;
 		    Input vector.
 		v : (N,) array_like
 		    Input vector.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		chebyshev : double
 		    The Chebyshev distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.chebyshev([1, 0, 0], [0, 1, 0])
+		1
+		>>> distance.chebyshev([1, 1, 0], [0, 1, 0])
+		1
 	**/
-	static public function chebyshev(u:Dynamic, v:Dynamic):Dynamic;
+	static public function chebyshev(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the City Block (Manhattan) distance.
+		Compute the City Block (Manhattan) distance.
 		
 		Computes the Manhattan distance between two 1-D arrays `u` and `v`,
 		which is defined as
@@ -398,24 +486,36 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		cityblock : double
 		    The City Block (Manhattan) distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.cityblock([1, 0, 0], [0, 1, 0])
+		2
+		>>> distance.cityblock([1, 0, 0], [0, 2, 0])
+		3
+		>>> distance.cityblock([1, 0, 0], [1, 1, 0])
+		1
 	**/
-	static public function cityblock(u:Dynamic, v:Dynamic):Dynamic;
-	static public function converter(X:Dynamic):Dynamic;
+	static public function cityblock(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the correlation distance between two 1-D arrays.
+		Compute the correlation distance between two 1-D arrays.
 		
 		The correlation distance between `u` and `v`, is
 		defined as
 		
 		.. math::
 		
-		   1 - \frac{(u - \bar{u}) \cdot (v - \bar{v})}
-		           {{||(u - \bar{u})||}_2 {||(v - \bar{v})||}_2}
+		    1 - \frac{(u - \bar{u}) \cdot (v - \bar{v})}
+		              {{||(u - \bar{u})||}_2 {||(v - \bar{v})||}_2}
 		
 		where :math:`\bar{u}` is the mean of the elements of `u`
 		and :math:`x \cdot y` is the dot product of :math:`x` and :math:`y`.
@@ -426,22 +526,25 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		correlation : double
 		    The correlation distance between 1-D array `u` and `v`.
 	**/
-	static public function correlation(u:Dynamic, v:Dynamic):Dynamic;
+	static public function correlation(u:Dynamic, v:Dynamic, ?w:Dynamic, ?centered:Dynamic):Dynamic;
 	/**
-		Computes the Cosine distance between 1-D arrays.
+		Compute the Cosine distance between 1-D arrays.
 		
 		The Cosine distance between `u` and `v`, is defined as
 		
 		.. math::
 		
-		   1 - \frac{u \cdot v}
-		            {||u||_2 ||v||_2}.
+		    1 - \frac{u \cdot v}
+		              {||u||_2 ||v||_2}.
 		
 		where :math:`u \cdot v` is the dot product of :math:`u` and
 		:math:`v`.
@@ -452,15 +555,28 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		cosine : double
 		    The Cosine distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.cosine([1, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.cosine([100, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.cosine([1, 1, 0], [0, 1, 0])
+		0.29289321881345254
 	**/
-	static public function cosine(u:Dynamic, v:Dynamic):Dynamic;
+	static public function cosine(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the Dice dissimilarity between two boolean 1-D arrays.
+		Compute the Dice dissimilarity between two boolean 1-D arrays.
 		
 		The Dice dissimilarity between `u` and `v`, is
 		
@@ -479,15 +595,28 @@ package scipy.spatial.distance;
 		    Input 1-D array.
 		v : (N,) ndarray, bool
 		    Input 1-D array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		dice : double
 		    The Dice dissimilarity between 1-D arrays `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.dice([1, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.dice([1, 0, 0], [1, 1, 0])
+		0.3333333333333333
+		>>> distance.dice([1, 0, 0], [2, 0, 0])
+		-0.3333333333333333
 	**/
-	static public function dice(u:Dynamic, v:Dynamic):Dynamic;
+	static public function dice(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the directed Hausdorff distance between two N-D arrays.
+		Compute the directed Hausdorff distance between two N-D arrays.
 		
 		Distances between pairs are calculated using a Euclidean metric.
 		
@@ -580,22 +709,34 @@ package scipy.spatial.distance;
 		
 		   {||u-v||}_2
 		
+		   \left(\sum{(w_i |(u_i - v_i)|^2)}\right)^{1/2}
+		
 		Parameters
 		----------
 		u : (N,) array_like
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		euclidean : double
 		    The Euclidean distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.euclidean([1, 0, 0], [0, 1, 0])
+		1.4142135623730951
+		>>> distance.euclidean([1, 1, 0], [0, 1, 0])
+		1.0
 	**/
-	static public function euclidean(u:Dynamic, v:Dynamic):Dynamic;
-	static public var fn_name : Dynamic;
+	static public function euclidean(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the Hamming distance between two 1-D arrays.
+		Compute the Hamming distance between two 1-D arrays.
 		
 		The Hamming distance between 1-D arrays `u` and `v`, is simply the
 		proportion of disagreeing components in `u` and `v`. If `u` and `v` are
@@ -615,15 +756,30 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		hamming : double
 		    The Hamming distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.hamming([1, 0, 0], [0, 1, 0])
+		0.66666666666666663
+		>>> distance.hamming([1, 0, 0], [1, 1, 0])
+		0.33333333333333331
+		>>> distance.hamming([1, 0, 0], [2, 0, 0])
+		0.33333333333333331
+		>>> distance.hamming([1, 0, 0], [3, 0, 0])
+		0.33333333333333331
 	**/
-	static public function hamming(u:Dynamic, v:Dynamic):Dynamic;
+	static public function hamming(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Returns True if input array is a valid distance matrix.
+		Return True if input array is a valid distance matrix.
 		
 		Distance matrices must be 2-dimensional numpy arrays.
 		They must have a zero-diagonal, and they must be symmetric.
@@ -659,7 +815,7 @@ package scipy.spatial.distance;
 	**/
 	static public function is_valid_dm(D:Dynamic, ?tol:Dynamic, ?_throw:Dynamic, ?name:Dynamic, ?warning:Dynamic):Bool;
 	/**
-		Returns True if the input array is a valid condensed distance matrix.
+		Return True if the input array is a valid condensed distance matrix.
 		
 		Condensed distance matrices must be 1-dimensional numpy arrays.
 		Their length must be a binomial coefficient :math:`{n \choose 2}`
@@ -683,7 +839,7 @@ package scipy.spatial.distance;
 	**/
 	static public function is_valid_y(y:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the Jaccard-Needham dissimilarity between two boolean 1-D arrays.
+		Compute the Jaccard-Needham dissimilarity between two boolean 1-D arrays.
 		
 		The Jaccard-Needham dissimilarity between 1-D boolean arrays `u` and `v`,
 		is defined as
@@ -703,15 +859,30 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like, bool
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		jaccard : double
 		    The Jaccard distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.jaccard([1, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.jaccard([1, 0, 0], [1, 1, 0])
+		0.5
+		>>> distance.jaccard([1, 0, 0], [1, 2, 0])
+		0.5
+		>>> distance.jaccard([1, 0, 0], [1, 1, 1])
+		0.66666666666666663
 	**/
-	static public function jaccard(u:Dynamic, v:Dynamic):Dynamic;
+	static public function jaccard(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the Kulsinski dissimilarity between two boolean 1-D arrays.
+		Compute the Kulsinski dissimilarity between two boolean 1-D arrays.
 		
 		The Kulsinski dissimilarity between two boolean 1-D arrays `u` and `v`,
 		is defined as
@@ -731,15 +902,30 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like, bool
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		kulsinski : double
 		    The Kulsinski distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.kulsinski([1, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.kulsinski([1, 0, 0], [1, 1, 0])
+		0.75
+		>>> distance.kulsinski([1, 0, 0], [2, 1, 0])
+		0.33333333333333331
+		>>> distance.kulsinski([1, 0, 0], [3, 1, 0])
+		-0.5
 	**/
-	static public function kulsinski(u:Dynamic, v:Dynamic):Dynamic;
+	static public function kulsinski(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the Mahalanobis distance between two 1-D arrays.
+		Compute the Mahalanobis distance between two 1-D arrays.
 		
 		The Mahalanobis distance between 1-D arrays `u` and `v`, is defined as
 		
@@ -763,16 +949,32 @@ package scipy.spatial.distance;
 		-------
 		mahalanobis : double
 		    The Mahalanobis distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> iv = [[1, 0.5, 0.5], [0.5, 1, 0.5], [0.5, 0.5, 1]]
+		>>> distance.mahalanobis([1, 0, 0], [0, 1, 0], iv)
+		1.0
+		>>> distance.mahalanobis([0, 2, 0], [0, 1, 0], iv)
+		1.0
+		>>> distance.mahalanobis([2, 0, 0], [0, 1, 0], iv)
+		1.7320508075688772
 	**/
 	static public function mahalanobis(u:Dynamic, v:Dynamic, VI:Dynamic):Dynamic;
 	/**
-		Computes the Hamming distance between two boolean 1-D arrays.
+		`matching` is deprecated!
+		spatial.distance.matching is deprecated in scipy 1.0.0; use spatial.distance.hamming instead.
 		
-		This is a deprecated synonym for :func:`hamming`.
+		
+		    Compute the Hamming distance between two boolean 1-D arrays.
+		
+		    This is a deprecated synonym for :func:`hamming`.
+		    
 	**/
-	static public function matching(u:Dynamic, v:Dynamic):Dynamic;
+	static public function matching(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Computes the Minkowski distance between two 1-D arrays.
+		Compute the Minkowski distance between two 1-D arrays.
 		
 		The Minkowski distance between 1-D arrays `u` and `v`,
 		is defined as
@@ -780,6 +982,9 @@ package scipy.spatial.distance;
 		.. math::
 		
 		   {||u-v||}_p = (\sum{|u_i - v_i|^p})^{1/p}.
+		
+		
+		   \left(\sum{w_i(|(u_i - v_i)|^p)}\right)^{1/p}.
 		
 		Parameters
 		----------
@@ -789,15 +994,55 @@ package scipy.spatial.distance;
 		    Input array.
 		p : int
 		    The order of the norm of the difference :math:`{||u-v||}_p`.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
-		d : double
+		minkowski : double
 		    The Minkowski distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.minkowski([1, 0, 0], [0, 1, 0], 1)
+		2.0
+		>>> distance.minkowski([1, 0, 0], [0, 1, 0], 2)
+		1.4142135623730951
+		>>> distance.minkowski([1, 0, 0], [0, 1, 0], 3)
+		1.2599210498948732
+		>>> distance.minkowski([1, 1, 0], [0, 1, 0], 1)
+		1.0
+		>>> distance.minkowski([1, 1, 0], [0, 1, 0], 2)
+		1.0
+		>>> distance.minkowski([1, 1, 0], [0, 1, 0], 3)
+		1.0
 	**/
-	static public function minkowski(u:Dynamic, v:Dynamic, p:Dynamic):Dynamic;
-	static public var name : Dynamic;
-	static public var names : Dynamic;
+	static public function minkowski(u:Dynamic, v:Dynamic, ?p:Dynamic, ?w:Dynamic):Dynamic;
+	/**
+		Returns a new subclass of tuple with named fields.
+		
+		>>> Point = namedtuple('Point', ['x', 'y'])
+		>>> Point.__doc__                   # docstring for the new class
+		'Point(x, y)'
+		>>> p = Point(11, y=22)             # instantiate with positional args or keywords
+		>>> p[0] + p[1]                     # indexable like a plain tuple
+		33
+		>>> x, y = p                        # unpack like a regular tuple
+		>>> x, y
+		(11, 22)
+		>>> p.x + p.y                       # fields also accessible by name
+		33
+		>>> d = p._asdict()                 # convert to a dictionary
+		>>> d['x']
+		11
+		>>> Point(**d)                      # convert from a dictionary
+		Point(x=11, y=22)
+		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
+		Point(x=100, y=22)
+	**/
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		Matrix or vector norm.
 		
@@ -915,7 +1160,7 @@ package scipy.spatial.distance;
 	**/
 	static public function norm(a:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		Returns the number of original observations that correspond to a
+		Return the number of original observations that correspond to a
 		square, redundant distance matrix.
 		
 		Parameters
@@ -930,7 +1175,7 @@ package scipy.spatial.distance;
 	**/
 	static public function num_obs_dm(d:Dynamic):Int;
 	/**
-		Returns the number of original observations that correspond to a
+		Return the number of original observations that correspond to a
 		condensed distance matrix.
 		
 		Parameters
@@ -961,18 +1206,34 @@ package scipy.spatial.distance;
 		    'jaccard', 'kulsinski', 'mahalanobis', 'matching',
 		    'minkowski', 'rogerstanimoto', 'russellrao', 'seuclidean',
 		    'sokalmichener', 'sokalsneath', 'sqeuclidean', 'yule'.
-		p : double, optional
-		    The p-norm to apply
-		    Only for Minkowski, weighted and unweighted. Default: 2.
-		w : ndarray, optional
-		    The weight vector.
-		    Only for weighted Minkowski. Mandatory
-		V : ndarray, optional
-		    The variance vector
-		    Only for standardized Euclidean. Default: var(X, axis=0, ddof=1)
-		VI : ndarray, optional
-		    The inverse of the covariance matrix
-		    Only for Mahalanobis. Default: inv(cov(X.T)).T
+		*args : tuple. Deprecated.
+		    Additional arguments should be passed as keyword arguments
+		**kwargs : dict, optional
+		    Extra arguments to `metric`: refer to each metric documentation for a
+		    list of all possible arguments.
+		
+		    Some possible arguments:
+		
+		    p : scalar
+		    The p-norm to apply for Minkowski, weighted and unweighted.
+		    Default: 2.
+		
+		    w : ndarray
+		    The weight vector for metrics that support weights (e.g., Minkowski).
+		
+		    V : ndarray
+		    The variance vector for standardized Euclidean.
+		    Default: var(X, axis=0, ddof=1)
+		
+		    VI : ndarray
+		    The inverse of the covariance matrix for Mahalanobis.
+		    Default: inv(cov(X.T)).T
+		
+		    out : ndarray.
+		    The output array
+		    If not None, condensed distance matrix Y is stored in this array.
+		    Note: metric independent, it will become a regular keyword arg in a
+		    future scipy version
 		
 		Returns
 		-------
@@ -1001,7 +1262,7 @@ package scipy.spatial.distance;
 		   (2-norm) as the distance metric between the points. The points
 		   are arranged as m n-dimensional row vectors in the matrix X.
 		
-		2. ``Y = pdist(X, 'minkowski', p)``
+		2. ``Y = pdist(X, 'minkowski', p=2.)``
 		
 		   Computes the distances using the Minkowski distance
 		   :math:`||u-v||_p` (p-norm) where :math:`p \geq 1`.
@@ -1148,7 +1409,7 @@ package scipy.spatial.distance;
 		   Computes the Sokal-Sneath distance between each pair of
 		   boolean vectors. (see sokalsneath function documentation)
 		
-		22. ``Y = pdist(X, 'wminkowski')``
+		22. ``Y = pdist(X, 'wminkowski', p=2, w=w)``
 		
 		   Computes the weighted Minkowski distance between each pair of
 		   vectors. (see wminkowski function documentation)
@@ -1175,11 +1436,10 @@ package scipy.spatial.distance;
 		
 		     dm = pdist(X, 'sokalsneath')
 	**/
-	static public function pdist(X:Dynamic, ?metric:Dynamic, ?p:Dynamic, ?w:Dynamic, ?V:Dynamic, ?VI:Dynamic):Dynamic;
-	static public function pdist_fn(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function pdist(X:Dynamic, ?metric:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Computes the Rogers-Tanimoto dissimilarity between two boolean 1-D arrays.
+		Compute the Rogers-Tanimoto dissimilarity between two boolean 1-D arrays.
 		
 		The Rogers-Tanimoto dissimilarity between two boolean 1-D arrays
 		`u` and `v`, is defined as
@@ -1198,16 +1458,29 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like, bool
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		rogerstanimoto : double
 		    The Rogers-Tanimoto dissimilarity between vectors
 		    `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.rogerstanimoto([1, 0, 0], [0, 1, 0])
+		0.8
+		>>> distance.rogerstanimoto([1, 0, 0], [1, 1, 0])
+		0.5
+		>>> distance.rogerstanimoto([1, 0, 0], [2, 0, 0])
+		-1.0
 	**/
-	static public function rogerstanimoto(u:Dynamic, v:Dynamic):Dynamic;
+	static public function rogerstanimoto(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the Russell-Rao dissimilarity between two boolean 1-D arrays.
+		Compute the Russell-Rao dissimilarity between two boolean 1-D arrays.
 		
 		The Russell-Rao dissimilarity between two boolean 1-D arrays, `u` and
 		`v`, is defined as
@@ -1227,15 +1500,28 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like, bool
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		russellrao : double
 		    The Russell-Rao dissimilarity between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.russellrao([1, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.russellrao([1, 0, 0], [1, 1, 0])
+		0.6666666666666666
+		>>> distance.russellrao([1, 0, 0], [2, 0, 0])
+		0.3333333333333333
 	**/
-	static public function russellrao(u:Dynamic, v:Dynamic):Dynamic;
+	static public function russellrao(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Returns the standardized Euclidean distance between two 1-D arrays.
+		Return the standardized Euclidean distance between two 1-D arrays.
 		
 		The standardized Euclidean distance between `u` and `v`.
 		
@@ -1253,10 +1539,20 @@ package scipy.spatial.distance;
 		-------
 		seuclidean : double
 		    The standardized Euclidean distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.seuclidean([1, 0, 0], [0, 1, 0], [0.1, 0.1, 0.1])
+		4.4721359549995796
+		>>> distance.seuclidean([1, 0, 0], [0, 1, 0], [1, 0.1, 0.1])
+		3.3166247903553998
+		>>> distance.seuclidean([1, 0, 0], [0, 1, 0], [10, 0.1, 0.1])
+		3.1780497164141406
 	**/
 	static public function seuclidean(u:Dynamic, v:Dynamic, V:Dynamic):Dynamic;
 	/**
-		Computes the Sokal-Michener dissimilarity between two boolean 1-D arrays.
+		Compute the Sokal-Michener dissimilarity between two boolean 1-D arrays.
 		
 		The Sokal-Michener dissimilarity between boolean 1-D arrays `u` and `v`,
 		is defined as
@@ -1277,15 +1573,28 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like, bool
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		sokalmichener : double
 		    The Sokal-Michener dissimilarity between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.sokalmichener([1, 0, 0], [0, 1, 0])
+		0.8
+		>>> distance.sokalmichener([1, 0, 0], [1, 1, 0])
+		0.5
+		>>> distance.sokalmichener([1, 0, 0], [2, 0, 0])
+		-1.0
 	**/
-	static public function sokalmichener(u:Dynamic, v:Dynamic):Dynamic;
+	static public function sokalmichener(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the Sokal-Sneath dissimilarity between two boolean 1-D arrays.
+		Compute the Sokal-Sneath dissimilarity between two boolean 1-D arrays.
 		
 		The Sokal-Sneath dissimilarity between `u` and `v`,
 		
@@ -1304,22 +1613,38 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like, bool
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		sokalsneath : double
 		    The Sokal-Sneath dissimilarity between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.sokalsneath([1, 0, 0], [0, 1, 0])
+		1.0
+		>>> distance.sokalsneath([1, 0, 0], [1, 1, 0])
+		0.66666666666666663
+		>>> distance.sokalsneath([1, 0, 0], [2, 1, 0])
+		0.0
+		>>> distance.sokalsneath([1, 0, 0], [3, 1, 0])
+		-2.0
 	**/
-	static public function sokalsneath(u:Dynamic, v:Dynamic):Dynamic;
+	static public function sokalsneath(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Computes the squared Euclidean distance between two 1-D arrays.
+		Compute the squared Euclidean distance between two 1-D arrays.
 		
 		The squared Euclidean distance between `u` and `v` is defined as
 		
 		.. math::
 		
-		   {||u-v||}_2^2.
+		   {||u-v||}_2^2
 		
+		   \left(\sum{(w_i |(u_i - v_i)|^2)}\right)
 		
 		Parameters
 		----------
@@ -1327,15 +1652,26 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		sqeuclidean : double
 		    The squared Euclidean distance between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.sqeuclidean([1, 0, 0], [0, 1, 0])
+		2.0
+		>>> distance.sqeuclidean([1, 1, 0], [0, 1, 0])
+		1.0
 	**/
-	static public function sqeuclidean(u:Dynamic, v:Dynamic):Dynamic;
+	static public function sqeuclidean(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 	/**
-		Converts a vector-form distance vector to a square-form distance
+		Convert a vector-form distance vector to a square-form distance
 		matrix, and vice-versa.
 		
 		Parameters
@@ -1385,9 +1721,8 @@ package scipy.spatial.distance;
 	**/
 	static public function squareform(X:Dynamic, ?force:Dynamic, ?checks:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
-	static public var typ : Dynamic;
 	/**
-		Computes the weighted Minkowski distance between two 1-D arrays.
+		Compute the weighted Minkowski distance between two 1-D arrays.
 		
 		The weighted Minkowski distance between `u` and `v`, defined as
 		
@@ -1410,11 +1745,32 @@ package scipy.spatial.distance;
 		-------
 		wminkowski : double
 		    The weighted Minkowski distance between vectors `u` and `v`.
+		
+		Notes
+		-----
+		`wminkowski` is DEPRECATED. It implements a definition where weights
+		are powered. It is recommended to use the weighted version of `minkowski`
+		instead. This function will be removed in a future version of scipy.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.wminkowski([1, 0, 0], [0, 1, 0], 1, np.ones(3))
+		2.0
+		>>> distance.wminkowski([1, 0, 0], [0, 1, 0], 2, np.ones(3))
+		1.4142135623730951
+		>>> distance.wminkowski([1, 0, 0], [0, 1, 0], 3, np.ones(3))
+		1.2599210498948732
+		>>> distance.wminkowski([1, 1, 0], [0, 1, 0], 1, np.ones(3))
+		1.0
+		>>> distance.wminkowski([1, 1, 0], [0, 1, 0], 2, np.ones(3))
+		1.0
+		>>> distance.wminkowski([1, 1, 0], [0, 1, 0], 3, np.ones(3))
+		1.0
 	**/
 	static public function wminkowski(u:Dynamic, v:Dynamic, p:Dynamic, w:Dynamic):Dynamic;
-	static public var wrap_name : Dynamic;
 	/**
-		Computes the Yule dissimilarity between two boolean 1-D arrays.
+		Compute the Yule dissimilarity between two boolean 1-D arrays.
 		
 		The Yule dissimilarity is defined as
 		
@@ -1432,11 +1788,22 @@ package scipy.spatial.distance;
 		    Input array.
 		v : (N,) array_like, bool
 		    Input array.
+		w : (N,) array_like, optional
+		    The weights for each value in `u` and `v`. Default is None,
+		    which gives each value a weight of 1.0
 		
 		Returns
 		-------
 		yule : double
 		    The Yule dissimilarity between vectors `u` and `v`.
+		
+		Examples
+		--------
+		>>> from scipy.spatial import distance
+		>>> distance.yule([1, 0, 0], [0, 1, 0])
+		2.0
+		>>> distance.yule([1, 1, 0], [0, 1, 0])
+		0.0
 	**/
-	static public function yule(u:Dynamic, v:Dynamic):Dynamic;
+	static public function yule(u:Dynamic, v:Dynamic, ?w:Dynamic):Dynamic;
 }

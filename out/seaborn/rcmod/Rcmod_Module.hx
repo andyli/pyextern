@@ -50,6 +50,7 @@ package seaborn.rcmod;
 	**/
 	static public function axes_style(?style:Dynamic, ?rc:Dynamic):Dynamic;
 	static public var mpl_ge_150 : Dynamic;
+	static public var mpl_ge_2 : Dynamic;
 	/**
 		Return a parameter dict to scale elements of the figure.
 		
@@ -170,7 +171,7 @@ package seaborn.rcmod;
 		
 		Parameters
 		----------
-		palette : hls | husl | matplotlib colormap | seaborn color palette
+		palette : seaborn color paltte | matplotlib colormap | hls | husl
 		    Palette definition. Should be something that :func:`color_palette`
 		    can process.
 		n_colors : int

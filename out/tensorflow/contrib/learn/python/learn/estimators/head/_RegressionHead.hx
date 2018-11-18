@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.estimators.head;
 @:pythonImport("tensorflow.contrib.learn.python.learn.estimators.head", "_RegressionHead") extern class _RegressionHead {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,6 +46,10 @@ package tensorflow.contrib.learn.python.learn.estimators.head;
 		    shape `[batch_size, label_dimension]`).
 		  loss_fn: Loss function, takes logits and labels and returns loss.
 		  link_fn: Link function, takes a logits tensor and returns the output.
+		  logits_dimension: Number of logits per example. This is the
+		    size of the last dimension of the logits `Tensor` (typically, this has
+		    shape `[batch_size, label_dimension]`).
+		    Default value: `label_dimension`.
 		  label_name: String, name of the key in label dict. Can be null if label
 		      is a tensor (single headed models).
 		  weight_column_name: A string defining feature column name representing
@@ -59,7 +63,7 @@ package tensorflow.contrib.learn.python.learn.estimators.head;
 		    `head_name`.
 	**/
 	@:native("__init__")
-	public function ___init__(label_dimension:Dynamic, loss_fn:Dynamic, link_fn:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Dynamic;
+	public function ___init__(label_dimension:Dynamic, loss_fn:Dynamic, link_fn:Dynamic, ?logits_dimension:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Dynamic;
 	/**
 		`Head` for regression.
 		
@@ -69,6 +73,10 @@ package tensorflow.contrib.learn.python.learn.estimators.head;
 		    shape `[batch_size, label_dimension]`).
 		  loss_fn: Loss function, takes logits and labels and returns loss.
 		  link_fn: Link function, takes a logits tensor and returns the output.
+		  logits_dimension: Number of logits per example. This is the
+		    size of the last dimension of the logits `Tensor` (typically, this has
+		    shape `[batch_size, label_dimension]`).
+		    Default value: `label_dimension`.
 		  label_name: String, name of the key in label dict. Can be null if label
 		      is a tensor (single headed models).
 		  weight_column_name: A string defining feature column name representing
@@ -81,14 +89,14 @@ package tensorflow.contrib.learn.python.learn.estimators.head;
 		    suffixed by `"/" + head_name` and the default variable scope is
 		    `head_name`.
 	**/
-	public function new(label_dimension:Dynamic, loss_fn:Dynamic, link_fn:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Void;
+	public function new(label_dimension:Dynamic, loss_fn:Dynamic, link_fn:Dynamic, ?logits_dimension:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -110,7 +118,7 @@ package tensorflow.contrib.learn.python.learn.estimators.head;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -153,7 +161,7 @@ package tensorflow.contrib.learn.python.learn.estimators.head;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

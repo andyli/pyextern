@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.lib.index_tricks;
 @:pythonImport("numpy.lib.index_tricks", "AxisConcatenator") extern class AxisConcatenator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package numpy.lib.index_tricks;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,13 +105,13 @@ package numpy.lib.index_tricks;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -121,7 +121,12 @@ package numpy.lib.index_tricks;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -161,6 +166,8 @@ package numpy.lib.index_tricks;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -185,6 +192,10 @@ package numpy.lib.index_tricks;
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		matrix(data, dtype=None, copy=True)
+		
+		.. note:: It is no longer recommended to use this class, even for linear
+		          algebra. Instead use regular arrays. The class may be removed
+		          in the future.
 		
 		Returns a matrix from an array-like object, or from a string of data.
 		A matrix is a specialized 2-D array that retains its 2-D nature

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.optimize.minpack;
 @:pythonImport("scipy.optimize.minpack") extern class Minpack_Module {
+	static public var _MINPACK_LOCK : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -104,6 +105,8 @@ package scipy.optimize.minpack;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -126,6 +129,7 @@ package scipy.optimize.minpack;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -183,7 +187,7 @@ package scipy.optimize.minpack;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -209,7 +213,7 @@ package scipy.optimize.minpack;
 		False
 		
 		>>> np.all([[True,False],[True,True]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.all([-1, 4, 5])
 		True
@@ -220,7 +224,7 @@ package scipy.optimize.minpack;
 		>>> o=np.array([False])
 		>>> z=np.all([-1, 4, 5], out=o)
 		>>> id(z), id(o), z                             # doctest: +SKIP
-		(28293632, 28293632, array([ True], dtype=bool))
+		(28293632, 28293632, array([ True]))
 	**/
 	static public function all(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
@@ -276,7 +280,15 @@ package scipy.optimize.minpack;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -386,9 +398,9 @@ package scipy.optimize.minpack;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -470,13 +482,13 @@ package scipy.optimize.minpack;
 		
 		Examples
 		--------
-		>>> from scipy import array, linalg, dot
-		>>> a = array([[1,-2j],[2j,5]])
-		>>> L = linalg.cholesky(a, lower=True)
+		>>> from scipy.linalg import cholesky
+		>>> a = np.array([[1,-2j],[2j,5]])
+		>>> L = cholesky(a, lower=True)
 		>>> L
 		array([[ 1.+0.j,  0.+0.j],
 		       [ 0.+2.j,  1.+0.j]])
-		>>> dot(L, L.T.conj())
+		>>> L @ L.T.conj()
 		array([[ 1.+0.j,  0.-2.j],
 		       [ 0.+2.j,  5.+0.j]])
 	**/
@@ -535,7 +547,7 @@ package scipy.optimize.minpack;
 		    False may silently produce nonsensical results if the input arrays
 		    do contain nans. Default is True.
 		bounds : 2-tuple of array_like, optional
-		    Lower and upper bounds on independent variables. Defaults to no bounds.
+		    Lower and upper bounds on parameters. Defaults to no bounds.
 		    Each element of the tuple must be either an array with the length equal
 		    to the number of parameters, or a scalar (in which case the bound is
 		    taken to be the same for all parameters.) Use ``np.inf`` with an
@@ -617,24 +629,31 @@ package scipy.optimize.minpack;
 		>>> def func(x, a, b, c):
 		...     return a * np.exp(-b * x) + c
 		
-		define the data to be fit with some noise
+		Define the data to be fit with some noise:
 		
 		>>> xdata = np.linspace(0, 4, 50)
 		>>> y = func(xdata, 2.5, 1.3, 0.5)
+		>>> np.random.seed(1729)
 		>>> y_noise = 0.2 * np.random.normal(size=xdata.size)
 		>>> ydata = y + y_noise
 		>>> plt.plot(xdata, ydata, 'b-', label='data')
 		
-		Fit for the parameters a, b, c of the function `func`
+		Fit for the parameters a, b, c of the function `func`:
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
-		>>> plt.plot(xdata, func(xdata, *popt), 'r-', label='fit')
+		>>> popt
+		array([ 2.55423706,  1.35190947,  0.47450618])
+		>>> plt.plot(xdata, func(xdata, *popt), 'r-',
+		...          label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt))
 		
-		Constrain the optimization to the region of ``0 < a < 3``, ``0 < b < 2``
-		and ``0 < c < 1``:
+		Constrain the optimization to the region of ``0 <= a <= 3``,
+		``0 <= b <= 1`` and ``0 <= c <= 0.5``:
 		
-		>>> popt, pcov = curve_fit(func, xdata, ydata, bounds=(0, [3., 2., 1.]))
-		>>> plt.plot(xdata, func(xdata, *popt), 'g--', label='fit-with-bounds')
+		>>> popt, pcov = curve_fit(func, xdata, ydata, bounds=(0, [3., 1., 0.5]))
+		>>> popt
+		array([ 2.43708906,  1.        ,  0.35015434])
+		>>> plt.plot(xdata, func(xdata, *popt), 'g--',
+		...          label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt))
 		
 		>>> plt.xlabel('x')
 		>>> plt.ylabel('y')
@@ -646,12 +665,22 @@ package scipy.optimize.minpack;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -731,6 +760,11 @@ package scipy.optimize.minpack;
 		  to a lower diagonal.
 		dtype : data-type, optional
 		  Data-type of the returned array.
+		order : {'C', 'F'}, optional
+		    Whether the output should be stored in row-major (C-style) or
+		    column-major (Fortran-style) order in memory.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -753,7 +787,7 @@ package scipy.optimize.minpack;
 		       [ 0.,  0.,  1.],
 		       [ 0.,  0.,  0.]])
 	**/
-	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Find a fixed point of the function.
 		
@@ -803,12 +837,13 @@ package scipy.optimize.minpack;
 		Parameters
 		----------
 		func : callable ``f(x, *args)``
-		    A function that takes at least one (possibly vector) argument.
+		    A function that takes at least one (possibly vector) argument,
+		    and returns a value of the same length.
 		x0 : ndarray
 		    The starting estimate for the roots of ``func(x) = 0``.
 		args : tuple, optional
 		    Any extra arguments to `func`.
-		fprime : callable(x), optional
+		fprime : callable ``f(x, *args)``, optional
 		    A function to compute the Jacobian of `func` with derivatives
 		    across the rows. By default, the Jacobian will be estimated.
 		full_output : bool, optional
@@ -906,8 +941,10 @@ package scipy.optimize.minpack;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		
 		See Also
@@ -917,14 +954,14 @@ package scipy.optimize.minpack;
 		Examples
 		--------
 		>>> np.greater([4,2],[2,2])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		If the inputs are ndarrays, then np.greater is equivalent to '>'.
 		
 		>>> a = np.array([4,2])
 		>>> b = np.array([2,2])
 		>>> a > b
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function greater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var inf : Dynamic;
@@ -949,6 +986,17 @@ package scipy.optimize.minpack;
 		False
 		>>> np.isscalar(False)
 		True
+		>>> np.isscalar('numpy')
+		True
+		
+		NumPy supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> isscalar(Fraction(5, 17))
+		True
+		>>> from numbers import Number
+		>>> isscalar(Number())
+		True
 	**/
 	static public function isscalar(num:Dynamic):Bool;
 	/**
@@ -970,7 +1018,7 @@ package scipy.optimize.minpack;
 		
 		Examples
 		--------
-		>>> np.issubdtype('S1', str)
+		>>> np.issubdtype('S1', np.string_)
 		True
 		>>> np.issubdtype(np.float64, np.float32)
 		False
@@ -1305,7 +1353,7 @@ package scipy.optimize.minpack;
 		Examples
 		--------
 		In this example we find a minimum of the Rosenbrock function without bounds
-		on independed variables.
+		on independent variables.
 		
 		>>> def fun_rosenbrock(x):
 		...     return np.array([10 * (x[1] - x[0]**2), (1 - x[0])])
@@ -1585,6 +1633,9 @@ package scipy.optimize.minpack;
 		
 		       min   sum((ydata - f(xdata, params))**2, axis=0)
 		     params
+		
+		The solution, `x`, is always a 1D array, regardless of the shape of `x0`,
+		or whether `x0` is a scalar.
 	**/
 	static public function leastsq(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?Dfun:Dynamic, ?full_output:Dynamic, ?col_deriv:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?maxfev:Dynamic, ?epsfcn:Dynamic, ?factor:Dynamic, ?diag:Dynamic):Dynamic;
 	/**
@@ -1603,7 +1654,7 @@ package scipy.optimize.minpack;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the shape of an array.
 		
@@ -1686,26 +1737,44 @@ package scipy.optimize.minpack;
 		Notes
 		-----
 		.. versionadded:: 0.9.0
+		
+		Examples
+		--------
+		Solve the lower triangular system a x = b, where::
+		
+		         [3  0  0  0]       [4]
+		    a =  [2  1  0  0]   b = [2]
+		         [1  0  1  0]       [4]
+		         [1  1  1  1]       [2]
+		
+		>>> from scipy.linalg import solve_triangular
+		>>> a = np.array([[3, 0, 0, 0], [2, 1, 0, 0], [1, 0, 1, 0], [1, 1, 1, 1]])
+		>>> b = np.array([4, 2, 4, 2])
+		>>> x = solve_triangular(a, b, lower=True)
+		>>> x
+		array([ 1.33333333, -0.66666667,  2.66666667, -1.33333333])
+		>>> a.dot(x)  # Check the result
+		array([ 4.,  2.,  4.,  2.])
 	**/
 	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
 		Singular Value Decomposition.
 		
-		Factorizes the matrix a into two unitary matrices U and Vh, and
-		a 1-D array s of singular values (real, non-negative) such that
-		``a == U*S*Vh``, where S is a suitably shaped matrix of zeros with
-		main diagonal s.
+		Factorizes the matrix `a` into two unitary matrices ``U`` and ``Vh``, and
+		a 1-D array ``s`` of singular values (real, non-negative) such that
+		``a == U @ S @ Vh``, where ``S`` is a suitably shaped matrix of zeros with
+		main diagonal ``s``.
 		
 		Parameters
 		----------
 		a : (M, N) array_like
 		    Matrix to decompose.
 		full_matrices : bool, optional
-		    If True, `U` and `Vh` are of shape ``(M,M)``, ``(N,N)``.
-		    If False, the shapes are ``(M,K)`` and ``(K,N)``, where
-		    ``K = min(M,N)``.
+		    If True (default), `U` and `Vh` are of shape ``(M, M)``, ``(N, N)``.
+		    If False, the shapes are ``(M, K)`` and ``(K, N)``, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether to compute also `U` and `Vh` in addition to `s`.
+		    Whether to compute also ``U`` and ``Vh`` in addition to ``s``.
 		    Default is True.
 		overwrite_a : bool, optional
 		    Whether to overwrite `a`; may improve performance.
@@ -1726,15 +1795,15 @@ package scipy.optimize.minpack;
 		-------
 		U : ndarray
 		    Unitary matrix having left singular vectors as columns.
-		    Of shape ``(M,M)`` or ``(M,K)``, depending on `full_matrices`.
+		    Of shape ``(M, M)`` or ``(M, K)``, depending on `full_matrices`.
 		s : ndarray
 		    The singular values, sorted in non-increasing order.
 		    Of shape (K,), with ``K = min(M, N)``.
 		Vh : ndarray
 		    Unitary matrix having right singular vectors as rows.
-		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
+		    Of shape ``(N, N)`` or ``(K, N)`` depending on `full_matrices`.
 		
-		For ``compute_uv=False``, only `s` is returned.
+		For ``compute_uv=False``, only ``s`` is returned.
 		
 		Raises
 		------
@@ -1749,15 +1818,28 @@ package scipy.optimize.minpack;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6) + 1.j*np.random.randn(9, 6)
+		>>> m, n = 9, 6
+		>>> a = np.random.randn(m, n) + 1.j*np.random.randn(m, n)
 		>>> U, s, Vh = linalg.svd(a)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 9), (6, 6), (6,))
+		>>> U.shape,  s.shape, Vh.shape
+		((9, 9), (6,), (6, 6))
+		
+		Reconstruct the original matrix from the decomposition:
+		
+		>>> sigma = np.zeros((m, n))
+		>>> for i in range(min(m, n)):
+		...     sigma[i, i] = s[i]
+		>>> a1 = np.dot(U, np.dot(sigma, Vh))
+		>>> np.allclose(a, a1)
+		True
+		
+		Alternatively, use ``full_matrices=False`` (notice that the shape of
+		``U`` is then ``(m, n)`` instead of ``(m, m)``):
 		
 		>>> U, s, Vh = linalg.svd(a, full_matrices=False)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = linalg.diagsvd(s, 6, 6)
+		>>> U.shape, s.shape, Vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> S = np.diag(s)
 		>>> np.allclose(a, np.dot(U, np.dot(S, Vh)))
 		True
 		
@@ -1769,15 +1851,28 @@ package scipy.optimize.minpack;
 	/**
 		Take elements from an array along an axis.
 		
-		This function does the same thing as "fancy" indexing (indexing arrays
-		using arrays); however, it can be easier to use if you need elements
-		along a given axis.
+		When axis is not None, this function does the same thing as "fancy"
+		indexing (indexing arrays using arrays); however, it can be easier to use
+		if you need elements along a given axis. A call such as
+		``np.take(arr, indices, axis=3)`` is equivalent to
+		``arr[:,:,:,indices,...]``.
+		
+		Explained without fancy indexing, this is equivalent to the following use
+		of `ndindex`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of
+		indices::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    Nj = indices.shape
+		    for ii in ndindex(Ni):
+		        for jj in ndindex(Nj):
+		            for kk in ndindex(Nk):
+		                out[ii + jj + kk] = a[ii + (indices[jj],) + kk]
 		
 		Parameters
 		----------
-		a : array_like
+		a : array_like (Ni..., M, Nk...)
 		    The source array.
-		indices : array_like
+		indices : array_like (Nj...)
 		    The indices of the values to extract.
 		
 		    .. versionadded:: 1.8.0
@@ -1786,7 +1881,7 @@ package scipy.optimize.minpack;
 		axis : int, optional
 		    The axis over which to select values. By default, the flattened
 		    input array is used.
-		out : ndarray, optional
+		out : ndarray, optional (Ni..., Nj..., Nk...)
 		    If provided, the result will be placed in this array. It should
 		    be of the appropriate shape and dtype.
 		mode : {'raise', 'wrap', 'clip'}, optional
@@ -1802,13 +1897,31 @@ package scipy.optimize.minpack;
 		
 		Returns
 		-------
-		subarray : ndarray
+		out : ndarray (Ni..., Nj..., Nk...)
 		    The returned array has the same type as `a`.
 		
 		See Also
 		--------
 		compress : Take elements using a boolean mask
 		ndarray.take : equivalent method
+		take_along_axis : Take elements by matching the array and the index arrays
+		
+		Notes
+		-----
+		
+		By eliminating the inner loop in the description above, and using `s_` to
+		build simple slice objects, `take` can be expressed  in terms of applying
+		fancy indexing to each 1-d slice::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nj):
+		            out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]
+		
+		For this reason, it is equivalent to (but faster than) the following use
+		of `apply_along_axis`::
+		
+		    out = np.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)
 		
 		Examples
 		--------
@@ -1960,7 +2073,7 @@ package scipy.optimize.minpack;
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
-		       [False,  True, False]], dtype=bool)
+		       [False,  True, False]])
 		>>> np.where(ix)
 		(array([1, 1, 2]), array([0, 1, 1]))
 	**/
@@ -1972,14 +2085,15 @@ package scipy.optimize.minpack;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1989,17 +2103,16 @@ package scipy.optimize.minpack;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

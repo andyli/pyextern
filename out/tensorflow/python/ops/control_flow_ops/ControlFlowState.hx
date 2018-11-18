@@ -41,10 +41,10 @@ package tensorflow.python.ops.control_flow_ops;
 		Otherwise, they will enter the backprop loop with None. As an example,
 		people often write:
 		
-		       ```
-		       v1, _ = tf.while_loop(p, b, [x1, x2])
-		       result = gradients(v1, x1)
-		       ```
+		```python
+		v1, _ = tf.while_loop(p, b, [x1, x2])
+		result = gradients(v1, x1)
+		```
 		
 		The exit node for x2 is not included by the betweenness analysis. But we
 		need to backprop x2 if x2 is involved in computing v1.
@@ -88,7 +88,7 @@ package tensorflow.python.ops.control_flow_ops;
 		  A zero tensor of the same shape of val.
 	**/
 	public function ZerosLikeForExit(val:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -139,7 +139,7 @@ package tensorflow.python.ops.control_flow_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -190,7 +190,7 @@ package tensorflow.python.ops.control_flow_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

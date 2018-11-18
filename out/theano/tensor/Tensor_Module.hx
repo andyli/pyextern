@@ -2,22 +2,27 @@
 package theano.tensor;
 @:pythonImport("theano.tensor") extern class Tensor_Module {
 	/**
-		Computes the L operation on `f` wrt to `wrt` evaluated at points given
-		in `eval_points`. Mathematically this stands for the jacobian of `f` wrt
+		Computes the L operation on `f` wrt to `wrt` at `eval_points`.
+		
+		Mathematically this stands for the jacobian of `f` wrt
 		to `wrt` left muliplied by the eval points.
 		
-		:type f: Variable or list of Variables
+		Parameters
+		----------
+		f : :class:`~theano.gof.graph.Variable` or list of Variables
 		    `f` stands for the output of the computational graph to which you
 		    want to apply the L operator
-		:type wrt: Variable or list of `Variables`s
+		wrt : :class:`~theano.gof.graph.Variable` or list of Variables
 		    variables for which you compute the L operator of the expression
 		    described by `f`
-		:type eval_points: Variable or list of Variables
-		                    evalutation points for each of the variables in `f`
+		eval_points : :class:`~theano.gof.graph.Variable` or list of Variables
+		    evalutation points for each of the variables in `f`
 		
-		:rtype: :class:`~theano.gof.Variable` or list/tuple of Variables depending on type of f
-		:return: symbolic expression such that
-		    L_op[i] = sum_i ( d f[i] / d wrt[j]) eval_point[i]
+		Returns
+		-------
+		:class:`~theano.gof.Variable` or list/tuple of Variables depending on type of f
+		    Symbolic expression such that
+		    L_op[i] = sum_i (d f[i] / d wrt[j]) eval_point[i]
 		    where the indices in that expression are magic multidimensional
 		    indices that specify both the position within a list and all
 		    coordinates of the tensor element in the last
@@ -26,27 +31,48 @@ package theano.tensor;
 	static public function Lop(f:Dynamic, wrt:Dynamic, eval_points:Dynamic, ?consider_constant:Dynamic, ?disconnected_inputs:Dynamic):Dynamic;
 	static public var NoneConst : Dynamic;
 	/**
-		Computes the R operation on `f` wrt to `wrt` evaluated at points given
-		in `eval_points`. Mathematically this stands for the jacobian of `f` wrt
+		Computes the R operation on `f` wrt to `wrt` at `eval_points`.
+		
+		Mathematically this stands for the jacobian of `f` wrt
 		to `wrt` right muliplied by the eval points.
 		
-		:type f: Variable or list of Variables
-		         `f` stands for the output of the computational graph to which you
-		         want to apply the R operator
-		:type wrt: Variable or list of `Variables`s
-		           variables for which you compute the R operator of the expression
-		           described by `f`
-		:type eval_points: Variable or list of Variables
-		                   evalutation points for each of the variables in `wrt`
-		:rtype: :class:`~theano.gof.Variable` or list/tuple of Variables depending on type of f
-		:return: symbolic expression such that
-		    R_op[i] = sum_j ( d f[i] / d wrt[j]) eval_point[j]
+		Parameters
+		----------
+		f : :class:`~theano.gof.graph.Variable` or list of Variables
+		    `f` stands for the output of the computational graph to which you
+		    want to apply the R operator
+		wrt : :class:`~theano.gof.graph.Variable` or list of Variables
+		    variables for which you compute the R operator of the expression
+		    described by `f`
+		eval_points : :class:`~theano.gof.graph.Variable` or list of Variables
+		    evalutation points for each of the variables in `wrt`
+		disconnected_outputs : str
+		    Defines the behaviour if some of the variables in `f`
+		    have no dependency on any of the variable in `wrt` (or if
+		    all links are non-differentiable). The possible values are:
+		
+		    - 'ignore': considers that the gradient on these parameters is zero.
+		    - 'warn': consider the gradient zero, and print a warning.
+		    - 'raise': raise DisconnectedInputError.
+		
+		return_disconnected : {'zero', 'None', 'Disconnected'}
+		    - 'zero' : If wrt[i] is disconnected, return value i will be
+		      wrt[i].zeros_like()
+		    - 'None' : If wrt[i] is disconnected, return value i will be
+		      None
+		    - 'Disconnected' : returns variables of type DisconnectedType
+		
+		Returns
+		-------
+		:class:`~theano.gof.graph.Variable` or list/tuple of Variables depending on type of f
+		    Symbolic expression such that
+		    R_op[i] = sum_j (d f[i] / d wrt[j]) eval_point[j]
 		    where the indices in that expression are magic multidimensional
 		    indices that specify both the position within a list and all
 		    coordinates of the tensor element in the last.
 		    If `wrt` is a list/tuple, then return a list/tuple with the results.
 	**/
-	static public function Rop(f:Dynamic, wrt:Dynamic, eval_points:Dynamic):Dynamic;
+	static public function Rop(f:Dynamic, wrt:Dynamic, eval_points:Dynamic, ?disconnected_outputs:Dynamic, ?return_disconnected:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -201,6 +227,9 @@ package theano.tensor;
 		the output. From this, we find the output broadcast pattern.
 	**/
 	static public function adv_index_broadcastable_pattern(a:Dynamic, idx:Dynamic):Dynamic;
+	static public function advanced_boolean_inc_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function advanced_boolean_set_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function advanced_boolean_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function advanced_inc_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function advanced_inc_subtensor1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function advanced_set_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -703,6 +732,43 @@ package theano.tensor;
 		order.
 	**/
 	static public function argsort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	/**
+		Returns the indices of k-largest elements along an axis.
+		
+		Parameters
+		----------
+		
+		x: tensor instance
+		
+		kth: integer constant/variable
+		    Must not be 0. If negative, gives k-smallest elements instead.
+		
+		sorted: bool
+		    NOTE: NOT IMPLEMENTED YET, USE ``False`` FOR NOW.
+		    Defaults to ``True``
+		
+		    If True, the result array of corresponding indices would be sorted in descending order.
+		
+		
+		axis: integer, tuple/list of integers, or ``None``
+		    Upon which axis shall the operation be performed on.
+		    If ``None``, works on flattened array.
+		
+		idx_dtype: string
+		    Specify output dtype, defaults to ``int64``, must be integer type.
+		
+		Returns
+		-------
+		Tensor variable with dtype specified in `idx_dtype`.
+		
+		Notes
+		-----
+		- ``sorted=True`` is not supported yet.
+		
+		- If the top-k-th value is not unique, we cannot guarantee the output
+		  indices are deterministically chosen.
+	**/
+	static public function argtopk(x:Dynamic, kth:Dynamic, ?axis:Dynamic, ?sorted:Dynamic, ?idx_dtype:Dynamic):Dynamic;
 	static public function as_index_variable(idx:Dynamic):Dynamic;
 	static public function as_int_none_variable(x:Dynamic):Dynamic;
 	/**
@@ -1062,6 +1128,8 @@ package theano.tensor;
 	static public function btensor3(?name:Dynamic):Dynamic;
 	static public function btensor4(?name:Dynamic):Dynamic;
 	static public function btensor5(?name:Dynamic):Dynamic;
+	static public function btensor6(?name:Dynamic):Dynamic;
+	static public function btensor7(?name:Dynamic):Dynamic;
 	static public function bvector(?name:Dynamic):Dynamic;
 	/**
 		Symbolically cast `x` to a Tensor of type `dtype`.
@@ -1122,6 +1190,29 @@ package theano.tensor;
 		Works for all dtypes, but mostly useful when a and b are int.
 	**/
 	static public function ceil_intdiv(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		This function checks if the index list in idx_list is correct.
+		If there are any boolean masks, we check if the mask has the
+		same shape as the input. This is enforced in NumPy 0.13.0 and
+		newer, but not by earlier versions. If the size is not the same,
+		this method raises an IndexError.
+	**/
+	static public function check_advanced_indexing_dimensions(input:Dynamic, idx_list:Dynamic):Dynamic;
+	/**
+		Check axes, normalize and convert them to a Python list of integers.
+		Return an empty list if argument is None.
+		
+		Parameters
+		----------
+		x: Tensor variable
+		axis = Integer, tuple or list of integers
+		
+		Returns
+		-------
+		axis: list of integers
+	**/
+	static public function check_and_normalize_axes(x:Dynamic, axis:Dynamic):Dynamic;
+	static public function check_and_reject_bool(args_el:Dynamic):Dynamic;
 	/**
 		Return True iff x and y are equal.
 		
@@ -1486,8 +1577,6 @@ package theano.tensor;
 		.. versionadded:: 0.7
 	**/
 	static public function consider_constant(x:Dynamic):Dynamic;
-	static public function constant(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public var constant_cache : Dynamic;
 	/**
 		Return a symbolic `Constant` with value `x`.
 		
@@ -1497,8 +1586,19 @@ package theano.tensor;
 		    `x` could not be converted to a numpy.ndarray.
 		ValueError
 		    `x` could not be expanded to have ndim dimensions.
+		
+		Note
+		----
+		We create a small cache of frequently used constant.
+		This speed up the Merge optimization for big graph.
+		We want to cache all scalar to don't merge as frequently constants.
+		But we don't want to cache too much stuff.
+		So we cache integer with dtype [u]int and float where the value is
+		between -10 and 10.
+		We cache all broadcast pattern for scalar.
 	**/
-	static public function constant_or_value(x:Dynamic, rtype:Dynamic, ?name:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function constant(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public var constant_cache : Dynamic;
 	/**
 		Add `f` to :doc:`oplist`.
 		
@@ -1601,11 +1701,46 @@ package theano.tensor;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	static public function cosh(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Calculate the covariance matrix.
+		Covariance indicates the level to which two variables vary together.
+		If we examine N-dimensional samples, :math:`m = [x_1, x_2, ... x_N]^T`,
+		then the covariance matrix element :math:`C_{ij}` is the covariance of
+		:math:`x_i` and :math:`x_j`. The element :math:`C_{ii}` is the variance
+		of :math:`x_i`. Code and docstring ported from numpy.
+		----------
+		m : array_like
+		    A 2-D array containing multiple variables and observations.
+		    Each row of `m` represents a variable, and each column is
+		    observations of all those variables.
+		y : array_like, optional
+		    An additional set of variables and observations. `y` has the same form
+		    as that of `m`.
+		rowvar : bool, optional
+		    If `rowvar` is True (default), then each row represents a
+		    variable, with observations in the columns. Otherwise, the relationship
+		    is transposed: each column represents a variable, while the rows
+		    contain observations.
+		bias : bool, optional
+		    Default normalization (False) is by ``(N - 1)``, where ``N`` is the
+		    number of observations given (unbiased estimate). If `bias` is True, then
+		    normalization is by ``N``. These values can be overridden by using the
+		    keyword ``ddof``.
+		ddof : int, optional
+		    If not ``None`` the default value implied by `bias` is overridden.
+		    The default value is ``None``.
+		Returns
+		-------
+		out : The covariance matrix of the variables.
+	**/
+	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):Dynamic;
 	static public function crow(?name:Dynamic):Dynamic;
 	static public function cscalar(?name:Dynamic):Dynamic;
 	static public function ctensor3(?name:Dynamic):Dynamic;
 	static public function ctensor4(?name:Dynamic):Dynamic;
 	static public function ctensor5(?name:Dynamic):Dynamic;
+	static public function ctensor6(?name:Dynamic):Dynamic;
+	static public function ctensor7(?name:Dynamic):Dynamic;
 	/**
 		Return the cumulative product of the elements along a given axis.
 		
@@ -1707,7 +1842,43 @@ package theano.tensor;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	static public function deg2rad(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		A helper function for two ops: `theano.tensor.ExtractDiag` and
+		`theano.tensor.AllocDiag`. The name `diag` is meant to keep it consistent
+		with numpy. It both accepts tensor vector and tensor matrix.
+		While the passed tensor variable `v` has `v.ndim>=2`, it builds a
+		`ExtractDiag` instance, and returns a vector with its entries equal to
+		`v`'s main diagonal; otherwise if `v.ndim` is `1`, it builds an `AllocDiag`
+		instance, and returns a matrix with `v` at its k-th diaogonal.
+		
+		Parameters
+		----------
+		v : symbolic tensor
+		k : int
+		    offset
+		
+		Returns
+		-------
+		tensor : symbolic tensor
+	**/
 	static public function diag(v:Dynamic, ?k:Dynamic):Dynamic;
+	/**
+		A helper function for `theano.tensor.ExtractDiag`. It accepts tensor with
+		`ndim >= 2` as input. The name `diagonal` is just meant to keep it
+		consistent with numpy.
+		
+		Parameters
+		----------
+		a : symbolic tensor
+		offset : int
+		    offset
+		axis1 : int
+		axis2 : int
+		
+		Returns
+		-------
+		tensor : symbolic tensor
+	**/
 	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
 	static public var discrete_dtypes : Dynamic;
 	/**
@@ -1767,6 +1938,10 @@ package theano.tensor;
 	static public function dtensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function dtensor5(?name:Dynamic):Dynamic;
 	static public function dtensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function dtensor6(?name:Dynamic):Dynamic;
+	static public function dtensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function dtensor7(?name:Dynamic):Dynamic;
+	static public function dtensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function dvector(?name:Dynamic):Dynamic;
 	static public function dvectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -2357,15 +2532,17 @@ package theano.tensor;
 		    x : theano.tensor.var.TensorVariable
 		        the variable that should be reshaped.
 		
-		    outdim : int
+		    ndim : int
 		        the number of dimensions of the returned variable
-		
+		        Default 1.
+		    outdim : int
+		        DEPRECATED synonym for ndim
 		Returns
 		-------
 		theano.tensor.var.TensorVariable
 		    the flattend variable with dimensionality of outdim
 	**/
-	static public function flatten(x:Dynamic, ?outdim:Dynamic):Dynamic;
+	static public function flatten(x:Dynamic, ?ndim:Dynamic, ?outdim:Dynamic):Dynamic;
 	static public var float16_atol : Dynamic;
 	static public var float16_rtol : Dynamic;
 	static public var float32_atol : Dynamic;
@@ -2483,6 +2660,10 @@ package theano.tensor;
 	static public function ftensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function ftensor5(?name:Dynamic):Dynamic;
 	static public function ftensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ftensor6(?name:Dynamic):Dynamic;
+	static public function ftensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ftensor7(?name:Dynamic):Dynamic;
+	static public function ftensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function fvector(?name:Dynamic):Dynamic;
 	static public function fvectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -2693,8 +2874,7 @@ package theano.tensor;
 	**/
 	static public function get_vector_length(v:Dynamic):Dynamic;
 	/**
-		Return symbolic gradients for one or more variables with respect to some
-		cost.
+		Return symbolic gradients of one cost with respect to one or more variables.
 		
 		For more information about how automatic differentiation works in Theano,
 		see :mod:`gradient`. For information on how to implement the gradient of
@@ -2702,13 +2882,13 @@ package theano.tensor;
 		
 		Parameters
 		----------
-		cost : :class:`~theano.gof.Variable` scalar (0-dimensional) tensor variable or None
-		    Value with respect to which we are differentiating.  May be
-		    `None` if known_grads is provided.
-		wrt : :class:`~theano.gof.Variable` or list of Variables
-		    term[s] for which we want gradients
+		cost : :class:`~theano.gof.graph.Variable` scalar (0-dimensional) tensor variable or ``None``
+		    Value that we are differentiating (that we want the gradient of).
+		    May be `None` if `known_grads` is provided.
+		wrt : :class:`~theano.gof.graph.Variable` or list of Variables
+		    Term[s] with respect to which we want gradients
 		consider_constant : list of variables
-		    expressions not to backpropagate through
+		    Expressions not to backpropagate through
 		disconnected_inputs : {'ignore', 'warn', 'raise'}
 		    Defines the behaviour if some of the variables in `wrt` are
 		    not part of the computational graph computing `cost` (or if
@@ -2727,9 +2907,9 @@ package theano.tensor;
 		    variables but do not know the original cost.
 		return_disconnected : {'zero', 'None', 'Disconnected'}
 		    - 'zero' : If wrt[i] is disconnected, return value i will be
-		               wrt[i].zeros_like()
+		      wrt[i].zeros_like()
 		    - 'None' : If wrt[i] is disconnected, return value i will be
-		               None
+		      None
 		    - 'Disconnected' : returns variables of type DisconnectedType
 		null_gradients : {'raise', 'return'}
 		    Defines the behaviour if some of the variables in `wrt` have a
@@ -2741,7 +2921,7 @@ package theano.tensor;
 		Returns
 		-------
 		variable or list/tuple of variables (matches `wrt`)
-		    symbolic expression of gradient of `cost` with respect to each
+		    Symbolic expression of gradient of `cost` with respect to each
 		    of the `wrt` terms.  If an element of `wrt` is not
 		    differentiable with respect to the output, then a zero
 		    variable is returned.
@@ -2822,27 +3002,29 @@ package theano.tensor;
 	static public function gt(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function hashtype(self:Dynamic):Dynamic;
 	/**
-		:type cost: Scalar (0-dimensional) Variable.
-		:type wrt: Vector (1-dimensional tensor) 'Variable' or list of
-		           vectors (1-dimensional tensors) Variables
-		
-		:param consider_constant: a list of expressions not to backpropagate
-		    through
-		
-		:type disconnected_inputs: string
-		:param disconnected_inputs: Defines the behaviour if some of the variables
+		Parameters
+		----------
+		cost: Scalar (0-dimensional) variable.
+		wrt: Vector (1-dimensional tensor) 'Variable' or list of
+		vectors (1-dimensional tensors) Variables
+		consider_constant:
+		    a list of expressions not to backpropagate through
+		disconnected_inputs: string
+		    Defines the behaviour if some of the variables
 		    in ``wrt`` are not part of the computational graph computing ``cost``
 		    (or if all links are non-differentiable). The possible values are:
+		
 		    - 'ignore': considers that the gradient on these parameters is zero.
 		    - 'warn': consider the gradient zero, and print a warning.
 		    - 'raise': raise an exception.
 		
-		:return: either a instance of Variable or list/tuple of Variables
-		        (depending upon `wrt`) repressenting the Hessian of the `cost`
-		        with respect to (elements of) `wrt`. If an element of `wrt` is not
-		        differentiable with respect to the output, then a zero
-		        variable is returned. The return value is of same type
-		        as `wrt`: a list/tuple or TensorVariable in all cases.
+		Returns
+		-------
+		:class:`~theano.gof.graph.Variable` or list/tuple of Variables
+		    The Hessian of the `cost` with respect to (elements of) `wrt`.
+		    If an element of `wrt` is not differentiable with respect to the
+		    output, then a zero variable is returned. The return value is
+		    of same type as `wrt`: a list/tuple or TensorVariable in all cases.
 	**/
 	static public function hessian(cost:Dynamic, wrt:Dynamic, ?consider_constant:Dynamic, ?disconnected_inputs:Dynamic):Dynamic;
 	/**
@@ -2853,6 +3035,100 @@ package theano.tensor;
 		second.
 	**/
 	static public function horizontal_stack(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Modified Bessel function of the first kind of order 0.
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function i0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Modified Bessel function of the first kind of order 1.
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function i1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function icol(?name:Dynamic):Dynamic;
 	static public function icols(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function identity_like(x:Dynamic):Dynamic;
@@ -2905,6 +3181,7 @@ package theano.tensor;
 	static public function imag(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function imatrices(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function imatrix(?name:Dynamic):Dynamic;
+	static public function inc_code():Dynamic;
 	/**
 		Return x with the given subtensor incremented by y.
 		
@@ -2932,10 +3209,8 @@ package theano.tensor;
 		>>> new_r = inc_subtensor(r[10:], 5)
 	**/
 	static public function inc_subtensor(x:Dynamic, y:Dynamic, ?inplace:Dynamic, ?set_instead_of_inc:Dynamic, ?tolerate_inplace_aliasing:Dynamic):Dynamic;
-	/**
-		increments a numpy array inplace at the passed indexes.
-	**/
-	static public function inplace_increment(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function int32(?name:Dynamic):Dynamic;
+	static public function int32_t(?name:Dynamic):Dynamic;
 	/**
 		elementwise [floor] division (inverse of multiplication)
 		
@@ -3122,7 +3397,7 @@ package theano.tensor;
 		    the comparison result of var's dim
 		    and the expected outdim.
 	**/
-	static public function is_flat(_var:Dynamic, ?outdim:Dynamic):Dynamic;
+	static public function is_flat(_var:Dynamic, ?ndim:Dynamic, ?outdim:Dynamic):Dynamic;
 	static public function iscalar(?name:Dynamic):Dynamic;
 	static public function iscalars(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -3304,10 +3579,61 @@ package theano.tensor;
 	static public function itensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function itensor5(?name:Dynamic):Dynamic;
 	static public function itensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function itensor6(?name:Dynamic):Dynamic;
+	static public function itensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function itensor7(?name:Dynamic):Dynamic;
+	static public function itensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Modified Bessel function of the first kind of order v (real).
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function iv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function ivector(?name:Dynamic):Dynamic;
 	static public function ivectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Bessel function of the 0'th kind
+		Bessel function of the first kind of order 0.
 		
 		Generalizes a scalar op to tensors.
 		
@@ -3354,7 +3680,7 @@ package theano.tensor;
 	**/
 	static public function j0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Bessel function of the 1'th kind
+		Bessel function of the first kind of order 1.
 		
 		Generalizes a scalar op to tensors.
 		
@@ -3401,26 +3727,33 @@ package theano.tensor;
 	**/
 	static public function j1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		:type expression: Vector (1-dimensional) Variable
-		:type wrt: Variable or list of Variables
+		Compute the full Jacobian, row by row.
 		
-		:param consider_constant: a list of expressions not to backpropagate
-		    through
+		Parameters
+		----------
+		expression : Vector (1-dimensional) :class:`~theano.gof.graph.Variable`
+		    Values that we are differentiating (that we want the Jacobian of)
+		wrt : :class:`~theano.gof.graph.Variable` or list of Variables
+		    Term[s] with respect to which we compute the Jacobian
+		consider_constant : list of variables
+		    Expressions not to backpropagate through
 		
-		:type disconnected_inputs: string
-		:param disconnected_inputs: Defines the behaviour if some of the variables
-		    in ``wrt`` are not part of the computational graph computing ``cost``
+		disconnected_inputs: string
+		    Defines the behaviour if some of the variables
+		    in `wrt` are not part of the computational graph computing `cost`
 		    (or if all links are non-differentiable). The possible values are:
+		
 		    - 'ignore': considers that the gradient on these parameters is zero.
 		    - 'warn': consider the gradient zero, and print a warning.
 		    - 'raise': raise an exception.
 		
-		:return: either a instance of Variable or list/tuple of Variables
-		        (depending upon `wrt`) repesenting the jacobian of `expression`
-		        with respect to (elements of) `wrt`. If an element of `wrt` is not
-		        differentiable with respect to the output, then a zero
-		        variable is returned. The return value is of same type
-		        as `wrt`: a list/tuple or TensorVariable in all cases.
+		Returns
+		-------
+		:class:`~theano.gof.graph.Variable` or list/tuple of Variables (depending upon `wrt`)
+		    The Jacobian of `expression` with respect to (elements of) `wrt`.
+		    If an element of `wrt` is not differentiable with respect to the
+		    output, then a zero variable is returned. The return value is
+		    of same type as `wrt`: a list/tuple or TensorVariable in all cases.
 	**/
 	static public function jacobian(expression:Dynamic, wrt:Dynamic, ?consider_constant:Dynamic, ?disconnected_inputs:Dynamic):Dynamic;
 	/**
@@ -3449,6 +3782,53 @@ package theano.tensor;
 	**/
 	static public function join(axis:Dynamic, ?tensors_list:python.VarArgs<Dynamic>):Dynamic;
 	static public function join_(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Bessel function of the first kind of order v (real).
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function jv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		comparator function based on "key" function
 	**/
@@ -3787,6 +4167,10 @@ package theano.tensor;
 	static public function ltensor4s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function ltensor5(?name:Dynamic):Dynamic;
 	static public function ltensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ltensor6(?name:Dynamic):Dynamic;
+	static public function ltensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	static public function ltensor7(?name:Dynamic):Dynamic;
+	static public function ltensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function lvector(?name:Dynamic):Dynamic;
 	static public function lvectors(?names:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -4612,6 +4996,40 @@ package theano.tensor;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	static public function rad2deg(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Converts a tuple of index arrays into an array of flat
+		indices, applying boundary modes to the multi-index.
+		
+		Parameters
+		----------
+		multi_index : tuple of Theano or NumPy arrays
+		    A tuple of integer arrays, one array for each dimension.
+		dims : tuple of ints
+		    The shape of array into which the indices from ``multi_index`` apply.
+		mode : {'raise', 'wrap', 'clip'}, optional
+		    Specifies how out-of-bounds indices are handled.  Can specify
+		    either one mode or a tuple of modes, one mode per index.
+		    * 'raise' -- raise an error (default)
+		    * 'wrap' -- wrap around
+		    * 'clip' -- clip to the range
+		    In 'clip' mode, a negative index which would normally
+		    wrap will clip to 0 instead.
+		order : {'C', 'F'}, optional
+		    Determines whether the multi-index should be viewed as
+		    indexing in row-major (C-style) or column-major
+		    (Fortran-style) order.
+		
+		Returns
+		-------
+		raveled_indices : Theano array
+		    An array of indices into the flattened version of an array
+		    of dimensions ``dims``.
+		
+		See Also
+		--------
+		unravel_index
+	**/
+	static public function ravel_multi_index(multi_index:Dynamic, dims:Dynamic, ?mode:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Return real component of complex-valued tensor `z`
 		
@@ -5645,6 +6063,30 @@ package theano.tensor;
 	**/
 	static public function tensor5(?name:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function tensor5s(?names:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Return a symbolic 6-D variable.
+		
+		Parameters
+		----------
+		dtype: numeric type
+		    None means to use theano.config.floatX.
+		name
+		    A name to attach to this variable.
+	**/
+	static public function tensor6(?name:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function tensor6s(?names:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Return a symbolic 7-D variable.
+		
+		Parameters
+		----------
+		dtype: numeric type
+		    None means to use theano.config.floatX.
+		name
+		    A name to attach to this variable.
+	**/
+	static public function tensor7(?name:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function tensor7s(?names:python.VarArgs<Dynamic>):Dynamic;
 	static public function tensor_copy(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function tensor_from_scalar(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -5762,6 +6204,50 @@ package theano.tensor;
 	**/
 	static public function tile(x:Dynamic, reps:Dynamic, ?ndim:Dynamic):Dynamic;
 	/**
+		Returns the k-largest elements along an axis.
+		
+		Parameters
+		----------
+		
+		x: tensor instance
+		
+		kth: integer constant/variable
+		    Must not be 0. If negative, gives k-smallest elements instead.
+		
+		axis: integer or ``None``
+		    Upon which axis shall the operation be performed on.
+		    If ``None``, works on flattened array.
+		
+		sorted: bool
+		    NOTE: NOT IMPLEMENTED YET, USE ``False`` FOR NOW.
+		    Defaults to ``True``
+		
+		    If True, the result array would be sorted in descending order.
+		
+		idx_dtype: string
+		    Specify output dtype used in indices, defaults to ``int64``, must be integer type.
+		    This option is here because indices are needed for gradient.
+		
+		Returns
+		-------
+		Tensor variable with same dtype as `x`.
+		
+		Notes
+		-----
+		- ``sorted=True`` is not supported yet.
+	**/
+	static public function topk(x:Dynamic, kth:Dynamic, ?axis:Dynamic, ?sorted:Dynamic, ?idx_dtype:Dynamic):Dynamic;
+	/**
+		Returns the results of both topk() and argtopk() in one Op.
+		
+		See the respective documentation for details.
+		
+		Returns
+		-------
+		tuple: (values, indices)
+	**/
+	static public function topk_and_argtopk(x:Dynamic, kth:Dynamic, ?axis:Dynamic, ?sorted:Dynamic, ?idx_dtype:Dynamic):Dynamic;
+	/**
 		Return a version of `var` transferred to `target`.
 		
 		`cpu` mean a TensorType (on the CPU).  Other types may define
@@ -5805,6 +6291,53 @@ package theano.tensor;
 		    in other words ``T[i,j] == 1`` for ``i <= j + k``, 0 otherwise.
 	**/
 	static public function tri(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		second derivative of the log gamma function
+		
+		Generalizes a scalar op to tensors.
+		
+		All the inputs must have the same number of dimensions. When the
+		Op is performed, for each dimension, each input's size for that
+		dimension must be the same. As a special case, it can also be 1
+		but only if the input's broadcastable flag is True for that
+		dimension. In that case, the tensor is (virtually) replicated
+		along that dimension to match the size of the others.
+		
+		The dtypes of the outputs mirror those of the scalar Op that is
+		being generalized to tensors. In particular, if the calculations
+		for an output are done inplace on an input, the output type must
+		be the same as the corresponding input type (see the doc of
+		scalar.ScalarOp to get help about controlling the output type)
+		
+		Parameters
+		----------
+		scalar_op
+		    An instance of a subclass of scalar.ScalarOp which works uniquely
+		    on scalars.
+		inplace_pattern
+		    A dictionary that maps the index of an output to the
+		    index of an input so the output is calculated inplace using
+		    the input's storage. (Just like destroymap, but without the lists.)
+		nfunc_spec
+		    Either None or a tuple of three elements,
+		    (nfunc_name, nin, nout) such that getattr(numpy, nfunc_name)
+		    implements this operation, takes nin inputs and nout outputs.
+		    Note that nin cannot always be inferred from the scalar op's
+		    own nin field because that value is sometimes 0 (meaning a
+		    variable number of inputs), whereas the numpy function may
+		    not have varargs.
+		
+		Note
+		----
+		| Elemwise(add) represents + on tensors (x + y)
+		| Elemwise(add, {0 : 0}) represents the += operation (x += y)
+		| Elemwise(add, {0 : 1}) represents += on the second argument (y += x)
+		| Elemwise(mul)(rand(10, 5), rand(1, 5)) the second input is completed along the first dimension to match the first input
+		| Elemwise(true_div)(rand(10, 5), rand(10, 1)) same but along the second dimension
+		| Elemwise(int_div)(rand(1, 5), rand(10, 1)) the output has size (10, 5)
+		| Elemwise(log)(rand(3, 4, 5))
+	**/
+	static public function tri_gamma(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Lower triangle of an array.
 		
@@ -5961,6 +6494,40 @@ package theano.tensor;
 		    A theano tensor, which is unbroadcastable along the specified dimensions.
 	**/
 	static public function unbroadcast(x:Dynamic, ?axes:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Converts a flat index or array of flat indices into a tuple
+		of coordinate arrays.
+		
+		This method is similar to the NumPy version, except for the
+		additional ``ndim`` parameter. This parameter is required if
+		the length of ``dims`` cannot be determined automatically.
+		
+		Parameters
+		----------
+		indices : Theano or NumPy array
+		    An integer array whose elements are indices into the flattened
+		    version of an array of dimensions ``dims``.
+		dims : tuple of ints
+		    The shape of the array to use for unraveling ``indices``.
+		order : {'C', 'F'}, optional
+		    Determines whether the indices should be viewed as indexing in
+		    row-major (C-style) or column-major (Fortran-style) order.
+		ndim : int, optional
+		    Specifies the number of dimensions, i.e., the length of
+		    ``dims``. This is required if the dimensions cannot be determined
+		    automatically from ``dims`` itself.
+		
+		Returns
+		-------
+		unraveled_coords : tuple of ndarray
+		    Each array in the tuple has the same shape as the ``indices``
+		    array.
+		
+		See Also
+		--------
+		ravel_multi_index
+	**/
+	static public function unravel_index(indices:Dynamic, dims:Dynamic, ?order:Dynamic, ?ndim:Dynamic):Dynamic;
 	static public function values_eq_approx_always_true(a:Dynamic, b:Dynamic):Dynamic;
 	/**
 		Computes the variance along the given axis(es) of a tensor `input`.
@@ -6006,46 +6573,56 @@ package theano.tensor;
 	/**
 		Test a gradient by Finite Difference Method. Raise error on failure.
 		
-		Example:
-		    >>> verify_grad(theano.tensor.tanh,
-		    ...             (numpy.asarray([[2,3,4], [-1, 3.3, 9.9]]),),
-		    ...             rng=numpy.random)
-		
 		Raises an Exception if the difference between the analytic gradient and
 		numerical gradient (computed through the Finite Difference Method) of a
 		random projection of the fun's output to a scalar exceeds the given
 		tolerance.
 		
-		:param fun: a Python function that takes Theano variables as inputs,
-		    and returns a Theano variable. For instance, an Op instance with
-		    a single output.
-		:param pt: the list of numpy.ndarrays to use as input values.
-		    These arrays must be either float16, float32, or float64 arrays.
-		:param n_tests: number of times to run the test
-		:param rng: random number generator used to sample u, we test gradient
-		    of sum(u * fun) at pt
-		:param eps: stepsize used in the Finite Difference Method (Default
-		    None is type-dependent)
-		    Raising the value of eps can raise or lower the absolute and
-		    relative errors of the verification depending on the
-		    Op. Raising eps does not lower the verification quality
-		    for linear operations. It
-		    is better to raise eps than raising abs_tol or rel_tol.
-		:param out_type: dtype of output, if complex (i.e. 'complex32' or
-		    'complex64')
-		:param abs_tol: absolute tolerance used as threshold for gradient
-		    comparison
-		:param rel_tol: relative tolerance used as threshold for gradient
-		    comparison
-		:param cast_to_output_type: if the output is float32 and
-		    cast_to_output_type is True, cast the random projection to
-		    float32. Otherwise it is float64. float16 is not handled here.
-		:param no_debug_ref: Don't use DebugMode for the numerical
-		    gradient function.
+		Examples
+		--------
+		>>> verify_grad(theano.tensor.tanh,
+		...             (np.asarray([[2, 3, 4], [-1, 3.3, 9.9]]),),
+		...             rng=np.random)
 		
-		:note: This function does not support multiple outputs. In
-		    tests/test_scan.py there is an experimental verify_grad that
-		    covers that case as well by using random projections.
+		Parameters
+		----------
+		fun : a Python function
+		    `fun` takes Theano variables as inputs, and returns a Theano variable.
+		    For instance, an Op instance with  a single output.
+		pt : list of numpy.ndarrays
+		    Input values, points where the gradient is estimated.
+		    These arrays must be either float16, float32, or float64 arrays.
+		n_tests : int
+		    number of times to run the test
+		rng : numpy.random.RandomState, optional
+		    random number generator used to sample the output random projection `u`,
+		    we test gradient of sum(u * fun) at `pt`
+		eps : float, optional
+		    stepsize used in the Finite Difference Method (Default
+		    None is type-dependent).
+		    Raising the value of eps can raise or lower the absolute
+		    and relative errors of the verification depending on the
+		    Op. Raising eps does not lower the verification quality for
+		    linear operations. It is better to raise `eps` than raising
+		    `abs_tol` or `rel_tol`.
+		out_type : string
+		    dtype of output, if complex (i.e., 'complex32' or 'complex64')
+		abs_tol : float
+		    absolute tolerance used as threshold for gradient comparison
+		rel_tol : float
+		    relative tolerance used as threshold for gradient comparison
+		cast_to_output_type : bool
+		    if the output is float32 and cast_to_output_type is True, cast
+		    the random projection to float32. Otherwise it is float64.
+		    float16 is not handled here.
+		no_debug_ref : bool
+		    Don't use DebugMode for the numerical gradient function.
+		
+		Note
+		----
+		This function does not support multiple outputs. In
+		tests/test_scan.py there is an experimental verify_grad that
+		covers that case as well by using random projections.
 	**/
 	static public function verify_grad(fun:Dynamic, pt:Dynamic, ?n_tests:Dynamic, ?rng:Dynamic, ?eps:Dynamic, ?out_type:Dynamic, ?abs_tol:Dynamic, ?rel_tol:Dynamic, ?mode:Dynamic, ?cast_to_output_type:Dynamic, ?no_debug_ref:Dynamic):Dynamic;
 	static public function vertical_stack(?args:python.VarArgs<Dynamic>):Dynamic;
@@ -6103,6 +6680,8 @@ package theano.tensor;
 	static public function wtensor3(?name:Dynamic):Dynamic;
 	static public function wtensor4(?name:Dynamic):Dynamic;
 	static public function wtensor5(?name:Dynamic):Dynamic;
+	static public function wtensor6(?name:Dynamic):Dynamic;
+	static public function wtensor7(?name:Dynamic):Dynamic;
 	static public function wvector(?name:Dynamic):Dynamic;
 	/**
 		bitwise a ^ b
@@ -6178,5 +6757,7 @@ package theano.tensor;
 	static public function ztensor3(?name:Dynamic):Dynamic;
 	static public function ztensor4(?name:Dynamic):Dynamic;
 	static public function ztensor5(?name:Dynamic):Dynamic;
+	static public function ztensor6(?name:Dynamic):Dynamic;
+	static public function ztensor7(?name:Dynamic):Dynamic;
 	static public function zvector(?name:Dynamic):Dynamic;
 }

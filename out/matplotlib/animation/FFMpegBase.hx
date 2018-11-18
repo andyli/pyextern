@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.animation;
 @:pythonImport("matplotlib.animation", "FFMpegBase") extern class FFMpegBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.animation;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,13 +103,13 @@ package matplotlib.animation;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public function _handle_subprocess(process:Dynamic):Dynamic;
 	static public var args_key : Dynamic;
 	static public var exec_key : Dynamic;
+	static public function isAvailable():Dynamic;
 	public var output_args : Dynamic;
 }

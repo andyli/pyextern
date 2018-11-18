@@ -10,6 +10,22 @@ package tensorflow.contrib.layers.python.layers.utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Returns the `dim` dimension of `shape`, while checking it has `min_rank`.
+		
+		Args:
+		  shape: A `TensorShape`.
+		  dim: Integer, which dimension to return.
+		  min_rank: Integer, minimum rank of shape.
+		
+		Returns:
+		  The value of the `dim` dimension.
+		
+		Raises:
+		  ValueError: if inputs don't have at least min_rank dimensions, or if the
+		    first dimension value is not defined.
+	**/
+	static public function _get_dimension(shape:Dynamic, dim:Dynamic, ?min_rank:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Append an alias to the list of aliases of the tensor.
@@ -22,6 +38,22 @@ package tensorflow.contrib.layers.python.layers.utils;
 		  The tensor with a new alias appended to its list of aliases.
 	**/
 	static public function append_tensor_alias(tensor:Dynamic, alias:Dynamic):Dynamic;
+	/**
+		Returns the channel dimension of shape, while checking it has min_rank.
+		
+		Args:
+		  shape: A `TensorShape`.
+		  data_format: `channels_first` or `channels_last`.
+		  min_rank: Integer, minimum rank of shape.
+		
+		Returns:
+		  The value of the first dimension.
+		
+		Raises:
+		  ValueError: if inputs don't have at least min_rank dimensions, or if the
+		    first dimension value is not defined.
+	**/
+	static public function channel_dimension(shape:Dynamic, data_format:Dynamic, ?min_rank:Dynamic):Dynamic;
 	/**
 		Add `Tensor` outputs tagged with alias to collections.
 		
@@ -61,27 +93,14 @@ package tensorflow.contrib.layers.python.layers.utils;
 		
 		Args:
 		  collection: A collection.
+		  clear_collection: When True, it clears the collection after converting to
+		    OrderedDict.
 		
 		Returns:
 		  An OrderedDict of {alias: tensor}
 	**/
-	static public function convert_collection_to_dict(collection:Dynamic):Dynamic;
+	static public function convert_collection_to_dict(collection:Dynamic, ?clear_collection:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	/**
-		Returns the first dimension of shape while checking it has min_rank.
-		
-		Args:
-		  shape: A `TensorShape`.
-		  min_rank: Integer, minimum rank of shape.
-		
-		Returns:
-		  The value of the first dimension.
-		
-		Raises:
-		  ValueError: if inputs don't have at least min_rank dimensions, or if the
-		    first dimension value is not defined.
-	**/
-	static public function first_dimension(shape:Dynamic, ?min_rank:Dynamic):Dynamic;
 	/**
 		Given a list of tensors, gather their aliases.
 		

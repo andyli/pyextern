@@ -6,218 +6,8 @@ package scipy.constants.constants;
 	static public var Btu : Dynamic;
 	static public var Btu_IT : Dynamic;
 	static public var Btu_th : Dynamic;
-	/**
-		`C2F` is deprecated!
-		scipy.constants.C2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
-		
-		
-		    Convert Celsius to Fahrenheit
-		
-		    Parameters
-		    ----------
-		    C : array_like
-		        Celsius temperature(s) to be converted.
-		
-		    Returns
-		    -------
-		    F : float or array of floats
-		        Equivalent Fahrenheit temperature(s).
-		
-		    See also
-		    --------
-		    convert_temperature
-		
-		    Notes
-		    -----
-		    Computes ``F = 1.8 * C + 32``.
-		
-		    Examples
-		    --------
-		    >>> from scipy.constants import C2F
-		    >>> C2F(np.array([-40, 40.0]))
-		    array([ -40.,  104.])
-		
-		    
-	**/
-	static public function C2F(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`C2K` is deprecated!
-		scipy.constants.C2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
-		
-		
-		    Convert Celsius to Kelvin
-		
-		    Parameters
-		    ----------
-		    C : array_like
-		        Celsius temperature(s) to be converted.
-		
-		    Returns
-		    -------
-		    K : float or array of floats
-		        Equivalent Kelvin temperature(s).
-		
-		    See also
-		    --------
-		    convert_temperature
-		
-		    Notes
-		    -----
-		    Computes ``K = C + zero_Celsius`` where `zero_Celsius` = 273.15, i.e.,
-		    (the absolute value of) temperature "absolute zero" as measured in Celsius.
-		
-		    Examples
-		    --------
-		    >>> from scipy.constants import C2K
-		    >>> C2K(np.array([-40, 40.0]))
-		    array([ 233.15,  313.15])
-		
-		    
-	**/
-	static public function C2K(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`F2C` is deprecated!
-		scipy.constants.F2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
-		
-		
-		    Convert Fahrenheit to Celsius
-		
-		    Parameters
-		    ----------
-		    F : array_like
-		        Fahrenheit temperature(s) to be converted.
-		
-		    Returns
-		    -------
-		    C : float or array of floats
-		        Equivalent Celsius temperature(s).
-		
-		    See also
-		    --------
-		    convert_temperature
-		
-		    Notes
-		    -----
-		    Computes ``C = (F - 32) / 1.8``.
-		
-		    Examples
-		    --------
-		    >>> from scipy.constants import F2C
-		    >>> F2C(np.array([-40, 40.0]))
-		    array([-40.        ,   4.44444444])
-		
-		    
-	**/
-	static public function F2C(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`F2K` is deprecated!
-		scipy.constants.F2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
-		
-		
-		    Convert Fahrenheit to Kelvin
-		
-		    Parameters
-		    ----------
-		    F : array_like
-		        Fahrenheit temperature(s) to be converted.
-		
-		    Returns
-		    -------
-		    K : float or array of floats
-		        Equivalent Kelvin temperature(s).
-		
-		    See also
-		    --------
-		    convert_temperature
-		
-		    Notes
-		    -----
-		    Computes ``K = (F - 32)/1.8 + zero_Celsius`` where `zero_Celsius` =
-		    273.15, i.e., (the absolute value of) temperature "absolute zero" as
-		    measured in Celsius.
-		
-		    Examples
-		    --------
-		    >>> from scipy.constants import F2K
-		    >>> F2K(np.array([-40, 104]))
-		    array([ 233.15,  313.15])
-		
-		    
-	**/
-	static public function F2K(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var G : Dynamic;
 	static public var Julian_year : Dynamic;
-	/**
-		`K2C` is deprecated!
-		scipy.constants.K2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
-		
-		
-		    Convert Kelvin to Celsius
-		
-		    Parameters
-		    ----------
-		    K : array_like
-		        Kelvin temperature(s) to be converted.
-		
-		    Returns
-		    -------
-		    C : float or array of floats
-		        Equivalent Celsius temperature(s).
-		
-		    See also
-		    --------
-		    convert_temperature
-		
-		    Notes
-		    -----
-		    Computes ``C = K - zero_Celsius`` where `zero_Celsius` = 273.15, i.e.,
-		    (the absolute value of) temperature "absolute zero" as measured in Celsius.
-		
-		    Examples
-		    --------
-		    >>> from scipy.constants import K2C
-		    >>> K2C(np.array([233.15, 313.15]))
-		    array([-40.,  40.])
-		
-		    
-	**/
-	static public function K2C(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`K2F` is deprecated!
-		scipy.constants.K2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.
-		
-		
-		    Convert Kelvin to Fahrenheit
-		
-		    Parameters
-		    ----------
-		    K : array_like
-		        Kelvin temperature(s) to be converted.
-		
-		    Returns
-		    -------
-		    F : float or array of floats
-		        Equivalent Fahrenheit temperature(s).
-		
-		    See also
-		    --------
-		    convert_temperature
-		
-		    Notes
-		    -----
-		    Computes ``F = 1.8 * (K - zero_Celsius) + 32`` where `zero_Celsius` =
-		    273.15, i.e., (the absolute value of) temperature "absolute zero" as
-		    measured in Celsius.
-		
-		    Examples
-		    --------
-		    >>> from scipy.constants import K2F
-		    >>> K2F(np.array([233.15,  313.15]))
-		    array([ -40.,  104.])
-		
-		    
-	**/
-	static public function K2F(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var N_A : Dynamic;
 	static public var Planck : Dynamic;
 	static public var R : Dynamic;
@@ -274,6 +64,7 @@ package scipy.constants.constants;
 	static public var bar : Dynamic;
 	static public var barrel : Dynamic;
 	static public var bbl : Dynamic;
+	static public var blob : Dynamic;
 	static public var c : Dynamic;
 	static public var calorie : Dynamic;
 	static public var calorie_IT : Dynamic;
@@ -463,6 +254,8 @@ package scipy.constants.constants;
 	static public var pt : Dynamic;
 	static public var short_ton : Dynamic;
 	static public var sigma : Dynamic;
+	static public var slinch : Dynamic;
+	static public var slug : Dynamic;
 	static public var speed_of_light : Dynamic;
 	static public var speed_of_sound : Dynamic;
 	static public var stone : Dynamic;

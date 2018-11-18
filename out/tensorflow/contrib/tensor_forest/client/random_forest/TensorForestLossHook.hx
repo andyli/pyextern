@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tensor_forest.client.random_forest;
 @:pythonImport("tensorflow.contrib.tensor_forest.client.random_forest", "TensorForestLossHook") extern class TensorForestLossHook {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package tensorflow.contrib.tensor_forest.client.random_forest;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(early_stopping_rounds:Dynamic):Dynamic;
+	public function ___init__(early_stopping_rounds:Dynamic, ?early_stopping_loss_threshold:Dynamic, ?loss_op:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(early_stopping_rounds:Dynamic):Void;
+	public function new(early_stopping_rounds:Dynamic, ?early_stopping_loss_threshold:Dynamic, ?loss_op:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,13 @@ package tensorflow.contrib.tensor_forest.client.random_forest;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Called when new TensorFlow session is created.
 		

@@ -39,32 +39,47 @@ package tensorflow.contrib.learn.python.learn.learn_runner;
 	**/
 	static public function _wrapped_experiment_fn_with_uid_check(experiment_fn:Dynamic, ?require_hparams:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
 	/**
-		Decorator for marking functions or methods experimental.
+		Decorator for marking functions or methods deprecated.
 		
-		This decorator logs an experimental warning whenever the decorated function is
+		This decorator logs a deprecation warning whenever the decorated function is
 		called. It has the following format:
 		
-		  <function> (from <module>) is experimental and may change or be removed at
-		  any time, and without warning.
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
 		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
 		<function> will include the class name if it is a method.
 		
-		It also edits the docstring of the function: ' (experimental)' is appended
-		to the first line of the docstring and a notice is prepended to the rest of
-		the docstring.
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
 		
 		Args:
-		  func: A function or method to mark experimental.
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
 	**/
-	static public function experimental(func:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Make and run an experiment.
+		Make and run an experiment. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.estimator.train_and_evaluate.
 		
 		It creates an Experiment by calling `experiment_fn`. Then it calls the
 		function named as `schedule` of the Experiment.
@@ -126,12 +141,12 @@ package tensorflow.contrib.learn.python.learn.learn_runner;
 		    to create the `Estimator` (passed as `model_dir` to its constructor). It
 		    must return an `Experiment`. For this case, `run_config` and `hparams`
 		    must be None.
-		    2) It accpets two arguments `run_config` and `hparams`, which should be
+		    2) It accepts two arguments `run_config` and `hparams`, which should be
 		    used to create the `Estimator` (`run_config` passed as `config` to its
-		    constructor; `hparams` used as the hyper-paremeters of the model).
+		    constructor; `hparams` used as the hyper-parameters of the model).
 		    It must return an `Experiment`. For this case, `output_dir` must be None.
 		  output_dir: Base output directory [Deprecated].
-		  schedule: The name of the  method in the `Experiment` to run.
+		  schedule: The name of the method in the `Experiment` to run.
 		  run_config: `RunConfig` instance. The `run_config.model_dir` must be
 		    non-empty. If `run_config` is set, `output_dir` must be None.
 		  hparams: `HParams` instance. The default hyper-parameters, which will be
@@ -149,10 +164,11 @@ package tensorflow.contrib.learn.python.learn.learn_runner;
 	**/
 	static public function run(experiment_fn:Dynamic, ?output_dir:Dynamic, ?schedule:Dynamic, ?run_config:Dynamic, ?hparams:Dynamic):Dynamic;
 	/**
-		Tune an experiment with hyper-parameters. (experimental)
+		Tune an experiment with hyper-parameters. (deprecated)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
-		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.estimator.train_and_evaluate.
 		
 		It iterates trials by running the Experiment for each trial with the
 		corresponding hyper-parameters. For each trial, it retrieves the

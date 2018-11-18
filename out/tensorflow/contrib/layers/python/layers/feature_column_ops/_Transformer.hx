@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.layers.python.layers.feature_column_ops;
 @:pythonImport("tensorflow.contrib.layers.python.layers.feature_column_ops", "_Transformer") extern class _Transformer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,7 +38,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initializes transfomer.
+		Initializes transformer.
 		
 		Args:
 		  columns_to_tensors: A mapping from feature columns to tensors. 'string'
@@ -50,7 +50,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 	@:native("__init__")
 	public function ___init__(columns_to_tensors:Dynamic):Dynamic;
 	/**
-		Initializes transfomer.
+		Initializes transformer.
 		
 		Args:
 		  columns_to_tensors: A mapping from feature columns to tensors. 'string'
@@ -66,7 +66,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -117,7 +117,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

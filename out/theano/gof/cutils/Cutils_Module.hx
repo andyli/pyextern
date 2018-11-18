@@ -15,7 +15,6 @@ package theano.gof.cutils;
 		Do just the compilation of cutils_ext.
 	**/
 	static public function compile_cutils():Dynamic;
-	static public function compile_cutils_code():Dynamic;
 	static public var config : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -32,10 +31,6 @@ package theano.gof.cutils;
 		We can lock only on 1 directory at a time.
 	**/
 	static public function get_lock(?lock_dir:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		increments a numpy array inplace at the passed indexes.
-	**/
-	static public function inplace_increment(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var location : Dynamic;
 	static public var print_function : Dynamic;
 	/**

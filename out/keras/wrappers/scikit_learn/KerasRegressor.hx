@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.wrappers.scikit_learn;
 @:pythonImport("keras.wrappers.scikit_learn", "KerasRegressor") extern class KerasRegressor {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package keras.wrappers.scikit_learn;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,13 +103,13 @@ package keras.wrappers.scikit_learn;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Checks for user typos in "params".
+		Checks for user typos in `params`.
 		
 		# Arguments
 		    params: dictionary; the parameters to be checked
@@ -119,15 +119,15 @@ package keras.wrappers.scikit_learn;
 	**/
 	public function check_params(params:Dynamic):Dynamic;
 	/**
-		Filters `sk_params` and return those in `fn`'s arguments.
+		Filters `sk_params` and returns those in `fn`'s arguments.
 		
 		# Arguments
 		    fn : arbitrary function
-		    override: dictionary, values to override sk_params
+		    override: dictionary, values to override `sk_params`
 		
 		# Returns
-		    res : dictionary dictionary containing variables
-		        in both sk_params and fn's arguments.
+		    res : dictionary containing variables
+		        in both `sk_params` and `fn`'s arguments.
 	**/
 	public function filter_sk_params(fn:Dynamic, ?_override:Dynamic):Dynamic;
 	/**
@@ -135,10 +135,10 @@ package keras.wrappers.scikit_learn;
 		
 		# Arguments
 		    x : array-like, shape `(n_samples, n_features)`
-		        Training samples where n_samples in the number of samples
-		        and n_features is the number of features.
+		        Training samples where `n_samples` is the number of samples
+		        and `n_features` is the number of features.
 		    y : array-like, shape `(n_samples,)` or `(n_samples, n_outputs)`
-		        True labels for X.
+		        True labels for `x`.
 		    **kwargs: dictionary arguments
 		        Legal arguments are the arguments of `Sequential.fit`
 		
@@ -162,8 +162,8 @@ package keras.wrappers.scikit_learn;
 		
 		# Arguments
 		    x: array-like, shape `(n_samples, n_features)`
-		        Test samples where n_samples in the number of samples
-		        and n_features is the number of features.
+		        Test samples where `n_samples` is the number of samples
+		        and `n_features` is the number of features.
 		    **kwargs: dictionary arguments
 		        Legal arguments are the arguments of `Sequential.predict`.
 		
@@ -177,16 +177,16 @@ package keras.wrappers.scikit_learn;
 		
 		# Arguments
 		    x: array-like, shape `(n_samples, n_features)`
-		        Test samples where n_samples in the number of samples
-		        and n_features is the number of features.
+		        Test samples where `n_samples` is the number of samples
+		        and `n_features` is the number of features.
 		    y: array-like, shape `(n_samples,)`
-		        True labels for X.
+		        True labels for `x`.
 		    **kwargs: dictionary arguments
 		        Legal arguments are the arguments of `Sequential.evaluate`.
 		
 		# Returns
 		    score: float
-		        Mean accuracy of predictions on X wrt. y.
+		        Mean accuracy of predictions on `x` wrt. `y`.
 	**/
 	public function score(x:Dynamic, y:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

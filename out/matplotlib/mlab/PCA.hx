@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.mlab;
 @:pythonImport("matplotlib.mlab", "PCA") extern class PCA {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -37,108 +37,16 @@ package matplotlib.mlab;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	/**
-		compute the SVD of a and store data for PCA.  Use project to
-		project the data onto a reduced set of dimensions
-		
-		Parameters
-		----------
-		a : np.ndarray
-		    A numobservations x numdims array
-		standardize : bool
-		    True if input data are to be standardized. If False, only centering
-		    will be carried out.
-		
-		Attributes
-		----------
-		a
-		    A centered unit sigma version of input ``a``.
-		
-		numrows, numcols
-		    The dimensions of ``a``.
-		
-		mu
-		    A numdims array of means of ``a``. This is the vector that points
-		    to the origin of PCA space.
-		
-		sigma
-		    A numdims array of standard deviation of ``a``.
-		
-		fracs
-		    The proportion of variance of each of the principal components.
-		
-		s
-		    The actual eigenvalues of the decomposition.
-		
-		Wt
-		    The weight vector for projecting a numdims point or array into
-		    PCA space.
-		
-		Y
-		    A projected into PCA space.
-		
-		Notes
-		-----
-		The factor loadings are in the ``Wt`` factor, i.e., the factor loadings
-		for the first principal component are given by ``Wt[0]``. This row is
-		also the first eigenvector.
-	**/
 	@:native("__init__")
-	public function ___init__(a:Dynamic, ?standardize:Dynamic):Dynamic;
-	/**
-		compute the SVD of a and store data for PCA.  Use project to
-		project the data onto a reduced set of dimensions
-		
-		Parameters
-		----------
-		a : np.ndarray
-		    A numobservations x numdims array
-		standardize : bool
-		    True if input data are to be standardized. If False, only centering
-		    will be carried out.
-		
-		Attributes
-		----------
-		a
-		    A centered unit sigma version of input ``a``.
-		
-		numrows, numcols
-		    The dimensions of ``a``.
-		
-		mu
-		    A numdims array of means of ``a``. This is the vector that points
-		    to the origin of PCA space.
-		
-		sigma
-		    A numdims array of standard deviation of ``a``.
-		
-		fracs
-		    The proportion of variance of each of the principal components.
-		
-		s
-		    The actual eigenvalues of the decomposition.
-		
-		Wt
-		    The weight vector for projecting a numdims point or array into
-		    PCA space.
-		
-		Y
-		    A projected into PCA space.
-		
-		Notes
-		-----
-		The factor loadings are in the ``Wt`` factor, i.e., the factor loadings
-		for the first principal component are given by ``Wt[0]``. This row is
-		also the first eigenvector.
-	**/
-	public function new(a:Dynamic, ?standardize:Dynamic):Void;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -189,7 +97,7 @@ package matplotlib.mlab;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

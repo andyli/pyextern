@@ -3,7 +3,7 @@ package theano.configparser;
 @:pythonImport("theano.configparser", "TheanoConfigParser") extern class TheanoConfigParser {
 	static public var DebugMode : Dynamic;
 	static public var NanGuardMode : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -54,7 +54,7 @@ package theano.configparser;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,7 +105,7 @@ package theano.configparser;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -118,6 +118,7 @@ package theano.configparser;
 	public var cache_optimizations : Dynamic;
 	public var cast_policy : Dynamic;
 	public var check_input : Dynamic;
+	public var check_stack_trace : Dynamic;
 	static public var cmodule : Dynamic;
 	static public var compile : Dynamic;
 	public var compiledir : Dynamic;
@@ -126,12 +127,13 @@ package theano.configparser;
 	public var compute_test_value_opt : Dynamic;
 	public var contexts : Dynamic;
 	static public var conv : Dynamic;
-	static public var cublas : Dynamic;
+	static public var ctc : Dynamic;
 	static public var cuda : Dynamic;
 	public var cxx : Dynamic;
+	public var cycle_detection : Dynamic;
+	public var deterministic : Dynamic;
 	public var device : Dynamic;
 	static public var dnn : Dynamic;
-	public var enable_initial_driver_test : Dynamic;
 	public var exception_verbosity : Dynamic;
 	static public var experimental : Dynamic;
 	public var floatX : Dynamic;
@@ -140,16 +142,15 @@ package theano.configparser;
 	static public var gpu : Dynamic;
 	static public var gpuarray : Dynamic;
 	static public var gpuelemwise : Dynamic;
-	public var home : Dynamic;
 	public var init_gpu_device : Dynamic;
 	public var int_division : Dynamic;
 	static public var lib : Dynamic;
 	public var linker : Dynamic;
+	static public var magma : Dynamic;
 	static public var metaopt : Dynamic;
 	public var mode : Dynamic;
 	public var nocleanup : Dynamic;
 	static public var numpy : Dynamic;
-	static public var nvcc : Dynamic;
 	public var on_opt_error : Dynamic;
 	public var on_shape_error : Dynamic;
 	public var on_unused_input : Dynamic;
@@ -161,6 +162,7 @@ package theano.configparser;
 	public var optimizer_including : Dynamic;
 	public var optimizer_requiring : Dynamic;
 	public var optimizer_verbose : Dynamic;
+	public var pickle_test_value : Dynamic;
 	public var print_active_device : Dynamic;
 	public var print_global_stats : Dynamic;
 	public var print_test_value : Dynamic;
@@ -168,7 +170,6 @@ package theano.configparser;
 	public var profile_memory : Dynamic;
 	public var profile_optimizer : Dynamic;
 	static public var profiling : Dynamic;
-	static public var pycuda : Dynamic;
 	public var reoptimize_unpickled_function : Dynamic;
 	static public var scan : Dynamic;
 	static public var tensor : Dynamic;

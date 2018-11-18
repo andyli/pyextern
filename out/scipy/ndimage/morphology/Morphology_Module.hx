@@ -40,6 +40,23 @@ package scipy.ndimage.morphology;
 		    By default, a new array is created.
 		origin : int or tuple of ints, optional
 		    Placement of the filter, by default 0.
+		mask : array_like, optional
+		    If a mask is given, only those elements with a True value at
+		    the corresponding mask element are modified at each iteration.
+		
+		    .. versionadded:: 1.1.0
+		border_value : int (cast to 0 or 1), optional
+		    Value at the border in the output array.
+		
+		    .. versionadded:: 1.1.0
+		brute_force : boolean, optional
+		    Memory condition: if False, only the pixels whose value was changed in
+		    the last iteration are tracked as candidates to be updated in the
+		    current iteration; if true al pixels are considered as candidates for
+		    update, regardless of what happened in the previous iteration.
+		    False by default.
+		
+		    .. versionadded:: 1.1.0
 		
 		Returns
 		-------
@@ -128,7 +145,7 @@ package scipy.ndimage.morphology;
 		       [0, 0, 1, 1, 1, 0, 0],
 		       [0, 0, 0, 0, 0, 0, 0]])
 	**/
-	static public function binary_closing(input:Dynamic, ?structure:Dynamic, ?iterations:Dynamic, ?output:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function binary_closing(input:Dynamic, ?structure:Dynamic, ?iterations:Dynamic, ?output:Dynamic, ?origin:Dynamic, ?mask:Dynamic, ?border_value:Dynamic, ?brute_force:Dynamic):Dynamic;
 	/**
 		Multi-dimensional binary dilation with the given structuring element.
 		
@@ -151,10 +168,16 @@ package scipy.ndimage.morphology;
 		output : ndarray, optional
 		    Array of the same shape as input, into which the output is placed.
 		    By default, a new array is created.
-		origin : int or tuple of ints, optional
-		    Placement of the filter, by default 0.
 		border_value : int (cast to 0 or 1), optional
 		    Value at the border in the output array.
+		origin : int or tuple of ints, optional
+		    Placement of the filter, by default 0.
+		brute_force : boolean, optional
+		    Memory condition: if False, only the pixels whose value was changed in
+		    the last iteration are tracked as candidates to be updated (dilated)
+		    in the current iteration; if True all pixels are considered as
+		    candidates for dilation, regardless of what happened in the previous
+		    iteration. False by default.
 		
 		Returns
 		-------
@@ -260,10 +283,16 @@ package scipy.ndimage.morphology;
 		output : ndarray, optional
 		    Array of the same shape as input, into which the output is placed.
 		    By default, a new array is created.
-		origin : int or tuple of ints, optional
-		    Placement of the filter, by default 0.
 		border_value : int (cast to 0 or 1), optional
 		    Value at the border in the output array.
+		origin : int or tuple of ints, optional
+		    Placement of the filter, by default 0.
+		brute_force : boolean, optional
+		    Memory condition: if False, only the pixels whose value was changed in
+		    the last iteration are tracked as candidates to be updated (eroded) in
+		    the current iteration; if True all pixels are considered as candidates
+		    for erosion, regardless of what happened in the previous iteration.
+		    False by default.
 		
 		Returns
 		-------
@@ -500,6 +529,23 @@ package scipy.ndimage.morphology;
 		    By default, a new array is created.
 		origin : int or tuple of ints, optional
 		    Placement of the filter, by default 0.
+		mask : array_like, optional
+		    If a mask is given, only those elements with a True value at
+		    the corresponding mask element are modified at each iteration.
+		
+		    .. versionadded:: 1.1.0
+		border_value : int (cast to 0 or 1), optional
+		    Value at the border in the output array.
+		
+		    .. versionadded:: 1.1.0
+		brute_force : boolean, optional
+		    Memory condition: if False, only the pixels whose value was changed in
+		    the last iteration are tracked as candidates to be updated in the
+		    current iteration; if true all pixels are considered as candidates for
+		    update, regardless of what happened in the previous iteration.
+		    False by default.
+		
+		    .. versionadded:: 1.1.0
 		
 		Returns
 		-------
@@ -565,7 +611,7 @@ package scipy.ndimage.morphology;
 		       [0, 0, 1, 0, 0],
 		       [0, 0, 0, 0, 0]])
 	**/
-	static public function binary_opening(input:Dynamic, ?structure:Dynamic, ?iterations:Dynamic, ?output:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function binary_opening(input:Dynamic, ?structure:Dynamic, ?iterations:Dynamic, ?output:Dynamic, ?origin:Dynamic, ?mask:Dynamic, ?border_value:Dynamic, ?brute_force:Dynamic):Dynamic;
 	/**
 		Multi-dimensional binary propagation with the given structuring element.
 		
@@ -598,7 +644,7 @@ package scipy.ndimage.morphology;
 		Notes
 		-----
 		This function is functionally equivalent to calling binary_dilation
-		with the number of iterations less then one: iterative dilation until
+		with the number of iterations less than one: iterative dilation until
 		the result does not change anymore.
 		
 		The succession of an erosion and propagation inside the original image
@@ -608,7 +654,9 @@ package scipy.ndimage.morphology;
 		References
 		----------
 		.. [1] http://cmm.ensmp.fr/~serra/cours/pdf/en/ch6en.pdf, slide 15.
-		.. [2] http://www.qi.tnw.tudelft.nl/Courses/FIP/noframes/fip-Morpholo.html#Heading102
+		.. [2] I.T. Young, J.J. Gerbrands, and L.J. van Vliet, "Fundamentals of
+		    image processing", 1998
+		    ftp://qiftp.tudelft.nl/DIPimage/docs/FIP2.3.pdf
 		
 		Examples
 		--------
@@ -732,8 +780,8 @@ package scipy.ndimage.morphology;
 		Distance transform function by a brute force algorithm.
 		
 		This function calculates the distance transform of the `input`, by
-		replacing each background element (zero values), with its
-		shortest distance to the foreground (any element non-zero).
+		replacing each foreground (non-zero) element, with its
+		shortest distance to the background (any zero-valued element).
 		
 		In addition to the distance transform, the feature transform can
 		be calculated. In this case the index of the closest background
@@ -1027,7 +1075,7 @@ package scipy.ndimage.morphology;
 		    Structuring element used for the grayscale closing. `structure`
 		    may be a non-flat structuring element.
 		output : array, optional
-		    An array used for storing the ouput of the closing may be provided.
+		    An array used for storing the output of the closing may be provided.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -1103,7 +1151,7 @@ package scipy.ndimage.morphology;
 		    Structuring element used for the grayscale dilation. `structure`
 		    may be a non-flat structuring element.
 		output : array, optional
-		    An array used for storing the ouput of the dilation may be provided.
+		    An array used for storing the output of the dilation may be provided.
 		mode : {'reflect','constant','nearest','mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -1219,7 +1267,7 @@ package scipy.ndimage.morphology;
 		    Structuring element used for the grayscale erosion. `structure`
 		    may be a non-flat structuring element.
 		output : array, optional
-		    An array used for storing the ouput of the erosion may be provided.
+		    An array used for storing the output of the erosion may be provided.
 		mode : {'reflect','constant','nearest','mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -1317,7 +1365,7 @@ package scipy.ndimage.morphology;
 		    Structuring element used for the grayscale opening. `structure`
 		    may be a non-flat structuring element.
 		output : array, optional
-		    An array used for storing the ouput of the opening may be provided.
+		    An array used for storing the output of the opening may be provided.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are
 		    handled, where `cval` is the value when mode is equal to
@@ -1441,7 +1489,7 @@ package scipy.ndimage.morphology;
 		    Structuring element used for the morphology operations.
 		    `structure` may be a non-flat structuring element.
 		output : array, optional
-		    An array used for storing the ouput of the morphological gradient
+		    An array used for storing the output of the morphological gradient
 		    may be provided.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
 		    The `mode` parameter determines how the array borders are

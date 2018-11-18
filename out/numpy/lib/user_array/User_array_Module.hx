@@ -14,6 +14,8 @@ package numpy.lib.user_array;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -36,6 +38,7 @@ package numpy.lib.user_array;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -87,8 +90,8 @@ package numpy.lib.user_array;
 		Returns
 		-------
 		add : ndarray or scalar
-		    The sum of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    The sum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -132,7 +135,8 @@ package numpy.lib.user_array;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -218,7 +222,15 @@ package numpy.lib.user_array;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -328,9 +340,9 @@ package numpy.lib.user_array;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -364,8 +376,9 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -396,7 +409,7 @@ package numpy.lib.user_array;
 		>>> np.bitwise_and(np.array([2,5,255]), np.array([3,14,16]))
 		array([ 2,  4, 16])
 		>>> np.bitwise_and([True, True], [False, True])
-		array([False,  True], dtype=bool)
+		array([False,  True])
 	**/
 	static public function bitwise_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -426,8 +439,9 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -463,7 +477,7 @@ package numpy.lib.user_array;
 		...               np.array([4, 4, 4, 2147483647L], dtype=np.int32))
 		array([         6,          5,        255, 2147483647])
 		>>> np.bitwise_or([True, True], [False, True])
-		array([ True,  True], dtype=bool)
+		array([ True,  True])
 	**/
 	static public function bitwise_or(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -493,8 +507,9 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -523,7 +538,7 @@ package numpy.lib.user_array;
 		>>> np.bitwise_xor([31,3], [5,6])
 		array([26,  5])
 		>>> np.bitwise_xor([True, True], [False, True])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function bitwise_xor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -555,8 +570,8 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : ndarray
-		    Result is scalar if both inputs are scalar, ndarray otherwise.
+		out : ndarray or scalar
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -611,8 +626,10 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : ndarray or bool
-		    Output array of bools, or a single bool if x1 and x2 are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -621,13 +638,13 @@ package numpy.lib.user_array;
 		Examples
 		--------
 		>>> np.equal([0, 1, 3], np.arange(3))
-		array([ True,  True, False], dtype=bool)
+		array([ True,  True, False])
 		
 		What is compared are values, not types. So an int (1) and an array of
 		length one can evaluate as True:
 		
 		>>> np.equal(1, np.ones(1))
-		array([ True], dtype=bool)
+		array([ True])
 	**/
 	static public function equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -655,8 +672,10 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		
 		See Also
@@ -666,14 +685,14 @@ package numpy.lib.user_array;
 		Examples
 		--------
 		>>> np.greater([4,2],[2,2])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		If the inputs are ndarrays, then np.greater is equivalent to '>'.
 		
 		>>> a = np.array([4,2])
 		>>> b = np.array([2,2])
 		>>> a > b
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function greater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -702,7 +721,9 @@ package numpy.lib.user_array;
 		Returns
 		-------
 		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -711,7 +732,7 @@ package numpy.lib.user_array;
 		Examples
 		--------
 		>>> np.greater_equal([4, 2, 1], [2, 2, 2])
-		array([ True, True, False], dtype=bool)
+		array([ True, True, False])
 	**/
 	static public function greater_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -748,8 +769,9 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : array_like
+		out : ndarray or scalar
 		    Result.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -802,7 +824,7 @@ package numpy.lib.user_array;
 		Booleans are accepted as well:
 		
 		>>> np.invert(array([True, False]))
-		array([False,  True], dtype=bool)
+		array([False,  True])
 	**/
 	static public function invert(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -836,6 +858,7 @@ package numpy.lib.user_array;
 		-------
 		out : array of integer type
 		    Return `x1` with bits shifted `x2` times to the left.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -881,8 +904,10 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -891,7 +916,7 @@ package numpy.lib.user_array;
 		Examples
 		--------
 		>>> np.less([1, 2], [2, 2])
-		array([ True, False], dtype=bool)
+		array([ True, False])
 	**/
 	static public function less(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -919,8 +944,10 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -929,7 +956,7 @@ package numpy.lib.user_array;
 		Examples
 		--------
 		>>> np.less_equal([4, 2, 1], [2, 2, 2])
-		array([False,  True,  True], dtype=bool)
+		array([False,  True,  True])
 	**/
 	static public function less_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -957,7 +984,8 @@ package numpy.lib.user_array;
 		-------
 		y : ndarray
 		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    both `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -984,7 +1012,7 @@ package numpy.lib.user_array;
 		Parameters
 		----------
 		x1, x2 : array_like
-		  Input arrays.
+		    Input arrays.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -999,10 +1027,10 @@ package numpy.lib.user_array;
 		
 		Returns
 		-------
-		not_equal : ndarray bool, scalar bool
-		  For each element in `x1, x2`, return True if `x1` is not equal
-		  to `x2` and False otherwise.
-		
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -1011,10 +1039,10 @@ package numpy.lib.user_array;
 		Examples
 		--------
 		>>> np.not_equal([1.,2.], [1., 3.])
-		array([False,  True], dtype=bool)
+		array([False,  True])
 		>>> np.not_equal([1, 2], [[1, 3],[1, 4]])
 		array([[False,  True],
-		       [False,  True]], dtype=bool)
+		       [False,  True]])
 	**/
 	static public function not_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1048,6 +1076,7 @@ package numpy.lib.user_array;
 		-------
 		y : ndarray
 		    The bases in `x1` raised to the exponents in `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -1088,8 +1117,18 @@ package numpy.lib.user_array;
 		
 		Computes the remainder complementary to the `floor_divide` function.  It is
 		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
-		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
-		function.
+		as the divisor `x2`. The MATLAB function equivalent to ``np.remainder``
+		is ``mod``.
+		
+		.. warning::
+		
+		    This should not be confused with:
+		
+		    * Python 3.7's `math.remainder` and C's ``remainder``, which
+		      computes the IEEE remainder, which are the complement to
+		      ``round(x1 / x2)``.
+		    * The MATLAB ``rem`` function and or the C ``%`` operator which is the
+		      complement to ``int(x1 / x2)``.
 		
 		Parameters
 		----------
@@ -1113,13 +1152,13 @@ package numpy.lib.user_array;
 		-------
 		y : ndarray
 		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
-		    Returns a scalar if both  `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
 		divmod : Simultaneous floor division and remainder.
-		fmod : Equivalent of the Matlab(TM) ``rem`` function.
+		fmod : Equivalent of the MATLAB ``rem`` function.
 		divide, floor
 		
 		Notes
@@ -1175,11 +1214,11 @@ package numpy.lib.user_array;
 		Notes
 		-----
 		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
+		copying the data. If you want an error to be raised when the data is copied,
 		you should assign the new shape to the shape attribute of the array::
 		
 		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
+		 # A transpose makes the array non-contiguous
 		 >>> b = a.T
 		 # Taking a view makes it possible to modify the shape without modifying
 		 # the initial object.
@@ -1260,6 +1299,7 @@ package numpy.lib.user_array;
 		-------
 		out : ndarray, int
 		    Return `x1` with bits shifted `x2` times to the right.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -1342,6 +1382,7 @@ package numpy.lib.user_array;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1387,7 +1428,7 @@ package numpy.lib.user_array;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -1414,6 +1455,7 @@ package numpy.lib.user_array;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1463,8 +1505,8 @@ package numpy.lib.user_array;
 		Returns
 		-------
 		y : ndarray
-		    The difference of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    The difference of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----

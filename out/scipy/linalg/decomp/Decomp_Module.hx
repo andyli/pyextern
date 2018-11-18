@@ -44,6 +44,14 @@ package scipy.linalg.decomp;
 	**/
 	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
 	/**
+		Check info return value.
+	**/
+	static public function _check_info(info:Dynamic, driver:Dynamic, ?positive:Dynamic):Dynamic;
+	/**
+		Check that select is valid, convert to Fortran style.
+	**/
+	static public function _check_select(select:Dynamic, select_range:Dynamic, max_ev:Dynamic, max_len:Dynamic):Dynamic;
+	/**
 		Round floating-point lwork returned by lapack to integer.
 		
 		Several LAPACK routines compute optimal values for LWORK, which
@@ -52,14 +60,23 @@ package scipy.linalg.decomp;
 		to hold the exact value --- some LAPACK versions (<= 3.5.0 at
 		least) truncate the returned integer to single precision and in
 		some cases this can be smaller than the required value.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lapack
+		>>> n = 5000
+		>>> s_r, s_lw = lapack.get_lapack_funcs(('sysvx', 'sysvx_lwork'))
+		>>> lwork = lapack._compute_lwork(s_lw, n)
+		>>> lwork
+		32000
 	**/
 	static public function _compute_lwork(routine:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _conv_dict : Dynamic;
 	/**
 		Strict check for `arr` not sharing any data with `original`,
 		under the assumption that arr = asarray(original)
 	**/
 	static public function _datacopied(arr:Dynamic, original:Dynamic):Dynamic;
-	static public var _double_precision : Dynamic;
 	static public function _geneig(a1:Dynamic, b1:Dynamic, left:Dynamic, right:Dynamic, overwrite_a:Dynamic, overwrite_b:Dynamic, homogeneous_eigvals:Dynamic):Dynamic;
 	/**
 		Produce complex-valued eigenvectors from LAPACK DGGEV real-valued output
@@ -67,6 +84,133 @@ package scipy.linalg.decomp;
 	static public function _make_complex_eigvecs(w:Dynamic, vin:Dynamic, dtype:Dynamic):Dynamic;
 	static public function _make_eigvals(alpha:Dynamic, beta:Dynamic, homogeneous_eigvals:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Returns the indices that would sort an array.
+		
+		Perform an indirect sort along the given axis using the algorithm specified
+		by the `kind` keyword. It returns an array of indices of the same shape as
+		`a` that index data along the given axis in sorted order.
+		
+		Parameters
+		----------
+		a : array_like
+		    Array to sort.
+		axis : int or None, optional
+		    Axis along which to sort.  The default is -1 (the last axis). If None,
+		    the flattened array is used.
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
+		    Sorting algorithm.
+		order : str or list of str, optional
+		    When `a` is an array with fields defined, this argument specifies
+		    which fields to compare first, second, etc.  A single field can
+		    be specified as a string, and not all fields need be specified,
+		    but unspecified fields will still be used, in the order in which
+		    they come up in the dtype, to break ties.
+		
+		Returns
+		-------
+		index_array : ndarray, int
+		    Array of indices that sort `a` along the specified axis.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
+		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
+		    yields the sorted `a`, irrespective of dimensionality.
+		
+		See Also
+		--------
+		sort : Describes sorting algorithms used.
+		lexsort : Indirect stable sort with multiple keys.
+		ndarray.sort : Inplace sort.
+		argpartition : Indirect partial sort.
+		
+		Notes
+		-----
+		See `sort` for notes on the different sorting algorithms.
+		
+		As of NumPy 1.4.0 `argsort` works with real/complex arrays containing
+		nan values. The enhanced sort order is documented in `sort`.
+		
+		Examples
+		--------
+		One dimensional array:
+		
+		>>> x = np.array([3, 1, 2])
+		>>> np.argsort(x)
+		array([1, 2, 0])
+		
+		Two-dimensional array:
+		
+		>>> x = np.array([[0, 3], [2, 2]])
+		>>> x
+		array([[0, 3],
+		       [2, 2]])
+		
+		>>> np.argsort(x, axis=0)  # sorts along first axis (down)
+		array([[0, 1],
+		       [1, 0]])
+		
+		>>> np.argsort(x, axis=1)  # sorts along last axis (across)
+		array([[0, 1],
+		       [0, 1]])
+		
+		Indices of the sorted elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argsort(x, axis=None), x.shape)
+		>>> ind
+		(array([0, 1, 1, 0]), array([0, 0, 1, 1]))
+		>>> x[ind]  # same as np.sort(x, axis=None)
+		array([0, 2, 2, 3])
+		
+		Sorting with keys:
+		
+		>>> x = np.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])
+		>>> x
+		array([(1, 0), (0, 1)],
+		      dtype=[('x', '<i4'), ('y', '<i4')])
+		
+		>>> np.argsort(x, order=('x','y'))
+		array([1, 0])
+		
+		>>> np.argsort(x, order=('y','x'))
+		array([0, 1])
+	**/
+	static public function argsort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	/**
+		Find the indices of array elements that are non-zero, grouped by element.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input data.
+		
+		Returns
+		-------
+		index_array : ndarray
+		    Indices of elements that are non-zero. Indices are grouped by element.
+		
+		See Also
+		--------
+		where, nonzero
+		
+		Notes
+		-----
+		``np.argwhere(a)`` is the same as ``np.transpose(np.nonzero(a))``.
+		
+		The output of ``argwhere`` is not suitable for indexing arrays.
+		For this purpose use ``nonzero(a)`` instead.
+		
+		Examples
+		--------
+		>>> x = np.arange(6).reshape(2,3)
+		>>> x
+		array([[0, 1, 2],
+		       [3, 4, 5]])
+		>>> np.argwhere(x>1)
+		array([[0, 2],
+		       [1, 0],
+		       [1, 1],
+		       [1, 2]])
+	**/
+	static public function argwhere(a:Dynamic):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
@@ -120,7 +264,15 @@ package scipy.linalg.decomp;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -171,8 +323,158 @@ package scipy.linalg.decomp;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Convert the input to an array.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input data, in any form that can be converted to an array.  This
+		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
+		    of lists and ndarrays.
+		dtype : data-type, optional
+		    By default, the data-type is inferred from the input data.
+		order : {'C', 'F'}, optional
+		    Whether to use row-major (C-style) or
+		    column-major (Fortran-style) memory representation.
+		    Defaults to 'C'.
+		
+		Returns
+		-------
+		out : ndarray
+		    Array interpretation of `a`.  No copy is performed if the input
+		    is already an ndarray with matching dtype and order.  If `a` is a
+		    subclass of ndarray, a base class ndarray is returned.
+		
+		See Also
+		--------
+		asanyarray : Similar function which passes through subclasses.
+		ascontiguousarray : Convert input to a contiguous array.
+		asfarray : Convert input to a floating point ndarray.
+		asfortranarray : Convert input to an ndarray with column-major
+		                 memory order.
+		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
+		fromiter : Create an array from an iterator.
+		fromfunction : Construct an array by executing a function on grid
+		               positions.
+		
+		Examples
+		--------
+		Convert a list into an array:
+		
+		>>> a = [1, 2]
+		>>> np.asarray(a)
+		array([1, 2])
+		
+		Existing arrays are not copied:
+		
+		>>> a = np.array([1, 2])
+		>>> np.asarray(a) is a
+		True
+		
+		If `dtype` is set, array is copied only if dtype does not match:
+		
+		>>> a = np.array([1, 2], dtype=np.float32)
+		>>> np.asarray(a, dtype=np.float32) is a
+		True
+		>>> np.asarray(a, dtype=np.float64) is a
+		False
+		
+		Contrary to `asanyarray`, ndarray subclasses are not passed through:
+		
+		>>> issubclass(np.recarray, np.ndarray)
+		True
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
+		>>> np.asarray(a) is a
+		False
+		>>> np.asanyarray(a) is a
+		True
+	**/
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	@:native("cast")
 	static public var _cast : Dynamic;
+	/**
+		Converts complex eigenvalues ``w`` and eigenvectors ``v`` to real
+		eigenvalues in a block diagonal form ``wr`` and the associated real
+		eigenvectors ``vr``, such that::
+		
+		    vr @ wr = X @ vr
+		
+		continues to hold, where ``X`` is the original array for which ``w`` and
+		``v`` are the eigenvalues and eigenvectors.
+		
+		.. versionadded:: 1.1.0
+		
+		Parameters
+		----------
+		w : (..., M) array_like
+		    Complex or real eigenvalues, an array or stack of arrays
+		
+		    Conjugate pairs must not be interleaved, else the wrong result
+		    will be produced. So ``[1+1j, 1, 1-1j]`` will give a correct result, but
+		    ``[1+1j, 2+1j, 1-1j, 2-1j]`` will not.
+		
+		v : (..., M, M) array_like
+		    Complex or real eigenvectors, a square array or stack of square arrays.
+		
+		Returns
+		-------
+		wr : (..., M, M) ndarray
+		    Real diagonal block form of eigenvalues
+		vr : (..., M, M) ndarray
+		    Real eigenvectors associated with ``wr``
+		
+		See Also
+		--------
+		eig : Eigenvalues and right eigenvectors for non-symmetric arrays
+		rsf2csf : Convert real Schur form to complex Schur form
+		
+		Notes
+		-----
+		``w``, ``v`` must be the eigenstructure for some *real* matrix ``X``.
+		For example, obtained by ``w, v = scipy.linalg.eig(X)`` or
+		``w, v = numpy.linalg.eig(X)`` in which case ``X`` can also represent
+		stacked arrays.
+		
+		.. versionadded:: 1.1.0
+		
+		Examples
+		--------
+		>>> X = np.array([[1, 2, 3], [0, 4, 5], [0, -5, 4]])
+		>>> X
+		array([[ 1,  2,  3],
+		       [ 0,  4,  5],
+		       [ 0, -5,  4]])
+		
+		>>> from scipy import linalg
+		>>> w, v = linalg.eig(X)
+		>>> w
+		array([ 1.+0.j,  4.+5.j,  4.-5.j])
+		>>> v
+		array([[ 1.00000+0.j     , -0.01906-0.40016j, -0.01906+0.40016j],
+		       [ 0.00000+0.j     ,  0.00000-0.64788j,  0.00000+0.64788j],
+		       [ 0.00000+0.j     ,  0.64788+0.j     ,  0.64788-0.j     ]])
+		
+		>>> wr, vr = linalg.cdf2rdf(w, v)
+		>>> wr
+		array([[ 1.,  0.,  0.],
+		       [ 0.,  4.,  5.],
+		       [ 0., -5.,  4.]])
+		>>> vr
+		array([[ 1.     ,  0.40016, -0.01906],
+		       [ 0.     ,  0.64788,  0.     ],
+		       [ 0.     ,  0.     ,  0.64788]])
+		
+		>>> vr @ wr
+		array([[ 1.     ,  1.69593,  1.9246 ],
+		       [ 0.     ,  2.59153,  3.23942],
+		       [ 0.     , -3.23942,  2.59153]])
+		>>> X @ vr
+		array([[ 1.     ,  1.69593,  1.9246 ],
+		       [ 0.     ,  2.59153,  3.23942],
+		       [ 0.     , -3.23942,  2.59153]])
+	**/
+	static public function cdf2rdf(w:Dynamic, v:Dynamic):Dynamic;
 	/**
 		conjugate(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -201,6 +503,7 @@ package scipy.linalg.decomp;
 		-------
 		y : ndarray
 		    The complex conjugate of `x`, with same dtype as `y`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -272,7 +575,38 @@ package scipy.linalg.decomp;
 		
 		See Also
 		--------
+		eigvals : eigenvalues of general arrays
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
+		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
+		    band matrices
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
+		
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a) == linalg.eig(a)[0]
+		array([ True,  True])
+		>>> linalg.eig(a, left=True, right=False)[1] # normalized left eigenvector
+		array([[-0.70710678+0.j        , -0.70710678-0.j        ],
+		       [-0.        +0.70710678j, -0.        -0.70710678j]])
+		>>> linalg.eig(a, left=False, right=True)[1] # normalized right eigenvector
+		array([[0.70710678+0.j        , 0.70710678-0.j        ],
+		       [0.        -0.70710678j, 0.        +0.70710678j]])
 	**/
 	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
@@ -348,7 +682,36 @@ package scipy.linalg.decomp;
 		    The normalized eigenvector corresponding to the eigenvalue w[i] is
 		    the column v[:,i].
 		
-		Raises LinAlgError if eigenvalue computation does not converge
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
+		
+		See Also
+		--------
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eig : eigenvalues and right eigenvectors of general arrays.
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eig_banded
+		>>> A = np.array([[1, 5, 2, 0], [5, 2, 5, 2], [2, 5, 3, 5], [0, 2, 5, 4]])
+		>>> Ab = np.array([[1, 2, 3, 4], [5, 5, 5, 0], [2, 2, 0, 0]])
+		>>> w, v = eig_banded(Ab, lower=True)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
+		>>> w = eig_banded(Ab, lower=True, eigvals_only=True)
+		>>> w
+		array([-4.26200532, -2.22987175,  3.95222349, 12.53965359])
+		
+		Request only the eigenvalues between ``[-3, 4]``
+		
+		>>> w, v = eig_banded(Ab, lower=True, select='v', select_range=[-3, 4])
+		>>> w
+		array([-2.22987175,  3.95222349])
 	**/
 	static public function eig_banded(a_band:Dynamic, ?lower:Dynamic, ?eigvals_only:Dynamic, ?overwrite_a_band:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?max_ev:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -431,9 +794,114 @@ package scipy.linalg.decomp;
 		
 		See Also
 		--------
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w, v = eigh(A)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
 	**/
 	static public function eigh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?eigvals_only:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
+		Solve eigenvalue problem for a real symmetric tridiagonal matrix.
+		
+		Find eigenvalues `w` and optionally right eigenvectors `v` of ``a``::
+		
+		    a v[:,i] = w[i] v[:,i]
+		    v.H v    = identity
+		
+		For a real symmetric matrix ``a`` with diagonal elements `d` and
+		off-diagonal elements `e`.
+		
+		Parameters
+		----------
+		d : ndarray, shape (ndim,)
+		    The diagonal elements of the array.
+		e : ndarray, shape (ndim-1,)
+		    The off-diagonal elements of the array.
+		select : {'a', 'v', 'i'}, optional
+		    Which eigenvalues to calculate
+		
+		    ======  ========================================
+		    select  calculated
+		    ======  ========================================
+		    'a'     All eigenvalues
+		    'v'     Eigenvalues in the interval (min, max]
+		    'i'     Eigenvalues with indices min <= i <= max
+		    ======  ========================================
+		select_range : (min, max), optional
+		    Range of selected eigenvalues
+		check_finite : bool, optional
+		    Whether to check that the input matrix contains only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		tol : float
+		    The absolute tolerance to which each eigenvalue is required
+		    (only used when 'stebz' is the `lapack_driver`).
+		    An eigenvalue (or cluster) is considered to have converged if it
+		    lies in an interval of this width. If <= 0. (default),
+		    the value ``eps*|a|`` is used where eps is the machine precision,
+		    and ``|a|`` is the 1-norm of the matrix ``a``.
+		lapack_driver : str
+		    LAPACK function to use, can be 'auto', 'stemr', 'stebz', 'sterf',
+		    or 'stev'. When 'auto' (default), it will use 'stemr' if ``select='a'``
+		    and 'stebz' otherwise. When 'stebz' is used to find the eigenvalues and
+		    ``eigvals_only=False``, then a second LAPACK call (to ``?STEIN``) is
+		    used to find the corresponding eigenvectors. 'sterf' can only be
+		    used when ``eigvals_only=True`` and ``select='a'``. 'stev' can only
+		    be used when ``select='a'``.
+		
+		Returns
+		-------
+		w : (M,) ndarray
+		    The eigenvalues, in ascending order, each repeated according to its
+		    multiplicity.
+		v : (M, M) ndarray
+		    The normalized eigenvector corresponding to the eigenvalue ``w[i]`` is
+		    the column ``v[:,i]``.
+		
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
+		
+		See Also
+		--------
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
+		    band matrices
+		
+		Notes
+		-----
+		This function makes use of LAPACK ``S/DSTEMR`` routines.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigh_tridiagonal
+		>>> d = 3*np.ones(4)
+		>>> e = -1*np.ones(3)
+		>>> w, v = eigh_tridiagonal(d, e)
+		>>> A = np.diag(d) + np.diag(e, k=1) + np.diag(e, k=-1)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
+	**/
+	static public function eigh_tridiagonal(d:Dynamic, e:Dynamic, ?eigvals_only:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?check_finite:Dynamic, ?tol:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Compute eigenvalues from an ordinary or generalized eigenvalue problem.
 		
@@ -478,9 +946,27 @@ package scipy.linalg.decomp;
 		
 		See Also
 		--------
-		eigvalsh : eigenvalues of symmetric or Hermitian arrays,
 		eig : eigenvalues and right eigenvectors of general arrays.
-		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
 	**/
 	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
@@ -544,15 +1030,29 @@ package scipy.linalg.decomp;
 		    The eigenvalues, in ascending order, each repeated according to its
 		    multiplicity.
 		
-		Raises LinAlgError if eigenvalue computation does not converge
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
 		
 		See Also
 		--------
 		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
 		    band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
 		eigvals : eigenvalues of general arrays
 		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigvals_banded
+		>>> A = np.array([[1, 5, 2, 0], [5, 2, 5, 2], [2, 5, 3, 5], [0, 2, 5, 4]])
+		>>> Ab = np.array([[1, 2, 3, 4], [5, 5, 5, 0], [2, 2, 0, 0]])
+		>>> w = eigvals_banded(Ab, lower=True)
+		>>> w
+		array([-4.26200532, -2.22987175,  3.95222349, 12.53965359])
 	**/
 	static public function eigvals_banded(a_band:Dynamic, ?lower:Dynamic, ?overwrite_a_band:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -617,20 +1117,440 @@ package scipy.linalg.decomp;
 		
 		See Also
 		--------
-		eigvals : eigenvalues of general arrays
 		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
-		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigvals : eigenvalues of general arrays
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigvalsh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w = eigvalsh(A)
+		>>> w
+		array([-3.74637491, -0.76263923,  6.08502336, 12.42399079])
 	**/
 	static public function eigvalsh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
-		Return indices that are non-zero in the flattened version of a.
+		Solve eigenvalue problem for a real symmetric tridiagonal matrix.
 		
-		This is equivalent to a.ravel().nonzero()[0].
+		Find eigenvalues `w` of ``a``::
+		
+		    a v[:,i] = w[i] v[:,i]
+		    v.H v    = identity
+		
+		For a real symmetric matrix ``a`` with diagonal elements `d` and
+		off-diagonal elements `e`.
 		
 		Parameters
 		----------
-		a : ndarray
-		    Input array.
+		d : ndarray, shape (ndim,)
+		    The diagonal elements of the array.
+		e : ndarray, shape (ndim-1,)
+		    The off-diagonal elements of the array.
+		select : {'a', 'v', 'i'}, optional
+		    Which eigenvalues to calculate
+		
+		    ======  ========================================
+		    select  calculated
+		    ======  ========================================
+		    'a'     All eigenvalues
+		    'v'     Eigenvalues in the interval (min, max]
+		    'i'     Eigenvalues with indices min <= i <= max
+		    ======  ========================================
+		select_range : (min, max), optional
+		    Range of selected eigenvalues
+		check_finite : bool, optional
+		    Whether to check that the input matrix contains only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		tol : float
+		    The absolute tolerance to which each eigenvalue is required
+		    (only used when ``lapack_driver='stebz'``).
+		    An eigenvalue (or cluster) is considered to have converged if it
+		    lies in an interval of this width. If <= 0. (default),
+		    the value ``eps*|a|`` is used where eps is the machine precision,
+		    and ``|a|`` is the 1-norm of the matrix ``a``.
+		lapack_driver : str
+		    LAPACK function to use, can be 'auto', 'stemr', 'stebz',  'sterf',
+		    or 'stev'. When 'auto' (default), it will use 'stemr' if ``select='a'``
+		    and 'stebz' otherwise. 'sterf' and 'stev' can only be used when
+		    ``select='a'``.
+		
+		Returns
+		-------
+		w : (M,) ndarray
+		    The eigenvalues, in ascending order, each repeated according to its
+		    multiplicity.
+		
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
+		
+		See Also
+		--------
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigvalsh_tridiagonal, eigvalsh
+		>>> d = 3*np.ones(4)
+		>>> e = -1*np.ones(3)
+		>>> w = eigvalsh_tridiagonal(d, e)
+		>>> A = np.diag(d) + np.diag(e, k=1) + np.diag(e, k=-1)
+		>>> w2 = eigvalsh(A)  # Verify with other eigenvalue routines
+		>>> np.allclose(w - w2, np.zeros(4))
+		True
+	**/
+	static public function eigvalsh_tridiagonal(d:Dynamic, e:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?check_finite:Dynamic, ?tol:Dynamic, ?lapack_driver:Dynamic):Dynamic;
+	/**
+		einsum(subscripts, *operands, out=None, dtype=None, order='K',
+		       casting='safe', optimize=False)
+		
+		Evaluates the Einstein summation convention on the operands.
+		
+		Using the Einstein summation convention, many common multi-dimensional
+		array operations can be represented in a simple fashion.  This function
+		provides a way to compute such summations. The best way to understand this
+		function is to try the examples below, which show how many common NumPy
+		functions can be implemented as calls to `einsum`.
+		
+		Parameters
+		----------
+		subscripts : str
+		    Specifies the subscripts for summation.
+		operands : list of array_like
+		    These are the arrays for the operation.
+		out : {ndarray, None}, optional
+		    If provided, the calculation is done into this array.
+		dtype : {data-type, None}, optional
+		    If provided, forces the calculation to use the data type specified.
+		    Note that you may have to also give a more liberal `casting`
+		    parameter to allow the conversions. Default is None.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    Controls the memory layout of the output. 'C' means it should
+		    be C contiguous. 'F' means it should be Fortran contiguous,
+		    'A' means it should be 'F' if the inputs are all 'F', 'C' otherwise.
+		    'K' means it should be as close to the layout as the inputs as
+		    is possible, including arbitrarily permuted axes.
+		    Default is 'K'.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
+		    Controls what kind of data casting may occur.  Setting this to
+		    'unsafe' is not recommended, as it can adversely affect accumulations.
+		
+		      * 'no' means the data types should not be cast at all.
+		      * 'equiv' means only byte-order changes are allowed.
+		      * 'safe' means only casts which can preserve values are allowed.
+		      * 'same_kind' means only safe casts or casts within a kind,
+		        like float64 to float32, are allowed.
+		      * 'unsafe' means any data conversions may be done.
+		
+		    Default is 'safe'.
+		optimize : {False, True, 'greedy', 'optimal'}, optional
+		    Controls if intermediate optimization should occur. No optimization
+		    will occur if False and True will default to the 'greedy' algorithm.
+		    Also accepts an explicit contraction list from the ``np.einsum_path``
+		    function. See ``np.einsum_path`` for more details. Defaults to False.
+		
+		Returns
+		-------
+		output : ndarray
+		    The calculation based on the Einstein summation convention.
+		
+		See Also
+		--------
+		einsum_path, dot, inner, outer, tensordot, linalg.multi_dot
+		
+		Notes
+		-----
+		.. versionadded:: 1.6.0
+		
+		The subscripts string is a comma-separated list of subscript labels,
+		where each label refers to a dimension of the corresponding operand.
+		Repeated subscripts labels in one operand take the diagonal.  For example,
+		``np.einsum('ii', a)`` is equivalent to ``np.trace(a)``.
+		
+		Whenever a label is repeated, it is summed, so ``np.einsum('i,i', a, b)``
+		is equivalent to ``np.inner(a,b)``.  If a label appears only once,
+		it is not summed, so ``np.einsum('i', a)`` produces a view of ``a``
+		with no changes.
+		
+		The order of labels in the output is by default alphabetical.  This
+		means that ``np.einsum('ij', a)`` doesn't affect a 2D array, while
+		``np.einsum('ji', a)`` takes its transpose.
+		
+		The output can be controlled by specifying output subscript labels
+		as well.  This specifies the label order, and allows summing to
+		be disallowed or forced when desired.  The call ``np.einsum('i->', a)``
+		is like ``np.sum(a, axis=-1)``, and ``np.einsum('ii->i', a)``
+		is like ``np.diag(a)``.  The difference is that `einsum` does not
+		allow broadcasting by default.
+		
+		To enable and control broadcasting, use an ellipsis.  Default
+		NumPy-style broadcasting is done by adding an ellipsis
+		to the left of each term, like ``np.einsum('...ii->...i', a)``.
+		To take the trace along the first and last axes,
+		you can do ``np.einsum('i...i', a)``, or to do a matrix-matrix
+		product with the left-most indices instead of rightmost, you can do
+		``np.einsum('ij...,jk...->ik...', a, b)``.
+		
+		When there is only one operand, no axes are summed, and no output
+		parameter is provided, a view into the operand is returned instead
+		of a new array.  Thus, taking the diagonal as ``np.einsum('ii->i', a)``
+		produces a view.
+		
+		An alternative way to provide the subscripts and operands is as
+		``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])``. The examples
+		below have corresponding `einsum` calls with the two parameter methods.
+		
+		.. versionadded:: 1.10.0
+		
+		Views returned from einsum are now writeable whenever the input array
+		is writeable. For example, ``np.einsum('ijk...->kji...', a)`` will now
+		have the same effect as ``np.swapaxes(a, 0, 2)`` and
+		``np.einsum('ii->i', a)`` will return a writeable view of the diagonal
+		of a 2D array.
+		
+		.. versionadded:: 1.12.0
+		
+		Added the ``optimize`` argument which will optimize the contraction order
+		of an einsum expression. For a contraction with three or more operands this
+		can greatly increase the computational efficiency at the cost of a larger
+		memory footprint during computation.
+		
+		See ``np.einsum_path`` for more details.
+		
+		Examples
+		--------
+		>>> a = np.arange(25).reshape(5,5)
+		>>> b = np.arange(5)
+		>>> c = np.arange(6).reshape(2,3)
+		
+		>>> np.einsum('ii', a)
+		60
+		>>> np.einsum(a, [0,0])
+		60
+		>>> np.trace(a)
+		60
+		
+		>>> np.einsum('ii->i', a)
+		array([ 0,  6, 12, 18, 24])
+		>>> np.einsum(a, [0,0], [0])
+		array([ 0,  6, 12, 18, 24])
+		>>> np.diag(a)
+		array([ 0,  6, 12, 18, 24])
+		
+		>>> np.einsum('ij,j', a, b)
+		array([ 30,  80, 130, 180, 230])
+		>>> np.einsum(a, [0,1], b, [1])
+		array([ 30,  80, 130, 180, 230])
+		>>> np.dot(a, b)
+		array([ 30,  80, 130, 180, 230])
+		>>> np.einsum('...j,j', a, b)
+		array([ 30,  80, 130, 180, 230])
+		
+		>>> np.einsum('ji', c)
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> np.einsum(c, [1,0])
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		>>> c.T
+		array([[0, 3],
+		       [1, 4],
+		       [2, 5]])
+		
+		>>> np.einsum('..., ...', 3, c)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.einsum(',ij', 3, C)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.einsum(3, [Ellipsis], c, [Ellipsis])
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		>>> np.multiply(3, c)
+		array([[ 0,  3,  6],
+		       [ 9, 12, 15]])
+		
+		>>> np.einsum('i,i', b, b)
+		30
+		>>> np.einsum(b, [0], b, [0])
+		30
+		>>> np.inner(b,b)
+		30
+		
+		>>> np.einsum('i,j', np.arange(2)+1, b)
+		array([[0, 1, 2, 3, 4],
+		       [0, 2, 4, 6, 8]])
+		>>> np.einsum(np.arange(2)+1, [0], b, [1])
+		array([[0, 1, 2, 3, 4],
+		       [0, 2, 4, 6, 8]])
+		>>> np.outer(np.arange(2)+1, b)
+		array([[0, 1, 2, 3, 4],
+		       [0, 2, 4, 6, 8]])
+		
+		>>> np.einsum('i...->...', a)
+		array([50, 55, 60, 65, 70])
+		>>> np.einsum(a, [0,Ellipsis], [Ellipsis])
+		array([50, 55, 60, 65, 70])
+		>>> np.sum(a, axis=0)
+		array([50, 55, 60, 65, 70])
+		
+		>>> a = np.arange(60.).reshape(3,4,5)
+		>>> b = np.arange(24.).reshape(4,3,2)
+		>>> np.einsum('ijk,jil->kl', a, b)
+		array([[ 4400.,  4730.],
+		       [ 4532.,  4874.],
+		       [ 4664.,  5018.],
+		       [ 4796.,  5162.],
+		       [ 4928.,  5306.]])
+		>>> np.einsum(a, [0,1,2], b, [1,0,3], [2,3])
+		array([[ 4400.,  4730.],
+		       [ 4532.,  4874.],
+		       [ 4664.,  5018.],
+		       [ 4796.,  5162.],
+		       [ 4928.,  5306.]])
+		>>> np.tensordot(a,b, axes=([1,0],[0,1]))
+		array([[ 4400.,  4730.],
+		       [ 4532.,  4874.],
+		       [ 4664.,  5018.],
+		       [ 4796.,  5162.],
+		       [ 4928.,  5306.]])
+		
+		>>> a = np.arange(6).reshape((3,2))
+		>>> b = np.arange(12).reshape((4,3))
+		>>> np.einsum('ki,jk->ij', a, b)
+		array([[10, 28, 46, 64],
+		       [13, 40, 67, 94]])
+		>>> np.einsum('ki,...k->i...', a, b)
+		array([[10, 28, 46, 64],
+		       [13, 40, 67, 94]])
+		>>> np.einsum('k...,jk', a, b)
+		array([[10, 28, 46, 64],
+		       [13, 40, 67, 94]])
+		
+		>>> # since version 1.10.0
+		>>> a = np.zeros((3, 3))
+		>>> np.einsum('ii->i', a)[:] = 1
+		>>> a
+		array([[ 1.,  0.,  0.],
+		       [ 0.,  1.,  0.],
+		       [ 0.,  0.,  1.]])
+	**/
+	static public function einsum(?operands:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		empty(shape, dtype=float, order='C')
+		
+		Return a new array of given shape and type, without initializing entries.
+		
+		Parameters
+		----------
+		shape : int or tuple of int
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
+		dtype : data-type, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
+		
+		Returns
+		-------
+		out : ndarray
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
+		
+		See Also
+		--------
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
+		
+		Notes
+		-----
+		`empty`, unlike `zeros`, does not set the array values to zero,
+		and may therefore be marginally faster.  On the other hand, it requires
+		the user to manually set all the values in the array, and should be
+		used with caution.
+		
+		Examples
+		--------
+		>>> np.empty([2, 2])
+		array([[ -9.74499359e+001,   6.69583040e-309],
+		       [  2.13182611e-314,   3.06959433e-309]])         #random
+		
+		>>> np.empty([2, 2], dtype=int)
+		array([[-1073741821, -1067949133],
+		       [  496041986,    19249760]])                     #random
+	**/
+	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return a 2-D array with ones on the diagonal and zeros elsewhere.
+		
+		Parameters
+		----------
+		N : int
+		  Number of rows in the output.
+		M : int, optional
+		  Number of columns in the output. If None, defaults to `N`.
+		k : int, optional
+		  Index of the diagonal: 0 (the default) refers to the main diagonal,
+		  a positive value refers to an upper diagonal, and a negative value
+		  to a lower diagonal.
+		dtype : data-type, optional
+		  Data-type of the returned array.
+		order : {'C', 'F'}, optional
+		    Whether the output should be stored in row-major (C-style) or
+		    column-major (Fortran-style) order in memory.
+		
+		    .. versionadded:: 1.14.0
+		
+		Returns
+		-------
+		I : ndarray of shape (N,M)
+		  An array where all elements are equal to zero, except for the `k`-th
+		  diagonal, whose values are equal to one.
+		
+		See Also
+		--------
+		identity : (almost) equivalent function
+		diag : diagonal 2-D array from a 1-D array specified by the user.
+		
+		Examples
+		--------
+		>>> np.eye(2, dtype=int)
+		array([[1, 0],
+		       [0, 1]])
+		>>> np.eye(3, k=1)
+		array([[ 0.,  1.,  0.],
+		       [ 0.,  0.,  1.],
+		       [ 0.,  0.,  0.]])
+	**/
+	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	/**
+		Return indices that are non-zero in the flattened version of a.
+		
+		This is equivalent to np.nonzero(np.ravel(a))[0].
+		
+		Parameters
+		----------
+		a : array_like
+		    Input data.
 		
 		Returns
 		-------
@@ -676,12 +1596,10 @@ package scipy.linalg.decomp;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -692,8 +1610,37 @@ package scipy.linalg.decomp;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -727,8 +1674,49 @@ package scipy.linalg.decomp;
 		Q : (M, M) ndarray
 		    Unitary/orthogonal similarity transformation matrix ``A = Q H Q^H``.
 		    Only returned if ``calc_q=True``.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import hessenberg
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> H, Q = hessenberg(A, calc_q=True)
+		>>> H
+		array([[  2.        , -11.65843866,   1.42005301,   0.25349066],
+		       [ -9.94987437,  14.53535354,  -5.31022304,   2.43081618],
+		       [  0.        ,  -1.83299243,   0.38969961,  -0.51527034],
+		       [  0.        ,   0.        ,  -3.83189513,   1.07494686]])
+		>>> np.allclose(Q @ H @ Q.conj().T - A, np.zeros((4, 4)))
+		True
 	**/
 	static public function hessenberg(a:Dynamic, ?calc_q:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
+		Returns a bool array, where True if input element is complex.
+		
+		What is tested is whether the input has a non-zero imaginary part, not if
+		the input type is complex.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		
+		Returns
+		-------
+		out : ndarray of bools
+		    Output array.
+		
+		See Also
+		--------
+		isreal
+		iscomplexobj : Return True if x is a complex type or an array of complex
+		               numbers.
+		
+		Examples
+		--------
+		>>> np.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])
+		array([ True, False, False, False, False,  True])
+	**/
+	static public function iscomplex(x:Dynamic):Dynamic;
 	/**
 		Check for a complex type or an array of complex numbers.
 		
@@ -786,15 +1774,9 @@ package scipy.linalg.decomp;
 		Returns
 		-------
 		y : ndarray, bool
-		    For scalar input, the result is a new boolean with value True
-		    if the input is finite; otherwise the value is False (input is
-		    either positive infinity, negative infinity or Not a Number).
-		
-		    For array input, the result is a boolean array with the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is finite; otherwise the values
-		    are False (element is either positive infinity, negative infinity
-		    or Not a Number).
+		    True where ``x`` is not positive infinity, negative infinity,
+		    or NaN; false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -825,7 +1807,7 @@ package scipy.linalg.decomp;
 		>>> np.isfinite(np.NINF)
 		False
 		>>> np.isfinite([np.log(-1.),1.,np.log(0)])
-		array([False,  True, False], dtype=bool)
+		array([False,  True, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -835,6 +1817,7 @@ package scipy.linalg.decomp;
 		array([0, 1, 0])
 	**/
 	static public function isfinite(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var newaxis : Dynamic;
 	/**
 		Return the indices of the elements that are non-zero.
 		
@@ -881,14 +1864,15 @@ package scipy.linalg.decomp;
 		       [0, 2, 0],
 		       [1, 1, 0]])
 		>>> np.nonzero(x)
-		(array([0, 1, 2, 2], dtype=int64), array([0, 1, 0, 1], dtype=int64))
+		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 		
 		>>> x[np.nonzero(x)]
-		array([ 1.,  1.,  1.])
+		array([1, 2, 1, 1])
 		>>> np.transpose(np.nonzero(x))
 		array([[0, 0],
 		       [1, 1],
-		       [2, 2]])
+		       [2, 0],
+		       [2, 1])
 		
 		A common use for ``nonzero`` is to find the indices of an array, where
 		a condition is True.  Given an array `a`, the condition `a` > 3 is a
@@ -899,7 +1883,7 @@ package scipy.linalg.decomp;
 		>>> a > 3
 		array([[False, False, False],
 		       [ True,  True,  True],
-		       [ True,  True,  True]], dtype=bool)
+		       [ True,  True,  True]])
 		>>> np.nonzero(a > 3)
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 		
@@ -1026,4 +2010,56 @@ package scipy.linalg.decomp;
 	**/
 	static public function norm(a:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public var string_types : Dynamic;
+	/**
+		zeros(shape, dtype=float, order='C')
+		
+		Return a new array of given shape and type, filled with zeros.
+		
+		Parameters
+		----------
+		shape : int or tuple of ints
+		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
+		dtype : data-type, optional
+		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
+		
+		Returns
+		-------
+		out : ndarray
+		    Array of zeros with the given shape, dtype, and order.
+		
+		See Also
+		--------
+		zeros_like : Return an array of zeros with shape and type of input.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
+		
+		Examples
+		--------
+		>>> np.zeros(5)
+		array([ 0.,  0.,  0.,  0.,  0.])
+		
+		>>> np.zeros((5,), dtype=int)
+		array([0, 0, 0, 0, 0])
+		
+		>>> np.zeros((2, 1))
+		array([[ 0.],
+		       [ 0.]])
+		
+		>>> s = (2,2)
+		>>> np.zeros(s)
+		array([[ 0.,  0.],
+		       [ 0.,  0.]])
+		
+		>>> np.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype
+		array([(0, 0), (0, 0)],
+		      dtype=[('x', '<i4'), ('y', '<i4')])
+	**/
+	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

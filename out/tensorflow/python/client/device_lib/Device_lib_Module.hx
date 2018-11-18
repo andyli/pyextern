@@ -14,9 +14,12 @@ package tensorflow.python.client.device_lib;
 	/**
 		List the available devices available in the local process.
 		
+		Args:
+		  session_config: a session config proto or None to use the default config.
+		
 		Returns:
 		  A list of `DeviceAttribute` protocol buffers.
 	**/
-	static public function list_local_devices():Dynamic;
+	static public function list_local_devices(?session_config:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

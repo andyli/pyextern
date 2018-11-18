@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.resample;
 @:pythonImport("pandas.core.resample", "TimeGrouper") extern class TimeGrouper {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package pandas.core.resample;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,26 +103,26 @@ package pandas.core.resample;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _adjust_bin_edges(binner:Dynamic, ax_values:Dynamic):Dynamic;
-	/**
-		default to the standard binner here 
-	**/
-	public function _get_binner_for_grouping(obj:Dynamic):Dynamic;
+	static public var _attributes : Dynamic;
 	/**
 		Parameters
 		----------
 		obj : the subject object
+		validate : boolean, default True
+		    if True, validate the grouper
 		
 		Returns
 		-------
 		a tuple of binner, grouper, obj (possibly sorted)
 	**/
-	public function _get_grouper(obj:Dynamic):Dynamic;
+	public function _get_grouper(obj:Dynamic, ?validate:Dynamic):Dynamic;
+	public function _get_period_bins(ax:Dynamic):Dynamic;
 	/**
 		return my resampler or raise if we have an invalid axis
 		

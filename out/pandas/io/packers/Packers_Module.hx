@@ -63,7 +63,7 @@ package pandas.io.packers;
 		If possible, reshape `arr` to have shape `new_shape`,
 		with a couple of exceptions (see gh-13012):
 		
-		1) If `arr` is a Categorical or Index, `arr` will be
+		1) If `arr` is a ExtensionArray or Index, `arr` will be
 		   returned as is.
 		2) If `arr` is a Series, the `_values` attribute will
 		   be reshaped and returned.
@@ -74,6 +74,29 @@ package pandas.io.packers;
 		new_shape : int or tuple of ints, the new shape
 	**/
 	static public function _safe_reshape(arr:Dynamic, new_shape:Dynamic):Dynamic;
+	/**
+		Attempt to convert a path-like object to a string.
+		
+		Parameters
+		----------
+		filepath_or_buffer : object to be converted
+		
+		Returns
+		-------
+		str_filepath_or_buffer : maybe a string version of the object
+		
+		Notes
+		-----
+		Objects supporting the fspath protocol (python 3.6+) are coerced
+		according to its __fspath__ method.
+		
+		For backwards compatibility with older pythons, pathlib.Path and
+		py.path objects are specially coerced.
+		
+		Any other object is passed through unchanged, which includes bytes,
+		strings, buffers, or anything else that's not even path-like.
+	**/
+	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	/**
 		Convert strings to complex number instance with specified numpy type.
 	**/
@@ -120,12 +143,16 @@ package pandas.io.packers;
 		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
 		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
+		mode : str, optional
 		
 		Returns
 		-------
-		a filepath_or_buffer, the encoding, the compression
+		tuple of ({a filepath_ or buffer or S3File instance},
+		          encoding, str,
+		          compression, str,
+		          should_close, bool)
 	**/
-	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the Categorical dtype.
 		
@@ -253,29 +280,29 @@ package pandas.io.packers;
 		    :class:`datetime` object is returned.
 		
 		:param tzinfos:
-		        Additional time zone names / aliases which may be present in the
-		        string. This argument maps time zone names (and optionally offsets
-		        from those time zones) to time zones. This parameter can be a
-		        dictionary with timezone aliases mapping time zone names to time
-		        zones or a function taking two parameters (``tzname`` and
-		        ``tzoffset``) and returning a time zone.
+		    Additional time zone names / aliases which may be present in the
+		    string. This argument maps time zone names (and optionally offsets
+		    from those time zones) to time zones. This parameter can be a
+		    dictionary with timezone aliases mapping time zone names to time
+		    zones or a function taking two parameters (``tzname`` and
+		    ``tzoffset``) and returning a time zone.
 		
-		        The timezones to which the names are mapped can be an integer
-		        offset from UTC in minutes or a :class:`tzinfo` object.
+		    The timezones to which the names are mapped can be an integer
+		    offset from UTC in seconds or a :class:`tzinfo` object.
 		
-		        .. doctest::
-		           :options: +NORMALIZE_WHITESPACE
+		    .. doctest::
+		       :options: +NORMALIZE_WHITESPACE
 		
-		            >>> from dateutil.parser import parse
-		            >>> from dateutil.tz import gettz
-		            >>> tzinfos = {"BRST": -10800, "CST": gettz("America/Chicago")}
-		            >>> parse("2012-01-19 17:21:00 BRST", tzinfos=tzinfos)
-		            datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -10800))
-		            >>> parse("2012-01-19 17:21:00 CST", tzinfos=tzinfos)
-		            datetime.datetime(2012, 1, 19, 17, 21,
-		                              tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))
+		        >>> from dateutil.parser import parse
+		        >>> from dateutil.tz import gettz
+		        >>> tzinfos = {"BRST": -7200, "CST": gettz("America/Chicago")}
+		        >>> parse("2012-01-19 17:21:00 BRST", tzinfos=tzinfos)
+		        datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -7200))
+		        >>> parse("2012-01-19 17:21:00 CST", tzinfos=tzinfos)
+		        datetime.datetime(2012, 1, 19, 17, 21,
+		                          tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))
 		
-		        This parameter is ignored if ``ignoretz`` is set.
+		    This parameter is ignored if ``ignoretz`` is set.
 		
 		:param dayfirst:
 		    Whether to interpret the first value in an ambiguous 3-integer date

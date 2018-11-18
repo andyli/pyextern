@@ -3,6 +3,7 @@ package tensorflow.python.ops.array_grad;
 @:pythonImport("tensorflow.python.ops.array_grad") extern class Array_grad_Module {
 	static public function _BatchToSpaceGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _BatchToSpaceNDGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _BroadcastToGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for check_numerics op.
 	**/
@@ -20,7 +21,7 @@ package tensorflow.python.ops.array_grad;
 		  dim_index: An interger index of concat_dim or axis parameter in op.inputs.
 		
 		Returns:
-		  Tensors represending the partial gradients with respect to each input
+		  Tensors representing the partial gradients with respect to each input
 		  of the op.
 		
 		Raises:
@@ -28,6 +29,10 @@ package tensorflow.python.ops.array_grad;
 	**/
 	static public function _ConcatGradHelper(op:Dynamic, grad:Dynamic, start_value_index:Dynamic, end_value_index:Dynamic, dim_index:Dynamic):Dynamic;
 	static public function _ConcatGradV2(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Returns conj(unshuffle(grad)).
+	**/
+	static public function _ConjugateTransposeGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _DepthToSpaceGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _DiagGrad(_:Dynamic, grad:Dynamic):Dynamic;
 	static public function _DiagPartGrad(_:Dynamic, grad:Dynamic):Dynamic;
@@ -39,7 +44,12 @@ package tensorflow.python.ops.array_grad;
 	**/
 	static public function _GatherGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _GatherNdGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
+		Gradient for GatherV2 op.
+	**/
+	static public function _GatherV2Grad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _IdGrad(_:Dynamic, grad:Dynamic):Dynamic;
+	static public function _IdNGrad(_:Dynamic, ?grad:python.VarArgs<Dynamic>):Dynamic;
 	static public function _MatrixBandPartGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _MatrixDiagGrad(_:Dynamic, grad:Dynamic):Dynamic;
 	static public function _MatrixDiagPartGrad(op:Dynamic, grad:Dynamic):Dynamic;
@@ -60,6 +70,7 @@ package tensorflow.python.ops.array_grad;
 	static public function _PreventGradientGrad(op:Dynamic, _:Dynamic):Dynamic;
 	static public function _QuantizeAndDequantizeGrad(_:Dynamic, grad:Dynamic):Dynamic;
 	static public function _QuantizeAndDequantizeV2Grad(_:Dynamic, grad:Dynamic):Dynamic;
+	static public function _QuantizeAndDequantizeV3Grad(_:Dynamic, grad:Dynamic):Dynamic;
 	static public function _RefIdGrad(_:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ReshapeGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
@@ -70,6 +81,7 @@ package tensorflow.python.ops.array_grad;
 	static public function _ReverseSequenceGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ReverseV2Grad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public function _ScatterNdGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	static public function _ScatterNdNonAliasingAddGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gradient for Slice op.
 	**/
@@ -109,13 +121,6 @@ package tensorflow.python.ops.array_grad;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		ceil(x)
-		
-		Return the ceiling of x as an Integral.
-		This is the smallest integer >= x.
-	**/
-	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

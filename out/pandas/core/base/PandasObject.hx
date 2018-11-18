@@ -8,7 +8,7 @@ package pandas.core.base;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package pandas.core.base;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -96,7 +96,7 @@ package pandas.core.base;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -115,7 +115,7 @@ package pandas.core.base;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -127,12 +127,14 @@ package pandas.core.base;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**

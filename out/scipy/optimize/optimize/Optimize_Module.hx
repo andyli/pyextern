@@ -121,8 +121,18 @@ package scipy.optimize.optimize;
 		fatol : number, optional
 		    Absolute error in func(xopt) between iterations that is acceptable for
 		    convergence.
+		adaptive : bool, optional
+		    Adapt algorithm parameters to dimensionality of problem. Useful for
+		    high-dimensional minimization [1]_.
+		
+		References
+		----------
+		.. [1] Gao, F. and Han, L.
+		   Implementing the Nelder-Mead simplex algorithm with adaptive
+		   parameters. 2012. Computational Optimization and Applications.
+		   51:1, pp. 259-277
 	**/
-	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?initial_simplex:Dynamic, ?xatol:Dynamic, ?fatol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?initial_simplex:Dynamic, ?xatol:Dynamic, ?fatol:Dynamic, ?adaptive:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Newton-CG algorithm.
@@ -169,8 +179,12 @@ package scipy.optimize.optimize;
 		-------
 		maxiter : int
 		    Maximum number of iterations to perform.
-		disp : bool
-		    Set to True to print convergence messages.
+		disp: int, optional
+		    If non-zero, print messages.
+		        0 : no message printing.
+		        1 : non-convergence notification messages only.
+		        2 : print a message on convergence too.
+		        3 : print iteration results.
 		xatol : float
 		    Absolute error in solution `xopt` acceptable for convergence.
 	**/
@@ -300,11 +314,19 @@ package scipy.optimize.optimize;
 		>>> np.argmin(a, axis=1)
 		array([0, 0])
 		
+		Indices of the minimum elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argmin(a, axis=None), a.shape)
+		>>> ind
+		(0, 0)
+		>>> a[ind]
+		0
+		
 		>>> b = np.arange(6)
 		>>> b[4] = 0
 		>>> b
 		array([0, 1, 2, 3, 0, 5])
-		>>> np.argmin(b) # Only the first occurrence is returned.
+		>>> np.argmin(b)  # Only the first occurrence is returned.
 		0
 	**/
 	static public function argmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -367,9 +389,9 @@ package scipy.optimize.optimize;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -473,9 +495,9 @@ package scipy.optimize.optimize;
 	**/
 	static public function bracket(func:Dynamic, ?xa:Dynamic, ?xb:Dynamic, ?args:Dynamic, ?grow_limit:Dynamic, ?maxiter:Dynamic):Float;
 	/**
-		Given a function of one-variable and a possible bracketing interval,
-		return the minimum of the function isolated to a fractional precision of
-		tol.
+		Given a function of one-variable and a possible bracket, return
+		the local minimum of the function isolated to a fractional precision
+		of tol.
 		
 		Parameters
 		----------
@@ -517,6 +539,28 @@ package scipy.optimize.optimize;
 		-----
 		Uses inverse parabolic interpolation when possible to speed up
 		convergence of golden section method.
+		
+		Does not ensure that the minimum lies in the range specified by
+		`brack`. See `fminbound`.
+		
+		Examples
+		--------
+		We illustrate the behaviour of the function when `brack` is of
+		size 2 and 3 respectively. In the case where `brack` is of the
+		form (xa,xb), we can see for the given values, the output need
+		not necessarily lie in the range (xa,xb).
+		
+		>>> def f(x):
+		...     return x**2
+		
+		>>> from scipy import optimize
+		
+		>>> minimum = optimize.brent(f,brack=(1,2))
+		>>> minimum
+		0.0
+		>>> minimum = optimize.brent(f,brack=(-1,0.5,2))
+		>>> minimum
+		-2.7755575615628914e-17
 	**/
 	static public function brent(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
@@ -531,6 +575,12 @@ package scipy.optimize.optimize;
 		function.  The value and type of the function evaluation returned when
 		``full_output=True`` are affected in addition by the ``finish`` argument
 		(see Notes).
+		
+		The brute force approach is inefficient because the number of grid points
+		increases exponentially - the number of grid points to evaluate is
+		``Ns ** len(x)``. Consequently, even with coarse grid spacing, even
+		moderately sized problems can take a long time to run, and/or run into
+		memory limitations.
 		
 		Parameters
 		----------
@@ -731,6 +781,11 @@ package scipy.optimize.optimize;
 		  to a lower diagonal.
 		dtype : data-type, optional
 		  Data-type of the returned array.
+		order : {'C', 'F'}, optional
+		    Whether the output should be stored in row-major (C-style) or
+		    column-major (Fortran-style) order in memory.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -753,7 +808,7 @@ package scipy.optimize.optimize;
 		       [ 0.,  0.,  1.],
 		       [ 0.,  0.,  0.]])
 	**/
-	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Minimize a function using the downhill simplex algorithm.
 		
@@ -828,6 +883,21 @@ package scipy.optimize.optimize;
 		converge to the minimum, or how fast it will if it does. Both the ftol and
 		xtol criteria must be met for convergence.
 		
+		Examples
+		--------
+		>>> def f(x):
+		...     return x**2
+		
+		>>> from scipy import optimize
+		
+		>>> minimum = optimize.fmin(f, 1)
+		Optimization terminated successfully.
+		         Current function value: 0.000000
+		         Iterations: 17
+		         Function evaluations: 34
+		>>> minimum[0]
+		-8.8817841970012523e-16
+		
 		References
 		----------
 		.. [1] Nelder, J.A. and Mead, R. (1965), "A simplex method for function
@@ -891,7 +961,7 @@ package scipy.optimize.optimize;
 		    1 : Maximum number of iterations exceeded.
 		    2 : Gradient and/or function calls not changing.
 		allvecs  :  list
-		    `OptimizeResult` at each iteration.  Only returned if retall is True.
+		    The value of xopt at each iteration.  Only returned if retall is True.
 		
 		See also
 		--------
@@ -1224,6 +1294,21 @@ package scipy.optimize.optimize;
 		   fraction of the decrease in the function value from that iteration of
 		   the inner loop.
 		
+		Examples
+		--------
+		>>> def f(x):
+		...     return x**2
+		
+		>>> from scipy import optimize
+		
+		>>> minimum = optimize.fmin_powell(f, -1)
+		Optimization terminated successfully.
+		         Current function value: 0.000000
+		         Iterations: 2
+		         Function evaluations: 18
+		>>> minimum
+		array(0.0)
+		
 		References
 		----------
 		Powell M.J.D. (1964) An efficient method for finding the minimum of a
@@ -1282,10 +1367,28 @@ package scipy.optimize.optimize;
 		Finds a local minimizer of the scalar function `func` in the
 		interval x1 < xopt < x2 using Brent's method.  (See `brent`
 		for auto-bracketing).
+		
+		Examples
+		--------
+		`fminbound` finds the minimum of the function in the given range.
+		The following examples illustrate the same
+		
+		>>> def f(x):
+		...     return x**2
+		
+		>>> from scipy import optimize
+		
+		>>> minimum = optimize.fminbound(f, -1, 2)
+		>>> minimum
+		0.0
+		>>> minimum = optimize.fminbound(f, 1, 2)
+		>>> minimum
+		1.0000059608609866
 	**/
 	static public function fminbound(func:Dynamic, x1:Dynamic, x2:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxfun:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
 	/**
-		Return the minimum of a function of one variable.
+		Return the minimum of a function of one variable using golden section
+		method.
 		
 		Given a function of one variable and a possible bracketing interval,
 		return the minimum of the function isolated to a fractional precision of
@@ -1319,6 +1422,25 @@ package scipy.optimize.optimize;
 		-----
 		Uses analog of bisection method to decrease the bracketed
 		interval.
+		
+		Examples
+		--------
+		We illustrate the behaviour of the function when `brack` is of
+		size 2 and 3 respectively. In the case where `brack` is of the
+		form (xa,xb), we can see for the given values, the output need
+		not necessarily lie in the range ``(xa, xb)``.
+		
+		>>> def f(x):
+		...     return x**2
+		
+		>>> from scipy import optimize
+		
+		>>> minimum = optimize.golden(f, brack=(1, 2))
+		>>> minimum
+		1.5717277788484873e-162
+		>>> minimum = optimize.golden(f, brack=(-1, 0.5, 2))
+		>>> minimum
+		-1.5717277788484873e-162
 	**/
 	static public function golden(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
@@ -1354,18 +1476,8 @@ package scipy.optimize.optimize;
 		Returns
 		-------
 		y : bool (scalar) or boolean ndarray
-		    For scalar input, the result is a new boolean with value True if
-		    the input is positive or negative infinity; otherwise the value is
-		    False.
-		
-		    For array input, the result is a boolean array with the same shape
-		    as the input and the values are True where the corresponding
-		    element of the input is positive or negative infinity; elsewhere
-		    the values are False.  If a second argument was supplied the result
-		    is stored there.  If the type of that array is a numeric type the
-		    result is represented as zeros and ones, if the type is boolean
-		    then as False and True, respectively.  The return value `y` is then
-		    a reference to that array.
+		    True where ``x`` is positive or negative infinity, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1389,7 +1501,7 @@ package scipy.optimize.optimize;
 		>>> np.isinf(np.NINF)
 		True
 		>>> np.isinf([np.inf, -np.inf, 1.0, np.nan])
-		array([ True,  True, False, False], dtype=bool)
+		array([ True,  True, False, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -1427,6 +1539,17 @@ package scipy.optimize.optimize;
 		    Parameter for curvature condition rule.
 		amax : float, optional
 		    Maximum step size
+		extra_condition : callable, optional
+		    A callable of the form ``extra_condition(alpha, x, f, g)``
+		    returning a boolean. Arguments are the proposed step ``alpha``
+		    and the corresponding ``x``, ``f`` and ``g`` values. The line search 
+		    accepts the value of ``alpha`` only if this 
+		    callable returns ``True``. If the callable returns ``False`` 
+		    for the step length, the algorithm will continue with 
+		    new iterates. The callable is only called for iterates 
+		    satisfying the strong Wolfe conditions.
+		maxiter : int, optional
+		    Maximum number of iterations to perform
 		
 		Returns
 		-------
@@ -1456,7 +1579,7 @@ package scipy.optimize.optimize;
 		
 		For the zoom phase it uses an algorithm by [...].
 	**/
-	static public function line_search(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic):Dynamic;
+	static public function line_search(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?extra_condition:Dynamic, ?maxiter:Dynamic):Dynamic;
 	/**
 		As `scalar_search_wolfe1` but do a line search to direction `pk`
 		
@@ -1516,6 +1639,17 @@ package scipy.optimize.optimize;
 		    Parameter for curvature condition rule.
 		amax : float, optional
 		    Maximum step size
+		extra_condition : callable, optional
+		    A callable of the form ``extra_condition(alpha, x, f, g)``
+		    returning a boolean. Arguments are the proposed step ``alpha``
+		    and the corresponding ``x``, ``f`` and ``g`` values. The line search 
+		    accepts the value of ``alpha`` only if this 
+		    callable returns ``True``. If the callable returns ``False`` 
+		    for the step length, the algorithm will continue with 
+		    new iterates. The callable is only called for iterates 
+		    satisfying the strong Wolfe conditions.
+		maxiter : int, optional
+		    Maximum number of iterations to perform
 		
 		Returns
 		-------
@@ -1545,7 +1679,7 @@ package scipy.optimize.optimize;
 		
 		For the zoom phase it uses an algorithm by [...].
 	**/
-	static public function line_search_wolfe2(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic):Dynamic;
+	static public function line_search_wolfe2(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?extra_condition:Dynamic, ?maxiter:Dynamic):Dynamic;
 	static public function main():Dynamic;
 	/**
 		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
@@ -1768,13 +1902,14 @@ package scipy.optimize.optimize;
 		
 		`scipy.optimize.linprog`
 		
-		- :ref:`simplex     <optimize.linprog-simplex>`
+		- :ref:`simplex         <optimize.linprog-simplex>`
+		- :ref:`interior-point  <optimize.linprog-interior-point>`
 	**/
 	static public function show_options(?solver:Dynamic, ?method:Dynamic, ?disp:Dynamic):Dynamic;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -1801,6 +1936,7 @@ package scipy.optimize.optimize;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1883,14 +2019,15 @@ package scipy.optimize.optimize;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1900,17 +2037,16 @@ package scipy.optimize.optimize;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

@@ -2,22 +2,22 @@
 package matplotlib.patches;
 @:pythonImport("matplotlib.patches", "ConnectionStyle") extern class ConnectionStyle {
 	/**
-		Creates a picewise continuous quadratic bezier path between
+		Creates a piecewise continuous quadratic Bezier path between
 		two points. The path has a one passing-through point placed at
-		the intersecting point of two lines which crosses the start
-		(or end) point and has a angle of angleA (or angleB).  The
-		connecting edges are rounded with *rad*.
+		the intersecting point of two lines which cross the start
+		and end point, and have a slope of angleA and angleB, respectively.
+		The connecting edges are rounded with *rad*.
 	**/
 	static public function Angle(?angleA:Dynamic, ?angleB:Dynamic, ?rad:Dynamic):Dynamic;
 	/**
-		Creates a simple quadratic bezier curve between two
+		Creates a simple quadratic Bezier curve between two
 		points. The middle control points is placed at the
-		intersecting point of two lines which crosses the start (or
-		end) point and has a angle of angleA (or angleB).
+		intersecting point of two lines which cross the start and
+		end point, and have a slope of angleA and angleB, respectively.
 	**/
 	static public function Angle3(?angleA:Dynamic, ?angleB:Dynamic):Dynamic;
 	/**
-		Creates a picewise continuous quadratic bezier path between
+		Creates a piecewise continuous quadratic Bezier path between
 		two points. The path can have two passing-through points, a
 		point placed at the distance of armA and angle of angleA from
 		point A, another point with respect to point B. The edges are
@@ -25,8 +25,8 @@ package matplotlib.patches;
 	**/
 	static public function Arc(?angleA:Dynamic, ?angleB:Dynamic, ?armA:Dynamic, ?armB:Dynamic, ?rad:Dynamic):Dynamic;
 	/**
-		Creates a simple quadratic bezier curve between two
-		points. The curve is created so that the middle contol points
+		Creates a simple quadratic Bezier curve between two
+		points. The curve is created so that the middle control point
 		(C1) is located at the same distance from the start (C0) and
 		end points(C2) and the distance of the C1 to the line
 		connecting C0-C2 is *rad* times the distance of C0-C2.
@@ -51,7 +51,7 @@ package matplotlib.patches;
 		helper methods.
 	**/
 	static public function _Base():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -102,7 +102,7 @@ package matplotlib.patches;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +119,7 @@ package matplotlib.patches;
 	/**
 		return the instance of the subclass with the given style name.
 	**/
-	static public function __new__(self:Dynamic, stylename:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, stylename:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -153,7 +153,7 @@ package matplotlib.patches;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

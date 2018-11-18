@@ -60,7 +60,7 @@ package theano.scalar.sharedvar;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __invert__():Dynamic;
 	/**
 		Return self<=value.
@@ -142,7 +142,7 @@ package theano.scalar.sharedvar;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -151,6 +151,7 @@ package theano.scalar.sharedvar;
 	public function __xor__(other:Dynamic):Dynamic;
 	public function _value_get():Dynamic;
 	public function _value_set(new_value:Dynamic):Dynamic;
+	static public function append_construction_observer(observer:Dynamic):Dynamic;
 	public function astype(dtype:Dynamic):Dynamic;
 	/**
 		Return a new Variable like self.
@@ -168,6 +169,7 @@ package theano.scalar.sharedvar;
 		Name is copied to the returned instance.
 	**/
 	public function clone():Dynamic;
+	static public var construction_observers : Dynamic;
 	static public var container : Dynamic;
 	public var dtype : Dynamic;
 	/**
@@ -229,7 +231,9 @@ package theano.scalar.sharedvar;
 	**/
 	public function get_value(?borrow:Dynamic, ?return_internal_type:Dynamic):Dynamic;
 	static public var ndim : Dynamic;
+	static public function notify_construction_observers(instance:Dynamic):Dynamic;
 	public function ones_like(?dtype:Dynamic):Dynamic;
+	static public function remove_construction_observer(observer:Dynamic):Dynamic;
 	/**
 		Set the non-symbolic value associated with this SharedVariable.
 		

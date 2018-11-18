@@ -13,6 +13,7 @@ package tensorflow.python.debug.lib.source_utils;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _convert_watch_key_to_tensor_name(watch_key:Dynamic):Dynamic;
+	static public function _norm_abs_path(file_path:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Annotate a Python source file with a list of ops created at each line.
@@ -40,6 +41,26 @@ package tensorflow.python.debug.lib.source_utils;
 		  ValueError: If the dump object does not have a Python graph set.
 	**/
 	static public function annotate_source(dump:Dynamic, source_file_path:Dynamic, ?do_dumped_tensors:Dynamic, ?file_stack_top:Dynamic, ?min_line:Dynamic, ?max_line:Dynamic):Dynamic;
+	/**
+		Annotate a Python source file with profiling information at each line.
+		
+		(The annotation doesn't change the source file itself.)
+		
+		Args:
+		  profile_data: (`list` of `ProfileDatum`) A list of `ProfileDatum`.
+		  source_file_path: (`str`) Path to the source file being annotated.
+		  node_name_filter: Regular expression to filter by node name.
+		  op_type_filter: Regular expression to filter by op type.
+		  min_line: (`None` or `int`) The 1-based line to start annotate the source
+		    file from (inclusive).
+		  max_line: (`None` or `int`) The 1-based line number to end the annotation
+		    at (exclusive).
+		
+		Returns:
+		  A `dict` mapping 1-based line number to a the namedtuple
+		    `profiling.LineOrFuncProfileSummary`.
+	**/
+	static public function annotate_source_against_profile(profile_data:Dynamic, source_file_path:Dynamic, ?node_name_filter:Dynamic, ?op_type_filter:Dynamic, ?min_line:Dynamic, ?max_line:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Guess whether a Python source file is a part of the tensorflow library.
@@ -93,5 +114,6 @@ package tensorflow.python.debug.lib.source_utils;
 		  ValueError: If the dump object does not have a Python graph set.
 	**/
 	static public function list_source_files_against_dump(dump:Dynamic, ?path_regex_whitelist:Dynamic, ?node_name_regex_whitelist:Dynamic):Dynamic;
+	static public function load_source(source_file_path:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

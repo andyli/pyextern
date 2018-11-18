@@ -18,7 +18,7 @@ package numpy;
 	**/
 	public function __and__(value:Dynamic):Dynamic;
 	/**
-		sc.__array__(|type) return 0-dim array
+		sc.__array__(dtype) return 0-dim array from scalar with specified dtype
 	**/
 	public function __array__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -41,7 +41,7 @@ package numpy;
 		self != 0
 	**/
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __deepcopy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -113,7 +113,7 @@ package numpy;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		int(self)
 	**/
@@ -261,7 +261,7 @@ package numpy;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self/value.
 	**/

@@ -7,7 +7,7 @@ package numpy.polynomial.polynomial;
 		Call self as a function.
 	**/
 	public function __call__(arg:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package numpy.polynomial.polynomial;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -83,7 +83,7 @@ package numpy.polynomial.polynomial;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
@@ -141,7 +141,7 @@ package numpy.polynomial.polynomial;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -531,7 +531,8 @@ package numpy.polynomial.polynomial;
 		Raises
 		------
 		ValueError
-		    If ``m < 1``, ``len(k) > m``.
+		    If ``m < 1``, ``len(k) > m``, ``np.ndim(lbnd) != 0``, or
+		    ``np.ndim(scl) != 0``.
 		
 		See Also
 		--------
@@ -542,7 +543,7 @@ package numpy.polynomial.polynomial;
 		Note that the result of each integration is *multiplied* by `scl`.  Why
 		is this important to note?  Say one is making a linear change of
 		variable :math:`u = ax + b` in an integral relative to `x`. Then
-		.. math::`dx = du/a`, so one will need to set `scl` equal to
+		:math:`dx = du/a`, so one will need to set `scl` equal to
 		:math:`1/a` - perhaps not what one would have first thought.
 		
 		Examples

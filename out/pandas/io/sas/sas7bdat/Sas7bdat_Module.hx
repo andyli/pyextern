@@ -18,10 +18,14 @@ package pandas.io.sas.sas7bdat;
 		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
 		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
+		mode : str, optional
 		
 		Returns
 		-------
-		a filepath_or_buffer, the encoding, the compression
+		tuple of ({a filepath_ or buffer or S3File instance},
+		          encoding, str,
+		          compression, str,
+		          should_close, bool)
 	**/
-	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?mode:Dynamic):Dynamic;
 }

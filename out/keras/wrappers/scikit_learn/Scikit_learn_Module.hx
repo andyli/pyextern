@@ -10,6 +10,7 @@ package keras.wrappers.scikit_learn;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Checks if a callable accepts a given keyword argument.
 		
@@ -29,6 +30,7 @@ package keras.wrappers.scikit_learn;
 		    bool, whether `fn` accepts a `name` keyword argument.
 	**/
 	static public function has_arg(fn:Dynamic, name:Dynamic, ?accept_all:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Converts a class vector (integers) to binary class matrix.
 		
@@ -38,9 +40,29 @@ package keras.wrappers.scikit_learn;
 		    y: class vector to be converted into a matrix
 		        (integers from 0 to num_classes).
 		    num_classes: total number of classes.
+		    dtype: The data type expected by the input, as a string
+		        (`float32`, `float64`, `int32`...)
 		
 		# Returns
-		    A binary matrix representation of the input.
+		    A binary matrix representation of the input. The classes axis
+		    is placed last.
 	**/
-	static public function to_categorical(y:Dynamic, ?num_classes:Dynamic):Dynamic;
+	static public function to_categorical(y:Dynamic, ?num_classes:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Normalizes a list/tensor into a list.
+		
+		If a tensor is passed, we return
+		a list of size 1 containing the tensor.
+		
+		# Arguments
+		    x: target object to be normalized.
+		    allow_tuple: If False and x is a tuple,
+		        it will be converted into a list
+		        with a single element (the tuple).
+		        Else converts the tuple to a list.
+		
+		# Returns
+		    A list.
+	**/
+	static public function to_list(x:Dynamic, ?allow_tuple:Dynamic):Dynamic;
 }

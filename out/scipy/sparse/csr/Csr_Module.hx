@@ -45,6 +45,29 @@ package scipy.sparse.csr;
 	static public function isintlike(x:Dynamic):Dynamic;
 	static public function ismatrix(t:Dynamic):Dynamic;
 	static public function issequence(t:Dynamic):Dynamic;
+	/**
+		Is x of csr_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csr matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csr matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix_csr
+		>>> isspmatrix_csr(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csr(csc_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_csr(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**

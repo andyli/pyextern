@@ -11,6 +11,35 @@ package pandas.core.reshape.concat;
 	static public var __spec__ : Dynamic;
 	static public function _all_indexes_same(indexes:Dynamic):Dynamic;
 	static public function _concat_indexes(indexes:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           labels=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		_ensure_index_from_sequences
+	**/
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Factorize an input `values` into `categories` and `codes`. Preserves
@@ -49,8 +78,8 @@ package pandas.core.reshape.concat;
 		See `_factorize_from_iterable` for more info.
 	**/
 	static public function _factorize_from_iterables(iterables:Dynamic):Dynamic;
-	static public function _get_combined_index(indexes:Dynamic, ?intersect:Dynamic):Dynamic;
 	static public function _get_consensus_names(indexes:Dynamic):Dynamic;
+	static public function _get_objs_combined_axis(objs:Dynamic, ?intersect:Dynamic, ?axis:Dynamic, ?sort:Dynamic):Dynamic;
 	static public function _make_concat_multiindex(indexes:Dynamic, keys:Dynamic, ?levels:Dynamic, ?names:Dynamic):Dynamic;
 	/**
 		Concatenate pandas objects along a particular axis with optional set logic
@@ -91,19 +120,36 @@ package pandas.core.reshape.concat;
 		verify_integrity : boolean, default False
 		    Check whether the new concatenated axis contains duplicates. This can
 		    be very expensive relative to the actual data concatenation
+		sort : boolean, default None
+		    Sort non-concatenation axis if it is not already aligned when `join`
+		    is 'outer'. The current default of sorting is deprecated and will
+		    change to not-sorting in a future version of pandas.
+		
+		    Explicitly pass ``sort=True`` to silence the warning and sort.
+		    Explicitly pass ``sort=False`` to silence the warning and not sort.
+		
+		    This has no effect when ``join='inner'``, which already preserves
+		    the order of the non-concatenation axis.
+		
+		    .. versionadded:: 0.23.0
+		
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
 		
 		Returns
 		-------
-		concatenated : type of objects
+		concatenated : object, type of objs
+		    When concatenating all ``Series`` along the index (axis=0), a
+		    ``Series`` is returned. When ``objs`` contains at least one
+		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
+		    the columns (axis=1), a ``DataFrame`` is returned.
 		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
 		
 		A walkthrough of how this method fits in with other tools for combining
-		panda objects can be found `here
+		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
 		
 		See Also
@@ -228,9 +274,11 @@ package pandas.core.reshape.concat;
 		   0
 		a  2
 		>>> pd.concat([df5, df6], verify_integrity=True)
+		Traceback (most recent call last):
+		    ...
 		ValueError: Indexes have overlapping values: ['a']
 	**/
-	static public function concat(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?ignore_index:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?verify_integrity:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function concat(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?ignore_index:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?verify_integrity:Dynamic, ?sort:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Concatenate block managers into one.
 		

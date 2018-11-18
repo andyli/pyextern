@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.wrappers.framework;
 @:pythonImport("tensorflow.python.debug.wrappers.framework", "WatchOptions") extern class WatchOptions {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.python.debug.wrappers.framework;
 		    are set, the two filtering operations will occur in a logical `AND`
 		    relation. In other words, a node will be included if and only if it
 		    hits both whitelists.
-		  tensor_dtype_regex_whitelist: Regular-experssion whitelist for Tensor
+		  tensor_dtype_regex_whitelist: Regular-expression whitelist for Tensor
 		    data type, e.g., `"^int.*"`.
 		    This whitelist operates in logical `AND` relations to the two whitelists
 		    above.
@@ -77,7 +77,7 @@ package tensorflow.python.debug.wrappers.framework;
 		    are set, the two filtering operations will occur in a logical `AND`
 		    relation. In other words, a node will be included if and only if it
 		    hits both whitelists.
-		  tensor_dtype_regex_whitelist: Regular-experssion whitelist for Tensor
+		  tensor_dtype_regex_whitelist: Regular-expression whitelist for Tensor
 		    data type, e.g., `"^int.*"`.
 		    This whitelist operates in logical `AND` relations to the two whitelists
 		    above.
@@ -92,7 +92,7 @@ package tensorflow.python.debug.wrappers.framework;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -143,7 +143,7 @@ package tensorflow.python.debug.wrappers.framework;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

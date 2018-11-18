@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.io.netcdf;
 @:pythonImport("scipy.io.netcdf", "netcdf_variable") extern class Netcdf_variable {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package scipy.io.netcdf;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,7 +105,7 @@ package scipy.io.netcdf;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -118,6 +118,17 @@ package scipy.io.netcdf;
 		returned).
 	**/
 	static public function _apply_missing_value(data:Dynamic, missing_value:Dynamic):Dynamic;
+	/**
+		The default encoded fill-value for this Variable's data type.
+	**/
+	public function _default_encoded_fill_value():Dynamic;
+	/**
+		Returns the encoded fill value for this variable as bytes.
+		
+		This is taken from either the _FillValue attribute, or the default fill
+		value for this variable's data type.
+	**/
+	public function _get_encoded_fill_value():Dynamic;
 	/**
 		Returns the value denoting "no data" for this variable.
 		

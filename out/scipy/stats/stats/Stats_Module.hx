@@ -11,6 +11,49 @@ package scipy.stats.stats;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _betai(a:Dynamic, b:Dynamic, x:Dynamic):Dynamic;
+	/**
+		Compute, between two one-dimensional distributions :math:`u` and
+		:math:`v`, whose respective CDFs are :math:`U` and :math:`V`, the
+		statistical distance that is defined as:
+		
+		.. math::
+		
+		    l_p(u, v) = \left( \int_{-\infty}^{+\infty} |U-V|^p \right)^{1/p}
+		
+		p is a positive parameter; p = 1 gives the Wasserstein distance, p = 2
+		gives the energy distance.
+		
+		Parameters
+		----------
+		u_values, v_values : array_like
+		    Values observed in the (empirical) distribution.
+		u_weights, v_weights : array_like, optional
+		    Weight for each value. If unspecified, each value is assigned the same
+		    weight.
+		    `u_weights` (resp. `v_weights`) must have the same length as
+		    `u_values` (resp. `v_values`). If the weight sum differs from 1, it
+		    must still be positive and finite so that the weights can be normalized
+		    to sum to 1.
+		
+		Returns
+		-------
+		distance : float
+		    The computed distance between the distributions.
+		
+		Notes
+		-----
+		The input distributions can be empirical, therefore coming from samples
+		whose values are effectively inputs of the function, or they can be seen as
+		generalized functions, in which case they are weighted sums of Dirac delta
+		functions located at the specified values.
+		
+		References
+		----------
+		.. [1] Bellemare, Danihelka, Dabney, Mohamed, Lakshminarayanan, Hoyer,
+		       Munos "The Cramer Distance as a Solution to Biased Wasserstein
+		       Gradients" (2017). :arXiv:`1705.10743`.
+	**/
+	static public function _cdf_distance(p:Dynamic, u_values:Dynamic, v_values:Dynamic, ?u_weights:Dynamic, ?v_weights:Dynamic):Float;
 	static public function _chk2_asarray(a:Dynamic, b:Dynamic, axis:Dynamic):Dynamic;
 	static public function _chk_asarray(a:Dynamic, axis:Dynamic):Dynamic;
 	static public function _compute_qth_percentile(sorted:Dynamic, per:Dynamic, interpolation_method:Dynamic, axis:Dynamic):Dynamic;
@@ -25,7 +68,7 @@ package scipy.stats.stats;
 	static public function _equal_var_ttest_denom(v1:Dynamic, n1:Dynamic, v2:Dynamic, n2:Dynamic):Dynamic;
 	static public function _find_repeats(arr:Dynamic):Dynamic;
 	/**
-		Separates the range into several bins and returns the number of instances
+		Separate the range into several bins and return the number of instances
 		in each bin.
 		
 		Parameters
@@ -135,7 +178,7 @@ package scipy.stats.stats;
 	static public var _power_div_lambda_names : Dynamic;
 	static public var _scale_conversions : Dynamic;
 	/**
-		Sums elements of the input array, and returns the square(s) of that sum.
+		Sum elements of the input array, and return the square(s) of that sum.
 		
 		Parameters
 		----------
@@ -156,7 +199,7 @@ package scipy.stats.stats;
 	**/
 	static public function _square_of_sums(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Squares each element of the input array, and returns the sum(s) of that.
+		Square each element of the input array, and return the sum(s) of that.
 		
 		Parameters
 		----------
@@ -184,6 +227,25 @@ package scipy.stats.stats;
 	static public function _ttest_finish(df:Dynamic, t:Dynamic):Dynamic;
 	static public function _ttest_ind_from_stats(mean1:Dynamic, mean2:Dynamic, denom:Dynamic, df:Dynamic):Dynamic;
 	static public function _unequal_var_ttest_denom(v1:Dynamic, n1:Dynamic, v2:Dynamic, n2:Dynamic):Dynamic;
+	/**
+		Validate the values and weights from a distribution input of `cdf_distance`
+		and return them as ndarray objects.
+		
+		Parameters
+		----------
+		values : array_like
+		    Values observed in the (empirical) distribution.
+		weights : array_like
+		    Weight for each value.
+		
+		Returns
+		-------
+		values : ndarray
+		    Values as ndarray.
+		weights : ndarray
+		    Weights as ndarray.
+	**/
+	static public function _validate_distribution(values:Dynamic, weights:Dynamic):Dynamic;
 	static public function _weightedrankedtau(x:Dynamic, y:Dynamic, rank:Dynamic, weigher:Dynamic, additive:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -239,7 +301,15 @@ package scipy.stats.stats;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -349,73 +419,18 @@ package scipy.stats.stats;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
 		True
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
-	/**
-		`betai` is deprecated!
-		stats.betai is deprecated in scipy 0.17.0; use special.betainc instead
-		
-		
-		    Returns the incomplete beta function.
-		
-		    I_x(a,b) = 1/B(a,b)*(Integral(0,x) of t^(a-1)(1-t)^(b-1) dt)
-		
-		    where a,b>0 and B(a,b) = G(a)*G(b)/(G(a+b)) where G(a) is the gamma
-		    function of a.
-		
-		    The standard broadcasting rules apply to a, b, and x.
-		
-		    Parameters
-		    ----------
-		    a : array_like or float > 0
-		
-		    b : array_like or float > 0
-		
-		    x : array_like or float
-		        x will be clipped to be no greater than 1.0 .
-		
-		    Returns
-		    -------
-		    betai : ndarray
-		        Incomplete beta function.
-		
-		    
-	**/
-	static public function betai(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
 	/**
-		`chisqprob` is deprecated!
-		stats.chisqprob is deprecated in scipy 0.17.0; use stats.distributions.chi2.sf instead.
-		
-		
-		    Probability value (1-tail) for the Chi^2 probability distribution.
-		
-		    Broadcasting rules apply.
-		
-		    Parameters
-		    ----------
-		    chisq : array_like or float > 0
-		
-		    df : array_like or float, probably int >= 1
-		
-		    Returns
-		    -------
-		    chisqprob : ndarray
-		        The area from `chisq` to infinity under the Chi^2 probability
-		        distribution with degrees of freedom `df`.
-		
-		    
-	**/
-	static public function chisqprob(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Calculates a one-way chi square test.
+		Calculate a one-way chi square test.
 		
 		The chi square test tests the null hypothesis that the categorical data
 		has the given frequencies.
@@ -580,7 +595,7 @@ package scipy.stats.stats;
 	**/
 	static public function combine_pvalues(pvalues:Dynamic, ?method:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
-		Returns a cumulative frequency histogram, using the histogram function.
+		Return a cumulative frequency histogram, using the histogram function.
 		
 		A cumulative histogram is a mapping that counts the cumulative number of
 		observations in all of the bins up to the specified bin.
@@ -651,7 +666,7 @@ package scipy.stats.stats;
 	**/
 	static public function cumfreq(a:Dynamic, ?numbins:Dynamic, ?defaultreallimits:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
-		Computes several descriptive statistics of the passed array.
+		Compute several descriptive statistics of the passed array.
 		
 		Parameters
 		----------
@@ -672,8 +687,9 @@ package scipy.stats.stats;
 		
 		Returns
 		-------
-		nobs : int
+		nobs : int or ndarray of ints
 		   Number of observations (length of data along `axis`).
+		   When 'omit' is chosen as nan_policy, each column is counted separately.
 		minmax: tuple of ndarrays or floats
 		   Minimum and maximum value of data array.
 		mean : ndarray or float
@@ -697,16 +713,94 @@ package scipy.stats.stats;
 		>>> from scipy import stats
 		>>> a = np.arange(10)
 		>>> stats.describe(a)
-		DescribeResult(nobs=10, minmax=(0, 9), mean=4.5, variance=9.1666666666666661,
+		DescribeResult(nobs=10, minmax=(0, 9), mean=4.5, variance=9.166666666666666,
 		               skewness=0.0, kurtosis=-1.2242424242424244)
 		>>> b = [[1, 2], [3, 4]]
 		>>> stats.describe(b)
 		DescribeResult(nobs=2, minmax=(array([1, 2]), array([3, 4])),
-		               mean=array([ 2., 3.]), variance=array([ 2., 2.]),
-		               skewness=array([ 0., 0.]), kurtosis=array([-2., -2.]))
+		               mean=array([2., 3.]), variance=array([2., 2.]),
+		               skewness=array([0., 0.]), kurtosis=array([-2., -2.]))
 	**/
-	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?bias:Dynamic, ?nan_policy:Dynamic):Int;
+	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?bias:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Compute the energy distance between two 1D distributions.
+		
+		.. versionadded:: 1.0.0
+		
+		Parameters
+		----------
+		u_values, v_values : array_like
+		    Values observed in the (empirical) distribution.
+		u_weights, v_weights : array_like, optional
+		    Weight for each value. If unspecified, each value is assigned the same
+		    weight.
+		    `u_weights` (resp. `v_weights`) must have the same length as
+		    `u_values` (resp. `v_values`). If the weight sum differs from 1, it
+		    must still be positive and finite so that the weights can be normalized
+		    to sum to 1.
+		
+		Returns
+		-------
+		distance : float
+		    The computed distance between the distributions.
+		
+		Notes
+		-----
+		The energy distance between two distributions :math:`u` and :math:`v`, whose
+		respective CDFs are :math:`U` and :math:`V`, equals to:
+		
+		.. math::
+		
+		    D(u, v) = \left( 2\mathbb E|X - Y| - \mathbb E|X - X'| -
+		    \mathbb E|Y - Y'| \right)^{1/2}
+		
+		where :math:`X` and :math:`X'` (resp. :math:`Y` and :math:`Y'`) are
+		independent random variables whose probability distribution is :math:`u`
+		(resp. :math:`v`).
+		
+		As shown in [2]_, for one-dimensional real-valued variables, the energy
+		distance is linked to the non-distribution-free version of the Cramer-von
+		Mises distance:
+		
+		.. math::
+		
+		    D(u, v) = \sqrt{2} l_2(u, v) = \left( 2 \int_{-\infty}^{+\infty} (U-V)^2
+		    \right)^{1/2}
+		
+		Note that the common Cramer-von Mises criterion uses the distribution-free
+		version of the distance. See [2]_ (section 2), for more details about both
+		versions of the distance.
+		
+		The input distributions can be empirical, therefore coming from samples
+		whose values are effectively inputs of the function, or they can be seen as
+		generalized functions, in which case they are weighted sums of Dirac delta
+		functions located at the specified values.
+		
+		References
+		----------
+		.. [1] "Energy distance", https://en.wikipedia.org/wiki/Energy_distance
+		.. [2] Szekely "E-statistics: The energy of statistical samples." Bowling
+		       Green State University, Department of Mathematics and Statistics,
+		       Technical Report 02-16 (2002).
+		.. [3] Rizzo, Szekely "Energy distance." Wiley Interdisciplinary Reviews:
+		       Computational Statistics, 8(1):27-38 (2015).
+		.. [4] Bellemare, Danihelka, Dabney, Mohamed, Lakshminarayanan, Hoyer,
+		       Munos "The Cramer Distance as a Solution to Biased Wasserstein
+		       Gradients" (2017). :arXiv:`1705.10743`.
+		
+		Examples
+		--------
+		>>> from scipy.stats import energy_distance
+		>>> energy_distance([0], [2])
+		2.0000000000000004
+		>>> energy_distance([0, 8], [0, 8], [3, 1], [2, 2])
+		1.0000000000000002
+		>>> energy_distance([0.7, 7.4, 2.4, 6.8], [1.4, 8. ],
+		...                 [2.1, 4.2, 7.4, 8. ], [7.6, 8.8])
+		0.88003340976158217
+	**/
+	static public function energy_distance(u_values:Dynamic, v_values:Dynamic, ?u_weights:Dynamic, ?v_weights:Dynamic):Float;
 	/**
 		Performs a 1-way ANOVA.
 		
@@ -777,93 +871,6 @@ package scipy.stats.stats;
 	**/
 	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
 	/**
-		`f_value` is deprecated!
-		stats.f_value deprecated in scipy 0.17.0
-		
-		
-		    Returns an F-statistic for a restricted vs. unrestricted model.
-		
-		    Parameters
-		    ----------
-		    ER : float
-		         `ER` is the sum of squared residuals for the restricted model
-		          or null hypothesis
-		
-		    EF : float
-		         `EF` is the sum of squared residuals for the unrestricted model
-		          or alternate hypothesis
-		
-		    dfR : int
-		          `dfR` is the degrees of freedom in the restricted model
-		
-		    dfF : int
-		          `dfF` is the degrees of freedom in the unrestricted model
-		
-		    Returns
-		    -------
-		    F-statistic : float
-		
-		    
-	**/
-	static public function f_value(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`f_value_multivariate` is deprecated!
-		stats.f_value_multivariate deprecated in scipy 0.17.0
-		
-		
-		    Returns a multivariate F-statistic.
-		
-		    Parameters
-		    ----------
-		    ER : ndarray
-		        Error associated with the null hypothesis (the Restricted model).
-		        From a multivariate F calculation.
-		    EF : ndarray
-		        Error associated with the alternate hypothesis (the Full model)
-		        From a multivariate F calculation.
-		    dfnum : int
-		        Degrees of freedom the Restricted model.
-		    dfden : int
-		        Degrees of freedom associated with the Restricted model.
-		
-		    Returns
-		    -------
-		    fstat : float
-		        The computed F-statistic.
-		
-		    
-	**/
-	static public function f_value_multivariate(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`f_value_wilks_lambda` is deprecated!
-		stats.f_value_wilks_lambda deprecated in scipy 0.17.0
-		
-		Calculation of Wilks lambda F-statistic for multivarite data, per
-		    Maxwell & Delaney p.657.
-		    
-	**/
-	static public function f_value_wilks_lambda(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`fastsort` is deprecated!
-		scipy.stats.fastsort is deprecated in scipy 0.16.0
-		
-		
-		    Sort an array and provide the argsort.
-		
-		    Parameters
-		    ----------
-		    a : array_like
-		        Input array.
-		
-		    Returns
-		    -------
-		    fastsort : ndarray of type int
-		        sorted indices into the original array
-		
-		    
-	**/
-	static public function fastsort(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Find repeats and repeat counts.
 		
 		Parameters
@@ -888,10 +895,10 @@ package scipy.stats.stats;
 		--------
 		>>> from scipy import stats
 		>>> stats.find_repeats([2, 1, 2, 3, 2, 2, 5])
-		RepeatedResults(values=array([ 2.]), counts=array([4]))
+		RepeatedResults(values=array([2.]), counts=array([4]))
 		
 		>>> stats.find_repeats([[10, 20, 1, 2], [5, 5, 4, 4]])
-		RepeatedResults(values=array([ 4.,  5.]), counts=array([2, 2]))
+		RepeatedResults(values=array([4.,  5.]), counts=array([2, 2]))
 	**/
 	static public function find_repeats(arr:Dynamic):Dynamic;
 	/**
@@ -954,7 +961,7 @@ package scipy.stats.stats;
 	**/
 	static public function fisher_exact(table:Dynamic, ?alternative:Dynamic):Float;
 	/**
-		Computes the Friedman test for repeated measurements
+		Compute the Friedman test for repeated measurements
 		
 		The Friedman test tests the null hypothesis that repeated measurements of
 		the same individuals have the same distribution.  It is often used
@@ -991,7 +998,7 @@ package scipy.stats.stats;
 	/**
 		Compute the geometric mean along the specified axis.
 		
-		Returns the geometric average of the array elements.
+		Return the geometric average of the array elements.
 		That is:  n-th root of (x1 * x2 * ... * xn)
 		
 		Parameters
@@ -1028,45 +1035,18 @@ package scipy.stats.stats;
 		Use masked arrays to ignore any non-finite values in the input or that
 		arise in the calculations such as Not a Number and infinity because masked
 		arrays automatically mask any non-finite values.
+		
+		Examples
+		--------
+		>>> from scipy.stats import gmean
+		>>> gmean([1, 4])
+		2.0
+		>>> gmean([1, 2, 3, 4, 5, 6, 7])
+		3.3800151591412964
 	**/
 	static public function gmean(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		`histogram` is deprecated!
-		scipy.stats.histogram is deprecated in scipy 0.17.0; use np.histogram instead
-	**/
-	static public function histogram(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`histogram2` is deprecated!
-		scipy.stats.histogram2 is deprecated in scipy 0.16.0; use np.histogram2d instead
-		
-		
-		    Compute histogram using divisions in bins.
-		
-		    Count the number of times values from array `a` fall into
-		    numerical ranges defined by `bins`.  Range x is given by
-		    bins[x] <= range_x < bins[x+1] where x =0,N and N is the
-		    length of the `bins` array.  The last range is given by
-		    bins[N] <= range_N < infinity.  Values less than bins[0] are
-		    not included in the histogram.
-		
-		    Parameters
-		    ----------
-		    a : array_like of rank 1
-		        The array of values to be assigned into bins
-		    bins : array_like of rank 1
-		        Defines the ranges of values to use during histogramming.
-		
-		    Returns
-		    -------
-		    histogram2 : ndarray of rank 1
-		        Each value represents the occurrences for a given bin (range) of
-		        values.
-		
-		    
-	**/
-	static public function histogram2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Calculates the harmonic mean along the specified axis.
+		Calculate the harmonic mean along the specified axis.
 		
 		That is:  n / (1/x1 + 1/x2 + ... + 1/xn)
 		
@@ -1103,11 +1083,18 @@ package scipy.stats.stats;
 		
 		Use masked arrays to ignore any non-finite values in the input or that
 		arise in the calculations such as Not a Number and infinity.
+		
+		Examples
+		--------
+		>>> from scipy.stats import hmean
+		>>> hmean([1, 4])
+		1.6000000000000001
+		>>> hmean([1, 2, 3, 4, 5, 6, 7])
+		2.6997245179063363
 	**/
 	static public function hmean(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		Compute the interquartile range of the data along the specified
-		axis.
+		Compute the interquartile range of the data along the specified axis.
 		
 		The interquartile range (IQR) is the difference between the 75th and
 		25th percentile of the data. It is a measure of the dispersion
@@ -1224,40 +1211,46 @@ package scipy.stats.stats;
 	**/
 	static public function iqr(x:Dynamic, ?axis:Dynamic, ?rng:Dynamic, ?scale:Dynamic, ?nan_policy:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		Returns a 2-D array of item frequencies.
+		`itemfreq` is deprecated!
+		`itemfreq` is deprecated and will be removed in a future version. Use instead `np.unique(..., return_counts=True)`
 		
-		Parameters
-		----------
-		a : (N,) array_like
-		    Input array.
 		
-		Returns
-		-------
-		itemfreq : (K, 2) ndarray
-		    A 2-D frequency table.  Column 1 contains sorted, unique values from
-		    `a`, column 2 contains their respective counts.
+		    Return a 2-D array of item frequencies.
 		
-		Examples
-		--------
-		>>> from scipy import stats
-		>>> a = np.array([1, 1, 5, 0, 1, 2, 2, 0, 1, 4])
-		>>> stats.itemfreq(a)
-		array([[ 0.,  2.],
-		       [ 1.,  4.],
-		       [ 2.,  2.],
-		       [ 4.,  1.],
-		       [ 5.,  1.]])
-		>>> np.bincount(a)
-		array([2, 4, 2, 0, 1, 1])
+		    Parameters
+		    ----------
+		    a : (N,) array_like
+		        Input array.
 		
-		>>> stats.itemfreq(a/10.)
-		array([[ 0. ,  2. ],
-		       [ 0.1,  4. ],
-		       [ 0.2,  2. ],
-		       [ 0.4,  1. ],
-		       [ 0.5,  1. ]])
+		    Returns
+		    -------
+		    itemfreq : (K, 2) ndarray
+		        A 2-D frequency table.  Column 1 contains sorted, unique values from
+		        `a`, column 2 contains their respective counts.
+		
+		    Examples
+		    --------
+		    >>> from scipy import stats
+		    >>> a = np.array([1, 1, 5, 0, 1, 2, 2, 0, 1, 4])
+		    >>> stats.itemfreq(a)
+		    array([[ 0.,  2.],
+		           [ 1.,  4.],
+		           [ 2.,  2.],
+		           [ 4.,  1.],
+		           [ 5.,  1.]])
+		    >>> np.bincount(a)
+		    array([2, 4, 2, 0, 1, 1])
+		
+		    >>> stats.itemfreq(a/10.)
+		    array([[ 0. ,  2. ],
+		           [ 0.1,  4. ],
+		           [ 0.2,  2. ],
+		           [ 0.4,  1. ],
+		           [ 0.5,  1. ]])
+		
+		    
 	**/
-	static public function itemfreq(a:Dynamic):Dynamic;
+	static public function itemfreq(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Perform the Jarque-Bera goodness of fit test on sample data.
 		
@@ -1299,7 +1292,7 @@ package scipy.stats.stats;
 	**/
 	static public function jarque_bera(x:Dynamic):Float;
 	/**
-		Calculates Kendall's tau, a correlation measure for ordinal data.
+		Calculate Kendall's tau, a correlation measure for ordinal data.
 		
 		Kendall's tau is a measure of the correspondence between two rankings.
 		Values close to 1 indicate strong agreement, values close to -1 indicate
@@ -1423,17 +1416,17 @@ package scipy.stats.stats;
 		>>> x = [1, 3, 5, 7, 9]
 		>>> y = [2, 4, 6, 8, 10]
 		>>> stats.kruskal(x, y)
-		KruskalResult(statistic=0.27272727272727337, pvalue=0.60150813444058948)
+		KruskalResult(statistic=0.2727272727272734, pvalue=0.6015081344405895)
 		
 		>>> x = [1, 1, 1]
 		>>> y = [2, 2, 2]
 		>>> z = [2, 2]
 		>>> stats.kruskal(x, y, z)
-		KruskalResult(statistic=7.0, pvalue=0.030197383422318501)
+		KruskalResult(statistic=7.0, pvalue=0.0301973834223185)
 	**/
 	static public function kruskal(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
-		Computes the Kolmogorov-Smirnov statistic on 2 samples.
+		Compute the Kolmogorov-Smirnov statistic on 2 samples.
 		
 		This is a two-sided test for the null hypothesis that 2 independent samples
 		are drawn from the same continuous distribution.
@@ -1599,7 +1592,7 @@ package scipy.stats.stats;
 	**/
 	static public function kstest(rvs:Dynamic, cdf:Dynamic, ?args:Dynamic, ?N:Dynamic, ?alternative:Dynamic, ?mode:Dynamic):Float;
 	/**
-		Computes the kurtosis (Fisher or Pearson) of a dataset.
+		Compute the kurtosis (Fisher or Pearson) of a dataset.
 		
 		Kurtosis is the fourth central moment divided by the square of the
 		variance. If Fisher's definition is used, then 3.0 is subtracted from
@@ -1638,10 +1631,16 @@ package scipy.stats.stats;
 		.. [1] Zwillinger, D. and Kokoska, S. (2000). CRC Standard
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
+		
+		Examples
+		--------
+		>>> from scipy.stats import kurtosis
+		>>> kurtosis([1, 2, 3, 4, 5])
+		-1.3
 	**/
 	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic, ?nan_policy:Dynamic):Array<Dynamic>;
 	/**
-		Tests whether a dataset has normal kurtosis
+		Test whether a dataset has normal kurtosis.
 		
 		This function tests the null hypothesis that the kurtosis
 		of the population from which the sample was drawn is that
@@ -1675,6 +1674,17 @@ package scipy.stats.stats;
 		----------
 		.. [1] see e.g. F. J. Anscombe, W. J. Glynn, "Distribution of the kurtosis
 		   statistic b2 for normal samples", Biometrika, vol. 70, pp. 227-234, 1983.
+		
+		Examples
+		--------
+		>>> from scipy.stats import kurtosistest
+		>>> kurtosistest(list(range(20)))
+		KurtosistestResult(statistic=-1.7058104152122062, pvalue=0.08804338332528348)
+		
+		>>> np.random.seed(28041990)
+		>>> s = np.random.normal(0, 1, 1000)
+		>>> kurtosistest(s)
+		KurtosistestResult(statistic=1.2317590987707365, pvalue=0.21803908613450895)
 	**/
 	static public function kurtosistest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
@@ -1698,7 +1708,8 @@ package scipy.stats.stats;
 		    correlation coefficient
 		pvalue : float
 		    two-sided p-value for a hypothesis test whose null hypothesis is
-		    that the slope is zero.
+		    that the slope is zero, using Wald Test with t-distribution of
+		    the test statistic.
 		stderr : float
 		    Standard error of the estimated gradient.
 		
@@ -1721,7 +1732,7 @@ package scipy.stats.stats;
 		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
-		('r-squared:', 0.080402268539028335)
+		r-squared: 0.08040226853902833
 		
 		Plot the data along with the fitted line
 		
@@ -1732,7 +1743,7 @@ package scipy.stats.stats;
 	**/
 	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
-		Computes the Mann-Whitney rank test on samples x and y.
+		Compute the Mann-Whitney rank test on samples x and y.
 		
 		Parameters
 		----------
@@ -1767,10 +1778,18 @@ package scipy.stats.stats;
 		value of U.
 		
 		This test corrects for ties and by default uses a continuity correction.
+		
+		References
+		----------
+		.. [1] https://en.wikipedia.org/wiki/Mann-Whitney_U_test
+		
+		.. [2] H.B. Mann and D.R. Whitney, "On a Test of Whether one of Two Random
+		       Variables is Stochastically Larger than the Other," The Annals of
+		       Mathematical Statistics, vol. 18, no. 1, pp. 50-60, 1947.
 	**/
 	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic, ?alternative:Dynamic):Float;
 	/**
-		Returns an array of the modal (most common) value in the passed array.
+		Return an array of the modal (most common) value in the passed array.
 		
 		If there is more than one such value, only the smallest is returned.
 		The bin-count for the modal bins is also returned.
@@ -1812,11 +1831,11 @@ package scipy.stats.stats;
 	**/
 	static public function mode(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Calculates the nth moment about the mean for a sample.
+		Calculate the nth moment about the mean for a sample.
 		
-		A moment is a specific quantitative measure of the shape of a set of points.
-		It is often used to calculate coefficients of skewness and kurtosis due
-		to its close relationship with them.
+		A moment is a specific quantitative measure of the shape of a set of
+		points. It is often used to calculate coefficients of skewness and kurtosis
+		due to its close relationship with them.
 		
 		
 		Parameters
@@ -1858,6 +1877,14 @@ package scipy.stats.stats;
 		References
 		----------
 		.. [1] http://eli.thegreenplace.net/2009/03/21/efficient-integer-exponentiation-algorithms
+		
+		Examples
+		--------
+		>>> from scipy.stats import moment
+		>>> moment([1, 2, 3, 4, 5], moment=1)
+		0.0
+		>>> moment([1, 2, 3, 4, 5], moment=2)
+		2.0
 	**/
 	static public function moment(a:Dynamic, ?moment:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
@@ -1884,7 +1911,7 @@ package scipy.stats.stats;
 	**/
 	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
 	/**
-		Tests whether a sample differs from a normal distribution.
+		Test whether a sample differs from a normal distribution.
 		
 		This function tests the null hypothesis that a sample comes
 		from a normal distribution.  It is based on D'Agostino and
@@ -1895,7 +1922,7 @@ package scipy.stats.stats;
 		Parameters
 		----------
 		a : array_like
-		    The array containing the data to be tested.
+		    The array containing the sample to be tested.
 		axis : int or None, optional
 		    Axis along which to compute test. Default is 0. If None,
 		    compute over the whole array `a`.
@@ -1919,10 +1946,28 @@ package scipy.stats.stats;
 		
 		.. [2] D'Agostino, R. and Pearson, E. S. (1973), "Tests for departure from
 		       normality", Biometrika, 60, 613-622
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> pts = 1000
+		>>> np.random.seed(28041990)
+		>>> a = np.random.normal(0, 1, size=pts)
+		>>> b = np.random.normal(2, 1, size=pts)
+		>>> x = np.concatenate((a, b))
+		>>> k2, p = stats.normaltest(x)
+		>>> alpha = 1e-3
+		>>> print("p = {:g}".format(p))
+		p = 3.27207e-11
+		>>> if p < alpha:  # null hypothesis: x comes from a normal distribution
+		...     print("The null hypothesis can be rejected")
+		... else:
+		...     print("The null hypothesis cannot be rejected")
+		The null hypothesis can be rejected
 	**/
 	static public function normaltest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Computes the O'Brien transform on input data (any number of arrays).
+		Compute the O'Brien transform on input data (any number of arrays).
 		
 		Used to test for homogeneity of variance prior to running one-way stats.
 		Each array in ``*args`` is one level of a factor.
@@ -1973,7 +2018,7 @@ package scipy.stats.stats;
 	**/
 	static public function obrientransform(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Calculates a Pearson correlation coefficient and the p-value for testing
+		Calculate a Pearson correlation coefficient and the p-value for testing
 		non-correlation.
 		
 		The Pearson correlation coefficient measures the linear relationship
@@ -2003,9 +2048,34 @@ package scipy.stats.stats;
 		p-value : float
 		    2-tailed p-value
 		
+		Notes
+		-----
+		
+		The correlation coefficient is calculated as follows:
+		
+		.. math::
+		
+		    r_{pb} = \frac{\sum (x - m_x) (y - m_y)
+		                   }{\sqrt{\sum (x - m_x)^2 (y - m_y)^2}}
+		
+		where :math:`m_x` is the mean of the vector :math:`x` and :math:`m_y` is
+		the mean of the vector :math:`y`.
+		
+		
 		References
 		----------
 		http://www.statsoft.com/textbook/glosp.html#Pearson%20Correlation
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> a = np.array([0, 0, 0, 1, 1, 1, 1])
+		>>> b = np.arange(7)
+		>>> stats.pearsonr(a, b)
+		(0.8660254037844386, 0.011724811003954654)
+		
+		>>> stats.pearsonr([1,2,3,4,5], [5,6,7,8,7])
+		(0.83205029433784372, 0.080509573298498519)
 	**/
 	static public function pearsonr(x:Dynamic, y:Dynamic):Float;
 	/**
@@ -2079,7 +2149,7 @@ package scipy.stats.stats;
 	**/
 	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Float;
 	/**
-		Calculates a point biserial correlation coefficient and its p-value.
+		Calculate a point biserial correlation coefficient and its p-value.
 		
 		The point biserial correlation is used to measure the relationship
 		between a binary variable, x, and a continuous variable, y. Like other
@@ -2313,8 +2383,6 @@ package scipy.stats.stats;
 	static public function power_divergence(f_obs:Dynamic, ?f_exp:Dynamic, ?ddof:Dynamic, ?axis:Dynamic, ?lambda_:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		rankdata(a, method='average')
-		
 		Assign ranks to data, dealing with ties appropriately.
 		
 		Ranks begin at 1.  The `method` argument controls how ranks are assigned
@@ -2404,7 +2472,7 @@ package scipy.stats.stats;
 	**/
 	static public function ranksums(x:Dynamic, y:Dynamic):Float;
 	/**
-		Returns a relative frequency histogram, using the histogram function.
+		Return a relative frequency histogram, using the histogram function.
 		
 		A relative frequency  histogram is a mapping of the number of
 		observations in each of the bins relative to the total of observations.
@@ -2529,7 +2597,7 @@ package scipy.stats.stats;
 	**/
 	static public function scoreatpercentile(a:Dynamic, per:Dynamic, ?limit:Dynamic, ?interpolation_method:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Calculates the standard error of the mean (or standard error of
+		Calculate the standard error of the mean (or standard error of
 		measurement) of the values in the input array.
 		
 		Parameters
@@ -2577,14 +2645,15 @@ package scipy.stats.stats;
 	/**
 		Iterative sigma-clipping of array elements.
 		
-		The output array contains only those elements of the input array `c`
-		that satisfy the conditions ::
-		
-		    mean(c) - std(c)*low < c < mean(c) + std(c)*high
-		
 		Starting from the full sample, all elements outside the critical range are
-		removed. The iteration continues with a new critical range until no
-		elements are outside the range.
+		removed, i.e. all elements of the input array `c` that satisfy either of
+		the following conditions ::
+		
+		    c < mean(c) - std(c)*low
+		    c > mean(c) + std(c)*high
+		
+		The iteration continues with the updated sample until no
+		elements are outside the (updated) range.
 		
 		Parameters
 		----------
@@ -2628,41 +2697,13 @@ package scipy.stats.stats;
 	**/
 	static public function sigmaclip(a:Dynamic, ?low:Dynamic, ?high:Dynamic):Dynamic;
 	/**
-		`signaltonoise` is deprecated!
-		scipy.stats.signaltonoise is deprecated in scipy 0.16.0
+		Compute the skewness of a data set.
 		
-		
-		    The signal-to-noise ratio of the input data.
-		
-		    Returns the signal-to-noise ratio of `a`, here defined as the mean
-		    divided by the standard deviation.
-		
-		    Parameters
-		    ----------
-		    a : array_like
-		        An array_like object containing the sample data.
-		    axis : int or None, optional
-		        Axis along which to operate. Default is 0. If None, compute over
-		        the whole array `a`.
-		    ddof : int, optional
-		        Degrees of freedom correction for standard deviation. Default is 0.
-		
-		    Returns
-		    -------
-		    s2n : ndarray
-		        The mean to standard deviation ratio(s) along `axis`, or 0 where the
-		        standard deviation is 0.
-		
-		    
-	**/
-	static public function signaltonoise(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Computes the skewness of a data set.
-		
-		For normally distributed data, the skewness should be about 0. A skewness
-		value > 0 means that there is more weight in the left tail of the
-		distribution. The function `skewtest` can be used to determine if the
-		skewness value is close enough to 0, statistically speaking.
+		For normally distributed data, the skewness should be about 0. For
+		unimodal continuous distributions, a skewness value > 0 means that
+		there is more weight in the right tail of the distribution. The
+		function `skewtest` can be used to determine if the skewness value
+		is close enough to 0, statistically speaking.
 		
 		Parameters
 		----------
@@ -2691,10 +2732,18 @@ package scipy.stats.stats;
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
 		   Section 2.2.24.1
+		
+		Examples
+		--------
+		>>> from scipy.stats import skew
+		>>> skew([1, 2, 3, 4, 5])
+		0.0
+		>>> skew([2, 8, 0, 4, 1, 9, 9, 0])
+		0.2650554122698573
 	**/
 	static public function skew(a:Dynamic, ?axis:Dynamic, ?bias:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Tests whether the skew is different from the normal distribution.
+		Test whether the skew is different from the normal distribution.
 		
 		This function tests the null hypothesis that the skewness of
 		the population that the sample was drawn from is the same
@@ -2726,12 +2775,24 @@ package scipy.stats.stats;
 		References
 		----------
 		.. [1] R. B. D'Agostino, A. J. Belanger and R. B. D'Agostino Jr.,
-		        "A suggestion for using powerful and informative tests of 
+		        "A suggestion for using powerful and informative tests of
 		        normality", American Statistician 44, pp. 316-321, 1990.
+		
+		Examples
+		--------
+		>>> from scipy.stats import skewtest
+		>>> skewtest([1, 2, 3, 4, 5, 6, 7, 8])
+		SkewtestResult(statistic=1.0108048609177787, pvalue=0.3121098361421897)
+		>>> skewtest([2, 8, 0, 4, 1, 9, 9, 0])
+		SkewtestResult(statistic=0.44626385374196975, pvalue=0.6554066631275459)
+		>>> skewtest([1, 2, 3, 4, 5, 6, 7, 8000])
+		SkewtestResult(statistic=3.571773510360407, pvalue=0.0003545719905823133)
+		>>> skewtest([100, 100, 100, 100, 100, 100, 100, 101])
+		SkewtestResult(statistic=3.5717766638478072, pvalue=0.000354567720281634)
 	**/
 	static public function skewtest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
-		Calculates a Spearman rank-order correlation coefficient and the p-value
+		Calculate a Spearman rank-order correlation coefficient and the p-value
 		to test for non-correlation.
 		
 		The Spearman correlation is a nonparametric measure of the monotonicity
@@ -2828,16 +2889,6 @@ package scipy.stats.stats;
 		(0.052760927029710199, 0.60213045837062351)
 	**/
 	static public function spearmanr(a:Dynamic, ?b:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
-	/**
-		`square_of_sums` is deprecated!
-		scipy.stats.square_of_sums is deprecated in scipy 0.17.0
-	**/
-	static public function square_of_sums(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`ss` is deprecated!
-		scipy.stats.ss is deprecated in scipy 0.17.0
-	**/
-	static public function ss(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Computes the Theil-Sen estimator for a set of points (x, y).
@@ -2919,45 +2970,6 @@ package scipy.stats.stats;
 	**/
 	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
 	/**
-		`threshold` is deprecated!
-		stats.threshold is deprecated in scipy 0.17.0
-		
-		
-		    Clip array to a given value.
-		
-		    Similar to numpy.clip(), except that values less than `threshmin` or
-		    greater than `threshmax` are replaced by `newval`, instead of by
-		    `threshmin` and `threshmax` respectively.
-		
-		    Parameters
-		    ----------
-		    a : array_like
-		        Data to threshold.
-		    threshmin : float, int or None, optional
-		        Minimum threshold, defaults to None.
-		    threshmax : float, int or None, optional
-		        Maximum threshold, defaults to None.
-		    newval : float or int, optional
-		        Value to put in place of values in `a` outside of bounds.
-		        Defaults to 0.
-		
-		    Returns
-		    -------
-		    out : ndarray
-		        The clipped input array, with values less than `threshmin` or
-		        greater than `threshmax` replaced with `newval`.
-		
-		    Examples
-		    --------
-		    >>> a = np.array([9, 9, 6, 3, 1, 6, 1, 0, 0, 8])
-		    >>> from scipy import stats
-		    >>> stats.threshold(a, threshmin=2, threshmax=8, newval=-1)
-		    array([-1, -1,  6,  3, -1,  6, -1, -1, -1,  8])
-		
-		    
-	**/
-	static public function threshold(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Tie correction factor for ties in the Mann-Whitney U and
 		Kruskal-Wallis H tests.
 		
@@ -2996,7 +3008,7 @@ package scipy.stats.stats;
 	**/
 	static public function tiecorrect(rankvals:Dynamic):Float;
 	/**
-		Compute the trimmed maximum
+		Compute the trimmed maximum.
 		
 		This function computes the maximum value of an array along a given axis,
 		while ignoring values larger than a specified upper limit.
@@ -3079,7 +3091,7 @@ package scipy.stats.stats;
 	**/
 	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic):Float;
 	/**
-		Compute the trimmed minimum
+		Compute the trimmed minimum.
 		
 		This function finds the miminum value of an array `a` along the
 		specified axis, but only considering values greater than a specified
@@ -3281,7 +3293,7 @@ package scipy.stats.stats;
 	**/
 	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
-		Compute the trimmed sample standard deviation
+		Compute the trimmed sample standard deviation.
 		
 		This function finds the sample standard deviation of given values,
 		ignoring values outside the given `limits`.
@@ -3325,7 +3337,7 @@ package scipy.stats.stats;
 	**/
 	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
-		Calculates the T-test for the mean of ONE group of scores.
+		Calculate the T-test for the mean of ONE group of scores.
 		
 		This is a two-sided test for the null hypothesis that the expected value
 		(mean) of a sample of independent observations `a` is equal to the given
@@ -3336,7 +3348,7 @@ package scipy.stats.stats;
 		a : array_like
 		    sample observation
 		popmean : float or array_like
-		    expected value in null hypothesis, if array_like than it must have the
+		    expected value in null hypothesis. If array_like, then it must have the
 		    same shape as `a` excluding the axis dimension
 		axis : int or None, optional
 		    Axis along which to compute test. If None, compute over the whole
@@ -3382,7 +3394,7 @@ package scipy.stats.stats;
 	**/
 	static public function ttest_1samp(a:Dynamic, popmean:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Calculates the T-test for the means of *two independent* samples of scores.
+		Calculate the T-test for the means of *two independent* samples of scores.
 		
 		This is a two-sided test for the null hypothesis that 2 independent samples
 		have identical average (expected) values. This test assumes that the
@@ -3476,8 +3488,8 @@ package scipy.stats.stats;
 	/**
 		T-test for means of two independent samples from descriptive statistics.
 		
-		This is a two-sided test for the null hypothesis that 2 independent samples
-		have identical average (expected) values.
+		This is a two-sided test for the null hypothesis that two independent
+		samples have identical average (expected) values.
 		
 		Parameters
 		----------
@@ -3506,7 +3518,7 @@ package scipy.stats.stats;
 		pvalue : float or array
 		    The two-tailed p-value.
 		
-		See also
+		See Also
 		--------
 		scipy.stats.ttest_ind
 		
@@ -3520,10 +3532,37 @@ package scipy.stats.stats;
 		.. [1] http://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
 		
 		.. [2] http://en.wikipedia.org/wiki/Welch%27s_t_test
+		
+		Examples
+		--------
+		Suppose we have the summary data for two samples, as follows::
+		
+		                     Sample   Sample
+		               Size   Mean   Variance
+		    Sample 1    13    15.0     87.5
+		    Sample 2    11    12.0     39.0
+		
+		Apply the t-test to this data (with the assumption that the population
+		variances are equal):
+		
+		>>> from scipy.stats import ttest_ind_from_stats
+		>>> ttest_ind_from_stats(mean1=15.0, std1=np.sqrt(87.5), nobs1=13,
+		...                      mean2=12.0, std2=np.sqrt(39.0), nobs2=11)
+		Ttest_indResult(statistic=0.9051358093310269, pvalue=0.3751996797581487)
+		
+		For comparison, here is the data from which those summary statistics
+		were taken.  With this data, we can compute the same result using
+		`scipy.stats.ttest_ind`:
+		
+		>>> a = np.array([1, 3, 4, 6, 11, 13, 15, 19, 22, 24, 25, 26, 26])
+		>>> b = np.array([2, 4, 6, 9, 11, 13, 14, 15, 18, 19, 21])
+		>>> from scipy.stats import ttest_ind
+		>>> ttest_ind(a, b)
+		Ttest_indResult(statistic=0.905135809331027, pvalue=0.3751996797581486)
 	**/
 	static public function ttest_ind_from_stats(mean1:Dynamic, std1:Dynamic, nobs1:Dynamic, mean2:Dynamic, std2:Dynamic, nobs2:Dynamic, ?equal_var:Dynamic):Dynamic;
 	/**
-		Calculates the T-test on TWO RELATED samples of scores, a and b.
+		Calculate the T-test on TWO RELATED samples of scores, a and b.
 		
 		This is a two-sided test for the null hypothesis that 2 related or
 		repeated samples have identical average (expected) values.
@@ -3561,7 +3600,7 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		http://en.wikipedia.org/wiki/T-test#Dependent_t-test
+		https://en.wikipedia.org/wiki/T-test#Dependent_t-test_for_paired_samples
 		
 		Examples
 		--------
@@ -3580,7 +3619,7 @@ package scipy.stats.stats;
 	**/
 	static public function ttest_rel(a:Dynamic, b:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Compute the trimmed variance
+		Compute the trimmed variance.
 		
 		This function computes the sample variance of an array of values,
 		while ignoring values which are outside of given `limits`.
@@ -3625,7 +3664,7 @@ package scipy.stats.stats;
 	**/
 	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
-		Computes the coefficient of variation, the ratio of the biased standard
+		Compute the coefficient of variation, the ratio of the biased standard
 		deviation to the mean.
 		
 		Parameters
@@ -3650,10 +3689,89 @@ package scipy.stats.stats;
 		.. [1] Zwillinger, D. and Kokoska, S. (2000). CRC Standard
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
+		
+		Examples
+		--------
+		>>> from scipy.stats import variation
+		>>> variation([1, 2, 3, 4, 5])
+		0.47140452079103173
 	**/
 	static public function variation(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Computes a weighted version of Kendall's :math:`\tau`.
+		Compute the first Wasserstein distance between two 1D distributions.
+		
+		This distance is also known as the earth mover's distance, since it can be
+		seen as the minimum amount of "work" required to transform :math:`u` into
+		:math:`v`, where "work" is measured as the amount of distribution weight
+		that must be moved, multiplied by the distance it has to be moved.
+		
+		.. versionadded:: 1.0.0
+		
+		Parameters
+		----------
+		u_values, v_values : array_like
+		    Values observed in the (empirical) distribution.
+		u_weights, v_weights : array_like, optional
+		    Weight for each value. If unspecified, each value is assigned the same
+		    weight.
+		    `u_weights` (resp. `v_weights`) must have the same length as
+		    `u_values` (resp. `v_values`). If the weight sum differs from 1, it
+		    must still be positive and finite so that the weights can be normalized
+		    to sum to 1.
+		
+		Returns
+		-------
+		distance : float
+		    The computed distance between the distributions.
+		
+		Notes
+		-----
+		The first Wasserstein distance between the distributions :math:`u` and
+		:math:`v` is:
+		
+		.. math::
+		
+		    l_1 (u, v) = \inf_{\pi \in \Gamma (u, v)} \int_{\mathbb{R} \times
+		    \mathbb{R}} |x-y| \mathrm{d} \pi (x, y)
+		
+		where :math:`\Gamma (u, v)` is the set of (probability) distributions on
+		:math:`\mathbb{R} \times \mathbb{R}` whose marginals are :math:`u` and
+		:math:`v` on the first and second factors respectively.
+		
+		If :math:`U` and :math:`V` are the respective CDFs of :math:`u` and
+		:math:`v`, this distance also equals to:
+		
+		.. math::
+		
+		    l_1(u, v) = \int_{-\infty}^{+\infty} |U-V|
+		
+		See [2]_ for a proof of the equivalence of both definitions.
+		
+		The input distributions can be empirical, therefore coming from samples
+		whose values are effectively inputs of the function, or they can be seen as
+		generalized functions, in which case they are weighted sums of Dirac delta
+		functions located at the specified values.
+		
+		References
+		----------
+		.. [1] "Wasserstein metric", http://en.wikipedia.org/wiki/Wasserstein_metric
+		.. [2] Ramdas, Garcia, Cuturi "On Wasserstein Two Sample Testing and Related
+		       Families of Nonparametric Tests" (2015). :arXiv:`1509.02237`.
+		
+		Examples
+		--------
+		>>> from scipy.stats import wasserstein_distance
+		>>> wasserstein_distance([0, 1, 3], [5, 6, 8])
+		5.0
+		>>> wasserstein_distance([0, 1], [0, 1], [3, 1], [2, 2])
+		0.25
+		>>> wasserstein_distance([3.4, 3.9, 7.5, 7.8], [4.5, 1.4],
+		...                      [1.4, 0.9, 3.1, 7.2], [3.2, 3.5])
+		4.0781331438047861
+	**/
+	static public function wasserstein_distance(u_values:Dynamic, v_values:Dynamic, ?u_weights:Dynamic, ?v_weights:Dynamic):Float;
+	/**
+		Compute a weighted version of Kendall's :math:`\tau`.
 		
 		The weighted :math:`\tau` is a weighted version of Kendall's
 		:math:`\tau` in which exchanges of high weight are more influential than
@@ -3780,7 +3898,7 @@ package scipy.stats.stats;
 		>>> stats.weightedtau(x, y, rank=None)
 		WeightedTauResult(correlation=-0.4157652301037516, pvalue=nan)
 		>>> stats.weightedtau(y, x, rank=None)
-		WeightedTauResult(correlation=-0.71813413296990281, pvalue=nan)
+		WeightedTauResult(correlation=-0.7181341329699028, pvalue=nan)
 	**/
 	static public function weightedtau(x:Dynamic, y:Dynamic, ?rank:Dynamic, ?weigher:Dynamic, ?additive:Dynamic):Float;
 	/**
@@ -3790,14 +3908,15 @@ package scipy.stats.stats;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -3807,17 +3926,16 @@ package scipy.stats.stats;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))
@@ -3835,9 +3953,9 @@ package scipy.stats.stats;
 	**/
 	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Calculates the relative z-scores.
+		Calculate the relative z-scores.
 		
-		Returns an array of z-scores, i.e., scores that are standardized to
+		Return an array of z-scores, i.e., scores that are standardized to
 		zero mean and unit variance, where mean and variance are calculated
 		from the comparison array.
 		
@@ -3877,7 +3995,7 @@ package scipy.stats.stats;
 	**/
 	static public function zmap(scores:Dynamic, compare:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	/**
-		Calculates the z score of each value in the sample, relative to the
+		Calculate the z score of each value in the sample, relative to the
 		sample mean and standard deviation.
 		
 		Parameters

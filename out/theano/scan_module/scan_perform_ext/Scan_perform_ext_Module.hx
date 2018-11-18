@@ -11,12 +11,8 @@ package theano.scan_module.scan_perform_ext;
 	static public var __spec__ : Dynamic;
 	static public var _logger : Dynamic;
 	static public var absolute_import : Dynamic;
-	static public var cfile : Dynamic;
-	static public var code : Dynamic;
 	static public var config : Dynamic;
-	static public var dirname : Dynamic;
 	static public var division : Dynamic;
-	static public var f : Dynamic;
 	/**
 		Obtain lock on compilation directory.
 		
@@ -32,11 +28,7 @@ package theano.scan_module.scan_perform_ext;
 	**/
 	static public function get_lock(?lock_dir:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_version(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var init_py : Dynamic;
-	static public var init_pyc : Dynamic;
-	static public var loc : Dynamic;
 	static public var need_reload : Dynamic;
-	static public var numpy_ver : Dynamic;
 	/**
 		Parameters
 		----------
@@ -93,7 +85,7 @@ package theano.scan_module.scan_perform_ext;
 		    This is the linker, i.e. the function that will loop over the
 		    computational graph and call the perform of each operation. For this
 		    linker there is a c version in gof/lazy_linker.c that will be the
-		    starting point of implementing this funciton in C ( we need to take
+		    starting point of implementing this function in C ( we need to take
 		    all the code around the call of this function and put in C inside
 		    that code)
 		fnct: python object
@@ -113,7 +105,6 @@ package theano.scan_module.scan_perform_ext;
 		    informations .. but I don;t need to.
 	**/
 	static public function perform(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var preargs : Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Release lock on compilation directory.

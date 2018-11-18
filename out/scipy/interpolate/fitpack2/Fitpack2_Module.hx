@@ -49,7 +49,7 @@ package scipy.interpolate.fitpack2;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -75,7 +75,7 @@ package scipy.interpolate.fitpack2;
 		False
 		
 		>>> np.all([[True,False],[True,True]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.all([-1, 4, 5])
 		True
@@ -86,7 +86,7 @@ package scipy.interpolate.fitpack2;
 		>>> o=np.array([False])
 		>>> z=np.all([-1, 4, 5], out=o)
 		>>> id(z), id(o), z                             # doctest: +SKIP
-		(28293632, 28293632, array([ True], dtype=bool))
+		(28293632, 28293632, array([ True]))
 	**/
 	static public function all(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
@@ -96,7 +96,7 @@ package scipy.interpolate.fitpack2;
 		--------
 		numpy.all : Equivalent function; see for details.
 	**/
-	static public function alltrue(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function alltrue(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
@@ -150,7 +150,15 @@ package scipy.interpolate.fitpack2;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -202,7 +210,7 @@ package scipy.interpolate.fitpack2;
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -212,7 +220,12 @@ package scipy.interpolate.fitpack2;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -252,6 +265,8 @@ package scipy.interpolate.fitpack2;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -275,7 +290,7 @@ package scipy.interpolate.fitpack2;
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Calculate the n-th discrete difference along given axis.
+		Calculate the n-th discrete difference along the given axis.
 		
 		The first difference is given by ``out[n] = a[n+1] - a[n]`` along
 		the given axis, higher differences are calculated by using `diff`
@@ -286,16 +301,21 @@ package scipy.interpolate.fitpack2;
 		a : array_like
 		    Input array
 		n : int, optional
-		    The number of times values are differenced.
+		    The number of times values are differenced. If zero, the input
+		    is returned as-is.
 		axis : int, optional
-		    The axis along which the difference is taken, default is the last axis.
+		    The axis along which the difference is taken, default is the
+		    last axis.
 		
 		Returns
 		-------
 		diff : ndarray
 		    The n-th differences. The shape of the output is the same as `a`
 		    except along `axis` where the dimension is smaller by `n`. The
-		    type of the output is the same as that of the input.
+		    type of the output is the same as the type of the difference
+		    between any two elements of `a`. This is the same as the type of
+		    `a` in most cases. A notable exception is `datetime64`, which
+		    results in a `timedelta64` output array.
 		
 		See Also
 		--------
@@ -303,13 +323,13 @@ package scipy.interpolate.fitpack2;
 		
 		Notes
 		-----
-		For boolean arrays, the preservation of type means that the result
-		will contain `False` when consecutive elements are the same and
-		`True` when they differ.
+		Type is preserved for boolean arrays, so the result will contain
+		`False` when consecutive elements are the same and `True` when they
+		differ.
 		
-		For unsigned integer arrays, the results will also be unsigned. This should
-		not be surprising, as the result is consistent with calculating the
-		difference directly:
+		For unsigned integer arrays, the results will also be unsigned. This
+		should not be surprising, as the result is consistent with
+		calculating the difference directly:
 		
 		>>> u8_arr = np.array([1, 0], dtype=np.uint8)
 		>>> np.diff(u8_arr)
@@ -317,8 +337,8 @@ package scipy.interpolate.fitpack2;
 		>>> u8_arr[1,...] - u8_arr[0,...]
 		array(255, np.uint8)
 		
-		If this is not desirable, then the array should be cast to a larger integer
-		type first:
+		If this is not desirable, then the array should be cast to a larger
+		integer type first:
 		
 		>>> i16_arr = u8_arr.astype(np.int16)
 		>>> np.diff(i16_arr)
@@ -338,6 +358,10 @@ package scipy.interpolate.fitpack2;
 		       [5, 1, 2]])
 		>>> np.diff(x, axis=0)
 		array([[-1,  2,  0, -2]])
+		
+		>>> x = np.arange('1066-10-13', '1066-10-16', dtype=np.datetime64)
+		>>> np.diff(x)
+		array([1, 1], dtype='timedelta64[D]')
 	**/
 	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -351,9 +375,10 @@ package scipy.interpolate.fitpack2;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -362,14 +387,18 @@ package scipy.interpolate.fitpack2;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -418,10 +447,9 @@ package scipy.interpolate.fitpack2;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -491,14 +519,15 @@ package scipy.interpolate.fitpack2;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -508,17 +537,16 @@ package scipy.interpolate.fitpack2;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

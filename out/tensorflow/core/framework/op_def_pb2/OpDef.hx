@@ -6,11 +6,11 @@ package tensorflow.core.framework.op_def_pb2;
 	/**
 		A ProtocolMessage
 	**/
-	static public function ArgDef(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function ArgDef(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A ProtocolMessage
 	**/
-	static public function AttrDef(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function AttrDef(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
@@ -49,7 +49,7 @@ package tensorflow.core.framework.op_def_pb2;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -87,7 +87,7 @@ package tensorflow.core.framework.op_def_pb2;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var SUMMARY_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
@@ -148,7 +148,7 @@ package tensorflow.core.framework.op_def_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -203,7 +203,7 @@ package tensorflow.core.framework.op_def_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -259,7 +259,7 @@ package tensorflow.core.framework.op_def_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/

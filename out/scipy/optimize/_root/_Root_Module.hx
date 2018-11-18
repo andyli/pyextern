@@ -555,6 +555,9 @@ package scipy.optimize._root;
 		
 		       min   sum((ydata - f(xdata, params))**2, axis=0)
 		     params
+		
+		The solution, `x`, is always a 1D array, regardless of the shape of `x0`,
+		or whether `x0` is a scalar.
 	**/
 	static public function leastsq(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?Dfun:Dynamic, ?full_output:Dynamic, ?col_deriv:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?maxfev:Dynamic, ?epsfcn:Dynamic, ?factor:Dynamic, ?diag:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -658,8 +661,8 @@ package scipy.optimize._root;
 		.. [1] More, Jorge J., Burton S. Garbow, and Kenneth E. Hillstrom.
 		   1980. User Guide for MINPACK-1.
 		.. [2] C. T. Kelley. 1995. Iterative Methods for Linear and Nonlinear
-		    Equations. Society for Industrial and Applied Mathematics.
-		    <http://www.siam.org/books/kelley/>
+		   Equations. Society for Industrial and Applied Mathematics.
+		   <http://www.siam.org/books/kelley/fr16/index.php>
 		.. [3] W. La Cruz, J.M. Martinez, M. Raydan. Math. Comp. 75, 1429 (2006).
 		
 		Examples

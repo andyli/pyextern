@@ -11,64 +11,68 @@ package matplotlib.axes;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	/**
-		Return True if *obj* looks like a string
-	**/
-	static public function is_string_like(obj:Dynamic):Dynamic;
 	/**
 		return true if *obj* is iterable
 	**/
 	static public function iterable(obj:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
-	/**
-		reduce(function, sequence[, initial]) -> value
-		
-		Apply a function of two arguments cumulatively to the items of a sequence,
-		from left to right, so as to reduce the sequence to a single value.
-		For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
-		((((1+2)+3)+4)+5).  If initial is present, it is placed before the items
-		of the sequence in the calculation, and serves as a default when the
-		sequence is empty.
-	**/
-	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function safe_first_element(obj:Dynamic):Dynamic;
-	static public function subplot_class_factory(?axes_class:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 	/**
-		A decorator to add a 'data' kwarg to any a function.  The signature
-		of the input function must include the ax argument at the first position ::
-		
-		   def foo(ax, *args, **kwargs)
-		
-		so this is suitable for use with Axes methods.
+		This makes a new class that inherits from `.SubplotBase` and the
+		given axes_class (which is assumed to be a subclass of `.axes.Axes`).
+		This is perhaps a little bit roundabout to make a new class on
+		the fly like this, but it means that a new Subplot class does
+		not have to be created for every type of Axes.
+	**/
+	static public function subplot_class_factory(?axes_class:Dynamic):Dynamic;
+	/**
+		Used to display deprecation in a standard way.
 		
 		Parameters
 		----------
-		replace_names : list of strings, optional, default: None
-		    The list of parameter names which arguments should be replaced by
-		    `data[name]`. If None, all arguments are replaced if they are
-		    included in `data`.
-		replace_all_args : bool, default: False
-		    If True, all arguments in *args get replaced, even if they are not
-		    in replace_names.
-		label_namer : string, optional, default: None
-		    The name of the parameter which argument should be used as label, if
-		    label is not set. If None, the label keyword argument is not set.
-		positional_parameter_names : list of strings or callable, optional
-		    The full list of positional parameter names (excluding an explicit
-		    `ax`/'self' argument at the first place and including all possible
-		    positional parameter in `*args`), in the right order. Can also include
-		    all other keyword parameter. Only needed if the wrapped function does
-		    contain `*args` and (replace_names is not None or replace_all_args is
-		    False). If it is a callable, it will be called with the actual
-		    tuple of *args and the data and should return a list like
-		    above.
-		    NOTE: callables should only be used when the names and order of *args
-		    can only be determined at runtime. Please use list of names
-		    when the order and names of *args is clear before runtime!
+		since : str
+		    The release at which this API became deprecated.
+		
+		message : str, optional
+		    Override the default deprecation message.  The format
+		    specifier `%(name)s` may be used for the name of the function,
+		    and `%(alternative)s` may be used in the deprecation message
+		    to insert the name of an alternative to the deprecated
+		    function.  `%(obj_type)s` may be used to insert a friendly name
+		    for the type of object being deprecated.
+		
+		name : str, optional
+		    The name of the deprecated object.
+		
+		alternative : str, optional
+		    An alternative API that the user may use in place of the deprecated
+		    API.  The deprecation warning will tell the user about this alternative
+		    if provided.
+		
+		pending : bool, optional
+		    If True, uses a PendingDeprecationWarning instead of a
+		    DeprecationWarning.  Cannot be used together with *removal*.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
+		
+		obj_type : str, optional
+		    The object type being deprecated.
+		
+		addendum : str, optional
+		    Additional text appended directly to the final message.
+		
+		Examples
+		--------
+		
+		    Basic example::
+		
+		        # To warn of the deprecation of "matplotlib.name_of_module"
+		        warn_deprecated('1.4.0', name='matplotlib.name_of_module',
+		                        obj_type='module')
 	**/
-	static public function unpack_labeled_data(?replace_names:Dynamic, ?replace_all_args:Dynamic, ?label_namer:Dynamic, ?positional_parameter_names:Dynamic):Dynamic;
+	static public function warn_deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic, ?addendum:Dynamic, ?removal:Dynamic):Dynamic;
 }

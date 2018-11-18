@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.spatial._spherical_voronoi;
 @:pythonImport("scipy.spatial._spherical_voronoi", "SphericalVoronoi") extern class SphericalVoronoi {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -49,7 +49,7 @@ package scipy.spatial._spherical_voronoi;
 		 supplied.
 	**/
 	@:native("__init__")
-	public function ___init__(points:Dynamic, ?radius:Dynamic, ?center:Dynamic):Dynamic;
+	public function ___init__(points:Dynamic, ?radius:Dynamic, ?center:Dynamic, ?threshold:Dynamic):Dynamic;
 	/**
 		Initializes the object and starts the computation of the Voronoi
 		diagram.
@@ -61,14 +61,14 @@ package scipy.spatial._spherical_voronoi;
 		center : The center of the sphere. Will default to the origin if not
 		 supplied.
 	**/
-	public function new(points:Dynamic, ?radius:Dynamic, ?center:Dynamic):Void;
+	public function new(points:Dynamic, ?radius:Dynamic, ?center:Dynamic, ?threshold:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +119,7 @@ package scipy.spatial._spherical_voronoi;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

@@ -2,6 +2,7 @@
 package tensorflow.core.framework.step_stats_pb2;
 @:pythonImport("tensorflow.core.framework.step_stats_pb2") extern class Step_stats_pb2_Module {
 	static public var DESCRIPTOR : Dynamic;
+	static public var _ALLOCATIONRECORD : Dynamic;
 	static public var _ALLOCATORMEMORYUSED : Dynamic;
 	static public var _DEVICESTEPSTATS : Dynamic;
 	static public var _MEMORYSTATS : Dynamic;

@@ -92,7 +92,7 @@ package scipy._lib._util;
 	/**
 		Return an array equivalent to the input array. If the input
 		array is a view of a much larger array, copy its contents to a
-		newly allocated array. Otherwise, return the input unchaged.
+		newly allocated array. Otherwise, return the input unchanged.
 	**/
 	static public function _prune_array(array:Dynamic):Dynamic;
 	/**

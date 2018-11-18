@@ -11,6 +11,7 @@ package pandas.io.stata;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _bytes(s:Dynamic, encoding:Dynamic):Dynamic;
 	/**
 		Checks the dtypes of the columns of a pandas DataFrame for
 		compatibility with the data types and ranges supported by Stata, and
@@ -31,8 +32,8 @@ package pandas.io.stata;
 		this range.  If the int64 values are outside of the range of those
 		perfectly representable as float64 values, a warning is raised.
 		
-		bool columns are cast to int8.  uint colums are converted to int of the
-		same size if there is no loss in precision, other wise are upcast to a
+		bool columns are cast to int8.  uint columns are converted to int of the
+		same size if there is no loss in precision, otherwise are upcast to a
 		larger type.  uint64 is currently not supported since it is concerted to
 		object in a DataFrame.
 	**/
@@ -68,33 +69,69 @@ package pandas.io.stata;
 		int32   -> "%12.0g"
 		int16   -> "%8.0g"
 		int8    -> "%8.0g"
+		strl    -> "%9s"
 	**/
-	static public function _dtype_to_default_stata_fmt(dtype:Dynamic, column:Dynamic):Dynamic;
+	static public function _dtype_to_default_stata_fmt(dtype:Dynamic, column:Dynamic, ?dta_version:Dynamic, ?force_strl:Dynamic):Dynamic;
 	/**
 		Converts dtype types to stata types. Returns the byte of the given ordinal.
 		See TYPE_MAP and comments for an explanation. This is also explained in
 		the dta spec.
 		1 - 244 are strings of this length
 		                     Pandas    Stata
-		251 - chr(251) - for int8      byte
-		252 - chr(252) - for int16     int
-		253 - chr(253) - for int32     long
-		254 - chr(254) - for float32   float
-		255 - chr(255) - for double    double
+		251 - for int8      byte
+		252 - for int16     int
+		253 - for int32     long
+		254 - for float32   float
+		255 - for double    double
 		
 		If there are dates to convert, then dtype will already have the correct
 		type inserted.
 	**/
 	static public function _dtype_to_stata_type(dtype:Dynamic, column:Dynamic):Dynamic;
+	/**
+		Converts dtype types to stata types. Returns the byte of the given ordinal.
+		See TYPE_MAP and comments for an explanation. This is also explained in
+		the dta spec.
+		1 - 2045 are strings of this length
+		            Pandas    Stata
+		32768 - for object    strL
+		65526 - for int8      byte
+		65527 - for int16     int
+		65528 - for int32     long
+		65529 - for float32   float
+		65530 - for double    double
+		
+		If there are dates to convert, then dtype will already have the correct
+		type inserted.
+	**/
+	static public function _dtype_to_stata_type_117(dtype:Dynamic, column:Dynamic, force_strl:Dynamic):Dynamic;
 	static public var _encoding_params : Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _iterator_params : Dynamic;
 	static public function _maybe_convert_to_int_keys(convert_dates:Dynamic, varlist:Dynamic):Dynamic;
-	static public function _open_file_binary_write(fname:Dynamic, encoding:Dynamic):Dynamic;
+	/**
+		Open a binary file or no-op if file-like
+		
+		Parameters
+		----------
+		fname : string path, path object or buffer
+		
+		Returns
+		-------
+		file : file-like object
+		    File object supporting write
+		own : bool
+		    True if the file was created, otherwise False
+	**/
+	static public function _open_file_binary_write(fname:Dynamic):Dynamic;
 	/**
 		Takes a char string and pads it with null bytes until it's length chars
 	**/
 	static public function _pad_bytes(name:Dynamic, length:Dynamic):Dynamic;
+	/**
+		Takes a bytes instance and pads it with null bytes until it's length chars.
+	**/
+	static public function _pad_bytes_new(name:Dynamic, length:Dynamic):Dynamic;
 	static public var _read_method_doc : Dynamic;
 	static public var _read_stata_doc : Dynamic;
 	static public function _set_endianness(endianness:Dynamic):Dynamic;
@@ -151,7 +188,93 @@ package pandas.io.stata;
 	static public var _stata_reader_doc : Dynamic;
 	static public var _statafile_processing_params1 : Dynamic;
 	static public var _statafile_processing_params2 : Dynamic;
+	/**
+		Attempt to convert a path-like object to a string.
+		
+		Parameters
+		----------
+		filepath_or_buffer : object to be converted
+		
+		Returns
+		-------
+		str_filepath_or_buffer : maybe a string version of the object
+		
+		Notes
+		-----
+		Objects supporting the fspath protocol (python 3.6+) are coerced
+		according to its __fspath__ method.
+		
+		For backwards compatibility with older pythons, pathlib.Path and
+		py.path objects are specially coerced.
+		
+		Any other object is passed through unchanged, which includes bytes,
+		strings, buffers, or anything else that's not even path-like.
+	**/
+	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	static public var _version_error : Dynamic;
+	/**
+		Decorator to deprecate a keyword argument of a function.
+		
+		Parameters
+		----------
+		old_arg_name : str
+		    Name of argument in function to deprecate
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
+		mapping : dict or callable
+		    If mapping is present, use it to translate old arguments to
+		    new arguments. A callable must do its own value checking;
+		    values not found in a dict will be forwarded unchanged.
+		
+		Examples
+		--------
+		The following deprecates 'cols', using 'columns' instead
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
+		... def f(columns=''):
+		...     print(columns)
+		...
+		>>> f(columns='should work ok')
+		should work ok
+		
+		>>> f(cols='should raise warning')
+		FutureWarning: cols is deprecated, use columns instead
+		  warnings.warn(msg, FutureWarning)
+		should raise warning
+		
+		>>> f(cols='should error', columns="can't pass do both")
+		TypeError: Can only specify 'cols' or 'columns', not both
+		
+		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
+		... def f(new=False):
+		...     print('yes!' if new else 'no!')
+		...
+		>>> f(old='yes')
+		FutureWarning: old='yes' is deprecated, use new=True instead
+		  warnings.warn(msg, FutureWarning)
+		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+	**/
+	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public var excessive_string_length_error : Dynamic;
 	/**
 		If the filepath_or_buffer is a url, translate and return the buffer.
@@ -162,19 +285,28 @@ package pandas.io.stata;
 		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
 		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
+		mode : str, optional
 		
 		Returns
 		-------
-		a filepath_or_buffer, the encoding, the compression
+		tuple of ({a filepath_ or buffer or S3File instance},
+		          encoding, str,
+		          compression, str,
+		          should_close, bool)
 	**/
-	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
-		Effeciently infer the type of a passed val, or list-like
+		Efficiently infer the type of a passed val, or list-like
 		array of values. Return a string describing the type.
 		
 		Parameters
 		----------
 		value : scalar, list, ndarray, or pandas type
+		skipna : bool, default False
+		    Ignore NaN values when inferring the type. The default of ``False``
+		    will be deprecated in a later version of pandas.
+		
+		    .. versionadded:: 0.21.0
 		
 		Returns
 		-------
@@ -188,6 +320,7 @@ package pandas.io.stata;
 		- integer
 		- mixed-integer
 		- mixed-integer-float
+		- decimal
 		- complex
 		- categorical
 		- boolean
@@ -216,6 +349,12 @@ package pandas.io.stata;
 		>>> infer_dtype(['foo', 'bar'])
 		'string'
 		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=True)
+		'string'
+		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=False)
+		'mixed'
+		
 		>>> infer_dtype([b'foo', b'bar'])
 		'bytes'
 		
@@ -230,6 +369,9 @@ package pandas.io.stata;
 		
 		>>> infer_dtype(['a', 1])
 		'mixed-integer'
+		
+		>>> infer_dtype([Decimal(1), Decimal(2.0)])
+		'decimal'
 		
 		>>> infer_dtype([True, False])
 		'boolean'
@@ -309,24 +451,79 @@ package pandas.io.stata;
 	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -336,57 +533,63 @@ package pandas.io.stata;
 	static public function max_len_string_array(arr:Dynamic):Dynamic;
 	static public var precision_loss_doc : Dynamic;
 	/**
-		Read Stata file into DataFrame
+		Read Stata file into DataFrame.
 		
 		Parameters
 		----------
 		filepath_or_buffer : string or file-like object
-		    Path to .dta file or object implementing a binary read() functions
+		    Path to .dta file or object implementing a binary read() functions.
 		convert_dates : boolean, defaults to True
-		    Convert date variables to DataFrame time values
+		    Convert date variables to DataFrame time values.
 		convert_categoricals : boolean, defaults to True
-		    Read value labels and convert columns to Categorical/Factor variables
+		    Read value labels and convert columns to Categorical/Factor variables.
 		encoding : string, None or encoding
 		    Encoding used to parse the files. None defaults to latin-1.
-		index : identifier of index column
-		    identifier of column that should be used as index of the DataFrame
+		index_col : string, optional, default: None
+		    Column to set as index.
 		convert_missing : boolean, defaults to False
 		    Flag indicating whether to convert missing values to their Stata
-		    representations.  If False, missing values are replaced with nans.
+		    representations.  If False, missing values are replaced with nan.
 		    If True, columns containing missing values are returned with
 		    object data types and missing values are represented by
 		    StataMissingValue objects.
 		preserve_dtypes : boolean, defaults to True
 		    Preserve Stata datatypes. If False, numeric data are upcast to pandas
-		    default types for foreign data (float64 or int64)
+		    default types for foreign data (float64 or int64).
 		columns : list or None
 		    Columns to retain.  Columns will be returned in the given order.  None
-		    returns all columns
+		    returns all columns.
 		order_categoricals : boolean, defaults to True
 		    Flag indicating whether converted categorical data are ordered.
 		chunksize : int, default None
 		    Return StataReader object for iterations, returns chunks with
-		    given number of lines
+		    given number of lines.
 		iterator : boolean, default False
-		    Return StataReader object
+		    Return StataReader object.
 		
 		Returns
 		-------
 		DataFrame or StataReader
 		
+		See Also
+		--------
+		pandas.io.stata.StataReader : low-level reader for Stata data files
+		pandas.DataFrame.to_stata: export Stata data files
+		
 		Examples
 		--------
 		Read a Stata dta file:
 		
-		>>> df = pandas.read_stata('filename.dta')
+		>>> import pandas as pd
+		>>> df = pd.read_stata('filename.dta')
 		
 		Read a Stata dta file in 10,000 line chunks:
 		
-		>>> itr = pandas.read_stata('filename.dta', chunksize=10000)
+		>>> itr = pd.read_stata('filename.dta', chunksize=10000)
 		>>> for chunk in itr:
-		>>>     do_something(chunk)
+		...     do_something(chunk)
 	**/
-	static public function read_stata(filepath_or_buffer:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?encoding:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?chunksize:Dynamic, ?iterator:Dynamic):Dynamic;
+	static public function read_stata(filepath_or_buffer:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?encoding:Dynamic, ?index_col:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?chunksize:Dynamic, ?iterator:Dynamic):Dynamic;
 	static public var stata_epoch : Dynamic;
 	static public var string_types : Dynamic;
 	/**
@@ -396,7 +599,7 @@ package pandas.io.stata;
 		----------
 		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
-		    .. versionadded: 0.18.1
+		    .. versionadded:: 0.18.1
 		
 		       or DataFrame/dict-like
 		
@@ -422,7 +625,7 @@ package pandas.io.stata;
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
-		    .. versionadded: 0.16.1
+		    .. versionadded:: 0.16.1
 		
 		utc : boolean, default None
 		    Return UTC DatetimeIndex if True (converting any tz-aware
@@ -460,7 +663,13 @@ package pandas.io.stata;
 		    - If Timestamp convertible, origin is set to Timestamp identified by
 		      origin.
 		
-		    .. versionadded: 0.20.0
+		    .. versionadded:: 0.20.0
+		cache : boolean, default False
+		    If True, use a cache of unique, converted dates to apply the datetime
+		    conversion. May produce sigificant speed-up when parsing duplicate date
+		    strings, especially ones with timezone offsets.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
@@ -473,11 +682,11 @@ package pandas.io.stata;
 		
 		    In case when it is not possible to return designated types (e.g. when
 		    any element of input is before Timestamp.min or after Timestamp.max)
-		    return will have datetime.datetime type (or correspoding array/Series).
+		    return will have datetime.datetime type (or corresponding
+		    array/Series).
 		
 		Examples
 		--------
-		
 		Assembling a datetime from multiple columns of a DataFrame. The keys can be
 		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
 		'ms', 'us', 'ns']) or plurals of the same
@@ -539,8 +748,13 @@ package pandas.io.stata;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		Convert argument to timedelta
 		
@@ -587,6 +801,11 @@ package pandas.io.stata;
 		>>> pd.to_timedelta(np.arange(5), unit='d')
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 	static public var value_label_mismatch_doc : Dynamic;

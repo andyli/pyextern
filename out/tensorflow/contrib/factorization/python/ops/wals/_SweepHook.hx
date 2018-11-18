@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.factorization.python.ops.wals;
 @:pythonImport("tensorflow.contrib.factorization.python.ops.wals", "_SweepHook") extern class _SweepHook {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -43,58 +43,48 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		Args:
 		  is_row_sweep_var: A Boolean tf.Variable, determines whether we are
 		    currently doing a row or column sweep. It is updated by the hook.
-		  train_op: An op. All the ops created by the hook will have
-		    control_dependencies on train_op.
-		  num_rows: int, the total number of rows to be processed.
-		  num_cols: int, the total number of columns to be processed.
-		  processed_row_indices: A Tensor of type int64. The indices of the input
-		    rows that are processed during the current sweep. All elements of
-		    processed_row_indices must be in [0, num_rows).
-		  processed_col_indices: A Tensor of type int64. The indices of the input
-		    columns that are processed during the current sweep. All elements of
-		    processed_col_indices must be in [0, num_cols).
-		  row_prep_ops: list of ops, to be run before the beginning of each row
-		    sweep, in the given order.
-		  col_prep_ops: list of ops, to be run before the beginning of each column
-		    sweep, in the given order.
-		  cache_init_ops: list of ops, to be run once before training, in the given
-		    order. These are typically local initialization ops (such as cache
-		    initialization).
+		  is_sweep_done_var: A Boolean tf.Variable, determines whether we are
+		    starting a new sweep (this is used to determine when to run the prep ops
+		    below).
+		  init_op: op to be run once before training. This is typically a local
+		    initialization op (such as cache initialization).
+		  row_prep_ops: A list of TensorFlow ops, to be run before the beginning of
+		    each row sweep (and during initialization), in the given order.
+		  col_prep_ops: A list of TensorFlow ops, to be run before the beginning of
+		    each column sweep (and during initialization), in the given order.
+		  row_train_op: A TensorFlow op to be run during row sweeps.
+		  col_train_op: A TensorFlow op to be run during column sweeps.
+		  switch_op: A TensorFlow op to be run before each sweep.
 	**/
 	@:native("__init__")
-	public function ___init__(is_row_sweep_var:Dynamic, train_op:Dynamic, num_rows:Dynamic, num_cols:Dynamic, processed_row_indices:Dynamic, processed_col_indices:Dynamic, row_prep_ops:Dynamic, col_prep_ops:Dynamic, cache_init_ops:Dynamic):Dynamic;
+	public function ___init__(is_row_sweep_var:Dynamic, is_sweep_done_var:Dynamic, init_op:Dynamic, row_prep_ops:Dynamic, col_prep_ops:Dynamic, row_train_op:Dynamic, col_train_op:Dynamic, switch_op:Dynamic):Dynamic;
 	/**
 		Initializes SweepHook.
 		
 		Args:
 		  is_row_sweep_var: A Boolean tf.Variable, determines whether we are
 		    currently doing a row or column sweep. It is updated by the hook.
-		  train_op: An op. All the ops created by the hook will have
-		    control_dependencies on train_op.
-		  num_rows: int, the total number of rows to be processed.
-		  num_cols: int, the total number of columns to be processed.
-		  processed_row_indices: A Tensor of type int64. The indices of the input
-		    rows that are processed during the current sweep. All elements of
-		    processed_row_indices must be in [0, num_rows).
-		  processed_col_indices: A Tensor of type int64. The indices of the input
-		    columns that are processed during the current sweep. All elements of
-		    processed_col_indices must be in [0, num_cols).
-		  row_prep_ops: list of ops, to be run before the beginning of each row
-		    sweep, in the given order.
-		  col_prep_ops: list of ops, to be run before the beginning of each column
-		    sweep, in the given order.
-		  cache_init_ops: list of ops, to be run once before training, in the given
-		    order. These are typically local initialization ops (such as cache
-		    initialization).
+		  is_sweep_done_var: A Boolean tf.Variable, determines whether we are
+		    starting a new sweep (this is used to determine when to run the prep ops
+		    below).
+		  init_op: op to be run once before training. This is typically a local
+		    initialization op (such as cache initialization).
+		  row_prep_ops: A list of TensorFlow ops, to be run before the beginning of
+		    each row sweep (and during initialization), in the given order.
+		  col_prep_ops: A list of TensorFlow ops, to be run before the beginning of
+		    each column sweep (and during initialization), in the given order.
+		  row_train_op: A TensorFlow op to be run during row sweeps.
+		  col_train_op: A TensorFlow op to be run during column sweeps.
+		  switch_op: A TensorFlow op to be run before each sweep.
 	**/
-	public function new(is_row_sweep_var:Dynamic, train_op:Dynamic, num_rows:Dynamic, num_cols:Dynamic, processed_row_indices:Dynamic, processed_col_indices:Dynamic, row_prep_ops:Dynamic, col_prep_ops:Dynamic, cache_init_ops:Dynamic):Void;
+	public function new(is_row_sweep_var:Dynamic, is_sweep_done_var:Dynamic, init_op:Dynamic, row_prep_ops:Dynamic, col_prep_ops:Dynamic, row_train_op:Dynamic, col_train_op:Dynamic, switch_op:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -145,44 +135,13 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Creates ops to update is_row_sweep_var and to increment global_step.
-		
-		Creates two boolean tensors processed_rows and processed_cols, which keep
-		track of which rows/cols have been processed during the current sweep.
-		Returns ops that should be run after each row / col update.
-		  - When is_row_sweep_var is True, it sets
-		    processed_rows[processed_row_indices] to True.
-		  - When is_row_sweep_var is False, it sets
-		    processed_cols[processed_col_indices] to True .
-		When all rows or all cols have been processed, negates is_row_sweep_var and
-		resets processed_rows and processed_cols to False.
-		All of the ops created by this function have control_dependencies on
-		train_op.
-		
-		Args:
-		  processed_row_indices: A Tensor. The indices of the input rows that are
-		    processed during the current sweep.
-		  processed_col_indices: A Tensor. The indices of the input columns that
-		    are processed during the current sweep.
-		  train_op: An op. All the ops created by this function have
-		    control_dependencies on train_op.
-		Returns:
-		  A list consisting of:
-		    is_sweep_done: A Boolean tensor, determines whether the sweep is done,
-		      i.e. all rows (during a row sweep) or all columns (during a column
-		      sweep) have been processed.
-		    switch_ops: An op that updates is_row_sweep_var when is_sweep_done is
-		      True. Has control_dependencies on train_op.
-		    global_step_incr_op: An op that increments the global_step counter. Has
-		      control_dependenciens on switch_ops.
-	**/
-	public function _create_switch_ops(processed_row_indices:Dynamic, processed_col_indices:Dynamic, train_op:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Called when new TensorFlow session is created.
 		

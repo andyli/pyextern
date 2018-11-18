@@ -14,6 +14,263 @@ package tensorflow.contrib.distributions;
 	static public var __spec__ : Dynamic;
 	static public var _allowed_symbols : Dynamic;
 	/**
+		Compute the log of the exponentially weighted moving mean of the exp.
+		
+		If `log_value` is a draw from a stationary random variable, this function
+		approximates `log(E[exp(log_value)])`, i.e., a weighted log-sum-exp. More
+		precisely, a `tf.Variable`, `log_mean_exp_var`, is updated by `log_value`
+		using the following identity:
+		
+		```none
+		log_mean_exp_var =
+		= log(decay exp(log_mean_exp_var) + (1 - decay) exp(log_value))
+		= log(exp(log_mean_exp_var + log(decay)) + exp(log_value + log1p(-decay)))
+		= log_mean_exp_var
+		  + log(  exp(log_mean_exp_var   - log_mean_exp_var + log(decay))
+		        + exp(log_value - log_mean_exp_var + log1p(-decay)))
+		= log_mean_exp_var
+		  + log_sum_exp([log(decay), log_value - log_mean_exp_var + log1p(-decay)]).
+		```
+		
+		In addition to numerical stability, this formulation is advantageous because
+		`log_mean_exp_var` can be updated in a lock-free manner, i.e., using
+		`assign_add`. (Note: the updates are not thread-safe; it's just that the
+		update to the tf.Variable is presumed efficient due to being lock-free.)
+		
+		Args:
+		  log_mean_exp_var: `float`-like `Variable` representing the log of the
+		    exponentially weighted moving mean of the exp. Same shape as `log_value`.
+		  log_value: `float`-like `Tensor` representing a new (streaming) observation.
+		    Same shape as `log_mean_exp_var`.
+		  decay: A `float`-like `Tensor`. The moving mean decay. Typically close to
+		    `1.`, e.g., `0.999`.
+		  name: Optional name of the returned operation.
+		
+		Returns:
+		  log_mean_exp_var: A reference to the input 'Variable' tensor with the
+		    `log_value`-updated log of the exponentially weighted moving mean of exp.
+		
+		Raises:
+		  TypeError: if `log_mean_exp_var` does not have float type `dtype`.
+		  TypeError: if `log_mean_exp_var`, `log_value`, `decay` have different
+		    `base_dtype`.
+	**/
+	static public function assign_log_moving_mean_exp(log_mean_exp_var:Dynamic, log_value:Dynamic, decay:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Compute exponentially weighted moving {mean,variance} of a streaming value.
+		
+		The `value` updated exponentially weighted moving `mean_var` and
+		`variance_var` are given by the following recurrence relations:
+		
+		```python
+		variance_var = decay * (variance_var + (1-decay) * (value - mean_var)**2)
+		mean_var     = decay * mean_var + (1 - decay) * value
+		```
+		
+		Note: `mean_var` is updated *after* `variance_var`, i.e., `variance_var` uses
+		the lag-1 mean.
+		
+		For derivation justification, see [Finch (2009; Eq. 143)][1].
+		
+		Args:
+		  mean_var: `float`-like `Variable` representing the exponentially weighted
+		    moving mean. Same shape as `variance_var` and `value`.
+		  variance_var: `float`-like `Variable` representing the
+		    exponentially weighted moving variance. Same shape as `mean_var` and
+		    `value`.
+		  value: `float`-like `Tensor`. Same shape as `mean_var` and `variance_var`.
+		  decay: A `float`-like `Tensor`. The moving mean decay. Typically close to
+		    `1.`, e.g., `0.999`.
+		  name: Optional name of the returned operation.
+		
+		Returns:
+		  mean_var: `Variable` representing the `value`-updated exponentially weighted
+		    moving mean.
+		  variance_var: `Variable` representing the `value`-updated
+		    exponentially weighted moving variance.
+		
+		Raises:
+		  TypeError: if `mean_var` does not have float type `dtype`.
+		  TypeError: if `mean_var`, `variance_var`, `value`, `decay` have different
+		    `base_dtype`.
+		
+		#### References
+		
+		[1]: Tony Finch. Incremental calculation of weighted mean and variance.
+		     _Technical Report_, 2009.
+		     http://people.ds.cam.ac.uk/fanf2/hermes/doc/antiforgery/stats.pdf
+	**/
+	static public function assign_moving_mean_variance(mean_var:Dynamic, variance_var:Dynamic, value:Dynamic, decay:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Auto correlation along one axis.
+		
+		Given a `1-D` wide sense stationary (WSS) sequence `X`, the auto correlation
+		`RXX` may be defined as  (with `E` expectation and `Conj` complex conjugate)
+		
+		```
+		RXX[m] := E{ W[m] Conj(W[0]) } = E{ W[0] Conj(W[-m]) },
+		W[n]   := (X[n] - MU) / S,
+		MU     := E{ X[0] },
+		S**2   := E{ (X[0] - MU) Conj(X[0] - MU) }.
+		```
+		
+		This function takes the viewpoint that `x` is (along one axis) a finite
+		sub-sequence of a realization of (WSS) `X`, and then uses `x` to produce an
+		estimate of `RXX[m]` as follows:
+		
+		After extending `x` from length `L` to `inf` by zero padding, the auto
+		correlation estimate `rxx[m]` is computed for `m = 0, 1, ..., max_lags` as
+		
+		```
+		rxx[m] := (L - m)**-1 sum_n w[n + m] Conj(w[n]),
+		w[n]   := (x[n] - mu) / s,
+		mu     := L**-1 sum_n x[n],
+		s**2   := L**-1 sum_n (x[n] - mu) Conj(x[n] - mu)
+		```
+		
+		The error in this estimate is proportional to `1 / sqrt(len(x) - m)`, so users
+		often set `max_lags` small enough so that the entire output is meaningful.
+		
+		Note that since `mu` is an imperfect estimate of `E{ X[0] }`, and we divide by
+		`len(x) - m` rather than `len(x) - m - 1`, our estimate of auto correlation
+		contains a slight bias, which goes to zero as `len(x) - m --> infinity`.
+		
+		Args:
+		  x:  `float32` or `complex64` `Tensor`.
+		  axis:  Python `int`. The axis number along which to compute correlation.
+		    Other dimensions index different batch members.
+		  max_lags:  Positive `int` tensor.  The maximum value of `m` to consider
+		    (in equation above).  If `max_lags >= x.shape[axis]`, we effectively
+		    re-set `max_lags` to `x.shape[axis] - 1`.
+		  center:  Python `bool`.  If `False`, do not subtract the mean estimate `mu`
+		    from `x[n]` when forming `w[n]`.
+		  normalize:  Python `bool`.  If `False`, do not divide by the variance
+		    estimate `s**2` when forming `w[n]`.
+		  name:  `String` name to prepend to created ops.
+		
+		Returns:
+		  `rxx`: `Tensor` of same `dtype` as `x`.  `rxx.shape[i] = x.shape[i]` for
+		    `i != axis`, and `rxx.shape[axis] = max_lags + 1`.
+		
+		Raises:
+		  TypeError:  If `x` is not a supported type.
+	**/
+	static public function auto_correlation(x:Dynamic, ?axis:Dynamic, ?max_lags:Dynamic, ?center:Dynamic, ?normalize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Creates a `Head` for regression under a generic distribution. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
+		
+		Args:
+		  make_distribution_fn: Python `callable` which returns a `tf.Distribution`
+		    instance created using only logits.
+		  label_dimension: Number of regression labels per example. This is the size
+		    of the last dimension of the labels `Tensor` (typically, this has shape
+		    `[batch_size, label_dimension]`).
+		  logits_dimension: Number of logits per example. This is the size of the last
+		    dimension of the logits `Tensor` (typically, this has shape
+		    `[batch_size, logits_dimension]`).
+		    Default value: `label_dimension`.
+		  label_name: Python `str`, name of the key in label `dict`. Can be `None` if
+		    label is a `Tensor` (single headed models).
+		  weight_column_name: Python `str` defining feature column name representing
+		    weights. It is used to down weight or boost examples during training. It
+		    will be multiplied by the loss of the example.
+		  enable_centered_bias: Python `bool`. If `True`, estimator will learn a
+		    centered bias variable for each class. Rest of the model structure learns
+		    the residual after centered bias.
+		  head_name: Python `str`, name of the head. Predictions, summary and metrics
+		    keys are suffixed by `"/" + head_name` and the default variable scope is
+		    `head_name`.
+		
+		Returns:
+		  An instance of `Head` for generic regression.
+	**/
+	static public function estimator_head_distribution_regression(make_distribution_fn:Dynamic, ?label_dimension:Dynamic, ?logits_dimension:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Dynamic;
+	/**
+		Creates a (batch of) triangular matrix from a vector of inputs.
+		
+		Created matrix can be lower- or upper-triangular. (It is more efficient to
+		create the matrix as upper or lower, rather than transpose.)
+		
+		Triangular matrix elements are filled in a clockwise spiral. See example,
+		below.
+		
+		If `x.get_shape()` is `[b1, b2, ..., bB, d]` then the output shape is
+		`[b1, b2, ..., bB, n, n]` where `n` is such that `d = n(n+1)/2`, i.e.,
+		`n = int(np.sqrt(0.25 + 2. * m) - 0.5)`.
+		
+		Example:
+		
+		```python
+		fill_triangular([1, 2, 3, 4, 5, 6])
+		# ==> [[4, 0, 0],
+		#      [6, 5, 0],
+		#      [3, 2, 1]]
+		
+		fill_triangular([1, 2, 3, 4, 5, 6], upper=True)
+		# ==> [[1, 2, 3],
+		#      [0, 5, 6],
+		#      [0, 0, 4]]
+		```
+		
+		For comparison, a pure numpy version of this function can be found in
+		`util_test.py`, function `_fill_triangular`.
+		
+		Args:
+		  x: `Tensor` representing lower (or upper) triangular elements.
+		  upper: Python `bool` representing whether output matrix should be upper
+		    triangular (`True`) or lower triangular (`False`, default).
+		  name: Python `str`. The name to give this op.
+		
+		Returns:
+		  tril: `Tensor` with lower (or upper) triangular elements filled from `x`.
+		
+		Raises:
+		  ValueError: if `x` cannot be mapped to a triangular matrix.
+	**/
+	static public function fill_triangular(x:Dynamic, ?upper:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Creates a vector from a (batch of) triangular matrix.
+		
+		The vector is created from the lower-triangular or upper-triangular portion
+		depending on the value of the parameter `upper`.
+		
+		If `x.shape` is `[b1, b2, ..., bB, n, n]` then the output shape is
+		`[b1, b2, ..., bB, d]` where `d = n (n + 1) / 2`.
+		
+		Example:
+		
+		```python
+		fill_triangular_inverse(
+		  [[4, 0, 0],
+		   [6, 5, 0],
+		   [3, 2, 1]])
+		
+		# ==> [1, 2, 3, 4, 5, 6]
+		
+		fill_triangular_inverse(
+		  [[1, 2, 3],
+		   [0, 5, 6],
+		   [0, 0, 4]], upper=True)
+		
+		# ==> [1, 2, 3, 4, 5, 6]
+		```
+		
+		Args:
+		  x: `Tensor` representing lower (or upper) triangular elements.
+		  upper: Python `bool` representing whether output matrix should be upper
+		    triangular (`True`) or lower triangular (`False`, default).
+		  name: Python `str`. The name to give this op.
+		
+		Returns:
+		  flat_tril: (Batch of) vector-shaped `Tensor` representing vectorized lower
+		    (or upper) triangular elements from `x`.
+	**/
+	static public function fill_triangular_inverse(x:Dynamic, ?upper:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Get the KL-divergence KL(distribution_a || distribution_b).
 		
 		If there is no KL method registered specifically for `type(distribution_a)`
@@ -62,13 +319,15 @@ package tensorflow.contrib.distributions;
 		# valid Cholesky factor.
 		chol = matrix_diag_transform(matrix, transform=tf.nn.softplus)
 		
-		# OperatorPDCholesky ignores the upper triangle.
-		operator = OperatorPDCholesky(chol)
+		# LinearOperatorLowerTriangular ignores the upper triangle.
+		operator = LinearOperatorLowerTriangular(chol)
 		```
 		
 		Example of heteroskedastic 2-D linear regression.
 		
 		```python
+		tfd = tfp.distributions
+		
 		# Get a trainable Cholesky factor.
 		matrix_values = tf.contrib.layers.fully_connected(activations, 4)
 		matrix = tf.reshape(matrix_values, (batch_size, 2, 2))
@@ -78,7 +337,7 @@ package tensorflow.contrib.distributions;
 		mu = tf.contrib.layers.fully_connected(activations, 2)
 		
 		# This is a fully trainable multivariate normal!
-		dist = tf.contrib.distributions.MVNCholesky(mu, chol)
+		dist = tfd.MultivariateNormalTriL(mu, chol)
 		
 		# Standard log loss. Minimizing this will "train" mu and chol, and then dist
 		# will be a distribution predicting labels as multivariate Gaussians.
@@ -98,6 +357,51 @@ package tensorflow.contrib.distributions;
 		  A `Tensor` with same shape and `dtype` as `matrix`.
 	**/
 	static public function matrix_diag_transform(matrix:Dynamic, ?transform:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Compute exponentially weighted moving {mean,variance} of a streaming value.
+		
+		The exponentially-weighting moving `mean_var` and `variance_var` are updated
+		by `value` according to the following recurrence:
+		
+		```python
+		variance_var = decay * (variance_var + (1-decay) * (value - mean_var)**2)
+		mean_var     = decay * mean_var + (1 - decay) * value
+		```
+		
+		Note: `mean_var` is updated *after* `variance_var`, i.e., `variance_var` uses
+		the lag-`1` mean.
+		
+		For derivation justification, see [Finch (2009; Eq. 143)][1].
+		
+		Unlike `assign_moving_mean_variance`, this function handles
+		variable creation.
+		
+		Args:
+		  value: `float`-like `Tensor`. Same shape as `mean_var` and `variance_var`.
+		  decay: A `float`-like `Tensor`. The moving mean decay. Typically close to
+		    `1.`, e.g., `0.999`.
+		  collections: Python list of graph-collections keys to which the internal
+		    variables `mean_var` and `variance_var` are added.
+		    Default value is `[GraphKeys.GLOBAL_VARIABLES]`.
+		  name: Optional name of the returned operation.
+		
+		Returns:
+		  mean_var: `Variable` representing the `value`-updated exponentially weighted
+		    moving mean.
+		  variance_var: `Variable` representing the `value`-updated
+		    exponentially weighted moving variance.
+		
+		Raises:
+		  TypeError: if `value_var` does not have float type `dtype`.
+		  TypeError: if `value`, `decay` have different `base_dtype`.
+		
+		#### References
+		
+		[1]: Tony Finch. Incremental calculation of weighted mean and variance.
+		     _Technical Report_, 2009.
+		     http://people.ds.cam.ac.uk/fanf2/hermes/doc/antiforgery/stats.pdf
+	**/
+	static public function moving_mean_variance(value:Dynamic, decay:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Posterior Normal distribution with conjugate prior on the mean.
 		
@@ -195,7 +499,7 @@ package tensorflow.contrib.distributions;
 		Compute the `q`-th percentile of `x`.
 		
 		Given a vector `x`, the `q`-th percentile of `x` is the value `q / 100` of the
-		way from the minimum to the maximum in in a sorted copy of `x`.
+		way from the minimum to the maximum in a sorted copy of `x`.
 		
 		The values and distances of the two nearest neighbors as well as the
 		`interpolation` parameter will determine the percentile if the normalized
@@ -261,6 +565,195 @@ package tensorflow.contrib.distributions;
 	**/
 	static public function percentile(x:Dynamic, q:Dynamic, ?axis:Dynamic, ?interpolation:Dynamic, ?keep_dims:Dynamic, ?validate_args:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Use Gauss-Hermite quadrature to form quadrature on positive-reals. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
+		
+		Note: for a given `quadrature_size`, this method is generally less accurate
+		than `quadrature_scheme_lognormal_quantiles`.
+		
+		Args:
+		  loc: `float`-like (batch of) scalar `Tensor`; the location parameter of
+		    the LogNormal prior.
+		  scale: `float`-like (batch of) scalar `Tensor`; the scale parameter of
+		    the LogNormal prior.
+		  quadrature_size: Python `int` scalar representing the number of quadrature
+		    points.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  name: Python `str` name prefixed to Ops created by this class.
+		
+		Returns:
+		  grid: (Batch of) length-`quadrature_size` vectors representing the
+		    `log_rate` parameters of a `Poisson`.
+		  probs: (Batch of) length-`quadrature_size` vectors representing the
+		    weight associate with each `grid` value.
+	**/
+	static public function quadrature_scheme_lognormal_gauss_hermite(loc:Dynamic, scale:Dynamic, quadrature_size:Dynamic, ?validate_args:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Use LogNormal quantiles to form quadrature on positive-reals. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
+		
+		Args:
+		  loc: `float`-like (batch of) scalar `Tensor`; the location parameter of
+		    the LogNormal prior.
+		  scale: `float`-like (batch of) scalar `Tensor`; the scale parameter of
+		    the LogNormal prior.
+		  quadrature_size: Python `int` scalar representing the number of quadrature
+		    points.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  name: Python `str` name prefixed to Ops created by this class.
+		
+		Returns:
+		  grid: (Batch of) length-`quadrature_size` vectors representing the
+		    `log_rate` parameters of a `Poisson`.
+		  probs: (Batch of) length-`quadrature_size` vectors representing the
+		    weight associate with each `grid` value.
+	**/
+	static public function quadrature_scheme_lognormal_quantiles(loc:Dynamic, scale:Dynamic, quadrature_size:Dynamic, ?validate_args:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Use Gauss-Hermite quadrature to form quadrature on `K - 1` simplex. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
+		
+		A `SoftmaxNormal` random variable `Y` may be generated via
+		
+		```
+		Y = SoftmaxCentered(X),
+		X = Normal(normal_loc, normal_scale)
+		```
+		
+		Note: for a given `quadrature_size`, this method is generally less accurate
+		than `quadrature_scheme_softmaxnormal_quantiles`.
+		
+		Args:
+		  normal_loc: `float`-like `Tensor` with shape `[b1, ..., bB, K-1]`, B>=0.
+		    The location parameter of the Normal used to construct the SoftmaxNormal.
+		  normal_scale: `float`-like `Tensor`. Broadcastable with `normal_loc`.
+		    The scale parameter of the Normal used to construct the SoftmaxNormal.
+		  quadrature_size: Python `int` scalar representing the number of quadrature
+		    points.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  name: Python `str` name prefixed to Ops created by this class.
+		
+		Returns:
+		  grid: Shape `[b1, ..., bB, K, quadrature_size]` `Tensor` representing the
+		    convex combination of affine parameters for `K` components.
+		    `grid[..., :, n]` is the `n`-th grid point, living in the `K - 1` simplex.
+		  probs:  Shape `[b1, ..., bB, K, quadrature_size]` `Tensor` representing the
+		    associated with each grid point.
+	**/
+	static public function quadrature_scheme_softmaxnormal_gauss_hermite(normal_loc:Dynamic, normal_scale:Dynamic, quadrature_size:Dynamic, ?validate_args:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Use SoftmaxNormal quantiles to form quadrature on `K - 1` simplex. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
+		
+		A `SoftmaxNormal` random variable `Y` may be generated via
+		
+		```
+		Y = SoftmaxCentered(X),
+		X = Normal(normal_loc, normal_scale)
+		```
+		
+		Args:
+		  normal_loc: `float`-like `Tensor` with shape `[b1, ..., bB, K-1]`, B>=0.
+		    The location parameter of the Normal used to construct the SoftmaxNormal.
+		  normal_scale: `float`-like `Tensor`. Broadcastable with `normal_loc`.
+		    The scale parameter of the Normal used to construct the SoftmaxNormal.
+		  quadrature_size: Python `int` scalar representing the number of quadrature
+		    points.
+		  validate_args: Python `bool`, default `False`. When `True` distribution
+		    parameters are checked for validity despite possibly degrading runtime
+		    performance. When `False` invalid inputs may silently render incorrect
+		    outputs.
+		  name: Python `str` name prefixed to Ops created by this class.
+		
+		Returns:
+		  grid: Shape `[b1, ..., bB, K, quadrature_size]` `Tensor` representing the
+		    convex combination of affine parameters for `K` components.
+		    `grid[..., :, n]` is the `n`-th grid point, living in the `K - 1` simplex.
+		  probs:  Shape `[b1, ..., bB, K, quadrature_size]` `Tensor` representing the
+		    associated with each grid point.
+	**/
+	static public function quadrature_scheme_softmaxnormal_quantiles(normal_loc:Dynamic, normal_scale:Dynamic, quadrature_size:Dynamic, ?validate_args:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes `log(abs(sum(weight * exp(elements across tensor dimensions))))`.
+		
+		If all weights `w` are known to be positive, it is more efficient to directly
+		use `reduce_logsumexp`, i.e., `tf.reduce_logsumexp(logx + tf.log(w))` is more
+		efficient than `du.reduce_weighted_logsumexp(logx, w)`.
+		
+		Reduces `input_tensor` along the dimensions given in `axis`.
+		Unless `keep_dims` is true, the rank of the tensor is reduced by 1 for each
+		entry in `axis`. If `keep_dims` is true, the reduced dimensions
+		are retained with length 1.
+		
+		If `axis` has no entries, all dimensions are reduced, and a
+		tensor with a single element is returned.
+		
+		This function is more numerically stable than log(sum(w * exp(input))). It
+		avoids overflows caused by taking the exp of large inputs and underflows
+		caused by taking the log of small inputs.
+		
+		For example:
+		
+		```python
+		x = tf.constant([[0., 0, 0],
+		                 [0, 0, 0]])
+		
+		w = tf.constant([[-1., 1, 1],
+		                 [1, 1, 1]])
+		
+		du.reduce_weighted_logsumexp(x, w)
+		# ==> log(-1*1 + 1*1 + 1*1 + 1*1 + 1*1 + 1*1) = log(4)
+		
+		du.reduce_weighted_logsumexp(x, w, axis=0)
+		# ==> [log(-1+1), log(1+1), log(1+1)]
+		
+		du.reduce_weighted_logsumexp(x, w, axis=1)
+		# ==> [log(-1+1+1), log(1+1+1)]
+		
+		du.reduce_weighted_logsumexp(x, w, axis=1, keep_dims=True)
+		# ==> [[log(-1+1+1)], [log(1+1+1)]]
+		
+		du.reduce_weighted_logsumexp(x, w, axis=[0, 1])
+		# ==> log(-1+5)
+		```
+		
+		Args:
+		  logx: The tensor to reduce. Should have numeric type.
+		  w: The weight tensor. Should have numeric type identical to `logx`.
+		  axis: The dimensions to reduce. If `None` (the default),
+		    reduces all dimensions. Must be in the range
+		    `[-rank(input_tensor), rank(input_tensor))`.
+		  keep_dims: If true, retains reduced dimensions with length 1.
+		  return_sign: If `True`, returns the sign of the result.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  lswe: The `log(abs(sum(weight * exp(x))))` reduced tensor.
+		  sign: (Optional) The sign of `sum(weight * exp(x))`.
+	**/
+	static public function reduce_weighted_logsumexp(logx:Dynamic, ?w:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?return_sign:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Computes the inverse softplus, i.e., x = softplus_inverse(softplus(x)).
 		
 		Mathematically this op is equivalent to:
@@ -277,4 +770,37 @@ package tensorflow.contrib.distributions;
 		  `Tensor`. Has the same type/shape as input `x`.
 	**/
 	static public function softplus_inverse(x:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Creates a matrix with values set above, below, and on the diagonal.
+		
+		Example:
+		
+		```python
+		tridiag(below=[1., 2., 3.],
+		        diag=[4., 5., 6., 7.],
+		        above=[8., 9., 10.])
+		# ==> array([[  4.,   8.,   0.,   0.],
+		#            [  1.,   5.,   9.,   0.],
+		#            [  0.,   2.,   6.,  10.],
+		#            [  0.,   0.,   3.,   7.]], dtype=float32)
+		```
+		
+		Warning: This Op is intended for convenience, not efficiency.
+		
+		Args:
+		  below: `Tensor` of shape `[B1, ..., Bb, d-1]` corresponding to the below
+		    diagonal part. `None` is logically equivalent to `below = 0`.
+		  diag: `Tensor` of shape `[B1, ..., Bb, d]` corresponding to the diagonal
+		    part.  `None` is logically equivalent to `diag = 0`.
+		  above: `Tensor` of shape `[B1, ..., Bb, d-1]` corresponding to the above
+		    diagonal part.  `None` is logically equivalent to `above = 0`.
+		  name: Python `str`. The name to give this op.
+		
+		Returns:
+		  tridiag: `Tensor` with values set above, below and on the diagonal.
+		
+		Raises:
+		  ValueError: if all inputs are `None`.
+	**/
+	static public function tridiag(?below:Dynamic, ?diag:Dynamic, ?above:Dynamic, ?name:Dynamic):Dynamic;
 }

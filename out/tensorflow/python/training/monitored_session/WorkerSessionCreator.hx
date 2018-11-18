@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.monitored_session;
 @:pythonImport("tensorflow.python.training.monitored_session", "WorkerSessionCreator") extern class WorkerSessionCreator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -45,9 +45,10 @@ package tensorflow.python.training.monitored_session;
 		    not specified a default one is created. It's used to finalize the graph.
 		  master: `String` representation of the TensorFlow master to use.
 		  config: `ConfigProto` proto used to configure the session.
+		  max_wait_secs: Maximum time to wait for the session to become available.
 	**/
 	@:native("__init__")
-	public function ___init__(?scaffold:Dynamic, ?master:Dynamic, ?config:Dynamic):Dynamic;
+	public function ___init__(?scaffold:Dynamic, ?master:Dynamic, ?config:Dynamic, ?max_wait_secs:Dynamic):Dynamic;
 	/**
 		Initializes a worker session creator.
 		
@@ -56,15 +57,16 @@ package tensorflow.python.training.monitored_session;
 		    not specified a default one is created. It's used to finalize the graph.
 		  master: `String` representation of the TensorFlow master to use.
 		  config: `ConfigProto` proto used to configure the session.
+		  max_wait_secs: Maximum time to wait for the session to become available.
 	**/
-	public function new(?scaffold:Dynamic, ?master:Dynamic, ?config:Dynamic):Void;
+	public function new(?scaffold:Dynamic, ?master:Dynamic, ?config:Dynamic, ?max_wait_secs:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,11 +117,13 @@ package tensorflow.python.training.monitored_session;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_session_manager():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public function create_session():Dynamic;
 }

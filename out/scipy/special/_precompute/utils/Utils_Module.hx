@@ -28,4 +28,5 @@ package scipy.special._precompute.utils;
 	**/
 	static public function lagrange_inversion(a:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function sup(func:Dynamic):Dynamic;
 }

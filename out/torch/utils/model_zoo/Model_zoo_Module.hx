@@ -10,11 +10,11 @@ package torch.utils.model_zoo;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _download_url_to_file(url:Dynamic, dst:Dynamic, hash_prefix:Dynamic):Dynamic;
+	static public function _download_url_to_file(url:Dynamic, dst:Dynamic, hash_prefix:Dynamic, progress:Dynamic):Dynamic;
 	/**
 		Loads the Torch serialized object at the given URL.
 		
-		If the object is already present in `model_dir`, it's deserialied and
+		If the object is already present in `model_dir`, it's deserialized and
 		returned. The filename part of the URL should follow the naming convention
 		``filename-<sha256>.ext`` where ``<sha256>`` is the first eight or more
 		digits of the SHA256 hash of the contents of the file. The hash is used to
@@ -22,16 +22,19 @@ package torch.utils.model_zoo;
 		
 		The default value of `model_dir` is ``$TORCH_HOME/models`` where
 		``$TORCH_HOME`` defaults to ``~/.torch``. The default directory can be
-		overriden with the ``$TORCH_MODEL_ZOO`` environement variable.
+		overridden with the ``$TORCH_MODEL_ZOO`` environment variable.
 		
 		Args:
 		    url (string): URL of the object to download
 		    model_dir (string, optional): directory in which to save the object
+		    map_location (optional): a function or a dict specifying how to remap storage locations (see torch.load)
+		    progress (bool, optional): whether or not to display a progress bar to stderr
 		
 		Example:
 		    >>> state_dict = torch.utils.model_zoo.load_url('https://s3.amazonaws.com/pytorch/models/resnet18-5c106cde.pth')
 	**/
-	static public function load_url(url:Dynamic, ?model_dir:Dynamic):Dynamic;
+	static public function load_url(url:Dynamic, ?model_dir:Dynamic, ?map_location:Dynamic, ?progress:Dynamic):Dynamic;
+	static public var requests_available : Dynamic;
 	/**
 		Open the URL url, which can be either a string or a Request object.
 		

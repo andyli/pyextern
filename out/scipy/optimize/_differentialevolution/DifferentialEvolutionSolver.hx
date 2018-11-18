@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package scipy.optimize._differentialevolution;
 @:pythonImport("scipy.optimize._differentialevolution", "DifferentialEvolutionSolver") extern class DifferentialEvolutionSolver {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _DifferentialEvolutionSolver__init_error_msg : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +53,7 @@ package scipy.optimize._differentialevolution;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -115,7 +116,7 @@ package scipy.optimize._differentialevolution;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -136,6 +137,10 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function _calculate_population_energies():Dynamic;
 	/**
+		currenttobest1bin, currenttobest1exp
+	**/
+	public function _currenttobest1(candidate:Dynamic, samples:Dynamic):Dynamic;
+	/**
 		make sure the parameters lie between the limits
 	**/
 	public function _ensure_constraint(trial:Dynamic):Dynamic;
@@ -155,7 +160,7 @@ package scipy.optimize._differentialevolution;
 	/**
 		randtobest1bin, randtobest1exp
 	**/
-	public function _randtobest1(candidate:Dynamic, samples:Dynamic):Dynamic;
+	public function _randtobest1(samples:Dynamic):Dynamic;
 	/**
 		scale from a number between 0 and 1 to parameters.
 	**/
@@ -174,6 +179,17 @@ package scipy.optimize._differentialevolution;
 		mean.
 	**/
 	public var convergence : Dynamic;
+	/**
+		Initialises the population with a user specified population.
+		
+		Parameters
+		----------
+		init : np.ndarray
+		    Array specifying subset of the initial population. The array should
+		    have shape (M, len(x)), where len(x) is the number of parameters.
+		    The population is clipped to the lower and upper `bounds`.
+	**/
+	public function init_population_array(init:Dynamic):Dynamic;
 	/**
 		Initializes the population with Latin Hypercube Sampling.
 		Latin Hypercube Sampling ensures that each parameter is uniformly

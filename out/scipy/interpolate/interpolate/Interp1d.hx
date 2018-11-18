@@ -16,7 +16,7 @@ package scipy.interpolate.interpolate;
 		    the interpolation axis in the original array with the shape of x.
 	**/
 	public function __call__(x:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -67,7 +67,7 @@ package scipy.interpolate.interpolate;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +119,7 @@ package scipy.interpolate.interpolate;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -131,6 +131,10 @@ package scipy.interpolate.interpolate;
 		Find nearest neighbour interpolated y_new = f(x_new).
 	**/
 	public function _call_nearest(x_new:Dynamic):Dynamic;
+	/**
+		Use previous/next neighbour of x_new, y_new = f(x_new).
+	**/
+	public function _call_previousnext(x_new:Dynamic):Dynamic;
 	public function _call_spline(x_new:Dynamic):Dynamic;
 	/**
 		Check the inputs for being in the bounds of the interpolated data.

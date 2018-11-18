@@ -1,7 +1,9 @@
 /* This file is generated, do not edit! */
 package theano.compile.builders;
 @:pythonImport("theano.compile.builders", "OpFromGraph") extern class OpFromGraph {
+	static public var LOP_TYPE_ERR_MSG : Dynamic;
 	public function L_op(inputs:Dynamic, outputs:Dynamic, output_grads:Dynamic):Dynamic;
+	static public var OV_INP_LEN_ERR_MSG : Dynamic;
 	/**
 		This method is primarily used by tensor.Rop
 		
@@ -25,6 +27,8 @@ package theano.compile.builders;
 		                          eval_points=eval_points)
 	**/
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
+	static public var STYPE_ERR_MSG : Dynamic;
+	static public var TYPE_ERR_MSG : Dynamic;
 	/**
 		Optional: return some or all output[s] of `make_node`.
 		
@@ -95,18 +99,18 @@ package theano.compile.builders;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(inputs:Dynamic, outputs:Dynamic, ?_inline:Dynamic, ?grad_overrides:Dynamic, ?rop_overrides:Dynamic, ?name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(inputs:Dynamic, outputs:Dynamic, ?_inline:Dynamic, ?lop_overrides:Dynamic, ?grad_overrides:Dynamic, ?rop_overrides:Dynamic, ?connection_pattern:Dynamic, ?name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(inputs:Dynamic, outputs:Dynamic, ?_inline:Dynamic, ?grad_overrides:Dynamic, ?rop_overrides:Dynamic, ?name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(inputs:Dynamic, outputs:Dynamic, ?_inline:Dynamic, ?lop_overrides:Dynamic, ?grad_overrides:Dynamic, ?rop_overrides:Dynamic, ?connection_pattern:Dynamic, ?name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -158,7 +162,7 @@ package theano.compile.builders;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -175,9 +179,9 @@ package theano.compile.builders;
 	**/
 	static public function _get_test_value(v:Dynamic):Dynamic;
 	/**
-		converts self._grad_op from user supplied form to type(self) instance
+		converts self._lop_op from user supplied form to type(self) instance
 	**/
-	public function _recompute_grad_op():Dynamic;
+	public function _recompute_lop_op():Dynamic;
 	/**
 		converts self._rop_op from user supplied form to type(self) instance
 	**/
@@ -196,10 +200,10 @@ package theano.compile.builders;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	/**
 		Optional: return a code string specific to the apply to be
 		inserted in the struct cleanup code.
@@ -495,7 +499,7 @@ package theano.compile.builders;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -564,14 +568,14 @@ package theano.compile.builders;
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
 	/**
-		getter method for self._grad_op
+		getter method for self._lop_op
 	**/
-	public function get_grad_op():Dynamic;
+	public function get_lop_op():Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	/**
 		getter method for self._rop_op
 	**/
 	public function get_rop_op():Dynamic;
-	public function grad(inputs:Dynamic, output_grads:Dynamic):Dynamic;
 	public function infer_shape(node:Dynamic, shapes:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
@@ -661,15 +665,20 @@ package theano.compile.builders;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;
 	/**
 		Set gradient overrides, see help(theano.OpFromGraph) for syntax
-		This will completely remove any previously set gradient overrides
+		This will completely remove any previously set L_op/gradient overrides
 	**/
 	public function set_grad_overrides(grad_overrides:Dynamic):Dynamic;
+	/**
+		Set L_op overrides, see help(theano.OpFromGraph) for syntax
+		This will completely remove any previously set L_op/gradient overrides
+	**/
+	public function set_lop_overrides(lop_overrides:Dynamic):Dynamic;
 	/**
 		Set R_op overrides, see help(theano.OpFromGraph) for syntax
 		This will completely remove any previously set R_op overrides

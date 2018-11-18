@@ -9,28 +9,6 @@ package tensorflow.python.layers.normalization;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Selects fn_then() or fn_else() based on the value of pred.
-		
-		The purpose of this function is the same as `utils.smart_cond`. However, at
-		the moment there is a bug (b/36297356) that seems to kick in only when
-		`smart_cond` delegates to `tf.cond`, which sometimes results in the training
-		hanging when using parameter servers. This function will output the result
-		of `fn_then` or `fn_else` if `pred` is known at graph construction time.
-		Otherwise, it will use `tf.where` which will result in some redundant work
-		(both branches will be computed but only one selected). However, the tensors
-		involved will usually be small (means and variances in batchnorm), so the
-		cost will be small and will not be incurred at all if `pred` is a constant.
-		
-		Args:
-		  pred: A boolean scalar `Tensor`.
-		  fn_then: A callable to use when pred==True.
-		  fn_else: A callable to use when pred==False.
-		
-		Returns:
-		  A `Tensor` whose value is fn_then() or fn_else() based on the value of pred.
-	**/
-	static public function _smart_select(pred:Dynamic, fn_then:Dynamic, fn_else:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Functional interface for the batch normalization layer.
@@ -44,9 +22,16 @@ package tensorflow.python.layers.normalization;
 		
 		Note: when training, the moving_mean and moving_variance need to be updated.
 		By default the update ops are placed in `tf.GraphKeys.UPDATE_OPS`, so they
-		need to be added as a dependency to the `train_op`. For example:
+		need to be added as a dependency to the `train_op`. Also, be sure to add
+		any batch_normalization ops before getting the update_ops collection.
+		Otherwise, update_ops will be empty, and training/inference will not work
+		properly. For example:
 		
 		```python
+		  x_norm = tf.layers.batch_normalization(x, training=training)
+		
+		  # ...
+		
 		  update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 		  with tf.control_dependencies(update_ops):
 		    train_op = optimizer.minimize(loss)
@@ -54,7 +39,7 @@ package tensorflow.python.layers.normalization;
 		
 		Arguments:
 		  inputs: Tensor input.
-		  axis: Integer, the axis that should be normalized (typically the features
+		  axis: An `int`, the axis that should be normalized (typically the features
 		    axis). For instance, after a `Convolution2D` layer with
 		    `data_format="channels_first"`, set `axis=1` in `BatchNormalization`.
 		  momentum: Momentum for the moving average.
@@ -70,6 +55,14 @@ package tensorflow.python.layers.normalization;
 		  moving_variance_initializer: Initializer for the moving variance.
 		  beta_regularizer: Optional regularizer for the beta weight.
 		  gamma_regularizer: Optional regularizer for the gamma weight.
+		  beta_constraint: An optional projection function to be applied to the `beta`
+		      weight after being updated by an `Optimizer` (e.g. used to implement
+		      norm constraints or value constraints for layer weights). The function
+		      must take as input the unprojected variable and must return the
+		      projected variable (which must have the same shape). Constraints are
+		      not safe to use when doing asynchronous distributed training.
+		  gamma_constraint: An optional projection function to be applied to the
+		      `gamma` weight after being updated by an `Optimizer`.
 		  training: Either a Python boolean, or a TensorFlow boolean scalar tensor
 		    (e.g. a placeholder). Whether to return the output in training mode
 		    (normalized with statistics of the current batch) or in inference mode
@@ -94,11 +87,34 @@ package tensorflow.python.layers.normalization;
 		    and should be neither too small (which would add noise) nor too large
 		    (which would give stale estimates). Note that `momentum` is still applied
 		    to get the means and variances for inference.
+		  fused: if `None` or `True`, use a faster, fused implementation if possible.
+		    If `False`, use the system recommended implementation.
+		  virtual_batch_size: An `int`. By default, `virtual_batch_size` is `None`,
+		    which means batch normalization is performed across the whole batch. When
+		    `virtual_batch_size` is not `None`, instead perform "Ghost Batch
+		    Normalization", which creates virtual sub-batches which are each
+		    normalized separately (with shared gamma, beta, and moving statistics).
+		    Must divide the actual batch size during execution.
+		  adjustment: A function taking the `Tensor` containing the (dynamic) shape of
+		    the input tensor and returning a pair (scale, bias) to apply to the
+		    normalized values (before gamma and beta), only during training. For
+		    example, if axis==-1,
+		      `adjustment = lambda shape: (
+		        tf.random_uniform(shape[-1:], 0.93, 1.07),
+		        tf.random_uniform(shape[-1:], -0.1, 0.1))`
+		    will scale the normalized value by up to 7% up or down, then shift the
+		    result by up to 0.1 (with independent scaling and bias for each feature
+		    but shared across all examples), and finally apply gamma and/or beta. If
+		    `None`, no adjustment is applied. Cannot be specified if
+		    virtual_batch_size is specified.
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
-	static public function batch_norm(inputs:Dynamic, ?axis:Dynamic, ?momentum:Dynamic, ?epsilon:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?beta_initializer:Dynamic, ?gamma_initializer:Dynamic, ?moving_mean_initializer:Dynamic, ?moving_variance_initializer:Dynamic, ?beta_regularizer:Dynamic, ?gamma_regularizer:Dynamic, ?training:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_momentum:Dynamic):Dynamic;
+	static public function batch_norm(inputs:Dynamic, ?axis:Dynamic, ?momentum:Dynamic, ?epsilon:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?beta_initializer:Dynamic, ?gamma_initializer:Dynamic, ?moving_mean_initializer:Dynamic, ?moving_variance_initializer:Dynamic, ?beta_regularizer:Dynamic, ?gamma_regularizer:Dynamic, ?beta_constraint:Dynamic, ?gamma_constraint:Dynamic, ?training:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_momentum:Dynamic, ?fused:Dynamic, ?virtual_batch_size:Dynamic, ?adjustment:Dynamic):Dynamic;
 	/**
 		Functional interface for the batch normalization layer.
 		
@@ -111,9 +127,16 @@ package tensorflow.python.layers.normalization;
 		
 		Note: when training, the moving_mean and moving_variance need to be updated.
 		By default the update ops are placed in `tf.GraphKeys.UPDATE_OPS`, so they
-		need to be added as a dependency to the `train_op`. For example:
+		need to be added as a dependency to the `train_op`. Also, be sure to add
+		any batch_normalization ops before getting the update_ops collection.
+		Otherwise, update_ops will be empty, and training/inference will not work
+		properly. For example:
 		
 		```python
+		  x_norm = tf.layers.batch_normalization(x, training=training)
+		
+		  # ...
+		
 		  update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 		  with tf.control_dependencies(update_ops):
 		    train_op = optimizer.minimize(loss)
@@ -121,7 +144,7 @@ package tensorflow.python.layers.normalization;
 		
 		Arguments:
 		  inputs: Tensor input.
-		  axis: Integer, the axis that should be normalized (typically the features
+		  axis: An `int`, the axis that should be normalized (typically the features
 		    axis). For instance, after a `Convolution2D` layer with
 		    `data_format="channels_first"`, set `axis=1` in `BatchNormalization`.
 		  momentum: Momentum for the moving average.
@@ -137,6 +160,14 @@ package tensorflow.python.layers.normalization;
 		  moving_variance_initializer: Initializer for the moving variance.
 		  beta_regularizer: Optional regularizer for the beta weight.
 		  gamma_regularizer: Optional regularizer for the gamma weight.
+		  beta_constraint: An optional projection function to be applied to the `beta`
+		      weight after being updated by an `Optimizer` (e.g. used to implement
+		      norm constraints or value constraints for layer weights). The function
+		      must take as input the unprojected variable and must return the
+		      projected variable (which must have the same shape). Constraints are
+		      not safe to use when doing asynchronous distributed training.
+		  gamma_constraint: An optional projection function to be applied to the
+		      `gamma` weight after being updated by an `Optimizer`.
 		  training: Either a Python boolean, or a TensorFlow boolean scalar tensor
 		    (e.g. a placeholder). Whether to return the output in training mode
 		    (normalized with statistics of the current batch) or in inference mode
@@ -161,11 +192,35 @@ package tensorflow.python.layers.normalization;
 		    and should be neither too small (which would add noise) nor too large
 		    (which would give stale estimates). Note that `momentum` is still applied
 		    to get the means and variances for inference.
+		  fused: if `None` or `True`, use a faster, fused implementation if possible.
+		    If `False`, use the system recommended implementation.
+		  virtual_batch_size: An `int`. By default, `virtual_batch_size` is `None`,
+		    which means batch normalization is performed across the whole batch. When
+		    `virtual_batch_size` is not `None`, instead perform "Ghost Batch
+		    Normalization", which creates virtual sub-batches which are each
+		    normalized separately (with shared gamma, beta, and moving statistics).
+		    Must divide the actual batch size during execution.
+		  adjustment: A function taking the `Tensor` containing the (dynamic) shape of
+		    the input tensor and returning a pair (scale, bias) to apply to the
+		    normalized values (before gamma and beta), only during training. For
+		    example, if axis==-1,
+		      `adjustment = lambda shape: (
+		        tf.random_uniform(shape[-1:], 0.93, 1.07),
+		        tf.random_uniform(shape[-1:], -0.1, 0.1))`
+		    will scale the normalized value by up to 7% up or down, then shift the
+		    result by up to 0.1 (with independent scaling and bias for each feature
+		    but shared across all examples), and finally apply gamma and/or beta. If
+		    `None`, no adjustment is applied. Cannot be specified if
+		    virtual_batch_size is specified.
 		
 		Returns:
 		  Output tensor.
+		
+		Raises:
+		  ValueError: if eager execution is enabled.
 	**/
-	static public function batch_normalization(inputs:Dynamic, ?axis:Dynamic, ?momentum:Dynamic, ?epsilon:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?beta_initializer:Dynamic, ?gamma_initializer:Dynamic, ?moving_mean_initializer:Dynamic, ?moving_variance_initializer:Dynamic, ?beta_regularizer:Dynamic, ?gamma_regularizer:Dynamic, ?training:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_momentum:Dynamic):Dynamic;
+	static public function batch_normalization(inputs:Dynamic, ?axis:Dynamic, ?momentum:Dynamic, ?epsilon:Dynamic, ?center:Dynamic, ?scale:Dynamic, ?beta_initializer:Dynamic, ?gamma_initializer:Dynamic, ?moving_mean_initializer:Dynamic, ?moving_variance_initializer:Dynamic, ?beta_regularizer:Dynamic, ?gamma_regularizer:Dynamic, ?beta_constraint:Dynamic, ?gamma_constraint:Dynamic, ?training:Dynamic, ?trainable:Dynamic, ?name:Dynamic, ?reuse:Dynamic, ?renorm:Dynamic, ?renorm_clipping:Dynamic, ?renorm_momentum:Dynamic, ?fused:Dynamic, ?virtual_batch_size:Dynamic, ?adjustment:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

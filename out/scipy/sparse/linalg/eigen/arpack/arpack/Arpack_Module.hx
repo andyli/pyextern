@@ -57,6 +57,12 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -71,6 +77,199 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 	**/
 	static public function choose_ncv(k:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Solve an ordinary or generalized eigenvalue problem of a square matrix.
+		
+		Find eigenvalues w and right or left eigenvectors of a general matrix::
+		
+		    a   vr[:,i] = w[i]        b   vr[:,i]
+		    a.H vl[:,i] = w[i].conj() b.H vl[:,i]
+		
+		where ``.H`` is the Hermitian conjugation.
+		
+		Parameters
+		----------
+		a : (M, M) array_like
+		    A complex or real matrix whose eigenvalues and eigenvectors
+		    will be computed.
+		b : (M, M) array_like, optional
+		    Right-hand side matrix in a generalized eigenvalue problem.
+		    Default is None, identity matrix is assumed.
+		left : bool, optional
+		    Whether to calculate and return left eigenvectors.  Default is False.
+		right : bool, optional
+		    Whether to calculate and return right eigenvectors.  Default is True.
+		overwrite_a : bool, optional
+		    Whether to overwrite `a`; may improve performance.  Default is False.
+		overwrite_b : bool, optional
+		    Whether to overwrite `b`; may improve performance.  Default is False.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		homogeneous_eigvals : bool, optional
+		    If True, return the eigenvalues in homogeneous coordinates.
+		    In this case ``w`` is a (2, M) array so that::
+		
+		        w[1,i] a vr[:,i] = w[0,i] b vr[:,i]
+		
+		    Default is False.
+		
+		Returns
+		-------
+		w : (M,) or (2, M) double or complex ndarray
+		    The eigenvalues, each repeated according to its
+		    multiplicity. The shape is (M,) unless
+		    ``homogeneous_eigvals=True``.
+		vl : (M, M) double or complex ndarray
+		    The normalized left eigenvector corresponding to the eigenvalue
+		    ``w[i]`` is the column vl[:,i]. Only returned if ``left=True``.
+		vr : (M, M) double or complex ndarray
+		    The normalized right eigenvector corresponding to the eigenvalue
+		    ``w[i]`` is the column ``vr[:,i]``.  Only returned if ``right=True``.
+		
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
+		
+		See Also
+		--------
+		eigvals : eigenvalues of general arrays
+		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
+		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
+		    band matrices
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
+		
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a) == linalg.eig(a)[0]
+		array([ True,  True])
+		>>> linalg.eig(a, left=True, right=False)[1] # normalized left eigenvector
+		array([[-0.70710678+0.j        , -0.70710678-0.j        ],
+		       [-0.        +0.70710678j, -0.        -0.70710678j]])
+		>>> linalg.eig(a, left=False, right=True)[1] # normalized right eigenvector
+		array([[0.70710678+0.j        , 0.70710678-0.j        ],
+		       [0.        -0.70710678j, 0.        +0.70710678j]])
+	**/
+	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
+	/**
+		Solve an ordinary or generalized eigenvalue problem for a complex
+		Hermitian or real symmetric matrix.
+		
+		Find eigenvalues w and optionally eigenvectors v of matrix `a`, where
+		`b` is positive definite::
+		
+		                  a v[:,i] = w[i] b v[:,i]
+		    v[i,:].conj() a v[:,i] = w[i]
+		    v[i,:].conj() b v[:,i] = 1
+		
+		Parameters
+		----------
+		a : (M, M) array_like
+		    A complex Hermitian or real symmetric matrix whose eigenvalues and
+		    eigenvectors will be computed.
+		b : (M, M) array_like, optional
+		    A complex Hermitian or real symmetric definite positive matrix in.
+		    If omitted, identity matrix is assumed.
+		lower : bool, optional
+		    Whether the pertinent array data is taken from the lower or upper
+		    triangle of `a`. (Default: lower)
+		eigvals_only : bool, optional
+		    Whether to calculate only eigenvalues and no eigenvectors.
+		    (Default: both are calculated)
+		turbo : bool, optional
+		    Use divide and conquer algorithm (faster but expensive in memory,
+		    only for generalized eigenvalue problem and if eigvals=None)
+		eigvals : tuple (lo, hi), optional
+		    Indexes of the smallest and largest (in ascending order) eigenvalues
+		    and corresponding eigenvectors to be returned: 0 <= lo <= hi <= M-1.
+		    If omitted, all eigenvalues and eigenvectors are returned.
+		type : int, optional
+		    Specifies the problem type to be solved:
+		
+		       type = 1: a   v[:,i] = w[i] b v[:,i]
+		
+		       type = 2: a b v[:,i] = w[i]   v[:,i]
+		
+		       type = 3: b a v[:,i] = w[i]   v[:,i]
+		overwrite_a : bool, optional
+		    Whether to overwrite data in `a` (may improve performance)
+		overwrite_b : bool, optional
+		    Whether to overwrite data in `b` (may improve performance)
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		
+		Returns
+		-------
+		w : (N,) float ndarray
+		    The N (1<=N<=M) selected eigenvalues, in ascending order, each
+		    repeated according to its multiplicity.
+		v : (M, N) complex ndarray
+		    (if eigvals_only == False)
+		
+		    The normalized selected eigenvector corresponding to the
+		    eigenvalue w[i] is the column v[:,i].
+		
+		    Normalization:
+		
+		        type 1 and 3: v.conj() a      v  = w
+		
+		        type 2: inv(v).conj() a  inv(v) = w
+		
+		        type = 1 or 2: v.conj() b      v  = I
+		
+		        type = 3: v.conj() inv(b) v  = I
+		
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge,
+		    an error occurred, or b matrix is not definite positive. Note that
+		    if input matrices are not symmetric or hermitian, no error is reported
+		    but results will be wrong.
+		
+		See Also
+		--------
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
+		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w, v = eigh(A)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
+	**/
+	static public function eigh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?eigvals_only:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
 		Find k eigenvalues and eigenvectors of the square matrix A.
 		
@@ -425,7 +624,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 		>>> sparse.eye(3, dtype=np.int8)
-		<3x3 sparse matrix of type '<type 'numpy.int8'>'
+		<3x3 sparse matrix of type '<class 'numpy.int8'>'
 		    with 3 stored elements (1 diagonals) in DIAgonal format>
 	**/
 	static public function eye(m:Dynamic, ?n:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?format:Dynamic):Dynamic;
@@ -455,9 +654,15 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		----------------
 		x0 : {array, matrix}
 		    Starting guess for the solution (a vector of zeros by default).
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		restart : int, optional
 		    Number of iterations between restarts. Larger values increase
 		    iteration cost, but may be necessary for convergence.
@@ -466,15 +671,6 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		    Maximum number of iterations (restart cycles).  Iteration will stop
 		    after maxiter steps even if the specified tolerance has not been
 		    achieved.
-		xtype : {'f','d','F','D'}
-		    This parameter is DEPRECATED --- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 		M : {sparse matrix, dense matrix, LinearOperator}
 		    Inverse of the preconditioner of A.  M should approximate the
 		    inverse of A and be easy to solve for (see Notes).  Effective
@@ -502,10 +698,104 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		  import scipy.sparse.linalg as spla
 		  M_x = lambda x: spla.spsolve(P, x)
 		  M = spla.LinearOperator((n, n), M_x)
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import gmres
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> b = np.array([2, 4, -1], dtype=float)
+		>>> x, exitCode = gmres(A, b)
+		>>> print(exitCode)            # 0 indicates successful convergence
+		0
+		>>> np.allclose(A.dot(x), b)
+		True
 	**/
-	static public function gmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?restart:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?restrt:Dynamic):Dynamic;
+	static public function gmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?restart:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?restrt:Dynamic, ?atol:Dynamic):Dynamic;
+	/**
+		gmres with looser termination condition.
+	**/
+	static public function gmres_loose(A:Dynamic, b:Dynamic, tol:Dynamic):Dynamic;
 	static public function isdense(x:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
+	static public function issparse(x:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
+	/**
+		Is x of csr_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csr matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csr matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix_csr
+		>>> isspmatrix_csr(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csr(csc_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_csr(x:Dynamic):Dynamic;
 	/**
 		Compute pivoted LU decomposition of a matrix.
@@ -544,6 +834,22 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		Notes
 		-----
 		This is a wrapper to the ``*GETRF`` routines from LAPACK.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu_factor
+		>>> from numpy import tril, triu, allclose, zeros, eye
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> lu, piv = lu_factor(A)
+		>>> piv
+		array([2, 2, 3, 3], dtype=int32)
+		
+		Convert LAPACK's ``piv`` array to NumPy index and test the permutation 
+		
+		>>> piv_py = [2, 0, 3, 1]
+		>>> L, U = np.tril(lu, k=-1) + np.eye(4), np.triu(lu)
+		>>> np.allclose(A[piv_py] - L @ U, np.zeros((4, 4)))
+		True
 	**/
 	static public function lu_factor(a:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -580,6 +886,16 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		See also
 		--------
 		lu_factor : LU factorize a matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu_factor, lu_solve
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> b = np.array([1, 1, 1, 1])
+		>>> lu, piv = lu_factor(A)
+		>>> x = lu_solve((lu, piv), b)
+		>>> np.allclose(A @ x - b, np.zeros((4,)))
+		True
 	**/
 	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
@@ -602,8 +918,6 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		diag_pivot_thresh : float, optional
 		    Threshold used for a diagonal entry to be an acceptable pivot.
 		    See SuperLU user's guide for details [1]_
-		drop_tol : float, optional
-		    (deprecated) No effect.
 		relax : int, optional
 		    Expert option for customizing the degree of relaxing supernodes.
 		    See SuperLU user's guide for details [1]_
@@ -633,8 +947,22 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		References
 		----------
 		.. [1] SuperLU http://crd.lbl.gov/~xiaoye/SuperLU/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import splu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = splu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
-	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?drop_tol:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
+	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
 		Compute the largest k singular values/vectors for a sparse matrix.
 		
@@ -698,6 +1026,17 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		-----
 		This is a naive implementation using ARPACK as an eigensolver
 		on A.H * A or A * A.H, depending on which one is more efficient.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import svds, eigs
+		>>> A = csc_matrix([[1, 0, 0], [5, 0, 2], [0, -1, 0], [0, 0, 3]], dtype=float)
+		>>> u, s, vt = svds(A, k=2)
+		>>> s
+		array([ 2.75193379,  5.6059665 ])
+		>>> np.sqrt(eigs(A.dot(A.T), k=2)[0]).real
+		array([ 5.6059665 ,  2.75193379])
 	**/
 	static public function svds(A:Dynamic, ?k:Dynamic, ?ncv:Dynamic, ?tol:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?maxiter:Dynamic, ?return_singular_vectors:Dynamic):Dynamic;
 }

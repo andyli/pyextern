@@ -5,7 +5,7 @@ package scipy.sparse.compressed;
 	public function __add__(other:Dynamic):Dynamic;
 	static public var __array_priority__ : Dynamic;
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -58,7 +58,7 @@ package scipy.sparse.compressed;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	public function __itruediv__(other:Dynamic):Dynamic;
@@ -92,11 +92,6 @@ package scipy.sparse.compressed;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
-	/**
-		Method for compatibility with NumPy's ufuncs and dot
-		functions.
-	**/
-	public function __numpy_ufunc__(func:Dynamic, method:Dynamic, pos:Dynamic, inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __pow__(other:Dynamic):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	public function __rdiv__(other:Dynamic):Dynamic;
@@ -139,12 +134,14 @@ package scipy.sparse.compressed;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _add_dense(other:Dynamic):Dynamic;
+	public function _add_sparse(other:Dynamic):Dynamic;
 	public function _arg_min_or_max(axis:Dynamic, out:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
 	public function _arg_min_or_max_axis(axis:Dynamic, op:Dynamic, compare:Dynamic):Dynamic;
 	/**
@@ -210,6 +207,8 @@ package scipy.sparse.compressed;
 	/**
 		Reduce nonzeros with a ufunc over the minor axis when non-empty
 		
+		Can be applied to a function of self.data by supplying data parameter.
+		
 		Warning: this does not call sum_duplicates()
 		
 		Returns
@@ -220,7 +219,7 @@ package scipy.sparse.compressed;
 		value : array of self.dtype
 		    Reduce result for nonzeros in each major_index
 	**/
-	public function _minor_reduce(ufunc:Dynamic):Dynamic;
+	public function _minor_reduce(ufunc:Dynamic, ?data:Dynamic):Dynamic;
 	public function _mul_multivector(other:Dynamic):Dynamic;
 	public function _mul_scalar(other:Dynamic):Dynamic;
 	public function _mul_sparse_matrix(other:Dynamic):Dynamic;
@@ -228,6 +227,7 @@ package scipy.sparse.compressed;
 	public function _prepare_indices(i:Dynamic, j:Dynamic):Dynamic;
 	public function _process_toarray_args(order:Dynamic, out:Dynamic):Dynamic;
 	public function _real():Dynamic;
+	public function _rsub_dense(other:Dynamic):Dynamic;
 	/**
 		Scalar version of self._binopt, for cases in which no new nonzeros
 		are added. Produces a new spmatrix in canonical form.
@@ -237,7 +237,8 @@ package scipy.sparse.compressed;
 	/**
 		Sets value at each (i, j) to x
 		
-		Here (i,j) index major and minor respectively.
+		Here (i,j) index major and minor respectively, and must not contain
+		duplicate entries.
 	**/
 	public function _set_many(i:Dynamic, j:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -250,6 +251,8 @@ package scipy.sparse.compressed;
 		array.
 	**/
 	public function _slicetoarange(j:Dynamic, shape:Dynamic):Dynamic;
+	public function _sub_dense(other:Dynamic):Dynamic;
+	public function _sub_sparse(other:Dynamic):Dynamic;
 	/**
 		Parse index. Always return a tuple of the form (row, col).
 		Where row/col is a integer, slice, or array of integers.
@@ -292,7 +295,7 @@ package scipy.sparse.compressed;
 	**/
 	public function arctanh():Dynamic;
 	/**
-		Return indices of minimum elements along an axis.
+		Return indices of maximum elements along an axis.
 		
 		Implicit zero elements are also taken into account. If there are
 		several maximum values, the index of the first occurrence is returned.
@@ -336,19 +339,21 @@ package scipy.sparse.compressed;
 	**/
 	public function argmin(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Return this matrix in a given sparse format
+		Return this matrix in the passed sparse format.
 		
 		Parameters
 		----------
-		format : {string, None}
-		    desired sparse matrix format
-		        - None for no format conversion
-		        - "csr" for csr_matrix format
-		        - "csc" for csc_matrix format
-		        - "lil" for lil_matrix format
-		        - "dok" for dok_matrix format and so on
+		format : {str, None}
+		    The desired sparse matrix format ("csr", "csc", "lil", "dok", ...)
+		    or None for no conversion.
+		copy : bool, optional
+		    If True, the result is guaranteed to not share data with self.
+		
+		Returns
+		-------
+		A : This matrix in the passed sparse format.
 	**/
-	public function asformat(format:Dynamic):Dynamic;
+	public function asformat(format:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Upcast matrix to a floating point format (if necessary)
 	**/
@@ -356,14 +361,25 @@ package scipy.sparse.compressed;
 	/**
 		Cast the matrix elements to a specified type.
 		
-		The data will be copied.
-		
 		Parameters
 		----------
-		t : string or numpy dtype
+		dtype : string or numpy dtype
 		    Typecode or data-type to which to cast the data.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
+		    Controls what kind of data casting may occur.
+		    Defaults to 'unsafe' for backwards compatibility.
+		    'no' means the data types should not be cast at all.
+		    'equiv' means only byte-order changes are allowed.
+		    'safe' means only casts which can preserve values are allowed.
+		    'same_kind' means only safe casts or casts within a kind,
+		    like float64 to float32, are allowed.
+		    'unsafe' means any data conversions may be done.
+		copy : bool, optional
+		    If `copy` is `False`, the result might share some memory with this
+		    matrix. If `copy` is `True`, it is guaranteed that the result and
+		    this matrix do not share any memory.
 	**/
-	public function astype(t:Dynamic):Dynamic;
+	public function astype(dtype:Dynamic, ?casting:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Element-wise ceil.
 		
@@ -383,17 +399,35 @@ package scipy.sparse.compressed;
 	/**
 		Element-wise complex conjugation.
 		
-		If the matrix is of non-complex data type, then this method does
-		nothing and the data is not copied.
+		If the matrix is of non-complex data type and `copy` is False,
+		this method does nothing and the data is not copied.
+		
+		Parameters
+		----------
+		copy : bool, optional
+		    If True, the result is guaranteed to not share data with self.
+		
+		Returns
+		-------
+		A : The element-wise complex conjugate.
 	**/
-	public function conj():Dynamic;
+	public function conj(?copy:Dynamic):Dynamic;
 	/**
 		Element-wise complex conjugation.
 		
-		If the matrix is of non-complex data type, then this method does
-		nothing and the data is not copied.
+		If the matrix is of non-complex data type and `copy` is False,
+		this method does nothing and the data is not copied.
+		
+		Parameters
+		----------
+		copy : bool, optional
+		    If True, the result is guaranteed to not share data with self.
+		
+		Returns
+		-------
+		A : The element-wise complex conjugate.
 	**/
-	public function conjugate():Dynamic;
+	public function conjugate(?copy:Dynamic):Dynamic;
 	/**
 		Returns a copy of this matrix.
 		
@@ -418,10 +452,30 @@ package scipy.sparse.compressed;
 	**/
 	public function deg2rad():Dynamic;
 	/**
-		Returns the main diagonal of the matrix
-		        
+		Returns the k-th diagonal of the matrix.
+		
+		Parameters
+		----------
+		k : int, optional
+		    Which diagonal to set, corresponding to elements a[i, i+k].
+		    Default: 0 (the main diagonal).
+		
+		    .. versionadded:: 1.0
+		
+		See also
+		--------
+		numpy.diagonal : Equivalent numpy function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> A = csr_matrix([[1, 2, 0], [0, 0, 3], [4, 0, 5]])
+		>>> A.diagonal()
+		array([1, 0, 5])
+		>>> A.diagonal(k=1)
+		array([2, 3])
 	**/
-	public function diagonal():Dynamic;
+	public function diagonal(?k:Dynamic):Dynamic;
 	/**
 		Ordinary dot product
 		
@@ -575,14 +629,14 @@ package scipy.sparse.compressed;
 		    is `float64`; for floating point inputs, it is the same as the
 		    input dtype.
 		
-		    .. versionadded: 0.18.0
+		    .. versionadded:: 0.18.0
 		
 		out : np.matrix, optional
 		    Alternative output matrix in which to place the result. It must
 		    have the same shape as the expected output, but the type of the
 		    output values will be cast if necessary.
 		
-		    .. versionadded: 0.18.0
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
@@ -676,26 +730,60 @@ package scipy.sparse.compressed;
 	**/
 	public function rad2deg():Dynamic;
 	/**
+		reshape(self, shape, order='C', copy=False)
+		
 		Gives a new shape to a sparse matrix without changing its data.
 		
 		Parameters
 		----------
 		shape : length-2 tuple of ints
 		    The new shape should be compatible with the original shape.
-		order : 'C', optional
-		    This argument is in the signature *solely* for NumPy
-		    compatibility reasons. Do not pass in anything except
-		    for the default value, as this argument is not used.
+		order : {'C', 'F'}, optional
+		    Read the elements using this index order. 'C' means to read and
+		    write the elements using C-like index order; e.g. read entire first
+		    row, then second row, etc. 'F' means to read and write the elements
+		    using Fortran-like index order; e.g. read entire first column, then
+		    second column, etc.
+		copy : bool, optional
+		    Indicates whether or not attributes of self should be copied
+		    whenever possible. The degree to which attributes are copied varies
+		    depending on the type of sparse matrix being used.
 		
 		Returns
 		-------
-		reshaped_matrix : `self` with the new dimensions of `shape`
+		reshaped_matrix : sparse matrix
+		    A sparse matrix with the given `shape`, not necessarily of the same
+		    format as the current object.
 		
 		See Also
 		--------
 		np.matrix.reshape : NumPy's implementation of 'reshape' for matrices
 	**/
-	public function reshape(shape:Dynamic, ?order:Dynamic):Dynamic;
+	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Resize the matrix in-place to dimensions given by ``shape``
+		
+		Any elements that lie within the new shape will remain at the same
+		indices, while non-zero elements lying outside the new shape are
+		removed.
+		
+		Parameters
+		----------
+		shape : (int, int)
+		    number of rows and columns in the new matrix
+		
+		Notes
+		-----
+		The semantics are not identical to `numpy.ndarray.resize` or
+		`numpy.resize`.  Here, the same data will be maintained at each index
+		before and after reshape, if that index is within the new bounds.  In
+		numpy, resizing maintains contiguity of the array, moving elements
+		around in the logical matrix but not within a flattened representation.
+		
+		We give no guarantees about whether the underlying data attributes
+		(arrays, etc.) will be modified in place or replaced with new objects.
+	**/
+	public function resize(?shape:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Element-wise rint.
 		
@@ -780,14 +868,14 @@ package scipy.sparse.compressed;
 		    integer is used while if `a` is unsigned then an unsigned integer
 		    of the same precision as the platform integer is used.
 		
-		    .. versionadded: 0.18.0
+		    .. versionadded:: 0.18.0
 		
 		out : np.matrix, optional
 		    Alternative output matrix in which to place the result. It must
 		    have the same shape as the expected output, but the type of the
 		    output values will be cast if necessary.
 		
-		    .. versionadded: 0.18.0
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
@@ -819,7 +907,33 @@ package scipy.sparse.compressed;
 	**/
 	public function tanh():Dynamic;
 	/**
-		See the docstring for `spmatrix.toarray`.
+		Return a dense ndarray representation of this matrix.
+		
+		Parameters
+		----------
+		order : {'C', 'F'}, optional
+		    Whether to store multi-dimensional data in C (row-major)
+		    or Fortran (column-major) order in memory. The default
+		    is 'None', indicating the NumPy default of C-ordered.
+		    Cannot be specified in conjunction with the `out`
+		    argument.
+		
+		out : ndarray, 2-dimensional, optional
+		    If specified, uses this array as the output buffer
+		    instead of allocating a new array to return. The provided
+		    array must have the same shape and dtype as the sparse
+		    matrix on which you are calling the method. For most
+		    sparse types, `out` is required to be memory contiguous
+		    (either C or Fortran ordered).
+		
+		Returns
+		-------
+		arr : ndarray, 2-dimensional
+		    An array with the same shape and containing the same
+		    data represented by the sparse matrix, with the requested
+		    memory order. If `out` was passed, the same object is
+		    returned after being modified in-place to contain the
+		    appropriate values.
 	**/
 	public function toarray(?order:Dynamic, ?out:Dynamic):Dynamic;
 	/**

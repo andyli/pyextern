@@ -5,7 +5,7 @@ package torch.nn.modules.loss;
 		Call self as a function.
 	**/
 	public function __call__(?input:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,18 +46,18 @@ package torch.nn.modules.loss;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?weight:Dynamic, ?size_average:Dynamic):Dynamic;
+	public function ___init__(?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?weight:Dynamic, ?size_average:Dynamic):Void;
+	public function new(?size_average:Dynamic, ?reduce:Dynamic, ?reduction:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -91,6 +91,7 @@ package torch.nn.modules.loss;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -108,82 +109,211 @@ package torch.nn.modules.loss;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _all_buffers(?memo:Dynamic):Dynamic;
 	public function _apply(fn:Dynamic):Dynamic;
+	public function _get_name():Dynamic;
+	/**
+		Copies parameters and buffers from :attr:`state_dict` into only
+		this module, but not its descendants. This is called on every submodule
+		in :meth:`~torch.nn.Module.load_state_dict`. Metadata saved for this
+		module in input :attr:`state_dict` is provided as :attr`metadata`.
+		For state dicts without meta data, :attr`metadata` is empty.
+		Subclasses can achieve class-specific backward compatible loading using
+		the version number at `metadata.get("version", None)`.
+		
+		.. note::
+		    :attr:`state_dict` is not the same object as the input
+		    :attr:`state_dict` to :meth:`~torch.nn.Module.load_state_dict`. So
+		    it can be modified.
+		
+		Arguments:
+		    state_dict (dict): a dict containing parameters and
+		        persistent buffers.
+		    prefix (str): the prefix for parameters and buffers used in this
+		        module
+		    metadata (dict): a dict containing the metadata for this moodule.
+		        See
+		    strict (bool): whether to strictly enforce that the keys in
+		        :attr:`state_dict` with :attr:`prefix` match the names of
+		        parameters and buffers in this module
+		    missing_keys (list of str): if ``strict=False``, add missing keys to
+		        this list
+		    unexpected_keys (list of str): if ``strict=False``, add unexpected
+		        keys to this list
+		    error_msgs (list of str): error messages should be added to this
+		        list, and will be reported together in
+		        :meth:`~torch.nn.Module.load_state_dict`
+	**/
+	public function _load_from_state_dict(state_dict:Dynamic, prefix:Dynamic, metadata:Dynamic, strict:Dynamic, missing_keys:Dynamic, unexpected_keys:Dynamic, error_msgs:Dynamic):Dynamic;
+	public function _slow_forward(?input:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _tracing_name(tracing_state:Dynamic):Dynamic;
+	static public var _version : Dynamic;
 	/**
 		Adds a child module to the current module.
 		
 		The module can be accessed as an attribute using the given name.
+		
+		Args:
+		    name (string): name of the child module. The child module can be
+		        accessed from this module using the given name
+		    parameter (Module): child module to be added to the module.
 	**/
 	public function add_module(name:Dynamic, module:Dynamic):Dynamic;
+	/**
+		Applies ``fn`` recursively to every submodule (as returned by ``.children()``)
+		as well as self. Typical use includes initializing the parameters of a model
+		(see also :ref:`torch-nn-init`).
+		
+		Args:
+		    fn (:class:`Module` -> None): function to be applied to each submodule
+		
+		Returns:
+		    Module: self
+		
+		Example::
+		
+		    >>> def init_weights(m):
+		            print(m)
+		            if type(m) == nn.Linear:
+		                m.weight.data.fill_(1.0)
+		                print(m.weight)
+		
+		    >>> net = nn.Sequential(nn.Linear(2, 2), nn.Linear(2, 2))
+		    >>> net.apply(init_weights)
+		    Linear(in_features=2, out_features=2, bias=True)
+		    Parameter containing:
+		    tensor([[ 1.,  1.],
+		            [ 1.,  1.]])
+		    Linear(in_features=2, out_features=2, bias=True)
+		    Parameter containing:
+		    tensor([[ 1.,  1.],
+		            [ 1.,  1.]])
+		    Sequential(
+		      (0): Linear(in_features=2, out_features=2, bias=True)
+		      (1): Linear(in_features=2, out_features=2, bias=True)
+		    )
+		    Sequential(
+		      (0): Linear(in_features=2, out_features=2, bias=True)
+		      (1): Linear(in_features=2, out_features=2, bias=True)
+		    )
+	**/
 	public function apply(fn:Dynamic):Dynamic;
 	/**
 		Returns an iterator over immediate children modules.
+		
+		Yields:
+		    Module: a child module
 	**/
 	public function children():Dynamic;
 	/**
 		Moves all model parameters and buffers to the CPU.
+		
+		Returns:
+		    Module: self
 	**/
-	public function cpu(?device_id:Dynamic):Dynamic;
+	public function cpu():Dynamic;
 	/**
 		Moves all model parameters and buffers to the GPU.
 		
+		This also makes associated parameters and buffers different objects. So
+		it should be called before constructing optimizer if the module will
+		live on GPU while being optimized.
+		
 		Arguments:
-		    device_id (int, optional): if specified, all parameters will be
+		    device (int, optional): if specified, all parameters will be
 		        copied to that device
+		
+		Returns:
+		    Module: self
 	**/
-	public function cuda(?device_id:Dynamic):Dynamic;
+	public function cuda(?device:Dynamic):Dynamic;
 	/**
-		Casts all parameters and buffers to double datatype.
+		Casts all floating point parameters and buffers to ``double`` datatype.
+		
+		Returns:
+		    Module: self
 	**/
 	public function double():Dynamic;
 	static public var dump_patches : Dynamic;
 	/**
 		Sets the module in evaluation mode.
 		
-		This has any effect only on modules such as Dropout or BatchNorm.
+		This has any effect only on certain modules. See documentations of
+		particular modules for details of their behaviors in training/evaluation
+		mode, if they are affected, e.g. :class:`Dropout`, :class:`BatchNorm`,
+		etc.
 	**/
 	public function eval():Dynamic;
 	/**
-		Casts all parameters and buffers to float datatype.
+		Set the extra representation of the module
+		
+		To print customized extra information, you should reimplement
+		this method in your own modules. Both single-line and multi-line
+		strings are acceptable.
+	**/
+	public function extra_repr():Dynamic;
+	/**
+		Casts all floating point parameters and buffers to float datatype.
+		
+		Returns:
+		    Module: self
 	**/
 	public function float():Dynamic;
 	/**
 		Defines the computation performed at every call.
 		
-		Should be overriden by all subclasses.
+		Should be overridden by all subclasses.
+		
+		.. note::
+		    Although the recipe for forward pass needs to be defined within
+		    this function, one should call the :class:`Module` instance afterwards
+		    instead of this since the former takes care of running the
+		    registered hooks while the latter silently ignores them.
 	**/
 	public function forward(input:Dynamic, target:Dynamic):Dynamic;
 	/**
-		Casts all parameters and buffers to half datatype.
+		Casts all floating point parameters and buffers to ``half`` datatype.
+		
+		Returns:
+		    Module: self
 	**/
 	public function half():Dynamic;
 	/**
 		Copies parameters and buffers from :attr:`state_dict` into
-		this module and its descendants. The keys of :attr:`state_dict` must
-		exactly match the keys returned by this module's :func:`state_dict()`
-		function.
+		this module and its descendants. If :attr:`strict` is ``True``, then
+		the keys of :attr:`state_dict` must exactly match the keys returned
+		by this module's :meth:`~torch.nn.Module.state_dict` function.
 		
 		Arguments:
-		    state_dict (dict): A dict containing parameters and
+		    state_dict (dict): a dict containing parameters and
 		        persistent buffers.
+		    strict (bool, optional): whether to strictly enforce that the keys
+		        in :attr:`state_dict` match the keys returned by this module's
+		        :meth:`~torch.nn.Module.state_dict` function. Default: ``True``
 	**/
-	public function load_state_dict(state_dict:Dynamic):Dynamic;
+	public function load_state_dict(state_dict:Dynamic, ?strict:Dynamic):Dynamic;
 	/**
 		Returns an iterator over all modules in the network.
+		
+		Yields:
+		    Module: a module in the network
 		
 		Note:
 		    Duplicate modules are returned only once. In the following
 		    example, ``l`` will be returned only once.
 		
+		Example::
+		
 		    >>> l = nn.Linear(2, 2)
 		    >>> net = nn.Sequential(l, l)
 		    >>> for idx, m in enumerate(net.modules()):
-		    >>>     print(idx, '->', m)
+		            print(idx, '->', m)
+		
 		    0 -> Sequential (
 		      (0): Linear (2 -> 2)
 		      (1): Linear (2 -> 2)
@@ -195,7 +325,11 @@ package torch.nn.modules.loss;
 		Returns an iterator over immediate children modules, yielding both
 		the name of the module as well as the module itself.
 		
-		Example:
+		Yields:
+		    (string, Module): Tuple containing a name and child module
+		
+		Example::
+		
 		    >>> for name, module in model.named_children():
 		    >>>     if name in ['conv4', 'conv5']:
 		    >>>         print(module)
@@ -205,14 +339,20 @@ package torch.nn.modules.loss;
 		Returns an iterator over all modules in the network, yielding
 		both the name of the module as well as the module itself.
 		
+		Yields:
+		    (string, Module): Tuple of name and module
+		
 		Note:
 		    Duplicate modules are returned only once. In the following
 		    example, ``l`` will be returned only once.
 		
+		Example::
+		
 		    >>> l = nn.Linear(2, 2)
 		    >>> net = nn.Sequential(l, l)
 		    >>> for idx, m in enumerate(net.named_modules()):
-		    >>>     print(idx, '->', m)
+		            print(idx, '->', m)
+		
 		    0 -> ('', Sequential (
 		      (0): Linear (2 -> 2)
 		      (1): Linear (2 -> 2)
@@ -224,7 +364,11 @@ package torch.nn.modules.loss;
 		Returns an iterator over module parameters, yielding both the
 		name of the parameter as well as the parameter itself
 		
-		Example:
+		Yields:
+		    (string, Parameter): Tuple containing the name and parameter
+		
+		Example::
+		
 		    >>> for name, param in self.named_parameters():
 		    >>>    if name in ['bias']:
 		    >>>        print(param.size())
@@ -235,13 +379,17 @@ package torch.nn.modules.loss;
 		
 		This is typically passed to an optimizer.
 		
-		Example:
+		Yields:
+		    Parameter: module parameter
+		
+		Example::
+		
 		    >>> for param in model.parameters():
 		    >>>     print(type(param.data), param.size())
 		    <class 'torch.FloatTensor'> (20L,)
 		    <class 'torch.FloatTensor'> (20L, 1L, 5L, 5L)
 	**/
-	public function parameters(?memo:Dynamic):Dynamic;
+	public function parameters():Dynamic;
 	/**
 		Registers a backward hook on the module.
 		
@@ -256,8 +404,10 @@ package torch.nn.modules.loss;
 		input that will be used in place of :attr:`grad_input` in subsequent
 		computations.
 		
-		This function returns a handle with a method ``handle.remove()``
-		that removes the hook from the module.
+		Returns:
+		    :class:`torch.utils.hooks.RemovableHandle`:
+		        a handle that can be used to remove the added hook by calling
+		        ``handle.remove()``
 	**/
 	public function register_backward_hook(hook:Dynamic):Dynamic;
 	/**
@@ -269,27 +419,57 @@ package torch.nn.modules.loss;
 		
 		Buffers can be accessed as attributes using given names.
 		
-		Example:
+		Args:
+		    name (string): name of the buffer. The buffer can be accessed
+		        from this module using the given name
+		    tensor (Tensor): buffer to be registered.
+		
+		Example::
+		
 		    >>> self.register_buffer('running_mean', torch.zeros(num_features))
 	**/
 	public function register_buffer(name:Dynamic, tensor:Dynamic):Dynamic;
 	/**
 		Registers a forward hook on the module.
 		
-		The hook will be called every time :func:`forward` computes an output.
+		The hook will be called every time after :func:`forward` has computed an output.
 		It should have the following signature::
 		
 		    hook(module, input, output) -> None
 		
 		The hook should not modify the input or output.
-		This function returns a handle with a method ``handle.remove()``
-		that removes the hook from the module.
+		
+		Returns:
+		    :class:`torch.utils.hooks.RemovableHandle`:
+		        a handle that can be used to remove the added hook by calling
+		        ``handle.remove()``
 	**/
 	public function register_forward_hook(hook:Dynamic):Dynamic;
+	/**
+		Registers a forward pre-hook on the module.
+		
+		The hook will be called every time before :func:`forward` is invoked.
+		It should have the following signature::
+		
+		    hook(module, input) -> None
+		
+		The hook should not modify the input.
+		
+		Returns:
+		    :class:`torch.utils.hooks.RemovableHandle`:
+		        a handle that can be used to remove the added hook by calling
+		        ``handle.remove()``
+	**/
+	public function register_forward_pre_hook(hook:Dynamic):Dynamic;
 	/**
 		Adds a parameter to the module.
 		
 		The parameter can be accessed as an attribute using given name.
+		
+		Args:
+		    name (string): name of the parameter. The parameter can be accessed
+		        from this module using the given name
+		    parameter (Parameter): parameter to be added to the module.
 	**/
 	public function register_parameter(name:Dynamic, param:Dynamic):Dynamic;
 	public function share_memory():Dynamic;
@@ -299,17 +479,102 @@ package torch.nn.modules.loss;
 		Both parameters and persistent buffers (e.g. running averages) are
 		included. Keys are corresponding parameter and buffer names.
 		
-		Example:
+		Returns:
+		    dict:
+		        a dictionary containing a whole state of the module
+		
+		Example::
+		
 		    >>> module.state_dict().keys()
 		    ['bias', 'weight']
 	**/
-	public function state_dict(?destination:Dynamic, ?prefix:Dynamic):Dynamic;
+	public function state_dict(?destination:Dynamic, ?prefix:Dynamic, ?keep_vars:Dynamic):Dynamic;
+	/**
+		Moves and/or casts the parameters and buffers.
+		
+		This can be called as
+		
+		.. function:: to(device=None, dtype=None, non_blocking=False)
+		
+		.. function:: to(dtype, non_blocking=False)
+		
+		.. function:: to(tensor, non_blocking=False)
+		
+		Its signature is similar to :meth:`torch.Tensor.to`, but only accepts
+		floating point desired :attr:`dtype` s. In addition, this method will
+		only cast the floating point parameters and buffers to :attr:`dtype`
+		(if given). The integral parameters and buffers will be moved
+		:attr:`device`, if that is given, but with dtypes unchanged. When
+		:attr:`non_blocking` is set, it tries to convert/move asynchronously
+		with respect to the host if possible, e.g., moving CPU Tensors with
+		pinned memory to CUDA devices.
+		
+		See below for examples.
+		
+		.. note::
+		    This method modifies the module in-place.
+		
+		Args:
+		    device (:class:`torch.device`): the desired device of the parameters
+		        and buffers in this module
+		    dtype (:class:`torch.dtype`): the desired floating point type of
+		        the floating point parameters and buffers in this module
+		    tensor (torch.Tensor): Tensor whose dtype and device are the desired
+		        dtype and device for all parameters and buffers in this module
+		
+		Returns:
+		    Module: self
+		
+		Example::
+		
+		    >>> linear = nn.Linear(2, 2)
+		    >>> linear.weight
+		    Parameter containing:
+		    tensor([[ 0.1913, -0.3420],
+		            [-0.5113, -0.2325]])
+		    >>> linear.to(torch.double)
+		    Linear(in_features=2, out_features=2, bias=True)
+		    >>> linear.weight
+		    Parameter containing:
+		    tensor([[ 0.1913, -0.3420],
+		            [-0.5113, -0.2325]], dtype=torch.float64)
+		    >>> gpu1 = torch.device("cuda:1")
+		    >>> linear.to(gpu1, dtype=torch.half, non_blocking=True)
+		    Linear(in_features=2, out_features=2, bias=True)
+		    >>> linear.weight
+		    Parameter containing:
+		    tensor([[ 0.1914, -0.3420],
+		            [-0.5112, -0.2324]], dtype=torch.float16, device='cuda:1')
+		    >>> cpu = torch.device("cpu")
+		    >>> linear.to(cpu)
+		    Linear(in_features=2, out_features=2, bias=True)
+		    >>> linear.weight
+		    Parameter containing:
+		    tensor([[ 0.1914, -0.3420],
+		            [-0.5112, -0.2324]], dtype=torch.float16)
+	**/
+	public function to(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the module in training mode.
 		
-		This has any effect only on modules such as Dropout or BatchNorm.
+		This has any effect only on certain modules. See documentations of
+		particular modules for details of their behaviors in training/evaluation
+		mode, if they are affected, e.g. :class:`Dropout`, :class:`BatchNorm`,
+		etc.
+		
+		Returns:
+		    Module: self
 	**/
 	public function train(?mode:Dynamic):Dynamic;
+	/**
+		Casts all parameters and buffers to :attr:`dst_type`.
+		
+		Arguments:
+		    dst_type (type or string): the desired type
+		
+		Returns:
+		    Module: self
+	**/
 	public function type(dst_type:Dynamic):Dynamic;
 	/**
 		Sets gradients of all model parameters to zero.

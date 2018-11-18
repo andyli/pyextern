@@ -4,6 +4,10 @@ package tensorflow.contrib.learn.python.learn.estimators.logistic_regressor;
 	/**
 		Builds a logistic regression Estimator for binary classification.
 		
+		THIS CLASS IS DEPRECATED. See
+		[contrib/learn/README.md](https://www.tensorflow.org/code/tensorflow/contrib/learn/README.md)
+		for general migration instructions.
+		
 		This method provides a basic Estimator with some additional metrics for custom
 		binary classification models, including AUC, precision/recall and accuracy.
 		
@@ -40,7 +44,7 @@ package tensorflow.contrib.learn.python.learn.estimators.logistic_regressor;
 		                    into the model.
 		
 		Returns:
-		  A `tf.contrib.learn.Estimator` instance.
+		  An `Estimator` instance.
 	**/
 	static public function LogisticRegressor(model_fn:Dynamic, ?thresholds:Dynamic, ?model_dir:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;

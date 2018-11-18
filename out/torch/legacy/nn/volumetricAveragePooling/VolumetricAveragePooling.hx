@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.legacy.nn.volumetricAveragePooling;
 @:pythonImport("torch.legacy.nn.VolumetricAveragePooling", "VolumetricAveragePooling") extern class VolumetricAveragePooling {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package torch.legacy.nn.volumetricAveragePooling;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(kT:Dynamic, kW:Dynamic, kH:Dynamic, ?dT:Dynamic, ?dW:Dynamic, ?dH:Dynamic):Dynamic;
+	public function ___init__(kT:Dynamic, kW:Dynamic, kH:Dynamic, ?dT:Dynamic, ?dW:Dynamic, ?dH:Dynamic, ?padT:Dynamic, ?padW:Dynamic, ?padH:Dynamic, ?ceil_mode:Dynamic, ?count_include_pad:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(kT:Dynamic, kW:Dynamic, kH:Dynamic, ?dT:Dynamic, ?dW:Dynamic, ?dH:Dynamic):Void;
+	public function new(kT:Dynamic, kW:Dynamic, kH:Dynamic, ?dT:Dynamic, ?dW:Dynamic, ?dH:Dynamic, ?padT:Dynamic, ?padW:Dynamic, ?padH:Dynamic, ?ceil_mode:Dynamic, ?count_include_pad:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -86,6 +86,7 @@ package torch.legacy.nn.volumetricAveragePooling;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(d:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -103,7 +104,7 @@ package torch.legacy.nn.volumetricAveragePooling;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

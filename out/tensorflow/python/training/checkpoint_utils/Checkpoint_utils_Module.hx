@@ -19,6 +19,11 @@ package tensorflow.python.training.checkpoint_utils;
 	**/
 	static public function _get_checkpoint_filename(ckpt_dir_or_file:Dynamic):Dynamic;
 	/**
+		See `init_from_checkpoint` for documentation.
+	**/
+	static public function _init_from_checkpoint(_:Dynamic, ckpt_dir_or_file:Dynamic, assignment_map:Dynamic):Dynamic;
+	static public function _is_variable(x:Dynamic):Dynamic;
+	/**
 		Overrides given variable's initialization op.
 		
 		Sets variable initializer to assign op that initializes variable from tensor's
@@ -96,7 +101,7 @@ package tensorflow.python.training.checkpoint_utils;
 		                         partitioner=lambda shape, dtype: [5, 1])
 		
 		# Initialize all variables in `new_scope_1` from `old_scope_1`.
-		init_from_checkpoint('/tmp/model.ckpt', {'old_scope_1/', 'new_scope_1'})
+		init_from_checkpoint('/tmp/model.ckpt', {'old_scope_1/': 'new_scope_1'})
 		
 		# Use names to specify which variables to initialize from checkpoint.
 		init_from_checkpoint('/tmp/model.ckpt',
@@ -169,4 +174,5 @@ package tensorflow.python.training.checkpoint_utils;
 	**/
 	static public function load_variable(ckpt_dir_or_file:Dynamic, name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.lib._datasource;
 @:pythonImport("numpy.lib._datasource", "Repository") extern class Repository {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -53,7 +53,7 @@ package numpy.lib._datasource;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,7 +104,7 @@ package numpy.lib._datasource;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -233,11 +233,16 @@ package numpy.lib._datasource;
 		    Mode to open `path`.  Mode 'r' for reading, 'w' for writing,
 		    'a' to append. Available modes depend on the type of object
 		    specified by `path`. Default is 'r'.
+		encoding : {None, str}, optional
+		    Open text file with given encoding. The default encoding will be
+		    what `io.open` uses.
+		newline : {None, str}, optional
+		    Newline to use when reading text file.
 		
 		Returns
 		-------
 		out : file object
 		    File object.
 	**/
-	public function open(path:Dynamic, ?mode:Dynamic):Dynamic;
+	public function open(path:Dynamic, ?mode:Dynamic, ?encoding:Dynamic, ?newline:Dynamic):Dynamic;
 }

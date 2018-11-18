@@ -13,14 +13,14 @@ package scipy.sparse.dok;
 	static public var __spec__ : Dynamic;
 	static public function _is_sequence(x:Dynamic):Dynamic;
 	/**
-		Force x to a list.
-	**/
-	static public function _list(x:Dynamic):Dynamic;
-	/**
 		Product of a list of numbers; ~40x faster vs np.prod for Python tuples
 	**/
 	static public function _prod(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Imitate numpy.matrix handling of shape arguments
+	**/
+	static public function check_shape(args:Dynamic, ?current_shape:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Based on input (integer) arrays `a`, determine a suitable index data
@@ -62,10 +62,61 @@ package scipy.sparse.dok;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	/**
 		Is x a valid 2-tuple of dimensions?
-		    
+		
+		If nonneg, also checks that the dimensions are non-negative.
 	**/
-	static public function isshape(x:Dynamic):Dynamic;
+	static public function isshape(x:Dynamic, ?nonneg:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
+	/**
+		Is x of dok_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a dok matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a dok matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import dok_matrix, isspmatrix_dok
+		>>> isspmatrix_dok(dok_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import dok_matrix, csr_matrix, isspmatrix_dok
+		>>> isspmatrix_dok(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_dok(x:Dynamic):Dynamic;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.

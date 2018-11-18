@@ -10,4 +10,12 @@ package torch.utils.data;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Randomly split a dataset into non-overlapping new datasets of given lengths.
+		
+		Arguments:
+		    dataset (Dataset): Dataset to be split
+		    lengths (sequence): lengths of splits to be produced
+	**/
+	static public function random_split(dataset:Dynamic, lengths:Dynamic):Dynamic;
 }

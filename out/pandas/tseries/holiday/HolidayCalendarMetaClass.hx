@@ -2,14 +2,14 @@
 package pandas.tseries.holiday;
 @:pythonImport("pandas.tseries.holiday", "HolidayCalendarMetaClass") extern class HolidayCalendarMetaClass {
 	public var __abstractmethods__ : Dynamic;
-	static public function __base__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __base__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __bases__ : Dynamic;
 	static public var __basicsize__ : Dynamic;
 	/**
 		Call self as a function.
 	**/
 	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -62,7 +62,7 @@ package pandas.tseries.holiday;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__instancecheck__() -> bool
 		check if an object is an instance
@@ -92,7 +92,7 @@ package pandas.tseries.holiday;
 		__prepare__() -> dict
 		used to create the namespace for the class statement
 	**/
-	static public function __prepare__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __prepare__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __qualname__ : Dynamic;
 	/**
 		helper for pickle
@@ -136,7 +136,7 @@ package pandas.tseries.holiday;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __text_signature__ : Dynamic;
 	static public var __weakrefoffset__ : Dynamic;
 	/**

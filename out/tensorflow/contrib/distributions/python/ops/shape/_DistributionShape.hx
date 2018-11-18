@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.distributions.python.ops.shape;
 @:pythonImport("tensorflow.contrib.distributions.python.ops.shape", "_DistributionShape") extern class _DistributionShape {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,7 +38,11 @@ package tensorflow.contrib.distributions.python.ops.shape;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct `DistributionShape` with fixed `batch_ndims`, `event_ndims`.
+		Construct `DistributionShape` with fixed `batch_ndims`, `event_ndims`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
 		`batch_ndims` and `event_ndims` are fixed throughout the lifetime of a
 		`Distribution`. They may only be known at graph execution.
@@ -67,7 +71,11 @@ package tensorflow.contrib.distributions.python.ops.shape;
 	@:native("__init__")
 	public function ___init__(?batch_ndims:Dynamic, ?event_ndims:Dynamic, ?validate_args:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Construct `DistributionShape` with fixed `batch_ndims`, `event_ndims`.
+		Construct `DistributionShape` with fixed `batch_ndims`, `event_ndims`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
 		`batch_ndims` and `event_ndims` are fixed throughout the lifetime of a
 		`Distribution`. They may only be known at graph execution.
@@ -100,7 +108,7 @@ package tensorflow.contrib.distributions.python.ops.shape;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -151,7 +159,7 @@ package tensorflow.contrib.distributions.python.ops.shape;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -247,7 +255,7 @@ package tensorflow.contrib.distributions.python.ops.shape;
 		Reshapes/transposes `Distribution` `Tensor` from S+B+E to B_+E_+S_.
 		
 		Where:
-		  - `B_ = B if B or not expand_batch_dim  else [1]`,
+		  - `B_ = B if B or not expand_batch_dim else [1]`,
 		  - `E_ = E if E else [1]`,
 		  - `S_ = [tf.reduce_prod(S)]`.
 		
@@ -270,7 +278,7 @@ package tensorflow.contrib.distributions.python.ops.shape;
 		Reshapes/transposes `Distribution` `Tensor` from B_+E_+S_ to S+B+E.
 		
 		Where:
-		  - `B_ = B if B or not expand_batch_dim  else [1]`,
+		  - `B_ = B if B or not expand_batch_dim else [1]`,
 		  - `E_ = E if E else [1]`,
 		  - `S_ = [tf.reduce_prod(S)]`.
 		

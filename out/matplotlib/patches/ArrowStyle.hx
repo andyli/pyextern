@@ -46,15 +46,15 @@ package matplotlib.patches;
 	**/
 	static public function CurveFilledB(?head_length:Dynamic, ?head_width:Dynamic):Dynamic;
 	/**
-		A fancy arrow. Only works with a quadratic bezier curve.
+		A fancy arrow. Only works with a quadratic Bezier curve.
 	**/
 	static public function Fancy(?head_length:Dynamic, ?head_width:Dynamic, ?tail_width:Dynamic):Dynamic;
 	/**
-		A simple arrow. Only works with a quadratic bezier curve.
+		A simple arrow. Only works with a quadratic Bezier curve.
 	**/
 	static public function Simple(?head_length:Dynamic, ?head_width:Dynamic, ?tail_width:Dynamic):Dynamic;
 	/**
-		Wedge(?) shape. Only works with a quadratic bezier curve.  The
+		Wedge(?) shape. Only works with a quadratic Bezier curve.  The
 		begin point has a width of the tail_width and the end point has a
 		width of 0. At the middle, the width is shrink_factor*tail_width.
 	**/
@@ -88,7 +88,7 @@ package matplotlib.patches;
 		at the end point. The arrow heads can be either open or closed.
 	**/
 	static public function _Curve(?beginarrow:Dynamic, ?endarrow:Dynamic, ?fillbegin:Dynamic, ?fillend:Dynamic, ?head_length:Dynamic, ?head_width:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -139,7 +139,7 @@ package matplotlib.patches;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -156,7 +156,7 @@ package matplotlib.patches;
 	/**
 		return the instance of the subclass with the given style name.
 	**/
-	static public function __new__(self:Dynamic, stylename:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, stylename:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -190,7 +190,7 @@ package matplotlib.patches;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

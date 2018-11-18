@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.utils.io_utils;
 @:pythonImport("keras.utils.io_utils") extern class Io_utils_Module {
+	static public var HDF5_OBJECT_HEADER_LIMIT : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -20,5 +21,6 @@ package keras.utils.io_utils;
 		    True if we can proceed with overwrite, False otherwise.
 	**/
 	static public function ask_to_proceed_with_overwrite(filepath:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

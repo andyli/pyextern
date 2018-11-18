@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.platform.gfile;
 @:pythonImport("tensorflow.python.platform.gfile", "GFile") extern class GFile {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -60,7 +60,7 @@ package tensorflow.python.platform.gfile;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -113,7 +113,7 @@ package tensorflow.python.platform.gfile;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -121,6 +121,8 @@ package tensorflow.python.platform.gfile;
 	public function _prepare_value(val:Dynamic):Dynamic;
 	public function _preread_check():Dynamic;
 	public function _prewrite_check():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Closes FileIO. Should be called for the WritableFile to be flushed.
 	**/

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.projections;
 @:pythonImport("matplotlib.projections", "ProjectionRegistry") extern class ProjectionRegistry {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.projections;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.projections;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -113,12 +113,11 @@ package matplotlib.projections;
 	**/
 	public function get_projection_class(name:Dynamic):Dynamic;
 	/**
-		Get a list of the names of all projections currently
-		registered.
+		Get a list of the names of all projections currently registered.
 	**/
 	public function get_projection_names():Dynamic;
 	/**
-		Register a new set of projection(s).
+		Register a new set of projections.
 	**/
 	public function register(?projections:python.VarArgs<Dynamic>):Dynamic;
 }

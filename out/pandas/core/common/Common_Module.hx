@@ -1,10 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.common;
 @:pythonImport("pandas.core.common") extern class Common_Module {
-	static public function CategoricalDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function DatetimeTZDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function IntervalDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function PeriodDtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var PY36 : Dynamic;
 	static public var _NS_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -14,16 +11,38 @@ package pandas.core.common;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Returns a boolean indicating if all arguments are None
+	**/
 	static public function _all_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Returns a boolean indicating if all arguments are not None
+	**/
 	static public function _all_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Returns a boolean indicating if any argument is None
+	**/
 	static public function _any_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Returns a boolean indicating if any argument is not None
+	**/
+	static public function _any_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Evaluate possibly callable input using obj and kwargs if it is callable,
 		otherwise return as it is
+		
+		Parameters
+		----------
+		maybe_callable : possibly a callable
+		obj : NDFrame
+		**kwargs
 	**/
 	static public function _apply_if_callable(maybe_callable:Dynamic, obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _consensus_name_attr(objs:Dynamic):Dynamic;
+	/**
+		Returns the count of arguments that are not None
+	**/
 	static public function _count_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _default_index(n:Dynamic):Dynamic;
 	/**
@@ -38,12 +57,30 @@ package pandas.core.common;
 		dict
 	**/
 	static public function _dict_compat(d:Dynamic):Dynamic;
+	static public function _dict_keys_to_ordered_list(mapping:Dynamic):Dynamic;
 	static public function _get_callable_name(obj:Dynamic):Dynamic;
+	/**
+		Return a list with distinct elements of "objs" (different ids).
+		Preserves order.
+	**/
+	static public function _get_distinct_objs(objs:Dynamic):Dynamic;
 	/**
 		Slice the info axis of `obj` with `indexer`.
 	**/
 	static public function _get_info_slice(obj:Dynamic, indexer:Dynamic):Dynamic;
-	static public function _index_labels_to_array(labels:Dynamic):Dynamic;
+	/**
+		Transform label or iterable of labels to array, for use in Index.
+		
+		Parameters
+		----------
+		dtype : dtype
+		    If specified, use as dtype of the resulting array, otherwise infer.
+		
+		Returns
+		-------
+		array
+	**/
+	static public function _index_labels_to_array(labels:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Check if the object is an iterable but not a string.
 		
@@ -70,9 +107,35 @@ package pandas.core.common;
 	static public function _maybe_box(indexer:Dynamic, values:Dynamic, obj:Dynamic, key:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
 	static public function _maybe_make_list(obj:Dynamic):Dynamic;
-	static public function _maybe_match_name(a:Dynamic, b:Dynamic):Dynamic;
 	static public function _mut_exclusive(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Returns a generator consisting of the arguments that are not None
+	**/
 	static public function _not_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Apply a function ``func`` to object ``obj`` either by passing obj as the
+		first argument to the function or, in the case that the func is a tuple,
+		interpret the first element of the tuple as a function and pass the obj to
+		that function as a keyword argument whose key is the value of the second
+		element of the tuple.
+		
+		Parameters
+		----------
+		func : callable or tuple of (callable, string)
+		    Function to apply to this object or, alternatively, a
+		    ``(callable, data_keyword)`` tuple where ``data_keyword`` is a
+		    string indicating the keyword of `callable`` that expects the
+		    object.
+		args : iterable, optional
+		    positional arguments passed into ``func``.
+		kwargs : dict, optional
+		    a dictionary of keyword arguments passed into ``func``.
+		
+		Returns
+		-------
+		object : the return type of ``func``.
+	**/
+	static public function _pipe(obj:Dynamic, func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Helper function for processing random_state arguments.
 		
@@ -96,7 +159,24 @@ package pandas.core.common;
 	**/
 	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _where_compat(mask:Dynamic, arr1:Dynamic, arr2:Dynamic):Dynamic;
-	static public function array_equivalent(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Transform any list-like object in a 1-dimensional numpy array of object
+		dtype.
+		
+		Parameters
+		----------
+		values : any iterable which has a len()
+		
+		Raises
+		------
+		TypeError
+		    * If `values` does not have a len()
+		
+		Returns
+		-------
+		1-dimensional numpy array of dtype object
+	**/
+	static public function construct_1d_object_array_from_listlike(values:Dynamic):Dynamic;
 	static public function difference(a:Dynamic, b:Dynamic):Dynamic;
 	/**
 		Flatten an arbitrarily nested sequence.
@@ -124,15 +204,14 @@ package pandas.core.common;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -140,7 +219,9 @@ package pandas.core.common;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -213,16 +294,22 @@ package pandas.core.common;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -266,11 +353,6 @@ package pandas.core.common;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -287,7 +369,7 @@ package pandas.core.common;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -332,12 +414,6 @@ package pandas.core.common;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -388,21 +464,22 @@ package pandas.core.common;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -413,6 +490,11 @@ package pandas.core.common;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -422,11 +504,23 @@ package pandas.core.common;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -438,8 +532,8 @@ package pandas.core.common;
 	/**
 		check if we're inside an IPython Notebook
 		
-		DEPRECATED: This is no longer used in pandas, and won't work in IPython 3
-		and above.
+		.. deprecated:: 0.14.1
+		   This is no longer needed, or working, in IPython 3 and above.
 	**/
 	static public function in_ipnb():Dynamic;
 	/**
@@ -449,89 +543,171 @@ package pandas.core.common;
 	/**
 		check if we're inside an IPython qtconsole
 		
-		DEPRECATED: This is no longer needed, or working, in IPython 3 and above.
+		.. deprecated:: 0.14.1
+		   This is no longer needed, or working, in IPython 3 and above.
 	**/
 	static public function in_qtconsole():Dynamic;
-	static public function infer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function intersection(?seqs:python.VarArgs<Dynamic>):Dynamic;
-	static public function is_any_int_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_bool(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_bool_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool_indexer(key:Dynamic):Dynamic;
-	static public function is_categorical(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_categorical_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_complex(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_complex_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetime64_any_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetime64_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetime64_ns_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetime64tz_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetime_arraylike(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetime_or_timedelta_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetimelike(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetimelike_v_numeric(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetimelike_v_object(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_datetimetz(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_dict_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_dtype_equal(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_extension_type(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_file_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_float(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_float_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_floating_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we have a full length slice 
 	**/
 	static public function is_full_slice(obj:Dynamic, l:Dynamic):Dynamic;
-	static public function is_hashable(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_int64_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_int_or_datetime_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_integer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_integer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_interval(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_interval_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_iterator(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_list_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_named_tuple(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		we have a null slice 
 	**/
 	static public function is_null_slice(obj:Dynamic):Dynamic;
-	static public function is_number(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_numeric_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_object_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_period(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_period_arraylike(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_period_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_re(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_re_compilable(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_scalar(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_sequence(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_signed_integer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_sparse(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_string_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_string_like(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_string_like_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_timedelta64_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_timedelta64_ns_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function is_unsigned_integer_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Find non-trivial slices in "l": return a list of booleans with same length.
+	**/
+	static public function is_true_slices(l:Dynamic):Dynamic;
+	/**
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
+	**/
+	static public function isna(obj:Dynamic):Dynamic;
+	/**
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : scalar or array-like
+		    Object to check for null or missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
+		
+		See Also
+		--------
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
 	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
@@ -555,8 +731,80 @@ package pandas.core.common;
 		given array/list
 	**/
 	static public function map_indices_py(arr:Dynamic):Dynamic;
-	static public function outer(?t:Dynamic):Dynamic;
-	static public function pandas_dtype(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
+		
+		See Also
+		--------
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
+	**/
+	static public function notnull(obj:Dynamic):Dynamic;
 	static public function sentinel_factory():Dynamic;
 	/**
 		Generates tuples of ranges which cover all True value in mask
@@ -565,7 +813,28 @@ package pandas.core.common;
 		[(0, 1), (3, 4)]
 	**/
 	static public function split_ranges(mask:Dynamic):Dynamic;
-	static public var t : Dynamic;
+	/**
+		Helper function to standardize a supplied mapping.
+		
+		.. versionadded:: 0.21.0
+		
+		Parameters
+		----------
+		into : instance or subclass of collections.Mapping
+		    Must be a class, an initialized collections.defaultdict,
+		    or an instance of a collections.Mapping subclass.
+		
+		Returns
+		-------
+		mapping : a collections.Mapping subclass or other constructor
+		    a callable object that can accept an iterator to create
+		    the desired Mapping.
+		
+		See Also
+		--------
+		DataFrame.to_dict
+		Series.to_dict
+	**/
+	static public function standardize_mapping(into:Dynamic):Dynamic;
 	static public function union(?seqs:python.VarArgs<Dynamic>):Dynamic;
-	static public function union_categoricals(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

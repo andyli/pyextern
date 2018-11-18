@@ -515,6 +515,20 @@ package scipy.linalg._matfuncs_inv_ssq;
 		.. [2] Awad H. Al-Mohy and Nicholas J. Higham (2009),
 		       "A new scaling and squaring algorithm for the matrix exponential."
 		       SIAM J. Matrix Anal. Appl. Vol. 31, No. 3, pp. 970-989.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import onenormest
+		>>> A = csc_matrix([[1., 0., 0.], [5., 8., 2.], [0., -1., 0.]], dtype=float)
+		>>> A.todense()
+		matrix([[ 1.,  0.,  0.],
+		        [ 5.,  8.,  2.],
+		        [ 0., -1.,  0.]])
+		>>> onenormest(A)
+		9.0
+		>>> np.linalg.norm(A.todense(), ord=1)
+		9.0
 	**/
 	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	static public var print_function : Dynamic;
@@ -527,24 +541,47 @@ package scipy.linalg._matfuncs_inv_ssq;
 		Parameters
 		----------
 		T : (M, M) array_like
-		    Real Schur form of the original matrix
+		    Real Schur form of the original array
 		Z : (M, M) array_like
 		    Schur transformation matrix
 		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
+		    Whether to check that the input arrays contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
 		
 		Returns
 		-------
 		T : (M, M) ndarray
-		    Complex Schur form of the original matrix
+		    Complex Schur form of the original array
 		Z : (M, M) ndarray
 		    Schur transformation matrix corresponding to the complex form
 		
-		See also
+		See Also
 		--------
-		schur : Schur decompose a matrix
+		schur : Schur decomposition of an array
+		
+		Examples
+		--------
+		>>> from scipy.linalg import schur, rsf2csf
+		>>> A = np.array([[0, 2, 2], [0, 1, 2], [1, 0, 1]])
+		>>> T, Z = schur(A)
+		>>> T
+		array([[ 2.65896708,  1.42440458, -1.92933439],
+		       [ 0.        , -0.32948354, -0.49063704],
+		       [ 0.        ,  1.31178921, -0.32948354]])
+		>>> Z
+		array([[0.72711591, -0.60156188, 0.33079564],
+		       [0.52839428, 0.79801892, 0.28976765],
+		       [0.43829436, 0.03590414, -0.89811411]])
+		>>> T2 , Z2 = rsf2csf(T, Z)
+		>>> T2
+		array([[2.65896708+0.j, -1.64592781+0.743164187j, -1.21516887+1.00660462j],
+		       [0.+0.j , -0.32948354+8.02254558e-01j, -0.82115218-2.77555756e-17j],
+		       [0.+0.j , 0.+0.j, -0.32948354-0.802254558j]])
+		>>> Z2
+		array([[0.72711591+0.j,  0.28220393-0.31385693j,  0.51319638-0.17258824j],
+		       [0.52839428+0.j,  0.24720268+0.41635578j, -0.68079517-0.15118243j],
+		       [0.43829436+0.j, -0.76618703+0.01873251j, -0.03063006+0.46857912j]])
 	**/
 	static public function rsf2csf(T:Dynamic, Z:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -613,6 +650,35 @@ package scipy.linalg._matfuncs_inv_ssq;
 		See also
 		--------
 		rsf2csf : Convert real Schur form to complex Schur form
+		
+		Examples
+		--------
+		>>> from scipy.linalg import schur, eigvals
+		>>> A = np.array([[0, 2, 2], [0, 1, 2], [1, 0, 1]])
+		>>> T, Z = schur(A)
+		>>> T
+		array([[ 2.65896708,  1.42440458, -1.92933439],
+		       [ 0.        , -0.32948354, -0.49063704],
+		       [ 0.        ,  1.31178921, -0.32948354]])
+		>>> Z
+		array([[0.72711591, -0.60156188, 0.33079564],
+		       [0.52839428, 0.79801892, 0.28976765],
+		       [0.43829436, 0.03590414, -0.89811411]])
+		
+		>>> T2, Z2 = schur(A, output='complex')
+		>>> T2
+		array([[ 2.65896708, -1.22839825+1.32378589j,  0.42590089+1.51937378j],
+		       [ 0.        , -0.32948354+0.80225456j, -0.59877807+0.56192146j],
+		       [ 0.        ,  0.                    , -0.32948354-0.80225456j]])
+		>>> eigvals(T2)
+		array([2.65896708, -0.32948354+0.80225456j, -0.32948354-0.80225456j])
+		
+		An arbitrary custom eig-sorting condition, having positive imaginary part, 
+		which is satisfied by only one eigenvalue
+		
+		>>> T3, Z3, sdim = schur(A, output='complex', sort=lambda x: x.imag > 0)
+		>>> sdim
+		1
 	**/
 	static public function schur(a:Dynamic, ?output:Dynamic, ?lwork:Dynamic, ?overwrite_a:Dynamic, ?sort:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -660,6 +726,24 @@ package scipy.linalg._matfuncs_inv_ssq;
 		Notes
 		-----
 		.. versionadded:: 0.9.0
+		
+		Examples
+		--------
+		Solve the lower triangular system a x = b, where::
+		
+		         [3  0  0  0]       [4]
+		    a =  [2  1  0  0]   b = [2]
+		         [1  0  1  0]       [4]
+		         [1  1  1  1]       [2]
+		
+		>>> from scipy.linalg import solve_triangular
+		>>> a = np.array([[3, 0, 0, 0], [2, 1, 0, 0], [1, 0, 1, 0], [1, 1, 1, 1]])
+		>>> b = np.array([4, 2, 4, 2])
+		>>> x = solve_triangular(a, b, lower=True)
+		>>> x
+		array([ 1.33333333, -0.66666667,  2.66666667, -1.33333333])
+		>>> a.dot(x)  # Check the result
+		array([ 4.,  2.,  4.,  2.])
 	**/
 	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -698,10 +782,50 @@ package scipy.linalg._matfuncs_inv_ssq;
 		>>> svdvals(a)
 		array([], dtype=float64)
 		
-		See also
+		See Also
 		--------
 		svd : Compute the full singular value decomposition of a matrix.
 		diagsvd : Construct the Sigma matrix, given the vector s.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import svdvals
+		>>> m = np.array([[1.0, 0.0],
+		...               [2.0, 3.0],
+		...               [1.0, 1.0],
+		...               [0.0, 2.0],
+		...               [1.0, 0.0]])
+		>>> svdvals(m)
+		array([ 4.28091555,  1.63516424])
+		
+		We can verify the maximum singular value of `m` by computing the maximum
+		length of `m.dot(u)` over all the unit vectors `u` in the (x,y) plane.
+		We approximate "all" the unit vectors with a large sample.  Because
+		of linearity, we only need the unit vectors with angles in [0, pi].
+		
+		>>> t = np.linspace(0, np.pi, 2000)
+		>>> u = np.array([np.cos(t), np.sin(t)])
+		>>> np.linalg.norm(m.dot(u), axis=0).max()
+		4.2809152422538475
+		
+		`p` is a projection matrix with rank 1.  With exact arithmetic,
+		its singular values would be [1, 0, 0, 0].
+		
+		>>> v = np.array([0.1, 0.3, 0.9, 0.3])
+		>>> p = np.outer(v, v)
+		>>> svdvals(p)
+		array([  1.00000000e+00,   2.02021698e-17,   1.56692500e-17,
+		         8.15115104e-34])
+		
+		The singular values of an orthogonal matrix are all 1.  Here we
+		create a random orthogonal matrix by using the `rvs()` method of
+		`scipy.stats.ortho_group`.
+		
+		>>> from scipy.stats import ortho_group
+		>>> np.random.seed(123)
+		>>> orth = ortho_group.rvs(4)
+		>>> svdvals(orth)
+		array([ 1.,  1.,  1.,  1.])
 	**/
 	static public function svdvals(a:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 }

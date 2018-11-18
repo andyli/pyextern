@@ -15,7 +15,7 @@ package tensorflow.contrib.session_bundle.bundle_shim;
 		Args:
 		  tensor_name: string name of tensor to add to signature_def inputs
 		  map_key: string key to key into signature_def inputs map
-		  signature_def: object of type  meta_graph_pb2.SignatureDef()
+		  signature_def: object of type meta_graph_pb2.SignatureDef()
 		
 		Sideffect:
 		  adds a TensorInfo with tensor_name to signature_def inputs map keyed with
@@ -28,7 +28,7 @@ package tensorflow.contrib.session_bundle.bundle_shim;
 		Args:
 		  tensor_name: string name of tensor to add to signature_def outputs
 		  map_key: string key to key into signature_def outputs map
-		  signature_def: object of type  meta_graph_pb2.SignatureDef()
+		  signature_def: object of type meta_graph_pb2.SignatureDef()
 		
 		Sideffect:
 		  adds a TensorInfo with tensor_name to signature_def outputs map keyed with

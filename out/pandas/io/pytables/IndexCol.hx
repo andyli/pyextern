@@ -8,7 +8,7 @@ package pandas.io.pytables;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package pandas.io.pytables;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -113,7 +113,7 @@ package pandas.io.pytables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __unicode__():Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -128,7 +128,7 @@ package pandas.io.pytables;
 	/**
 		set the values from this selection: take = take ownership 
 	**/
-	public function convert(values:Dynamic, nan_rep:Dynamic, encoding:Dynamic):Dynamic;
+	public function convert(values:Dynamic, nan_rep:Dynamic, encoding:Dynamic, errors:Dynamic):Dynamic;
 	public function copy():Dynamic;
 	/**
 		return my cython values 
@@ -136,7 +136,7 @@ package pandas.io.pytables;
 	public var cvalues : Dynamic;
 	public var description : Dynamic;
 	/**
-		set the kind for this colummn 
+		set the kind for this column 
 	**/
 	public function get_attr():Dynamic;
 	/**
@@ -151,7 +151,7 @@ package pandas.io.pytables;
 	public var is_indexed : Dynamic;
 	/**
 		maybe set a string col itemsize:
-		min_itemsize can be an interger or a dict with this columns name
+		min_itemsize can be an integer or a dict with this columns name
 		with an integer size 
 	**/
 	public function maybe_set_size(?min_itemsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -160,7 +160,7 @@ package pandas.io.pytables;
 	**/
 	public function read_metadata(handler:Dynamic):Dynamic;
 	/**
-		set the kind for this colummn 
+		set the kind for this column 
 	**/
 	public function set_attr():Dynamic;
 	/**

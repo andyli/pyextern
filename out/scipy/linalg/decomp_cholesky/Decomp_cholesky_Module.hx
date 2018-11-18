@@ -79,9 +79,9 @@ package scipy.linalg.decomp_cholesky;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -149,6 +149,42 @@ package scipy.linalg.decomp_cholesky;
 	**/
 	static public function asarray_chkfinite(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
+		View inputs as arrays with at least two dimensions.
+		
+		Parameters
+		----------
+		arys1, arys2, ... : array_like
+		    One or more array-like sequences.  Non-array inputs are converted
+		    to arrays.  Arrays that already have two or more dimensions are
+		    preserved.
+		
+		Returns
+		-------
+		res, res2, ... : ndarray
+		    An array, or list of arrays, each with ``a.ndim >= 2``.
+		    Copies are avoided where possible, and views with two or more
+		    dimensions are returned.
+		
+		See Also
+		--------
+		atleast_1d, atleast_3d
+		
+		Examples
+		--------
+		>>> np.atleast_2d(3.0)
+		array([[ 3.]])
+		
+		>>> x = np.arange(3.0)
+		>>> np.atleast_2d(x)
+		array([[ 0.,  1.,  2.]])
+		>>> np.atleast_2d(x).base is x
+		True
+		
+		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
+		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
+	**/
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	/**
 		Compute the Cholesky decomposition of a matrix, to use in cho_solve
 		
 		Returns a matrix containing the Cholesky decomposition,
@@ -191,6 +227,19 @@ package scipy.linalg.decomp_cholesky;
 		--------
 		cho_solve : Solve a linear set equations using the Cholesky factorization
 		            of a matrix.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> c
+		array([[3.        , 1.        , 0.33333333, 1.66666667],
+		       [3.        , 2.44948974, 1.90515869, -0.27216553],
+		       [1.        , 5.        , 2.29330749, 0.8559528 ],
+		       [5.        , 1.        , 2.        , 1.55418563]])
+		>>> np.allclose(np.triu(c).T @ np. triu(c) - A, np.zeros((4, 4)))
+		True
 	**/
 	static public function cho_factor(a:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -217,17 +266,27 @@ package scipy.linalg.decomp_cholesky;
 		See also
 		--------
 		cho_factor : Cholesky factorization of a matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor, cho_solve
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> x = cho_solve((c, low), [1, 1, 1, 1])
+		>>> np.allclose(A @ x - [1, 1, 1, 1], np.zeros(4))
+		True
 	**/
 	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
-		Solve the linear equations A x = b, given the Cholesky factorization of A.
+		Solve the linear equations ``A x = b``, given the Cholesky factorization of
+		the banded hermitian ``A``.
 		
 		Parameters
 		----------
-		(cb, lower) : tuple, (array, bool)
+		(cb, lower) : tuple, (ndarray, bool)
 		    `cb` is the Cholesky factorization of A, as given by cholesky_banded.
 		    `lower` must be the same value that was given to cholesky_banded.
-		b : array
+		b : array_like
 		    Right-hand side
 		overwrite_b : bool, optional
 		    If True, the function will overwrite the values in `b`.
@@ -249,6 +308,17 @@ package scipy.linalg.decomp_cholesky;
 		-----
 		
 		.. versionadded:: 0.8.0
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cholesky_banded, cho_solve_banded
+		>>> Ab = np.array([[0, 0, 1j, 2, 3j], [0, -1, -2, 3, 4], [9, 8, 7, 6, 9]])
+		>>> A = np.diag(Ab[0,2:], k=2) + np.diag(Ab[1,1:], k=1)
+		>>> A = A + A.conj().T + np.diag(Ab[2, :])
+		>>> c = cholesky_banded(Ab)
+		>>> x = cho_solve_banded((c, False), np.ones(5))
+		>>> np.allclose(A @ x - np.ones(5), np.zeros(5))
+		True
 	**/
 	static public function cho_solve_banded(cb_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
@@ -282,13 +352,13 @@ package scipy.linalg.decomp_cholesky;
 		
 		Examples
 		--------
-		>>> from scipy import array, linalg, dot
-		>>> a = array([[1,-2j],[2j,5]])
-		>>> L = linalg.cholesky(a, lower=True)
+		>>> from scipy.linalg import cholesky
+		>>> a = np.array([[1,-2j],[2j,5]])
+		>>> L = cholesky(a, lower=True)
 		>>> L
 		array([[ 1.+0.j,  0.+0.j],
 		       [ 0.+2.j,  1.+0.j]])
-		>>> dot(L, L.T.conj())
+		>>> L @ L.T.conj()
 		array([[ 1.+0.j,  0.-2.j],
 		       [ 0.+2.j,  5.+0.j]])
 	**/
@@ -331,6 +401,18 @@ package scipy.linalg.decomp_cholesky;
 		-------
 		c : (u + 1, M) ndarray
 		    Cholesky factorization of a, in the same banded format as ab
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cholesky_banded
+		>>> from numpy import allclose, zeros, diag
+		>>> Ab = np.array([[0, 0, 1j, 2, 3j], [0, -1, -2, 3, 4], [9, 8, 7, 6, 9]])
+		>>> A = np.diag(Ab[0,2:], k=2) + np.diag(Ab[1,1:], k=1)
+		>>> A = A + A.conj().T + np.diag(Ab[2, :])
+		>>> c = cholesky_banded(Ab)
+		>>> C = np.diag(c[0, 2:], k=2) + np.diag(c[1, 1:], k=1) + np.diag(c[2, :])
+		>>> np.allclose(C.conj().T @ C - A, np.zeros((5, 5)))
+		True
 	**/
 	static public function cholesky_banded(ab:Dynamic, ?overwrite_ab:Dynamic, ?lower:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -352,12 +434,10 @@ package scipy.linalg.decomp_cholesky;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -368,8 +448,37 @@ package scipy.linalg.decomp_cholesky;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;

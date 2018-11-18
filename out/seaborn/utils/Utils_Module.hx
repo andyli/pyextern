@@ -142,6 +142,9 @@ package seaborn.utils;
 	**/
 	static public function despine(?fig:Dynamic, ?ax:Dynamic, ?top:Dynamic, ?right:Dynamic, ?left:Dynamic, ?bottom:Dynamic, ?offset:Dynamic, ?trim:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Return the list of colors in the current matplotlib color cycle.
+	**/
 	static public function get_color_cycle():Dynamic;
 	/**
 		Return the path of the seaborn data directory.
@@ -236,6 +239,20 @@ package seaborn.utils;
 	**/
 	static public function relative_luminance(color:Dynamic):Dynamic;
 	/**
+		Helper method for removing NA values from array-like.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like from which to remove NA values.
+		
+		Returns
+		-------
+		clean_arr : array-like
+		    The original array with NA values removed.
+	**/
+	static public function remove_na(arr:Dynamic):Dynamic;
+	/**
 		Return a fully saturated color with the same hue.
 		
 		Parameters
@@ -269,6 +286,10 @@ package seaborn.utils;
 		Return a R-style significance string corresponding to p values.
 	**/
 	static public function sig_stars(p:Dynamic):Dynamic;
+	/**
+		Wrapper to handle different pandas sorting API pre/post 0.17.
+	**/
+	static public function sort_df(df:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a Unicode string representing a Python object.
 		

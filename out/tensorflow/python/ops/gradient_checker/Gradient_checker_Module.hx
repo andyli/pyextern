@@ -10,7 +10,7 @@ package tensorflow.python.ops.gradient_checker;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Returns a node to compute gradient of x wrt y.
+		Returns a node to compute gradient of y wrt x.
 	**/
 	static public function _compute_dx_and_dy(x:Dynamic, y:Dynamic, y_shape:Dynamic):Dynamic;
 	/**
@@ -81,10 +81,10 @@ package tensorflow.python.ops.gradient_checker;
 		numbers.  For example, if `x` is complex with shape `[m]` and `y` is complex
 		with shape `[n]`, each Jacobian `J` will have shape `[m * 2, n * 2]` with
 		
-		    J[:m, :n] = d(Re y)/d(Re x)
-		    J[:m, n:] = d(Im y)/d(Re x)
-		    J[m:, :n] = d(Re y)/d(Im x)
-		    J[m:, n:] = d(Im y)/d(Im x)
+		    J[::2, ::2] = d(Re y)/d(Re x)
+		    J[::2, 1::2] = d(Im y)/d(Re x)
+		    J[1::2, ::2] = d(Re y)/d(Im x)
+		    J[1::2, 1::2] = d(Im y)/d(Im x)
 		
 		Args:
 		  x: a tensor or list of tensors
@@ -135,7 +135,6 @@ package tensorflow.python.ops.gradient_checker;
 		    as the initial value.
 		  delta: (optional) the amount of perturbation.
 		  init_targets: list of targets to run to initialize model params.
-		    TODO(mrry): Remove this argument.
 		  extra_feed_dict: dict that allows fixing specified tensor values
 		    during the Jacobian calculation.
 		
@@ -145,4 +144,5 @@ package tensorflow.python.ops.gradient_checker;
 	static public function compute_gradient_error(x:Dynamic, x_shape:Dynamic, y:Dynamic, y_shape:Dynamic, ?x_init_value:Dynamic, ?delta:Dynamic, ?init_targets:Dynamic, ?extra_feed_dict:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

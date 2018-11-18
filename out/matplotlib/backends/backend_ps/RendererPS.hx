@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_ps;
 @:pythonImport("matplotlib.backends.backend_ps", "RendererPS") extern class RendererPS {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package matplotlib.backends.backend_ps;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +107,7 @@ package matplotlib.backends.backend_ps;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -126,16 +126,18 @@ package matplotlib.backends.backend_ps;
 	/**
 		draw the text by converting them to paths using textpath module.
 		
-		*prop*
+		Parameters
+		----------
+		prop : `matplotlib.font_manager.FontProperties`
 		  font property
 		
-		*s*
+		s : str
 		  text to be converted
 		
-		*usetex*
+		usetex : bool
 		  If True, use matplotlib usetex mode.
 		
-		*ismath*
+		ismath : bool
 		  If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _draw_text_as_path(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
@@ -146,16 +148,18 @@ package matplotlib.backends.backend_ps;
 	/**
 		return the text path and transform
 		
-		*prop*
+		Parameters
+		----------
+		prop : `matplotlib.font_manager.FontProperties`
 		  font property
 		
-		*s*
+		s : str
 		  text to be converted
 		
-		*usetex*
+		usetex : bool
 		  If True, use matplotlib usetex mode.
 		
-		*ismath*
+		ismath : bool
 		  If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _get_text_path_transform(x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
@@ -163,7 +167,7 @@ package matplotlib.backends.backend_ps;
 	/**
 		This is a helper method (along with
 		:meth:`_iter_collection_raw_paths`) to make it easier to write
-		a space-efficent :meth:`draw_path_collection` implementation in a
+		a space-efficient :meth:`draw_path_collection` implementation in a
 		backend.
 		
 		This method yields all of the path, offset and graphics
@@ -188,7 +192,7 @@ package matplotlib.backends.backend_ps;
 	public function _iter_collection(gc:Dynamic, master_transform:Dynamic, all_transforms:Dynamic, path_ids:Dynamic, offsets:Dynamic, offsetTrans:Dynamic, facecolors:Dynamic, edgecolors:Dynamic, linewidths:Dynamic, linestyles:Dynamic, antialiaseds:Dynamic, urls:Dynamic, offset_position:Dynamic):Dynamic;
 	/**
 		This is a helper method (along with :meth:`_iter_collection`) to make
-		it easier to write a space-efficent :meth:`draw_path_collection`
+		it easier to write a space-efficient :meth:`draw_path_collection`
 		implementation in a backend.
 		
 		This method yields all of the base path/transform
@@ -222,23 +226,31 @@ package matplotlib.backends.backend_ps;
 	/**
 		Draw a Gouraud-shaded triangle.
 		
-		*points* is a 3x2 array of (x, y) points for the triangle.
+		Parameters
+		----------
+		points : array_like, shape=(3, 2)
+		    Array of (x, y) points for the triangle.
 		
-		*colors* is a 3x4 array of RGBA colors for each point of the
-		triangle.
+		colors : array_like, shape=(3, 4)
+		    RGBA colors for each point of the triangle.
 		
-		*transform* is an affine transform to apply to the points.
+		transform : `matplotlib.transforms.Transform`
+		    An affine transform to apply to the points.
 	**/
 	public function draw_gouraud_triangle(gc:Dynamic, points:Dynamic, colors:Dynamic, trans:Dynamic):Dynamic;
 	/**
 		Draws a series of Gouraud triangles.
 		
-		*points* is a Nx3x2 array of (x, y) points for the trianglex.
+		Parameters
+		----------
+		points : array_like, shape=(N, 3, 2)
+		    Array of *N* (x, y) points for the triangles.
 		
-		*colors* is a Nx3x4 array of RGBA colors for each point of the
-		triangles.
+		colors : array_like, shape=(N, 3, 4)
+		    Array of *N* RGBA colors for each point of the triangles.
 		
-		*transform* is an affine transform to apply to the points.
+		transform : `matplotlib.transforms.Transform`
+		    An affine transform to apply to the points.
 	**/
 	public function draw_gouraud_triangles(gc:Dynamic, points:Dynamic, colors:Dynamic, trans:Dynamic):Dynamic;
 	/**
@@ -294,7 +306,7 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function draw_tex(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ?ismath:Dynamic, ?mtext:Dynamic):Dynamic;
 	/**
-		draw a Text instance
+		Draw a Text instance.
 	**/
 	public function draw_text(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ?ismath:Dynamic, ?mtext:Dynamic):Dynamic;
 	/**
@@ -343,16 +355,20 @@ package matplotlib.backends.backend_ps;
 	/**
 		Convert points to display units
 		
-		*points*
-		    a float or a numpy array of float
-		
-		return points converted to pixels
-		
 		You need to override this function (unless your backend
 		doesn't have a dpi, e.g., postscript or svg).  Some imaging
 		systems assume some value for pixels per inch::
 		
 		    points to pixels = points * pixels_per_inch/72.0 * dpi/72.0
+		
+		Parameters
+		----------
+		points : scalar or array_like
+		    a float or a numpy array of float
+		
+		Returns
+		-------
+		Points converted to pixels
 	**/
 	public function points_to_pixels(points:Dynamic):Dynamic;
 	public function set_color(r:Dynamic, g:Dynamic, b:Dynamic, ?store:Dynamic):Dynamic;

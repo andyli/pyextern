@@ -27,11 +27,11 @@ package scipy.integrate.quadpack;
 		    first argument and x the second argument.
 		a, b : float
 		    The limits of integration in x: `a` < `b`
-		gfun : callable
+		gfun : callable or float
 		    The lower boundary curve in y which is a function taking a single
-		    floating point argument (x) and returning a floating point result: a
-		    lambda function can be useful here.
-		hfun : callable
+		    floating point argument (x) and returning a floating point result
+		    or a float indicating a constant boundary curve.
+		hfun : callable or float
 		    The upper boundary curve in y (same requirements as `gfun`).
 		args : sequence, optional
 		    Extra arguments to pass to `func`.
@@ -60,6 +60,17 @@ package scipy.integrate.quadpack;
 		simps : integrator for sampled data
 		romb : integrator for sampled data
 		scipy.special : for coefficients and roots of orthogonal polynomials
+		
+		Examples
+		--------
+		
+		Compute the double integral of ``x * y**2`` over the box
+		``x`` ranging from 0 to 2 and ``y`` ranging from 0 to 1.
+		
+		>>> from scipy import integrate
+		>>> f = lambda y, x: x*y**2
+		>>> integrate.dblquad(f, 0, 2, lambda x: 0, lambda x: 1)
+		    (0.6666666666666667, 7.401486830834377e-15)
 	**/
 	static public function dblquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Float;
 	static public var division : Dynamic;
@@ -88,7 +99,7 @@ package scipy.integrate.quadpack;
 		        double func(int n, double *xx, void *user_data)
 		
 		    where ``n`` is the number of extra parameters and args is an array
-		    of doubles of the additional parameters, the ``xx`` array contains the 
+		    of doubles of the additional parameters, the ``xx`` array contains the
 		    coordinates. The ``user_data`` is the data contained in the
 		    `scipy.LowLevelCallable`.
 		ranges : iterable object
@@ -96,7 +107,7 @@ package scipy.integrate.quadpack;
 		    a callable that returns such a sequence.  ``ranges[0]`` corresponds to
 		    integration over x0, and so on.  If an element of ranges is a callable,
 		    then it will be called with all of the integration arguments available,
-		    as well as any parametric arguments. e.g. if 
+		    as well as any parametric arguments. e.g. if
 		    ``func = f(x0, x1, x2, t0, t1)``, then ``ranges[0]`` may be defined as
 		    either ``(a, b)`` or else as ``(a, b) = range0(x1, x2, t0, t1)``.
 		args : iterable object, optional
@@ -108,7 +119,7 @@ package scipy.integrate.quadpack;
 		    default options from scipy.integrate.quad are used.  If a dict, the same
 		    options are used for all levels of integraion.  If a sequence, then each
 		    element of the sequence corresponds to a particular integration. e.g.
-		    opts[0] corresponds to integration over x0, and so on. If a callable, 
+		    opts[0] corresponds to integration over x0, and so on. If a callable,
 		    the signature must be the same as for ``ranges``. The available
 		    options together with their default values are:
 		
@@ -123,8 +134,8 @@ package scipy.integrate.quadpack;
 		    For more information on these options, see `quad` and `quad_explain`.
 		
 		full_output : bool, optional
-		    Partial implementation of ``full_output`` from scipy.integrate.quad. 
-		    The number of integrand function evaluations ``neval`` can be obtained 
+		    Partial implementation of ``full_output`` from scipy.integrate.quad.
+		    The number of integrand function evaluations ``neval`` can be obtained
 		    by setting ``full_output=True`` when calling nquad.
 		
 		Returns
@@ -135,7 +146,7 @@ package scipy.integrate.quadpack;
 		    The maximum of the estimates of the absolute error in the various
 		    integration results.
 		out_dict : dict, optional
-		    A dict containing additional information on the integration. 
+		    A dict containing additional information on the integration.
 		
 		See Also
 		--------
@@ -206,11 +217,11 @@ package scipy.integrate.quadpack;
 		        double func(int n, double *xx, void *user_data)
 		
 		    The ``user_data`` is the data contained in the `scipy.LowLevelCallable`.
-		    In the call forms with ``xx``,  ``n`` is the length of the ``xx`` 
+		    In the call forms with ``xx``,  ``n`` is the length of the ``xx``
 		    array which contains ``xx[0] == x`` and the rest of the items are
 		    numbers contained in the ``args`` argument of quad.
 		
-		    In addition, certain ctypes call signatures are supported for 
+		    In addition, certain ctypes call signatures are supported for
 		    backward compatibility, but those should not be used in new code.
 		a : float
 		    Lower limit of integration (use -numpy.inf for -infinity).
@@ -454,6 +465,20 @@ package scipy.integrate.quadpack;
 		   #(1.3333333333333333, 1.4802973661668752e-14)
 		   print((1.0**3/3.0 + 1.0) - (0.0**3/3.0 + 0.0)) #Analytic result
 		   # 1.3333333333333333
+		
+		Be aware that pulse shapes and other sharp features as compared to the
+		size of the integration interval may not be integrated correctly using
+		this method. A simplified example of this limitation is integrating a
+		y-axis reflected step function with many zero values within the integrals
+		bounds.
+		
+		>>> y = lambda x: 1 if x<=0 else 0
+		>>> integrate.quad(y, -1, 1)
+		(1.0, 1.1102230246251565e-14)
+		>>> integrate.quad(y, -1, 100)
+		(1.0000000002199108, 1.0189464580163188e-08)
+		>>> integrate.quad(y, -1, 10000)
+		(0.0, 0.0)
 	**/
 	static public function quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?full_output:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic, ?limit:Dynamic, ?points:Dynamic, ?weight:Dynamic, ?wvar:Dynamic, ?wopts:Dynamic, ?maxp1:Dynamic, ?limlst:Dynamic):Float;
 	/**
@@ -483,16 +508,17 @@ package scipy.integrate.quadpack;
 		    order (z, y, x).
 		a, b : float
 		    The limits of integration in x: `a` < `b`
-		gfun : function
+		gfun : function or float
 		    The lower boundary curve in y which is a function taking a single
-		    floating point argument (x) and returning a floating point result:
-		    a lambda function can be useful here.
-		hfun : function
+		    floating point argument (x) and returning a floating point result
+		    or a float indicating a constant boundary curve.
+		hfun : function or float
 		    The upper boundary curve in y (same requirements as `gfun`).
-		qfun : function
+		qfun : function or float
 		    The lower boundary surface in z.  It must be a function that takes
-		    two floats in the order (x, y) and returns a float.
-		rfun : function
+		    two floats in the order (x, y) and returns a float or a float
+		    indicating a constant boundary surface.
+		rfun : function or float
 		    The upper boundary surface in z. (Same requirements as `qfun`.)
 		args : tuple, optional
 		    Extra arguments to pass to `func`.
@@ -521,6 +547,18 @@ package scipy.integrate.quadpack;
 		ode: ODE integrators
 		odeint: ODE integrators
 		scipy.special: For coefficients and roots of orthogonal polynomials
+		
+		Examples
+		--------
+		
+		Compute the triple integral of ``x * y * z``, over ``x`` ranging 
+		from 1 to 2, ``y`` ranging from 2 to 3, ``z`` ranging from 0 to 1.
+		
+		>>> from scipy import integrate
+		>>> f = lambda z, y, x: x*y*z
+		>>> integrate.tplquad(f, 1, 2, lambda x: 2, lambda x: 3,
+		...                   lambda x, y: 0, lambda x, y: 1)
+		(1.8750000000000002, 3.324644794257407e-14)
 	**/
 	static public function tplquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, qfun:Dynamic, rfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Float;
 }

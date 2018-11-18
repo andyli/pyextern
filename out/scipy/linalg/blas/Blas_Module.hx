@@ -135,6 +135,44 @@ package scipy.linalg.blas;
 	**/
 	static public function cdotu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		yout = cgbmv(m,n,kl,ku,alpha,a,x,[incx,offx,beta,y,incy,offy,trans,overwrite_y])
+		
+		Wrapper for ``cgbmv``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		kl : input int
+		ku : input int
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('F') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('F') with bounds (ly) and y storage
+	**/
+	static public function cgbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c = cgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
 		
 		Wrapper for ``cgemm``.
@@ -258,6 +296,41 @@ package scipy.linalg.blas;
 		a : rank-2 array('F') with bounds (m,n)
 	**/
 	static public function cgeru(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		yout = chbmv(k,alpha,a,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``chbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('F') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('F') with bounds (ly) and y storage
+	**/
+	static public function chbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		c = chemm(alpha,a,b,[beta,c,side,lower,overwrite_c])
 		
@@ -439,6 +512,102 @@ package scipy.linalg.blas;
 	**/
 	static public function cherk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		yout = chpmv(n,alpha,ap,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``chpmv``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		ap : input rank-1 array('F') with bounds (*)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('F') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('F') with bounds (ly) and y storage
+	**/
+	static public function chpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = chpr(n,alpha,x,ap,[incx,offx,lower,overwrite_ap])
+		
+		Wrapper for ``chpr``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		x : input rank-1 array('F') with bounds (*)
+		ap : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('F') with bounds (*) and ap storage
+	**/
+	static public function chpr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = chpr2(n,alpha,x,y,ap,[incx,offx,incy,offy,lower,overwrite_ap])
+		
+		Wrapper for ``chpr2``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		ap : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('F') with bounds (*) and ap storage
+	**/
+	static public function chpr2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,s = crotg(a,b)
 		
 		Wrapper for ``crotg``.
@@ -478,6 +647,69 @@ package scipy.linalg.blas;
 		x : rank-1 array('F') with bounds (*)
 	**/
 	static public function cscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		yout = cspmv(n,alpha,ap,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``cspmv``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		ap : input rank-1 array('F') with bounds (*)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('F') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('F') with bounds (ly) and y storage
+	**/
+	static public function cspmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = cspr(n,alpha,x,ap,[incx,offx,lower,overwrite_ap])
+		
+		Wrapper for ``cspr``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		x : input rank-1 array('F') with bounds (*)
+		ap : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('F') with bounds (*) and ap storage
+	**/
+	static public function cspr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,y = csrot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
 		
@@ -681,6 +913,130 @@ package scipy.linalg.blas;
 	**/
 	static public function csyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		xout = ctbmv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ctbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('F') with bounds (lda,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('F') with bounds (*) and x storage
+	**/
+	static public function ctbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ctbsv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ctbsv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('F') with bounds (lda,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('F') with bounds (*) and x storage
+	**/
+	static public function ctbsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ctpmv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ctpmv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('F') with bounds (*)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('F') with bounds (*) and x storage
+	**/
+	static public function ctpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ctpsv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ctpsv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('F') with bounds (*)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('F') with bounds (*) and x storage
+	**/
+	static public function ctpsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		b = ctrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
 		
 		Wrapper for ``ctrmm``.
@@ -710,7 +1066,7 @@ package scipy.linalg.blas;
 	**/
 	static public function ctrmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x = ctrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		x = ctrmv(a,x,[offx,incx,lower,trans,diag,overwrite_x])
 		
 		Wrapper for ``ctrmv``.
 		
@@ -731,7 +1087,7 @@ package scipy.linalg.blas;
 		    Default: 0
 		trans : input int, optional
 		    Default: 0
-		unitdiag : input int, optional
+		diag : input int, optional
 		    Default: 0
 		
 		Returns
@@ -739,6 +1095,65 @@ package scipy.linalg.blas;
 		x : rank-1 array('F') with bounds (*)
 	**/
 	static public function ctrmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x = ctrsm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``ctrsm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,*)
+		b : input rank-2 array('F') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('F') with bounds (ldb,n) and b storage
+	**/
+	static public function ctrsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ctrsv(a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ctrsv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('F') with bounds (*) and x storage
+	**/
+	static public function ctrsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		s = dasum(x,[n,offx,incx])
 		
@@ -848,6 +1263,44 @@ package scipy.linalg.blas;
 		xy : float
 	**/
 	static public function ddot(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		yout = dgbmv(m,n,kl,ku,alpha,a,x,[incx,offx,beta,y,incy,offy,trans,overwrite_y])
+		
+		Wrapper for ``dgbmv``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		kl : input int
+		ku : input int
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('d') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('d') with bounds (ly) and y storage
+	**/
+	static public function dgbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		c = dgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
 		
@@ -1068,6 +1521,41 @@ package scipy.linalg.blas;
 	**/
 	static public function drotmg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		yout = dsbmv(k,alpha,a,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``dsbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('d') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('d') with bounds (ly) and y storage
+	**/
+	static public function dsbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		x = dscal(a,x,[n,offx,incx])
 		
 		Wrapper for ``dscal``.
@@ -1091,6 +1579,102 @@ package scipy.linalg.blas;
 		x : rank-1 array('d') with bounds (*)
 	**/
 	static public function dscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		yout = dspmv(n,alpha,ap,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``dspmv``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		ap : input rank-1 array('d') with bounds (*)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('d') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('d') with bounds (ly) and y storage
+	**/
+	static public function dspmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = dspr(n,alpha,x,ap,[incx,offx,lower,overwrite_ap])
+		
+		Wrapper for ``dspr``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		x : input rank-1 array('d') with bounds (*)
+		ap : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('d') with bounds (*) and ap storage
+	**/
+	static public function dspr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = dspr2(n,alpha,x,y,ap,[incx,offx,incy,offy,lower,overwrite_ap])
+		
+		Wrapper for ``dspr2``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		ap : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('d') with bounds (*) and ap storage
+	**/
+	static public function dspr2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,y = dswap(x,y,[n,offx,incx,offy,incy])
 		
@@ -1301,6 +1885,130 @@ package scipy.linalg.blas;
 	**/
 	static public function dsyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		xout = dtbmv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``dtbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('d') with bounds (lda,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('d') with bounds (*) and x storage
+	**/
+	static public function dtbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = dtbsv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``dtbsv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('d') with bounds (lda,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('d') with bounds (*) and x storage
+	**/
+	static public function dtbsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = dtpmv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``dtpmv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('d') with bounds (*)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('d') with bounds (*) and x storage
+	**/
+	static public function dtpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = dtpsv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``dtpsv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('d') with bounds (*)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('d') with bounds (*) and x storage
+	**/
+	static public function dtpsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		b = dtrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
 		
 		Wrapper for ``dtrmm``.
@@ -1330,7 +2038,7 @@ package scipy.linalg.blas;
 	**/
 	static public function dtrmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x = dtrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		x = dtrmv(a,x,[offx,incx,lower,trans,diag,overwrite_x])
 		
 		Wrapper for ``dtrmv``.
 		
@@ -1351,7 +2059,7 @@ package scipy.linalg.blas;
 		    Default: 0
 		trans : input int, optional
 		    Default: 0
-		unitdiag : input int, optional
+		diag : input int, optional
 		    Default: 0
 		
 		Returns
@@ -1359,6 +2067,65 @@ package scipy.linalg.blas;
 		x : rank-1 array('d') with bounds (*)
 	**/
 	static public function dtrmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x = dtrsm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``dtrsm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,*)
+		b : input rank-2 array('d') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('d') with bounds (ldb,n) and b storage
+	**/
+	static public function dtrsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = dtrsv(a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``dtrsv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('d') with bounds (*) and x storage
+	**/
+	static public function dtrsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		s = dzasum(x,[n,offx,incx])
 		
@@ -1427,6 +2194,18 @@ package scipy.linalg.blas;
 		    Inferred Numpy data type.
 		prefer_fortran : bool
 		    Whether to prefer Fortran order routines over C order.
+		
+		Examples
+		--------
+		>>> import scipy.linalg.blas as bla
+		>>> a = np.random.rand(10,15)
+		>>> b = np.asfortranarray(a)  # Change the memory layout order
+		>>> bla.find_best_blas_type((a,))
+		('d', dtype('float64'), False)
+		>>> bla.find_best_blas_type((a*1j,))
+		('z', dtype('complex128'), False)
+		>>> bla.find_best_blas_type((b,))
+		('d', dtype('float64'), True)
 	**/
 	static public function find_best_blas_type(?arrays:Dynamic, ?dtype:Dynamic):String;
 	/**
@@ -1466,6 +2245,17 @@ package scipy.linalg.blas;
 		types {float32, float64, complex64, complex128} respectively.
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
+		
+		Examples
+		--------
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_gemv = LA.get_blas_funcs('gemv', (a,))
+		>>> x_gemv.typecode
+		'd'
+		>>> x_gemv = LA.get_blas_funcs('gemv',(a*1j,))
+		>>> x_gemv.typecode
+		'z'
 	**/
 	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -1717,6 +2507,44 @@ package scipy.linalg.blas;
 	**/
 	static public function sdot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		yout = sgbmv(m,n,kl,ku,alpha,a,x,[incx,offx,beta,y,incy,offy,trans,overwrite_y])
+		
+		Wrapper for ``sgbmv``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		kl : input int
+		ku : input int
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('f') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('f') with bounds (ly) and y storage
+	**/
+	static public function sgbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c = sgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
 		
 		Wrapper for ``sgemm``.
@@ -1935,6 +2763,41 @@ package scipy.linalg.blas;
 	**/
 	static public function srotmg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		yout = ssbmv(k,alpha,a,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``ssbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('f') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('f') with bounds (ly) and y storage
+	**/
+	static public function ssbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		x = sscal(a,x,[n,offx,incx])
 		
 		Wrapper for ``sscal``.
@@ -1958,6 +2821,102 @@ package scipy.linalg.blas;
 		x : rank-1 array('f') with bounds (*)
 	**/
 	static public function sscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		yout = sspmv(n,alpha,ap,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``sspmv``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		ap : input rank-1 array('f') with bounds (*)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('f') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('f') with bounds (ly) and y storage
+	**/
+	static public function sspmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = sspr(n,alpha,x,ap,[incx,offx,lower,overwrite_ap])
+		
+		Wrapper for ``sspr``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		x : input rank-1 array('f') with bounds (*)
+		ap : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('f') with bounds (*) and ap storage
+	**/
+	static public function sspr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = sspr2(n,alpha,x,y,ap,[incx,offx,incy,offy,lower,overwrite_ap])
+		
+		Wrapper for ``sspr2``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		ap : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('f') with bounds (*) and ap storage
+	**/
+	static public function sspr2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,y = sswap(x,y,[n,offx,incx,offy,incy])
 		
@@ -2168,6 +3127,130 @@ package scipy.linalg.blas;
 	**/
 	static public function ssyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		xout = stbmv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``stbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('f') with bounds (lda,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('f') with bounds (*) and x storage
+	**/
+	static public function stbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = stbsv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``stbsv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('f') with bounds (lda,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('f') with bounds (*) and x storage
+	**/
+	static public function stbsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = stpmv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``stpmv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('f') with bounds (*)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('f') with bounds (*) and x storage
+	**/
+	static public function stpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = stpsv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``stpsv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('f') with bounds (*)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('f') with bounds (*) and x storage
+	**/
+	static public function stpsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		b = strmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
 		
 		Wrapper for ``strmm``.
@@ -2197,7 +3280,7 @@ package scipy.linalg.blas;
 	**/
 	static public function strmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x = strmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		x = strmv(a,x,[offx,incx,lower,trans,diag,overwrite_x])
 		
 		Wrapper for ``strmv``.
 		
@@ -2218,7 +3301,7 @@ package scipy.linalg.blas;
 		    Default: 0
 		trans : input int, optional
 		    Default: 0
-		unitdiag : input int, optional
+		diag : input int, optional
 		    Default: 0
 		
 		Returns
@@ -2226,6 +3309,65 @@ package scipy.linalg.blas;
 		x : rank-1 array('f') with bounds (*)
 	**/
 	static public function strmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x = strsm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``strsm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,*)
+		b : input rank-2 array('f') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('f') with bounds (ldb,n) and b storage
+	**/
+	static public function strsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = strsv(a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``strsv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('f') with bounds (*) and x storage
+	**/
+	static public function strsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		z = zaxpy(x,y,[n,a,offx,incx,offy,incy])
 		
@@ -2402,6 +3544,44 @@ package scipy.linalg.blas;
 	**/
 	static public function zdscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		yout = zgbmv(m,n,kl,ku,alpha,a,x,[incx,offx,beta,y,incy,offy,trans,overwrite_y])
+		
+		Wrapper for ``zgbmv``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		kl : input int
+		ku : input int
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('D') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('D') with bounds (ly) and y storage
+	**/
+	static public function zgbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c = zgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
 		
 		Wrapper for ``zgemm``.
@@ -2525,6 +3705,41 @@ package scipy.linalg.blas;
 		a : rank-2 array('D') with bounds (m,n)
 	**/
 	static public function zgeru(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		yout = zhbmv(k,alpha,a,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``zhbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('D') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('D') with bounds (ly) and y storage
+	**/
+	static public function zhbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		c = zhemm(alpha,a,b,[beta,c,side,lower,overwrite_c])
 		
@@ -2706,6 +3921,102 @@ package scipy.linalg.blas;
 	**/
 	static public function zherk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		yout = zhpmv(n,alpha,ap,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``zhpmv``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		ap : input rank-1 array('D') with bounds (*)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('D') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('D') with bounds (ly) and y storage
+	**/
+	static public function zhpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = zhpr(n,alpha,x,ap,[incx,offx,lower,overwrite_ap])
+		
+		Wrapper for ``zhpr``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input float
+		x : input rank-1 array('D') with bounds (*)
+		ap : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('D') with bounds (*) and ap storage
+	**/
+	static public function zhpr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = zhpr2(n,alpha,x,y,ap,[incx,offx,incy,offy,lower,overwrite_ap])
+		
+		Wrapper for ``zhpr2``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		ap : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('D') with bounds (*) and ap storage
+	**/
+	static public function zhpr2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		c,s = zrotg(a,b)
 		
 		Wrapper for ``zrotg``.
@@ -2745,6 +4056,69 @@ package scipy.linalg.blas;
 		x : rank-1 array('D') with bounds (*)
 	**/
 	static public function zscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		yout = zspmv(n,alpha,ap,x,[incx,offx,beta,y,incy,offy,lower,overwrite_y])
+		
+		Wrapper for ``zspmv``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		ap : input rank-1 array('D') with bounds (*)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('D') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		yout : rank-1 array('D') with bounds (ly) and y storage
+	**/
+	static public function zspmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		apu = zspr(n,alpha,x,ap,[incx,offx,lower,overwrite_ap])
+		
+		Wrapper for ``zspr``.
+		
+		Parameters
+		----------
+		n : input int
+		alpha : input complex
+		x : input rank-1 array('D') with bounds (*)
+		ap : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		overwrite_ap : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		apu : rank-1 array('D') with bounds (*) and ap storage
+	**/
+	static public function zspr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		x,y = zswap(x,y,[n,offx,incx,offy,incy])
 		
@@ -2887,6 +4261,130 @@ package scipy.linalg.blas;
 	**/
 	static public function zsyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		xout = ztbmv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ztbmv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('D') with bounds (lda,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('D') with bounds (*) and x storage
+	**/
+	static public function ztbmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ztbsv(k,a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ztbsv``.
+		
+		Parameters
+		----------
+		k : input int
+		a : input rank-2 array('D') with bounds (lda,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('D') with bounds (*) and x storage
+	**/
+	static public function ztbsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ztpmv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ztpmv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('D') with bounds (*)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('D') with bounds (*) and x storage
+	**/
+	static public function ztpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ztpsv(n,ap,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ztpsv``.
+		
+		Parameters
+		----------
+		n : input int
+		ap : input rank-1 array('D') with bounds (*)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('D') with bounds (*) and x storage
+	**/
+	static public function ztpsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		b = ztrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
 		
 		Wrapper for ``ztrmm``.
@@ -2916,7 +4414,7 @@ package scipy.linalg.blas;
 	**/
 	static public function ztrmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		x = ztrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		x = ztrmv(a,x,[offx,incx,lower,trans,diag,overwrite_x])
 		
 		Wrapper for ``ztrmv``.
 		
@@ -2937,7 +4435,7 @@ package scipy.linalg.blas;
 		    Default: 0
 		trans : input int, optional
 		    Default: 0
-		unitdiag : input int, optional
+		diag : input int, optional
 		    Default: 0
 		
 		Returns
@@ -2945,4 +4443,63 @@ package scipy.linalg.blas;
 		x : rank-1 array('D') with bounds (*)
 	**/
 	static public function ztrmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x = ztrsm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``ztrsm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,*)
+		b : input rank-2 array('D') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('D') with bounds (ldb,n) and b storage
+	**/
+	static public function ztrsm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		xout = ztrsv(a,x,[incx,offx,lower,trans,diag,overwrite_x])
+		
+		Wrapper for ``ztrsv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		xout : rank-1 array('D') with bounds (*) and x storage
+	**/
+	static public function ztrsv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -24,8 +24,8 @@ package tensorflow.python.training.server_lib;
 		    Defaults to the value in `server_or_cluster_def`, if specified. Otherwise
 		    defaults to 0 if the server's job has only one task.
 		  protocol: (Optional.) Specifies the protocol to be used by the server.
-		    Acceptable values include `"grpc"`. Defaults to the value in
-		    `server_or_cluster_def`, if specified. Otherwise defaults to `"grpc"`.
+		    Acceptable values include `"grpc", "grpc+verbs"`. Defaults to the value
+		    in `server_or_cluster_def`, if specified. Otherwise defaults to `"grpc"`.
 		  config: (Options.) A `tf.ConfigProto` that specifies default configuration
 		    options for all sessions that run on this server.
 		
@@ -40,4 +40,5 @@ package tensorflow.python.training.server_lib;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -5,7 +5,7 @@ package tensorflow.python.ops.init_ops;
 		Call self as a function.
 	**/
 	public function __call__(shape:Dynamic, ?dtype:Dynamic, ?partition_info:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,12 +42,20 @@ package tensorflow.python.ops.init_ops;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		DEPRECATED FUNCTION ARGUMENTS
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		`normal` is a deprecated alias for `truncated_normal`
 	**/
 	@:native("__init__")
 	public function ___init__(?scale:Dynamic, ?mode:Dynamic, ?distribution:Dynamic, ?seed:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		DEPRECATED FUNCTION ARGUMENTS
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		`normal` is a deprecated alias for `truncated_normal`
 	**/
 	public function new(?scale:Dynamic, ?mode:Dynamic, ?distribution:Dynamic, ?seed:Dynamic, ?dtype:Dynamic):Void;
 	/**
@@ -56,7 +64,7 @@ package tensorflow.python.ops.init_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,23 +115,26 @@ package tensorflow.python.ops.init_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	/**
 		Instantiates an initializer from a configuration dictionary.
 		
 		Example:
 		
-		```
+		```python
 		initializer = RandomUniform(-1, 1)
 		config = initializer.get_config()
 		initializer = RandomUniform.from_config(config)
 		```
 		
-		Arguments:
+		Args:
 		  config: A Python dictionary.
 		    It will typically be the output of `get_config`.
 		

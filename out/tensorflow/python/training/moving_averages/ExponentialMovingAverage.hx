@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.moving_averages;
 @:pythonImport("tensorflow.python.training.moving_averages", "ExponentialMovingAverage") extern class ExponentialMovingAverage {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -90,7 +90,7 @@ package tensorflow.python.training.moving_averages;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -141,11 +141,13 @@ package tensorflow.python.training.moving_averages;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Maintains moving averages of variables.
 		
@@ -160,20 +162,22 @@ package tensorflow.python.training.moving_averages;
 		`GraphKeys.ALL_VARIABLES` collection.  They will be returned by calls to
 		`tf.global_variables()`.
 		
-		Returns an op that updates all shadow variables as described above.
+		Returns an op that updates all shadow variables from the current value of
+		their associated variables.
 		
-		Note that `apply()` can be called multiple times with different lists of
-		variables.
+		Note that `apply()` can be called multiple times. When eager execution is
+		enabled each call to apply will update the variables once, so this needs to
+		be called in a loop.
 		
 		Args:
 		  var_list: A list of Variable or Tensor objects. The variables
-		    and Tensors must be of types float16, float32, or float64.
+		    and Tensors must be of types bfloat16, float16, float32, or float64.
 		
 		Returns:
 		  An Operation that updates the moving averages.
 		
 		Raises:
-		  TypeError: If the arguments are not all float16, float32, or float64.
+		  TypeError: If the arguments are not an allowed type.
 		  ValueError: If the moving average of one of the variables is already
 		    being computed.
 	**/
@@ -212,6 +216,10 @@ package tensorflow.python.training.moving_averages;
 		  `var`.
 	**/
 	public function average_name(_var:Dynamic):Dynamic;
+	/**
+		The name of this ExponentialMovingAverage object.
+	**/
+	public var name : Dynamic;
 	/**
 		Returns a map of names to `Variables` to restore.
 		

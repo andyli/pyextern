@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.formats.terminal;
 @:pythonImport("pandas.io.formats.terminal") extern class Terminal_Module {
+	static public var PY3 : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -20,5 +21,11 @@ package pandas.io.formats.terminal;
 		IPython zmq frontends, or IDLE do not run in a terminal,
 	**/
 	static public function get_terminal_size():Dynamic;
+	/**
+		Detect if Python is running in a terminal.
+		
+		Returns True if Python is running in a terminal or False if not.
+	**/
+	static public function is_terminal():Dynamic;
 	static public var print_function : Dynamic;
 }

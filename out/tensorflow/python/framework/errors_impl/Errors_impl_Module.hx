@@ -29,10 +29,12 @@ package tensorflow.python.framework.errors_impl;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _make_specific_exception(node_def:Dynamic, op:Dynamic, message:Dynamic, error_code:Dynamic):Dynamic;
+	static public var _tf_api_constants : Dynamic;
+	static public var _tf_api_constants_v1 : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public function error_code_from_exception_type(cls:Dynamic):Dynamic;
 	static public function exception_type_from_error_code(error_code:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	static public function raise_exception_on_not_ok_status():Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

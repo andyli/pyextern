@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.preprocessing.categorical;
 @:pythonImport("tensorflow.contrib.learn.python.learn.preprocessing.categorical", "CategoricalProcessor") extern class CategoricalProcessor {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,7 +38,11 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initializes a CategoricalProcessor instance.
+		Initializes a CategoricalProcessor instance. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use tensorflow/transform or tf.data for sequence processing.
 		
 		Args:
 		  min_frequency: Minimum frequency of categories in the vocabulary.
@@ -52,7 +56,11 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical;
 	@:native("__init__")
 	public function ___init__(?min_frequency:Dynamic, ?share:Dynamic, ?vocabularies:Dynamic):Dynamic;
 	/**
-		Initializes a CategoricalProcessor instance.
+		Initializes a CategoricalProcessor instance. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use tensorflow/transform or tf.data for sequence processing.
 		
 		Args:
 		  min_frequency: Minimum frequency of categories in the vocabulary.
@@ -70,7 +78,7 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +129,7 @@ package tensorflow.contrib.learn.python.learn.preprocessing.categorical;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

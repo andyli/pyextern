@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package pandas.util._decorators;
 @:pythonImport("pandas.util._decorators") extern class _Decorators_Module {
+	static public var PY2 : Dynamic;
+	static public var WRAPPER_ASSIGNMENTS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -30,16 +32,42 @@ package pandas.util._decorators;
 		expanded tabs before searching for common leading whitespace.)
 	**/
 	static public function dedent(text:Dynamic):Dynamic;
-	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function
+		Return a new function that emits a deprecation warning on use.
+		
+		To use this method for a deprecated function, another function
+		`alternative` with the same signature must exist. The deprecated
+		function will emit a deprecation warning, and in the docstring
+		it will contain the deprecation directive with the provided version
+		so it can be detected for future removal.
+		
+		Parameters
+		----------
+		name : str
+		    Name of function to deprecate.
+		alternative : func
+		    Function to use instead.
+		version : str
+		    Version of pandas in which the method has been deprecated.
+		alt_name : str, optional
+		    Name to use in preference of alternative.__name__.
+		klass : Warning, default FutureWarning
+		stacklevel : int, default 2
+		msg : str
+		    The message to display in the warning.
+		    Default is '{name} is deprecated. Use {alt_name} instead.'
+	**/
+	static public function deprecate(name:Dynamic, alternative:Dynamic, version:Dynamic, ?alt_name:Dynamic, ?klass:Dynamic, ?stacklevel:Dynamic, ?msg:Dynamic):Dynamic;
+	/**
+		Decorator to deprecate a keyword argument of a function.
 		
 		Parameters
 		----------
 		old_arg_name : str
 		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of preferred argument in function
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -55,12 +83,15 @@ package pandas.util._decorators;
 		...
 		>>> f(columns='should work ok')
 		should work ok
+		
 		>>> f(cols='should raise warning')
 		FutureWarning: cols is deprecated, use columns instead
 		  warnings.warn(msg, FutureWarning)
 		should raise warning
+		
 		>>> f(cols='should error', columns="can't pass do both")
 		TypeError: Can only specify 'cols' or 'columns', not both
+		
 		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
 		... def f(new=False):
 		...     print('yes!' if new else 'no!')
@@ -69,21 +100,40 @@ package pandas.util._decorators;
 		FutureWarning: old='yes' is deprecated, use new=True instead
 		  warnings.warn(msg, FutureWarning)
 		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public function indent(text:Dynamic, ?indents:Dynamic):Dynamic;
 	/**
-		Returns a string repr of the arg list of a func call, with any defaults
+		Returns a string repr of the arg list of a func call, with any defaults.
 		
 		Examples
 		--------
-		
 		>>> def f(a,b,c=2) :
 		>>>     return a*b*c
 		>>> print(_make_signature(f))
 		a,b,c=2
 	**/
 	static public function make_signature(func:Dynamic):Dynamic;
+	static public function rewrite_axis_style_signature(name:Dynamic, extra_params:Dynamic):Dynamic;
 	static public function signature(f:Dynamic):Dynamic;
 	/**
 		Update a wrapper function to look like the wrapped function
@@ -98,6 +148,17 @@ package pandas.util._decorators;
 		function (defaults to functools.WRAPPER_UPDATES)
 	**/
 	static public function update_wrapper(wrapper:Dynamic, wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
+	/**
+		Wrap a single paragraph of text, returning a list of wrapped lines.
+		
+		Reformat the single paragraph in 'text' so it fits in lines of no
+		more than 'width' columns, and return a list of wrapped lines.  By
+		default, tabs in 'text' are expanded with string.expandtabs(), and
+		all other whitespace characters (including newline) are converted to
+		space.  See TextWrapper class for available keyword args to customize
+		wrapping behaviour.
+	**/
+	static public function wrap(text:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function
 		

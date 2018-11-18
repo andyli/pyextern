@@ -55,7 +55,7 @@ package theano.typed_list.basic;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -122,12 +122,13 @@ package theano.typed_list.basic;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function append(toAppend:Dynamic):Dynamic;
+	static public function append_construction_observer(observer:Dynamic):Dynamic;
 	/**
 		Return a new Variable like self.
 		
@@ -144,6 +145,7 @@ package theano.typed_list.basic;
 		Name is copied to the returned instance.
 	**/
 	public function clone():Dynamic;
+	static public var construction_observers : Dynamic;
 	public function count(elem:Dynamic):Dynamic;
 	public var dtype : Dynamic;
 	/**
@@ -191,7 +193,9 @@ package theano.typed_list.basic;
 	public function ind(elem:Dynamic):Dynamic;
 	public function insert(index:Dynamic, toInsert:Dynamic):Dynamic;
 	public var ndim : Dynamic;
+	static public function notify_construction_observers(instance:Dynamic):Dynamic;
 	public function remove(toRemove:Dynamic):Dynamic;
+	static public function remove_construction_observer(observer:Dynamic):Dynamic;
 	public function reverse():Dynamic;
 	public var ttype : Dynamic;
 }

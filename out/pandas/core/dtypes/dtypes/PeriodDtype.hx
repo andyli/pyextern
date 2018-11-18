@@ -8,7 +8,7 @@ package pandas.core.dtypes.dtypes;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -21,7 +21,20 @@ package pandas.core.dtypes.dtypes;
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
-		Return self==value.
+		Check whether 'other' is equal to self.
+		
+		By default, 'other' is considered equal if
+		
+		* it's a string matching 'self.name'.
+		* it's an instance of this type.
+		
+		Parameters
+		----------
+		other : Any
+		
+		Returns
+		-------
+		bool
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
@@ -60,7 +73,7 @@ package pandas.core.dtypes.dtypes;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -69,10 +82,6 @@ package pandas.core.dtypes.dtypes;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
-	/**
-		the type of PeriodDtype, this metaclass determines subclass ability
-	**/
-	static public function __metaclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -122,7 +131,7 @@ package pandas.core.dtypes.dtypes;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __unicode__():Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -147,8 +156,15 @@ package pandas.core.dtypes.dtypes;
 	static public var isnative : Dynamic;
 	static public var itemsize : Dynamic;
 	static public var kind : Dynamic;
+	static public var na_value : Dynamic;
 	public var name : Dynamic;
-	static public var names : Dynamic;
+	/**
+		Ordered list of field names, or None if there are no fields.
+		
+		This is for compatibility with NumPy arrays, and may be removed in the
+		future.
+	**/
+	public var names : Dynamic;
 	static public var num : Dynamic;
 	/**
 		clear the cache 
@@ -160,5 +176,5 @@ package pandas.core.dtypes.dtypes;
 	/**
 		the type of PeriodDtype, this metaclass determines subclass ability
 	**/
-	static public function type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

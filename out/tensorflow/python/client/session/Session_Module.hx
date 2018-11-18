@@ -10,8 +10,30 @@ package tensorflow.python.client.session;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Explicitly convert obj based on numpy type except for string type.
+	**/
+	static public function _convert_to_numpy_obj(numpy_dtype:Dynamic, obj:Dynamic):Dynamic;
+	/**
+		Returns the list of values from an attrs instance.
+	**/
+	static public function _get_attrs_values(obj:Dynamic):Dynamic;
 	static public function _get_feeds_for_indexed_slices(feed:Dynamic, feed_val:Dynamic):Dynamic;
 	static public function _get_indexed_slices_value_from_fetches(fetched_vals:Dynamic):Dynamic;
+	/**
+		Returns True if the given obj is an instance of attrs-decorated class.
+	**/
+	static public function _is_attrs_instance(obj:Dynamic):Dynamic;
+	/**
+		Utility function for transitioning to the new session API.
+		
+		Args:
+		  tensor_list: a list of `Tensor`s.
+		
+		Returns:
+		  A list of each `Tensor`s name (as byte arrays).
+	**/
+	static public function _name_list(tensor_list:Dynamic):Dynamic;
 	/**
 		Uniquifies fetches from a list of fetch_mappers.
 		
@@ -74,6 +96,10 @@ package tensorflow.python.client.session;
 		  feed_function_for_partial_run: A callable for specifying tensor values to
 		    feed when setting up a partial run, which takes a `tensor_type` type
 		    object as input, and returns a list of Tensors.
+		
+		Raises:
+		  ValueError: If `tensor_type` has already been registered.
 	**/
 	static public function register_session_run_conversion_functions(tensor_type:Dynamic, fetch_function:Dynamic, ?feed_function:Dynamic, ?feed_function_for_partial_run:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

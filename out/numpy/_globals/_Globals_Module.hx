@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy._globals;
 @:pythonImport("numpy._globals") extern class _Globals_Module {
+	static public var _NoValue : Dynamic;
 	static public var __ALL__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

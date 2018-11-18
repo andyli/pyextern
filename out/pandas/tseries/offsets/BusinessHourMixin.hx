@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.offsets;
 @:pythonImport("pandas.tseries.offsets", "BusinessHourMixin") extern class BusinessHourMixin {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -45,18 +45,18 @@ package pandas.tseries.offsets;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?start:Dynamic, ?end:Dynamic, ?offset:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?kwds:python.KwArgs<Dynamic>):Void;
+	public function new(?start:Dynamic, ?end:Dynamic, ?offset:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -91,10 +91,6 @@ package pandas.tseries.offsets;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Reconstruct an instance from a pickled state
-	**/
-	public function __setstate__(state:Dynamic):Dynamic;
-	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
 	**/
@@ -111,7 +107,7 @@ package pandas.tseries.offsets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -130,7 +126,7 @@ package pandas.tseries.offsets;
 	**/
 	public function _next_opening_time(other:Dynamic):Dynamic;
 	/**
-		Slight speedups using calcurated values
+		Slight speedups using calculated values
 	**/
 	public function _onOffset(dt:Dynamic, businesshours:Dynamic):Dynamic;
 	/**
@@ -139,8 +135,15 @@ package pandas.tseries.offsets;
 	**/
 	public function _prev_opening_time(other:Dynamic):Dynamic;
 	public function _repr_attrs():Dynamic;
-	public function _validate_time(t_input:Dynamic):Dynamic;
 	public function apply(other:Dynamic):Dynamic;
+	/**
+		used for moving to next businessday
+	**/
+	public var next_bday : Dynamic;
+	/**
+		Alias for self._offset
+	**/
+	public var offset : Dynamic;
 	public function onOffset(dt:Dynamic):Dynamic;
 	/**
 		Roll provided date backward to next offset only if not on offset

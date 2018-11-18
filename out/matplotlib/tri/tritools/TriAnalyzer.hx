@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.tri.tritools;
 @:pythonImport("matplotlib.tri.tritools", "TriAnalyzer") extern class TriAnalyzer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.tri.tritools;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.tri.tritools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -202,14 +202,13 @@ package matplotlib.tri.tritools;
 		triangulation from its border-located flat triangles
 		(according to their :meth:`circle_ratios`).
 		This mask is meant to be subsequently applied to the triangulation
-		using :func:`matplotlib.tri.Triangulation.set_mask` .
+		using :func:`matplotlib.tri.Triangulation.set_mask`.
 		*new_mask* is an extension of the initial triangulation mask
 		in the sense that an initially masked triangle will remain masked.
 		
-		The *new_mask* array is computed recursively ; at each step flat
-		triangles are removed only if they share a side with the current
-		mesh border. Thus no new holes in the triangulated domain will be
-		created.
+		The *new_mask* array is computed recursively; at each step flat
+		triangles are removed only if they share a side with the current mesh
+		border. Thus no new holes in the triangulated domain will be created.
 		
 		Parameters
 		----------
@@ -240,12 +239,6 @@ package matplotlib.tri.tritools;
 		triangulation would contain no more unmasked border triangles
 		with a circle ratio below *min_circle_ratio*, thus improving the
 		mesh quality for subsequent plots or interpolation.
-		
-		Examples
-		--------
-		Please refer to the following illustrating example:
-		
-		.. plot:: mpl_examples/pylab_examples/tricontour_smooth_delaunay.py
 	**/
 	public function get_flat_tri_mask(?min_circle_ratio:Dynamic, ?rescale:Dynamic):Dynamic;
 	/**

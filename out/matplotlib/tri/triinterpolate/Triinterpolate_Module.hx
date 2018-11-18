@@ -52,16 +52,12 @@ package matplotlib.tri.triinterpolate;
 	**/
 	static public function _extract_submatrices(M:Dynamic, block_indices:Dynamic, block_size:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		Inversion of arrays of (2,2) matrices.
-	**/
-	static public function _inv22_vectorized(M:Dynamic):Dynamic;
-	/**
 		Matrix product between arrays of matrices, or a matrix and an array of
 		matrices (*M1* and *M2*)
 	**/
 	static public function _prod_vectorized(M1:Dynamic, M2:Dynamic):Dynamic;
 	/**
-		Inversion of arrays of (2,2) SYMMETRIC matrices ; returns the
+		Inversion of arrays of (2,2) SYMMETRIC matrices; returns the
 		(Moore-Penrose) pseudo-inverse for rank-deficient matrices.
 		
 		In case M is of rank 1, we have M = trace(M) x P where P is the orthogonal
@@ -101,8 +97,4 @@ package matplotlib.tri.triinterpolate;
 		Transposition of an array of matrices *M*.
 	**/
 	static public function _transpose_vectorized(M:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

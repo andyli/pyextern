@@ -37,7 +37,7 @@ package scipy.interpolate.ndgriddata;
 		      more details.
 		
 		    ``linear``
-		      tesselate the input point set to n-dimensional
+		      tessellate the input point set to n-dimensional
 		      simplices, and interpolate linearly on each simplex.  See
 		      `LinearNDInterpolator` for more details.
 		
@@ -61,6 +61,11 @@ package scipy.interpolate.ndgriddata;
 		    incommensurable units and differ by many orders of magnitude.
 		
 		    .. versionadded:: 0.14.0
+		    
+		Returns
+		-------
+		ndarray
+		    Array of interpolated values.
 		
 		Notes
 		-----

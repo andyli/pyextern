@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package keras.utils.data_utils;
 @:pythonImport("keras.utils.data_utils") extern class Data_utils_Module {
+	static public var _SEQUENCE_COUNTER : Dynamic;
+	static public var _SHARED_SEQUENCES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -32,9 +34,9 @@ package keras.utils.data_utils;
 		# Example
 		
 		```python
-		   >>> from keras.data_utils import _hash_file
-		   >>> _hash_file('/path/to/file.zip')
-		   'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+		    >>> from keras.data_utils import _hash_file
+		    >>> _hash_file('/path/to/file.zip')
+		    'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
 		```
 		
 		# Arguments
@@ -65,6 +67,7 @@ package keras.utils.data_utils;
 		            ...
 	**/
 	static public function abstractmethod(funcobj:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Downloads a file from a URL if it not already in the cache.
 		
@@ -107,16 +110,36 @@ package keras.utils.data_utils;
 	**/
 	static public function get_file(fname:Dynamic, origin:Dynamic, ?untar:Dynamic, ?md5_hash:Dynamic, ?file_hash:Dynamic, ?cache_subdir:Dynamic, ?hash_algorithm:Dynamic, ?extract:Dynamic, ?archive_format:Dynamic, ?cache_dir:Dynamic):Dynamic;
 	/**
-		Quick fix for Python2, otherwise, it cannot be pickled.
+		Get the value from the Sequence `uid` at index `i`.
+		
+		To allow multiple Sequences to be used at the same time, we use `uid` to
+		get a specific one. A single Sequence would cause the validation to
+		overwrite the training Sequence.
 		
 		# Arguments
-		    ds: a Sequence object
+		    uid: int, Sequence identifier
 		    i: index
 		
 		# Returns
 		    The value at index `i`.
 	**/
-	static public function get_index(ds:Dynamic, i:Dynamic):Dynamic;
+	static public function get_index(uid:Dynamic, i:Dynamic):Dynamic;
+	static public function init_pool(seqs:Dynamic):Dynamic;
+	static public function init_pool_generator(gens:Dynamic, ?random_seed:Dynamic):Dynamic;
+	/**
+		Get the next value from the generator `uid`.
+		
+		To allow multiple generators to be used at the same time, we use `uid` to
+		get a specific one. A single generator would cause the validation to
+		overwrite the training generator.
+		
+		# Arguments
+		    uid: int, generator identifier
+		
+		# Returns
+		    The next value of generator `uid`.
+	**/
+	static public function next_sample(uid:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Open the URL url, which can be either a string or a Request object.

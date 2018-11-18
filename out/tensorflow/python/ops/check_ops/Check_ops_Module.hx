@@ -72,15 +72,20 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function _assert_same_base_type(items:Dynamic, ?expected_type:Dynamic):Dynamic;
 	/**
-		Raises a static ValueError with as much information as possible.
+		Raises a InvalidArgumentError with as much information as possible.
 	**/
 	static public function _assert_static(condition:Dynamic, data:Dynamic):Dynamic;
 	static public function _dynamic_rank_in(actual_rank:Dynamic, given_ranks:Dynamic):Dynamic;
+	static public function _ensure_shape_grad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
 		Gets the difference x[1:] - x[:-1].
 	**/
 	static public function _get_diff_for_monotonic_comparison(x:Dynamic):Dynamic;
 	static public function _maybe_constant_value_string(t:Dynamic):Dynamic;
+	/**
+		Returns a string containing tensor's shape and dtype.
+	**/
+	static public function _shape_and_dtype_str(tensor:Dynamic):Dynamic;
 	static public function _static_rank_in(actual_rank:Dynamic, given_ranks:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -108,6 +113,12 @@ package tensorflow.python.ops.check_ops;
 		
 		Returns:
 		  Op that raises `InvalidArgumentError` if `x == y` is False.
+		  @compatibility{eager} returns None
+		
+		Raises:
+		  InvalidArgumentError: if the check can be performed immediately and
+		    `x == y` is False. The check can be performed immediately during eager
+		    execution or if `x` and `y` are statically known.
 	**/
 	static public function assert_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -241,6 +252,51 @@ package tensorflow.python.ops.check_ops;
 		  Op that raises `InvalidArgumentError` if `x <= y` is False.
 	**/
 	static public function assert_less_equal(x:Dynamic, y:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assert the condition `x` and `y` are close element-wise.
+		
+		Example of adding a dependency to an operation:
+		
+		```python
+		with tf.control_dependencies([tf.assert_near(x, y)]):
+		  output = tf.reduce_sum(x)
+		```
+		
+		This condition holds if for every pair of (possibly broadcast) elements
+		`x[i]`, `y[i]`, we have
+		
+		```tf.abs(x[i] - y[i]) <= atol + rtol * tf.abs(y[i])```.
+		
+		If both `x` and `y` are empty, this is trivially satisfied.
+		
+		The default `atol` and `rtol` is `10 * eps`, where `eps` is the smallest
+		representable positive number such that `1 + eps != eps`.  This is about
+		`1.2e-6` in `32bit`, `2.22e-15` in `64bit`, and `0.00977` in `16bit`.
+		See `numpy.finfo`.
+		
+		Args:
+		  x:  Float or complex `Tensor`.
+		  y:  Float or complex `Tensor`, same `dtype` as, and broadcastable to, `x`.
+		  rtol:  `Tensor`.  Same `dtype` as, and broadcastable to, `x`.
+		    The relative tolerance.  Default is `10 * eps`.
+		  atol:  `Tensor`.  Same `dtype` as, and broadcastable to, `x`.
+		    The absolute tolerance.  Default is `10 * eps`.
+		  data:  The tensors to print out if the condition is False.  Defaults to
+		    error message and first few entries of `x`, `y`.
+		  summarize: Print this many entries of each tensor.
+		  message: A string to prefix to the default message.
+		  name: A name for this operation (optional).  Defaults to "assert_near".
+		
+		Returns:
+		  Op that raises `InvalidArgumentError` if `x` and `y` are not close enough.
+		
+		@compatibility(numpy)
+		Similar to `numpy.assert_allclose`, except tolerance depends on data type.
+		This is due to the fact that `TensorFlow` is often used with `32bit`, `64bit`,
+		and even `16bit` data.
+		@end_compatibility
+	**/
+	static public function assert_near(x:Dynamic, y:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?data:Dynamic, ?summarize:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Assert the condition `x < 0` holds element-wise.
 		
@@ -508,6 +564,48 @@ package tensorflow.python.ops.check_ops;
 	static public function assert_type(tensor:Dynamic, tf_type:Dynamic, ?message:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
+		Updates the shape of a tensor and checks at runtime that the shape holds.
+		
+		For example:
+		```python
+		x = tf.placeholder(tf.int32)
+		print(x.shape)
+		==> TensorShape(None)
+		y = x * 2
+		print(y.shape)
+		==> TensorShape(None)
+		
+		y = tf.ensure_shape(y, (None, 3, 3))
+		print(y.shape)
+		==> TensorShape([Dimension(None), Dimension(3), Dimension(3)])
+		
+		with tf.Session() as sess:
+		  # Raises tf.errors.InvalidArgumentError, because the shape (3,) is not
+		  # compatible with the shape (None, 3, 3)
+		  sess.run(y, feed_dict={x: [1, 2, 3]})
+		
+		```
+		
+		NOTE: This differs from `Tensor.set_shape` in that it sets the static shape
+		of the resulting tensor and enforces it at runtime, raising an error if the
+		tensor's runtime shape is incompatible with the specified shape.
+		`Tensor.set_shape` sets the static shape of the tensor without enforcing it
+		at runtime, which may result in inconsistencies between the statically-known
+		shape of tensors and the runtime value of tensors.
+		
+		Args:
+		  x: A `Tensor`.
+		  shape: A `TensorShape` representing the shape of this tensor, a
+		    `TensorShapeProto`, a list, a tuple, or None.
+		  name: A name for this operation (optional). Defaults to "EnsureShape".
+		
+		Returns:
+		  A `Tensor`. Has the same type and contents as `x`. At runtime, raises a
+		  `tf.errors.InvalidArgumentError` if `shape` is incompatible with the shape
+		  of `x`.
+	**/
+	static public function ensure_shape(x:Dynamic, shape:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Returns `True` if `x` is non-decreasing.
 		
 		Elements of `x` are compared in row-major order.  The tensor `[x[0],...]`
@@ -550,4 +648,5 @@ package tensorflow.python.ops.check_ops;
 	**/
 	static public function is_strictly_increasing(x:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

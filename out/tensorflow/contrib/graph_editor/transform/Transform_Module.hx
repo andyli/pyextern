@@ -10,6 +10,19 @@ package tensorflow.contrib.graph_editor.transform;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Complete `ops` so that the transformed graph is valid.
+		
+		Partially copying a graph can lead to a malformed graph. For instance,
+		copying half of a while construct is likely to result in an invalid graph.
+		This function attempts to add missing ops so that the transformation result
+		in a valid graph.
+		
+		Args:
+		  ops: list of ops (modifed in-place).
+		  control_ios: object created by a call to `util.ControlOutputs`.
+	**/
+	static public function _add_control_flow_ops(ops:Dynamic, control_ios:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Add the transformed elem to the (renamed) collections of elem.
@@ -53,11 +66,17 @@ package tensorflow.contrib.graph_editor.transform;
 		Args:
 		  info: Transform._TmpInfo instance.
 		  op: the `tf.Operation` to be copied.
+		  new_inputs: The new inputs for this op.
 		  copy_shape: also copy the shape of the tensor
+		  nodedef_fn: If provided, a function that will be run on the NodeDef
+		    and should return a mutated NodeDef before a new Operation is created.
+		    This is useful as certain features cannot be set on the Operation and
+		    must be modified in NodeDef.
+		
 		Returns:
 		  A `(op, op_outputs)` tuple containing the transformed op and its outputs.
 	**/
-	static public function copy_op_handler(info:Dynamic, op:Dynamic, ?copy_shape:Dynamic):Dynamic;
+	static public function copy_op_handler(info:Dynamic, op:Dynamic, new_inputs:Dynamic, ?copy_shape:Dynamic, ?nodedef_fn:Dynamic):Dynamic;
 	/**
 		Copy a subgraph, replacing some of its inputs.
 		

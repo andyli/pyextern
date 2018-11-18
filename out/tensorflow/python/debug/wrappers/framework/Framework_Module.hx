@@ -14,12 +14,13 @@ package tensorflow.python.debug.wrappers.framework;
 		
 		Args:
 		  obj: The object being checked.
-		  expected_type: (type) The expected type of obj.
+		  expected_types: (`type` or an iterable of `type`s) The expected `type`(s)
+		    of obj.
 		
 		Raises:
 		    TypeError: If obj is not an instance of expected_type.
 	**/
-	static public function _check_type(obj:Dynamic, expected_type:Dynamic):Dynamic;
+	static public function _check_type(obj:Dynamic, expected_types:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

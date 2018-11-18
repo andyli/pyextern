@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas._libs.interval;
 @:pythonImport("pandas._libs.interval", "IntervalMixin") extern class IntervalMixin {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -51,7 +51,7 @@ package pandas._libs.interval;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -68,9 +68,6 @@ package pandas._libs.interval;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		helper for pickle
-	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		helper for pickle
@@ -84,6 +81,7 @@ package pandas._libs.interval;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -101,10 +99,61 @@ package pandas._libs.interval;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check if the interval is closed on the left side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var closed_left : Dynamic;
+	/**
+		Check if the interval is closed on the right side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var closed_right : Dynamic;
+	/**
+		Return the length of the Interval
+	**/
+	public var length : Dynamic;
+	/**
+		Return the midpoint of the Interval
+	**/
 	public var mid : Dynamic;
+	/**
+		Check if the interval is open on the left side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var open_left : Dynamic;
+	/**
+		Check if the interval is open on the right side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var open_right : Dynamic;
 }

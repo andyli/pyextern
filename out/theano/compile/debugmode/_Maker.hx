@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.compile.debugmode;
 @:pythonImport("theano.compile.debugmode", "_Maker") extern class _Maker {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package theano.compile.debugmode;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(inputs:Dynamic, outputs:Dynamic, mode:Dynamic, ?accept_inplace:Dynamic, ?function_builder:Dynamic, ?profile:Dynamic, ?on_unused_input:Dynamic, ?fgraph:Dynamic, ?output_keys:Dynamic):Dynamic;
+	public function ___init__(inputs:Dynamic, outputs:Dynamic, mode:Dynamic, ?accept_inplace:Dynamic, ?function_builder:Dynamic, ?profile:Dynamic, ?on_unused_input:Dynamic, ?fgraph:Dynamic, ?output_keys:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(inputs:Dynamic, outputs:Dynamic, mode:Dynamic, ?accept_inplace:Dynamic, ?function_builder:Dynamic, ?profile:Dynamic, ?on_unused_input:Dynamic, ?fgraph:Dynamic, ?output_keys:Dynamic):Void;
+	public function new(inputs:Dynamic, outputs:Dynamic, mode:Dynamic, ?accept_inplace:Dynamic, ?function_builder:Dynamic, ?profile:Dynamic, ?on_unused_input:Dynamic, ?fgraph:Dynamic, ?output_keys:Dynamic, ?name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package theano.compile.debugmode;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -114,14 +114,14 @@ package theano.compile.debugmode;
 		
 		Parameters
 		----------
-		defaults
+		input_storage
 		    A list matching the inputs list and providing default values if the
 		    default for an input is None, then that input is a required input.
 		    For an input with an update, the default acts as initialization.
 		trustme
 		    Disables some exceptions, used internally.
 	**/
-	public function create(?defaults:Dynamic, ?trustme:Dynamic, ?storage_map:Dynamic):Dynamic;
+	public function create(?input_storage:Dynamic, ?trustme:Dynamic, ?storage_map:Dynamic):Dynamic;
 	static public function expand_in(sinput:Dynamic, rinputs:Dynamic):Dynamic;
 	public function optimize_graph_with_cache(optimizer:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public var verbose : Dynamic;

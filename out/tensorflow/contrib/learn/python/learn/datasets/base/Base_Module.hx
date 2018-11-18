@@ -10,6 +10,25 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Simple decorator for wrapping retriable functions, for internal use only.
+		
+		Args:
+		  initial_delay: the initial delay.
+		  max_delay: the maximum delay allowed (actual max is
+		      max_delay * (1 + jitter).
+		  factor: each subsequent retry, the delay is multiplied by this value.
+		      (must be >= 1).
+		  jitter: to avoid lockstep, the returned delay is multiplied by a random
+		      number between (1-jitter) and (1+jitter). To add a 20% jitter, set
+		      jitter = 0.2. Must be < 1.
+		  is_retriable: (optional) a function that takes an Exception as an argument
+		      and returns true if retry should be applied.
+		
+		Returns:
+		  A function that wraps another function to automatically retry it.
+	**/
+	static public function _internal_retry(initial_delay:Dynamic, max_delay:Dynamic, ?factor:Dynamic, ?jitter:Dynamic, ?is_retriable:Dynamic):Dynamic;
 	static public function _is_retriable(e:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -34,6 +53,8 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -42,10 +63,14 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Load Boston housing dataset.
+		Load Boston housing dataset. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use scikits.learn.datasets.
 		
 		Args:
 		    data_path: string, path to boston dataset (optional)
@@ -55,15 +80,27 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	**/
 	static public function load_boston(?data_path:Dynamic):Dynamic;
 	/**
-		Load dataset from CSV file with a header row.
+		Load dataset from CSV file with a header row. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data instead.
 	**/
 	static public function load_csv_with_header(filename:Dynamic, target_dtype:Dynamic, features_dtype:Dynamic, ?target_column:Dynamic):Dynamic;
 	/**
-		Load dataset from CSV file without a header row.
+		Load dataset from CSV file without a header row. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data instead.
 	**/
 	static public function load_csv_without_header(filename:Dynamic, target_dtype:Dynamic, features_dtype:Dynamic, ?target_column:Dynamic):Dynamic;
 	/**
-		Load Iris dataset.
+		Load Iris dataset. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use scikits.learn.datasets.
 		
 		Args:
 		    data_path: string, path to iris dataset (optional)
@@ -73,7 +110,11 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	**/
 	static public function load_iris(?data_path:Dynamic):Dynamic;
 	/**
-		Download the data from source url, unless it's already here.
+		Download the data from source url, unless it's already here. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please write your own downloading logic.
 		
 		Args:
 		    filename: string, name of the file in the directory.
@@ -86,27 +127,42 @@ package tensorflow.contrib.learn.python.learn.datasets.base;
 	static public function maybe_download(filename:Dynamic, work_directory:Dynamic, source_url:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Simple decorator for wrapping retriable functions.
+		Simple decorator for wrapping retriable functions. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use the retry module or similar alternatives.
 		
 		Args:
 		  initial_delay: the initial delay.
+		  max_delay: the maximum delay allowed (actual max is
+		      max_delay * (1 + jitter).
 		  factor: each subsequent retry, the delay is multiplied by this value.
 		      (must be >= 1).
 		  jitter: to avoid lockstep, the returned delay is multiplied by a random
 		      number between (1-jitter) and (1+jitter). To add a 20% jitter, set
 		      jitter = 0.2. Must be < 1.
-		  max_delay: the maximum delay allowed (actual max is
-		      max_delay * (1 + jitter).
 		  is_retriable: (optional) a function that takes an Exception as an argument
 		      and returns true if retry should be applied.
+		
+		Returns:
+		  A function that wraps another function to automatically retry it.
 	**/
 	static public function retry(initial_delay:Dynamic, max_delay:Dynamic, ?factor:Dynamic, ?jitter:Dynamic, ?is_retriable:Dynamic):Dynamic;
 	/**
-		Create a smaller dataset of only 1/ratio of original data.
+		Create a smaller dataset of only 1/ratio of original data. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data instead.
 	**/
 	static public function shrink_csv(filename:Dynamic, ratio:Dynamic):Dynamic;
 	/**
-		The actual wrapper function that applies the retry logic.
+		The actual wrapper function that applies the retry logic. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use urllib or similar directly.
 	**/
 	static public function urlretrieve_with_retry(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

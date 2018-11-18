@@ -131,6 +131,19 @@ package theano.scalar;
 		Return an un-computable symbolic variable of type `x.type`.
 		
 		If any call to tensor.grad results in an expression containing this
+		un-computable variable, an exception (NotImplementedError) will be
+		raised indicating that the gradient on the
+		`x_pos`'th input of `op` has not been implemented. Likewise if
+		any call to theano.function involves this variable.
+		
+		Optionally adds a comment to the exception explaining why this
+		gradient is not implemented.
+	**/
+	static public function grad_not_implemented(op:Dynamic, x_pos:Dynamic, x:Dynamic, ?comment:Dynamic):Dynamic;
+	/**
+		Return an un-computable symbolic variable of type `x.type`.
+		
+		If any call to tensor.grad results in an expression containing this
 		un-computable variable, an exception (GradUndefinedError) will be
 		raised indicating that the gradient on the
 		`x_pos`'th input of `op` is mathematically undefined. Likewise if
@@ -143,6 +156,8 @@ package theano.scalar;
 	static public function gt(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function handle_cast(node:Dynamic, mapping:Dynamic):Dynamic;
 	static public function handle_composite(node:Dynamic, mapping:Dynamic):Dynamic;
+	static public function i0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function i1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function identity(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function imag(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var imported_scipy_special : Dynamic;
@@ -189,8 +204,10 @@ package theano.scalar;
 	static public function invert(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function isinf(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function isnan(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function iv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function j0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function j1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function jv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function le(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function log(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function log10(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -240,6 +257,7 @@ package theano.scalar;
 	static public function _switch(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function tan(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function tanh(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function tri_gamma(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function true_div(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function trunc(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function uint16(?name:Dynamic):Dynamic;

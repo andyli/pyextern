@@ -6,7 +6,7 @@ package pandas.core.base;
 	**/
 	public var T : Dynamic;
 	static public var __array_priority__ : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -57,7 +57,15 @@ package pandas.core.base;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return an iterator of the values.
+		
+		These are each a scalar type, which is a Python scalar
+		(for str, int, float) or a pandas scalar
+		(for Timestamp/Timedelta/Interval/Period)
+	**/
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -108,20 +116,45 @@ package pandas.core.base;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		An internal function that maps values using the input
+		correspondence (which can be a dict, Series, or function).
+		
+		Parameters
+		----------
+		mapper : function, dict, or Series
+		    The input correspondence object
+		na_action : {None, 'ignore'}
+		    If 'ignore', propagate NA values, without passing them to the
+		    mapping function
+		
+		Returns
+		-------
+		applied : Union[Index, MultiIndex], inferred
+		    The output of the mapping function applied to the index.
+		    If the function returns a tuple with more than one element
+		    a MultiIndex will be returned.
+	**/
+	public function _map_values(mapper:Dynamic, ?na_action:Dynamic):Dynamic;
+	/**
+		The data as an ndarray, possibly losing information.
+		
+		The expectation is that this is cheap to compute, and is primarily
+		used for interacting with our indexers.
+		
+		- categorical -> codes
+	**/
+	public var _ndarray_values : Dynamic;
+	/**
 		perform the reduction type operation if we can 
 	**/
 	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		the internal implementation 
-	**/
-	public var _values : Dynamic;
 	/**
 		return a ndarray of the maximum argument indexer
 		
@@ -147,62 +180,111 @@ package pandas.core.base;
 		return the data pointer of the underlying data 
 	**/
 	public var data : Dynamic;
-	/**
-		Return IndexOpsMixin with duplicate values removed
-		
-		Parameters
-		----------
-		
-		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Drop duplicates except for the first occurrence.
-		    - ``last`` : Drop duplicates except for the last occurrence.
-		    - False : Drop all duplicates.
-		
-		
-		Returns
-		-------
-		deduplicated : IndexOpsMixin
-	**/
 	public function drop_duplicates(?keep:Dynamic, ?inplace:Dynamic):Dynamic;
-	/**
-		Return boolean IndexOpsMixin denoting duplicate values
-		
-		Parameters
-		----------
-		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Mark duplicates as ``True`` except for the first
-		      occurrence.
-		    - ``last`` : Mark duplicates as ``True`` except for the last
-		      occurrence.
-		    - False : Mark all duplicates as ``True``.
-		
-		Returns
-		-------
-		duplicated : IndexOpsMixin
-	**/
 	public function duplicated(?keep:Dynamic):Dynamic;
 	public var empty : Dynamic;
 	/**
-		Encode the object as an enumerated type or categorical variable
+		Encode the object as an enumerated type or categorical variable.
+		
+		This method is useful for obtaining a numeric representation of an
+		array when all that matters is identifying distinct values. `factorize`
+		is available as both a top-level function :func:`pandas.factorize`,
+		and as a method :meth:`Series.factorize` and :meth:`Index.factorize`.
 		
 		Parameters
 		----------
 		sort : boolean, default False
-		    Sort by values
-		na_sentinel: int, default -1
-		    Value to mark "not found"
+		    Sort `uniques` and shuffle `labels` to maintain the
+		    relationship.
+		
+		na_sentinel : int, default -1
+		    Value to mark "not found".
 		
 		Returns
 		-------
-		labels : the indexer to the original array
-		uniques : the unique Index
+		labels : ndarray
+		    An integer ndarray that's an indexer into `uniques`.
+		    ``uniques.take(labels)`` will have the same values as `values`.
+		uniques : ndarray, Index, or Categorical
+		    The unique valid values. When `values` is Categorical, `uniques`
+		    is a Categorical. When `values` is some other pandas object, an
+		    `Index` is returned. Otherwise, a 1-D ndarray is returned.
+		
+		    .. note ::
+		
+		       Even if there's a missing value in `values`, `uniques` will
+		       *not* contain an entry for it.
+		
+		See Also
+		--------
+		pandas.cut : Discretize continuous-valued array.
+		pandas.unique : Find the unique valuse in an array.
+		
+		Examples
+		--------
+		These examples all show factorize as a top-level method like
+		``pd.factorize(values)``. The results are identical for methods like
+		:meth:`Series.factorize`.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'])
+		>>> labels
+		array([0, 0, 1, 2, 0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		With ``sort=True``, the `uniques` will be sorted, and `labels` will be
+		shuffled so that the relationship is the maintained.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'], sort=True)
+		>>> labels
+		array([1, 1, 0, 2, 1])
+		>>> uniques
+		array(['a', 'b', 'c'], dtype=object)
+		
+		Missing values are indicated in `labels` with `na_sentinel`
+		(``-1`` by default). Note that missing values are never
+		included in `uniques`.
+		
+		>>> labels, uniques = pd.factorize(['b', None, 'a', 'c', 'b'])
+		>>> labels
+		array([ 0, -1,  1,  2,  0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		Thus far, we've only factorized lists (which are internally coerced to
+		NumPy arrays). When factorizing pandas objects, the type of `uniques`
+		will differ. For Categoricals, a `Categorical` is returned.
+		
+		>>> cat = pd.Categorical(['a', 'a', 'c'], categories=['a', 'b', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		[a, c]
+		Categories (3, object): [a, b, c]
+		
+		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		present in ``cat.values``.
+		
+		For all other pandas objects, an Index of the appropriate type is
+		returned.
+		
+		>>> cat = pd.Series(['a', 'a', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		Index(['a', 'c'], dtype='object')
 	**/
-	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):Dynamic;
+	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):numpy.Ndarray;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
 	public var flags : Dynamic;
-	static public var hasnans : Dynamic;
+	/**
+		return if I have any nans; enables various perf speedups 
+	**/
+	public var hasnans : Dynamic;
 	/**
 		Return boolean if values in the object are
 		monotonic_increasing
@@ -254,11 +336,38 @@ package pandas.core.base;
 	**/
 	public var itemsize : Dynamic;
 	/**
-		The maximum value of the object 
+		Return the maximum value of the Index.
+		
+		Returns
+		-------
+		scalar
+		    Maximum value.
+		
+		See Also
+		--------
+		Index.min : Return the minimum value in an Index.
+		Series.max : Return the maximum value in a Series.
+		DataFrame.max : Return the maximum values in a DataFrame.
+		
+		Examples
+		--------
+		>>> idx = pd.Index([3, 2, 1])
+		>>> idx.max()
+		3
+		
+		>>> idx = pd.Index(['c', 'b', 'a'])
+		>>> idx.max()
+		'c'
+		
+		For a MultiIndex, the maximum is determined lexicographically.
+		
+		>>> idx = pd.MultiIndex.from_product([('a', 'b'), (2, 1)])
+		>>> idx.max()
+		('b', 2)
 	**/
 	public function max():Dynamic;
 	/**
-		Memory usage of my values
+		Memory usage of the values
 		
 		Parameters
 		----------
@@ -273,7 +382,7 @@ package pandas.core.base;
 		Notes
 		-----
 		Memory usage does not include memory consumed by elements that
-		are not components of the array if deep=False
+		are not components of the array if deep=False or if used on PyPy
 		
 		See Also
 		--------
@@ -281,7 +390,34 @@ package pandas.core.base;
 	**/
 	public function memory_usage(?deep:Dynamic):Dynamic;
 	/**
-		The minimum value of the object 
+		Return the minimum value of the Index.
+		
+		Returns
+		-------
+		scalar
+		    Minimum value.
+		
+		See Also
+		--------
+		Index.max : Return the maximum value of the object.
+		Series.min : Return the minimum value in a Series.
+		DataFrame.min : Return the minimum values in a DataFrame.
+		
+		Examples
+		--------
+		>>> idx = pd.Index([3, 2, 1])
+		>>> idx.min()
+		1
+		
+		>>> idx = pd.Index(['c', 'b', 'a'])
+		>>> idx.min()
+		'a'
+		
+		For a MultiIndex, the minimum is determined lexicographically.
+		
+		>>> idx = pd.MultiIndex.from_product([('a', 'b'), (2, 1)])
+		>>> idx.min()
+		('a', 1)
 	**/
 	public function min():Dynamic;
 	/**
@@ -362,21 +498,16 @@ package pandas.core.base;
 		>>> x.searchsorted([1, 3], side='right')
 		array([1, 3])
 		
-		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
+		>>> x = pd.Categorical(['apple', 'bread', 'bread',
+		                        'cheese', 'milk'], ordered=True)
 		[apple, bread, bread, cheese, milk]
 		Categories (4, object): [apple < bread < cheese < milk]
 		
 		>>> x.searchsorted('bread')
 		array([1])     # Note: an array, not a scalar
 		
-		>>> x.searchsorted(['bread'])
-		array([1])
-		
-		>>> x.searchsorted(['bread', 'eggs'])
-		array([1, 4])
-		
-		>>> x.searchsorted(['bread', 'eggs'], side='right')
-		array([3, 4])    # eggs before milk
+		>>> x.searchsorted(['bread'], side='right')
+		array([3])
 	**/
 	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
@@ -392,30 +523,21 @@ package pandas.core.base;
 	**/
 	public var strides : Dynamic;
 	/**
-		return the transpose, which is by definition self 
-	**/
-	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Return unique values in the object. Uniques are returned in order
-		of appearance, this does NOT sort. Hash table-based unique.
+		Return a list of the values.
 		
-		Parameters
-		----------
-		values : 1d array-like
-		
-		Returns
-		-------
-		unique values.
-		  - If the input is an Index, the return is an Index
-		  - If the input is a Categorical dtype, the return is a Categorical
-		  - If the input is a Series/ndarray, the return will be an ndarray
+		These are each a scalar type, which is a Python scalar
+		(for str, int, float) or a pandas scalar
+		(for Timestamp/Timedelta/Interval/Period)
 		
 		See Also
 		--------
-		unique
-		Index.unique
-		Series.unique
+		numpy.ndarray.tolist
 	**/
+	public function tolist():Dynamic;
+	/**
+		return the transpose, which is by definition self 
+	**/
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function unique():Dynamic;
 	/**
 		Returns object containing counts of unique values.

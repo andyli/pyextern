@@ -12,21 +12,63 @@ package tensorflow.contrib.saved_model;
 	static public var __spec__ : Dynamic;
 	static public var _allowed_symbols : Dynamic;
 	/**
-		Utility function to get a SignatureDef protocol buffer by its key.
+		Load a keras.Model from SavedModel.
+		
+		load_model reinstantiates model state by:
+		1) loading model topology from json (this will eventually come
+		   from metagraph).
+		2) loading model weights from checkpoint.
 		
 		Args:
-		  meta_graph_def: MetaGraphDef protocol buffer with the SignatureDefMap to
-		    look up.
-		  signature_def_key: Key of the SignatureDef protocol buffer to find in the
-		    SignatureDefMap.
+		  saved_model_path: a string specifying the path to an existing SavedModel.
 		
 		Returns:
-		  A SignatureDef protocol buffer corresponding to the supplied key, if it
-		  exists.
+		  a keras.Model instance.
+	**/
+	static public function load_keras_model(saved_model_path:Dynamic):Dynamic;
+	/**
+		Save a `tf.keras.Model` into Tensorflow SavedModel format.
+		
+		`save_model` generates new files/folders under the `saved_model_path` folder:
+		1) an asset folder containing the json string of the model's
+		   configuration (topology).
+		2) a checkpoint containing the model weights.
+		3) a saved_model.pb file containing the model's MetaGraphs. The prediction
+		   graph is always exported. The evaluaton and training graphs are exported
+		   if the following conditions are met:
+		   - Evaluation: model loss is defined.
+		   - Training: model is compiled with an optimizer defined under `tf.train`.
+		     This is because `tf.keras.optimizers.Optimizer` instances cannot be
+		     saved to checkpoints.
+		
+		Model Requirements:
+		- Model must be a sequential model or functional model. Subclassed models can
+		  not be saved via this function, unless you provide an implementation for
+		  get_config() and from_config().
+		- All variables must be saveable by the model. In general, this condition is
+		  met through the use of layers defined in the keras library. However,
+		  there is currently a bug with variables created in Lambda layer functions
+		  not being saved correctly (see
+		  https://github.com/keras-team/keras/issues/9740).
+		
+		Note that each mode is exported in separate graphs, so different modes do not
+		share variables. To use the train graph with evaluation or prediction graphs,
+		create a new checkpoint if variable values have been updated.
+		
+		Args:
+		  model: A `tf.keras.Model` to be saved.
+		  saved_model_path: a string specifying the path to the SavedModel directory.
+		    The SavedModel will be saved to a timestamped folder created within this
+		    directory.
+		  custom_objects: Optional dictionary mapping string names to custom classes
+		    or functions (e.g. custom loss functions).
+		  as_text: whether to write the `SavedModel` proto in text format.
+		
+		Returns:
+		  String path to the SavedModel folder, a subdirectory of `saved_model_path`.
 		
 		Raises:
-		  ValueError: If no entry corresponding to the supplied key is found in the
-		  SignatureDefMap of the MetaGraphDef.
+		  NotImplementedError: If the passed in model is a subclassed model.
 	**/
-	static public function get_signature_def_by_key(meta_graph_def:Dynamic, signature_def_key:Dynamic):Dynamic;
+	static public function save_keras_model(model:Dynamic, saved_model_path:Dynamic, ?custom_objects:Dynamic, ?as_text:Dynamic):Dynamic;
 }

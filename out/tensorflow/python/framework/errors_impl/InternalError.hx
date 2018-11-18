@@ -5,7 +5,7 @@ package tensorflow.python.framework.errors_impl;
 		exception cause
 	**/
 	public var __cause__ : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		exception context
 	**/
@@ -60,7 +60,7 @@ package tensorflow.python.framework.errors_impl;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -81,7 +81,7 @@ package tensorflow.python.framework.errors_impl;
 	/**
 		helper for pickle
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -112,13 +112,16 @@ package tensorflow.python.framework.errors_impl;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var __suppress_context__ : Dynamic;
 	public var __traceback__ : Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	public var args : Dynamic;
 	/**
 		The integer error code that describes the error.
@@ -137,9 +140,9 @@ package tensorflow.python.framework.errors_impl;
 		
 		*N.B.* If the failed op was synthesized at runtime, e.g. a `Send`
 		or `Recv` op, there will be no corresponding
-		@{tf.Operation}
+		`tf.Operation`
 		object.  In that case, this will return `None`, and you should
-		instead use the @{tf.OpError.node_def} to
+		instead use the `tf.errors.OpError.node_def` to
 		discover information about the op.
 		
 		Returns:

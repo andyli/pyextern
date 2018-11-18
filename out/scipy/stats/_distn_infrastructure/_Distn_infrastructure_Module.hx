@@ -140,7 +140,8 @@ package scipy.stats._distn_infrastructure;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -217,11 +218,19 @@ package scipy.stats._distn_infrastructure;
 		>>> np.argmax(a, axis=1)
 		array([2, 2])
 		
+		Indexes of the maximal elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argmax(a, axis=None), a.shape)
+		>>> ind
+		(1, 2)
+		>>> a[ind]
+		5
+		
 		>>> b = np.arange(6)
 		>>> b[1] = 5
 		>>> b
 		array([0, 5, 2, 3, 4, 5])
-		>>> np.argmax(b) # Only the first occurrence is returned.
+		>>> np.argmax(b)  # Only the first occurrence is returned.
 		1
 	**/
 	static public function argmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
@@ -239,7 +248,7 @@ package scipy.stats._distn_infrastructure;
 		axis : int or None, optional
 		    Axis along which to sort.  The default is -1 (the last axis). If None,
 		    the flattened array is used.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -253,6 +262,8 @@ package scipy.stats._distn_infrastructure;
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
 		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
+		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
+		    yields the sorted `a`, irrespective of dimensionality.
 		
 		See Also
 		--------
@@ -283,13 +294,21 @@ package scipy.stats._distn_infrastructure;
 		array([[0, 3],
 		       [2, 2]])
 		
-		>>> np.argsort(x, axis=0)
+		>>> np.argsort(x, axis=0)  # sorts along first axis (down)
 		array([[0, 1],
 		       [1, 0]])
 		
-		>>> np.argsort(x, axis=1)
+		>>> np.argsort(x, axis=1)  # sorts along last axis (across)
 		array([[0, 1],
 		       [0, 1]])
+		
+		Indices of the sorted elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argsort(x, axis=None), x.shape)
+		>>> ind
+		(array([0, 1, 1, 0]), array([0, 0, 1, 1]))
+		>>> x[ind]  # same as np.sort(x, axis=None)
+		array([0, 2, 2, 3])
 		
 		Sorting with keys:
 		
@@ -385,9 +404,9 @@ package scipy.stats._distn_infrastructure;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -432,7 +451,7 @@ package scipy.stats._distn_infrastructure;
 		
 		Returns
 		-------
-		val : int, ndarray
+		val : int, float, ndarray
 		    The total number of combinations.
 		
 		See Also
@@ -505,10 +524,11 @@ package scipy.stats._distn_infrastructure;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -521,7 +541,11 @@ package scipy.stats._distn_infrastructure;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -632,8 +656,9 @@ package scipy.stats._distn_infrastructure;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -711,6 +736,7 @@ package scipy.stats._distn_infrastructure;
 		-------
 		y : ndarray or scalar
 		    The floor of each element in `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -778,18 +804,8 @@ package scipy.stats._distn_infrastructure;
 		Returns
 		-------
 		y : bool (scalar) or boolean ndarray
-		    For scalar input, the result is a new boolean with value True if
-		    the input is positive or negative infinity; otherwise the value is
-		    False.
-		
-		    For array input, the result is a boolean array with the same shape
-		    as the input and the values are True where the corresponding
-		    element of the input is positive or negative infinity; elsewhere
-		    the values are False.  If a second argument was supplied the result
-		    is stored there.  If the type of that array is a numeric type the
-		    result is represented as zeros and ones, if the type is boolean
-		    then as False and True, respectively.  The return value `y` is then
-		    a reference to that array.
+		    True where ``x`` is positive or negative infinity, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -813,7 +829,7 @@ package scipy.stats._distn_infrastructure;
 		>>> np.isinf(np.NINF)
 		True
 		>>> np.isinf([np.inf, -np.inf, 1.0, np.nan])
-		array([ True,  True, False, False], dtype=bool)
+		array([ True,  True, False, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -849,9 +865,9 @@ package scipy.stats._distn_infrastructure;
 		Notes
 		-----
 		For positive `v`, the AMOS [1]_ `zbesi` routine is called. It uses a
-		power series for small `z`, the asymptitic expansion for large
+		power series for small `z`, the asymptotic expansion for large
 		`abs(z)`, the Miller algorithm normalized by the Wronskian and a
-		Neumann series for intermediate magnitudes, and the uniform asymptitic
+		Neumann series for intermediate magnitudes, and the uniform asymptotic
 		expansions for :math:`I_v(z)` and :math:`J_v(z)` for large orders.
 		Backward recurrence is used to generate sequences or reduce orders when
 		necessary.
@@ -937,6 +953,7 @@ package scipy.stats._distn_infrastructure;
 		-------
 		y : ndarray
 		    The natural logarithm of `x`, element-wise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -995,6 +1012,7 @@ package scipy.stats._distn_infrastructure;
 		y : ndarray or bool
 		    Boolean result with the same shape as `x1` and `x2` of the logical
 		    AND operation on corresponding elements of `x1` and `x2`.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -1006,11 +1024,11 @@ package scipy.stats._distn_infrastructure;
 		>>> np.logical_and(True, False)
 		False
 		>>> np.logical_and([True, False], [False, False])
-		array([False, False], dtype=bool)
+		array([False, False])
 		
 		>>> x = np.arange(5)
 		>>> np.logical_and(x>1, x<4)
-		array([False, False,  True,  True, False], dtype=bool)
+		array([False, False,  True,  True, False])
 	**/
 	static public function logical_and(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var nan : Dynamic;
@@ -1024,9 +1042,10 @@ package scipy.stats._distn_infrastructure;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1035,14 +1054,18 @@ package scipy.stats._distn_infrastructure;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -1099,7 +1122,7 @@ package scipy.stats._distn_infrastructure;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		putmask(a, mask, values)
 		
@@ -1175,10 +1198,9 @@ package scipy.stats._distn_infrastructure;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -1313,11 +1335,11 @@ package scipy.stats._distn_infrastructure;
 		Notes
 		-----
 		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
+		copying the data. If you want an error to be raised when the data is copied,
 		you should assign the new shape to the shape attribute of the array::
 		
 		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
+		 # A transpose makes the array non-contiguous
 		 >>> b = a.T
 		 # Taking a view makes it possible to modify the shape without modifying
 		 # the initial object.
@@ -1407,7 +1429,7 @@ package scipy.stats._distn_infrastructure;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -1434,6 +1456,7 @@ package scipy.stats._distn_infrastructure;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1463,15 +1486,28 @@ package scipy.stats._distn_infrastructure;
 	/**
 		Take elements from an array along an axis.
 		
-		This function does the same thing as "fancy" indexing (indexing arrays
-		using arrays); however, it can be easier to use if you need elements
-		along a given axis.
+		When axis is not None, this function does the same thing as "fancy"
+		indexing (indexing arrays using arrays); however, it can be easier to use
+		if you need elements along a given axis. A call such as
+		``np.take(arr, indices, axis=3)`` is equivalent to
+		``arr[:,:,:,indices,...]``.
+		
+		Explained without fancy indexing, this is equivalent to the following use
+		of `ndindex`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of
+		indices::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    Nj = indices.shape
+		    for ii in ndindex(Ni):
+		        for jj in ndindex(Nj):
+		            for kk in ndindex(Nk):
+		                out[ii + jj + kk] = a[ii + (indices[jj],) + kk]
 		
 		Parameters
 		----------
-		a : array_like
+		a : array_like (Ni..., M, Nk...)
 		    The source array.
-		indices : array_like
+		indices : array_like (Nj...)
 		    The indices of the values to extract.
 		
 		    .. versionadded:: 1.8.0
@@ -1480,7 +1516,7 @@ package scipy.stats._distn_infrastructure;
 		axis : int, optional
 		    The axis over which to select values. By default, the flattened
 		    input array is used.
-		out : ndarray, optional
+		out : ndarray, optional (Ni..., Nj..., Nk...)
 		    If provided, the result will be placed in this array. It should
 		    be of the appropriate shape and dtype.
 		mode : {'raise', 'wrap', 'clip'}, optional
@@ -1496,13 +1532,31 @@ package scipy.stats._distn_infrastructure;
 		
 		Returns
 		-------
-		subarray : ndarray
+		out : ndarray (Ni..., Nj..., Nk...)
 		    The returned array has the same type as `a`.
 		
 		See Also
 		--------
 		compress : Take elements using a boolean mask
 		ndarray.take : equivalent method
+		take_along_axis : Take elements by matching the array and the index arrays
+		
+		Notes
+		-----
+		
+		By eliminating the inner loop in the description above, and using `s_` to
+		build simple slice objects, `take` can be expressed  in terms of applying
+		fancy indexing to each 1-d slice::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nj):
+		            out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]
+		
+		For this reason, it is equivalent to (but faster than) the following use
+		of `apply_along_axis`::
+		
+		    out = np.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)
 		
 		Examples
 		--------
@@ -1561,14 +1615,15 @@ package scipy.stats._distn_infrastructure;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1578,17 +1633,16 @@ package scipy.stats._distn_infrastructure;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.units;
 @:pythonImport("matplotlib.units", "AxisInfo") extern class AxisInfo {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,20 +38,42 @@ package matplotlib.units;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		majloc and minloc: TickLocators for the major and minor ticks
-		majfmt and minfmt: TickFormatters for the major and minor ticks
-		label: the default axis label
-		default_limits: the default min, max of the axis if no data is present
-		If any of the above are None, the axis will simply use the default
+		Parameters
+		----------
+		majloc, minloc : Locator, optional
+		    Tick locators for the major and minor ticks.
+		majfmt, minfmt : Formatter, optional
+		    Tick formatters for the major and minor ticks.
+		label : str, optional
+		    The default axis label.
+		default_limits : optional
+		    The default min and max limits of the axis if no data has
+		    been plotted.
+		
+		Notes
+		-----
+		If any of the above are ``None``, the axis will simply use the
+		default value.
 	**/
 	@:native("__init__")
 	public function ___init__(?majloc:Dynamic, ?minloc:Dynamic, ?majfmt:Dynamic, ?minfmt:Dynamic, ?label:Dynamic, ?default_limits:Dynamic):Dynamic;
 	/**
-		majloc and minloc: TickLocators for the major and minor ticks
-		majfmt and minfmt: TickFormatters for the major and minor ticks
-		label: the default axis label
-		default_limits: the default min, max of the axis if no data is present
-		If any of the above are None, the axis will simply use the default
+		Parameters
+		----------
+		majloc, minloc : Locator, optional
+		    Tick locators for the major and minor ticks.
+		majfmt, minfmt : Formatter, optional
+		    Tick formatters for the major and minor ticks.
+		label : str, optional
+		    The default axis label.
+		default_limits : optional
+		    The default min and max limits of the axis if no data has
+		    been plotted.
+		
+		Notes
+		-----
+		If any of the above are ``None``, the axis will simply use the
+		default value.
 	**/
 	public function new(?majloc:Dynamic, ?minloc:Dynamic, ?majfmt:Dynamic, ?minfmt:Dynamic, ?label:Dynamic, ?default_limits:Dynamic):Void;
 	/**
@@ -60,7 +82,7 @@ package matplotlib.units;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -111,7 +133,7 @@ package matplotlib.units;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

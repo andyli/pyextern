@@ -10,6 +10,10 @@ package tensorflow.python.ops.losses.losses_impl;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Computes the number of elements in `losses` tensor.
+	**/
+	static public function _num_elements(losses:Dynamic):Dynamic;
+	/**
 		Computes the number of elements in the loss function induced by `weights`.
 		
 		A given weights tensor induces different numbers of usable elements in the
@@ -109,8 +113,14 @@ package tensorflow.python.ops.losses.losses_impl;
 		  shape as `labels`; otherwise, it is scalar.
 		
 		Raises:
-		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
-		    if the shape of `weights` is invalid.
+		  ValueError: If the shape of `predictions` doesn't match that of
+		    `labels` or if the shape of `weights` is invalid or if `labels`
+		    or `predictions` is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function absolute_difference(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -134,10 +144,26 @@ package tensorflow.python.ops.losses.losses_impl;
 		  ValueError: If `weights` is `None` or the shape is not compatible with
 		    `losses`, or if the number of dimensions (rank) of either `losses` or
 		    `weights` is missing.
+		
+		Note:
+		  When calculating the gradient of a weighted loss contributions from
+		  both `losses` and `weights` are considered. If your `weights` depend
+		  on some model parameters but you do not want this to affect the loss
+		  gradient, you need to apply `tf.stop_gradient` to `weights` before
+		  passing them to `compute_weighted_loss`.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function compute_weighted_loss(losses:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
-		Adds a cosine-distance loss to the training procedure.
+		Adds a cosine-distance loss to the training procedure. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		dim is deprecated, use axis instead
 		
 		Note that the function assumes that `predictions` and `labels` are already
 		unit-normalized.
@@ -145,13 +171,14 @@ package tensorflow.python.ops.losses.losses_impl;
 		Args:
 		  labels: `Tensor` whose shape matches 'predictions'
 		  predictions: An arbitrary matrix.
-		  dim: The dimension along which the cosine distance is computed.
+		  axis: The dimension along which the cosine distance is computed.
 		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
 		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
 		    be either `1`, or the same as the corresponding `losses` dimension).
 		  scope: The scope for the operations performed in computing the loss.
 		  loss_collection: collection to which this loss will be added.
 		  reduction: Type of reduction to apply to loss.
+		  dim: The old (deprecated) name for `axis`.
 		
 		Returns:
 		  Weighted loss float `Tensor`. If `reduction` is `NONE`, this has the same
@@ -159,17 +186,80 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		Raises:
 		  ValueError: If `predictions` shape doesn't match `labels` shape, or
-		    `weights` is `None`.
+		    `axis`, `labels`, `predictions` or `weights` is `None`.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
-	static public function cosine_distance(labels:Dynamic, predictions:Dynamic, ?dim:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
+	static public function cosine_distance(labels:Dynamic, predictions:Dynamic, ?axis:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic, ?dim:Dynamic):Dynamic;
+	/**
+		Decorator for marking specific function arguments as deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called with the deprecated argument. It has the following format:
+		
+		  Calling <function> (from <module>) with <arg> is deprecated and will be
+		  removed after <date>. Instructions for updating:
+		    <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> includes the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated arguments)' is
+		appended to the first line of the docstring and a deprecation notice is
+		prepended to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  *deprecated_arg_names_or_tuples: String or 2-Tuple(String,
+		    [ok_vals]).  The string is the deprecated argument name.
+		    Optionally, an ok-value may be provided.  If the user provided
+		    argument equals this value, the warning is suppressed.
+		  **kwargs: If `warn_once=False` is passed, every call with a deprecated
+		    argument will log a warning. The default behavior is to only warn the
+		    first time the function is called with any given deprecated argument.
+		    All other kwargs raise `ValueError`.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, instructions are
+		    empty, the deprecated arguments are not present in the function
+		    signature, the second element of a deprecated_tuple is not a
+		    list, or if a kwarg other than `warn_once` is passed.
+	**/
+	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Looks up deprecated argument name and ensures both are not used.
+		
+		Args:
+		  new_name: new name of argument
+		  new_value: value of new argument (or None if not used)
+		  old_name: old name of argument
+		  old_value: value of old argument (or None if not used)
+		Returns:
+		  The effective argument that should be used.
+		Raises:
+		  ValueError: if new_value and old_value are both non-null
+	**/
+	static public function deprecated_argument_lookup(new_name:Dynamic, new_value:Dynamic, old_name:Dynamic, old_value:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Adds a hinge loss to the training procedure.
 		
 		Args:
 		  labels: The ground truth output tensor. Its shape should match the shape of
-		    logits. The values of the tensor are expected to be 0.0 or 1.0.
-		  logits: The logits, a float tensor.
+		    logits. The values of the tensor are expected to be 0.0 or 1.0. Internally
+		    the {0,1} labels are converted to {-1,1} when calculating the hinge loss.
+		  logits: The logits, a float tensor. Note that logits are assumed to be
+		    unbounded and 0-centered. A value > 0 (resp. < 0) is considered a positive
+		    (resp. negative) binary prediction.
 		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
 		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
 		    be either `1`, or the same as the corresponding `losses` dimension).
@@ -182,7 +272,13 @@ package tensorflow.python.ops.losses.losses_impl;
 		  shape as `labels`; otherwise, it is scalar.
 		
 		Raises:
-		  ValueError: If the shapes of `logits` and `labels` don't match.
+		  ValueError: If the shapes of `logits` and `labels` don't match or
+		    if `labels` or `logits` is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function hinge_loss(labels:Dynamic, logits:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
@@ -201,7 +297,7 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided, then
 		the loss is simply scaled by the given value. If `weights` is a tensor of size
-		[batch_size], then the total loss for each sample of the batch is rescaled
+		`[batch_size]`, then the total loss for each sample of the batch is rescaled
 		by the corresponding element in the `weights` vector. If the shape of
 		`weights` matches the shape of `predictions`, then the loss of each
 		measurable element of `predictions` is scaled by the corresponding value of
@@ -225,7 +321,13 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		Raises:
 		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
-		    if the shape of `weights` is invalid.
+		    if the shape of `weights` is invalid.  Also if `labels` or
+		   `predictions` is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function huber_loss(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?delta:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
@@ -233,7 +335,7 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided, then
 		the loss is simply scaled by the given value. If `weights` is a tensor of size
-		[batch_size], then the total loss for each sample of the batch is rescaled
+		`[batch_size]`, then the total loss for each sample of the batch is rescaled
 		by the corresponding element in the `weights` vector. If the shape of
 		`weights` matches the shape of `predictions`, then the loss of each
 		measurable element of `predictions` is scaled by the corresponding value of
@@ -256,7 +358,13 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		Raises:
 		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
-		    if the shape of `weights` is invalid.
+		    if the shape of `weights` is invalid.  Also if `labels` or `predictions`
+		    is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function log_loss(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?epsilon:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
@@ -279,7 +387,7 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided, then
 		the loss is simply scaled by the given value. If `weights` is a tensor of size
-		[batch_size], then the total loss for each sample of the batch is rescaled
+		`[batch_size]`, then the total loss for each sample of the batch is rescaled
 		by the corresponding element in the `weights` vector.
 		
 		Args:
@@ -298,7 +406,13 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		Raises:
 		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
-		    if the shape of `weights` is invalid.
+		    if the shape of `weights` is invalid.  Also if `labels` or `predictions`
+		    is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function mean_pairwise_squared_error(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic):Dynamic;
 	/**
@@ -306,7 +420,7 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided, then
 		the loss is simply scaled by the given value. If `weights` is a tensor of size
-		[batch_size], then the total loss for each sample of the batch is rescaled
+		`[batch_size]`, then the total loss for each sample of the batch is rescaled
 		by the corresponding element in the `weights` vector. If the shape of
 		`weights` matches the shape of `predictions`, then the loss of each
 		measurable element of `predictions` is scaled by the corresponding value of
@@ -328,7 +442,13 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		Raises:
 		  ValueError: If the shape of `predictions` doesn't match that of `labels` or
-		    if the shape of `weights` is invalid.
+		    if the shape of `weights` is invalid.  Also if `labels` or `predictions`
+		    is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function mean_squared_error(labels:Dynamic, predictions:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -347,7 +467,7 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		Args:
 		  multi_class_labels: `[batch_size, num_classes]` target integer labels in
-		    `(0, 1)`.
+		    `{0, 1}`.
 		  logits: Float `[batch_size, num_classes]` logits outputs of the network.
 		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
 		    `labels`, and must be broadcastable to `labels` (i.e., all dimensions must
@@ -364,11 +484,16 @@ package tensorflow.python.ops.losses.losses_impl;
 		Raises:
 		  ValueError: If the shape of `logits` doesn't match that of
 		    `multi_class_labels` or if the shape of `weights` is invalid, or if
-		    `weights` is None.
+		    `weights` is None.  Also if `multi_class_labels` or `logits` is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function sigmoid_cross_entropy(multi_class_labels:Dynamic, logits:Dynamic, ?weights:Dynamic, ?label_smoothing:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
-		Creates a cross-entropy loss using tf.nn.softmax_cross_entropy_with_logits.
+		Creates a cross-entropy loss using tf.nn.softmax_cross_entropy_with_logits_v2.
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided,
 		then the loss is simply scaled by the given value. If `weights` is a
@@ -379,13 +504,16 @@ package tensorflow.python.ops.losses.losses_impl;
 		    new_onehot_labels = onehot_labels * (1 - label_smoothing)
 		                        + label_smoothing / num_classes
 		
+		Note that `onehot_labels` and `logits` must have the same shape,
+		e.g. `[batch_size, num_classes]`. The shape of `weights` must be
+		broadcastable to loss, whose shape is decided by the shape of `logits`.
+		In case the shape of `logits` is `[batch_size, num_classes]`, loss is
+		a `Tensor` of shape `[batch_size]`.
+		
 		Args:
-		  onehot_labels: `[batch_size, num_classes]` target one-hot-encoded labels.
-		  logits: [batch_size, num_classes] logits outputs of the network .
-		  weights: Optional `Tensor` whose rank is either 0, or the same rank as
-		    `onehot_labels`, and must be broadcastable to `onehot_labels` (i.e., all
-		    dimensions must be either `1`, or the same as the corresponding `losses`
-		    dimension).
+		  onehot_labels: One-hot-encoded labels.
+		  logits: Logits outputs of the network.
+		  weights: Optional `Tensor` that is broadcastable to loss.
 		  label_smoothing: If greater than 0 then smooth the labels.
 		  scope: the scope for the operations performed in computing the loss.
 		  loss_collection: collection to which the loss will be added.
@@ -397,7 +525,13 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		Raises:
 		  ValueError: If the shape of `logits` doesn't match that of `onehot_labels`
-		    or if the shape of `weights` is invalid or if `weights` is None.
+		    or if the shape of `weights` is invalid or if `weights` is None.  Also if
+		    `onehot_labels` or `logits` is None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function softmax_cross_entropy(onehot_labels:Dynamic, logits:Dynamic, ?weights:Dynamic, ?label_smoothing:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
 	/**
@@ -405,7 +539,7 @@ package tensorflow.python.ops.losses.losses_impl;
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided,
 		then the loss is simply scaled by the given value. If `weights` is a
-		tensor of shape [`batch_size`], then the loss weights apply to each
+		tensor of shape `[batch_size]`, then the loss weights apply to each
 		corresponding sample.
 		
 		Args:
@@ -415,9 +549,10 @@ package tensorflow.python.ops.losses.losses_impl;
 		    exception when this op is run on CPU, and return `NaN` for corresponding
 		    loss and gradient rows on GPU.
 		  logits: Unscaled log probabilities of shape
-		    `[d_0, d_1, ..., d_{r-1}, num_classes]` and dtype `float32` or `float64`.
-		  weights: Coefficients for the loss. This must be scalar or of same rank as
-		    `labels`
+		    `[d_0, d_1, ..., d_{r-1}, num_classes]` and dtype `float16`, `float32` or
+		    `float64`.
+		  weights: Coefficients for the loss. This must be scalar or broadcastable to
+		    `labels` (i.e. same rank and each dimension is either 1 or the same).
 		  scope: the scope for the operations performed in computing the loss.
 		  loss_collection: collection to which the loss will be added.
 		  reduction: Type of reduction to apply to loss.
@@ -427,8 +562,14 @@ package tensorflow.python.ops.losses.losses_impl;
 		  `NONE`, this has the same shape as `labels`; otherwise, it is scalar.
 		
 		Raises:
-		  ValueError: If the shapes of logits, labels, and weight are incompatible, or
-		    if `weights` is None.
+		  ValueError: If the shapes of `logits`, `labels`, and `weights` are
+		    incompatible, or if any of them are None.
+		
+		@compatibility(eager)
+		The `loss_collection` argument is ignored when executing eagerly. Consider
+		holding on to the return value or collecting losses via a `tf.keras.Model`.
+		@end_compatibility
 	**/
 	static public function sparse_softmax_cross_entropy(labels:Dynamic, logits:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?loss_collection:Dynamic, ?reduction:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

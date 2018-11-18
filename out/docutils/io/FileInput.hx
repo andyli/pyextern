@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.io;
 @:pythonImport("docutils.io", "FileInput") extern class FileInput {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,13 +46,12 @@ package docutils.io;
 		    - `error_handler`: the encoding error handler to use.
 		    - `autoclose`: close automatically after read (except when
 		      `sys.stdin` is the source).
-		    - `handle_io_errors`: ignored, deprecated, will be removed.
 		    - `mode`: how the file is to be opened (see standard function
 		      `open`). The default 'rU' provides universal newline support
 		      for text files.
 	**/
 	@:native("__init__")
-	public function ___init__(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?handle_io_errors:Dynamic, ?mode:Dynamic):Dynamic;
+	public function ___init__(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		:Parameters:
 		    - `source`: either a file-like object (which is read directly), or
@@ -62,19 +61,18 @@ package docutils.io;
 		    - `error_handler`: the encoding error handler to use.
 		    - `autoclose`: close automatically after read (except when
 		      `sys.stdin` is the source).
-		    - `handle_io_errors`: ignored, deprecated, will be removed.
 		    - `mode`: how the file is to be opened (see standard function
 		      `open`). The default 'rU' provides universal newline support
 		      for text files.
 	**/
-	public function new(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?handle_io_errors:Dynamic, ?mode:Dynamic):Void;
+	public function new(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -125,7 +123,7 @@ package docutils.io;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

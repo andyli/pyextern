@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.lib.io.tf_record;
 @:pythonImport("tensorflow.python.lib.io.tf_record", "TFRecordOptions") extern class TFRecordOptions {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,21 +38,67 @@ package tensorflow.python.lib.io.tf_record;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Creates a `TFRecordOptions` instance.
+		
+		Options only effect TFRecordWriter when compression_type is not `None`.
+		Documentation, details, and defaults can be found in
+		[`zlib_compression_options.h`](https://www.tensorflow.org/code/tensorflow/core/lib/io/zlib_compression_options.h)
+		and in the [zlib manual](http://www.zlib.net/manual.html).
+		Leaving an option as `None` allows C++ to set a reasonable default.
+		
+		Args:
+		  compression_type: `TFRecordCompressionType` or `None`.
+		  flush_mode: flush mode or `None`, Default: Z_NO_FLUSH.
+		  input_buffer_size: int or `None`.
+		  output_buffer_size: int or `None`.
+		  window_bits: int or `None`.
+		  compression_level: 0 to 9, or `None`.
+		  compression_method: compression method or `None`.
+		  mem_level: 1 to 9, or `None`.
+		  compression_strategy: strategy or `None`. Default: Z_DEFAULT_STRATEGY.
+		
+		Returns:
+		  A `TFRecordOptions` object.
+		
+		Raises:
+		  ValueError: If compression_type is invalid.
 	**/
 	@:native("__init__")
-	public function ___init__(compression_type:Dynamic):Dynamic;
+	public function ___init__(?compression_type:Dynamic, ?flush_mode:Dynamic, ?input_buffer_size:Dynamic, ?output_buffer_size:Dynamic, ?window_bits:Dynamic, ?compression_level:Dynamic, ?compression_method:Dynamic, ?mem_level:Dynamic, ?compression_strategy:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Creates a `TFRecordOptions` instance.
+		
+		Options only effect TFRecordWriter when compression_type is not `None`.
+		Documentation, details, and defaults can be found in
+		[`zlib_compression_options.h`](https://www.tensorflow.org/code/tensorflow/core/lib/io/zlib_compression_options.h)
+		and in the [zlib manual](http://www.zlib.net/manual.html).
+		Leaving an option as `None` allows C++ to set a reasonable default.
+		
+		Args:
+		  compression_type: `TFRecordCompressionType` or `None`.
+		  flush_mode: flush mode or `None`, Default: Z_NO_FLUSH.
+		  input_buffer_size: int or `None`.
+		  output_buffer_size: int or `None`.
+		  window_bits: int or `None`.
+		  compression_level: 0 to 9, or `None`.
+		  compression_method: compression method or `None`.
+		  mem_level: 1 to 9, or `None`.
+		  compression_strategy: strategy or `None`. Default: Z_DEFAULT_STRATEGY.
+		
+		Returns:
+		  A `TFRecordOptions` object.
+		
+		Raises:
+		  ValueError: If compression_type is invalid.
 	**/
-	public function new(compression_type:Dynamic):Void;
+	public function new(?compression_type:Dynamic, ?flush_mode:Dynamic, ?input_buffer_size:Dynamic, ?output_buffer_size:Dynamic, ?window_bits:Dynamic, ?compression_level:Dynamic, ?compression_method:Dynamic, ?mem_level:Dynamic, ?compression_strategy:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +149,30 @@ package tensorflow.python.lib.io.tf_record;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Convert to RecordWriterOptions for use with PyRecordWriter.
+	**/
+	public function _as_record_writer_options():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	static public var compression_type_map : Dynamic;
+	/**
+		Convert various option types to a unified string.
+		
+		Args:
+		  options: `TFRecordOption`, `TFRecordCompressionType`, or string.
+		
+		Returns:
+		  Compression type as string (e.g. `'ZLIB'`, `'GZIP'`, or `''`).
+		
+		Raises:
+		  ValueError: If compression_type is invalid.
+	**/
 	static public function get_compression_type_string(options:Dynamic):Dynamic;
 }

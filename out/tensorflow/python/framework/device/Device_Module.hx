@@ -9,6 +9,9 @@ package tensorflow.python.framework.device;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _cache_lock : Dynamic;
+	static public var _cached_device_functions : Dynamic;
+	static public var _cached_device_specs : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Returns a canonical name for the given `DeviceSpec` or device name.
@@ -53,4 +56,5 @@ package tensorflow.python.framework.device;
 	**/
 	static public function merge_device(spec:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

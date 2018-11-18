@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.lookup_ops;
 @:pythonImport("tensorflow.python.ops.lookup_ops", "HashTable") extern class HashTable {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -84,7 +84,7 @@ package tensorflow.python.ops.lookup_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -135,7 +135,7 @@ package tensorflow.python.ops.lookup_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -144,6 +144,17 @@ package tensorflow.python.ops.lookup_ops;
 		The default value of the table.
 	**/
 	public var default_value : Dynamic;
+	/**
+		Returns tensors of all keys and values in the table.
+		
+		Args:
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A pair of tensors with the first tensor containing all keys and the
+		    second tensors containing all values in the table.
+	**/
+	public function export(?name:Dynamic):Dynamic;
 	/**
 		The table initialization op.
 	**/

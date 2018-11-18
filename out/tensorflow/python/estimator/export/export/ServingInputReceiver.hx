@@ -5,7 +5,7 @@ package tensorflow.python.estimator.export.export;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.python.estimator.export.export;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -95,9 +95,9 @@ package tensorflow.python.estimator.export.export;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of ServingInputReceiver(features, receiver_tensors)
+		Create new instance of ServingInputReceiver(features, receiver_tensors, receiver_tensors_alternatives)
 	**/
-	static public function __new__(cls:Dynamic, features:Dynamic, receiver_tensors:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, features:Dynamic, receiver_tensors:Dynamic, ?receiver_tensors_alternatives:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -136,11 +136,13 @@ package tensorflow.python.estimator.export.export;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
 	public function _asdict():Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
 	static public var _fields : Dynamic;
 	/**
 		Make a new ServingInputReceiver object from a sequence or iterable
@@ -149,7 +151,7 @@ package tensorflow.python.estimator.export.export;
 	/**
 		Return a new ServingInputReceiver object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
@@ -168,4 +170,8 @@ package tensorflow.python.estimator.export.export;
 		Alias for field number 1
 	**/
 	public var receiver_tensors : Dynamic;
+	/**
+		Alias for field number 2
+	**/
+	public var receiver_tensors_alternatives : Dynamic;
 }

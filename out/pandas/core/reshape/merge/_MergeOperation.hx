@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.reshape.merge;
 @:pythonImport("pandas.core.reshape.merge", "_MergeOperation") extern class _MergeOperation {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package pandas.core.reshape.merge;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):Dynamic;
+	public function ___init__(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic, ?validate:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):Void;
+	public function new(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic, ?validate:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package pandas.core.reshape.merge;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -131,7 +131,28 @@ package pandas.core.reshape.merge;
 	public function _indicator_pre_merge(left:Dynamic, right:Dynamic):Dynamic;
 	public function _maybe_add_join_keys(result:Dynamic, left_indexer:Dynamic, right_indexer:Dynamic):Dynamic;
 	public function _maybe_coerce_merge_keys():Dynamic;
+	/**
+		Restore index levels specified as `on` parameters
+		
+		Here we check for cases where `self.left_on` and `self.right_on` pairs
+		each reference an index level in their respective DataFrames. The
+		joined columns corresponding to these pairs are then restored to the
+		index of `result`.
+		
+		**Note:** This method has side effects. It modifies `result` in-place
+		
+		Parameters
+		----------
+		result: DataFrame
+		    merge result
+		
+		Returns
+		-------
+		None
+	**/
+	public function _maybe_restore_index_levels(result:Dynamic):Dynamic;
 	static public var _merge_type : Dynamic;
+	public function _validate(validate:Dynamic):Dynamic;
 	public function _validate_specification():Dynamic;
 	public function get_result():Dynamic;
 }

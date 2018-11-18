@@ -80,6 +80,14 @@ package tensorflow.python.training.supervisor;
 		
 		Returns:
 		  The list of threads started for the `QueueRunners`.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		Queues are not compatible with eager execution. To ingest data when eager
+		execution is enabled, use the `tf.data` API.
+		@end_compatibility
 	**/
 	public function StartQueueRunners(sess:Dynamic, ?queue_runners:Dynamic):Dynamic;
 	/**
@@ -120,8 +128,11 @@ package tensorflow.python.training.supervisor;
 		  close_summary_writer: Whether to close the `summary_writer`.  Defaults to
 		    `True` if the summary writer was created by the supervisor, `False`
 		    otherwise.
+		  ignore_live_threads: If `True` ignores threads that remain running after
+		    a grace period when joining threads via the coordinator, instead of
+		    raising a RuntimeError.
 	**/
-	public function Stop(?threads:Dynamic, ?close_summary_writer:Dynamic):Dynamic;
+	public function Stop(?threads:Dynamic, ?close_summary_writer:Dynamic, ?ignore_live_threads:Dynamic):Dynamic;
 	/**
 		Context handler to stop the supervisor when an exception is raised.
 		
@@ -150,7 +161,7 @@ package tensorflow.python.training.supervisor;
 		Block waiting for the coordinator to stop.
 	**/
 	public function WaitForStop():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -187,7 +198,11 @@ package tensorflow.python.training.supervisor;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create a `Supervisor`.
+		Create a `Supervisor`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.train.MonitoredTrainingSession
 		
 		Args:
 		  graph: A `Graph`.  The graph that the model will use.  Defaults to the
@@ -202,10 +217,9 @@ package tensorflow.python.training.supervisor;
 		  ready_for_local_init_op: 1-D string `Tensor`.  This tensor is evaluated by
 		    supervisors in `prepare_or_wait_for_session()` to check if the model is
 		    ready to run the local_init_op.
-		    The model is considered ready if it returns an empty array.  Defaults to
-		    the tensor returned from
-		    `tf.report_uninitialized_variables(tf.global_variables())`. If `None`,
-		    the model is not checked for readiness before running local_init_op.
+		    The model is considered ready if it returns an empty array. Defaults to
+		    `None`. If `None`, the model is not checked for readiness before running
+		    local_init_op.
 		  is_chief: If True, create a chief supervisor in charge of initializing
 		    and restoring the model.  If False, create a supervisor that relies
 		    on a chief supervisor for inits and restore.
@@ -255,14 +269,27 @@ package tensorflow.python.training.supervisor;
 		  init_fn: Optional callable used to initialize the model. Called
 		    after the optional `init_op` is called.  The callable must accept one
 		    argument, the session being initialized.
+		  local_init_run_options: RunOptions to be passed as the SessionManager
+		    local_init_run_options parameter.
 		
 		Returns:
 		  A `Supervisor`.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		`Supervisor`s are not supported when eager execution is enabled.
+		@end_compatibility
 	**/
 	@:native("__init__")
-	public function ___init__(?graph:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic):Dynamic;
+	public function ___init__(?graph:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic, ?local_init_run_options:Dynamic):Dynamic;
 	/**
-		Create a `Supervisor`.
+		Create a `Supervisor`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.train.MonitoredTrainingSession
 		
 		Args:
 		  graph: A `Graph`.  The graph that the model will use.  Defaults to the
@@ -277,10 +304,9 @@ package tensorflow.python.training.supervisor;
 		  ready_for_local_init_op: 1-D string `Tensor`.  This tensor is evaluated by
 		    supervisors in `prepare_or_wait_for_session()` to check if the model is
 		    ready to run the local_init_op.
-		    The model is considered ready if it returns an empty array.  Defaults to
-		    the tensor returned from
-		    `tf.report_uninitialized_variables(tf.global_variables())`. If `None`,
-		    the model is not checked for readiness before running local_init_op.
+		    The model is considered ready if it returns an empty array. Defaults to
+		    `None`. If `None`, the model is not checked for readiness before running
+		    local_init_op.
 		  is_chief: If True, create a chief supervisor in charge of initializing
 		    and restoring the model.  If False, create a supervisor that relies
 		    on a chief supervisor for inits and restore.
@@ -330,18 +356,27 @@ package tensorflow.python.training.supervisor;
 		  init_fn: Optional callable used to initialize the model. Called
 		    after the optional `init_op` is called.  The callable must accept one
 		    argument, the session being initialized.
+		  local_init_run_options: RunOptions to be passed as the SessionManager
+		    local_init_run_options parameter.
 		
 		Returns:
 		  A `Supervisor`.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		`Supervisor`s are not supported when eager execution is enabled.
+		@end_compatibility
 	**/
-	public function new(?graph:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic):Void;
+	public function new(?graph:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?is_chief:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?logdir:Dynamic, ?summary_op:Dynamic, ?saver:Dynamic, ?global_step:Dynamic, ?save_summaries_secs:Dynamic, ?save_model_secs:Dynamic, ?recovery_wait_secs:Dynamic, ?stop_grace_secs:Dynamic, ?checkpoint_basename:Dynamic, ?session_manager:Dynamic, ?summary_writer:Dynamic, ?init_fn:Dynamic, ?local_init_run_options:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -392,7 +427,7 @@ package tensorflow.python.training.supervisor;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -472,6 +507,8 @@ package tensorflow.python.training.supervisor;
 		    If set to USE_DEFAULT, create an op that merges all the summaries.
 	**/
 	public function _init_summary_op(?summary_op:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Check that all is good.
 		
@@ -703,6 +740,14 @@ package tensorflow.python.training.supervisor;
 		
 		Returns:
 		  The list of threads started for the `QueueRunners`.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		Queues are not compatible with eager execution. To ingest data when eager
+		execution is enabled, use the `tf.data` API.
+		@end_compatibility
 	**/
 	public function start_queue_runners(sess:Dynamic, ?queue_runners:Dynamic):Dynamic;
 	/**
@@ -743,8 +788,11 @@ package tensorflow.python.training.supervisor;
 		  close_summary_writer: Whether to close the `summary_writer`.  Defaults to
 		    `True` if the summary writer was created by the supervisor, `False`
 		    otherwise.
+		  ignore_live_threads: If `True` ignores threads that remain running after
+		    a grace period when joining threads via the coordinator, instead of
+		    raising a RuntimeError.
 	**/
-	public function stop(?threads:Dynamic, ?close_summary_writer:Dynamic):Dynamic;
+	public function stop(?threads:Dynamic, ?close_summary_writer:Dynamic, ?ignore_live_threads:Dynamic):Dynamic;
 	/**
 		Context handler to stop the supervisor when an exception is raised.
 		

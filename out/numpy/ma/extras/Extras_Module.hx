@@ -35,7 +35,7 @@ package numpy.ma.extras;
 		    Input array or object that can be converted to an array.
 		func : callable
 		    Reduction function capable of receiving a single axis argument.
-		    It is is called with `a` as first argument followed by `kwargs`.
+		    It is called with `a` as first argument followed by `kwargs`.
 		kwargs : keyword arguments
 		    additional keyword arguments to pass to `func`.
 		
@@ -74,8 +74,8 @@ package numpy.ma.extras;
 		Returns
 		-------
 		add : ndarray or scalar
-		    The sum of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    The sum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -99,14 +99,32 @@ package numpy.ma.extras;
 		Execute `func1d(a, *args)` where `func1d` operates on 1-D arrays and `a`
 		is a 1-D slice of `arr` along `axis`.
 		
+		This is equivalent to (but faster than) the following use of `ndindex` and
+		`s_`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of indices::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nk):
+		            f = func1d(arr[ii + s_[:,] + kk])
+		            Nj = f.shape
+		            for jj in ndindex(Nj):
+		                out[ii + jj + kk] = f[jj]
+		
+		Equivalently, eliminating the inner loop, this can be expressed as::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nk):
+		            out[ii + s_[...,] + kk] = func1d(arr[ii + s_[:,] + kk])
+		
 		Parameters
 		----------
-		func1d : function
+		func1d : function (M,) -> (Nj...)
 		    This function should accept 1-D arrays. It is applied to 1-D
 		    slices of `arr` along the specified axis.
 		axis : integer
 		    Axis along which `arr` is sliced.
-		arr : ndarray
+		arr : ndarray (Ni..., M, Nk...)
 		    Input array.
 		args : any
 		    Additional arguments to `func1d`.
@@ -118,11 +136,11 @@ package numpy.ma.extras;
 		
 		Returns
 		-------
-		apply_along_axis : ndarray
-		    The output array. The shape of `outarr` is identical to the shape of
+		out : ndarray  (Ni..., Nj..., Nk...)
+		    The output array. The shape of `out` is identical to the shape of
 		    `arr`, except along the `axis` dimension. This axis is removed, and
 		    replaced with new dimensions equal to the shape of the return value
-		    of `func1d`. So if `func1d` returns a scalar `outarr` will have one
+		    of `func1d`. So if `func1d` returns a scalar `out` will have one
 		    fewer dimensions than `arr`.
 		
 		See Also
@@ -157,16 +175,14 @@ package numpy.ma.extras;
 		array([[[1, 0, 0],
 		        [0, 2, 0],
 		        [0, 0, 3]],
-		
 		       [[4, 0, 0],
 		        [0, 5, 0],
 		        [0, 0, 6]],
-		
 		       [[7, 0, 0],
 		        [0, 8, 0],
 		        [0, 0, 9]]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -600,7 +616,7 @@ package numpy.ma.extras;
 		
 		    See Also
 		    --------
-		    hstack, vstack, concatenate
+		    stack, hstack, vstack, concatenate
 		
 		    Examples
 		    --------
@@ -799,7 +815,7 @@ package numpy.ma.extras;
 	**/
 	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?allow_masked:Dynamic, ?ddof:Dynamic):Dynamic;
 	/**
-		count(self, axis=None, keepdims=<class 'numpy._globals._NoValue'>)
+		count(self, axis=None, keepdims=<no value>)
 		
 		Count the non-masked elements of the array along the given axis.
 		
@@ -1067,25 +1083,26 @@ package numpy.ma.extras;
 		
 		    Stack arrays in sequence depth wise (along third axis).
 		
-		    Takes a sequence of arrays and stack them along the third axis
-		    to make a single array. Rebuilds arrays divided by `dsplit`.
-		    This is a simple way to stack 2D arrays (images) into a single
-		    3D array for processing.
+		    This is equivalent to concatenation along the third axis after 2-D arrays
+		    of shape `(M,N)` have been reshaped to `(M,N,1)` and 1-D arrays of shape
+		    `(N,)` have been reshaped to `(1,N,1)`. Rebuilds arrays divided by
+		    `dsplit`.
 		
-		    This function continues to be supported for backward compatibility, but
-		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		    function was added in NumPy 1.10.
+		    This function makes most sense for arrays with up to 3 dimensions. For
+		    instance, for pixel-data with a height (first axis), width (second axis),
+		    and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		    `block` provide more general stacking and concatenation operations.
 		
 		    Parameters
 		    ----------
 		    tup : sequence of arrays
-		        Arrays to stack. All of them must have the same shape along all
-		        but the third axis.
+		        The arrays must have the same shape along all but the third axis.
+		        1-D or 2-D arrays must have the same shape.
 		
 		    Returns
 		    -------
 		    stacked : ndarray
-		        The array formed by stacking the given arrays.
+		        The array formed by stacking the given arrays, will be at least 3-D.
 		
 		    See Also
 		    --------
@@ -1094,11 +1111,6 @@ package numpy.ma.extras;
 		    hstack : Stack along second axis.
 		    concatenate : Join a sequence of arrays along an existing axis.
 		    dsplit : Split array along third axis.
-		
-		    Notes
-		    -----
-		    Equivalent to ``np.concatenate(tup, axis=2)`` if `tup` contains arrays that
-		    are at least 3-dimensional.
 		
 		    Examples
 		    --------
@@ -1178,7 +1190,10 @@ package numpy.ma.extras;
 		Returns
 		-------
 		slice_list : list
-		    A sorted sequence of slices (start index, end index).
+		    A sorted sequence of `slice` objects (start index, end index).
+		
+		    ..versionchanged:: 1.15.0
+		        Now returns an empty list instead of None for a fully masked array
 		
 		See Also
 		--------
@@ -1193,7 +1208,7 @@ package numpy.ma.extras;
 		--------
 		>>> a = np.ma.arange(10)
 		>>> np.ma.flatnotmasked_contiguous(a)
-		slice(0, 10, None)
+		[slice(0, 10, None)]
 		
 		>>> mask = (a < 3) | (a > 8) | (a == 5)
 		>>> a[mask] = np.ma.masked
@@ -1203,8 +1218,8 @@ package numpy.ma.extras;
 		>>> np.ma.flatnotmasked_contiguous(a)
 		[slice(3, 5, None), slice(6, 9, None)]
 		>>> a[:] = np.ma.masked
-		>>> print(np.ma.flatnotmasked_edges(a))
-		None
+		>>> np.ma.flatnotmasked_contiguous(a)
+		[]
 	**/
 	static public function flatnotmasked_contiguous(a:Dynamic):Array<Dynamic>;
 	/**
@@ -1334,13 +1349,13 @@ package numpy.ma.extras;
 		      fill_value=999999)
 		>>> ma.getmask(a)
 		array([[False,  True],
-		       [False, False]], dtype=bool)
+		       [False, False]])
 		
 		Equivalently use the `MaskedArray` `mask` attribute.
 		
 		>>> a.mask
 		array([[False,  True],
-		       [False, False]], dtype=bool)
+		       [False, False]])
 		
 		Result when mask == `nomask`
 		
@@ -1391,7 +1406,7 @@ package numpy.ma.extras;
 		      fill_value=999999)
 		>>> ma.getmaskarray(a)
 		array([[False,  True],
-		       [False, False]], dtype=bool)
+		       [False, False]])
 		
 		Result when mask == ``nomask``
 		
@@ -1405,7 +1420,7 @@ package numpy.ma.extras;
 		      fill_value=999999)
 		>>> >ma.getmaskarray(b)
 		array([[False, False],
-		       [False, False]], dtype=bool)
+		       [False, False]])
 	**/
 	static public function getmaskarray(arr:Dynamic):Dynamic;
 	/**
@@ -1474,17 +1489,20 @@ package numpy.ma.extras;
 		
 		    Stack arrays in sequence horizontally (column wise).
 		
-		    Take a sequence of arrays and stack them horizontally to make
-		    a single array. Rebuild arrays divided by `hsplit`.
+		    This is equivalent to concatenation along the second axis, except for 1-D
+		    arrays where it concatenates along the first axis. Rebuilds arrays divided
+		    by `hsplit`.
 		
-		    This function continues to be supported for backward compatibility, but
-		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		    function was added in NumPy 1.10.
+		    This function makes most sense for arrays with up to 3 dimensions. For
+		    instance, for pixel-data with a height (first axis), width (second axis),
+		    and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		    `block` provide more general stacking and concatenation operations.
 		
 		    Parameters
 		    ----------
 		    tup : sequence of ndarrays
-		        All arrays must have the same shape along all but the second axis.
+		        The arrays must have the same shape along all but the second axis,
+		        except 1-D arrays which can be any length.
 		
 		    Returns
 		    -------
@@ -1499,11 +1517,6 @@ package numpy.ma.extras;
 		    concatenate : Join a sequence of arrays along an existing axis.
 		    hsplit : Split array along second axis.
 		    block : Assemble arrays from blocks.
-		
-		    Notes
-		    -----
-		    Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
-		    are at least 2-dimensional.
 		
 		    Examples
 		    --------
@@ -1605,7 +1618,7 @@ package numpy.ma.extras;
 		--------
 		>>> import numpy.ma as ma
 		>>> dtype = np.dtype({'names':['foo', 'bar'],
-		                      'formats':[np.float32, np.int]})
+		                      'formats':[np.float32, int]})
 		>>> dtype
 		dtype([('foo', '<f4'), ('bar', '<i4')])
 		>>> ma.make_mask_descr(dtype)
@@ -1627,7 +1640,7 @@ package numpy.ma.extras;
 		Examples
 		--------
 		>>> import numpy.ma as ma
-		>>> a = np.zeros((3, 3), dtype=np.int)
+		>>> a = np.zeros((3, 3), dtype=int)
 		>>> a[1, 1] = 1
 		>>> a
 		array([[0, 0, 0],
@@ -1688,7 +1701,7 @@ package numpy.ma.extras;
 		>>> m1 = np.ma.make_mask([0, 1, 1, 0])
 		>>> m2 = np.ma.make_mask([1, 0, 0, 0])
 		>>> np.ma.mask_or(m1, m2)
-		array([ True,  True,  True, False], dtype=bool)
+		array([ True,  True,  True, False])
 	**/
 	static public function mask_or(m1:Dynamic, m2:Dynamic, ?copy:Dynamic, ?shrink:Dynamic):Dynamic;
 	/**
@@ -1736,7 +1749,7 @@ package numpy.ma.extras;
 		Examples
 		--------
 		>>> import numpy.ma as ma
-		>>> a = np.zeros((3, 3), dtype=np.int)
+		>>> a = np.zeros((3, 3), dtype=int)
 		>>> a[1, 1] = 1
 		>>> a
 		array([[0, 0, 0],
@@ -1778,7 +1791,7 @@ package numpy.ma.extras;
 		Examples
 		--------
 		>>> import numpy.ma as ma
-		>>> a = np.zeros((3, 3), dtype=np.int)
+		>>> a = np.zeros((3, 3), dtype=int)
 		>>> a[1, 1] = 1
 		>>> a
 		array([[0, 0, 0],
@@ -2072,13 +2085,16 @@ package numpy.ma.extras;
 		    The input array.
 		axis : int, optional
 		    Axis along which to perform the operation.
-		    If None (default), applies to a flattened version of the array.
+		    If None (default), applies to a flattened version of the array, and this
+		    is the same as `flatnotmasked_contiguous`.
 		
 		Returns
 		-------
 		endpoints : list
 		    A list of slices (start and end indexes) of unmasked indexes
 		    in the array.
+		
+		    If the input is 2d and axis is specified, the result is a list of lists.
 		
 		See Also
 		--------
@@ -2091,16 +2107,35 @@ package numpy.ma.extras;
 		
 		Examples
 		--------
-		>>> a = np.arange(9).reshape((3, 3))
+		>>> a = np.arange(12).reshape((3, 4))
 		>>> mask = np.zeros_like(a)
-		>>> mask[1:, 1:] = 1
-		
+		>>> mask[1:, :-1] = 1; mask[0, 1] = 1; mask[-1, 0] = 0
 		>>> ma = np.ma.array(a, mask=mask)
+		>>> ma
+		masked_array(
+		  data=[[0, --, 2, 3],
+		        [--, --, --, 7],
+		        [8, --, --, 11]],
+		  mask=[[False,  True, False, False],
+		        [ True,  True,  True, False],
+		        [False,  True,  True, False]],
+		  fill_value=999999)
 		>>> np.array(ma[~ma.mask])
-		array([0, 1, 2, 3, 6])
+		array([ 0,  2,  3,  7, 8, 11])
 		
 		>>> np.ma.notmasked_contiguous(ma)
-		[slice(0, 4, None), slice(6, 7, None)]
+		[slice(0, 1, None), slice(2, 4, None), slice(7, 9, None), slice(11, 12, None)]
+		
+		>>> np.ma.notmasked_contiguous(ma, axis=0)
+		[[slice(0, 1, None), slice(2, 3, None)],  # column broken into two segments
+		 [],                                      # fully masked column
+		 [slice(0, 1, None)],
+		 [slice(0, 3, None)]]
+		
+		>>> np.ma.notmasked_contiguous(ma, axis=1)
+		[[slice(0, 1, None), slice(2, 4, None)],  # row broken into two segments
+		 [slice(3, 4, None)],
+		 [slice(0, 1, None), slice(3, 4, None)]]
 	**/
 	static public function notmasked_contiguous(a:Dynamic, ?axis:Dynamic):Array<Dynamic>;
 	/**
@@ -2197,7 +2232,15 @@ package numpy.ma.extras;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -2260,9 +2303,10 @@ package numpy.ma.extras;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -2271,14 +2315,18 @@ package numpy.ma.extras;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -2363,6 +2411,11 @@ package numpy.ma.extras;
 		
 		Notes
 		-----
+		
+		Any masked values in x is propagated in y, and vice-versa.
+		
+		
+		
 		The solution minimizes the squared error
 		
 		.. math ::
@@ -2435,13 +2488,6 @@ package numpy.ma.extras;
 		>>> plt.ylim(-2,2)
 		(-2, 2)
 		>>> plt.show()
-		
-		
-		
-		Notes
-		-----
-		
-		Any masked values in x is propagated in y, and vice-versa.
 	**/
 	static public function polyfit(x:Dynamic, y:Dynamic, deg:Dynamic, ?rcond:Dynamic, ?full:Dynamic, ?w:Dynamic, ?cov:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -2450,23 +2496,25 @@ package numpy.ma.extras;
 		
 		    Stack arrays in sequence vertically (row wise).
 		
-		    Take a sequence of arrays and stack them vertically to make a single
-		    array. Rebuild arrays divided by `vsplit`.
+		    This is equivalent to concatenation along the first axis after 1-D arrays
+		    of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		    `vsplit`.
 		
-		    This function continues to be supported for backward compatibility, but
-		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		    function was added in NumPy 1.10.
+		    This function makes most sense for arrays with up to 3 dimensions. For
+		    instance, for pixel-data with a height (first axis), width (second axis),
+		    and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		    `block` provide more general stacking and concatenation operations.
 		
 		    Parameters
 		    ----------
 		    tup : sequence of ndarrays
-		        Tuple containing arrays to be stacked. The arrays must have the same
-		        shape along all but the first axis.
+		        The arrays must have the same shape along all but the first axis.
+		        1-D arrays must have the same length.
 		
 		    Returns
 		    -------
 		    stacked : ndarray
-		        The array formed by stacking the given arrays.
+		        The array formed by stacking the given arrays, will be at least 2-D.
 		
 		    See Also
 		    --------
@@ -2476,11 +2524,6 @@ package numpy.ma.extras;
 		    concatenate : Join a sequence of arrays along an existing axis.
 		    vsplit : Split array into a list of multiple sub-arrays vertically.
 		    block : Assemble arrays from blocks.
-		
-		    Notes
-		    -----
-		    Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		    are at least 2-dimensional.
 		
 		    Examples
 		    --------
@@ -2545,7 +2588,7 @@ package numpy.ma.extras;
 		axis : int, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm. Default is 'quicksort'.
 		order : list, optional
 		    When `a` is a structured array, this argument specifies which fields
@@ -2598,6 +2641,68 @@ package numpy.ma.extras;
 		[1 -- -- 3 5]
 	**/
 	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
+	/**
+		stack(arrays, axis=0, out=None)
+		
+		    Join a sequence of arrays along a new axis.
+		
+		    The `axis` parameter specifies the index of the new axis in the dimensions
+		    of the result. For example, if ``axis=0`` it will be the first dimension
+		    and if ``axis=-1`` it will be the last dimension.
+		
+		    .. versionadded:: 1.10.0
+		
+		    Parameters
+		    ----------
+		    arrays : sequence of array_like
+		        Each array must have the same shape.
+		    axis : int, optional
+		        The axis in the result array along which the input arrays are stacked.
+		    out : ndarray, optional
+		        If provided, the destination to place the result. The shape must be
+		        correct, matching that of what stack would have returned if no
+		        out argument were specified.
+		
+		    Returns
+		    -------
+		    stacked : ndarray
+		        The stacked array has one more dimension than the input arrays.
+		
+		    See Also
+		    --------
+		    concatenate : Join a sequence of arrays along an existing axis.
+		    split : Split array into a list of multiple sub-arrays of equal size.
+		    block : Assemble arrays from blocks.
+		
+		    Examples
+		    --------
+		    >>> arrays = [np.random.randn(3, 4) for _ in range(10)]
+		    >>> np.stack(arrays, axis=0).shape
+		    (10, 3, 4)
+		
+		    >>> np.stack(arrays, axis=1).shape
+		    (3, 10, 4)
+		
+		    >>> np.stack(arrays, axis=2).shape
+		    (3, 4, 10)
+		
+		    >>> a = np.array([1, 2, 3])
+		    >>> b = np.array([2, 3, 4])
+		    >>> np.stack((a, b))
+		    array([[1, 2, 3],
+		           [2, 3, 4]])
+		
+		    >>> np.stack((a, b), axis=-1)
+		    array([[1, 2],
+		           [2, 3],
+		           [3, 4]])
+		
+		    
+		Notes
+		-----
+		The function is applied to both the _data and the _mask, if any.
+	**/
+	static public function stack(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Union of two arrays.
 		
@@ -2689,8 +2794,6 @@ package numpy.ma.extras;
 		>>> (5-3)*(5-2)*(5-1)*(3-2)*(3-1)*(2-1)
 		48
 		
-		
-		
 		Notes
 		-----
 		
@@ -2702,23 +2805,25 @@ package numpy.ma.extras;
 		
 		    Stack arrays in sequence vertically (row wise).
 		
-		    Take a sequence of arrays and stack them vertically to make a single
-		    array. Rebuild arrays divided by `vsplit`.
+		    This is equivalent to concatenation along the first axis after 1-D arrays
+		    of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		    `vsplit`.
 		
-		    This function continues to be supported for backward compatibility, but
-		    you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		    function was added in NumPy 1.10.
+		    This function makes most sense for arrays with up to 3 dimensions. For
+		    instance, for pixel-data with a height (first axis), width (second axis),
+		    and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		    `block` provide more general stacking and concatenation operations.
 		
 		    Parameters
 		    ----------
 		    tup : sequence of ndarrays
-		        Tuple containing arrays to be stacked. The arrays must have the same
-		        shape along all but the first axis.
+		        The arrays must have the same shape along all but the first axis.
+		        1-D arrays must have the same length.
 		
 		    Returns
 		    -------
 		    stacked : ndarray
-		        The array formed by stacking the given arrays.
+		        The array formed by stacking the given arrays, will be at least 2-D.
 		
 		    See Also
 		    --------
@@ -2728,11 +2833,6 @@ package numpy.ma.extras;
 		    concatenate : Join a sequence of arrays along an existing axis.
 		    vsplit : Split array into a list of multiple sub-arrays vertically.
 		    block : Assemble arrays from blocks.
-		
-		    Notes
-		    -----
-		    Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		    are at least 2-dimensional.
 		
 		    Examples
 		    --------
@@ -2765,14 +2865,15 @@ package numpy.ma.extras;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -2782,17 +2883,16 @@ package numpy.ma.extras;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

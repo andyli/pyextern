@@ -13,10 +13,6 @@ package tensorflow.python.training.slot_creator;
 		Helper function for creating a slot variable.
 	**/
 	static public function _create_slot_var(primary:Dynamic, val:Dynamic, scope:Dynamic, validate_shape:Dynamic, shape:Dynamic, dtype:Dynamic):Dynamic;
-	/**
-		Returns true if v is something you get from a resource variable.
-	**/
-	static public function _is_resource(v:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Create a slot initialized to the given value.

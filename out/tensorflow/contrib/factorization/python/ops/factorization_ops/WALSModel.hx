@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.factorization.python.ops.factorization_ops;
 @:pythonImport("tensorflow.contrib.factorization.python.ops.factorization_ops", "WALSModel") extern class WALSModel {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -61,21 +61,29 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		    in the form of [[w_0, w_1, ...], [w_k, ... ], [...]], with the number of
 		    inner lists matching the number of row factor shards and the elements in
 		    each inner list are the weights for the rows of the corresponding row
-		    factor shard. In this case,  w_ij = unonbserved_weight +
+		    factor shard. In this case,  w_ij = unobserved_weight +
 		                                        row_weights[i] * col_weights[j].
 		    - If this is a single non-negative real number, this value is used for
-		    all row weights and w_ij = unobserved_weight + row_weights *
+		    all row weights and \(w_ij\) = unobserved_weight + row_weights *
 		                               col_weights[j].
 		    Note that it is allowed to have row_weights as a list while col_weights
 		    a single number or vice versa.
 		  col_weights: See row_weights.
 		  use_factors_weights_cache: When True, the factors and weights will be
-		    cached on the workers before the updates start. Defaults to True.
+		    cached on the workers before the updates start. Defaults to True. Note
+		    that the weights cache is initialized through `worker_init`, and the
+		    row/col factors cache is initialized through
+		    `initialize_{col/row}_update_op`. In the case where the weights are
+		    computed outside and set before the training iterations start, it is
+		    important to ensure the `worker_init` op is run afterwards for the
+		    weights cache to take effect.
 		  use_gramian_cache: When True, the Gramians will be cached on the workers
 		    before the updates start. Defaults to True.
+		  use_scoped_vars: When True, the factor and weight vars will also be nested
+		    in a tf.name_scope.
 	**/
 	@:native("__init__")
-	public function ___init__(input_rows:Dynamic, input_cols:Dynamic, n_components:Dynamic, ?unobserved_weight:Dynamic, ?regularization:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache:Dynamic, ?use_gramian_cache:Dynamic):Dynamic;
+	public function ___init__(input_rows:Dynamic, input_cols:Dynamic, n_components:Dynamic, ?unobserved_weight:Dynamic, ?regularization:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache:Dynamic, ?use_gramian_cache:Dynamic, ?use_scoped_vars:Dynamic):Dynamic;
 	/**
 		Creates model for WALS matrix factorization.
 		
@@ -100,27 +108,35 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		    in the form of [[w_0, w_1, ...], [w_k, ... ], [...]], with the number of
 		    inner lists matching the number of row factor shards and the elements in
 		    each inner list are the weights for the rows of the corresponding row
-		    factor shard. In this case,  w_ij = unonbserved_weight +
+		    factor shard. In this case,  w_ij = unobserved_weight +
 		                                        row_weights[i] * col_weights[j].
 		    - If this is a single non-negative real number, this value is used for
-		    all row weights and w_ij = unobserved_weight + row_weights *
+		    all row weights and \(w_ij\) = unobserved_weight + row_weights *
 		                               col_weights[j].
 		    Note that it is allowed to have row_weights as a list while col_weights
 		    a single number or vice versa.
 		  col_weights: See row_weights.
 		  use_factors_weights_cache: When True, the factors and weights will be
-		    cached on the workers before the updates start. Defaults to True.
+		    cached on the workers before the updates start. Defaults to True. Note
+		    that the weights cache is initialized through `worker_init`, and the
+		    row/col factors cache is initialized through
+		    `initialize_{col/row}_update_op`. In the case where the weights are
+		    computed outside and set before the training iterations start, it is
+		    important to ensure the `worker_init` op is run afterwards for the
+		    weights cache to take effect.
 		  use_gramian_cache: When True, the Gramians will be cached on the workers
 		    before the updates start. Defaults to True.
+		  use_scoped_vars: When True, the factor and weight vars will also be nested
+		    in a tf.name_scope.
 	**/
-	public function new(input_rows:Dynamic, input_cols:Dynamic, n_components:Dynamic, ?unobserved_weight:Dynamic, ?regularization:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache:Dynamic, ?use_gramian_cache:Dynamic):Void;
+	public function new(input_rows:Dynamic, input_cols:Dynamic, n_components:Dynamic, ?unobserved_weight:Dynamic, ?regularization:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache:Dynamic, ?use_gramian_cache:Dynamic, ?use_scoped_vars:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -171,7 +187,7 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -260,7 +276,7 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		  gramian: Variable storing the gramian calculated from the factors.
 		
 		Returns:
-		  A op that updates the gramian with the calcuated value from the factors.
+		  An op that updates the gramian with the calculated value from the factors.
 	**/
 	public function _prepare_gramian(factors:Dynamic, gramian:Dynamic):Dynamic;
 	/**
@@ -282,12 +298,18 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		    of columns to be updated/projected.
 		
 		Returns:
-		  A tuple consisting of the following three elements:
+		  A tuple consisting of the following elements:
 		  new_values: New values for the row/column factors.
 		  update_op: An op that assigns the newly computed values to the row/column
 		    factors.
-		  loss: A tensor (scalar) that contains the normalized minibatch loss,
-		    corresponding to sp_input.
+		  unregularized_loss: A tensor (scalar) that contains the normalized
+		    minibatch loss corresponding to sp_input, without the regularization
+		    term. Add the regularization term below to yield the loss.
+		  regularization: A tensor (scalar) that contains the normalized
+		    regularization term for the minibatch loss corresponding to sp_input.
+		  sum_weights: The sum of the weights corresponding to sp_input. This
+		    can be used with unregularized loss to calculate the root weighted
+		    squared error.
 	**/
 	public function _process_input_helper(update_row_factors:Dynamic, ?sp_input:Dynamic, ?transpose_input:Dynamic, ?row_weights:Dynamic):Dynamic;
 	/**
@@ -307,6 +329,9 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		
 		Must be run before initialize_col_update_op and should only be run by one
 		trainer (usually the chief) when doing distributed training.
+		
+		Returns:
+		  Op to form the gramian.
 	**/
 	public var col_update_prep_gramian_op : Dynamic;
 	/**
@@ -328,8 +353,8 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 	/**
 		Projects the column factors.
 		
-		This computes the column embedding v_j for an observed column a_j by solving
-		one iteration of the update equations.
+		This computes the column embedding \(v_j\) for an observed column
+		\(a_j\) by solving one iteration of the update equations.
 		
 		Args:
 		  sp_input: A SparseTensor representing a set of columns. Please note that
@@ -351,8 +376,8 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 	/**
 		Projects the row factors.
 		
-		This computes the row embedding u_i for an observed row a_i by solving
-		one iteration of the update equations.
+		This computes the row embedding \(u_i\) for an observed row \(a_i\) by
+		solving one iteration of the update equations.
 		
 		Args:
 		  sp_input: A SparseTensor representing a set of rows. Please note that the
@@ -380,6 +405,9 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		
 		Must be run before initialize_row_update_op and should only be run by one
 		trainer (usually the chief) when doing distributed training.
+		
+		Returns:
+		  Op to form the gramian.
 	**/
 	public var row_update_prep_gramian_op : Dynamic;
 	/**
@@ -401,16 +429,24 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		    columns corresponding to the transposed input are updated.
 		
 		Returns:
-		  A tuple consisting of the following two elements:
+		  A tuple consisting of the following elements:
 		  new_values: New values for the column factors.
 		  update_op: An op that assigns the newly computed values to the column
 		    factors.
-		  loss: A tensor (scalar) that contains the normalized minibatch loss,
-		    corresponding to sp_input.
-		    If sp_input contains the columns {A_{:, j}, j \in J}, and the input
-		    matrix A has m total columns, then loss is:
-		    (\|\sqrt W_J \odot (A_J - U V_J^T)\|_F^2 + \lambda \|V_J\|_F^2) *
-		    m / |J| + \lambda \|U\|_F^2.
+		  unregularized_loss: A tensor (scalar) that contains the normalized
+		    minibatch loss corresponding to sp_input, without the regularization
+		    term. If sp_input contains the columns \\({A_{:, j}, j \in J}\\), and
+		    the input matrix A has m total columns, then the unregularized loss is:
+		    \\(\|\sqrt W_J \odot (A_J - U V_J^T)\|_F^2 * m / |I|\\)
+		    The total loss is unregularized_loss + regularization.
+		  regularization: A tensor (scalar) that contains the normalized
+		    regularization term for the minibatch loss corresponding to sp_input.
+		    If sp_input contains the columns \\({A_{:, j}, j \in J}\\), and the
+		    input matrix A has m total columns, then the regularization term is:
+		    \\(\lambda \|V_J\|_F^2) * m / |J| + \lambda \|U\|_F^2\\).
+		  sum_weights: The sum of the weights W_J corresponding to sp_input,
+		    normalized by a factor of \\(m / |J|\\). The root weighted squared
+		    error is: \sqrt(unregularized_loss / sum_weights).
 	**/
 	public function update_col_factors(?sp_input:Dynamic, ?transpose_input:Dynamic):Dynamic;
 	/**
@@ -428,16 +464,30 @@ package tensorflow.contrib.factorization.python.ops.factorization_ops;
 		  new_values: New values for the row factors.
 		  update_op: An op that assigns the newly computed values to the row
 		    factors.
-		  loss: A tensor (scalar) that contains the normalized minibatch loss,
-		    corresponding to sp_input.
-		    if sp_input contains the rows {A_{i, :}, i \in I}, and the input matrix
-		    A has n total rows, then loss is:
-		    (\|\sqrt W_I \odot (A_I - U_I V^T)\|_F^2 + \lambda \|U_I\|_F^2) *
-		    n / |I| + \lambda \|V\|_F^2.
+		  unregularized_loss: A tensor (scalar) that contains the normalized
+		    minibatch loss corresponding to sp_input, without the regularization
+		    term. If sp_input contains the rows \\({A_{i, :}, i \in I}\\), and the
+		    input matrix A has n total rows, then the unregularized loss is:
+		    \\(\|\sqrt W_I \odot (A_I - U_I V^T)\|_F^2 * n / |I|\\)
+		    The total loss is unregularized_loss + regularization.
+		  regularization: A tensor (scalar) that contains the normalized
+		    regularization term for the minibatch loss corresponding to sp_input.
+		    If sp_input contains the rows \\({A_{i, :}, i \in I}\\), and the input
+		    matrix A has n total rows, then the regularization term is:
+		    \\(\lambda \|U_I\|_F^2) * n / |I| + \lambda \|V\|_F^2\\).
+		  sum_weights: The sum of the weights W_I corresponding to sp_input,
+		    normalized by a factor of \\(n / |I|\\). The root weighted squared
+		    error is: \sqrt(unregularized_loss / sum_weights).
 	**/
 	public function update_row_factors(?sp_input:Dynamic, ?transpose_input:Dynamic):Dynamic;
 	/**
 		Op to initialize worker state once before starting any updates.
+		
+		Note that specifically this initializes the cache of the row and column
+		weights on workers when `use_factors_weights_cache` is True. In this case,
+		if these weights are being calculated and reset after the object is created,
+		it is important to ensure this ops is run afterwards so the cache reflects
+		the correct values.
 	**/
 	public var worker_init : Dynamic;
 }

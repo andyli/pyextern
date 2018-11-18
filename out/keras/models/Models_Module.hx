@@ -5,7 +5,7 @@ package keras.models;
 		`Input()` is used to instantiate a Keras tensor.
 		
 		A Keras tensor is a tensor object from the underlying backend
-		(Theano or TensorFlow), which we augment with certain
+		(Theano, TensorFlow or CNTK), which we augment with certain
 		attributes that allow us to build a Keras model
 		just by knowing the inputs and outputs of the model.
 		
@@ -14,9 +14,9 @@ package keras.models;
 		`model = Model(input=[a, b], output=c)`
 		
 		The added Keras attributes are:
-		    ._keras_shape: Integer shape tuple propagated
+		    `_keras_shape`: Integer shape tuple propagated
 		        via Keras-side shape inference.
-		    ._keras_history: Last layer applied to the tensor.
+		    `_keras_history`: Last layer applied to the tensor.
 		        the entire layer graph is retrievable from that layer,
 		        recursively.
 		
@@ -44,12 +44,12 @@ package keras.models;
 		
 		# Example
 		
-		    ```python
-		    # this is a logistic regression in Keras
-		    x = Input(shape=(32,))
-		    y = Dense(16, activation='softmax')(x)
-		    model = Model(x, y)
-		    ```
+		```python
+		# this is a logistic regression in Keras
+		x = Input(shape=(32,))
+		y = Dense(16, activation='softmax')(x)
+		model = Model(x, y)
+		```
 	**/
 	static public function Input(?shape:Dynamic, ?batch_shape:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?sparse:Dynamic, ?tensor:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -60,22 +60,101 @@ package keras.models;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
-		Produces a prompt asking about overwriting a file.
+		Clone a functional `Model` instance.
+		
+		Model cloning is similar to calling a model on new inputs,
+		except that it creates new layers (and thus new weights) instead
+		of sharing the weights of the existing layers.
 		
 		# Arguments
-		    filepath: the path to the file to be overwritten.
+		    model: Instance of `Model`.
+		    input_tensors: optional list of input tensors
+		        to build the model upon. If not provided,
+		        placeholders will be created.
 		
 		# Returns
-		    True if we can proceed with overwrite, False otherwise.
+		    An instance of `Model` reproducing the behavior
+		    of the original model, on top of new inputs tensors,
+		    using newly instantiated weights.
+		
+		# Raises
+		    ValueError: in case of invalid `model` argument value.
 	**/
-	static public function ask_to_proceed_with_overwrite(filepath:Dynamic):Dynamic;
+	static public function _clone_functional_model(model:Dynamic, ?input_tensors:Dynamic):Dynamic;
+	/**
+		Clone a `Sequential` model instance.
+		
+		Model cloning is similar to calling a model on new inputs,
+		except that it creates new layers (and thus new weights) instead
+		of sharing the weights of the existing layers.
+		
+		# Arguments
+		    model: Instance of `Sequential`.
+		    input_tensors: optional list of input tensors
+		        to build the model upon. If not provided,
+		        placeholders will be created.
+		
+		# Returns
+		    An instance of `Sequential` reproducing the behavior
+		    of the original model, on top of new inputs tensors,
+		    using newly instantiated weights.
+		
+		# Raises
+		    ValueError: in case of invalid `model` argument value.
+	**/
+	static public function _clone_sequential_model(model:Dynamic, ?input_tensors:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
+	/**
+		Clone any `Model` instance.
+		
+		Model cloning is similar to calling a model on new inputs,
+		except that it creates new layers (and thus new weights) instead
+		of sharing the weights of the existing layers.
+		
+		# Arguments
+		    model: Instance of `Model`
+		        (could be a functional model or a Sequential model).
+		    input_tensors: optional list of input tensors
+		        to build the model upon. If not provided,
+		        placeholders will be created.
+		
+		# Returns
+		    An instance of `Model` reproducing the behavior
+		    of the original model, on top of new inputs tensors,
+		    using newly instantiated weights.
+		
+		# Raises
+		    ValueError: in case of invalid `model` argument value.
+	**/
+	static public function clone_model(model:Dynamic, ?input_tensors:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	/**
+		Checks if a callable accepts a given keyword argument.
+		
+		For Python 2, checks if there is an argument with the given name.
+		
+		For Python 3, checks if there is an argument with the given name, and
+		also whether this argument can be called with a keyword (i.e. if it is
+		not a positional-only argument).
+		
+		# Arguments
+		    fn: Callable to inspect.
+		    name: Check if `fn` can be called with `name` as a keyword argument.
+		    accept_all: What to return if there is no parameter called `name`
+		                but the function accepts a `**kwargs` argument.
+		
+		# Returns
+		    bool, whether `fn` accepts a `name` keyword argument.
+	**/
+	static public function has_arg(fn:Dynamic, name:Dynamic, ?accept_all:Dynamic):Dynamic;
 	/**
 		Loads a model saved via `save_model`.
 		
 		# Arguments
-		    filepath: String, path to the saved model.
+		    filepath: one of the following:
+		        - string, path to the saved model, or
+		        - h5py.File or h5py.Group object from which to load the model
 		    custom_objects: Optional dictionary mapping names
 		        (strings) to custom classes or functions to be
 		        considered during deserialization.
@@ -141,6 +220,12 @@ package keras.models;
 	/**
 		Save a model to a HDF5 file.
 		
+		Note: Please also see
+		[How can I install HDF5 or h5py to save my models in Keras?](
+		    /getting-started/faq/
+		    #how-can-i-install-HDF5-or-h5py-to-save-my-models-in-Keras)
+		in the FAQ for instructions on how to install `h5py`.
+		
 		The saved model contains:
 		    - the model's configuration (topology)
 		    - the model's weights
@@ -152,7 +237,9 @@ package keras.models;
 		
 		# Arguments
 		    model: Keras model instance to be saved.
-		    filepath: String, path where to save the model.
+		    filepath: one of the following:
+		        - string, path where to save the model, or
+		        - h5py.File or h5py.Group object where to save the model
 		    overwrite: Whether we should overwrite any existing
 		        model at the target location, or instead
 		        ask the user with a manual prompt.
@@ -162,4 +249,21 @@ package keras.models;
 		    ImportError: if h5py is not available.
 	**/
 	static public function save_model(model:Dynamic, filepath:Dynamic, ?overwrite:Dynamic, ?include_optimizer:Dynamic):Dynamic;
+	/**
+		Normalizes a list/tensor into a list.
+		
+		If a tensor is passed, we return
+		a list of size 1 containing the tensor.
+		
+		# Arguments
+		    x: target object to be normalized.
+		    allow_tuple: If False and x is a tuple,
+		        it will be converted into a list
+		        with a single element (the tuple).
+		        Else converts the tuple to a list.
+		
+		# Returns
+		    A list.
+	**/
+	static public function to_list(x:Dynamic, ?allow_tuple:Dynamic):Dynamic;
 }

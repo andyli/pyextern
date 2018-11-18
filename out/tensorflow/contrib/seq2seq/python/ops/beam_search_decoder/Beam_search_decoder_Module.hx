@@ -27,12 +27,25 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		  beam_width: Python int.  The size of the beams.
 		  end_token: The int32 end token.
 		  length_penalty_weight: Float weight to penalize length. Disabled with 0.0.
+		  coverage_penalty_weight: Float weight to penalize the coverage of source
+		    sentence. Disabled with 0.0.
 		
 		Returns:
 		  A new beam state.
 	**/
-	static public function _beam_search_step(time:Dynamic, logits:Dynamic, next_cell_state:Dynamic, beam_state:Dynamic, batch_size:Dynamic, beam_width:Dynamic, end_token:Dynamic, length_penalty_weight:Dynamic):Dynamic;
+	static public function _beam_search_step(time:Dynamic, logits:Dynamic, next_cell_state:Dynamic, beam_state:Dynamic, batch_size:Dynamic, beam_width:Dynamic, end_token:Dynamic, length_penalty_weight:Dynamic, coverage_penalty_weight:Dynamic):Dynamic;
+	/**
+		Returns an Assert operation checking that the elements of the stacked
+		TensorArray can be reshaped to [batch_size, beam_size, -1]. At this point,
+		the TensorArray elements have a known rank of at least 1.
+	**/
+	static public function _check_batch_beam(t:Dynamic, batch_size:Dynamic, beam_width:Dynamic):Dynamic;
 	static public function _check_maybe(t:Dynamic):Dynamic;
+	/**
+		Raises an exception if dimensions are known statically and can not be
+		reshaped to [batch_size, beam_size, -1].
+	**/
+	static public function _check_static_batch_beam_maybe(shape:Dynamic, batch_size:Dynamic, beam_width:Dynamic):Dynamic;
 	/**
 		Calculates scores for beam search hypotheses.
 		
@@ -41,21 +54,39 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		    `[batch_size, beam_width, vocab_size]`.
 		  sequence_lengths: The array of sequence lengths.
 		  length_penalty_weight: Float weight to penalize length. Disabled with 0.0.
+		  coverage_penalty_weight: Float weight to penalize the coverage of source
+		    sentence. Disabled with 0.0.
+		  finished: A boolean tensor of shape `[batch_size, beam_width]` that
+		    specifies which elements in the beam are finished already.
+		  accumulated_attention_probs: Accumulated attention probabilities up to the
+		    current time step, with shape `[batch_size, beam_width, max_time]` if
+		    coverage_penalty_weight is not 0.0.
 		
 		Returns:
-		  The scores normalized by the length_penalty.
+		  The scores normalized by the length_penalty and coverage_penalty.
+		
+		Raises:
+		  ValueError: accumulated_attention_probs is None when coverage penalty is
+		    enabled.
 	**/
-	static public function _get_scores(log_probs:Dynamic, sequence_lengths:Dynamic, length_penalty_weight:Dynamic):Dynamic;
+	static public function _get_scores(log_probs:Dynamic, sequence_lengths:Dynamic, length_penalty_weight:Dynamic, coverage_penalty_weight:Dynamic, finished:Dynamic, accumulated_attention_probs:Dynamic):Dynamic;
 	/**
 		Calculates the length penalty. See https://arxiv.org/abs/1609.08144.
 		
+		Returns the length penalty tensor:
+		```
+		[(5+sequence_lengths)/6]**penalty_factor
+		```
+		where all operations are performed element-wise.
+		
 		Args:
-		  sequence_lengths: The sequence length of all hypotheses, a tensor
-		    of shape [beam_size, vocab_size].
+		  sequence_lengths: `Tensor`, the sequence lengths of each hypotheses.
 		  penalty_factor: A scalar that weights the length penalty.
 		
 		Returns:
-		  The length penalty factor, a tensor fo shape [beam_size].
+		  If the penalty is `0`, returns the scalar `1.0`.  Otherwise returns
+		  the length penalty factor, a tensor with the same shape as
+		  `sequence_lengths`.
 	**/
 	static public function _length_penalty(sequence_lengths:Dynamic, penalty_factor:Dynamic):Dynamic;
 	/**
@@ -65,12 +96,11 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		unfinished beams remain unchanged.
 		
 		Args:
-		  probs: Log probabiltiies of shape `[batch_size, beam_width, vocab_size]`
+		  probs: Log probabilities of shape `[batch_size, beam_width, vocab_size]`
 		  eos_token: An int32 id corresponding to the EOS token to allocate
 		    probability to.
 		  finished: A boolean tensor of shape `[batch_size, beam_width]` that
-		    specifies which
-		    elements in the beam are finished already.
+		    specifies which elements in the beam are finished already.
 		
 		Returns:
 		  A tensor of shape `[batch_size, beam_width, vocab_size]`, where unfinished
@@ -120,17 +150,63 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		    There, we want to preserve the attention_size elements, so gather_shape is
 		    [batch_size * beam_width, -1]. Then, upon reshape, we still have the
 		    attention_size as desired.
+		  name: The tensor name for set of operations. By default this is
+		    'tensor_gather_helper'. The final output is named 'output'.
 		
 		Returns:
 		  output: Gathered tensor of shape tf.shape(gather_from)[:1+len(gather_shape)]
 	**/
-	static public function _tensor_gather_helper(gather_indices:Dynamic, gather_from:Dynamic, batch_size:Dynamic, range_size:Dynamic, gather_shape:Dynamic):Dynamic;
+	static public function _tensor_gather_helper(gather_indices:Dynamic, gather_from:Dynamic, batch_size:Dynamic, range_size:Dynamic, gather_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Core single-tensor implementation of tile_batch.
 	**/
 	static public function _tile_batch(t:Dynamic, multiplier:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Calculates the average attention probabilities.
+		
+		Args:
+		  attention_state: An instance of `AttentionWrapperState`.
+		
+		Returns:
+		  The attention probabilities in the given AttentionWrapperState.
+		  If there're multiple attention mechanisms, return the average value from
+		  all attention mechanisms.
+	**/
+	static public function attention_probs_from_attn_state(attention_state:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Calculates the full beams for `TensorArray`s.
+		
+		Args:
+		  t: A stacked `TensorArray` of size `max_time` that contains `Tensor`s of
+		    shape `[batch_size, beam_width, s]` or `[batch_size * beam_width, s]`
+		    where `s` is the depth shape.
+		  parent_ids: The parent ids of shape `[max_time, batch_size, beam_width]`.
+		  sequence_length: The sequence length of shape `[batch_size, beam_width]`.
+		
+		Returns:
+		  A `Tensor` which is a stacked `TensorArray` of the same size and type as
+		  `t` and where beams are sorted in each `Tensor` according to `parent_ids`.
+	**/
+	static public function gather_tree_from_array(t:Dynamic, parent_ids:Dynamic, sequence_length:Dynamic):Dynamic;
+	/**
+		Get attention probabilities from the cell state.
+		
+		Args:
+		  next_cell_state: The next state from the cell, e.g. an instance of
+		    AttentionWrapperState if the cell is attentional.
+		  coverage_penalty_weight: Float weight to penalize the coverage of source
+		    sentence. Disabled with 0.0.
+		
+		Returns:
+		  The attention probabilities with shape `[batch_size, beam_width, max_time]`
+		  if coverage penalty is enabled. Otherwise, returns None.
+		
+		Raises:
+		  ValueError: If no cell is attentional but coverage penalty is enabled.
+	**/
+	static public function get_attention_probs(next_cell_state:Dynamic, coverage_penalty_weight:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Tile the batch dimension of a (possibly nested structure of) tensor(s) t.

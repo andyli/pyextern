@@ -21,6 +21,7 @@ package theano.compile.profiling;
 	static public function _atexit_print_fn():Dynamic;
 	static public var _atexit_print_list : Dynamic;
 	static public var _atexit_registered : Dynamic;
+	static public var _profiler_printers : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var config : Dynamic;
 	static public var division : Dynamic;
@@ -39,6 +40,7 @@ package theano.compile.profiling;
 		       -- on linker
 	**/
 	static public function print_global_stats():Dynamic;
+	static public function register_profiler_printer(fct:Dynamic):Dynamic;
 	static public var theano_imported_time : Dynamic;
 	static public var total_fct_exec_time : Dynamic;
 	static public var total_graph_opt_time : Dynamic;

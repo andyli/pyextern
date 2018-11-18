@@ -124,7 +124,6 @@ package scipy.stats.morestats;
 	static public function _calc_uniform_order_statistic_medians(n:Dynamic):Dynamic;
 	static public function _circfuncs_common(samples:Dynamic, high:Dynamic, low:Dynamic):Dynamic;
 	static public function _contains_nan(a:Dynamic, ?nan_policy:Dynamic):Dynamic;
-	static public function _hermnorm(N:Dynamic):Dynamic;
 	/**
 		Parse `dist` keyword.
 		
@@ -170,8 +169,15 @@ package scipy.stats.morestats;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The minimum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
 		
 		Returns
 		-------
@@ -218,14 +224,29 @@ package scipy.stats.morestats;
 		>>> np.amax(a, axis=1)   # Maxima along the second axis
 		array([1, 3])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amax(b)
 		nan
 		>>> np.nanmax(b)
 		4.0
+		
+		You can use an initial value to compute the maximum of an empty slice, or
+		to initialize it to a different value:
+		
+		>>> np.max([[-50], [10]], axis=-1, initial=0)
+		array([ 0, 10])
+		
+		Notice that the initial value is used as one of the elements for which the
+		maximum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		>>> np.max([5], initial=6)
+		6
+		>>> max([5], default=6)
+		5
 	**/
-	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Return the minimum of an array or minimum along an axis.
 		
@@ -254,8 +275,14 @@ package scipy.stats.morestats;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The maximum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -302,19 +329,32 @@ package scipy.stats.morestats;
 		>>> np.amin(a, axis=1)   # Minima along the second axis
 		array([0, 2])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amin(b)
 		nan
 		>>> np.nanmin(b)
 		0.0
+		
+		>>> np.min([[-50], [10]], axis=-1, initial=0)
+		array([-50,   0])
+		
+		Notice that the initial value is used as one of the elements for which the
+		minimum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		Notice that this isn't the same as Python's ``default`` argument.
+		
+		>>> np.min([6], initial=5)
+		5
+		>>> min([6], default=5)
+		6
 	**/
-	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Anderson-Darling test for data coming from a particular distribution
 		
-		The Anderson-Darling test is a modification of the Kolmogorov-
-		Smirnov test `kstest` for the null hypothesis that a sample is
+		The Anderson-Darling tests the null hypothesis that a sample is
 		drawn from a population that follows a particular distribution.
 		For the Anderson-Darling test, the critical values depend on
 		which distribution is being tested against.  This function works
@@ -342,6 +382,10 @@ package scipy.stats.morestats;
 		    differing set of significance levels depending on the
 		    distribution that is being tested against.
 		
+		See Also
+		--------
+		kstest : The Kolmogorov-Smirnov test for goodness-of-fit.
+		
 		Notes
 		-----
 		Critical values provided are for the following significance levels:
@@ -353,9 +397,10 @@ package scipy.stats.morestats;
 		Gumbel
 		    25%, 10%, 5%, 2.5%, 1%
 		
-		If A2 is larger than these critical values then for the corresponding
-		significance level, the null hypothesis that the data come from the
-		chosen distribution can be rejected.
+		If the returned statistic is larger than these critical values then
+		for the corresponding significance level, the null hypothesis that
+		the data come from the chosen distribution can be rejected.
+		The returned statistic is referred to as 'A2' in the references.
 		
 		References
 		----------
@@ -536,7 +581,7 @@ package scipy.stats.morestats;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -562,7 +607,7 @@ package scipy.stats.morestats;
 		True
 		
 		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.any([-1, 0, 5])
 		True
@@ -573,7 +618,7 @@ package scipy.stats.morestats;
 		>>> o=np.array([False])
 		>>> z=np.any([-1, 4, 5], out=o)
 		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
+		(array([ True]), array([ True]))
 		>>> # Check now that z is a reference to o
 		>>> z is o
 		True
@@ -607,7 +652,8 @@ package scipy.stats.morestats;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -680,6 +726,7 @@ package scipy.stats.morestats;
 		-------
 		angle : ndarray
 		    Array of angles in radians, in the range ``[-pi, pi]``.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -846,7 +893,15 @@ package scipy.stats.morestats;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -956,9 +1011,9 @@ package scipy.stats.morestats;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -1107,11 +1162,11 @@ package scipy.stats.morestats;
 		>>> data = [6, 9, 12, 7, 8, 8, 13]
 		>>> mean, var, std = stats.bayes_mvs(data)
 		>>> mean
-		Mean(statistic=9.0, minmax=(7.1036502226125329, 10.896349777387467))
+		Mean(statistic=9.0, minmax=(7.103650222612533, 10.896349777387467))
 		>>> var
 		Variance(statistic=10.0, minmax=(3.176724206..., 24.45910382...))
 		>>> std
-		Std_dev(statistic=2.9724954732045084, minmax=(1.7823367265645143, 4.9456146050146295))
+		Std_dev(statistic=2.9724954732045084, minmax=(1.7823367265645143, 4.945614605014631))
 		
 		Now we generate some normally distributed random data, and get estimates of
 		mean and standard deviation with 95% confidence intervals for those
@@ -1124,7 +1179,7 @@ package scipy.stats.morestats;
 		>>> import matplotlib.pyplot as plt
 		>>> fig = plt.figure()
 		>>> ax = fig.add_subplot(111)
-		>>> ax.hist(data, bins=100, normed=True, label='Histogram of data')
+		>>> ax.hist(data, bins=100, density=True, label='Histogram of data')
 		>>> ax.vlines(res_mean.statistic, 0, 0.5, colors='r', label='Estimated mean')
 		>>> ax.axvspan(res_mean.minmax[0],res_mean.minmax[1], facecolor='r',
 		...            alpha=0.2, label=r'Estimated mean (95% limits)')
@@ -1493,6 +1548,7 @@ package scipy.stats.morestats;
 		-------
 		y : ndarray or scalar
 		    The ceiling of each element in `x`, with `float` dtype.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1555,8 +1611,8 @@ package scipy.stats.morestats;
 		Notes
 		-----
 		An often quoted guideline for the validity of this calculation is that
-		the test should be used only if the observed and expected frequency in
-		each cell is at least 5.
+		the test should be used only if the observed and expected frequencies
+		in each cell are at least 5.
 		
 		This is a test for the independence of different categories of a
 		population. The test is only meaningful when the dimension of
@@ -1655,6 +1711,16 @@ package scipy.stats.morestats;
 		-------
 		circmean : float
 		    Circular mean.
+		
+		Examples
+		--------
+		>>> from scipy.stats import circmean
+		>>> circmean([0.1, 2*np.pi+0.2, 6*np.pi+0.3])
+		0.2
+		
+		>>> from scipy.stats import circmean
+		>>> circmean([0.2, 1.4, 2.6], high = 1, low = 0)
+		0.4
 	**/
 	static public function circmean(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
@@ -1683,6 +1749,12 @@ package scipy.stats.morestats;
 		-----
 		This uses a definition of circular standard deviation that in the limit of
 		small angles returns a number close to the 'linear' standard deviation.
+		
+		Examples
+		--------
+		>>> from scipy.stats import circstd
+		>>> circstd([0, 0.1*np.pi/2, 0.001*np.pi, 0.03*np.pi/2])
+		0.063564063306
 	**/
 	static public function circstd(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
@@ -1709,6 +1781,12 @@ package scipy.stats.morestats;
 		-----
 		This uses a definition of circular variance that in the limit of small
 		angles returns a number close to the 'linear' variance.
+		
+		Examples
+		--------
+		>>> from scipy.stats import circvar
+		>>> circvar([0, 2*np.pi/3, 5*np.pi/3])
+		2.19722457734
 	**/
 	static public function circvar(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
@@ -1795,6 +1873,7 @@ package scipy.stats.morestats;
 		-------
 		y : ndarray
 		    The corresponding cosine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -1894,8 +1973,9 @@ package scipy.stats.morestats;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1970,10 +2050,10 @@ package scipy.stats.morestats;
 		--------
 		>>> from scipy import stats
 		>>> stats.find_repeats([2, 1, 2, 3, 2, 2, 5])
-		RepeatedResults(values=array([ 2.]), counts=array([4]))
+		RepeatedResults(values=array([2.]), counts=array([4]))
 		
 		>>> stats.find_repeats([[10, 20, 1, 2], [5, 5, 4, 4]])
-		RepeatedResults(values=array([ 4.,  5.]), counts=array([2, 2]))
+		RepeatedResults(values=array([4.,  5.]), counts=array([2, 2]))
 	**/
 	static public function find_repeats(arr:Dynamic):Dynamic;
 	/**
@@ -2020,7 +2100,11 @@ package scipy.stats.morestats;
 		
 		References
 		----------
-		.. [1] http://www.stat.psu.edu/~bgl/center/tr/TR993.ps
+		.. [1] Park, C. and Lindsay, B. G. (1999). Robust Scale Estimation and
+		       Hypothesis Testing based on Quadratic Inference Function. Technical
+		       Report #99-03, Center for Likelihood Studies, Pennsylvania State
+		       University.
+		       http://cecas.clemson.edu/~cspark/cv/paper/qif/draftqif2.pdf
 		
 		.. [2] Fligner, M.A. and Killeen, T.J. (1976). Distribution-free two-sample
 		       tests for scale. 'Journal of the American Statistical Association.'
@@ -2065,6 +2149,7 @@ package scipy.stats.morestats;
 		-------
 		y : ndarray or scalar
 		    The floor of each element in `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -2113,6 +2198,7 @@ package scipy.stats.morestats;
 		-------
 		z : ndarray
 		    The hypotenuse of the triangle(s).
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Examples
 		--------
@@ -2149,6 +2235,17 @@ package scipy.stats.morestats;
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
+		True
+		>>> np.isscalar('numpy')
+		True
+		
+		NumPy supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> isscalar(Fraction(5, 17))
+		True
+		>>> from numbers import Number
+		>>> isscalar(Number())
 		True
 	**/
 	static public function isscalar(num:Dynamic):Bool;
@@ -2331,6 +2428,7 @@ package scipy.stats.morestats;
 		-------
 		y : ndarray
 		    The natural logarithm of `x`, element-wise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -2644,11 +2742,6 @@ package scipy.stats.morestats;
 		Point(x=100, y=22)
 	**/
 	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
-	/**
-		`pdf_fromgamma` is deprecated!
-		scipy.stats.pdf_fromgamma is deprecated in scipy 0.16.0 in favour of statsmodels.distributions.ExpandedNormal.
-	**/
-	static public function pdf_fromgamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var pi : Dynamic;
 	/**
 		Calculate the shape parameter that maximizes the PPCC
@@ -2946,10 +3039,9 @@ package scipy.stats.morestats;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -3013,33 +3105,6 @@ package scipy.stats.morestats;
 	**/
 	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Signals to nose that this function is or is not a test.
-		
-		Parameters
-		----------
-		tf : bool
-		    If True, specifies that the decorated callable is a test.
-		    If False, specifies that the decorated callable is not a test.
-		    Default is True.
-		
-		Notes
-		-----
-		This decorator can't use the nose namespace, because it can be
-		called from a non-test module. See also ``istest`` and ``nottest`` in
-		``nose.tools``.
-		
-		Examples
-		--------
-		`setastest` can be used in the following way::
-		
-		  from numpy.testing.decorators import setastest
-		
-		  @setastest(False)
-		  def func_with_test_in_name(arg1, arg2):
-		      pass
-	**/
-	static public function setastest(?tf:Dynamic):Dynamic;
-	/**
 		Perform the Shapiro-Wilk test for normality.
 		
 		The Shapiro-Wilk test tests the null hypothesis that the
@@ -3049,13 +3114,6 @@ package scipy.stats.morestats;
 		----------
 		x : array_like
 		    Array of sample data.
-		a : array_like, optional
-		    Array of internal parameters used in the calculation.  If these
-		    are not given, they will be computed internally.  If x has length
-		    n, then a must have length n/2.
-		reta : bool, optional
-		    Whether or not to return the internally computed a values.  The
-		    default is False.
 		
 		Returns
 		-------
@@ -3063,9 +3121,6 @@ package scipy.stats.morestats;
 		    The test statistic.
 		p-value : float
 		    The p-value for the hypothesis test.
-		a : array_like, optional
-		    If `reta` is True, then these are the internally computed "a"
-		    values that may be passed into this function on future calls.
 		
 		See Also
 		--------
@@ -3099,7 +3154,7 @@ package scipy.stats.morestats;
 		>>> stats.shapiro(x)
 		(0.9772805571556091, 0.08144091814756393)
 	**/
-	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Float;
+	static public function shapiro(x:Dynamic):Float;
 	/**
 		sin(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -3125,6 +3180,7 @@ package scipy.stats.morestats;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -3177,7 +3233,7 @@ package scipy.stats.morestats;
 		axis : int or None, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm. Default is 'quicksort'.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -3207,13 +3263,13 @@ package scipy.stats.morestats;
 		order. The three available algorithms have the following
 		properties:
 		
-		=========== ======= ============= ============ =======
-		   kind      speed   worst case    work space  stable
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
+		   kind      speed   worst case    work space   stable
+		=========== ======= ============= ============ ========
 		'quicksort'    1     O(n^2)            0          no
 		'mergesort'    2     O(n*log(n))      ~n/2        yes
 		'heapsort'     3     O(n*log(n))       0          no
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
 		
 		All the sort algorithms make temporary copies of the data when
 		sorting along any but the last axis.  Consequently, sorting along
@@ -3241,6 +3297,10 @@ package scipy.stats.morestats;
 		quicksort has been changed to an introsort which will switch
 		heapsort when it does not make enough progress. This makes its
 		worst case O(n*log(n)).
+		
+		'stable' automatically choses the best stable sorting algorithm
+		for the data type being sorted. It is currently mapped to
+		merge sort.
 		
 		Examples
 		--------
@@ -3277,7 +3337,7 @@ package scipy.stats.morestats;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -3304,6 +3364,7 @@ package scipy.stats.morestats;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -3334,10 +3395,11 @@ package scipy.stats.morestats;
 		Find the unique elements of an array.
 		
 		Returns the sorted unique elements of an array. There are three optional
-		outputs in addition to the unique elements: the indices of the input array
-		that give the unique values, the indices of the unique array that
-		reconstruct the input array, and the number of times each unique value
-		comes up in the input array.
+		outputs in addition to the unique elements:
+		
+		* the indices of the input array that give the unique values
+		* the indices of the unique array that reconstruct the input array
+		* the number of times each unique value comes up in the input array
 		
 		Parameters
 		----------
@@ -3353,16 +3415,18 @@ package scipy.stats.morestats;
 		return_counts : bool, optional
 		    If True, also return the number of times each unique item appears
 		    in `ar`.
+		
 		    .. versionadded:: 1.9.0
+		
 		axis : int or None, optional
-		    The axis to operate on. If None, `ar` will be flattened beforehand.
-		    Otherwise, duplicate items will be removed along the provided axis,
-		    with all the other axes belonging to the each of the unique elements.
-		    Object arrays or structured arrays that contain objects are not
-		    supported if the `axis` kwarg is used.
+		    The axis to operate on. If None, `ar` will be flattened. If an integer,
+		    the subarrays indexed by the given axis will be flattened and treated
+		    as the elements of a 1-D array with the dimension of the given axis,
+		    see the notes for more details.  Object arrays or structured arrays
+		    that contain objects are not supported if the `axis` kwarg is used. The
+		    default is None.
+		
 		    .. versionadded:: 1.13.0
-		
-		
 		
 		Returns
 		-------
@@ -3377,12 +3441,24 @@ package scipy.stats.morestats;
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
+		
 		    .. versionadded:: 1.9.0
 		
 		See Also
 		--------
 		numpy.lib.arraysetops : Module with a number of other functions for
 		                        performing set operations on arrays.
+		
+		Notes
+		-----
+		When an axis is specified the subarrays indexed by the axis are sorted.
+		This is done by making the specified axis the first dimension of the array
+		and then flattening the subarrays in C order. The flattened subarrays are
+		then viewed as a structured type with each element given a label, with the
+		effect that we end up with a 1-D array of structured types that can be
+		treated in the same way as any other 1-D array. The result is that the
+		flattened subarrays are sorted in lexicographic order starting with the
+		first element.
 		
 		Examples
 		--------
@@ -3479,14 +3555,15 @@ package scipy.stats.morestats;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -3496,17 +3573,16 @@ package scipy.stats.morestats;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

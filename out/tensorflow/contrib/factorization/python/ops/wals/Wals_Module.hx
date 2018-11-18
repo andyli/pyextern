@@ -21,6 +21,9 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		
 		Returns:
 		  A ModelFnOps object.
+		
+		Raises:
+		  ValueError: If `mode` is not recognized.
 	**/
 	static public function _wals_factorization_model_function(features:Dynamic, labels:Dynamic, mode:Dynamic, params:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;

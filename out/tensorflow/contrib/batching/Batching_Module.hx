@@ -15,7 +15,7 @@ package tensorflow.contrib.batching;
 		
 		So, for example, in the following code
 		
-		```
+		```python
 		@batch_function(1, 2, 3)
 		def layer(a):
 		  return tf.matmul(a, a)
@@ -44,13 +44,10 @@ package tensorflow.contrib.batching;
 		   does nothing. Otherwise, supplies a list of batch sizes, causing the op
 		   to pad batches up to one of those sizes. The entries must increase
 		   monotonically, and the final entry must equal max_batch_size.
-		  grad_timeout_micros: The timeout to use for the gradient. See the
-		   documentation of the unbatch op for more details. Defaults to 60s.
-		  unbatch_timeout_micros: The timeout to use for unbatching. See the
-		   documentation of the unbatch op for more details. Defaults to 60s.
+		  max_enqueued_batches: The maximum depth of the batch queue. Defaults to 10.
 		
 		Returns:
 		  The decorated function will return the unbatched computation output Tensors.
 	**/
-	static public function batch_function(num_batch_threads:Dynamic, max_batch_size:Dynamic, batch_timeout_micros:Dynamic, ?allowed_batch_sizes:Dynamic, ?grad_timeout_micros:Dynamic, ?unbatch_timeout_micros:Dynamic):Dynamic;
+	static public function batch_function(num_batch_threads:Dynamic, max_batch_size:Dynamic, batch_timeout_micros:Dynamic, ?allowed_batch_sizes:Dynamic, ?max_enqueued_batches:Dynamic):Dynamic;
 }

@@ -5,7 +5,7 @@ package tensorflow.python.estimator.inputs.queues.feeding_functions;
 		Call self as a function.
 	**/
 	public function __call__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -45,18 +45,18 @@ package tensorflow.python.estimator.inputs.queues.feeding_functions;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(placeholders:Dynamic, generator:Dynamic, batch_size:Dynamic, ?random_start:Dynamic, ?seed:Dynamic, ?num_epochs:Dynamic):Dynamic;
+	public function ___init__(placeholders:Dynamic, generator:Dynamic, batch_size:Dynamic, ?random_start:Dynamic, ?seed:Dynamic, ?num_epochs:Dynamic, ?pad_value:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(placeholders:Dynamic, generator:Dynamic, batch_size:Dynamic, ?random_start:Dynamic, ?seed:Dynamic, ?num_epochs:Dynamic):Void;
+	public function new(placeholders:Dynamic, generator:Dynamic, batch_size:Dynamic, ?random_start:Dynamic, ?seed:Dynamic, ?num_epochs:Dynamic, ?pad_value:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +107,7 @@ package tensorflow.python.estimator.inputs.queues.feeding_functions;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

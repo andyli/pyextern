@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.summary.text_summary;
 @:pythonImport("tensorflow.python.summary.text_summary") extern class Text_summary_Module {
+	static public var PLUGIN_NAME : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -15,23 +16,28 @@ package tensorflow.python.summary.text_summary;
 	/**
 		Outputs a `Summary` protocol buffer with a serialized tensor.proto.
 		
-		The generated
-		[`Summary`](https://www.tensorflow.org/code/tensorflow/core/framework/summary.proto)
-		has one summary value containing the input tensor.
-		
 		Args:
-		  name: A name for the generated node. Will also serve as the series name in
-		    TensorBoard.
+		  name: A name for the generated node. If display_name is not set, it will
+		    also serve as the tag name in TensorBoard. (In that case, the tag
+		    name will inherit tf name scopes.)
 		  tensor: A tensor of any type and shape to serialize.
-		  summary_description: Optional summary_pb2.SummaryDescription()
+		  summary_description: A long description of the summary sequence. Markdown
+		    is supported.
 		  collections: Optional list of graph collections keys. The new summary op is
 		    added to these collections. Defaults to `[GraphKeys.SUMMARIES]`.
+		  summary_metadata: Optional SummaryMetadata proto (which describes which
+		    plugins may use the summary value).
+		  family: Optional; if provided, used as the prefix of the summary tag,
+		    which controls the name used for display on TensorBoard when
+		    display_name is not set.
+		  display_name: A string used to name this data in TensorBoard. If this is
+		    not set, then the node name will be used instead.
 		
 		Returns:
 		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
 		  buffer.
 	**/
-	static public function tensor_summary(name:Dynamic, tensor:Dynamic, ?summary_description:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function tensor_summary(name:Dynamic, tensor:Dynamic, ?summary_description:Dynamic, ?collections:Dynamic, ?summary_metadata:Dynamic, ?family:Dynamic, ?display_name:Dynamic):Dynamic;
 	/**
 		Summarizes textual data.
 		
@@ -51,7 +57,7 @@ package tensorflow.python.summary.text_summary;
 		    summary to.  Defaults to [_ops.GraphKeys.SUMMARIES]
 		
 		Returns:
-		  A  TensorSummary op that is configured so that TensorBoard will recognize
+		  A TensorSummary op that is configured so that TensorBoard will recognize
 		  that it contains textual data. The TensorSummary is a scalar `Tensor` of
 		  type `string` which contains `Summary` protobufs.
 		
@@ -59,4 +65,5 @@ package tensorflow.python.summary.text_summary;
 		  ValueError: If tensor has the wrong type.
 	**/
 	static public function text_summary(name:Dynamic, tensor:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

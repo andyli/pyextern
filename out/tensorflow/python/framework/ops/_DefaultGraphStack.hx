@@ -2,7 +2,7 @@
 package tensorflow.python.framework.ops;
 @:pythonImport("tensorflow.python.framework.ops", "_DefaultGraphStack") extern class _DefaultGraphStack {
 	public function _GetGlobalDefaultGraph():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package tensorflow.python.framework.ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,15 +104,13 @@ package tensorflow.python.framework.ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var enforce_nesting : Dynamic;
-	/**
-		A context manager for manipulating a default stack.
-	**/
 	public function get_controller(_default:Dynamic):Dynamic;
 	/**
 		Override that returns a global default if the stack is empty.
 	**/
 	public function get_default():Dynamic;
+	public function is_cleared():Dynamic;
 	public function reset():Dynamic;
 }

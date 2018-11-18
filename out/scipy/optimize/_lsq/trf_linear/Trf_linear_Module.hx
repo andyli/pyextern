@@ -209,7 +209,10 @@ package scipy.optimize._lsq.trf_linear;
 		    needed.
 		show : bool, optional
 		    Print iterations logs if ``show=True``.
+		x0 : array_like, shape (n,), optional
+		    Initial guess of x, if None zeros are used.
 		
+		    .. versionadded:: 1.0.0
 		Returns
 		-------
 		x : ndarray of float
@@ -217,7 +220,8 @@ package scipy.optimize._lsq.trf_linear;
 		istop : int
 		    istop gives the reason for stopping::
 		
-		      istop   = 0 means x=0 is a solution.
+		      istop   = 0 means x=0 is a solution.  If x0 was given, then x=x0 is a
+		                  solution.
 		              = 1 means x is an approximate solution to A*x = B,
 		                  according to atol and btol.
 		              = 2 means x approximately solves the least-squares problem
@@ -255,8 +259,61 @@ package scipy.optimize._lsq.trf_linear;
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
 		       http://arxiv.org/abs/1006.0758
 		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lsmr
+		>>> A = csc_matrix([[1., 0.], [1., 1.], [0., 1.]], dtype=float)
+		
+		The first example has the trivial solution `[0, 0]`
+		
+		>>> b = np.array([0., 0., 0.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		0
+		>>> x
+		array([ 0.,  0.])
+		
+		The stopping code `istop=0` returned indicates that a vector of zeros was
+		found as a solution. The returned solution `x` indeed contains `[0., 0.]`.
+		The next example has a non-trivial solution:
+		
+		>>> b = np.array([1., 0., -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		1
+		>>> x
+		array([ 1., -1.])
+		>>> itn
+		1
+		>>> normr
+		4.440892098500627e-16
+		
+		As indicated by `istop=1`, `lsmr` found a solution obeying the tolerance
+		limits. The given solution `[1., -1.]` obviously solves the equation. The
+		remaining return values include information about the number of iterations
+		(`itn=1`) and the remaining difference of left and right side of the solved
+		equation.
+		The final example demonstrates the behavior in the case where there is no
+		solution for the equation:
+		
+		>>> b = np.array([1., 0.01, -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		2
+		>>> x
+		array([ 1.00333333, -0.99666667])
+		>>> A.dot(x)-b
+		array([ 0.00333333, -0.00333333,  0.00333333])
+		>>> normr
+		0.005773502691896255
+		
+		`istop` indicates that the system is inconsistent and thus `x` is rather an
+		approximate solution to the corresponding least-squares problem. `normr`
+		contains the minimal distance that was found.
 	**/
-	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic):Dynamic;
+	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		Shift a point to the interior of a feasible region.
 		
@@ -297,6 +354,9 @@ package scipy.optimize._lsq.trf_linear;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will
@@ -604,6 +664,24 @@ package scipy.optimize._lsq.trf_linear;
 		Notes
 		-----
 		.. versionadded:: 0.9.0
+		
+		Examples
+		--------
+		Solve the lower triangular system a x = b, where::
+		
+		         [3  0  0  0]       [4]
+		    a =  [2  1  0  0]   b = [2]
+		         [1  0  1  0]       [4]
+		         [1  1  1  1]       [2]
+		
+		>>> from scipy.linalg import solve_triangular
+		>>> a = np.array([[3, 0, 0, 0], [2, 1, 0, 0], [1, 0, 1, 0], [1, 1, 1, 1]])
+		>>> b = np.array([4, 2, 4, 2])
+		>>> x = solve_triangular(a, b, lower=True)
+		>>> x
+		array([ 1.33333333, -0.66666667,  2.66666667, -1.33333333])
+		>>> a.dot(x)  # Check the result
+		array([ 4.,  2.,  4.,  2.])
 	**/
 	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**

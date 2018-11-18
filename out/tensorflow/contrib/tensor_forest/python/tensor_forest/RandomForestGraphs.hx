@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tensor_forest.python.tensor_forest;
 @:pythonImport("tensorflow.contrib.tensor_forest.python.tensor_forest", "RandomForestGraphs") extern class RandomForestGraphs {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(params:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic):Dynamic;
+	public function ___init__(params:Dynamic, ?tree_configs:Dynamic, ?tree_stats:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(params:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic):Void;
+	public function new(params:Dynamic, ?tree_configs:Dynamic, ?tree_stats:Dynamic, ?device_assigner:Dynamic, ?variables:Dynamic, ?tree_variables_class:Dynamic, ?tree_graphs:Dynamic, ?training:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -124,16 +124,20 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 	**/
 	public function average_size():Dynamic;
 	public function feature_importances():Dynamic;
-	public function get_stats(session:Dynamic):Dynamic;
+	public function get_all_resource_handles():Dynamic;
 	/**
 		Constructs a TF graph for evaluating a random forest.
 		
 		Args:
-		  input_data: A tensor or dict of string->Tensor for input data.
+		  input_data: A tensor or dict of string->Tensor for the input data.
+		              This input_data must generate the same spec as the
+		              input_data used in training_graph:  the dict must have
+		              the same keys, for example, and all tensors must have
+		              the same size in their first dimension.
 		  **inference_args: Keyword arguments to pass through to each tree.
 		
 		Returns:
-		  The last op in the random forest inference graph.
+		  A tuple of (probabilities, tree_paths, variance).
 		
 		Raises:
 		  NotImplementedError: If trying to use feature bagging with sparse

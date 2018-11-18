@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.summary.writer.writer;
 @:pythonImport("tensorflow.python.summary.writer.writer", "SummaryToEventTransformer") extern class SummaryToEventTransformer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -104,7 +104,7 @@ package tensorflow.python.summary.writer.writer;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -155,7 +155,7 @@ package tensorflow.python.summary.writer.writer;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -227,8 +227,8 @@ package tensorflow.python.summary.writer.writer;
 		and adds it to the event file.
 		
 		You can pass the result of evaluating any summary op, using
-		@{tf.Session.run} or
-		@{tf.Tensor.eval}, to this
+		`tf.Session.run` or
+		`tf.Tensor.eval`, to this
 		function. Alternatively, you can pass a `tf.Summary` protocol
 		buffer that you populate with your own data. The latter is
 		commonly done to report evaluation results in event files.

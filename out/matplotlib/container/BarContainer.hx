@@ -5,7 +5,7 @@ package matplotlib.container;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -42,7 +42,6 @@ package matplotlib.container;
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	public function __getnewargs__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -66,7 +65,7 @@ package matplotlib.container;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -133,7 +132,7 @@ package matplotlib.container;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Adds a callback function that will be called whenever one of
 		the :class:`Artist`'s properties changes.
@@ -174,8 +173,16 @@ package matplotlib.container;
 	/**
 		Set the label to *s* for auto legend.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : string or anything printable with '%s' conversion.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The set_remove_method function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
 	public function set_remove_method(f:Dynamic):Dynamic;
 }

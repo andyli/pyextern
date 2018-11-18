@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_pgf;
 @:pythonImport("matplotlib.backends.backend_pgf", "FigureManagerPgf") extern class FigureManagerPgf {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package matplotlib.backends.backend_pgf;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function ___init__(canvas:Dynamic, num:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>):Void;
+	public function new(canvas:Dynamic, num:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.backends.backend_pgf;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -112,7 +112,8 @@ package matplotlib.backends.backend_pgf;
 	public function full_screen_toggle():Dynamic;
 	/**
 		Get the title text of the window containing the figure.
-		Return None for non-GUI backends (e.g., a PS backend).
+		
+		Return None for non-GUI (e.g., PS) backends.
 	**/
 	public function get_window_title():Dynamic;
 	/**
@@ -121,12 +122,13 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function key_press(event:Dynamic):Dynamic;
 	/**
-		"For gui backends, resize the window (in pixels).
+		"For GUI backends, resize the window (in pixels).
 	**/
 	public function resize(w:Dynamic, h:Dynamic):Dynamic;
 	/**
-		Set the title text of the window containing the figure.  Note that
-		this has no effect for non-GUI backends (e.g., a PS backend).
+		Set the title text of the window containing the figure.
+		
+		This has no effect for non-GUI (e.g., PS) backends.
 	**/
 	public function set_window_title(title:Dynamic):Dynamic;
 	/**
@@ -137,7 +139,10 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function show():Dynamic;
 	/**
-		Display message in a popup -- GUI only
+		.. deprecated:: 2.2
+		    The show_popup function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
+		Display message in a popup -- GUI only.
 	**/
 	public function show_popup(msg:Dynamic):Dynamic;
 }

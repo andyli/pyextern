@@ -43,13 +43,13 @@ package numpy.dual;
 		
 		Examples
 		--------
-		>>> from scipy import array, linalg, dot
-		>>> a = array([[1,-2j],[2j,5]])
-		>>> L = linalg.cholesky(a, lower=True)
+		>>> from scipy.linalg import cholesky
+		>>> a = np.array([[1,-2j],[2j,5]])
+		>>> L = cholesky(a, lower=True)
 		>>> L
 		array([[ 1.+0.j,  0.+0.j],
 		       [ 0.+2.j,  1.+0.j]])
-		>>> dot(L, L.T.conj())
+		>>> L @ L.T.conj()
 		array([[ 1.+0.j,  0.-2.j],
 		       [ 0.+2.j,  5.+0.j]])
 	**/
@@ -158,7 +158,38 @@ package numpy.dual;
 		
 		See Also
 		--------
+		eigvals : eigenvalues of general arrays
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
+		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
+		    band matrices
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
+		
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a) == linalg.eig(a)[0]
+		array([ True,  True])
+		>>> linalg.eig(a, left=True, right=False)[1] # normalized left eigenvector
+		array([[-0.70710678+0.j        , -0.70710678-0.j        ],
+		       [-0.        +0.70710678j, -0.        -0.70710678j]])
+		>>> linalg.eig(a, left=False, right=True)[1] # normalized right eigenvector
+		array([[0.70710678+0.j        , 0.70710678-0.j        ],
+		       [0.        -0.70710678j, 0.        +0.70710678j]])
 	**/
 	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
@@ -241,7 +272,25 @@ package numpy.dual;
 		
 		See Also
 		--------
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w, v = eigh(A)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
 	**/
 	static public function eigh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?eigvals_only:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -288,9 +337,27 @@ package numpy.dual;
 		
 		See Also
 		--------
-		eigvalsh : eigenvalues of symmetric or Hermitian arrays,
 		eig : eigenvalues and right eigenvectors of general arrays.
-		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
 	**/
 	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
@@ -355,9 +422,25 @@ package numpy.dual;
 		
 		See Also
 		--------
-		eigvals : eigenvalues of general arrays
 		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
-		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigvals : eigenvalues of general arrays
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigvalsh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w = eigvalsh(A)
+		>>> w
+		array([-3.74637491, -0.76263923,  6.08502336, 12.42399079])
 	**/
 	static public function eigvalsh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -393,8 +476,6 @@ package numpy.dual;
 		
 		        y(j) = sum[k=0..n-1] x[k] * exp(-sqrt(-1)*j*k* 2*pi/n), j = 0..n-1
 		
-		    Note that ``y(-j) = y(n-j).conjugate()``.
-		
 		See Also
 		--------
 		ifft : Inverse FFT
@@ -410,10 +491,6 @@ package numpy.dual;
 		To rearrange the fft output so that the zero-frequency component is
 		centered, like [-4, -3, -2, -1,  0,  1,  2,  3], use `fftshift`.
 		
-		For `n` even, ``A[n/2]`` contains the sum of the positive and
-		negative-frequency terms.  For `n` even and `x` real, ``A[n/2]`` will
-		always be real.
-		
 		Both single and double precision routines are implemented.  Half precision
 		inputs will be converted to single precision.  Non floating-point inputs
 		will be converted to double precision.  Long-double precision inputs are
@@ -421,6 +498,9 @@ package numpy.dual;
 		
 		This function is most efficient when `n` is a power of two, and least
 		efficient when `n` is prime.
+		
+		Note that if ``x`` is real-valued then ``A[j] == A[n-j].conjugate()``.
+		If ``x`` is real-valued and ``n`` is even then ``A[n/2]`` is real.
 		
 		If the data type of `x` is real, a "real FFT" algorithm is automatically
 		used, which roughly halves the computation time.  To increase efficiency
@@ -457,7 +537,6 @@ package numpy.dual;
 		     x[k_1,..,k_d] * prod[i=1..d] exp(-sqrt(-1)*2*pi/n_i * j_i * k_i)
 		
 		where d = len(x.shape) and n = x.shape.
-		Note that ``y[..., -j_i, ...] = y[..., n_i-j_i, ...].conjugate()``.
 		
 		Parameters
 		----------
@@ -487,6 +566,9 @@ package numpy.dual;
 		
 		Notes
 		-----
+		If ``x`` is real-valued, then
+		``y[..., j_i, ...] == y[..., n_i-j_i, ...].conjugate()``.
+		
 		Both single and double precision routines are implemented.  Half precision
 		inputs will be converted to single precision.  Non floating-point inputs
 		will be converted to double precision.  Long-double precision inputs are
@@ -584,6 +666,14 @@ package numpy.dual;
 		
 		If the data type of `x` is real, a "real IFFT" algorithm is automatically
 		used, which roughly halves the computation time.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import fft, ifft
+		>>> import numpy as np
+		>>> x = np.arange(5)
+		>>> np.allclose(ifft(fft(x)), x, atol=1e-15)  # within numerical accuracy.
+		True
 	**/
 	static public function ifft(x:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
@@ -615,6 +705,14 @@ package numpy.dual;
 		See Also
 		--------
 		fftn : for detailed information.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import fftn, ifftn
+		>>> import numpy as np
+		>>> y = (-np.arange(16), 8 - np.arange(16), np.arange(16))
+		>>> np.allclose(y, ifftn(fftn(y)))
+		True
 	**/
 	static public function ifftn(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
@@ -678,7 +776,7 @@ package numpy.dual;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		lapack_driver: str, optional
+		lapack_driver : str, optional
 		    Which LAPACK driver is used to solve the least-squares problem.
 		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
 		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
@@ -691,11 +789,11 @@ package numpy.dual;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : () or (1,) or (K,) ndarray
+		residues : (0,) or () or (K,) ndarray
 		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``> M``, or ``'gelsy'`` is used,
-		    this is an empty array. If b was 1-D, this is an (1,) shape array,
-		    otherwise the shape is (K,).
+		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
+		    this is a length zero array. If b was 1-D, this is a () shape array
+		    (numpy scalar), otherwise the shape is (K,).
 		rank : int
 		    Effective rank of matrix `a`.
 		s : (min(M,N),) ndarray or None
@@ -713,6 +811,50 @@ package numpy.dual;
 		See Also
 		--------
 		optimize.nnls : linear least squares with non-negativity constraint
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lstsq
+		>>> import matplotlib.pyplot as plt
+		
+		Suppose we have the following data:
+		
+		>>> x = np.array([1, 2.5, 3.5, 4, 5, 7, 8.5])
+		>>> y = np.array([0.3, 1.1, 1.5, 2.0, 3.2, 6.6, 8.6])
+		
+		We want to fit a quadratic polynomial of the form ``y = a + b*x**2``
+		to this data.  We first form the "design matrix" M, with a constant
+		column of 1s and a column containing ``x**2``:
+		
+		>>> M = x[:, np.newaxis]**[0, 2]
+		>>> M
+		array([[  1.  ,   1.  ],
+		       [  1.  ,   6.25],
+		       [  1.  ,  12.25],
+		       [  1.  ,  16.  ],
+		       [  1.  ,  25.  ],
+		       [  1.  ,  49.  ],
+		       [  1.  ,  72.25]])
+		
+		We want to find the least-squares solution to ``M.dot(p) = y``,
+		where ``p`` is a vector with length 2 that holds the parameters
+		``a`` and ``b``.
+		
+		>>> p, res, rnk, s = lstsq(M, y)
+		>>> p
+		array([ 0.20925829,  0.12013861])
+		
+		Plot the data and the fitted curve.
+		
+		>>> plt.plot(x, y, 'o', label='data')
+		>>> xx = np.linspace(0, 9, 101)
+		>>> yy = p[0] + p[1]*xx**2
+		>>> plt.plot(xx, yy, label='least squares fit, $y = a + bx^2$')
+		>>> plt.xlabel('x')
+		>>> plt.ylabel('y')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.show()
 	**/
 	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
@@ -929,8 +1071,8 @@ package numpy.dual;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -943,8 +1085,10 @@ package numpy.dual;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -967,28 +1111,28 @@ package numpy.dual;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	/**
 		Singular Value Decomposition.
 		
-		Factorizes the matrix a into two unitary matrices U and Vh, and
-		a 1-D array s of singular values (real, non-negative) such that
-		``a == U*S*Vh``, where S is a suitably shaped matrix of zeros with
-		main diagonal s.
+		Factorizes the matrix `a` into two unitary matrices ``U`` and ``Vh``, and
+		a 1-D array ``s`` of singular values (real, non-negative) such that
+		``a == U @ S @ Vh``, where ``S`` is a suitably shaped matrix of zeros with
+		main diagonal ``s``.
 		
 		Parameters
 		----------
 		a : (M, N) array_like
 		    Matrix to decompose.
 		full_matrices : bool, optional
-		    If True, `U` and `Vh` are of shape ``(M,M)``, ``(N,N)``.
-		    If False, the shapes are ``(M,K)`` and ``(K,N)``, where
-		    ``K = min(M,N)``.
+		    If True (default), `U` and `Vh` are of shape ``(M, M)``, ``(N, N)``.
+		    If False, the shapes are ``(M, K)`` and ``(K, N)``, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether to compute also `U` and `Vh` in addition to `s`.
+		    Whether to compute also ``U`` and ``Vh`` in addition to ``s``.
 		    Default is True.
 		overwrite_a : bool, optional
 		    Whether to overwrite `a`; may improve performance.
@@ -1009,15 +1153,15 @@ package numpy.dual;
 		-------
 		U : ndarray
 		    Unitary matrix having left singular vectors as columns.
-		    Of shape ``(M,M)`` or ``(M,K)``, depending on `full_matrices`.
+		    Of shape ``(M, M)`` or ``(M, K)``, depending on `full_matrices`.
 		s : ndarray
 		    The singular values, sorted in non-increasing order.
 		    Of shape (K,), with ``K = min(M, N)``.
 		Vh : ndarray
 		    Unitary matrix having right singular vectors as rows.
-		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
+		    Of shape ``(N, N)`` or ``(K, N)`` depending on `full_matrices`.
 		
-		For ``compute_uv=False``, only `s` is returned.
+		For ``compute_uv=False``, only ``s`` is returned.
 		
 		Raises
 		------
@@ -1032,15 +1176,28 @@ package numpy.dual;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6) + 1.j*np.random.randn(9, 6)
+		>>> m, n = 9, 6
+		>>> a = np.random.randn(m, n) + 1.j*np.random.randn(m, n)
 		>>> U, s, Vh = linalg.svd(a)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 9), (6, 6), (6,))
+		>>> U.shape,  s.shape, Vh.shape
+		((9, 9), (6,), (6, 6))
+		
+		Reconstruct the original matrix from the decomposition:
+		
+		>>> sigma = np.zeros((m, n))
+		>>> for i in range(min(m, n)):
+		...     sigma[i, i] = s[i]
+		>>> a1 = np.dot(U, np.dot(sigma, Vh))
+		>>> np.allclose(a, a1)
+		True
+		
+		Alternatively, use ``full_matrices=False`` (notice that the shape of
+		``U`` is then ``(m, n)`` instead of ``(m, m)``):
 		
 		>>> U, s, Vh = linalg.svd(a, full_matrices=False)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = linalg.diagsvd(s, 6, 6)
+		>>> U.shape, s.shape, Vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> S = np.diag(s)
 		>>> np.allclose(a, np.dot(U, np.dot(S, Vh)))
 		True
 		

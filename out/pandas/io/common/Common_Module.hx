@@ -4,8 +4,6 @@ package pandas.io.common;
 	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _NA_VALUES : Dynamic;
-	static public var _PATHLIB_INSTALLED : Dynamic;
-	static public var _PY_PATH_INSTALLED : Dynamic;
 	static public var _VALID_URLS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -47,12 +45,13 @@ package pandas.io.common;
 		is_text : boolean, default True
 		    whether file/buffer is in text format (csv, json, etc.), or in binary
 		    mode (pickle, etc.)
+		
 		Returns
 		-------
 		f : file-like
 		    A file-like object
 		handles : list of file-like objects
-		    A list of file-like object that were openned in this function.
+		    A list of file-like object that were opened in this function.
 	**/
 	static public function _get_handle(path_or_buf:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic, ?is_text:Dynamic):Dynamic;
 	/**
@@ -79,10 +78,6 @@ package pandas.io.common;
 	**/
 	static public function _infer_compression(filepath_or_buffer:Dynamic, compression:Dynamic):Dynamic;
 	/**
-		Check for an s3, s3n, or s3a url
-	**/
-	static public function _is_s3_url(url:Dynamic):Dynamic;
-	/**
 		Check to see if a URL has a valid protocol.
 		
 		Parameters
@@ -96,8 +91,7 @@ package pandas.io.common;
 	**/
 	static public function _is_url(url:Dynamic):Bool;
 	/**
-		Return the argument coerced to a string if it was a pathlib.Path
-		   or a py.path.local
+		Attempt to convert a path-like object to a string.
 		
 		Parameters
 		----------
@@ -105,7 +99,18 @@ package pandas.io.common;
 		
 		Returns
 		-------
-		str_filepath_or_buffer : a the string version of the input path
+		str_filepath_or_buffer : maybe a string version of the object
+		
+		Notes
+		-----
+		Objects supporting the fspath protocol (python 3.6+) are coerced
+		according to its __fspath__ method.
+		
+		For backwards compatibility with older pythons, pathlib.Path and
+		py.path objects are specially coerced.
+		
+		Any other object is passed through unchanged, which includes bytes,
+		strings, buffers, or anything else that's not even path-like.
 	**/
 	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	/**
@@ -216,12 +221,16 @@ package pandas.io.common;
 		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
 		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
+		mode : str, optional
 		
 		Returns
 		-------
-		a filepath_or_buffer, the encoding, the compression
+		tuple of ({a filepath_ or buffer or S3File instance},
+		          encoding, str,
+		          compression, str,
+		          should_close, bool)
 	**/
-	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Check if the object is a file-like object.
 		
@@ -255,24 +264,44 @@ package pandas.io.common;
 	/**
 		Check if the object is a number.
 		
+		Returns True when the object is a number, and False if is not.
+		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : any type
+		    The object to check if is a number.
 		
 		Returns
 		-------
 		is_number : bool
 		    Whether `obj` is a number or not.
 		
+		See Also
+		--------
+		pandas.api.types.is_integer: checks a subgroup of numbers
+		
 		Examples
 		--------
-		>>> is_number(1)
+		>>> pd.api.types.is_number(1)
 		True
-		>>> is_number("foo")
+		>>> pd.api.types.is_number(7.15)
+		True
+		
+		Booleans are valid because they are int subclass.
+		
+		>>> pd.api.types.is_number(False)
+		True
+		
+		>>> pd.api.types.is_number("foo")
+		False
+		>>> pd.api.types.is_number("5")
 		False
 	**/
 	static public function is_number(obj:Dynamic):Bool;
-	static public var need_text_wrapping : Dynamic;
+	/**
+		Check for an s3, s3n, or s3a url
+	**/
+	static public function is_s3_url(url:Dynamic):Dynamic;
 	/**
 		Parse a URL into 6 components:
 		<scheme>://<netloc>/<path>;<params>?<query>#<fragment>

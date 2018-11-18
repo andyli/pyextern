@@ -80,7 +80,7 @@ package theano.scan_module.scan_views;
 		    See ``scan``.
 		go_backwards : bool
 		    Decides the direction of iteration. True means that sequences are parsed
-		    from the end towards the begining, while False is the other way around.
+		    from the end towards the beginning, while False is the other way around.
 		mode
 		    See ``scan``.
 		name
@@ -108,7 +108,7 @@ package theano.scan_module.scan_views;
 		                      more info).
 		go_backwards : bool 
 		    Decides the direction of iteration. True means that sequences are parsed
-		    from the end towards the begining, while False is the other way around.
+		    from the end towards the beginning, while False is the other way around.
 		mode
 		    See ``scan``.
 		name
@@ -135,7 +135,7 @@ package theano.scan_module.scan_views;
 		    * ...
 		    * all time slices of the last sequence
 		    * all past slices of the first output
-		    * all past slices of the second otuput
+		    * all past slices of the second output
 		    * ...
 		    * all past slices of the last output
 		    * all other arguments (the list given as `non_sequences` to
@@ -357,10 +357,10 @@ package theano.scan_module.scan_views;
 		    iteration. But we free all those temp allocation at the end of
 		    all iterations (this is what the Theano flag allow_gc mean).
 		
-		    If you use cnmem and this scan is on GPU, the speed up from
-		    the scan allow_gc is small. If you are missing memory, disable
-		    the scan allow_gc could help you run graph that request much
-		    memory.
+		    If you use preallocate and this scan is on GPU, the speed up
+		    from the scan allow_gc is small. If you are missing memory,
+		    disable the scan allow_gc could help you run graph that
+		    request much memory.
 		
 		strict
 		    If true, all the shared variables used in ``fn`` must be provided as a

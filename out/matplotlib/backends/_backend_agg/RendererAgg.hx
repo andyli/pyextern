@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends._backend_agg;
 @:pythonImport("matplotlib.backends._backend_agg", "RendererAgg") extern class RendererAgg {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -51,7 +51,7 @@ package matplotlib.backends._backend_agg;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -101,7 +101,7 @@ package matplotlib.backends._backend_agg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function buffer_rgba(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function clear(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function copy_from_bbox(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -116,6 +116,5 @@ package matplotlib.backends._backend_agg;
 	public function get_content_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function restore_region(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function tostring_argb(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function tostring_bgra(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function tostring_rgb(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

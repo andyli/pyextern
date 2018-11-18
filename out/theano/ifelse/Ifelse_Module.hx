@@ -50,10 +50,6 @@ package theano.ifelse;
 	static public function deepcopy(x:Dynamic, ?memo:Dynamic, ?_nil:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Goes up in the graph and returns True if a node in nodes is found.
-	**/
-	static public function find_up(l_node:Dynamic, f_node:Dynamic):Dynamic;
-	/**
 		This function corresponds to an if statement, returning (and evaluating)
 		inputs in the ``then_branch`` if ``condition`` evaluates to True or
 		inputs in the ``else_branch`` if ``condition`` evalutates to False.

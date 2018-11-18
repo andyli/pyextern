@@ -51,7 +51,7 @@ package matplotlib.scale;
 		  - :meth:`transform_path`
 	**/
 	static public function SymmetricalLogTransform(base:Dynamic, linthresh:Dynamic, linscale:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -92,8 +92,9 @@ package matplotlib.scale;
 		   The base of the logarithm
 		
 		*linthreshx* /*linthreshy*:
-		  The range (-*x*, *x*) within which the plot is linear (to
-		  avoid having the plot go to infinity around zero).
+		  A single float which defines the range (-*x*, *x*), within
+		  which the plot is linear. This avoids having the plot go to
+		  infinity around zero.
 		
 		*subsx* /*subsy*:
 		   Where to place the subticks between each major tick.
@@ -119,8 +120,9 @@ package matplotlib.scale;
 		   The base of the logarithm
 		
 		*linthreshx* /*linthreshy*:
-		  The range (-*x*, *x*) within which the plot is linear (to
-		  avoid having the plot go to infinity around zero).
+		  A single float which defines the range (-*x*, *x*), within
+		  which the plot is linear. This avoids having the plot go to
+		  infinity around zero.
 		
 		*subsx* /*subsy*:
 		   Where to place the subticks between each major tick.
@@ -146,7 +148,7 @@ package matplotlib.scale;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -197,7 +199,7 @@ package matplotlib.scale;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

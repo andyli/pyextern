@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.session_manager;
 @:pythonImport("tensorflow.python.training.session_manager", "SessionManager") extern class SessionManager {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -69,13 +69,15 @@ package tensorflow.python.training.session_manager;
 		     to run local_init_op.
 		  graph: The `Graph` that the model will use.
 		  recovery_wait_secs: Seconds between checks for the model to be ready.
+		  local_init_run_options: RunOptions to be passed to session.run when
+		    executing the local_init_op.
 		
 		Raises:
 		  ValueError: If ready_for_local_init_op is not None but local_init_op is
 		    None
 	**/
 	@:native("__init__")
-	public function ___init__(?local_init_op:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic):Dynamic;
+	public function ___init__(?local_init_op:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic, ?local_init_run_options:Dynamic):Dynamic;
 	/**
 		Creates a SessionManager.
 		
@@ -108,19 +110,21 @@ package tensorflow.python.training.session_manager;
 		     to run local_init_op.
 		  graph: The `Graph` that the model will use.
 		  recovery_wait_secs: Seconds between checks for the model to be ready.
+		  local_init_run_options: RunOptions to be passed to session.run when
+		    executing the local_init_op.
 		
 		Raises:
 		  ValueError: If ready_for_local_init_op is not None but local_init_op is
 		    None
 	**/
-	public function new(?local_init_op:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic):Void;
+	public function new(?local_init_op:Dynamic, ?ready_op:Dynamic, ?ready_for_local_init_op:Dynamic, ?graph:Dynamic, ?recovery_wait_secs:Dynamic, ?local_init_run_options:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -171,7 +175,7 @@ package tensorflow.python.training.session_manager;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -233,6 +237,8 @@ package tensorflow.python.training.session_manager;
 		  sess: A `Session`.
 	**/
 	public function _safe_close(sess:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Tries to run _local_init_op, if not None, and is ready for local init.
 		
@@ -257,10 +263,14 @@ package tensorflow.python.training.session_manager;
 		up to `max_wait_secs`, for recovery to succeed.
 		
 		If the model cannot be recovered successfully then it is initialized by
-		either running the provided `init_op`, or calling the provided `init_fn`.
-		The local_init_op is also run after init_op and init_fn, regardless of
+		running the `init_op` and calling `init_fn` if they are provided.
+		The `local_init_op` is also run after init_op and init_fn, regardless of
 		whether the model was recovered successfully, but only if
-		ready_for_local_init_op passes.
+		`ready_for_local_init_op` passes.
+		
+		If the model is recovered from a checkpoint it is assumed that all
+		global variables have been initialized, in particular neither `init_op`
+		nor `init_fn` will be executed.
 		
 		It is an error if the model cannot be recovered and no `init_op`
 		or `init_fn` or `local_init_op` are passed.
@@ -287,8 +297,6 @@ package tensorflow.python.training.session_manager;
 		
 		Raises:
 		  RuntimeError: If the model cannot be initialized or recovered.
-		
-		Raises:
 		  ValueError: If both checkpoint_dir and checkpoint_filename_with_path are
 		    set.
 	**/

@@ -38,51 +38,53 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(p, loc=0, size=1, random_state=None)``
+		rvs(p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, p, loc=0)``
+		pmf(k, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, p, loc=0)``
+		logpmf(k, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, p, loc=0)``
+		cdf(k, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, p, loc=0)``
+		logcdf(k, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, p, loc=0)``
+		sf(k, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, p, loc=0)``
+		logsf(k, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, p, loc=0)``
+		ppf(q, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, p, loc=0)``
+		isf(q, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(p, loc=0, moments='mv')``
+		stats(p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(p, loc=0)``
+		entropy(p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(p, loc=0)``
+		median(p, loc=0)
 		    Median of the distribution.
-		``mean(p, loc=0)``
+		mean(p, loc=0)
 		    Mean of the distribution.
-		``var(p, loc=0)``
+		var(p, loc=0)
 		    Variance of the distribution.
-		``std(p, loc=0)``
+		std(p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, p, loc=0)``
+		interval(alpha, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `bernoulli` is::
+		The probability mass function for `bernoulli` is:
 		
-		   bernoulli.pmf(k) = 1-p  if k = 0
-		                    = p    if k = 1
+		.. math::
 		
-		for ``k`` in ``{0, 1}``.
+		   f(k) = \begin{cases}1-p  &\text{if } k = 0\\
+		                       p    &\text{if } k = 1\end{cases}
 		
-		`bernoulli` takes ``p`` as shape parameter.
+		for :math:`k` in :math:`\{0, 1\}`.
+		
+		`bernoulli` takes :math:`p` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -149,46 +151,48 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(n, p, loc=0, size=1, random_state=None)``
+		rvs(n, p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, n, p, loc=0)``
+		pmf(k, n, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, n, p, loc=0)``
+		logpmf(k, n, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, n, p, loc=0)``
+		cdf(k, n, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, n, p, loc=0)``
+		logcdf(k, n, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, n, p, loc=0)``
+		sf(k, n, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, n, p, loc=0)``
+		logsf(k, n, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, n, p, loc=0)``
+		ppf(q, n, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, n, p, loc=0)``
+		isf(q, n, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(n, p, loc=0, moments='mv')``
+		stats(n, p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(n, p, loc=0)``
+		entropy(n, p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(n, p, loc=0)``
+		median(n, p, loc=0)
 		    Median of the distribution.
-		``mean(n, p, loc=0)``
+		mean(n, p, loc=0)
 		    Mean of the distribution.
-		``var(n, p, loc=0)``
+		var(n, p, loc=0)
 		    Variance of the distribution.
-		``std(n, p, loc=0)``
+		std(n, p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, n, p, loc=0)``
+		interval(alpha, n, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `binom` is::
+		The probability mass function for `binom` is:
 		
-		   binom.pmf(k) = choose(n, k) * p**k * (1-p)**(n-k)
+		.. math::
+		
+		   f(k) = \binom{n}{k} p^k (1-p)^{n-k}
 		
 		for ``k`` in ``{0, 1,..., n}``.
 		
@@ -249,50 +253,52 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(lambda_, N, loc=0, size=1, random_state=None)``
+		rvs(lambda_, N, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, lambda_, N, loc=0)``
+		pmf(k, lambda_, N, loc=0)
 		    Probability mass function.
-		``logpmf(k, lambda_, N, loc=0)``
+		logpmf(k, lambda_, N, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, lambda_, N, loc=0)``
+		cdf(k, lambda_, N, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, lambda_, N, loc=0)``
+		logcdf(k, lambda_, N, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, lambda_, N, loc=0)``
+		sf(k, lambda_, N, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, lambda_, N, loc=0)``
+		logsf(k, lambda_, N, loc=0)
 		    Log of the survival function.
-		``ppf(q, lambda_, N, loc=0)``
+		ppf(q, lambda_, N, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, lambda_, N, loc=0)``
+		isf(q, lambda_, N, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(lambda_, N, loc=0, moments='mv')``
+		stats(lambda_, N, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(lambda_, N, loc=0)``
+		entropy(lambda_, N, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(lambda_, N), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(lambda_, N), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(lambda_, N, loc=0)``
+		median(lambda_, N, loc=0)
 		    Median of the distribution.
-		``mean(lambda_, N, loc=0)``
+		mean(lambda_, N, loc=0)
 		    Mean of the distribution.
-		``var(lambda_, N, loc=0)``
+		var(lambda_, N, loc=0)
 		    Variance of the distribution.
-		``std(lambda_, N, loc=0)``
+		std(lambda_, N, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, lambda_, N, loc=0)``
+		interval(alpha, lambda_, N, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `boltzmann` is::
+		The probability mass function for `boltzmann` is:
 		
-		    boltzmann.pmf(k) = (1-exp(-lambda_)*exp(-lambda_*k)/(1-exp(-lambda_*N))
+		.. math::
 		
-		for ``k = 0,..., N-1``.
+		    f(k) = (1-\exp(-\lambda) \exp(-\lambda k)/(1-\exp(-\lambda N))
 		
-		`boltzmann` takes ``lambda_`` and ``N`` as shape parameters.
+		for :math:`k = 0,..., N-1`.
+		
+		`boltzmann` takes :math:`\lambda` and :math:`N` as shape parameters.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -407,6 +413,7 @@ package scipy.stats._discrete_distns;
 		-------
 		y : ndarray or scalar
 		    The ceiling of each element in `x`, with `float` dtype.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -444,8 +451,9 @@ package scipy.stats._discrete_distns;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array of same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -470,50 +478,52 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, size=1, random_state=None)``
+		rvs(a, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, a, loc=0)``
+		pmf(k, a, loc=0)
 		    Probability mass function.
-		``logpmf(k, a, loc=0)``
+		logpmf(k, a, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, a, loc=0)``
+		cdf(k, a, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, a, loc=0)``
+		logcdf(k, a, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, a, loc=0)``
+		sf(k, a, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, a, loc=0)``
+		logsf(k, a, loc=0)
 		    Log of the survival function.
-		``ppf(q, a, loc=0)``
+		ppf(q, a, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0)``
+		isf(q, a, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(a, loc=0, moments='mv')``
+		stats(a, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0)``
+		entropy(a, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0)``
+		median(a, loc=0)
 		    Median of the distribution.
-		``mean(a, loc=0)``
+		mean(a, loc=0)
 		    Mean of the distribution.
-		``var(a, loc=0)``
+		var(a, loc=0)
 		    Variance of the distribution.
-		``std(a, loc=0)``
+		std(a, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0)``
+		interval(alpha, a, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `dlaplace` is::
+		The probability mass function for `dlaplace` is:
 		
-		    dlaplace.pmf(k) = tanh(a/2) * exp(-a*abs(k))
+		.. math::
 		
-		for ``a > 0``.
+		    f(k) = \tanh(a/2) \exp(-a |k|)
 		
-		`dlaplace` takes ``a`` as shape parameter.
+		for :math:`a > 0`.
+		
+		`dlaplace` takes :math:`a` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -614,8 +624,9 @@ package scipy.stats._discrete_distns;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -688,8 +699,9 @@ package scipy.stats._discrete_distns;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Element-wise exponential minus one: ``out = exp(x) - 1``.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -741,6 +753,7 @@ package scipy.stats._discrete_distns;
 		-------
 		y : ndarray or scalar
 		    The floor of each element in `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -760,7 +773,9 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Logarithm of the absolute value of the Gamma function for real inputs.
+		gammaln(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Logarithm of the absolute value of the Gamma function.
 		
 		Parameters
 		----------
@@ -783,14 +798,9 @@ package scipy.stats._discrete_distns;
 		for working in logspace on the real axis without having to deal with
 		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
 		
-		Note that `gammaln` currently accepts complex-valued inputs, but it is not
-		the same function as for real-valued inputs, and the branch is not
-		well-defined --- using `gammaln` with complex is deprecated and will be
-		disallowed in future Scipy versions.
-		
 		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gamln(x:Dynamic):Dynamic;
+	static public function gamln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		A geometric discrete random variable.
 		
@@ -800,50 +810,52 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(p, loc=0, size=1, random_state=None)``
+		rvs(p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, p, loc=0)``
+		pmf(k, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, p, loc=0)``
+		logpmf(k, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, p, loc=0)``
+		cdf(k, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, p, loc=0)``
+		logcdf(k, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, p, loc=0)``
+		sf(k, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, p, loc=0)``
+		logsf(k, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, p, loc=0)``
+		ppf(q, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, p, loc=0)``
+		isf(q, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(p, loc=0, moments='mv')``
+		stats(p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(p, loc=0)``
+		entropy(p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(p, loc=0)``
+		median(p, loc=0)
 		    Median of the distribution.
-		``mean(p, loc=0)``
+		mean(p, loc=0)
 		    Mean of the distribution.
-		``var(p, loc=0)``
+		var(p, loc=0)
 		    Variance of the distribution.
-		``std(p, loc=0)``
+		std(p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, p, loc=0)``
+		interval(alpha, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `geom` is::
+		The probability mass function for `geom` is:
 		
-		    geom.pmf(k) = (1-p)**(k-1)*p
+		.. math::
 		
-		for ``k >= 1``.
+		    f(k) = (1-p)^{k-1} p
 		
-		`geom` takes ``p`` as shape parameter.
+		for :math:`k \ge 1`.
+		
+		`geom` takes :math:`p` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -925,39 +937,39 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(M, n, N, loc=0, size=1, random_state=None)``
+		rvs(M, n, N, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, M, n, N, loc=0)``
+		pmf(k, M, n, N, loc=0)
 		    Probability mass function.
-		``logpmf(k, M, n, N, loc=0)``
+		logpmf(k, M, n, N, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, M, n, N, loc=0)``
+		cdf(k, M, n, N, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, M, n, N, loc=0)``
+		logcdf(k, M, n, N, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, M, n, N, loc=0)``
+		sf(k, M, n, N, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, M, n, N, loc=0)``
+		logsf(k, M, n, N, loc=0)
 		    Log of the survival function.
-		``ppf(q, M, n, N, loc=0)``
+		ppf(q, M, n, N, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, M, n, N, loc=0)``
+		isf(q, M, n, N, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(M, n, N, loc=0, moments='mv')``
+		stats(M, n, N, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(M, n, N, loc=0)``
+		entropy(M, n, N, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(M, n, N), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(M, n, N), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(M, n, N, loc=0)``
+		median(M, n, N, loc=0)
 		    Median of the distribution.
-		``mean(M, n, N, loc=0)``
+		mean(M, n, N, loc=0)
 		    Mean of the distribution.
-		``var(M, n, N, loc=0)``
+		var(M, n, N, loc=0)
 		    Variance of the distribution.
-		``std(M, n, N, loc=0)``
+		std(M, n, N, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, M, n, N, loc=0)``
+		interval(alpha, M, n, N, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -968,7 +980,8 @@ package scipy.stats._discrete_distns;
 		
 		The probability mass function is defined as,
 		
-		.. math:: p(k, M, n, N) = \frac{\binom{n}{k} \binom{M - n}{N - k}}{\binom{M}{N}}
+		.. math:: p(k, M, n, N) = \frac{\binom{n}{k} \binom{M - n}{N - k}}
+		                               {\binom{M}{N}}
 		
 		for :math:`k \in [\max(0, N - M + n), \min(n, N)]`, where the binomial
 		coefficients are defined as,
@@ -1043,6 +1056,7 @@ package scipy.stats._discrete_distns;
 		-------
 		y : ndarray
 		    The natural logarithm of `x`, element-wise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1102,6 +1116,7 @@ package scipy.stats._discrete_distns;
 		-------
 		y : ndarray
 		    Natural logarithm of `1 + x`, element-wise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1148,50 +1163,52 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(p, loc=0, size=1, random_state=None)``
+		rvs(p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, p, loc=0)``
+		pmf(k, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, p, loc=0)``
+		logpmf(k, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, p, loc=0)``
+		cdf(k, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, p, loc=0)``
+		logcdf(k, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, p, loc=0)``
+		sf(k, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, p, loc=0)``
+		logsf(k, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, p, loc=0)``
+		ppf(q, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, p, loc=0)``
+		isf(q, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(p, loc=0, moments='mv')``
+		stats(p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(p, loc=0)``
+		entropy(p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(p, loc=0)``
+		median(p, loc=0)
 		    Median of the distribution.
-		``mean(p, loc=0)``
+		mean(p, loc=0)
 		    Mean of the distribution.
-		``var(p, loc=0)``
+		var(p, loc=0)
 		    Variance of the distribution.
-		``std(p, loc=0)``
+		std(p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, p, loc=0)``
+		interval(alpha, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `logser` is::
+		The probability mass function for `logser` is:
 		
-		    logser.pmf(k) = - p**k / (k*log(1-p))
+		.. math::
 		
-		for ``k >= 1``.
+		    f(k) = - \frac{p^k}{k \log(1-p)}
 		
-		`logser` takes ``p`` as shape parameter.
+		for :math:`k \ge 1`.
+		
+		`logser` takes :math:`p` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1269,6 +1286,7 @@ package scipy.stats._discrete_distns;
 		    as NaN. Default is False (no sign information).
 		
 		    .. versionadded:: 0.16.0
+		
 		Returns
 		-------
 		res : ndarray
@@ -1332,54 +1350,56 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(n, p, loc=0, size=1, random_state=None)``
+		rvs(n, p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, n, p, loc=0)``
+		pmf(k, n, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, n, p, loc=0)``
+		logpmf(k, n, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, n, p, loc=0)``
+		cdf(k, n, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, n, p, loc=0)``
+		logcdf(k, n, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, n, p, loc=0)``
+		sf(k, n, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, n, p, loc=0)``
+		logsf(k, n, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, n, p, loc=0)``
+		ppf(q, n, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, n, p, loc=0)``
+		isf(q, n, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(n, p, loc=0, moments='mv')``
+		stats(n, p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(n, p, loc=0)``
+		entropy(n, p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(n, p, loc=0)``
+		median(n, p, loc=0)
 		    Median of the distribution.
-		``mean(n, p, loc=0)``
+		mean(n, p, loc=0)
 		    Mean of the distribution.
-		``var(n, p, loc=0)``
+		var(n, p, loc=0)
 		    Variance of the distribution.
-		``std(n, p, loc=0)``
+		std(n, p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, n, p, loc=0)``
+		interval(alpha, n, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		Negative binomial distribution describes a sequence of i.i.d. Bernoulli 
+		Negative binomial distribution describes a sequence of i.i.d. Bernoulli
 		trials, repeated until a predefined, non-random number of successes occurs.
 		
-		The probability mass function of the number of failures for `nbinom` is::
+		The probability mass function of the number of failures for `nbinom` is:
 		
-		   nbinom.pmf(k) = choose(k+n-1, n-1) * p**n * (1-p)**k
+		.. math::
 		
-		for ``k >= 0``.
+		   f(k) = \binom{k+n-1}{n-1} p^n (1-p)^k
 		
-		`nbinom` takes ``n`` and ``p`` as shape parameters where n is the number of
-		successes, whereas p is the probability of a single success.
+		for :math:`k \ge 0`.
+		
+		`nbinom` takes :math:`n` and :math:`p` as shape parameters where n is the
+		number of successes, whereas p is the probability of a single success.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1437,50 +1457,52 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(lambda_, loc=0, size=1, random_state=None)``
+		rvs(lambda_, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, lambda_, loc=0)``
+		pmf(k, lambda_, loc=0)
 		    Probability mass function.
-		``logpmf(k, lambda_, loc=0)``
+		logpmf(k, lambda_, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, lambda_, loc=0)``
+		cdf(k, lambda_, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, lambda_, loc=0)``
+		logcdf(k, lambda_, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, lambda_, loc=0)``
+		sf(k, lambda_, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, lambda_, loc=0)``
+		logsf(k, lambda_, loc=0)
 		    Log of the survival function.
-		``ppf(q, lambda_, loc=0)``
+		ppf(q, lambda_, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, lambda_, loc=0)``
+		isf(q, lambda_, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(lambda_, loc=0, moments='mv')``
+		stats(lambda_, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(lambda_, loc=0)``
+		entropy(lambda_, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(lambda_,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(lambda_,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(lambda_, loc=0)``
+		median(lambda_, loc=0)
 		    Median of the distribution.
-		``mean(lambda_, loc=0)``
+		mean(lambda_, loc=0)
 		    Mean of the distribution.
-		``var(lambda_, loc=0)``
+		var(lambda_, loc=0)
 		    Variance of the distribution.
-		``std(lambda_, loc=0)``
+		std(lambda_, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, lambda_, loc=0)``
+		interval(alpha, lambda_, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `planck` is::
+		The probability mass function for `planck` is:
 		
-		    planck.pmf(k) = (1-exp(-lambda_))*exp(-lambda_*k)
+		.. math::
 		
-		for ``k*lambda_ >= 0``.
+		    f(k) = (1-\exp(-\lambda)) \exp(-\lambda k)
 		
-		`planck` takes ``lambda_`` as shape parameter.
+		for :math:`k \lambda \ge 0`.
+		
+		`planck` takes :math:`\lambda` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1537,50 +1559,52 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(mu, loc=0, size=1, random_state=None)``
+		rvs(mu, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, mu, loc=0)``
+		pmf(k, mu, loc=0)
 		    Probability mass function.
-		``logpmf(k, mu, loc=0)``
+		logpmf(k, mu, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, mu, loc=0)``
+		cdf(k, mu, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, mu, loc=0)``
+		logcdf(k, mu, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, mu, loc=0)``
+		sf(k, mu, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, mu, loc=0)``
+		logsf(k, mu, loc=0)
 		    Log of the survival function.
-		``ppf(q, mu, loc=0)``
+		ppf(q, mu, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, mu, loc=0)``
+		isf(q, mu, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(mu, loc=0, moments='mv')``
+		stats(mu, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(mu, loc=0)``
+		entropy(mu, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(mu,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(mu,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(mu, loc=0)``
+		median(mu, loc=0)
 		    Median of the distribution.
-		``mean(mu, loc=0)``
+		mean(mu, loc=0)
 		    Mean of the distribution.
-		``var(mu, loc=0)``
+		var(mu, loc=0)
 		    Variance of the distribution.
-		``std(mu, loc=0)``
+		std(mu, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, mu, loc=0)``
+		interval(alpha, mu, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `poisson` is::
+		The probability mass function for `poisson` is:
 		
-		    poisson.pmf(k) = exp(-mu) * mu**k / k!
+		.. math::
 		
-		for ``k >= 0``.
+		    f(k) = \exp(-\mu) \frac{mu^k}{k!}
 		
-		`poisson` takes ``mu`` as shape parameter.
+		for :math:`k \ge 0`.
+		
+		`poisson` takes :math:`\mu` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1638,46 +1662,48 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(low, high, loc=0, size=1, random_state=None)``
+		rvs(low, high, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, low, high, loc=0)``
+		pmf(k, low, high, loc=0)
 		    Probability mass function.
-		``logpmf(k, low, high, loc=0)``
+		logpmf(k, low, high, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, low, high, loc=0)``
+		cdf(k, low, high, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, low, high, loc=0)``
+		logcdf(k, low, high, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, low, high, loc=0)``
+		sf(k, low, high, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, low, high, loc=0)``
+		logsf(k, low, high, loc=0)
 		    Log of the survival function.
-		``ppf(q, low, high, loc=0)``
+		ppf(q, low, high, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, low, high, loc=0)``
+		isf(q, low, high, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(low, high, loc=0, moments='mv')``
+		stats(low, high, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(low, high, loc=0)``
+		entropy(low, high, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(low, high), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(low, high), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(low, high, loc=0)``
+		median(low, high, loc=0)
 		    Median of the distribution.
-		``mean(low, high, loc=0)``
+		mean(low, high, loc=0)
 		    Mean of the distribution.
-		``var(low, high, loc=0)``
+		var(low, high, loc=0)
 		    Variance of the distribution.
-		``std(low, high, loc=0)``
+		std(low, high, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, low, high, loc=0)``
+		interval(alpha, low, high, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `randint` is::
+		The probability mass function for `randint` is:
 		
-		    randint.pmf(k) = 1./(high - low)
+		.. math::
+		
+		    f(k) = \frac{1}{high - low}
 		
 		for ``k = low, ..., high - 1``.
 		
@@ -1757,6 +1783,7 @@ package scipy.stats._discrete_distns;
 		-------
 		y : ndarray
 		    The corresponding hyperbolic sine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -1799,39 +1826,39 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(mu1, mu2, loc=0, size=1, random_state=None)``
+		rvs(mu1, mu2, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, mu1, mu2, loc=0)``
+		pmf(k, mu1, mu2, loc=0)
 		    Probability mass function.
-		``logpmf(k, mu1, mu2, loc=0)``
+		logpmf(k, mu1, mu2, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, mu1, mu2, loc=0)``
+		cdf(k, mu1, mu2, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, mu1, mu2, loc=0)``
+		logcdf(k, mu1, mu2, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, mu1, mu2, loc=0)``
+		sf(k, mu1, mu2, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, mu1, mu2, loc=0)``
+		logsf(k, mu1, mu2, loc=0)
 		    Log of the survival function.
-		``ppf(q, mu1, mu2, loc=0)``
+		ppf(q, mu1, mu2, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, mu1, mu2, loc=0)``
+		isf(q, mu1, mu2, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(mu1, mu2, loc=0, moments='mv')``
+		stats(mu1, mu2, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(mu1, mu2, loc=0)``
+		entropy(mu1, mu2, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(mu1, mu2), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(mu1, mu2), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(mu1, mu2, loc=0)``
+		median(mu1, mu2, loc=0)
 		    Median of the distribution.
-		``mean(mu1, mu2, loc=0)``
+		mean(mu1, mu2, loc=0)
 		    Mean of the distribution.
-		``var(mu1, mu2, loc=0)``
+		var(mu1, mu2, loc=0)
 		    Variance of the distribution.
-		``std(mu1, mu2, loc=0)``
+		std(mu1, mu2, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, mu1, mu2, loc=0)``
+		interval(alpha, mu1, mu2, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
@@ -1839,18 +1866,20 @@ package scipy.stats._discrete_distns;
 		Probability distribution of the difference of two correlated or
 		uncorrelated Poisson random variables.
 		
-		Let k1 and k2 be two Poisson-distributed r.v. with expected values
-		lam1 and lam2. Then, ``k1 - k2`` follows a Skellam distribution with
-		parameters ``mu1 = lam1 - rho*sqrt(lam1*lam2)`` and
-		``mu2 = lam2 - rho*sqrt(lam1*lam2)``, where rho is the correlation
-		coefficient between k1 and k2. If the two Poisson-distributed r.v.
-		are independent then ``rho = 0``.
+		Let :math:`k_1` and :math:`k_2` be two Poisson-distributed r.v. with
+		expected values lam1 and lam2. Then, :math:`k_1 - k_2` follows a Skellam
+		distribution with parameters
+		:math:`\mu_1 = \lambda_1 - \rho \sqrt{\lambda_1 \lambda_2}` and
+		:math:`\mu_2 = \lambda_2 - \rho \sqrt{\lambda_1 \lambda_2}`, where
+		:math:`\rho` is the correlation coefficient between :math:`k_1` and
+		:math:`k_2`. If the two Poisson-distributed r.v. are independent then
+		:math:`\rho = 0`.
 		
-		Parameters mu1 and mu2 must be strictly positive.
+		Parameters :math:`\mu_1` and :math:`\mu_2` must be strictly positive.
 		
 		For details see: http://en.wikipedia.org/wiki/Skellam_distribution
 		
-		`skellam` takes ``mu1`` and ``mu2`` as shape parameters.
+		`skellam` takes :math:`\mu_1` and :math:`\mu_2` as shape parameters.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
@@ -1901,7 +1930,7 @@ package scipy.stats._discrete_distns;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -1928,6 +1957,7 @@ package scipy.stats._discrete_distns;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1980,6 +2010,7 @@ package scipy.stats._discrete_distns;
 		-------
 		y : ndarray
 		    The corresponding hyperbolic tangent values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -2022,50 +2053,52 @@ package scipy.stats._discrete_distns;
 		
 		Methods
 		-------
-		``rvs(a, loc=0, size=1, random_state=None)``
+		rvs(a, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, a, loc=0)``
+		pmf(k, a, loc=0)
 		    Probability mass function.
-		``logpmf(k, a, loc=0)``
+		logpmf(k, a, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, a, loc=0)``
+		cdf(k, a, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, a, loc=0)``
+		logcdf(k, a, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, a, loc=0)``
+		sf(k, a, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, a, loc=0)``
+		logsf(k, a, loc=0)
 		    Log of the survival function.
-		``ppf(q, a, loc=0)``
+		ppf(q, a, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, a, loc=0)``
+		isf(q, a, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(a, loc=0, moments='mv')``
+		stats(a, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(a, loc=0)``
+		entropy(a, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(a, loc=0)``
+		median(a, loc=0)
 		    Median of the distribution.
-		``mean(a, loc=0)``
+		mean(a, loc=0)
 		    Mean of the distribution.
-		``var(a, loc=0)``
+		var(a, loc=0)
 		    Variance of the distribution.
-		``std(a, loc=0)``
+		std(a, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, a, loc=0)``
+		interval(alpha, a, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `zipf` is::
+		The probability mass function for `zipf` is:
 		
-		    zipf.pmf(k, a) = 1/(zeta(a) * k**a)
+		.. math::
 		
-		for ``k >= 1``.
+		    f(k, a) = \frac{1}{\zeta(a) k^a}
 		
-		`zipf` takes ``a`` as shape parameter.
+		for :math:`k \ge 1`.
+		
+		`zipf` takes :math:`a` as shape parameter.
 		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.

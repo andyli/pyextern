@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.linear_optimizer.python.sdca_optimizer;
 @:pythonImport("tensorflow.contrib.linear_optimizer.python.sdca_optimizer", "SDCAOptimizer") extern class SDCAOptimizer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package tensorflow.contrib.linear_optimizer.python.sdca_optimizer;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(example_id_column:Dynamic, ?num_loss_partitions:Dynamic, ?num_table_shards:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic):Dynamic;
+	public function ___init__(example_id_column:Dynamic, ?num_loss_partitions:Dynamic, ?num_table_shards:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic, ?adaptive:Dynamic, ?partitioner:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(example_id_column:Dynamic, ?num_loss_partitions:Dynamic, ?num_table_shards:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic):Void;
+	public function new(example_id_column:Dynamic, ?num_loss_partitions:Dynamic, ?num_table_shards:Dynamic, ?symmetric_l1_regularization:Dynamic, ?symmetric_l2_regularization:Dynamic, ?adaptive:Dynamic, ?partitioner:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,12 @@ package tensorflow.contrib.linear_optimizer.python.sdca_optimizer;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var adaptive : Dynamic;
 	public var example_id_column : Dynamic;
 	public function get_name():Dynamic;
 	/**
@@ -116,6 +117,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_optimizer;
 	public function get_train_step(columns_to_variables:Dynamic, weight_column_name:Dynamic, loss_type:Dynamic, features:Dynamic, targets:Dynamic, global_step:Dynamic):Dynamic;
 	public var num_loss_partitions : Dynamic;
 	public var num_table_shards : Dynamic;
+	public var partitioner : Dynamic;
 	public var symmetric_l1_regularization : Dynamic;
 	public var symmetric_l2_regularization : Dynamic;
 }

@@ -5,7 +5,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -95,9 +95,9 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of AttentionWrapperState(cell_state, attention, time, alignments, alignment_history)
+		Create new instance of AttentionWrapperState(cell_state, attention, time, alignments, alignment_history, attention_state)
 	**/
-	static public function __new__(_cls:Dynamic, cell_state:Dynamic, attention:Dynamic, time:Dynamic, alignments:Dynamic, alignment_history:Dynamic):Dynamic;
+	static public function __new__(_cls:Dynamic, cell_state:Dynamic, attention:Dynamic, time:Dynamic, alignments:Dynamic, alignment_history:Dynamic, attention_state:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -136,7 +136,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -149,7 +149,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 	/**
 		Return a new AttentionWrapperState object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		Alias for field number 4
@@ -164,11 +164,19 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 	**/
 	public var attention : Dynamic;
 	/**
+		Alias for field number 5
+	**/
+	public var attention_state : Dynamic;
+	/**
 		Alias for field number 0
 	**/
 	public var cell_state : Dynamic;
 	/**
 		Clone this object, overriding components provided by kwargs.
+		
+		The new state fields' shape must match original state fields' shape. This
+		will be validated, and original fields' shape will be propagated to new
+		fields.
 		
 		Example:
 		
@@ -183,7 +191,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		
 		Returns:
 		  A new `AttentionWrapperState` whose properties are the same as
-		  this one, except any overriden properties as provided in `kwargs`.
+		  this one, except any overridden properties as provided in `kwargs`.
 	**/
 	public function clone(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

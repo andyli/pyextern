@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.dates;
 @:pythonImport("matplotlib.dates", "DateConverter") extern class DateConverter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.dates;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.dates;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -127,13 +127,10 @@ package matplotlib.dates;
 	**/
 	static public function default_units(x:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		The matplotlib datalim, autoscaling, locators etc work with
+		The Matplotlib datalim, autoscaling, locators etc work with
 		scalars which are the units converted to floats given the
 		current unit.  The converter may be passed these floats, or
-		arrays of them, even when units are set.  Derived conversion
-		interfaces may opt to pass plain-ol unitless numbers through
-		the conversion interface and this is a helper function for
-		them.
+		arrays of them, even when units are set.
 	**/
 	static public function is_numlike(x:Dynamic):Dynamic;
 }

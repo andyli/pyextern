@@ -1,0 +1,18 @@
+/* This file is generated, do not edit! */
+package tensorflow.contrib.opt.python.training.elastic_average_optimizer;
+@:pythonImport("tensorflow.contrib.opt.python.training.elastic_average_optimizer") extern class Elastic_average_optimizer_Module {
+	static public var GLOBAL_STEP : Dynamic;
+	static public var GLOBAL_VARIABLE_NAME : Dynamic;
+	static public var LOCAL_VARIABLE_NAME : Dynamic;
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
+	static public var __doc__ : Dynamic;
+	static public var __file__ : Dynamic;
+	static public var __loader__ : Dynamic;
+	static public var __name__ : Dynamic;
+	static public var __package__ : Dynamic;
+	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
+}

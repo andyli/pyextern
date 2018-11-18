@@ -38,21 +38,62 @@ package tensorflow.contrib.quantization.python.array_ops;
 		If the mode is 'MIN_FIRST', then this approach is used:
 		
 		```c++
-		number_of_steps = 1 << (# of bits in T)
-		range_adjust = number_of_steps / (number_of_steps - 1)
+		num_discrete_values = 1 << (# of bits in T)
+		range_adjust = num_discrete_values / (num_discrete_values - 1)
 		range = (range_max - range_min) * range_adjust
-		range_scale = range / number_of_steps
+		range_scale = range / num_discrete_values
 		const double offset_input = static_cast<double>(input) - lowest_quantized;
 		result = range_min + ((input - numeric_limits<T>::min()) * range_scale)
 		```
 		
+		*SCALED mode Example*
+		
+		`SCALED` mode matches the quantization approach used in
+		`QuantizeAndDequantize{V2|V3}`.
+		
+		If the mode is `SCALED`, we do not use the full range of the output type,
+		choosing to elide the lowest possible value for symmetry (e.g., output range is
+		-127 to 127, not -128 to 127 for signed 8 bit quantization), so that 0.0 maps to
+		0.
+		
+		We first find the range of values in our tensor. The
+		range we use is always centered on 0, so we find m such that
+		```c++
+		  m = max(abs(input_min), abs(input_max))
+		```
+		
+		Our input tensor range is then `[-m, m]`.
+		
+		Next, we choose our fixed-point quantization buckets, `[min_fixed, max_fixed]`.
+		If T is signed, this is
+		```
+		  num_bits = sizeof(T) * 8
+		  [min_fixed, max_fixed] =
+		      [-(1 << (num_bits - 1) - 1), (1 << (num_bits - 1)) - 1]
+		```
+		
+		Otherwise, if T is unsigned, the fixed-point range is
+		```
+		  [min_fixed, max_fixed] = [0, (1 << num_bits) - 1]
+		```
+		
+		From this we compute our scaling factor, s:
+		```c++
+		  s = (2 * m) / (max_fixed - min_fixed)
+		```
+		
+		Now we can dequantize the elements of our tensor:
+		```c++
+		result = input * s
+		```
+		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint16`, `quint16`, `qint32`.
+		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
 		  min_range: A `Tensor` of type `float32`.
 		    The minimum scalar value possibly produced for the input.
 		  max_range: A `Tensor` of type `float32`.
 		    The maximum scalar value possibly produced for the input.
-		  mode: An optional `string` from: `"MIN_COMBINED", "MIN_FIRST"`. Defaults to `"MIN_COMBINED"`.
+		  mode: An optional `string` from: `"MIN_COMBINED", "MIN_FIRST", "SCALED"`. Defaults to `"MIN_COMBINED"`.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -66,7 +107,9 @@ package tensorflow.contrib.quantization.python.array_ops;
 		
 		[min_range, max_range] are scalar floats that specify the range for
 		the 'input' data. The 'mode' attribute controls exactly which calculations are
-		used to convert the float values to their quantized equivalents.
+		used to convert the float values to their quantized equivalents.  The
+		'round_mode' attribute controls which rounding tie-breaking algorithm is used
+		when rounding float values to their quantized equivalents.
 		
 		In 'MIN_COMBINED' mode, each value of the tensor will undergo the following:
 		
@@ -74,6 +117,7 @@ package tensorflow.contrib.quantization.python.array_ops;
 		out[i] = (in[i] - min_range) * range(T) / (max_range - min_range)
 		if T == qint8, out[i] -= (range(T) + 1) / 2.0
 		```
+		
 		here `range(T) = numeric_limits<T>::max() - numeric_limits<T>::min()`
 		
 		*MIN_COMBINED Mode Example*
@@ -90,10 +134,10 @@ package tensorflow.contrib.quantization.python.array_ops;
 		If the mode is 'MIN_FIRST', then this approach is used:
 		
 		```
-		number_of_steps = 1 << (# of bits in T)
-		range_adjust = number_of_steps / (number_of_steps - 1)
+		num_discrete_values = 1 << (# of bits in T)
+		range_adjust = num_discrete_values / (num_discrete_values - 1)
 		range = (range_max - range_min) * range_adjust
-		range_scale = number_of_steps / range
+		range_scale = num_discrete_values / range
 		quantized = round(input * range_scale) - round(range_min * range_scale) +
 		  numeric_limits<T>::min()
 		quantized = max(quantized, numeric_limits<T>::min())
@@ -104,6 +148,52 @@ package tensorflow.contrib.quantization.python.array_ops;
 		is rounded first, before it's subtracted from the rounded value. With
 		MIN_COMBINED, a small bias is introduced where repeated iterations of quantizing
 		and dequantizing will introduce a larger and larger error.
+		
+		*SCALED mode Example*
+		
+		`SCALED` mode matches the quantization approach used in
+		`QuantizeAndDequantize{V2|V3}`.
+		
+		If the mode is `SCALED`, we do not use the full range of the output type,
+		choosing to elide the lowest possible value for symmetry (e.g., output range is
+		-127 to 127, not -128 to 127 for signed 8 bit quantization), so that 0.0 maps to
+		0.
+		
+		We first find the range of values in our tensor. The
+		range we use is always centered on 0, so we find m such that
+		
+		```c++
+		  m = max(abs(input_min), abs(input_max))
+		```
+		
+		Our input tensor range is then `[-m, m]`.
+		
+		Next, we choose our fixed-point quantization buckets, `[min_fixed, max_fixed]`.
+		If T is signed, this is
+		
+		```
+		  num_bits = sizeof(T) * 8
+		  [min_fixed, max_fixed] =
+		      [-(1 << (num_bits - 1) - 1), (1 << (num_bits - 1)) - 1]
+		```
+		
+		Otherwise, if T is unsigned, the fixed-point range is
+		
+		```
+		  [min_fixed, max_fixed] = [0, (1 << num_bits) - 1]
+		```
+		
+		From this we compute our scaling factor, s:
+		
+		```c++
+		  s = (max_fixed - min_fixed) / (2 * m)
+		```
+		
+		Now we can quantize the elements of our tensor:
+		
+		```c++
+		result = round(input * s)
+		```
 		
 		One thing to watch out for is that the operator may choose to adjust the
 		requested minimum and maximum values slightly during the quantization process,
@@ -120,18 +210,19 @@ package tensorflow.contrib.quantization.python.array_ops;
 		    The minimum scalar value possibly produced for the input.
 		  max_range: A `Tensor` of type `float32`.
 		    The maximum scalar value possibly produced for the input.
-		  T: A `tf.DType` from: `tf.qint8, tf.quint8, tf.qint16, tf.quint16, tf.qint32`.
-		  mode: An optional `string` from: `"MIN_COMBINED", "MIN_FIRST"`. Defaults to `"MIN_COMBINED"`.
+		  T: A `tf.DType` from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`.
+		  mode: An optional `string` from: `"MIN_COMBINED", "MIN_FIRST", "SCALED"`. Defaults to `"MIN_COMBINED"`.
+		  round_mode: An optional `string` from: `"HALF_AWAY_FROM_ZERO", "HALF_TO_EVEN"`. Defaults to `"HALF_AWAY_FROM_ZERO"`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (output, output_min, output_max).
 		
-		  output: A `Tensor` of type `T`. The quantized data produced from the float input.
-		  output_min: A `Tensor` of type `float32`. The actual minimum scalar value used for the output.
-		  output_max: A `Tensor` of type `float32`. The actual maximum scalar value used for the output.
+		  output: A `Tensor` of type `T`.
+		  output_min: A `Tensor` of type `float32`.
+		  output_max: A `Tensor` of type `float32`.
 	**/
-	static public function quantize_v2(input:Dynamic, min_range:Dynamic, max_range:Dynamic, T:Dynamic, ?mode:Dynamic, ?name:Dynamic):Dynamic;
+	static public function quantize_v2(input:Dynamic, min_range:Dynamic, max_range:Dynamic, T:Dynamic, ?mode:Dynamic, ?round_mode:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Concatenates quantized tensors along one dimension.
 		
@@ -151,11 +242,9 @@ package tensorflow.contrib.quantization.python.array_ops;
 		Returns:
 		  A tuple of `Tensor` objects (output, output_min, output_max).
 		
-		  output: A `Tensor`. Has the same type as `values`. A `Tensor` with the concatenation of values stacked along the
-		    `concat_dim` dimension.  This tensor's shape matches that of `values` except
-		    in `concat_dim` where it has the sum of the sizes.
-		  output_min: A `Tensor` of type `float32`. The float value that the minimum quantized output value represents.
-		  output_max: A `Tensor` of type `float32`. The float value that the maximum quantized output value represents.
+		  output: A `Tensor`. Has the same type as `values`.
+		  output_min: A `Tensor` of type `float32`.
+		  output_max: A `Tensor` of type `float32`.
 	**/
 	static public function quantized_concat(concat_dim:Dynamic, values:Dynamic, input_mins:Dynamic, input_maxes:Dynamic, ?name:Dynamic):Dynamic;
 }

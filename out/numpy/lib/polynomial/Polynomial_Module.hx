@@ -17,6 +17,8 @@ package numpy.lib.polynomial;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -39,6 +41,7 @@ package numpy.lib.polynomial;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -117,7 +120,15 @@ package numpy.lib.polynomial;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -263,12 +274,22 @@ package numpy.lib.polynomial;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -402,17 +423,20 @@ package numpy.lib.polynomial;
 	/**
 		Stack arrays in sequence horizontally (column wise).
 		
-		Take a sequence of arrays and stack them horizontally to make
-		a single array. Rebuild arrays divided by `hsplit`.
+		This is equivalent to concatenation along the second axis, except for 1-D
+		arrays where it concatenates along the first axis. Rebuilds arrays divided
+		by `hsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    All arrays must have the same shape along all but the second axis.
+		    The arrays must have the same shape along all but the second axis,
+		    except 1-D arrays which can be any length.
 		
 		Returns
 		-------
@@ -427,11 +451,6 @@ package numpy.lib.polynomial;
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -559,7 +578,7 @@ package numpy.lib.polynomial;
 		Examples
 		--------
 		>>> np.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])
-		array([ True, False, False, False, False,  True], dtype=bool)
+		array([ True, False, False, False, False,  True])
 	**/
 	static public function iscomplex(x:Dynamic):Dynamic;
 	/**
@@ -582,6 +601,17 @@ package numpy.lib.polynomial;
 		>>> np.isscalar([3.1])
 		False
 		>>> np.isscalar(False)
+		True
+		>>> np.isscalar('numpy')
+		True
+		
+		NumPy supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> isscalar(Fraction(5, 17))
+		True
+		>>> from numbers import Number
+		>>> isscalar(Number())
 		True
 	**/
 	static public function isscalar(num:Dynamic):Bool;
@@ -610,12 +640,19 @@ package numpy.lib.polynomial;
 		    as zero if they are smaller than `rcond` times the largest singular
 		    value of `a`.
 		
+		    .. versionchanged:: 1.14.0
+		       If not set, a FutureWarning is given. The previous default
+		       of ``-1`` will use the machine precision as `rcond` parameter,
+		       the new default will use the machine precision times `max(M, N)`.
+		       To silence the warning and use the new default, use ``rcond=None``,
+		       to keep using the old behavior, use ``rcond=-1``.
+		
 		Returns
 		-------
 		x : {(N,), (N, K)} ndarray
 		    Least-squares solution. If `b` is two-dimensional,
 		    the solutions are in the `K` columns of `x`.
-		residuals : {(), (1,), (K,)} ndarray
+		residuals : {(1,), (K,), (0,)} ndarray
 		    Sums of residuals; squared Euclidean 2-norm for each column in
 		    ``b - a*x``.
 		    If the rank of `a` is < N or M <= N, this is an empty array.
@@ -655,7 +692,7 @@ package numpy.lib.polynomial;
 		       [ 2.,  1.],
 		       [ 3.,  1.]])
 		
-		>>> m, c = np.linalg.lstsq(A, y)[0]
+		>>> m, c = np.linalg.lstsq(A, y, rcond=None)[0]
 		>>> print(m, c)
 		1.0 -0.95
 		
@@ -720,9 +757,10 @@ package numpy.lib.polynomial;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -731,14 +769,18 @@ package numpy.lib.polynomial;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -832,11 +874,6 @@ package numpy.lib.polynomial;
 		
 		>>> P = np.array([[0, 1./3], [-1./2, 0]])
 		>>> np.poly(P)
-		array([ 1.        ,  0.        ,  0.16666667])
-		
-		Or a square matrix object:
-		
-		>>> np.poly(np.matrix(P))
 		array([ 1.        ,  0.        ,  0.16666667])
 		
 		Note how in all cases the leading coefficient is always 1.

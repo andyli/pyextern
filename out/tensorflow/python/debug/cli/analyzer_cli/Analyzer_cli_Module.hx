@@ -47,12 +47,13 @@ package tensorflow.python.debug.cli.analyzer_cli;
 		    filter (Callable).
 		  ui_type: (str) requested UI type, e.g., "curses", "readline".
 		  on_ui_exit: (`Callable`) the callback to be called when the UI exits.
+		  config: A `cli_config.CLIConfig` object.
 		
 		Returns:
 		  (base_ui.BaseUI) A BaseUI subtype object with a set of standard analyzer
 		    commands and tab-completions registered.
 	**/
-	static public function create_analyzer_ui(debug_dump:Dynamic, ?tensor_filters:Dynamic, ?ui_type:Dynamic, ?on_ui_exit:Dynamic):Dynamic;
+	static public function create_analyzer_ui(debug_dump:Dynamic, ?tensor_filters:Dynamic, ?ui_type:Dynamic, ?on_ui_exit:Dynamic, ?config:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

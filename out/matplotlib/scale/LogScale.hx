@@ -125,7 +125,7 @@ package matplotlib.scale;
 		
 		  - :meth:`transform_path`
 	**/
-	static public function Log10Transform(nonpos:Dynamic):Dynamic;
+	static public function Log10Transform(?nonpos:Dynamic):Dynamic;
 	/**
 		The base class of all :class:`TransformNode` instances that
 		actually perform a transformation.
@@ -150,7 +150,7 @@ package matplotlib.scale;
 		
 		  - :meth:`transform_path`
 	**/
-	static public function Log2Transform(nonpos:Dynamic):Dynamic;
+	static public function Log2Transform(?nonpos:Dynamic):Dynamic;
 	/**
 		The base class of all :class:`TransformNode` instances that
 		actually perform a transformation.
@@ -175,7 +175,7 @@ package matplotlib.scale;
 		
 		  - :meth:`transform_path`
 	**/
-	static public function LogTransform(base:Dynamic, nonpos:Dynamic):Dynamic;
+	static public function LogTransform(base:Dynamic, ?nonpos:Dynamic):Dynamic;
 	/**
 		The base class of all :class:`TransformNode` instances that
 		actually perform a transformation.
@@ -200,7 +200,7 @@ package matplotlib.scale;
 		
 		  - :meth:`transform_path`
 	**/
-	static public function LogTransformBase(nonpos:Dynamic):Dynamic;
+	static public function LogTransformBase(?nonpos:Dynamic):Dynamic;
 	/**
 		The base class of all :class:`TransformNode` instances that
 		actually perform a transformation.
@@ -225,8 +225,8 @@ package matplotlib.scale;
 		
 		  - :meth:`transform_path`
 	**/
-	static public function NaturalLogTransform(nonpos:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function NaturalLogTransform(?nonpos:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -266,7 +266,7 @@ package matplotlib.scale;
 		*basex* /*basey*:
 		   The base of the logarithm
 		
-		*nonposx* /*nonposy*: ['mask' | 'clip' ]
+		*nonposx* /*nonposy*: {'mask', 'clip'}
 		  non-positive values in *x* or *y* can be masked as
 		  invalid, or clipped to a very small positive number
 		
@@ -284,7 +284,7 @@ package matplotlib.scale;
 		*basex* /*basey*:
 		   The base of the logarithm
 		
-		*nonposx* /*nonposy*: ['mask' | 'clip' ]
+		*nonposx* /*nonposy*: {'mask', 'clip'}
 		  non-positive values in *x* or *y* can be masked as
 		  invalid, or clipped to a very small positive number
 		
@@ -303,7 +303,7 @@ package matplotlib.scale;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -354,7 +354,7 @@ package matplotlib.scale;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

@@ -50,7 +50,7 @@ package tensorflow.contrib.slim.python.slim.learning;
 		  total_loss: A `Tensor` representing the total loss.
 		  optimizer: A tf.Optimizer to use for computing the gradients.
 		  global_step: A `Tensor` representing the global step variable. If left as
-		    `_USE_GLOBAL_STEP`, then slim.variables.global_step() is used.
+		    `_USE_GLOBAL_STEP`, then tf.contrib.framework.global_step() is used.
 		  update_ops: An optional list of updates to execute. If `update_ops` is
 		    `None`, then the update ops are set to the contents of the
 		    `tf.GraphKeys.UPDATE_OPS` collection. If `update_ops` is not `None`, but
@@ -112,14 +112,15 @@ package tensorflow.contrib.slim.python.slim.learning;
 		    default, two `Boolean`, scalar ops called "should_stop" and "should_log"
 		    are provided.
 		  log_every_n_steps: The frequency, in terms of global steps, that the loss
-		    and global step and logged.
+		    and global step are logged.
 		  graph: The graph to pass to the supervisor. If no graph is supplied the
 		    default graph is used.
 		  master: The address of the tensorflow master.
 		  is_chief: Specifies whether or not the training is being run by the primary
 		    replica during replica training.
 		  global_step: The `Tensor` representing the global step. If left as `None`,
-		    then slim.variables.get_or_create_global_step() is used.
+		    then training_util.get_or_create_global_step(), that is,
+		    tf.contrib.framework.global_step() is used.
 		  number_of_steps: The max number of gradient steps to take during training,
 		    as measured by 'global_step': training will stop if global_step is
 		    greater than 'number_of_steps'. If the value is left as None, training
@@ -145,14 +146,21 @@ package tensorflow.contrib.slim.python.slim.learning;
 		  saver: Saver to save checkpoints. If None, a default one will be created
 		    and used.
 		  save_interval_secs: How often, in seconds, to save the model to `logdir`.
-		  sync_optimizer: an instance of tf.train.SyncReplicasOptimizer. If the
-		    argument is supplied, gradient updates will be synchronous. If left as
-		    `None`, gradient updates will be asynchronous.
+		  sync_optimizer: an instance of tf.train.SyncReplicasOptimizer, or a list of
+		    them. If the argument is supplied, gradient updates will be synchronous.
+		    If left as `None`, gradient updates will be asynchronous.
 		  session_config: An instance of `tf.ConfigProto` that will be used to
 		    configure the `Session`. If left as `None`, the default will be used.
+		  session_wrapper: A function that takes a `tf.Session` object as the only
+		    argument and returns a wrapped session object that has the same methods
+		    that the original object has, or `None`. Iff not `None`, the wrapped
+		    object will be used for training.
 		  trace_every_n_steps: produce and save a `Timeline` in Chrome trace format
 		    and add it to the summaries every `trace_every_n_steps`. If None, no trace
 		    information will be produced or saved.
+		  ignore_live_threads: If `True` ignores threads that remain running after
+		    a grace period when stopping the supervisor, instead of raising a
+		    RuntimeError.
 		
 		Returns:
 		  the value of the loss function after training.
@@ -163,7 +171,7 @@ package tensorflow.contrib.slim.python.slim.learning;
 		    negative, or if `trace_every_n_steps` is not `None` and no `logdir` is
 		    provided.
 	**/
-	static public function train(train_op:Dynamic, logdir:Dynamic, ?train_step_fn:Dynamic, ?train_step_kwargs:Dynamic, ?log_every_n_steps:Dynamic, ?graph:Dynamic, ?master:Dynamic, ?is_chief:Dynamic, ?global_step:Dynamic, ?number_of_steps:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?init_fn:Dynamic, ?ready_op:Dynamic, ?summary_op:Dynamic, ?save_summaries_secs:Dynamic, ?summary_writer:Dynamic, ?startup_delay_steps:Dynamic, ?saver:Dynamic, ?save_interval_secs:Dynamic, ?sync_optimizer:Dynamic, ?session_config:Dynamic, ?trace_every_n_steps:Dynamic):Dynamic;
+	static public function train(train_op:Dynamic, logdir:Dynamic, ?train_step_fn:Dynamic, ?train_step_kwargs:Dynamic, ?log_every_n_steps:Dynamic, ?graph:Dynamic, ?master:Dynamic, ?is_chief:Dynamic, ?global_step:Dynamic, ?number_of_steps:Dynamic, ?init_op:Dynamic, ?init_feed_dict:Dynamic, ?local_init_op:Dynamic, ?init_fn:Dynamic, ?ready_op:Dynamic, ?summary_op:Dynamic, ?save_summaries_secs:Dynamic, ?summary_writer:Dynamic, ?startup_delay_steps:Dynamic, ?saver:Dynamic, ?save_interval_secs:Dynamic, ?sync_optimizer:Dynamic, ?session_config:Dynamic, ?session_wrapper:Dynamic, ?trace_every_n_steps:Dynamic, ?ignore_live_threads:Dynamic):Dynamic;
 	/**
 		Function that takes a gradient step and specifies whether to stop.
 		

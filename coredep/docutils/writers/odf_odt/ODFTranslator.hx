@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.odf_odt;
 @:pythonImport("docutils.writers.odf_odt", "ODFTranslator") extern class ODFTranslator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.writers.odf_odt;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.writers.odf_odt;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -128,6 +128,13 @@ package docutils.writers.odf_odt;
 	static public var code_none : Dynamic;
 	static public var code_text : Dynamic;
 	public function content_astext():Dynamic;
+	/**
+		Convert various units to centimeters.
+		
+		Note that a call to this method should be wrapped in:
+		    try: except ValueError:
+	**/
+	public function convert_to_cm(size:Dynamic):Dynamic;
 	public function create_custom_headfoot(parent:Dynamic, text:Dynamic, style_name:Dynamic, automatic_styles:Dynamic):Dynamic;
 	/**
 		Override for generic, uniform traversals.
@@ -266,11 +273,19 @@ package docutils.writers.odf_odt;
 	public function generate_labeled_block(node:Dynamic, label:Dynamic):Dynamic;
 	public function generate_labeled_line(node:Dynamic, label:Dynamic):Dynamic;
 	public function generate_table_of_content_entry_template(el1:Dynamic):Dynamic;
+	public function get_dom_stylesheet():Dynamic;
 	public function get_embedded_file_list():Dynamic;
 	public function get_image_scale(node:Dynamic):Dynamic;
+	/**
+		Return the image size in centimeters adjusted by image attrs.
+	**/
 	public function get_image_scaled_width_height(node:Dynamic, source:Dynamic):Dynamic;
 	public function get_image_width_height(node:Dynamic, attr:Dynamic):Dynamic;
 	public function get_meta_dict():Dynamic;
+	/**
+		Return the document's page width in centimeters.
+	**/
+	public function get_page_width():Dynamic;
 	public function get_property(stylenode:Dynamic):Dynamic;
 	public function get_str_stylesheet():Dynamic;
 	public function get_table_style(node:Dynamic):Dynamic;
@@ -288,8 +303,9 @@ package docutils.writers.odf_odt;
 	/**
 		Returns the style name to use for the given style.
 		
-		If `parameters` is given `name` must contain a matching number of ``%`` and
-		is used as a format expression with `parameters` as the value.
+		If `parameters` is given `name` must contain a matching number of
+		``%`` and is used as a format expression with `parameters` as
+		the value.
 	**/
 	public function rststyle(name:Dynamic, ?parameters:Dynamic):Dynamic;
 	public function set_current_element(el:Dynamic):Dynamic;

@@ -54,7 +54,7 @@ package theano.gof.graph;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,11 +120,12 @@ package theano.gof.graph;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public function append_construction_observer(observer:Dynamic):Dynamic;
 	/**
 		Return a new Variable like self.
 		
@@ -141,6 +142,7 @@ package theano.gof.graph;
 		Name is copied to the returned instance.
 	**/
 	public function clone():Dynamic;
+	static public var construction_observers : Dynamic;
 	/**
 		Evaluates this variable.
 		
@@ -182,4 +184,6 @@ package theano.gof.graph;
 		value should not modify the graph structure.
 	**/
 	public function get_parents():Dynamic;
+	static public function notify_construction_observers(instance:Dynamic):Dynamic;
+	static public function remove_construction_observer(observer:Dynamic):Dynamic;
 }

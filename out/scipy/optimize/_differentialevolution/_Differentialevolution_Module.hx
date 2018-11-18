@@ -54,9 +54,11 @@ package scipy.optimize._differentialevolution;
 		        - 'best1exp'
 		        - 'rand1exp'
 		        - 'randtobest1exp'
+		        - 'currenttobest1exp'
 		        - 'best2exp'
 		        - 'rand2exp'
 		        - 'randtobest1bin'
+		        - 'currenttobest1bin'
 		        - 'best2bin'
 		        - 'rand2bin'
 		        - 'rand1bin'
@@ -68,7 +70,8 @@ package scipy.optimize._differentialevolution;
 		    is: ``(maxiter + 1) * popsize * len(x)``
 		popsize : int, optional
 		    A multiplier for setting the total population size.  The population has
-		    ``popsize * len(x)`` individuals.
+		    ``popsize * len(x)`` individuals (unless the initial population is
+		    supplied via the `init` keyword).
 		tol : float, optional
 		    Relative tolerance for convergence, the solving stops when
 		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
@@ -109,17 +112,24 @@ package scipy.optimize._differentialevolution;
 		    If True (default), then `scipy.optimize.minimize` with the `L-BFGS-B`
 		    method is used to polish the best population member at the end, which
 		    can improve the minimization slightly.
-		init : string, optional
-		    Specify how the population initialization is performed. Should be
+		init : str or array-like, optional
+		    Specify which type of population initialization is performed. Should be
 		    one of:
 		
 		        - 'latinhypercube'
 		        - 'random'
+		        - array specifying the initial population. The array should have
+		          shape ``(M, len(x))``, where len(x) is the number of parameters.
+		          `init` is clipped to `bounds` before use.
 		
 		    The default is 'latinhypercube'. Latin Hypercube sampling tries to
-		    maximize coverage of the available parameter space. 'random' initializes
-		    the population randomly - this has the drawback that clustering can
-		    occur, preventing the whole of parameter space being covered.
+		    maximize coverage of the available parameter space. 'random'
+		    initializes the population randomly - this has the drawback that
+		    clustering can occur, preventing the whole of parameter space being
+		    covered. Use of an array to specify a population subset could be used,
+		    for example, to create a tight bunch of initial guesses in an location
+		    where the solution is known to exist, thereby reducing time for
+		    convergence.
 		atol : float, optional
 		    Absolute tolerance for convergence, the solving stops when
 		    ``np.std(pop) <= atol + tol * np.abs(np.mean(population_energies))``,
@@ -209,29 +219,22 @@ package scipy.optimize._differentialevolution;
 	/**
 		Minimization of scalar function of one or more variables.
 		
-		In general, the optimization problems are of the form::
-		
-		    minimize f(x) subject to
-		
-		    g_i(x) >= 0,  i = 1,...,m
-		    h_j(x)  = 0,  j = 1,...,p
-		
-		where x is a vector of one or more variables.
-		``g_i(x)`` are the inequality constraints.
-		``h_j(x)`` are the equality constrains.
-		
-		Optionally, the lower and upper bounds for each element in x can also be
-		specified using the `bounds` argument.
-		
 		Parameters
 		----------
 		fun : callable
-		    Objective function.
-		x0 : ndarray
-		    Initial guess.
+		    The objective function to be minimized.
+		
+		        ``fun(x, *args) -> float``
+		
+		    where x is an 1-D array with shape (n,) and `args`
+		    is a tuple of the fixed parameters needed to completely
+		    specify the function.
+		x0 : ndarray, shape (n,)
+		    Initial guess. Array of real elements of size (n,),
+		    where 'n' is the number of independent variables.
 		args : tuple, optional
 		    Extra arguments passed to the objective function and its
-		    derivatives (Jacobian, Hessian).
+		    derivatives (`fun`, `jac` and `hess` functions).
 		method : str or callable, optional
 		    Type of solver.  Should be one of
 		
@@ -244,38 +247,88 @@ package scipy.optimize._differentialevolution;
 		        - 'TNC'         :ref:`(see here) <optimize.minimize-tnc>`
 		        - 'COBYLA'      :ref:`(see here) <optimize.minimize-cobyla>`
 		        - 'SLSQP'       :ref:`(see here) <optimize.minimize-slsqp>`
+		        - 'trust-constr':ref:`(see here) <optimize.minimize-trustconstr>`
 		        - 'dogleg'      :ref:`(see here) <optimize.minimize-dogleg>`
 		        - 'trust-ncg'   :ref:`(see here) <optimize.minimize-trustncg>`
+		        - 'trust-exact' :ref:`(see here) <optimize.minimize-trustexact>`
+		        - 'trust-krylov' :ref:`(see here) <optimize.minimize-trustkrylov>`
 		        - custom - a callable object (added in version 0.14.0),
 		          see below for description.
 		
 		    If not given, chosen to be one of ``BFGS``, ``L-BFGS-B``, ``SLSQP``,
 		    depending if the problem has constraints or bounds.
-		jac : bool or callable, optional
-		    Jacobian (gradient) of objective function. Only for CG, BFGS,
-		    Newton-CG, L-BFGS-B, TNC, SLSQP, dogleg, trust-ncg.
+		jac : {callable,  '2-point', '3-point', 'cs', bool}, optional
+		    Method for computing the gradient vector. Only for CG, BFGS,
+		    Newton-CG, L-BFGS-B, TNC, SLSQP, dogleg, trust-ncg, trust-krylov,
+		    trust-exact and trust-constr. If it is a callable, it should be a
+		    function that returns the gradient vector:
+		
+		        ``jac(x, *args) -> array_like, shape (n,)``
+		
+		    where x is an array with shape (n,) and `args` is a tuple with
+		    the fixed parameters. Alternatively, the keywords
+		    {'2-point', '3-point', 'cs'} select a finite
+		    difference scheme for numerical estimation of the gradient. Options
+		    '3-point' and 'cs' are available only to 'trust-constr'.
 		    If `jac` is a Boolean and is True, `fun` is assumed to return the
-		    gradient along with the objective function. If False, the
-		    gradient will be estimated numerically.
-		    `jac` can also be a callable returning the gradient of the
-		    objective. In this case, it must accept the same arguments as `fun`.
-		hess, hessp : callable, optional
-		    Hessian (matrix of second-order derivatives) of objective function or
-		    Hessian of objective function times an arbitrary vector p.  Only for
-		    Newton-CG, dogleg, trust-ncg.
+		    gradient along with the objective function. If False, the gradient
+		    will be estimated using '2-point' finite difference estimation.
+		hess : {callable, '2-point', '3-point', 'cs', HessianUpdateStrategy},  optional
+		    Method for computing the Hessian matrix. Only for Newton-CG, dogleg,
+		    trust-ncg,  trust-krylov, trust-exact and trust-constr. If it is
+		    callable, it should return the  Hessian matrix:
+		
+		        ``hess(x, *args) -> {LinearOperator, spmatrix, array}, (n, n)``
+		
+		    where x is a (n,) ndarray and `args` is a tuple with the fixed
+		    parameters. LinearOperator and sparse matrix returns are
+		    allowed only for 'trust-constr' method. Alternatively, the keywords
+		    {'2-point', '3-point', 'cs'} select a finite difference scheme
+		    for numerical estimation. Or, objects implementing
+		    `HessianUpdateStrategy` interface can be used to approximate
+		    the Hessian. Available quasi-Newton methods implementing
+		    this interface are:
+		
+		        - `BFGS`;
+		        - `SR1`.
+		
+		    Whenever the gradient is estimated via finite-differences,
+		    the Hessian cannot be estimated with options
+		    {'2-point', '3-point', 'cs'} and needs to be
+		    estimated using one of the quasi-Newton strategies.
+		    Finite-difference options {'2-point', '3-point', 'cs'} and
+		    `HessianUpdateStrategy` are available only for 'trust-constr' method.
+		hessp : callable, optional
+		    Hessian of objective function times an arbitrary vector p. Only for
+		    Newton-CG, trust-ncg, trust-krylov, trust-constr.
 		    Only one of `hessp` or `hess` needs to be given.  If `hess` is
-		    provided, then `hessp` will be ignored.  If neither `hess` nor
-		    `hessp` is provided, then the Hessian product will be approximated
-		    using finite differences on `jac`. `hessp` must compute the Hessian
-		    times an arbitrary vector.
-		bounds : sequence, optional
-		    Bounds for variables (only for L-BFGS-B, TNC and SLSQP).
-		    ``(min, max)`` pairs for each element in ``x``, defining
-		    the bounds on that parameter. Use None for one of ``min`` or
-		    ``max`` when there is no bound in that direction.
-		constraints : dict or sequence of dict, optional
-		    Constraints definition (only for COBYLA and SLSQP).
-		    Each constraint is defined in a dictionary with fields:
+		    provided, then `hessp` will be ignored.  `hessp` must compute the
+		    Hessian times an arbitrary vector:
+		
+		        ``hessp(x, p, *args) ->  ndarray shape (n,)``
+		
+		    where x is a (n,) ndarray, p is an arbitrary vector with
+		    dimension (n,) and `args` is a tuple with the fixed
+		    parameters.
+		bounds : sequence or `Bounds`, optional
+		    Bounds on variables for L-BFGS-B, TNC, SLSQP and
+		    trust-constr methods. There are two ways to specify the bounds:
+		
+		        1. Instance of `Bounds` class.
+		        2. Sequence of ``(min, max)`` pairs for each element in `x`. None
+		           is used to specify no bound.
+		
+		constraints : {Constraint, dict} or List of {Constraint, dict}, optional
+		    Constraints definition (only for COBYLA, SLSQP and trust-constr).
+		    Constraints for 'trust-constr' are defined as a single object or a
+		    list of objects specifying constraints to the optimization problem.
+		    Available constraints are:
+		
+		        - `LinearConstraint`
+		        - `NonlinearConstraint`
+		
+		    Constraints for COBYLA, SLSQP are defined as a list of dictionaries.
+		    Each dictionary with fields:
 		
 		        type : str
 		            Constraint type: 'eq' for equality, 'ineq' for inequality.
@@ -303,8 +356,20 @@ package scipy.optimize._differentialevolution;
 		
 		    For method-specific options, see :func:`show_options()`.
 		callback : callable, optional
-		    Called after each iteration, as ``callback(xk)``, where ``xk`` is the
-		    current parameter vector.
+		    Called after each iteration. For 'trust-constr' it is a callable with
+		    the signature:
+		
+		        ``callback(xk, OptimizeResult state) -> bool``
+		
+		    where ``xk`` is the current parameter vector. and ``state``
+		    is an `OptimizeResult` object, with the same fields
+		    as the ones from the return.  If callback returns True
+		    the algorithm execution is terminated.
+		    For all the other methods, the signature is:
+		
+		        ``callback(xk)``
+		
+		    where ``xk`` is the current parameter vector.
 		
 		Returns
 		-------
@@ -360,7 +425,8 @@ package scipy.optimize._differentialevolution;
 		Newton-CG algorithm [5]_ pp. 168 (also known as the truncated
 		Newton method). It uses a CG method to the compute the search
 		direction. See also *TNC* method for a box-constrained
-		minimization with a similar algorithm.
+		minimization with a similar algorithm. Suitable for large-scale
+		problems.
 		
 		Method :ref:`dogleg <optimize.minimize-dogleg>` uses the dog-leg
 		trust-region algorithm [5]_ for unconstrained minimization. This
@@ -371,9 +437,25 @@ package scipy.optimize._differentialevolution;
 		Newton conjugate gradient trust-region algorithm [5]_ for
 		unconstrained minimization. This algorithm requires the gradient
 		and either the Hessian or a function that computes the product of
-		the Hessian with a given vector.
+		the Hessian with a given vector. Suitable for large-scale problems.
 		
-		**Constrained minimization**
+		Method :ref:`trust-krylov <optimize.minimize-trustkrylov>` uses
+		the Newton GLTR trust-region algorithm [14]_, [15]_ for unconstrained
+		minimization. This algorithm requires the gradient
+		and either the Hessian or a function that computes the product of
+		the Hessian with a given vector. Suitable for large-scale problems.
+		On indefinite problems it requires usually less iterations than the
+		`trust-ncg` method and is recommended for medium and large-scale problems.
+		
+		Method :ref:`trust-exact <optimize.minimize-trustexact>`
+		is a trust-region method for unconstrained minimization in which
+		quadratic subproblems are solved almost exactly [13]_. This
+		algorithm requires the gradient and the Hessian (which is
+		*not* required to be positive definite). It is, in many
+		situations, the Newton method to converge in fewer iteraction
+		and the most recommended for small and medium-size problems.
+		
+		**Bound-Constrained minimization**
 		
 		Method :ref:`L-BFGS-B <optimize.minimize-lbfgsb>` uses the L-BFGS-B
 		algorithm [6]_, [7]_ for bound constrained minimization.
@@ -384,6 +466,8 @@ package scipy.optimize._differentialevolution;
 		called Newton Conjugate-Gradient. It differs from the *Newton-CG*
 		method described above as it wraps a C implementation and allows
 		each variable to be given upper and lower bounds.
+		
+		**Constrained Minimization**
 		
 		Method :ref:`COBYLA <optimize.minimize-cobyla>` uses the
 		Constrained Optimization BY Linear Approximation (COBYLA) method
@@ -400,6 +484,32 @@ package scipy.optimize._differentialevolution;
 		originally implemented by Dieter Kraft [12]_. Note that the
 		wrapper handles infinite values in bounds by converting them into
 		large floating values.
+		
+		Method :ref:`trust-constr <optimize.minimize-trustconstr>` is a
+		trust-region algorithm for constrained optimization. It swiches
+		between two implementations depending on the problem definition.
+		It is the most versatile constrained minimization algorithm
+		implemented in SciPy and the most appropriate for large-scale problems.
+		For equality constrained problems it is an implementation of Byrd-Omojokun
+		Trust-Region SQP method described in [17]_ and in [5]_, p. 549. When
+		inequality constraints  are imposed as well, it swiches to the trust-region
+		interior point  method described in [16]_. This interior point algorithm,
+		in turn, solves inequality constraints by introducing slack variables
+		and solving a sequence of equality-constrained barrier problems
+		for progressively smaller values of the barrier parameter.
+		The previously described equality constrained SQP method is
+		used to solve the subproblems with increasing levels of accuracy
+		as the iterate gets closer to a solution.
+		
+		**Finite-Difference Options**
+		
+		For Method :ref:`trust-constr <optimize.minimize-trustconstr>`
+		the gradient and the Hessian may be approximated using
+		three finite-difference schemes: {'2-point', '3-point', 'cs'}.
+		The scheme 'cs' is, potentially, the most accurate but it
+		requires the function to correctly handles complex inputs and to
+		be differentiable in the complex plane. The scheme '3-point' is more
+		accurate than '2-point' but requires twice as much operations.
 		
 		**Custom minimizers**
 		
@@ -461,6 +571,20 @@ package scipy.optimize._differentialevolution;
 		.. [12] Kraft, D. A software package for sequential quadratic
 		   programming. 1988. Tech. Rep. DFVLR-FB 88-28, DLR German Aerospace
 		   Center -- Institute for Flight Mechanics, Koln, Germany.
+		.. [13] Conn, A. R., Gould, N. I., and Toint, P. L.
+		   Trust region methods. 2000. Siam. pp. 169-200.
+		.. [14] F. Lenders, C. Kirches, A. Potschka: "trlib: A vector-free
+		   implementation of the GLTR method for iterative solution of
+		   the trust region problem", https://arxiv.org/abs/1611.04718
+		.. [15] N. Gould, S. Lucidi, M. Roma, P. Toint: "Solving the
+		   Trust-Region Subproblem using the Lanczos Method",
+		   SIAM J. Optim., 9(2), 504--525, (1999).
+		.. [16] Byrd, Richard H., Mary E. Hribar, and Jorge Nocedal. 1999.
+		    An interior point algorithm for large-scale nonlinear  programming.
+		    SIAM Journal on Optimization 9.4: 877-900.
+		.. [17] Lalee, Marucha, Jorge Nocedal, and Todd Plantega. 1998. On the
+		    implementation of an algorithm for large-scale equality constrained
+		    optimization. SIAM Journal on Optimization 8.3: 682-706.
 		
 		Examples
 		--------
@@ -523,4 +647,5 @@ package scipy.optimize._differentialevolution;
 	**/
 	static public function minimize(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?method:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?bounds:Dynamic, ?constraints:Dynamic, ?tol:Dynamic, ?callback:Dynamic, ?options:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public var string_types : Dynamic;
 }

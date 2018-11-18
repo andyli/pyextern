@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.ma.extras;
 @:pythonImport("numpy.ma.extras", "MAxisConcatenator") extern class MAxisConcatenator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package numpy.ma.extras;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,7 +105,7 @@ package numpy.ma.extras;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -152,6 +152,10 @@ package numpy.ma.extras;
 	static public function concatenate(arrays:Dynamic, ?axis:Dynamic):numpy.ma.MaskedArray;
 	/**
 		matrix(data, dtype=None, copy=True)
+		
+		.. note:: It is no longer recommended to use this class, even for linear
+		          algebra. Instead use regular arrays. The class may be removed
+		          in the future.
 		
 		Returns a matrix from an array-like object, or from a string of data.
 		A matrix is a specialized 2-D array that retains its 2-D nature

@@ -14,12 +14,11 @@ package matplotlib.tri.triinterpolate;
 		Returns
 		-------
 		z : np.ma.array
-		    Masked array of the same shape as *x* and *y* ; values
-		    corresponding to (*x*, *y*) points outside of the triangulation
-		    are masked out.
+		    Masked array of the same shape as *x* and *y*; values corresponding
+		    to (*x*, *y*) points outside of the triangulation are masked out.
 	**/
 	public function __call__(x:Dynamic, y:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -70,7 +69,7 @@ package matplotlib.tri.triinterpolate;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +120,7 @@ package matplotlib.tri.triinterpolate;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -135,7 +134,7 @@ package matplotlib.tri.triinterpolate;
 		    Choice of the _DOF_estimator subclass to perform the gradient
 		    estimation.
 		dz: tuple of array_likes (dzdx, dzdy), optional
-		    Used only if *kind=user ; in this case passed to the
+		    Used only if *kind*=user; in this case passed to the
 		    :class:`_DOF_estimator_user`.
 		
 		Returns
@@ -160,6 +159,8 @@ package matplotlib.tri.triinterpolate;
 		      HCT triangular element.
 	**/
 	static public function _compute_tri_eccentricities(tris_pts:Dynamic):Dynamic;
+	static public var _docstring__call__ : Dynamic;
+	static public var _docstringgradient : Dynamic;
 	/**
 		Fast (vectorized) function to compute barycentric coordinates alpha.
 		
@@ -271,8 +272,6 @@ package matplotlib.tri.triinterpolate;
 		    Returned array of the same size as *tri_index*
 	**/
 	public function _interpolate_single_key(return_key:Dynamic, tri_index:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
-	static public var docstring__call__ : Dynamic;
-	static public var docstringgradient : Dynamic;
 	/**
 		Returns a list of 2 masked arrays containing interpolated derivatives
 		at the specified x,y points.
@@ -286,21 +285,12 @@ package matplotlib.tri.triinterpolate;
 		Returns
 		-------
 		dzdx, dzdy : np.ma.array
-		    2  masked arrays of the same shape as *x* and *y* ; values
+		    2 masked arrays of the same shape as *x* and *y*; values
 		    corresponding to (x,y) points outside of the triangulation
 		    are masked out.
 		    The first returned array contains the values of
 		    :math:`\frac{\partial z}{\partial x}` and the second those of
 		    :math:`\frac{\partial z}{\partial y}`.
-		
-		
-		
-		Examples
-		--------
-		An example of effective application is shown below (plot of the
-		direction of the vector field derivated from a known potential field):
-		
-		.. plot:: mpl_examples/pylab_examples/trigradient_demo.py
 	**/
 	public function gradient(x:Dynamic, y:Dynamic):Dynamic;
 }

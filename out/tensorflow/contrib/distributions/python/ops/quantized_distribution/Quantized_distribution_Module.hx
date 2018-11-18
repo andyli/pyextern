@@ -16,7 +16,11 @@ package tensorflow.contrib.distributions.python.ops.quantized_distribution;
 	static public var _log_prob_note : Dynamic;
 	static public var _log_sf_note : Dynamic;
 	/**
-		Stable evaluation of `Log[exp{big} - exp{small}]`.
+		Stable evaluation of `Log[exp{big} - exp{small}]`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
 		To work correctly, we should have the pointwise relation:  `small <= big`.
 		

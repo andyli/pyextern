@@ -112,6 +112,8 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -120,7 +122,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Deprecated, please use Estimator.export_savedmodel(). (deprecated)
@@ -137,7 +139,7 @@ package tensorflow.contrib.learn.python.learn.utils.export;
 		Instructions for updating:
 		signature_fns are deprecated. For canned Estimators they are no longer needed. For custom Estimators, please return output_alternatives from your model_fn via ModelFnOps.
 		
-		This is needed for backward compatibility with default behaviour of
+		This is needed for backward compatibility with default behavior of
 		export_estimator.
 		
 		Args:

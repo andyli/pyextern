@@ -101,7 +101,7 @@ package theano.gpuarray.extra_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -151,12 +151,11 @@ package theano.gpuarray.extra_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _generate_kernel_bin(k:Dynamic, ctx:Dynamic):Dynamic;
 	public function _generate_kernel_cleanup(k:Dynamic):Dynamic;
 	public function _generate_kernel_code(k:Dynamic):Dynamic;
 	public function _generate_kernel_init(k:Dynamic, fail:Dynamic, ctx:Dynamic):Dynamic;
@@ -198,10 +197,10 @@ package theano.gpuarray.extra_ops;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	public function c_cleanup_code_struct(node:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Required: return the C implementation of an Op.
@@ -406,7 +405,7 @@ package theano.gpuarray.extra_ops;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -429,6 +428,9 @@ package theano.gpuarray.extra_ops;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function get_gpu_context(node:Dynamic):Dynamic;
+	public function get_gpu_context_c_name(params_c_name:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	/**
 		This is the method to override. This should return an iterable
 		of Kernel objects that describe the kernels this op will need.
@@ -436,8 +438,7 @@ package theano.gpuarray.extra_ops;
 	public function gpu_kernels(node:Dynamic, name:Dynamic):Dynamic;
 	/**
 		If you override :meth:`c_code_cache_version_apply`, call this
-		method to have the version of the kernel support code and
-		device.
+		method to have the version of the kernel support code.
 		
 		Parameters
 		----------
@@ -534,7 +535,7 @@ package theano.gpuarray.extra_ops;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

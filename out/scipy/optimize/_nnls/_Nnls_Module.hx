@@ -9,7 +9,7 @@ package scipy.optimize._nnls;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		x,rnorm,mode = nnls(a,m,n,b,w,zz,index_bn,[mda,overwrite_a,overwrite_b])
+		x,rnorm,mode = nnls(a,m,n,b,w,zz,index_bn,maxiter,[mda,overwrite_a,overwrite_b])
 		
 		Wrapper for ``nnls``.
 		
@@ -22,6 +22,7 @@ package scipy.optimize._nnls;
 		w : input rank-1 array('d') with bounds (*)
 		zz : input rank-1 array('d') with bounds (*)
 		index_bn : input rank-1 array('i') with bounds (*)
+		maxiter : input int
 		
 		Other Parameters
 		----------------

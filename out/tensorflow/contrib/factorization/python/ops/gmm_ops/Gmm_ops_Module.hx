@@ -43,7 +43,7 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		
 		This function is used to perform parallel lookups on the list of
 		tensors in `params`.  It is a generalization of
-		@{tf.gather}, where `params` is
+		`tf.gather`, where `params` is
 		interpreted as a partitioning of a large embedding tensor.  `params` may be
 		a `PartitionedVariable` as returned by using `tf.get_variable()` with a
 		partitioner.
@@ -82,8 +82,8 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		    in `indices` are always validated to be within range.  If assigned to GPU,
 		    out-of-bound indices result in safe but unspecified behavior, which may
 		    include raising an error.
-		  max_norm: If not None, embedding values are l2-normalized to the value of
-		   max_norm.
+		  max_norm: If not `None`, each embedding is clipped if its l2-norm is
+		    larger than this value.
 		
 		Returns:
 		  A `Tensor` with the same type as the tensors in `params`.
@@ -112,15 +112,11 @@ package tensorflow.contrib.factorization.python.ops.gmm_ops;
 		Returns:
 		  Note: tuple of lists returned to be consistent with skflow
 		  A tuple consisting of:
-		  all_scores: A matrix (or list of matrices) of dimensions (num_input,
-		    num_clusters) where the value is the distance of an input vector and a
-		    cluster center.
 		  assignments: A vector (or list of vectors). Each element in the vector
 		    corresponds to an input row in 'inp' and specifies the cluster id
 		    corresponding to the input.
-		  scores: Similar to assignments but specifies the distance to the
-		    assigned cluster instead.
 		  training_op: an op that runs an iteration of training.
+		  init_op: an op that runs the initialization.
 	**/
 	static public function gmm(inp:Dynamic, initial_clusters:Dynamic, num_clusters:Dynamic, random_seed:Dynamic, ?covariance_type:Dynamic, ?params:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

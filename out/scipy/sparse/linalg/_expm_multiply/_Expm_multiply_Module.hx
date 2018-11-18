@@ -112,7 +112,7 @@ package scipy.sparse.linalg._expm_multiply;
 	/**
 		A helper function, for the case q <= s.
 	**/
-	static public function _expm_multiply_interval_core_0(A:Dynamic, X:Dynamic, h:Dynamic, mu:Dynamic, m_star:Dynamic, s:Dynamic, q:Dynamic):Dynamic;
+	static public function _expm_multiply_interval_core_0(A:Dynamic, X:Dynamic, h:Dynamic, mu:Dynamic, q:Dynamic, norm_info:Dynamic, tol:Dynamic, ell:Dynamic, n0:Dynamic):Dynamic;
 	/**
 		A helper function, for the case q > s and q % s == 0.
 	**/
@@ -234,6 +234,12 @@ package scipy.sparse.linalg._expm_multiply;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -301,6 +307,28 @@ package scipy.sparse.linalg._expm_multiply;
 		       Acta Numerica,
 		       19. 159-208. ISSN 0962-4929
 		       http://eprints.ma.man.ac.uk/1451/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import expm, expm_multiply
+		>>> A = csc_matrix([[1, 0], [0, 1]])
+		>>> A.todense()
+		matrix([[1, 0],
+		        [0, 1]], dtype=int64)
+		>>> B = np.array([np.exp(-1.), np.exp(-2.)])
+		>>> B
+		array([ 0.36787944,  0.13533528])
+		>>> expm_multiply(A, B, start=1, stop=2, num=3, endpoint=True)
+		array([[ 1.        ,  0.36787944],
+		       [ 1.64872127,  0.60653066],
+		       [ 2.71828183,  1.        ]])
+		>>> expm(A).dot(B)                  # Verify 1st timestep
+		array([ 1.        ,  0.36787944])
+		>>> expm(1.5*A).dot(B)              # Verify 2nd timestep
+		array([ 1.64872127,  0.60653066])
+		>>> expm(2*A).dot(B)                # Verify 3rd timestep
+		array([ 2.71828183,  1.        ])
 	**/
 	static public function expm_multiply(A:Dynamic, B:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

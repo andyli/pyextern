@@ -34,8 +34,8 @@ package tensorflow.contrib.keras.api.keras.utils;
 		Consider a custom object `MyObject`
 		
 		```python
-		    with custom_object_scope({"MyObject":MyObject}):
-		        layer = Dense(..., W_regularizer="MyObject")
+		    with custom_object_scope({'MyObject':MyObject}):
+		        layer = Dense(..., kernel_regularizer='MyObject')
 		        # save, load, etc. will recognize custom object by name
 		```
 		
@@ -59,7 +59,7 @@ package tensorflow.contrib.keras.api.keras.utils;
 		
 		```python
 		    get_custom_objects().clear()
-		    get_custom_objects()["MyObject"] = MyObject
+		    get_custom_objects()['MyObject'] = MyObject
 		```
 		
 		Returns:
@@ -120,7 +120,20 @@ package tensorflow.contrib.keras.api.keras.utils;
 		    A normalized copy of the array.
 	**/
 	static public function normalize(x:Dynamic, ?axis:Dynamic, ?order:Dynamic):Dynamic;
-	static public function plot_model(model:Dynamic, ?to_file:Dynamic, ?show_shapes:Dynamic, ?show_layer_names:Dynamic):Dynamic;
+	/**
+		Converts a Keras model to dot format and save to a file.
+		
+		Arguments:
+		    model: A Keras model instance
+		    to_file: File name of the plot image.
+		    show_shapes: whether to display shape information.
+		    show_layer_names: whether to display layer names.
+		    rankdir: `rankdir` argument passed to PyDot,
+		        a string specifying the format of the plot:
+		        'TB' creates a vertical plot;
+		        'LR' creates a horizontal plot.
+	**/
+	static public function plot_model(model:Dynamic, ?to_file:Dynamic, ?show_shapes:Dynamic, ?show_layer_names:Dynamic, ?rankdir:Dynamic):Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
 	/**
 		Converts a class vector (integers) to binary class matrix.
@@ -133,7 +146,8 @@ package tensorflow.contrib.keras.api.keras.utils;
 		    num_classes: total number of classes.
 		
 		Returns:
-		    A binary matrix representation of the input.
+		    A binary matrix representation of the input. The classes axis is placed
+		    last.
 	**/
 	static public function to_categorical(y:Dynamic, ?num_classes:Dynamic):Dynamic;
 }

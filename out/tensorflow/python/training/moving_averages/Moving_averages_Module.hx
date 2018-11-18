@@ -61,12 +61,30 @@ package tensorflow.python.training.moving_averages;
 		See `ADAM: A Method for Stochastic Optimization` Section 3 for more details
 		(https://arxiv.org/abs/1412.6980).
 		
+		The names of the debias shadow variables, by default, include both the scope
+		they were created in and the scope of the variables they debias. They are also
+		given a uniqifying-suffix.
+		
+		E.g.:
+		
+		```
+		  with tf.variable_scope('scope1'):
+		    with tf.variable_scope('scope2'):
+		      var = tf.get_variable('foo')
+		      tf.assign_moving_average(var, 0.0, 1.0)
+		      tf.assign_moving_average(var, 0.0, 0.9)
+		
+		  # var.name: 'scope1/scope2/foo'
+		  # shadow var names: 'scope1/scope2/scope1/scope2/foo/biased'
+		  #                   'scope1/scope2/scope1/scope2/foo/biased_1'
+		```
+		
 		Args:
 		  variable: A Variable.
 		  value: A tensor with the same shape as 'variable'.
 		  decay: A float Tensor or float value.  The moving average decay.
-		  zero_debias: A python bool. If true, assume the variable is 0-intialized and
-		    unbias it, as in https://arxiv.org/abs/1412.6980. See docstring in
+		  zero_debias: A python bool. If true, assume the variable is 0-initialized
+		    and unbias it, as in https://arxiv.org/abs/1412.6980. See docstring in
 		    `_zero_debias` for more details.
 		  name: Optional name of the returned operation.
 		
@@ -77,6 +95,7 @@ package tensorflow.python.training.moving_averages;
 	static public function assign_moving_average(variable:Dynamic, value:Dynamic, decay:Dynamic, ?zero_debias:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the weighted moving average of `value`.
 		

@@ -387,7 +387,7 @@ package theano.sparse;
 		Returns
 		-------
 		A sparse matrix
-		    `x` + `y`
+		    `x` * `y`
 		
 		Notes
 		-----

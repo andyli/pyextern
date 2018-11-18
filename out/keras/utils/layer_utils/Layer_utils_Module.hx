@@ -9,6 +9,7 @@ package keras.utils.layer_utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Converts all convolution kernels in a model from Theano to TensorFlow.
 		
@@ -54,6 +55,33 @@ package keras.utils.layer_utils;
 		    ValueError: in case of invalid kernel shape or invalid data_format.
 	**/
 	static public function convert_kernel(kernel:Dynamic):Dynamic;
+	/**
+		Count the total number of scalars composing the weights.
+		
+		# Arguments
+		    weights: An iterable containing the weights on which to compute params
+		
+		# Returns
+		    The total number of scalars composing the weights
+	**/
+	static public function count_params(weights:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	/**
+		Returns the list of input tensors necessary to compute `tensor`.
+		
+		Output will always be a list of tensors
+		(potentially with 1 element).
+		
+		# Arguments
+		    tensor: The tensor to start from.
+		    layer: Origin layer of the tensor. Will be
+		        determined via tensor._keras_history if not provided.
+		    node_index: Origin node index of the tensor.
+		
+		# Returns
+		    List of input tensors.
+	**/
+	static public function get_source_inputs(tensor:Dynamic, ?layer:Dynamic, ?node_index:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Prints a summary of a model.
@@ -69,6 +97,7 @@ package keras.utils.layer_utils;
 		        It will be called on each line of the summary.
 		        You can set it to a custom function
 		        in order to capture the string summary.
+		        It defaults to `print` (prints to stdout).
 	**/
 	static public function print_summary(model:Dynamic, ?line_length:Dynamic, ?positions:Dynamic, ?print_fn:Dynamic):Dynamic;
 }

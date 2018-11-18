@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.lookup_ops;
 @:pythonImport("tensorflow.python.ops.lookup_ops", "TextFileIdTableInitializer") extern class TextFileIdTableInitializer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -57,9 +57,9 @@ package tensorflow.python.ops.lookup_ops;
 		    The path must be accessible from wherever the graph is initialized
 		    (eg. trainer or eval workers). The filename may be a scalar `Tensor`.
 		  key_column_index: The column index from the text file to get the `key`
+		    values from. The default is to use the whole line content.
+		  value_column_index: The column index from the text file to get the `value`
 		    values from. The default is to use the line number, starting from zero.
-		  value_column_index: The column index from the text file ro get the `value`
-		    values from. The default is 0 that represents the whole line content.
 		  vocab_size: The number of elements in the file, if known.
 		  delimiter: The delimiter to separate fields in a line.
 		  name: Optional name for the op.
@@ -91,9 +91,9 @@ package tensorflow.python.ops.lookup_ops;
 		    The path must be accessible from wherever the graph is initialized
 		    (eg. trainer or eval workers). The filename may be a scalar `Tensor`.
 		  key_column_index: The column index from the text file to get the `key`
+		    values from. The default is to use the whole line content.
+		  value_column_index: The column index from the text file to get the `value`
 		    values from. The default is to use the line number, starting from zero.
-		  value_column_index: The column index from the text file ro get the `value`
-		    values from. The default is 0 that represents the whole line content.
 		  vocab_size: The number of elements in the file, if known.
 		  delimiter: The delimiter to separate fields in a line.
 		  name: Optional name for the op.
@@ -110,7 +110,7 @@ package tensorflow.python.ops.lookup_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -161,7 +161,7 @@ package tensorflow.python.ops.lookup_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

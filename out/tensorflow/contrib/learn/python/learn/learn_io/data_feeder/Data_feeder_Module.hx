@@ -35,7 +35,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	static public function _is_iterable(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Checks array on dtype and converts it if different.
+		Checks array on dtype and converts it if different. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please convert numpy dtypes explicitly.
 		
 		Args:
 		  array: Input array.
@@ -45,9 +49,46 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 		  Original array or converted.
 	**/
 	static public function check_array(array:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Extract data from dask.Series or dask.DataFrame for predictors.
+		Extract data from dask.Series or dask.DataFrame for predictors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please feed input to tf.data to support dask.
 		
 		Given a distributed dask.DataFrame or dask.Series containing columns or names
 		for one or more predictors, this operation returns a single dask.DataFrame or
@@ -63,7 +104,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	static public function extract_dask_data(data:Dynamic):Dynamic;
 	/**
-		Extract data from dask.Series or dask.DataFrame for labels.
+		Extract data from dask.Series or dask.DataFrame for labels. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please feed input to tf.data to support dask.
 		
 		Given a distributed dask.DataFrame or dask.Series containing exactly one
 		column or name, this operation returns a single dask.DataFrame or dask.Series
@@ -85,7 +130,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	static public function extract_dask_labels(labels:Dynamic):Dynamic;
 	/**
-		Extract data from pandas.DataFrame for predictors.
+		Extract data from pandas.DataFrame for predictors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please access pandas data directly.
 		
 		Given a DataFrame, will extract the values and cast them to float. The
 		DataFrame is expected to contain values of type int, float or bool.
@@ -101,7 +150,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	static public function extract_pandas_data(data:Dynamic):Dynamic;
 	/**
-		Extract data from pandas.DataFrame for labels.
+		Extract data from pandas.DataFrame for labels. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please access pandas data directly.
 		
 		Args:
 		  labels: `pandas.DataFrame` or `pandas.Series` containing one column of
@@ -116,7 +169,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	static public function extract_pandas_labels(labels:Dynamic):Dynamic;
 	/**
-		Extracts numpy matrix from pandas DataFrame.
+		Extracts numpy matrix from pandas DataFrame. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please access pandas data directly.
 		
 		Args:
 		  data: `pandas.DataFrame` containing the data to be extracted.
@@ -127,7 +184,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	static public function extract_pandas_matrix(data:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Returns an iterable for feeding into predict step.
+		Returns an iterable for feeding into predict step. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use tensorflow/transform or tf.data.
 		
 		Args:
 		  x: numpy, pandas, Dask array or dictionary of aforementioned. Also supports
@@ -143,7 +204,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	static public function setup_predict_data_feeder(x:Dynamic, ?batch_size:Dynamic):Dynamic;
 	/**
-		Sets up processor iterable.
+		Sets up processor iterable. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use tensorflow/transform or tf.data.
 		
 		Args:
 		  x: numpy, pandas or iterable.
@@ -153,7 +218,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.data_feeder;
 	**/
 	static public function setup_processor_data_feeder(x:Dynamic):Dynamic;
 	/**
-		Create data feeder, to sample inputs from dataset.
+		Create data feeder, to sample inputs from dataset. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use tensorflow/transform or tf.data.
 		
 		If `x` and `y` are iterators, use `StreamingDataFeeder`.
 		

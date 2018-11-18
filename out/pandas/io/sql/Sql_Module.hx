@@ -13,31 +13,25 @@ package pandas.io.sql;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		convert sql and params args to DBAPI2.0 compliant format
+		Convert SQL and params args to DBAPI2.0 compliant format.
 	**/
 	static public function _convert_params(sql:Dynamic, params:Dynamic):Dynamic;
 	/**
 		Returns a SQLAlchemy engine from a URI (if con is a string)
-		else it just return con without modifying it
+		else it just return con without modifying it.
 	**/
 	static public function _engine_builder(con:Dynamic):Dynamic;
 	static public function _get_unicode_name(name:Dynamic):Dynamic;
 	static public function _get_valid_sqlite_name(name:Dynamic):Dynamic;
-	static public function _handle_date_column(col:Dynamic, ?format:Dynamic):Dynamic;
+	static public function _handle_date_column(col:Dynamic, ?utc:Dynamic, ?format:Dynamic):Dynamic;
 	static public function _is_sqlalchemy_connectable(con:Dynamic):Dynamic;
 	/**
 		Force non-datetime columns to be read as such.
-		Supports both string formatted and integer timestamp columns
+		Supports both string formatted and integer timestamp columns.
 	**/
 	static public function _parse_date_columns(data_frame:Dynamic, parse_dates:Dynamic):Dynamic;
 	/**
-		Checks whether a database 'flavor' was specified.
-		If not None, produces FutureWarning if 'sqlite' and
-		raises a ValueError if anything else.
-	**/
-	static public function _validate_flavor_parameter(flavor:Dynamic):Dynamic;
-	/**
-		Wrap result set of query in a DataFrame 
+		Wrap result set of query in a DataFrame.
 	**/
 	static public function _wrap_result(data:Dynamic, columns:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?parse_dates:Dynamic):Dynamic;
 	/**
@@ -75,9 +69,9 @@ package pandas.io.sql;
 		Parameters
 		----------
 		sql : string
-		    Query to be executed
+		    SQL query to be executed.
 		con : SQLAlchemy connectable(engine/connection) or sqlite3 connection
-		    Using SQLAlchemy makes it possible to use any DB supported by that
+		    Using SQLAlchemy makes it possible to use any DB supported by the
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
 		cur : deprecated, cursor is obtained from connection, default: None
@@ -103,26 +97,22 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library, default: None
 		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor : 'sqlite', default None
-		    DEPRECATED: this parameter will be removed in a future version
 		dtype : dict of column name to SQL type, default None
 		    Optional specifying the datatype for columns. The SQL type should
 		    be a SQLAlchemy type, or a string for sqlite3 fallback connection.
 	**/
-	static public function get_schema(frame:Dynamic, name:Dynamic, ?flavor:Dynamic, ?keys:Dynamic, ?con:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_schema(frame:Dynamic, name:Dynamic, ?keys:Dynamic, ?con:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Check if DataBase has named table.
 		
 		Parameters
 		----------
 		table_name: string
-		    Name of SQL table
+		    Name of SQL table.
 		con: SQLAlchemy connectable(engine/connection) or sqlite3 DBAPI2 connection
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor : 'sqlite', default None
-		    DEPRECATED: this parameter will be removed in a future version
 		schema : string, default None
 		    Name of SQL schema in database to write to (if database flavor supports
 		    this). If None, use default schema (default).
@@ -131,7 +121,7 @@ package pandas.io.sql;
 		-------
 		boolean
 	**/
-	static public function has_table(table_name:Dynamic, con:Dynamic, ?flavor:Dynamic, ?schema:Dynamic):Dynamic;
+	static public function has_table(table_name:Dynamic, con:Dynamic, ?schema:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
 		
@@ -216,29 +206,84 @@ package pandas.io.sql;
 	**/
 	static public function is_list_like(obj:Dynamic):Bool;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	/**
 		Convenience function to return the correct PandasSQL subclass based on the
-		provided parameters
+		provided parameters.
 	**/
-	static public function pandasSQL_builder(con:Dynamic, ?flavor:Dynamic, ?schema:Dynamic, ?meta:Dynamic, ?is_cursor:Dynamic):Dynamic;
+	static public function pandasSQL_builder(con:Dynamic, ?schema:Dynamic, ?meta:Dynamic, ?is_cursor:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Raise exception with existing traceback.
@@ -248,20 +293,27 @@ package pandas.io.sql;
 	/**
 		Read SQL query or database table into a DataFrame.
 		
+		This function is a convenience wrapper around ``read_sql_table`` and
+		``read_sql_query`` (for backward compatibility). It will delegate
+		to the specific function depending on the provided input. A SQL query
+		will be routed to ``read_sql_query``, while a database table name will
+		be routed to ``read_sql_table``. Note that the delegated function might
+		have more specific notes about their functionality not listed here.
+		
 		Parameters
 		----------
-		sql : string SQL query or SQLAlchemy Selectable (select or text object)
-		    to be executed, or database table name.
-		con : SQLAlchemy connectable(engine/connection) or database string URI
+		sql : string or SQLAlchemy Selectable (select or text object)
+		    SQL query to be executed or a table name.
+		con : SQLAlchemy connectable (engine/connection) or database string URI
 		    or DBAPI2 connection (fallback mode)
+		
 		    Using SQLAlchemy makes it possible to use any DB supported by that
-		    library.
-		    If a DBAPI2 object, only sqlite3 is supported.
+		    library. If a DBAPI2 object, only sqlite3 is supported.
 		index_col : string or list of strings, optional, default: None
-		    Column(s) to set as index(MultiIndex)
+		    Column(s) to set as index(MultiIndex).
 		coerce_float : boolean, default True
-		    Attempt to convert values of non-string, non-numeric objects (like
-		    decimal.Decimal) to floating point, useful for SQL result sets
+		    Attempts to convert values of non-string, non-numeric objects (like
+		    decimal.Decimal) to floating point, useful for SQL result sets.
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
 		    to pass parameters is database driver dependent. Check your
@@ -269,16 +321,16 @@ package pandas.io.sql;
 		    described in PEP 249's paramstyle, is supported.
 		    Eg. for psycopg2, uses %(name)s so use params={'name' : 'value'}
 		parse_dates : list or dict, default: None
-		    - List of column names to parse as dates
+		    - List of column names to parse as dates.
 		    - Dict of ``{column_name: format string}`` where format string is
-		      strftime compatible in case of parsing string times or is one of
-		      (D, s, ns, ms, us) in case of parsing integer timestamps
+		      strftime compatible in case of parsing string times, or is one of
+		      (D, s, ns, ms, us) in case of parsing integer timestamps.
 		    - Dict of ``{column_name: arg dict}``, where the arg dict corresponds
 		      to the keyword arguments of :func:`pandas.to_datetime`
 		      Especially useful with databases without native Datetime support,
-		      such as SQLite
+		      such as SQLite.
 		columns : list, default: None
-		    List of column names to select from sql table (only used when reading
+		    List of column names to select from SQL table (only used when reading
 		    a table).
 		chunksize : int, default None
 		    If specified, return an iterator where `chunksize` is the
@@ -288,18 +340,10 @@ package pandas.io.sql;
 		-------
 		DataFrame
 		
-		Notes
-		-----
-		This function is a convenience wrapper around ``read_sql_table`` and
-		``read_sql_query`` (and for backward compatibility) and will delegate
-		to the specific function depending on the provided input (database
-		table name or sql query).  The delegated function might have more specific
-		notes about their functionality not listed here.
-		
 		See also
 		--------
-		read_sql_table : Read SQL database table into a DataFrame
-		read_sql_query : Read SQL query into a DataFrame
+		read_sql_table : Read SQL database table into a DataFrame.
+		read_sql_query : Read SQL query into a DataFrame.
 	**/
 	static public function read_sql(sql:Dynamic, con:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?params:Dynamic, ?parse_dates:Dynamic, ?columns:Dynamic, ?chunksize:Dynamic):Dynamic;
 	/**
@@ -312,17 +356,17 @@ package pandas.io.sql;
 		Parameters
 		----------
 		sql : string SQL query or SQLAlchemy Selectable (select or text object)
-		    to be executed.
-		con : SQLAlchemy connectable(engine/connection) or database string URI
+		    SQL query to be executed.
+		con : SQLAlchemy connectable(engine/connection), database string URI,
 		    or sqlite3 DBAPI2 connection
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
 		index_col : string or list of strings, optional, default: None
-		    Column(s) to set as index(MultiIndex)
+		    Column(s) to set as index(MultiIndex).
 		coerce_float : boolean, default True
-		    Attempt to convert values of non-string, non-numeric objects (like
-		    decimal.Decimal) to floating point, useful for SQL result sets
+		    Attempts to convert values of non-string, non-numeric objects (like
+		    decimal.Decimal) to floating point. Useful for SQL result sets.
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
 		    to pass parameters is database driver dependent. Check your
@@ -330,14 +374,14 @@ package pandas.io.sql;
 		    described in PEP 249's paramstyle, is supported.
 		    Eg. for psycopg2, uses %(name)s so use params={'name' : 'value'}
 		parse_dates : list or dict, default: None
-		    - List of column names to parse as dates
+		    - List of column names to parse as dates.
 		    - Dict of ``{column_name: format string}`` where format string is
-		      strftime compatible in case of parsing string times or is one of
-		      (D, s, ns, ms, us) in case of parsing integer timestamps
+		      strftime compatible in case of parsing string times, or is one of
+		      (D, s, ns, ms, us) in case of parsing integer timestamps.
 		    - Dict of ``{column_name: arg dict}``, where the arg dict corresponds
 		      to the keyword arguments of :func:`pandas.to_datetime`
 		      Especially useful with databases without native Datetime support,
-		      such as SQLite
+		      such as SQLite.
 		chunksize : int, default None
 		    If specified, return an iterator where `chunksize` is the number of
 		    rows to include in each chunk.
@@ -349,47 +393,47 @@ package pandas.io.sql;
 		Notes
 		-----
 		Any datetime values with time zone information parsed via the `parse_dates`
-		parameter will be converted to UTC
+		parameter will be converted to UTC.
 		
 		See also
 		--------
-		read_sql_table : Read SQL database table into a DataFrame
+		read_sql_table : Read SQL database table into a DataFrame.
 		read_sql
 	**/
 	static public function read_sql_query(sql:Dynamic, con:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?params:Dynamic, ?parse_dates:Dynamic, ?chunksize:Dynamic):Dynamic;
 	/**
 		Read SQL database table into a DataFrame.
 		
-		Given a table name and an SQLAlchemy connectable, returns a DataFrame.
+		Given a table name and a SQLAlchemy connectable, returns a DataFrame.
 		This function does not support DBAPI connections.
 		
 		Parameters
 		----------
 		table_name : string
-		    Name of SQL table in database
+		    Name of SQL table in database.
 		con : SQLAlchemy connectable (or database string URI)
-		    Sqlite DBAPI connection mode not supported
+		    SQLite DBAPI connection mode not supported.
 		schema : string, default None
 		    Name of SQL schema in database to query (if database flavor
-		    supports this). If None, use default schema (default).
+		    supports this). Uses default schema if None (default).
 		index_col : string or list of strings, optional, default: None
-		    Column(s) to set as index(MultiIndex)
+		    Column(s) to set as index(MultiIndex).
 		coerce_float : boolean, default True
-		    Attempt to convert values of non-string, non-numeric objects (like
+		    Attempts to convert values of non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point. Can result in loss of Precision.
 		parse_dates : list or dict, default: None
-		    - List of column names to parse as dates
+		    - List of column names to parse as dates.
 		    - Dict of ``{column_name: format string}`` where format string is
 		      strftime compatible in case of parsing string times or is one of
-		      (D, s, ns, ms, us) in case of parsing integer timestamps
+		      (D, s, ns, ms, us) in case of parsing integer timestamps.
 		    - Dict of ``{column_name: arg dict}``, where the arg dict corresponds
 		      to the keyword arguments of :func:`pandas.to_datetime`
 		      Especially useful with databases without native Datetime support,
-		      such as SQLite
+		      such as SQLite.
 		columns : list, default: None
-		    List of column names to select from sql table
+		    List of column names to select from SQL table
 		chunksize : int, default None
-		    If specified, return an iterator where `chunksize` is the number of
+		    If specified, returns an iterator where `chunksize` is the number of
 		    rows to include in each chunk.
 		
 		Returns
@@ -398,7 +442,7 @@ package pandas.io.sql;
 		
 		Notes
 		-----
-		Any datetime values with time zone information will be converted to UTC
+		Any datetime values with time zone information will be converted to UTC.
 		
 		See also
 		--------
@@ -413,13 +457,11 @@ package pandas.io.sql;
 		Parameters
 		----------
 		table_name: string
-		    Name of SQL table
+		    Name of SQL table.
 		con: SQLAlchemy connectable(engine/connection) or sqlite3 DBAPI2 connection
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor : 'sqlite', default None
-		    DEPRECATED: this parameter will be removed in a future version
 		schema : string, default None
 		    Name of SQL schema in database to write to (if database flavor supports
 		    this). If None, use default schema (default).
@@ -428,7 +470,7 @@ package pandas.io.sql;
 		-------
 		boolean
 	**/
-	static public function table_exists(table_name:Dynamic, con:Dynamic, ?flavor:Dynamic, ?schema:Dynamic):Dynamic;
+	static public function table_exists(table_name:Dynamic, con:Dynamic, ?schema:Dynamic):Dynamic;
 	/**
 		Convert argument to datetime.
 		
@@ -436,7 +478,7 @@ package pandas.io.sql;
 		----------
 		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
-		    .. versionadded: 0.18.1
+		    .. versionadded:: 0.18.1
 		
 		       or DataFrame/dict-like
 		
@@ -462,7 +504,7 @@ package pandas.io.sql;
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
-		    .. versionadded: 0.16.1
+		    .. versionadded:: 0.16.1
 		
 		utc : boolean, default None
 		    Return UTC DatetimeIndex if True (converting any tz-aware
@@ -500,7 +542,13 @@ package pandas.io.sql;
 		    - If Timestamp convertible, origin is set to Timestamp identified by
 		      origin.
 		
-		    .. versionadded: 0.20.0
+		    .. versionadded:: 0.20.0
+		cache : boolean, default False
+		    If True, use a cache of unique, converted dates to apply the datetime
+		    conversion. May produce sigificant speed-up when parsing duplicate date
+		    strings, especially ones with timezone offsets.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
@@ -513,11 +561,11 @@ package pandas.io.sql;
 		
 		    In case when it is not possible to return designated types (e.g. when
 		    any element of input is before Timestamp.min or after Timestamp.max)
-		    return will have datetime.datetime type (or correspoding array/Series).
+		    return will have datetime.datetime type (or corresponding
+		    array/Series).
 		
 		Examples
 		--------
-		
 		Assembling a datetime from multiple columns of a DataFrame. The keys can be
 		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
 		'ms', 'us', 'ns']) or plurals of the same
@@ -579,23 +627,26 @@ package pandas.io.sql;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		Write records stored in a DataFrame to a SQL database.
 		
 		Parameters
 		----------
-		frame : DataFrame
+		frame : DataFrame, Series
 		name : string
-		    Name of SQL table
+		    Name of SQL table.
 		con : SQLAlchemy connectable(engine/connection) or database string URI
 		    or sqlite3 DBAPI2 connection
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor : 'sqlite', default None
-		    DEPRECATED: this parameter will be removed in a future version
 		schema : string, default None
 		    Name of SQL schema in database to write to (if database flavor
 		    supports this). If None, use default schema (default).
@@ -604,7 +655,7 @@ package pandas.io.sql;
 		    - replace: If table exists, drop it, recreate it, and insert data.
 		    - append: If table exists, insert data. Create if does not exist.
 		index : boolean, default True
-		    Write DataFrame index as a column
+		    Write DataFrame index as a column.
 		index_label : string or sequence, default None
 		    Column label for index column(s). If None is given (default) and
 		    `index` is True, then the index names are used.
@@ -617,5 +668,5 @@ package pandas.io.sql;
 		    be a SQLAlchemy type, or a string for sqlite3 fallback connection.
 		    If all columns are of the same type, one single value can be used.
 	**/
-	static public function to_sql(frame:Dynamic, name:Dynamic, con:Dynamic, ?flavor:Dynamic, ?schema:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function to_sql(frame:Dynamic, name:Dynamic, con:Dynamic, ?schema:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic):Dynamic;
 }

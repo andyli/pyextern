@@ -53,6 +53,7 @@ package theano.gpuarray.blocksparse;
 		    If `x` cannot be converted to a TensorType Variable.
 	**/
 	static public function as_tensor_variable(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic):Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public var discrete_dtypes : Dynamic;
 	static public var division : Dynamic;
 	static public function gpu_context_type(?name:Dynamic):Dynamic;
@@ -60,6 +61,7 @@ package theano.gpuarray.blocksparse;
 	static public function gpu_sparse_block_gemv_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_sparse_block_outer(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_sparse_block_outer_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	/**
 		Return an un-computable symbolic variable of type `x.type`.
 		

@@ -23,7 +23,7 @@ package tensorflow.python.ops.distributions.special_math;
 	**/
 	static public function _log_ndtr_asymptotic_series(x:Dynamic, series_order:Dynamic):Dynamic;
 	/**
-		Asymptotic expansion version of `Log[cdf(x)]`, apppropriate for `x<<-1`.
+		Asymptotic expansion version of `Log[cdf(x)]`, appropriate for `x<<-1`.
 	**/
 	static public function _log_ndtr_lower(x:Dynamic, series_order:Dynamic):Dynamic;
 	/**
@@ -36,6 +36,20 @@ package tensorflow.python.ops.distributions.special_math;
 	static public function _ndtri(p:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	/**
+		The inverse function for erf, the error function.
+		
+		Args:
+		  x: `Tensor` of type `float32`, `float64`.
+		  name: Python string. A name for the operation (default="erfinv").
+		
+		Returns:
+		  x: `Tensor` with `dtype=x.dtype`.
+		
+		Raises:
+		  TypeError: if `x` is not floating-type.
+	**/
+	static public function erfinv(x:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Log Laplace distribution function.
 		

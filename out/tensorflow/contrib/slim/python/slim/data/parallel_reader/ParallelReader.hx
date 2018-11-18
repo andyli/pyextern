@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 @:pythonImport("tensorflow.contrib.slim.python.slim.data.parallel_reader", "ParallelReader") extern class ParallelReader {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -136,7 +136,7 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -187,11 +187,14 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _configure_readers_by(queue:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public var common_queue : Dynamic;
 	public var num_readers : Dynamic;
 	/**
@@ -227,8 +230,8 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		reader needs to start reading from a new file since it has finished with
 		the previous file).
 		
-		A queue runner for enqueing in the `common_queue` is automatically added to
-		the TF QueueRunners collection.
+		A queue runner for enqueuing in the `common_queue` is automatically added
+		to the TF QueueRunners collection.
 		
 		Args:
 		  queue: A Queue or a mutable string Tensor representing a handle
@@ -247,6 +250,10 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		finished with the previous file).
 		It may return less than num_records even before the last batch.
 		
+		**Note** This operation is not supported by all types of `common_queue`s.
+		If a `common_queue` does not support `dequeue_up_to()`, then a
+		`tf.errors.UnimplementedError` is raised.
+		
 		Args:
 		  queue: A Queue or a mutable string Tensor representing a handle
 		    to a Queue, with string work items.
@@ -254,7 +261,7 @@ package tensorflow.contrib.slim.python.slim.data.parallel_reader;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A tuple of Tensors (keys, values).
+		  A tuple of Tensors (keys, values) from common_queue.
 		  keys: A 1-D string Tensor.
 		  values: A 1-D string Tensor.
 	**/

@@ -18,7 +18,7 @@ package numpy;
 	**/
 	public function __and__(value:Dynamic):Dynamic;
 	/**
-		sc.__array__(|type) return 0-dim array
+		sc.__array__(dtype) return 0-dim array from scalar with specified dtype
 	**/
 	public function __array__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -41,7 +41,7 @@ package numpy;
 		self != 0
 	**/
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -114,7 +114,7 @@ package numpy;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		int(self)
 	**/
@@ -270,7 +270,7 @@ package numpy;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self/value.
 	**/
@@ -622,11 +622,7 @@ package numpy;
 	/**
 		B.index(sub[, start[, end]]) -> int
 		
-		Return the lowest index in B where subsection sub is found,
-		such that sub is contained within B[start,end].  Optional
-		arguments start and end are interpreted as in slice notation.
-		
-		Raises ValueError when the subsection is not found.
+		Like B.find() but raise ValueError when the subsection is not found.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -956,11 +952,7 @@ package numpy;
 	/**
 		B.rindex(sub[, start[, end]]) -> int
 		
-		Return the highest index in B where subsection sub is found,
-		such that sub is contained within B[start,end].  Optional
-		arguments start and end are interpreted as in slice notation.
-		
-		Raise ValueError when the subsection is not found.
+		Like B.rfind() but raise ValueError when the subsection is not found.
 	**/
 	public function rindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

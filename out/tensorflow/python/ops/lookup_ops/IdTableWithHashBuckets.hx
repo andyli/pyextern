@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.lookup_ops;
 @:pythonImport("tensorflow.python.ops.lookup_ops", "IdTableWithHashBuckets") extern class IdTableWithHashBuckets {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -80,7 +80,7 @@ package tensorflow.python.ops.lookup_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -131,7 +131,7 @@ package tensorflow.python.ops.lookup_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -172,6 +172,21 @@ package tensorflow.python.ops.lookup_ops;
 		Compute the number of elements in this table.
 	**/
 	public function size(?name:Dynamic):Dynamic;
+	/**
+		Returns the table_ref of the underlying table, if one exists.
+		
+		Only use the table_ref directly if you know what you are doing. The
+		table_ref does not have the "hash bucket" functionality, as that is provided
+		by this class.
+		
+		One possible use of the table_ref is subtokenization, i.e. ops which
+		dynamically decompose tokens into subtokens based on the contents of the
+		table_ref.
+		
+		Returns:
+		  the underlying table_ref, or None if there is no underlying table
+	**/
+	public var table_ref : Dynamic;
 	/**
 		The table value dtype.
 	**/

@@ -9,17 +9,43 @@ package pandas.core.panel;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _default_index(n:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           labels=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		_ensure_index_from_sequences
+	**/
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Makes sure that time and panels are conformable
 	**/
 	static public function _ensure_like_indices(time:Dynamic, panels:Dynamic):Dynamic;
-	static public function _get_combined_index(indexes:Dynamic, ?intersect:Dynamic):Dynamic;
-	static public var _op_descriptions : Dynamic;
+	static public function _get_objs_combined_axis(objs:Dynamic, ?intersect:Dynamic, ?axis:Dynamic, ?sort:Dynamic):Dynamic;
 	static public var _shared_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
-	static public function _try_sort(iterable:Dynamic):Dynamic;
 	/**
 		Numpy version of itertools.product or pandas.compat.product.
 		Sometimes faster (for large inputs)...
@@ -45,9 +71,23 @@ package pandas.core.panel;
 		pandas.compat.product : An alias for itertools.product.
 	**/
 	static public function cartesian_product(X:Dynamic):Dynamic;
+	/**
+		create np.ndarray of specified shape and dtype, filled with values
+		
+		Parameters
+		----------
+		shape : tuple
+		value : scalar value
+		dtype : np.dtype, optional
+		    dtype to coerce
+		
+		Returns
+		-------
+		ndarray of shape, filled with value, of specified / inferred dtype
+	**/
+	static public function cast_scalar_to_array(shape:Dynamic, value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
 	static public function create_block_manager_from_blocks(blocks:Dynamic, axes:Dynamic):Dynamic;
-	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		interpret the dtype from a scalar
@@ -105,6 +145,7 @@ package pandas.core.panel;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -130,25 +171,79 @@ package pandas.core.panel;
 	static public function maybe_cast_item(obj:Dynamic, item:Dynamic, dtype:Dynamic):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
 	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : boolean inverse of pandas.notnull
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
 	**/
-	static public function notnull(obj:Dynamic):Dynamic;
+	static public function notna(obj:Dynamic):Dynamic;
 	/**
 		Returns a multi-index suitable for a panel-like DataFrame
 		
@@ -215,4 +310,39 @@ package pandas.core.panel;
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
+	/**
+		Argument handler for mixed index, columns / axis functions
+		
+		In an attempt to handle both `.method(index, columns)`, and
+		`.method(arg, axis=.)`, we have to do some bad things to argument
+		parsing. This translates all arguments to `{index=., columns=.}` style.
+		
+		Parameters
+		----------
+		data : DataFrame or Panel
+		arg : tuple
+		    All positional arguments from the user
+		kwargs : dict
+		    All keyword arguments from the user
+		arg_name, method_name : str
+		    Used for better error messages
+		
+		Returns
+		-------
+		kwargs : dict
+		    A dictionary of keyword arguments. Doesn't modify ``kwargs``
+		    inplace, so update them with the return value here.
+		
+		Examples
+		--------
+		>>> df._validate_axis_style_args((str.upper,), {'columns': id},
+		...                              'mapper', 'rename')
+		{'columns': <function id>, 'index': <method 'upper' of 'str' objects>}
+		
+		This emits a warning
+		>>> df._validate_axis_style_args((str.upper, id), {},
+		...                              'mapper', 'rename')
+		{'columns': <function id>, 'index': <method 'upper' of 'str' objects>}
+	**/
+	static public function validate_axis_style_args(data:Dynamic, args:Dynamic, kwargs:Dynamic, arg_name:Dynamic, method_name:Dynamic):python.Dict<Dynamic, Dynamic>;
 }

@@ -13,7 +13,7 @@ package matplotlib.scale;
 		Array interface to get at this Transform's affine matrix.
 	**/
 	public function __array__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function __deepcopy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -30,7 +30,7 @@ package matplotlib.scale;
 	/**
 		Return self==value.
 	**/
-	public function __eq__(other:Dynamic):Dynamic;
+	public function __eq__(value:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -48,33 +48,40 @@ package matplotlib.scale;
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
-	static public var __hash__ : Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
 	/**
 		Creates a new :class:`TransformNode`.
 		
-		**shorthand_name** - a string representing the "name" of this
-		                     transform. The name carries no significance
-		                     other than to improve the readability of
-		                     ``str(transform)`` when DEBUG=True.
+		Parameters
+		----------
+		shorthand_name : str
+		    A string representing the "name" of the transform. The name carries
+		    no significance other than to improve the readability of
+		    ``str(transform)`` when DEBUG=True.
 	**/
 	@:native("__init__")
-	public function ___init__(nonpos:Dynamic):Dynamic;
+	public function ___init__(?nonpos:Dynamic):Dynamic;
 	/**
 		Creates a new :class:`TransformNode`.
 		
-		**shorthand_name** - a string representing the "name" of this
-		                     transform. The name carries no significance
-		                     other than to improve the readability of
-		                     ``str(transform)`` when DEBUG=True.
+		Parameters
+		----------
+		shorthand_name : str
+		    A string representing the "name" of the transform. The name carries
+		    no significance other than to improve the readability of
+		    ``str(transform)`` when DEBUG=True.
 	**/
-	public function new(nonpos:Dynamic):Void;
+	public function new(?nonpos:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -152,7 +159,7 @@ package matplotlib.scale;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -186,7 +193,7 @@ package matplotlib.scale;
 	public function contains_branch(other:Dynamic):Dynamic;
 	/**
 		Returns whether the given branch is a sub-tree of this transform on
-		each seperate dimension.
+		each separate dimension.
 		
 		A common use for this method is to identify if a transform is a blended
 		transform containing an axes' data transform. e.g.::

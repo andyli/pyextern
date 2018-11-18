@@ -9,39 +9,148 @@ package matplotlib.cbook;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
+	/**
+		Get the elements on the perimeter of ``arr``,
+		
+		Parameters
+		----------
+		arr : ndarray, shape (M, N)
+		    The input array
+		
+		Returns
+		-------
+		perimeter : ndarray, shape (2*(M - 1) + 2*(N - 1),)
+		    The elements on the perimeter of the array::
+		
+		        [arr[0,0] ... arr[0,-1] ... arr[-1, -1] ... arr[-1,0] ...]
+		
+		Examples
+		--------
+		>>> i, j = np.ogrid[:3,:4]
+		>>> a = i*10 + j
+		>>> a
+		array([[ 0,  1,  2,  3],
+		       [10, 11, 12, 13],
+		       [20, 21, 22, 23]])
+		>>> _array_perimeter(a)
+		array([ 0,  1,  2,  3, 13, 23, 22, 21, 20, 10])
+	**/
+	static public function _array_perimeter(arr:Dynamic):Dynamic;
 	/**
 		Converts a sequence of less than 1 dimension, to an array of 1
 		dimension; leaves everything else untouched.
 	**/
 	static public function _check_1d(x:Dynamic):Dynamic;
 	static public var _dedent_regex : Dynamic;
-	static public var _find_dedent_regex : Dynamic;
-	static public function _generate_deprecation_message(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic):Dynamic;
-	static public var _linestyles : Dynamic;
-	static public var _lockstr : Dynamic;
-	static public function _putmask(a:Dynamic, mask:Dynamic, values:Dynamic):Dynamic;
 	/**
-		Converts a non-empty list or an ndarray of two or fewer dimensions
-		into a list of iterable objects so that in
+		Class decorator for defining property aliases.
 		
-		    for v in _reshape_2D(X):
+		Use as ::
 		
-		v is iterable and can be used to instantiate a 1D array.
+		    @cbook._define_aliases({"property": ["alias", ...], ...})
+		    class C: ...
+		
+		For each property, if the corresponding ``get_property`` is defined in the
+		class so far, an alias named ``get_alias`` will be defined; the same will
+		be done for setters.  If neither the getter nor the setter exists, an
+		exception will be raised.
+		
+		The alias map is stored as the ``_alias_map`` attribute on the class and
+		can be used by `~.normalize_kwargs` (which assumes that higher priority
+		aliases come last).
 	**/
-	static public function _reshape_2D(X:Dynamic):Dynamic;
+	static public function _define_aliases(alias_d:Dynamic, ?cls:Dynamic):Dynamic;
+	static public function _exception_printer(exc:Dynamic):Dynamic;
+	static public var _find_dedent_regex : Dynamic;
+	/**
+		Context manager for locking a path.
+		
+		Usage::
+		
+		    with _lock_path(path):
+		        ...
+		
+		Another thread or process that attempts to lock the same path will wait
+		until this context manager is exited.
+		
+		The lock is implemented by creating a temporary file in the parent
+		directory, so that directory must exist and be writable.
+	**/
+	static public function _lock_path(path:Dynamic):Dynamic;
+	static public var _lockstr : Dynamic;
+	/**
+		Convert a premultiplied ARGB32 buffer to an unmultiplied RGBA8888 buffer.
+	**/
+	static public function _premultiplied_argb32_to_unmultiplied_rgba8888(buf:Dynamic):Dynamic;
+	/**
+		Use Fortran ordering to convert ndarrays and lists of iterables to lists of
+		1D arrays.
+		
+		Lists of iterables are converted by applying `np.asarray` to each of their
+		elements.  1D ndarrays are returned in a singleton list containing them.
+		2D ndarrays are converted to the list of their *columns*.
+		
+		*name* is used to generate the error message for invalid inputs.
+	**/
+	static public function _reshape_2D(X:Dynamic, name:Dynamic):Dynamic;
 	static public var _safezip_msg : Dynamic;
 	/**
-		Helper function of `pts_to_*step` functions
-		
-		This function does all of the normalization required to the
-		input and generate the template for output
+		Temporarily set some attributes; restore original state at context exit.
+		    
 	**/
-	static public function _step_validation(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _string_to_bool(s:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
+	static public function _setattr_cm(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Return whether *obj* is a string equal to string *s*.
+		
+		This helper solely exists to handle the case where *obj* is a numpy array,
+		because in such cases, a naive ``obj == s`` would yield an array, which
+		cannot be used in a boolean context.
+	**/
+	static public function _str_equal(obj:Dynamic, s:Dynamic):Dynamic;
+	/**
+		Return whether *obj* is a string equal, when lowercased, to string *s*.
+		
+		This helper solely exists to handle the case where *obj* is a numpy array,
+		because in such cases, a naive ``obj == s`` would yield an array, which
+		cannot be used in a boolean context.
+	**/
+	static public function _str_lower_equal(obj:Dynamic, s:Dynamic):Dynamic;
+	/**
+		Parses the string argument as a boolean
+	**/
+	static public function _string_to_bool(s:Dynamic):Dynamic;
+	/**
+		Convert a sequence to a float array; if input was a masked array, masked
+		values are converted to nans.
+	**/
+	static public function _to_unmasked_float_array(x:Dynamic):Dynamic;
+	/**
+		Get the topmost artist of a list.
+		
+		In case of a tie, return the *last* of the tied artists, as it will be
+		drawn on top of the others. `max` returns the first maximum in case of
+		ties, so we need to iterate over the list in reverse order.
+	**/
+	static public function _topmost_artist(artists:Dynamic, ?_cached_max:Dynamic):Dynamic;
+	/**
+		Convert an unmultiplied RGBA8888 buffer to a premultiplied ARGB32 buffer.
+	**/
+	static public function _unmultiplied_rgba8888_to_premultiplied_argb32(rgba8888:Dynamic):Dynamic;
+	/**
+		`warnings.warn` wrapper that sets *stacklevel* to "outside Matplotlib".
+		
+		The original emitter of the warning can be obtained by patching this
+		function back to `warnings.warn`, i.e. ``cbook._warn_external =
+		warnings.warn`` (or ``functools.partial(warnings.warn, stacklevel=2)``,
+		etc.).
+	**/
+	static public function _warn_external(message:Dynamic, ?category:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 2.2
+		    The align_iterators function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		This generator takes a bunch of iterables that are ordered by func
 		It sends out ordered tuples::
 		
@@ -50,24 +159,6 @@ package matplotlib.cbook;
 		It is used by :func:`matplotlib.mlab.recs_join` to join record arrays
 	**/
 	static public function align_iterators(func:Dynamic, ?iterables:python.VarArgs<Dynamic>):Dynamic;
-	/**
-		Return *True* if all elements of *seq* compare equal.  If *seq* is
-		0 or 1 length, return *True*
-	**/
-	static public function allequal(seq:Dynamic):Dynamic;
-	/**
-		return all possible pairs in sequence *x*
-		
-		Condensed by Alex Martelli from this thread_ on c.l.python
-		
-		.. _thread: http://groups.google.com/groups?q=all+pairs+group:*python*&hl=en&lr=&ie=UTF-8&selm=mailman.4028.1096403649.5135.python-list%40python.org&rnum=1
-	**/
-	static public function allpairs(x:Dynamic):Dynamic;
-	/**
-		Return *True* if all elements of *seq* evaluate to *True*.  If
-		*seq* is empty, return *False*.
-	**/
-	static public function alltrue(seq:Dynamic):Dynamic;
 	/**
 		Returns list of dictionaries of statistics used to draw a series
 		of box and whisker plots. The `Returns` section enumerates the
@@ -105,10 +196,9 @@ package matplotlib.cbook;
 		    dimensions of `X`.
 		
 		autorange : bool, optional (False)
-		    When `True` and the data are distributed such that the  25th and
-		    75th percentiles are equal, ``whis`` is set to ``'range'`` such
-		    that the whisker ends are at the minimum and maximum of the
-		    data.
+		    When `True` and the data are distributed such that the 25th and 75th
+		    percentiles are equal, ``whis`` is set to ``'range'`` such that the
+		    whisker ends are at the minimum and maximum of the data.
 		
 		Returns
 		-------
@@ -145,6 +235,11 @@ package matplotlib.cbook;
 		Boxplots", The American Statistician, 32:12-16.
 	**/
 	static public function boxplot_stats(X:Dynamic, ?whis:Dynamic, ?bootstrap:Dynamic, ?labels:Dynamic, ?autorange:Dynamic):Dynamic;
+	/**
+		Return a list of (ind0, ind1) such that mask[ind0:ind1].all() is
+		True and we cover all such regions
+	**/
+	static public function contiguous_regions(mask:Dynamic):Dynamic;
 	/**
 		Remove excess indentation from docstring *s*.
 		
@@ -189,7 +284,7 @@ package matplotlib.cbook;
 	**/
 	static public function delete_masked_points(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Decorator to mark a function as deprecated.
+		Decorator to mark a function or a class as deprecated.
 		
 		Parameters
 		----------
@@ -199,15 +294,14 @@ package matplotlib.cbook;
 		
 		message : str, optional
 		    Override the default deprecation message.  The format
-		    specifier `%(func)s` may be used for the name of the function,
+		    specifier `%(name)s` may be used for the name of the object,
 		    and `%(alternative)s` may be used in the deprecation message
 		    to insert the name of an alternative to the deprecated
-		    function.  `%(obj_type)` may be used to insert a friendly name
-		    for the type of object being deprecated.
+		    object.
 		
 		name : str, optional
-		    The name of the deprecated function; if not provided the name
-		    is automatically determined from the passed in function,
+		    The name of the deprecated object; if not provided the name
+		    is automatically determined from the passed in object,
 		    though this is useful in the case of renamed functions, where
 		    the new function is just assigned to the name of the
 		    deprecated function.  For example::
@@ -217,13 +311,22 @@ package matplotlib.cbook;
 		        oldFunction = new_function
 		
 		alternative : str, optional
-		    An alternative function that the user may use in place of the
-		    deprecated function.  The deprecation warning will tell the user about
-		    this alternative if provided.
+		    An alternative API that the user may use in place of the deprecated
+		    API.  The deprecation warning will tell the user about this alternative
+		    if provided.
 		
 		pending : bool, optional
 		    If True, uses a PendingDeprecationWarning instead of a
-		    DeprecationWarning.
+		    DeprecationWarning.  Cannot be used together with *removal*.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
+		
+		addendum : str, optional
+		    Additional text appended directly to the final message.
 		
 		Examples
 		--------
@@ -234,23 +337,12 @@ package matplotlib.cbook;
 		        def the_function_to_deprecate():
 		            pass
 	**/
-	static public function deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic):Dynamic;
-	/**
-		delete all of the *keys* from the :class:`dict` *d*
-	**/
-	static public function dict_delall(d:Dynamic, keys:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	static public function exception_to_str(?s:Dynamic):Dynamic;
+	static public function deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic, ?addendum:Dynamic, ?removal:Dynamic):Dynamic;
 	/**
 		Returns `True` if the given writable file-like object requires Unicode
 		to be written to it.
 	**/
 	static public function file_requires_unicode(x:Dynamic):Dynamic;
-	/**
-		return all attributes of *o* which match string in match.  if case
-		is True require an exact case match.
-	**/
-	static public function finddir(o:Dynamic, match:Dynamic, ?_case:Dynamic):Dynamic;
 	/**
 		Returns a generator of flattened nested containers
 		
@@ -269,11 +361,6 @@ package matplotlib.cbook;
 	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
 	static public function get_realpath_and_stat(path:Dynamic):Dynamic;
 	/**
-		Recurse all the files and dirs in *args* ignoring symbolic links
-		and return the files as a list of strings
-	**/
-	static public function get_recursive_filelist(args:Dynamic):Dynamic;
-	/**
 		Return a sample data file.  *fname* is a path relative to the
 		`mpl-data/sample_data` directory.  If *asfileobj* is `True`
 		return a file object, otherwise just a file path.
@@ -286,14 +373,6 @@ package matplotlib.cbook;
 		If the filename ends in .gz, the file is implicitly ungzipped.
 	**/
 	static public function get_sample_data(fname:Dynamic, ?asfileobj:Dynamic):Dynamic;
-	/**
-		*seq* is a list of words.  Return the index into seq such that::
-		
-		    len(' '.join(seq[:ind])<=N
-		
-		.
-	**/
-	static public function get_split_ind(seq:Dynamic, N:Dynamic):Dynamic;
 	/**
 		A helper function to get the index of an input to plot
 		against if x values are not explicitly given.
@@ -321,38 +400,28 @@ package matplotlib.cbook;
 	static public function is_hashable(obj:Dynamic):Dynamic;
 	static public function is_math_text(s:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    isinstance(..., numbers.Number)
+		
 		return true if *obj* looks like a number
 	**/
 	static public function is_numlike(obj:Dynamic):Dynamic;
-	/**
-		return true if *obj* is not string like and is not iterable
-	**/
-	static public function is_scalar(obj:Dynamic):Dynamic;
 	/**
 		Return whether the given object is a scalar or string like.
 	**/
 	static public function is_scalar_or_string(val:Dynamic):Dynamic;
 	/**
-		Returns true if *obj* is iterable and contains strings
-	**/
-	static public function is_sequence_of_strings(obj:Dynamic):Dynamic;
-	/**
-		Return True if *obj* looks like a string
-	**/
-	static public function is_string_like(obj:Dynamic):Dynamic;
-	/**
 		return true if *obj* looks like a file object with a *write* method
 	**/
 	static public function is_writable_file_like(obj:Dynamic):Dynamic;
-	/**
-		return issubclass(x, klass) and return False on a TypeError
-	**/
-	static public function issubclass_safe(x:Dynamic, klass:Dynamic):Dynamic;
 	/**
 		return true if *obj* is iterable
 	**/
 	static public function iterable(obj:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    The listFiles function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
 		Recursively list files
 		
 		from Parmar and Martelli in the Python Cookbook
@@ -396,6 +465,9 @@ package matplotlib.cbook;
 	static public var ls_mapper : Dynamic;
 	static public var ls_mapper_r : Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    The mkdirs function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
 		make directory *newdir* recursively, and set *mode*.  Equivalent to ::
 		
 		    > mkdir -p NEWDIR
@@ -445,18 +517,9 @@ package matplotlib.cbook;
 	**/
 	static public function normalize_kwargs(kw:Dynamic, ?alias_mapping:Dynamic, ?required:Dynamic, ?forbidden:Dynamic, ?allowed:Dynamic):Dynamic;
 	/**
-		Return *True* if one element of *seq* is *True*.  It *seq* is
-		empty, return *False*.
+		Pass through file objects and context-manage `.PathLike`\s.
 	**/
-	static public function onetrue(seq:Dynamic):Dynamic;
-	/**
-		Break up the *seq* into *num* tuples
-	**/
-	static public function pieces(seq:Dynamic, ?num:Dynamic):Dynamic;
-	/**
-		empty a list
-	**/
-	static public function popall(seq:Dynamic):Dynamic;
+	static public function open_file_cm(path_or_file:Dynamic, ?mode:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		*objects*
 		    A list of objects to find cycles in.  It is often useful to
@@ -470,178 +533,137 @@ package matplotlib.cbook;
 		    If True, print the number of objects reached as they are found.
 	**/
 	static public function print_cycles(objects:Dynamic, ?outstream:Dynamic, ?show_progress:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
-		Covert continuous line to pre-steps
+		Convert continuous line to mid-steps.
 		
-		Given a set of N points convert to 2 N -1 points
-		which when connected linearly give a step function
-		which changes values at the begining the intervals.
+		Given a set of ``N`` points convert to ``2N`` points which when connected
+		linearly give a step function which changes values at the middle of the
+		intervals.
 		
 		Parameters
 		----------
 		x : array
-		    The x location of the steps
+		    The x location of the steps. May be empty.
 		
-		y1, y2, ... : array
-		    Any number of y arrays to be turned into steps.
-		    All must be the same length as ``x``
+		y1, ..., yp : array
+		    y arrays to be turned into steps; all must be the same length as
+		    ``x``.
 		
 		Returns
 		-------
-		x, y1, y2, .. : array
-		    The x and y values converted to steps in the same order
-		    as the input.  If the input is length ``N``, each of these arrays
-		    will be length ``2N + 1``
-		
+		out : array
+		    The x and y values converted to steps in the same order as the input;
+		    can be unpacked as ``x_out, y1_out, ..., yp_out``.  If the input is
+		    length ``N``, each of these arrays will be length ``2N``.
 		
 		Examples
 		--------
-		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+		>> x_s, y1_s, y2_s = pts_to_midstep(x, y1, y2)
 	**/
 	static public function pts_to_midstep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Array<Dynamic>;
 	/**
-		Covert continuous line to pre-steps
+		Convert continuous line to post-steps.
 		
-		Given a set of N points convert to 2 N -1 points
-		which when connected linearly give a step function
-		which changes values at the begining the intervals.
+		Given a set of ``N`` points convert to ``2N + 1`` points, which when
+		connected linearly give a step function which changes values at the end of
+		the intervals.
 		
 		Parameters
 		----------
 		x : array
-		    The x location of the steps
+		    The x location of the steps. May be empty.
 		
-		y1, y2, ... : array
-		    Any number of y arrays to be turned into steps.
-		    All must be the same length as ``x``
+		y1, ..., yp : array
+		    y arrays to be turned into steps; all must be the same length as ``x``.
 		
 		Returns
 		-------
-		x, y1, y2, .. : array
-		    The x and y values converted to steps in the same order
-		    as the input.  If the input is length ``N``, each of these arrays
-		    will be length ``2N + 1``
-		
+		out : array
+		    The x and y values converted to steps in the same order as the input;
+		    can be unpacked as ``x_out, y1_out, ..., yp_out``.  If the input is
+		    length ``N``, each of these arrays will be length ``2N + 1``. For
+		    ``N=0``, the length will be 0.
 		
 		Examples
 		--------
-		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+		>> x_s, y1_s, y2_s = pts_to_poststep(x, y1, y2)
 	**/
 	static public function pts_to_poststep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Array<Dynamic>;
 	/**
-		Covert continuous line to pre-steps
+		Convert continuous line to pre-steps.
 		
-		Given a set of N points convert to 2 N -1 points
-		which when connected linearly give a step function
-		which changes values at the begining the intervals.
+		Given a set of ``N`` points, convert to ``2N - 1`` points, which when
+		connected linearly give a step function which changes values at the
+		beginning of the intervals.
 		
 		Parameters
 		----------
 		x : array
-		    The x location of the steps
+		    The x location of the steps. May be empty.
 		
-		y1, y2, ... : array
-		    Any number of y arrays to be turned into steps.
-		    All must be the same length as ``x``
+		y1, ..., yp : array
+		    y arrays to be turned into steps; all must be the same length as ``x``.
 		
 		Returns
 		-------
-		x, y1, y2, .. : array
-		    The x and y values converted to steps in the same order
-		    as the input.  If the input is length ``N``, each of these arrays
-		    will be length ``2N + 1``
-		
+		out : array
+		    The x and y values converted to steps in the same order as the input;
+		    can be unpacked as ``x_out, y1_out, ..., yp_out``.  If the input is
+		    length ``N``, each of these arrays will be length ``2N + 1``. For
+		    ``N=0``, the length will be 0.
 		
 		Examples
 		--------
 		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
 	**/
 	static public function pts_to_prestep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Array<Dynamic>;
-	static public function recursive_remove(path:Dynamic):Dynamic;
-	/**
-		reduce(function, sequence[, initial]) -> value
-		
-		Apply a function of two arguments cumulatively to the items of a sequence,
-		from left to right, so as to reduce the sequence to a single value.
-		For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
-		((((1+2)+3)+4)+5).  If initial is present, it is placed before the items
-		of the sequence in the calculation, and serves as a default when the
-		sequence is empty.
-	**/
-	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return the memory consumed by process
 	**/
 	static public function report_memory(?i:Dynamic):Dynamic;
-	/**
-		Return a dictionary that contains those keys that appear in both
-		d and keys, with values from d.
-	**/
-	static public function restrict_dict(d:Dynamic, keys:Dynamic):Dynamic;
-	/**
-		reverse the dictionary -- may lose data if values are not unique!
-	**/
-	static public function reverse_dict(d:Dynamic):Dynamic;
 	static public function safe_first_element(obj:Dynamic):Dynamic;
 	static public function safe_masked_invalid(x:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		make sure *args* are equal len before zipping
 	**/
 	static public function safezip(?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function simple_linear_interpolation(a:Dynamic, steps:Dynamic):Dynamic;
 	/**
-		soundex module conforming to Odell-Russell algorithm 
+		Converts dictview object to list
 	**/
-	static public function soundex(name:Dynamic, ?len:Dynamic):Dynamic;
+	static public function sanitize_sequence(data:Dynamic):Dynamic;
+	/**
+		Resample an array with ``steps - 1`` points between original point pairs.
+		
+		Parameters
+		----------
+		a : array, shape (n, ...)
+		steps : int
+		
+		Returns
+		-------
+		array, shape ``((n - 1) * steps + 1, ...)``
+		
+		Along each column of *a*, ``(steps - 1)`` points are introduced between
+		each original values; the values are linearly interpolated.
+	**/
+	static public function simple_linear_interpolation(a:Dynamic, steps:Dynamic):Dynamic;
 	/**
 		remove latex formatting from mathtext
 	**/
 	static public function strip_math(s:Dynamic):Dynamic;
 	/**
-		*fname* can be a filename or a file handle.  Support for gzipped
+		*fname* can be an `os.PathLike` or a file handle.  Support for gzipped
 		files is automatic, if the filename ends in .gz.  *flag* is a
 		read/write flag for :func:`file`
 	**/
-	static public function to_filehandle(fname:Dynamic, ?flag:Dynamic, ?return_opened:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
+	static public function to_filehandle(fname:Dynamic, ?flag:Dynamic, ?return_opened:Dynamic, ?encoding:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The unicode_safe function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
 	static public function unicode_safe(s:Dynamic):Dynamic;
-	/**
-		Return a list of unique elements of *x*
-	**/
-	static public function unique(x:Dynamic):Dynamic;
-	/**
-		Find index ranges where *mask* is *False*.
-		
-		*mask* will be flattened if it is not already 1-D.
-		
-		Returns Nx2 :class:`numpy.ndarray` with each row the start and stop
-		indices for slices of the compressed :class:`numpy.ndarray`
-		corresponding to each of *N* uninterrupted runs of unmasked
-		values.  If optional argument *compressed* is *False*, it returns
-		the start and stop indices into the original :class:`numpy.ndarray`,
-		not the compressed :class:`numpy.ndarray`.  Returns *None* if there
-		are no unmasked values.
-		
-		Example::
-		
-		  y = ma.array(np.arange(5), mask = [0,0,1,0,0])
-		  ii = unmasked_index_ranges(ma.getmaskarray(y))
-		  # returns array [[0,2,] [2,4,]]
-		
-		  y.compressed()[ii[1,0]:ii[1,1]]
-		  # returns array [3,4,]
-		
-		  ii = unmasked_index_ranges(ma.getmaskarray(y), compressed=False)
-		  # returns array [[0, 2], [3, 5]]
-		
-		  y.filled()[ii[1,0]:ii[1,1]]
-		  # returns array [3,4,]
-		
-		Prior to the transforms refactoring, this was used to support
-		masked arrays in Line2D.
-	**/
-	static public function unmasked_index_ranges(mask:Dynamic, ?compressed:Dynamic):Dynamic;
 	/**
 		Returns a list of dictionaries of data which can be used to draw a series
 		of violin plots. See the `Returns` section below to view the required keys
@@ -682,7 +704,7 @@ package matplotlib.cbook;
 	**/
 	static public function violin_stats(X:Dynamic, method:Dynamic, ?points:Dynamic):Dynamic;
 	/**
-		Used to display deprecation warning in a standard way.
+		Used to display deprecation in a standard way.
 		
 		Parameters
 		----------
@@ -691,34 +713,35 @@ package matplotlib.cbook;
 		
 		message : str, optional
 		    Override the default deprecation message.  The format
-		    specifier `%(func)s` may be used for the name of the function,
+		    specifier `%(name)s` may be used for the name of the function,
 		    and `%(alternative)s` may be used in the deprecation message
 		    to insert the name of an alternative to the deprecated
-		    function.  `%(obj_type)` may be used to insert a friendly name
+		    function.  `%(obj_type)s` may be used to insert a friendly name
 		    for the type of object being deprecated.
 		
 		name : str, optional
-		    The name of the deprecated function; if not provided the name
-		    is automatically determined from the passed in function,
-		    though this is useful in the case of renamed functions, where
-		    the new function is just assigned to the name of the
-		    deprecated function.  For example::
-		
-		        def new_function():
-		            ...
-		        oldFunction = new_function
+		    The name of the deprecated object.
 		
 		alternative : str, optional
-		    An alternative function that the user may use in place of the
-		    deprecated function.  The deprecation warning will tell the user about
-		    this alternative if provided.
+		    An alternative API that the user may use in place of the deprecated
+		    API.  The deprecation warning will tell the user about this alternative
+		    if provided.
 		
 		pending : bool, optional
 		    If True, uses a PendingDeprecationWarning instead of a
-		    DeprecationWarning.
+		    DeprecationWarning.  Cannot be used together with *removal*.
+		
+		removal : str, optional
+		    The expected removal version.  With the default (an empty string), a
+		    removal version is automatically computed from *since*.  Set to other
+		    Falsy values to not schedule a removal date.  Cannot be used together
+		    with *pending*.
 		
 		obj_type : str, optional
 		    The object type being deprecated.
+		
+		addendum : str, optional
+		    Additional text appended directly to the final message.
 		
 		Examples
 		--------
@@ -729,9 +752,5 @@ package matplotlib.cbook;
 		        warn_deprecated('1.4.0', name='matplotlib.name_of_module',
 		                        obj_type='module')
 	**/
-	static public function warn_deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic):Dynamic;
-	/**
-		wrap *text* with *prefix* at length *cols*
-	**/
-	static public function wrap(prefix:Dynamic, text:Dynamic, cols:Dynamic):Dynamic;
+	static public function warn_deprecated(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic, ?addendum:Dynamic, ?removal:Dynamic):Dynamic;
 }

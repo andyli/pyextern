@@ -15,7 +15,6 @@ package pandas.io.pytables;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		pivot to the labels shape 
 	**/
@@ -24,7 +23,7 @@ package pandas.io.pytables;
 		guarantee the shape of the values to be at least 1 d 
 	**/
 	static public function _block_shape(values:Dynamic, ?ndim:Dynamic, ?shape:Dynamic):Dynamic;
-	static public function _convert_index(index:Dynamic, ?encoding:Dynamic, ?format_type:Dynamic):Dynamic;
+	static public function _convert_index(index:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?format_type:Dynamic):Dynamic;
 	/**
 		we take a string-like that is object dtype and coerce to a fixed size
 		string type
@@ -33,19 +32,49 @@ package pandas.io.pytables;
 		----------
 		data : a numpy array of object dtype
 		encoding : None or string-encoding
+		errors : handler for encoding errors
 		itemsize : integer, optional, defaults to the max length of the strings
 		
 		Returns
 		-------
 		data in a fixed-length string dtype, encoded to bytes if needed
 	**/
-	static public function _convert_string_array(data:Dynamic, encoding:Dynamic, ?itemsize:Dynamic):Dynamic;
+	static public function _convert_string_array(data:Dynamic, encoding:Dynamic, errors:Dynamic, ?itemsize:Dynamic):Dynamic;
 	static public var _default_encoding : Dynamic;
 	/**
 		if we have bytes, decode them to unicode 
 	**/
 	static public function _ensure_decoded(s:Dynamic):Dynamic;
 	static public function _ensure_encoding(encoding:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           labels=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		_ensure_index_from_sequences
+	**/
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -89,7 +118,7 @@ package pandas.io.pytables;
 		See `_factorize_from_iterable` for more info.
 	**/
 	static public function _factorize_from_iterables(iterables:Dynamic):Dynamic;
-	static public function _get_converter(kind:Dynamic, encoding:Dynamic):Dynamic;
+	static public function _get_converter(kind:Dynamic, encoding:Dynamic, errors:Dynamic):Dynamic;
 	/**
 		get/create the info for this name 
 	**/
@@ -102,7 +131,7 @@ package pandas.io.pytables;
 		Check if a given group is a metadata group for a given parent_group.
 	**/
 	static public function _is_metadata_of(group:Dynamic, parent_group:Dynamic):Dynamic;
-	static public function _maybe_convert(values:Dynamic, val_kind:Dynamic, encoding:Dynamic):Dynamic;
+	static public function _maybe_convert(values:Dynamic, val_kind:Dynamic, encoding:Dynamic, errors:Dynamic):Dynamic;
 	static public function _need_convert(kind:Dynamic):Dynamic;
 	static public function _reindex_axis(obj:Dynamic, axis:Dynamic, labels:Dynamic, ?other:Dynamic):Dynamic;
 	/**
@@ -119,8 +148,7 @@ package pandas.io.pytables;
 	**/
 	static public function _set_tz(values:Dynamic, tz:Dynamic, ?preserve_UTC:Dynamic, ?coerce:Dynamic):Dynamic;
 	/**
-		Return the argument coerced to a string if it was a pathlib.Path
-		   or a py.path.local
+		Attempt to convert a path-like object to a string.
 		
 		Parameters
 		----------
@@ -128,14 +156,25 @@ package pandas.io.pytables;
 		
 		Returns
 		-------
-		str_filepath_or_buffer : a the string version of the input path
+		str_filepath_or_buffer : maybe a string version of the object
+		
+		Notes
+		-----
+		Objects supporting the fspath protocol (python 3.6+) are coerced
+		according to its __fspath__ method.
+		
+		For backwards compatibility with older pythons, pathlib.Path and
+		py.path objects are specially coerced.
+		
+		Any other object is passed through unchanged, which includes bytes,
+		strings, buffers, or anything else that's not even path-like.
 	**/
 	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	static public var _table_file_open_policy_is_strict : Dynamic;
 	static public var _table_mod : Dynamic;
 	static public function _tables():Dynamic;
-	static public function _unconvert_index(data:Dynamic, kind:Dynamic, ?encoding:Dynamic):Dynamic;
-	static public function _unconvert_index_legacy(data:Dynamic, kind:Dynamic, ?legacy:Dynamic, ?encoding:Dynamic):Dynamic;
+	static public function _unconvert_index(data:Dynamic, kind:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
+	static public function _unconvert_index_legacy(data:Dynamic, kind:Dynamic, ?legacy:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
 		inverse of _convert_string_array
 		
@@ -144,12 +183,13 @@ package pandas.io.pytables;
 		data : fixed length string dtyped array
 		nan_rep : the storage repr of NaN, optional
 		encoding : the encoding of the data, optional
+		errors : handler for encoding errors, default 'strict'
 		
 		Returns
 		-------
 		an object array of the decoded data
 	**/
-	static public function _unconvert_string_array(data:Dynamic, ?nan_rep:Dynamic, ?encoding:Dynamic):Dynamic;
+	static public function _unconvert_string_array(data:Dynamic, ?nan_rep:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
 	static public var _version : Dynamic;
 	/**
 		Glues together two sets of strings using the amount of space requested.
@@ -237,19 +277,36 @@ package pandas.io.pytables;
 		verify_integrity : boolean, default False
 		    Check whether the new concatenated axis contains duplicates. This can
 		    be very expensive relative to the actual data concatenation
+		sort : boolean, default None
+		    Sort non-concatenation axis if it is not already aligned when `join`
+		    is 'outer'. The current default of sorting is deprecated and will
+		    change to not-sorting in a future version of pandas.
+		
+		    Explicitly pass ``sort=True`` to silence the warning and sort.
+		    Explicitly pass ``sort=False`` to silence the warning and not sort.
+		
+		    This has no effect when ``join='inner'``, which already preserves
+		    the order of the non-concatenation axis.
+		
+		    .. versionadded:: 0.23.0
+		
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
 		
 		Returns
 		-------
-		concatenated : type of objects
+		concatenated : object, type of objs
+		    When concatenating all ``Series`` along the index (axis=0), a
+		    ``Series`` is returned. When ``objs`` contains at least one
+		    ``DataFrame``, a ``DataFrame`` is returned. When concatenating along
+		    the columns (axis=1), a ``DataFrame`` is returned.
 		
 		Notes
 		-----
 		The keys, levels, and names arguments are all optional.
 		
 		A walkthrough of how this method fits in with other tools for combining
-		panda objects can be found `here
+		pandas objects can be found `here
 		<http://pandas.pydata.org/pandas-docs/stable/merging.html>`__.
 		
 		See Also
@@ -374,9 +431,11 @@ package pandas.io.pytables;
 		   0
 		a  2
 		>>> pd.concat([df5, df6], verify_integrity=True)
+		Traceback (most recent call last):
+		    ...
 		ValueError: Indexes have overlapping values: ['a']
 	**/
-	static public function concat(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?ignore_index:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?verify_integrity:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function concat(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?ignore_index:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?verify_integrity:Dynamic, ?sort:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var dropna_doc : Dynamic;
 	static public var duplicate_doc : Dynamic;
 	static public var format_deprecate_doc : Dynamic;
@@ -390,15 +449,14 @@ package pandas.io.pytables;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -406,7 +464,9 @@ package pandas.io.pytables;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -479,16 +539,22 @@ package pandas.io.pytables;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -532,11 +598,6 @@ package pandas.io.pytables;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -553,7 +614,7 @@ package pandas.io.pytables;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -598,12 +659,6 @@ package pandas.io.pytables;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -654,21 +709,22 @@ package pandas.io.pytables;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -679,6 +735,11 @@ package pandas.io.pytables;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -688,11 +749,23 @@ package pandas.io.pytables;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -841,27 +914,84 @@ package pandas.io.pytables;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function make_block(values:Dynamic, placement:Dynamic, ?klass:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
 	/**
@@ -916,40 +1046,229 @@ package pandas.io.pytables;
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	/**
-		read from the store, close it if we opened it
+		Read from the store, close it if we opened it.
 		
 		Retrieve pandas object stored in file, optionally based on where
 		criteria
 		
 		Parameters
 		----------
-		path_or_buf : path (string), buffer or path object (pathlib.Path or
-		    py._path.local.LocalPath) designating the file to open, or an
-		    already opened pd.HDFStore object
+		path_or_buf : string, buffer or path object
+		    Path to the file to open, or an open :class:`pandas.HDFStore` object.
+		    Supports any object implementing the ``__fspath__`` protocol.
+		    This includes :class:`pathlib.Path` and py._path.local.LocalPath
+		    objects.
 		
 		    .. versionadded:: 0.19.0 support for pathlib, py.path.
+		    .. versionadded:: 0.21.0 support for __fspath__ proptocol.
 		
-		key : group identifier in the store. Can be omitted if the HDF file
+		key : object, optional
+		    The group identifier in the store. Can be omitted if the HDF file
 		    contains a single pandas object.
-		mode : string, {'r', 'r+', 'a'}, default 'r'. Mode to use when opening
-		    the file. Ignored if path_or_buf is a pd.HDFStore.
-		where : list of Term (or convertable) objects, optional
-		start : optional, integer (defaults to None), row number to start
-		    selection
-		stop  : optional, integer (defaults to None), row number to stop
-		    selection
-		columns : optional, a list of columns that if not None, will limit the
-		    return columns
-		iterator : optional, boolean, return an iterator, default False
-		chunksize : optional, nrows to include in iteration, return an iterator
+		mode : {'r', 'r+', 'a'}, optional
+		    Mode to use when opening the file. Ignored if path_or_buf is a
+		    :class:`pandas.HDFStore`. Default is 'r'.
+		where : list, optional
+		    A list of Term (or convertible) objects.
+		start : int, optional
+		    Row number to start selection.
+		stop  : int, optional
+		    Row number to stop selection.
+		columns : list, optional
+		    A list of columns names to return.
+		iterator : bool, optional
+		    Return an iterator object.
+		chunksize : int, optional
+		    Number of rows to include in an iteration when using an iterator.
+		errors : str, default 'strict'
+		    Specifies how encoding and decoding errors are to be handled.
+		    See the errors argument for :func:`open` for a full list
+		    of options.
+		**kwargs
+		    Additional keyword arguments passed to HDFStore.
 		
 		Returns
 		-------
-		The selected object
+		item : object
+		    The selected object. Return type depends on the object stored.
+		
+		See Also
+		--------
+		pandas.DataFrame.to_hdf : write a HDF file from a DataFrame
+		pandas.HDFStore : low-level access to HDF files
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame([[1, 1.0, 'a']], columns=['x', 'y', 'z'])
+		>>> df.to_hdf('./store.h5', 'data')
+		>>> reread = pd.read_hdf('./store.h5')
 	**/
 	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
 	static public function timeit(key:Dynamic, df:Dynamic, ?fn:Dynamic, ?remove:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Convert argument to datetime.
+		
+		Parameters
+		----------
+		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
+		
+		    .. versionadded:: 0.18.1
+		
+		       or DataFrame/dict-like
+		
+		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		
+		    - If 'raise', then invalid parsing will raise an exception
+		    - If 'coerce', then invalid parsing will be set as NaT
+		    - If 'ignore', then invalid parsing will return the input
+		dayfirst : boolean, default False
+		    Specify a date parse order if `arg` is str or its list-likes.
+		    If True, parses dates with the day first, eg 10/11/12 is parsed as
+		    2012-11-10.
+		    Warning: dayfirst=True is not strict, but will prefer to parse
+		    with day first (this is a known bug, based on dateutil behavior).
+		yearfirst : boolean, default False
+		    Specify a date parse order if `arg` is str or its list-likes.
+		
+		    - If True parses dates with the year first, eg 10/11/12 is parsed as
+		      2010-11-12.
+		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same
+		      as dateutil).
+		
+		    Warning: yearfirst=True is not strict, but will prefer to parse
+		    with year first (this is a known bug, based on dateutil beahavior).
+		
+		    .. versionadded:: 0.16.1
+		
+		utc : boolean, default None
+		    Return UTC DatetimeIndex if True (converting any tz-aware
+		    datetime.datetime objects as well).
+		box : boolean, default True
+		
+		    - If True returns a DatetimeIndex
+		    - If False returns ndarray of values.
+		format : string, default None
+		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
+		    all the way up to nanoseconds.
+		exact : boolean, True by default
+		
+		    - If True, require an exact format match.
+		    - If False, allow the format to match anywhere in the target string.
+		
+		unit : string, default 'ns'
+		    unit of the arg (D,s,ms,us,ns) denote the unit, which is an
+		    integer or float number. This will be based off the origin.
+		    Example, with unit='ms' and origin='unix' (the default), this
+		    would calculate the number of milliseconds to the unix epoch start.
+		infer_datetime_format : boolean, default False
+		    If True and no `format` is given, attempt to infer the format of the
+		    datetime strings, and if it can be inferred, switch to a faster
+		    method of parsing them. In some cases this can increase the parsing
+		    speed by ~5-10x.
+		origin : scalar, default is 'unix'
+		    Define the reference date. The numeric values would be parsed as number
+		    of units (defined by `unit`) since this reference date.
+		
+		    - If 'unix' (or POSIX) time; origin is set to 1970-01-01.
+		    - If 'julian', unit must be 'D', and origin is set to beginning of
+		      Julian Calendar. Julian day number 0 is assigned to the day starting
+		      at noon on January 1, 4713 BC.
+		    - If Timestamp convertible, origin is set to Timestamp identified by
+		      origin.
+		
+		    .. versionadded:: 0.20.0
+		cache : boolean, default False
+		    If True, use a cache of unique, converted dates to apply the datetime
+		    conversion. May produce sigificant speed-up when parsing duplicate date
+		    strings, especially ones with timezone offsets.
+		
+		    .. versionadded:: 0.23.0
+		
+		Returns
+		-------
+		ret : datetime if parsing succeeded.
+		    Return type depends on input:
+		
+		    - list-like: DatetimeIndex
+		    - Series: Series of datetime64 dtype
+		    - scalar: Timestamp
+		
+		    In case when it is not possible to return designated types (e.g. when
+		    any element of input is before Timestamp.min or after Timestamp.max)
+		    return will have datetime.datetime type (or corresponding
+		    array/Series).
+		
+		Examples
+		--------
+		Assembling a datetime from multiple columns of a DataFrame. The keys can be
+		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
+		'ms', 'us', 'ns']) or plurals of the same
+		
+		>>> df = pd.DataFrame({'year': [2015, 2016],
+		                       'month': [2, 3],
+		                       'day': [4, 5]})
+		>>> pd.to_datetime(df)
+		0   2015-02-04
+		1   2016-03-05
+		dtype: datetime64[ns]
+		
+		If a date does not meet the `timestamp limitations
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html
+		#timeseries-timestamp-limits>`_, passing errors='ignore'
+		will return the original input instead of raising any exception.
+		
+		Passing errors='coerce' will force an out-of-bounds date to NaT,
+		in addition to forcing non-dates (or non-parseable dates) to NaT.
+		
+		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='ignore')
+		datetime.datetime(1300, 1, 1, 0, 0)
+		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='coerce')
+		NaT
+		
+		Passing infer_datetime_format=True can often-times speedup a parsing
+		if its not an ISO8601 format exactly, but in a regular format.
+		
+		>>> s = pd.Series(['3/11/2000', '3/12/2000', '3/13/2000']*1000)
+		
+		>>> s.head()
+		0    3/11/2000
+		1    3/12/2000
+		2    3/13/2000
+		3    3/11/2000
+		4    3/12/2000
+		dtype: object
+		
+		>>> %timeit pd.to_datetime(s,infer_datetime_format=True)
+		100 loops, best of 3: 10.4 ms per loop
+		
+		>>> %timeit pd.to_datetime(s,infer_datetime_format=False)
+		1 loop, best of 3: 471 ms per loop
+		
+		Using a unix epoch time
+		
+		>>> pd.to_datetime(1490195805, unit='s')
+		Timestamp('2017-03-22 15:16:45')
+		>>> pd.to_datetime(1490195805433502912, unit='ns')
+		Timestamp('2017-03-22 15:16:45.433502912')
+		
+		.. warning:: For float arg, precision rounding might happen. To prevent
+		    unexpected behavior use a fixed-width exact type.
+		
+		Using a non-unix epoch origin
+		
+		>>> pd.to_datetime([1, 2, 3], unit='D',
+		                   origin=pd.Timestamp('1960-01-01'))
+		0    1960-01-02
+		1    1960-01-03
+		2    1960-01-04
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
+	**/
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		store this object, close it if we opened it 
 	**/

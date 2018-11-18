@@ -36,10 +36,6 @@ package tensorflow.contrib.training.python.training.bucket_ops;
 	**/
 	static public function _shapes(tensor_list_list:Dynamic, shapes:Dynamic, enqueue_many:Dynamic):Dynamic;
 	/**
-		A `tf.cond` that does nothing when the condition is static.
-	**/
-	static public function _smart_cond(pred:Dynamic, if_true:Dynamic, if_false:Dynamic):Dynamic;
-	/**
 		Store SparseTensors for feeding into batch, etc.
 		
 		If `shared_map_ops` is provided, the underlying `SparseTensorsMap` objects
@@ -93,7 +89,7 @@ package tensorflow.contrib.training.python.training.bucket_ops;
 		This function is implemented using several queues. A `QueueRunner` for the
 		queues is added to the current `Graph`'s `QUEUE_RUNNER` collection.
 		
-		As the returned tensors are the result of of a dequeue operation, evaluating
+		As the returned tensors are the result of a dequeue operation, evaluating
 		them will throw a `tf.errors.OutOfRangeError` when the input queue is
 		exhausted.  If these tensors are feeding another input queue, its queue runner
 		will catch this exception, however, if they are used in your main thread

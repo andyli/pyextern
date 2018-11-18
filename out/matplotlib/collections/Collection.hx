@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.collections;
 @:pythonImport("matplotlib.collections", "Collection") extern class Collection {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -44,20 +44,20 @@ package matplotlib.collections;
 		%(Collection)s
 	**/
 	@:native("__init__")
-	public function ___init__(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?capstyle:Dynamic, ?joinstyle:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a Collection
 		
 		%(Collection)s
 	**/
-	public function new(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?capstyle:Dynamic, ?joinstyle:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -108,11 +108,12 @@ package matplotlib.collections;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _alias_map : Dynamic;
 	/**
 		Internal helper function to broadcast + scale ls/lw
 		
@@ -137,8 +138,6 @@ package matplotlib.collections;
 	**/
 	static public function _bcast_lwls(linewidths:Dynamic, dashes:Dynamic):Array<Dynamic>;
 	static public var _edge_default : Dynamic;
-	static public function _get_bool(val:Dynamic):Dynamic;
-	static public function _get_value(val:Dynamic):Dynamic;
 	static public var _offsets : Dynamic;
 	/**
 		Point prep for drawing and hit testing
@@ -209,7 +208,10 @@ package matplotlib.collections;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Derived classes drawing method
+	**/
+	public function draw(renderer:Dynamic):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -234,7 +236,7 @@ package matplotlib.collections;
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		return filter function to be used for agg filter
+		Return filter function to be used for agg filter.
 	**/
 	public function get_agg_filter():Dynamic;
 	/**
@@ -250,14 +252,7 @@ package matplotlib.collections;
 		Return the array
 	**/
 	public function get_array():Dynamic;
-	/**
-		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-	**/
-	public function get_axes():Dynamic;
+	public function get_capstyle():Dynamic;
 	/**
 		Return a list of the child :class:`Artist`s this
 		:class:`Artist` contains.
@@ -291,15 +286,23 @@ package matplotlib.collections;
 		Get the cursor data for a given event.
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
-	public function get_dashes():Dynamic;
+	/**
+		alias for `get_linestyle`
+	**/
+	public function get_dashes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_datalim(transData:Dynamic):Dynamic;
 	public function get_edgecolor():Dynamic;
-	public function get_edgecolors():Dynamic;
-	public function get_facecolor():Dynamic;
-	public function get_facecolors():Dynamic;
 	/**
-		Return the :class:`~matplotlib.figure.Figure` instance the
-		artist belongs to.
+		alias for `get_edgecolor`
+	**/
+	public function get_edgecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_facecolor():Dynamic;
+	/**
+		alias for `get_facecolor`
+	**/
+	public function get_facecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return the `.Figure` instance the artist belongs to.
 	**/
 	public function get_figure():Dynamic;
 	/**
@@ -307,21 +310,41 @@ package matplotlib.collections;
 	**/
 	public function get_fill():Dynamic;
 	/**
-		Returns the group id
+		Returns the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
-		Return the current hatching pattern
+		Return the current hatching pattern.
 	**/
 	public function get_hatch():Dynamic;
+	/**
+		Return boolean flag, ``True`` if artist is included in layout
+		calculations.
+		
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+	**/
+	public function get_in_layout():Dynamic;
+	public function get_joinstyle():Dynamic;
 	/**
 		Get the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	public function get_linestyle():Dynamic;
-	public function get_linestyles():Dynamic;
+	/**
+		alias for `get_linestyle`
+	**/
+	public function get_linestyles(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_linewidth():Dynamic;
-	public function get_linewidths():Dynamic;
+	/**
+		alias for `get_linewidth`
+	**/
+	public function get_linewidths(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		alias for `get_linewidth`
+	**/
+	public function get_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns how offsets are applied for the collection.  If
 		*offset_position* is 'screen', the offset is applied after the
@@ -339,12 +362,12 @@ package matplotlib.collections;
 	public function get_path_effects():Dynamic;
 	public function get_paths():Dynamic;
 	/**
-		Return the picker object used by this artist
+		Return the picker object used by this artist.
 	**/
 	public function get_picker():Dynamic;
 	public function get_pickradius():Dynamic;
 	/**
-		return True if the artist is to be rasterized
+		Return whether the artist is to be rasterized.
 	**/
 	public function get_rasterized():Dynamic;
 	/**
@@ -354,17 +377,17 @@ package matplotlib.collections;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -381,6 +404,21 @@ package matplotlib.collections;
 	**/
 	public function get_snap():Dynamic;
 	/**
+		Like `Artist.get_window_extent`, but includes any clipping.
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` instance
+		    renderer that will be used to draw the figures (i.e.
+		    ``fig.canvas.get_renderer()``)
+		
+		Returns
+		-------
+		bbox : `.BboxBase`
+		    containing the bounding box (in figure pixel co-ordinates).
+	**/
+	public function get_tightbbox(renderer:Dynamic):Dynamic;
+	/**
 		Return the :class:`~matplotlib.transforms.Transform`
 		instance used by this artist.
 	**/
@@ -393,7 +431,7 @@ package matplotlib.collections;
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	public function get_transforms():Dynamic;
 	/**
-		Returns the url
+		Returns the url.
 	**/
 	public function get_url():Dynamic;
 	public function get_urls():Dynamic;
@@ -417,7 +455,7 @@ package matplotlib.collections;
 	**/
 	public function get_window_extent(renderer:Dynamic):Dynamic;
 	/**
-		Return the :class:`Artist`'s zorder.
+		Return the artist's zorder.
 	**/
 	public function get_zorder():Dynamic;
 	/**
@@ -425,12 +463,17 @@ package matplotlib.collections;
 	**/
 	public function have_units():Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
-		Returns True if the artist is assigned to a
-		:class:`~matplotlib.figure.Figure`.
+		.. deprecated:: 2.2
+		    artist.figure is not None
+		
+		Returns whether the artist is assigned to a `.Figure`.
 	**/
 	public function is_figure_set():Dynamic;
 	/**
@@ -488,58 +531,80 @@ package matplotlib.collections;
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set agg_filter fuction.
+		Set the agg filter.
+		
+		Parameters
+		----------
+		filter_func : callable
+		    A filter function, which takes a (m, n, 3) float array and a dpi
+		    value, and returns a (m, n, 3) array.
+		
+		    .. ACCEPTS: a filter function, which takes a (m, n, 3) float array
+		        and a dpi value, and returns a (m, n, 3) array
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
 		Set the alpha tranparencies of the collection.  *alpha* must be
 		a float or *None*.
 		
-		ACCEPTS: float or None
+		Parameters
+		----------
+		alpha : float or None
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
 		Set the artist's animation state.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
 		Set the antialiasing state for rendering.
 		
-		ACCEPTS: Boolean or sequence of booleans
+		Parameters
+		----------
+		aa : bool or sequence of bools
 	**/
 	public function set_antialiased(aa:Dynamic):Dynamic;
 	/**
-		alias for set_antialiased
+		alias for `set_antialiased`
 	**/
-	public function set_antialiaseds(aa:Dynamic):Dynamic;
+	public function set_antialiaseds(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the image array from numpy array *A*
+		Set the image array from numpy array *A*.
+		
+		Parameters
+		----------
+		A : ndarray
 	**/
 	public function set_array(A:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.axes.Axes` instance in which the
-		artist resides, if any.
+		Set the capstyle for the collection. The capstyle can
+		only be set globally for all elements in the collection
 		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-		
-		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
+		Parameters
+		----------
+		cs : {'butt', 'round', 'projecting'}
+		    The capstyle
 	**/
-	public function set_axes(axes:Dynamic):Dynamic;
+	public function set_capstyle(cs:Dynamic):Dynamic;
 	/**
 		set the norm limits for image scaling; if *vmin* is a length2
 		sequence, interpret it as ``(vmin, vmax)`` which is used to
 		support setp
 		
-		ACCEPTS: a length 2 sequence of floats
+		ACCEPTS: a length 2 sequence of floats; may be overridden in methods
+		that have ``vmin`` and ``vmax`` kwargs.
 	**/
 	public function set_clim(?vmin:Dynamic, ?vmax:Dynamic):Dynamic;
 	/**
-		Set the artist's clip :class:`~matplotlib.transforms.Bbox`.
+		Set the artist's clip `.Bbox`.
 		
-		ACCEPTS: a :class:`matplotlib.transforms.Bbox` instance
+		Parameters
+		----------
+		clipbox : `.Bbox`
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
@@ -548,45 +613,47 @@ package matplotlib.collections;
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_clip_on(b:Dynamic):Dynamic;
 	/**
 		Set the artist's clip path, which may be:
 		
-		  * a :class:`~matplotlib.patches.Patch` (or subclass) instance
+		- a :class:`~matplotlib.patches.Patch` (or subclass) instance; or
+		- a :class:`~matplotlib.path.Path` instance, in which case a
+		  :class:`~matplotlib.transforms.Transform` instance, which will be
+		  applied to the path before using it for clipping, must be provided;
+		  or
+		- ``None``, to remove a previously set clipping path.
 		
-		  * a :class:`~matplotlib.path.Path` instance, in which case
-		     an optional :class:`~matplotlib.transforms.Transform`
-		     instance may be provided, which will be applied to the
-		     path before using it for clipping.
+		For efficiency, if the path happens to be an axis-aligned rectangle,
+		this method will set the clipping box to the corresponding rectangle
+		and set the clipping path to ``None``.
 		
-		  * *None*, to remove the clipping path
-		
-		For efficiency, if the path happens to be an axis-aligned
-		rectangle, this method will set the clipping box to the
-		corresponding rectangle and set the clipping path to *None*.
-		
-		ACCEPTS: [ (:class:`~matplotlib.path.Path`,
-		:class:`~matplotlib.transforms.Transform`) |
-		:class:`~matplotlib.patches.Patch` | None ]
+		ACCEPTS: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		set the colormap for luminance data
 		
-		ACCEPTS: a colormap or registered colormap name
+		Parameters
+		----------
+		cmap : colormap or registered colormap name
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
 		Set both the edgecolor and the facecolor.
 		
-		ACCEPTS: matplotlib color arg or sequence of rgba tuples
-		
 		.. seealso::
 		
 		    :meth:`set_facecolor`, :meth:`set_edgecolor`
 		       For setting the edge or face color individually.
+		
+		Parameters
+		----------
+		c : matplotlib color arg or sequence of rgba tuples
 	**/
 	public function set_color(c:Dynamic):Dynamic;
 	/**
@@ -600,13 +667,15 @@ package matplotlib.collections;
 		and *props* is a dictionary of properties you want returned
 		with the contains test.
 		
-		ACCEPTS: a callable function
+		Parameters
+		----------
+		picker : callable
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		alias for set_linestyle
+		alias for `set_linestyle`
 	**/
-	public function set_dashes(ls:Dynamic):Dynamic;
+	public function set_dashes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the edgecolor(s) of the collection. *c* can be a
 		matplotlib color spec (all patches have same color), or a
@@ -617,13 +686,15 @@ package matplotlib.collections;
 		the face color.  If it is 'none', the patch boundary will not
 		be drawn.
 		
-		ACCEPTS: matplotlib color spec or sequence of specs
+		Parameters
+		----------
+		c : color or sequence of colors
 	**/
 	public function set_edgecolor(c:Dynamic):Dynamic;
 	/**
-		alias for set_edgecolor
+		alias for `set_edgecolor`
 	**/
-	public function set_edgecolors(c:Dynamic):Dynamic;
+	public function set_edgecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the facecolor(s) of the collection.  *c* can be a
 		matplotlib color spec (all patches have same color), or a
@@ -632,24 +703,29 @@ package matplotlib.collections;
 		
 		If *c* is 'none', the patch will not be filled.
 		
-		ACCEPTS: matplotlib color spec or sequence of specs
+		Parameters
+		----------
+		c : color or sequence of colors
 	**/
 	public function set_facecolor(c:Dynamic):Dynamic;
 	/**
-		alias for set_facecolor
+		alias for `set_facecolor`
 	**/
-	public function set_facecolors(c:Dynamic):Dynamic;
+	public function set_facecolors(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the :class:`~matplotlib.figure.Figure` instance the artist
-		belongs to.
+		Set the `.Figure` instance the artist belongs to.
 		
-		ACCEPTS: a :class:`matplotlib.figure.Figure` instance
+		Parameters
+		----------
+		fig : `.Figure`
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist
+		Sets the (group) id for the artist.
 		
-		ACCEPTS: an id string
+		Parameters
+		----------
+		gid : str
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
 	/**
@@ -679,13 +755,39 @@ package matplotlib.collections;
 		can only be specified for the collection as a whole, not separately
 		for each member.
 		
-		ACCEPTS: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]
+		Parameters
+		----------
+		hatch : {'/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'}
 	**/
 	public function set_hatch(hatch:Dynamic):Dynamic;
 	/**
+		Set if artist is to be included in layout calculations,
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+		
+		Parameters
+		----------
+		in_layout : bool
+	**/
+	public function set_in_layout(in_layout:Dynamic):Dynamic;
+	/**
+		Set the joinstyle for the collection. The joinstyle can only be
+		set globally for all elements in the collection.
+		
+		Parameters
+		----------
+		js : {'miter', 'round', 'bevel'}
+		    The joinstyle
+	**/
+	public function set_joinstyle(js:Dynamic):Dynamic;
+	/**
 		Set the label to *s* for auto legend.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : object
+		    *s* will be converted to a string by calling `str`.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
@@ -704,42 +806,42 @@ package matplotlib.collections;
 		
 		    (offset, onoffseq),
 		
-		where ``onoffseq`` is an even length tuple of on and off ink
-		in points.
-		
-		ACCEPTS: ['solid' | 'dashed', 'dashdot', 'dotted' |
-		           (offset, on-off-dash-seq) |
-		           ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |
-		           ``' '`` | ``''``]
+		where ``onoffseq`` is an even length tuple of on and off ink in points.
 		
 		Parameters
 		----------
-		ls : { '-',  '--', '-.', ':'} and more see description
+		ls : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
 		    The line style.
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;
 	/**
-		alias for set_linestyle
+		alias for `set_linestyle`
 	**/
-	public function set_linestyles(ls:Dynamic):Dynamic;
+	public function set_linestyles(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the linewidth(s) for the collection.  *lw* can be a scalar
 		or a sequence; if it is a sequence the patches will cycle
 		through the sequence
 		
-		ACCEPTS: float or sequence of floats
+		Parameters
+		----------
+		lw : float or sequence of floats
 	**/
 	public function set_linewidth(lw:Dynamic):Dynamic;
 	/**
-		alias for set_linewidth
+		alias for `set_linewidth`
 	**/
-	public function set_linewidths(lw:Dynamic):Dynamic;
+	public function set_linewidths(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_linewidth
+		alias for `set_linewidth`
 	**/
-	public function set_lw(lw:Dynamic):Dynamic;
+	public function set_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set the normalization instance
+		Set the normalization instance.
+		
+		Parameters
+		----------
+		norm : `.Normalize`
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**
@@ -748,18 +850,27 @@ package matplotlib.collections;
 		been applied, that is, the offsets are in screen coordinates.
 		If offset_position is 'data', the offset is applied before the
 		master transform, i.e., the offsets are in data coordinates.
+		
+		Parameters
+		----------
+		offset_position : {'screen', 'data'}
 	**/
 	public function set_offset_position(offset_position:Dynamic):Dynamic;
 	/**
 		Set the offsets for the collection.  *offsets* can be a scalar
 		or a sequence.
 		
-		ACCEPTS: float or sequence of floats
+		Parameters
+		----------
+		offsets : float or sequence of floats
 	**/
 	public function set_offsets(offsets:Dynamic):Dynamic;
 	/**
-		set path_effects, which should be a list of instances of
-		matplotlib.patheffect._Base class or its derivatives.
+		Set the path effects.
+		
+		Parameters
+		----------
+		path_effects : `.AbstractPathEffect`
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	public function set_paths():Dynamic;
@@ -792,16 +903,28 @@ package matplotlib.collections;
 		    artist, return *hit=True* and props is a dictionary of
 		    properties you want added to the PickEvent attributes.
 		
-		ACCEPTS: [None|float|boolean|callable]
+		Parameters
+		----------
+		picker : None or bool or float or callable
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
+	/**
+		Set the pick radius used for containment tests.
+		
+		Parameters
+		----------
+		d : float
+		    Pick radius, in points.
+	**/
 	public function set_pickradius(pr:Dynamic):Dynamic;
 	/**
 		Force rasterized (bitmap) drawing in vector backend output.
 		
-		Defaults to None, which implies the backend's default behavior
+		Defaults to None, which implies the backend's default behavior.
 		
-		ACCEPTS: [True | False | None]
+		Parameters
+		----------
+		rasterized : bool or None
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
@@ -822,6 +945,8 @@ package matplotlib.collections;
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
 		    expanded (default 16.0)
+		
+		    .. ACCEPTS: (scale: float, length: float, randomness: float)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
@@ -835,33 +960,49 @@ package matplotlib.collections;
 		    segments, round to the nearest pixel center
 		
 		Only supported by the Agg and MacOSX backends.
+		
+		Parameters
+		----------
+		snap : bool or None
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.transforms.Transform` instance
-		used by this artist.
+		Set the artist transform.
 		
-		ACCEPTS: :class:`~matplotlib.transforms.Transform` instance
+		Parameters
+		----------
+		t : `.Transform`
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist
+		Sets the url for the artist.
 		
-		ACCEPTS: a url string
+		Parameters
+		----------
+		url : str
 	**/
 	public function set_url(url:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		urls : List[str] or None
+	**/
 	public function set_urls(urls:Dynamic):Dynamic;
 	/**
-		Set the artist's visiblity.
+		Set the artist's visibility.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_visible(b:Dynamic):Dynamic;
 	/**
 		Set the zorder for the artist.  Artists with lower zorder
 		values are drawn first.
 		
-		ACCEPTS: any number
+		Parameters
+		----------
+		level : float
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
@@ -900,6 +1041,9 @@ package matplotlib.collections;
 		If *x* is an ndarray with 3 dimensions,
 		and the last dimension is either 3 or 4, then it will be
 		treated as an rgb or rgba array, and no mapping will be done.
+		The array can be uint8, or it can be floating point with
+		values in the 0-1 range; otherwise a ValueError will be raised.
+		If it is a masked array, the mask will be ignored.
 		If the last dimension is 3, the *alpha* kwarg (defaulting to 1)
 		will be used to fill in the transparency.  If the last dimension
 		is 4, the *alpha* kwarg is ignored; it does not
@@ -911,17 +1055,11 @@ package matplotlib.collections;
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
 		If norm is False, no normalization of the input data is
-		performed, and it is assumed to already be in the range (0-1).
-		
-		Note: this method assumes the input is well-behaved; it does
-		not check for anomalies such as *x* being a masked rgba
-		array, or being an integer type other than uint8, or being
-		a floating point rgba array with values outside the 0-1 range.
+		performed, and it is assumed to be in the range (0-1).
 	**/
 	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
-		Update the properties of this :class:`Artist` from the
-		dictionary *prop*.
+		Update this artist's properties from the dictionary *prop*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

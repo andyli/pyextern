@@ -53,6 +53,9 @@ package theano.tensor.subtensor;
 		the output. From this, we find the output broadcast pattern.
 	**/
 	static public function adv_index_broadcastable_pattern(a:Dynamic, idx:Dynamic):Dynamic;
+	static public function advanced_boolean_inc_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function advanced_boolean_set_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function advanced_boolean_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function advanced_inc_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function advanced_inc_subtensor1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function advanced_set_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -61,6 +64,15 @@ package theano.tensor.subtensor;
 	static public function advanced_subtensor1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function alloc(val:Dynamic, ?shapes:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function as_index_variable(idx:Dynamic):Dynamic;
+	/**
+		This function checks if the index list in idx_list is correct.
+		If there are any boolean masks, we check if the mask has the
+		same shape as the input. This is enforced in NumPy 0.13.0 and
+		newer, but not by earlier versions. If the size is not the same,
+		this method raises an IndexError.
+	**/
+	static public function check_advanced_indexing_dimensions(input:Dynamic, idx_list:Dynamic):Dynamic;
+	static public function check_and_reject_bool(args_el:Dynamic):Dynamic;
 	/**
 		Clip x to be between min and max.
 		
@@ -181,6 +193,7 @@ package theano.tensor.subtensor;
 	**/
 	static public function get_scalar_constant_value(orig_v:Dynamic, ?elemwise:Dynamic, ?only_process_constants:Dynamic, ?max_recur:Dynamic):Dynamic;
 	static public function hashtype(self:Dynamic):Dynamic;
+	static public function inc_code():Dynamic;
 	/**
 		Return x with the given subtensor incremented by y.
 		
@@ -208,10 +221,6 @@ package theano.tensor.subtensor;
 		>>> new_r = inc_subtensor(r[10:], 5)
 	**/
 	static public function inc_subtensor(x:Dynamic, y:Dynamic, ?inplace:Dynamic, ?set_instead_of_inc:Dynamic, ?tolerate_inplace_aliasing:Dynamic):Dynamic;
-	/**
-		increments a numpy array inplace at the passed indexes.
-	**/
-	static public function inplace_increment(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var integer_types : Dynamic;
 	/**
 		Convert python litterals to theano constants in subtensor arguments.

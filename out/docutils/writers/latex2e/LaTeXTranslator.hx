@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.latex2e;
 @:pythonImport("docutils.writers.latex2e", "LaTeXTranslator") extern class LaTeXTranslator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.writers.latex2e;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.writers.latex2e;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -222,6 +222,14 @@ package docutils.writers.latex2e;
 	**/
 	public function dispatch_visit(node:Dynamic):Dynamic;
 	/**
+		Close a group of class declarations.
+	**/
+	public function duclass_close(node:Dynamic):Dynamic;
+	/**
+		Open a group and insert declarations for class values.
+	**/
+	public function duclass_open(node:Dynamic):Dynamic;
+	/**
 		Return text with 'problematic' characters escaped.
 		
 		* Escape the special printing characters ``# $ % & ~ _ ^ \ { }``,
@@ -242,6 +250,7 @@ package docutils.writers.latex2e;
 	**/
 	public function ids_to_labels(node:Dynamic, ?set_anchor:Dynamic):Dynamic;
 	public function insert_additional_table_colum_delimiters():Dynamic;
+	public function insert_align_declaration(node:Dynamic, ?_default:Dynamic):Dynamic;
 	static public var insert_newline : Dynamic;
 	static public var insert_non_breaking_blanks : Dynamic;
 	static public var inside_citation_reference_label : Dynamic;
@@ -268,6 +277,10 @@ package docutils.writers.latex2e;
 	static public var section_enumerator_separator : Dynamic;
 	static public var section_level : Dynamic;
 	static public var section_prefix_for_enumerators : Dynamic;
+	/**
+		Convert ``align-*`` class arguments into alignment args.
+	**/
+	public function set_align_from_classes(node:Dynamic):Dynamic;
 	/**
 		Return code to reference or embed stylesheet file `path`
 	**/

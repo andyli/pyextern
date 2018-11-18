@@ -22,9 +22,49 @@ package tensorflow.python.ops.spectral_ops;
 	**/
 	static public function _irfft_wrapper(ifft_fn:Dynamic, fft_rank:Dynamic, default_name:Dynamic):Dynamic;
 	/**
+		Pads `input_tensor` to `fft_length` on its inner-most `fft_rank` dims.
+	**/
+	static public function _maybe_pad_for_rfft(input_tensor:Dynamic, fft_rank:Dynamic, fft_length:Dynamic, ?is_reverse:Dynamic):Dynamic;
+	/**
 		Wrapper around gen_spectral_ops.rfft* that infers fft_length argument.
 	**/
 	static public function _rfft_wrapper(fft_fn:Dynamic, fft_rank:Dynamic, default_name:Dynamic):Dynamic;
+	static public function _validate_dct_arguments(dct_type:Dynamic, n:Dynamic, axis:Dynamic, norm:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
+	/**
+		Computes the 1D [Discrete Cosine Transform (DCT)][dct] of `input`.
+		
+		Currently only Types II and III are supported. Type II is implemented using a
+		length `2N` padded `tf.spectral.rfft`, as described here:
+		https://dsp.stackexchange.com/a/10606. Type III is a fairly straightforward
+		inverse of Type II (i.e. using a length `2N` padded `tf.spectral.irfft`).
+		
+		@compatibility(scipy)
+		Equivalent to scipy.fftpack.dct for Type-II and Type-III DCT.
+		https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.fftpack.dct.html
+		@end_compatibility
+		
+		Args:
+		  input: A `[..., samples]` `float32` `Tensor` containing the signals to
+		    take the DCT of.
+		  type: The DCT type to perform. Must be 2 or 3.
+		  n: For future expansion. The length of the transform. Must be `None`.
+		  axis: For future expansion. The axis to compute the DCT along. Must be `-1`.
+		  norm: The normalization to apply. `None` for no normalization or `'ortho'`
+		    for orthonormal normalization.
+		  name: An optional name for the operation.
+		
+		Returns:
+		  A `[..., samples]` `float32` `Tensor` containing the DCT of `input`.
+		
+		Raises:
+		  ValueError: If `type` is not `2` or `3`, `n` is not `None, `axis` is not
+		    `-1`, or `norm` is not `None` or `'ortho'`.
+		
+		[dct]: https://en.wikipedia.org/wiki/Discrete_cosine_transform
+	**/
+	static public function dct(input:Dynamic, ?type:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic, ?name:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Fast Fourier transform.
 		
@@ -32,17 +72,12 @@ package tensorflow.python.ops.spectral_ops;
 		dimension of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most
-		    dimension of `input` is replaced with its 1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.fft
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function fft(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -52,17 +87,12 @@ package tensorflow.python.ops.spectral_ops;
 		2 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 2
-		    dimensions of `input` are replaced with their 2D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.fft2
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function fft2d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -72,19 +102,52 @@ package tensorflow.python.ops.spectral_ops;
 		dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 3
-		    dimensions of `input` are replaced with their 3D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.fftn with 3 dimensions.
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function fft3d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the 1D [Inverse Discrete Cosine Transform (DCT)][idct] of `input`.
+		
+		Currently only Types II and III are supported. Type III is the inverse of
+		Type II, and vice versa.
+		
+		Note that you must re-normalize by 1/(2n) to obtain an inverse if `norm` is
+		not `'ortho'`. That is:
+		`signal == idct(dct(signal)) * 0.5 / signal.shape[-1]`.
+		When `norm='ortho'`, we have:
+		`signal == idct(dct(signal, norm='ortho'), norm='ortho')`.
+		
+		@compatibility(scipy)
+		Equivalent to scipy.fftpack.idct for Type-II and Type-III DCT.
+		https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.fftpack.idct.html
+		@end_compatibility
+		
+		Args:
+		  input: A `[..., samples]` `float32` `Tensor` containing the signals to take
+		    the DCT of.
+		  type: The IDCT type to perform. Must be 2 or 3.
+		  n: For future expansion. The length of the transform. Must be `None`.
+		  axis: For future expansion. The axis to compute the DCT along. Must be `-1`.
+		  norm: The normalization to apply. `None` for no normalization or `'ortho'`
+		    for orthonormal normalization.
+		  name: An optional name for the operation.
+		
+		Returns:
+		  A `[..., samples]` `float32` `Tensor` containing the IDCT of `input`.
+		
+		Raises:
+		  ValueError: If `type` is not `2` or `3`, `n` is not `None, `axis` is not
+		    `-1`, or `norm` is not `None` or `'ortho'`.
+		
+		[idct]:
+		https://en.wikipedia.org/wiki/Discrete_cosine_transform#Inverse_transforms
+	**/
+	static public function idct(input:Dynamic, ?type:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Inverse fast Fourier transform.
 		
@@ -92,17 +155,12 @@ package tensorflow.python.ops.spectral_ops;
 		inner-most dimension of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most
-		    dimension of `input` is replaced with its inverse 1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.ifft
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function ifft(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -112,17 +170,12 @@ package tensorflow.python.ops.spectral_ops;
 		inner-most 2 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 2
-		    dimensions of `input` are replaced with their inverse 2D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.ifft2
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function ifft2d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -132,17 +185,12 @@ package tensorflow.python.ops.spectral_ops;
 		inner-most 3 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 3
-		    dimensions of `input` are replaced with their inverse 3D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.ifftn with 3 dimensions.
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function ifft3d(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -158,6 +206,10 @@ package tensorflow.python.ops.spectral_ops;
 		compute `input` is odd, it should be provided since it cannot be inferred
 		properly.
 		
+		Along the axis `IRFFT` is computed on, if `fft_length / 2 + 1` is smaller
+		than the corresponding dimension of `input`, the dimension is cropped. If it is
+		larger, the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -166,13 +218,6 @@ package tensorflow.python.ops.spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A float32 tensor of the same rank as `input`. The inner-most
-		    dimension of `input` is replaced with the `fft_length` samples of its inverse
-		    1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.irfft
-		  @end_compatibility
 	**/
 	static public function irfft(input_tensor:Dynamic, ?fft_length:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -188,6 +233,11 @@ package tensorflow.python.ops.spectral_ops;
 		to compute `input` is odd, it should be provided since it cannot be inferred
 		properly.
 		
+		Along each axis `IRFFT2D` is computed on, if `fft_length` (or
+		`fft_length / 2 + 1` for the inner-most dimension) is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -196,13 +246,6 @@ package tensorflow.python.ops.spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A float32 tensor of the same rank as `input`. The inner-most 2
-		    dimensions of `input` are replaced with the `fft_length` samples of their
-		    inverse 2D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.irfft2
-		  @end_compatibility
 	**/
 	static public function irfft2d(input_tensor:Dynamic, ?fft_length:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -218,6 +261,11 @@ package tensorflow.python.ops.spectral_ops;
 		to compute `input` is odd, it should be provided since it cannot be inferred
 		properly.
 		
+		Along each axis `IRFFT3D` is computed on, if `fft_length` (or
+		`fft_length / 2 + 1` for the inner-most dimension) is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -226,15 +274,9 @@ package tensorflow.python.ops.spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A float32 tensor of the same rank as `input`. The inner-most 3
-		    dimensions of `input` are replaced with the `fft_length` samples of their
-		    inverse 3D real Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.irfftn with 3 dimensions.
-		  @end_compatibility
 	**/
 	static public function irfft3d(input_tensor:Dynamic, ?fft_length:Dynamic, ?name:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Real-valued fast Fourier transform.
 		
@@ -245,6 +287,10 @@ package tensorflow.python.ops.spectral_ops;
 		`fft_length / 2 + 1` unique components of the FFT: the zero-frequency term,
 		followed by the `fft_length / 2` positive-frequency terms.
 		
+		Along the axis `RFFT` is computed on, if `fft_length` is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `float32`. A float32 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -253,13 +299,6 @@ package tensorflow.python.ops.spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same rank as `input`. The inner-most
-		    dimension of `input` is replaced with the `fft_length / 2 + 1` unique
-		    frequency components of its 1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.rfft
-		  @end_compatibility
 	**/
 	static public function rfft(input_tensor:Dynamic, ?fft_length:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -273,6 +312,10 @@ package tensorflow.python.ops.spectral_ops;
 		of `output`: the zero-frequency term, followed by the `fft_length / 2`
 		positive-frequency terms.
 		
+		Along each axis `RFFT2D` is computed on, if `fft_length` is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `float32`. A float32 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -281,14 +324,6 @@ package tensorflow.python.ops.spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same rank as `input`. The inner-most 2
-		    dimensions of `input` are replaced with their 2D Fourier transform. The
-		    inner-most dimension contains `fft_length / 2 + 1` unique frequency
-		    components.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.rfft2
-		  @end_compatibility
 	**/
 	static public function rfft2d(input_tensor:Dynamic, ?fft_length:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -302,6 +337,10 @@ package tensorflow.python.ops.spectral_ops;
 		of `output`: the zero-frequency term, followed by the `fft_length / 2`
 		positive-frequency terms.
 		
+		Along each axis `RFFT3D` is computed on, if `fft_length` is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `float32`. A float32 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -310,14 +349,7 @@ package tensorflow.python.ops.spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same rank as `input`. The inner-most 3
-		    dimensions of `input` are replaced with the their 3D Fourier transform. The
-		    inner-most dimension contains `fft_length / 2 + 1` unique frequency
-		    components.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.rfftn with 3 dimensions.
-		  @end_compatibility
 	**/
 	static public function rfft3d(input_tensor:Dynamic, ?fft_length:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

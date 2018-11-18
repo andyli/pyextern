@@ -122,12 +122,19 @@ class Processor {
 	}
 
 	public function isMethodStatic(typeName:String, clsMemName:String, clsMemObj:Dynamic, fun:Function):Bool {
-		var nonInstanceMethods = [
-			"__new__"
+		var staticMethods = [
+			"__new__",
+		];
+		var instanceMethods = [
+			"__init__",
 		];
 
-		if (nonInstanceMethods.indexOf(clsMemName) >= 0) {
+		if (staticMethods.indexOf(clsMemName) >= 0) {
 			return true;
+		}
+
+		if (instanceMethods.indexOf(clsMemName) >= 0) {
+			return false;
 		}
 		
 		if (typeName == "staticmethod") {
@@ -138,19 +145,14 @@ class Processor {
 			if (fun.args.length < 1){
 				return true;
 			}
-			
 			return fun.args[0].name != "self";
 		}
 		
-		if (
-			Inspect.isfunction(clsMemObj) ||
-			Inspect.isroutine(clsMemObj) ||
-			Inspect.ismethoddescriptor(clsMemObj)
-		) {
+		if (Inspect.ismethoddescriptor(clsMemObj)) {
 			return false;
 		}
 
-		return true;
+		return false;
 	}
 
 	public function isMethod(clsMemObj:Dynamic):Bool {
@@ -217,9 +219,9 @@ class Processor {
 
 							var typeName = type(baseFunction(memObj, clsMemName)).__name__;
 							var fun = sigToFun(sig, Inspect.getdoc(clsMemObj));
-							var isInstanceMethod = !isMethodStatic(typeName, clsMemName, clsMemObj, fun);
+							var isStaticMethod = isMethodStatic(typeName, clsMemName, clsMemObj, fun);
 							fun = if (fun != null) {
-								if (isInstanceMethod) {
+								if (!isStaticMethod) {
 									if (fun.args.length < 1) {
 										trace(moduleName + " " + memName + " " + clsMemName);
 										trace(typeName);
@@ -260,7 +262,7 @@ class Processor {
 							var field:Field = {
 								doc: getdoc(clsMemObj),
 								meta: [],
-								access: isInstanceMethod ? [APublic] : [AStatic, APublic],
+								access: isStaticMethod ? [AStatic, APublic] : [APublic],
 								name: clsMemName,
 								kind: FFun(fun),
 								pos: null
@@ -356,7 +358,10 @@ class Processor {
 
 				if (isMethod(memObj)) {
 					var sig = try {
-						Inspect.signature(memObj);
+						if (memName != "group_cumsum") //pandas._libs.groupby.group_cumsum causes segfault...
+							Inspect.signature(memObj);
+						else
+							null;
 					} catch(e:Dynamic) {
 						null;
 					}

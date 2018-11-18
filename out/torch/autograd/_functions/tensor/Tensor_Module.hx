@@ -10,10 +10,6 @@ package torch.autograd._functions.tensor;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Return running totals
-	**/
-	static public function _accumulate(iterable:Dynamic, ?fn:Dynamic):Dynamic;
-	/**
 		reduce(function, sequence[, initial]) -> value
 		
 		Apply a function of two arguments cumulatively to the items of a sequence,

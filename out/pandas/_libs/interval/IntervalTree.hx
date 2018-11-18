@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas._libs.interval;
 @:pythonImport("pandas._libs.interval", "IntervalTree") extern class IntervalTree {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -73,7 +73,7 @@ package pandas._libs.interval;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -151,8 +151,20 @@ package pandas._libs.interval;
 	**/
 	public function __pyx_fuse_3get_loc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		helper for pickle
+		Return the positions corresponding to unique intervals that overlap
+		with the given array of scalar targets.
 	**/
+	public function __pyx_fuse_4get_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return the positions corresponding to intervals that overlap with
+		the given array of scalar targets. Non-unique positions are repeated.
+	**/
+	public function __pyx_fuse_4get_indexer_non_unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return all positions corresponding to intervals that overlap with
+		the given scalar key
+	**/
+	public function __pyx_fuse_4get_loc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		helper for pickle
@@ -166,6 +178,7 @@ package pandas._libs.interval;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -183,7 +196,7 @@ package pandas._libs.interval;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return all positions corresponding to intervals with the given side
 		falling between the left and right bounds of an interval query
@@ -191,7 +204,29 @@ package pandas._libs.interval;
 	public function _get_partial_overlap(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function clear_mapping(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var closed : Dynamic;
+	/**
+		Check if the interval is closed on the left side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var closed_left : Dynamic;
+	/**
+		Check if the interval is closed on the right side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var closed_right : Dynamic;
 	public var dtype : Dynamic;
 	/**
@@ -221,8 +256,37 @@ package pandas._libs.interval;
 		        
 	**/
 	public var left_sorter : Dynamic;
+	/**
+		Return the length of the Interval
+	**/
+	public var length : Dynamic;
+	/**
+		Return the midpoint of the Interval
+	**/
 	public var mid : Dynamic;
+	/**
+		Check if the interval is open on the left side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var open_left : Dynamic;
+	/**
+		Check if the interval is open on the right side.
+		
+		For the meaning of `closed` and `open` see :class:`~pandas.Interval`.
+		
+		Returns
+		-------
+		bool
+		    ``True`` if the Interval is closed on the left-side, else
+		    ``False``.
+	**/
 	public var open_right : Dynamic;
 	public var right : Dynamic;
 	/**

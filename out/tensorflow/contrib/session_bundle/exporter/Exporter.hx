@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.session_bundle.exporter;
 @:pythonImport("tensorflow.contrib.session_bundle.exporter", "Exporter") extern class Exporter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.contrib.session_bundle.exporter;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package tensorflow.contrib.session_bundle.exporter;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -117,7 +117,7 @@ package tensorflow.contrib.session_bundle.exporter;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		Args:
 		  export_dir_base: A string path to the base export dir.
@@ -141,7 +141,7 @@ package tensorflow.contrib.session_bundle.exporter;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		Args:
 		  graph_def: A GraphDef message of the graph to be used in inference.

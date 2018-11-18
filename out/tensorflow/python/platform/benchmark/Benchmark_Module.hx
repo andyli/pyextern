@@ -11,7 +11,6 @@ package tensorflow.python.platform.benchmark;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _benchmark_tests_can_log_memory():Dynamic;
 	/**
 		Method for recording a benchmark directly.
 		
@@ -51,4 +50,5 @@ package tensorflow.python.platform.benchmark;
 	static public function benchmarks_main(true_main:Dynamic, ?argv:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

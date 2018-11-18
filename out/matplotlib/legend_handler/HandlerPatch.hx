@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.legend_handler;
 @:pythonImport("matplotlib.legend_handler", "HandlerPatch") extern class HandlerPatch {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,30 +38,42 @@ package matplotlib.legend_handler;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		The HandlerPatch class optionally takes a function ``patch_func``
-		who's responsibility is to create the legend key artist. The
-		``patch_func`` should have the signature::
+		Parameters
+		----------
+		patch_func : callable, optional
+		    The function that creates the legend key artist.
+		    *patch_func* should have the signature::
 		
-		    def patch_func(legend=legend, orig_handle=orig_handle,
-		                   xdescent=xdescent, ydescent=ydescent,
-		                   width=width, height=height, fontsize=fontsize)
+		        def patch_func(legend=legend, orig_handle=orig_handle,
+		                       xdescent=xdescent, ydescent=ydescent,
+		                       width=width, height=height, fontsize=fontsize)
 		
-		Subsequently the created artist will have its ``update_prop`` method
-		called and the appropriate transform will be applied.
+		    Subsequently the created artist will have its ``update_prop`` method
+		    called and the appropriate transform will be applied.
+		
+		Notes
+		-----
+		Any other keyword arguments are given to `HandlerBase`.
 	**/
 	@:native("__init__")
 	public function ___init__(?patch_func:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		The HandlerPatch class optionally takes a function ``patch_func``
-		who's responsibility is to create the legend key artist. The
-		``patch_func`` should have the signature::
+		Parameters
+		----------
+		patch_func : callable, optional
+		    The function that creates the legend key artist.
+		    *patch_func* should have the signature::
 		
-		    def patch_func(legend=legend, orig_handle=orig_handle,
-		                   xdescent=xdescent, ydescent=ydescent,
-		                   width=width, height=height, fontsize=fontsize)
+		        def patch_func(legend=legend, orig_handle=orig_handle,
+		                       xdescent=xdescent, ydescent=ydescent,
+		                       width=width, height=height, fontsize=fontsize)
 		
-		Subsequently the created artist will have its ``update_prop`` method
-		called and the appropriate transform will be applied.
+		    Subsequently the created artist will have its ``update_prop`` method
+		    called and the appropriate transform will be applied.
+		
+		Notes
+		-----
+		Any other keyword arguments are given to `HandlerBase`.
 	**/
 	public function new(?patch_func:Dynamic, ?kw:python.KwArgs<Dynamic>):Void;
 	/**
@@ -70,7 +82,7 @@ package matplotlib.legend_handler;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +133,7 @@ package matplotlib.legend_handler;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

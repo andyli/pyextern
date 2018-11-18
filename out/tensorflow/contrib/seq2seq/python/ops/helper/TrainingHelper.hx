@@ -15,7 +15,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -86,7 +86,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -137,7 +137,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -156,6 +156,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		Returns `(initial_finished, initial_inputs)`.
 	**/
 	public function initialize(?name:Dynamic):Dynamic;
+	public var inputs : Dynamic;
 	/**
 		next_inputs_fn for TrainingHelper.
 	**/
@@ -164,4 +165,17 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		Returns `sample_ids`.
 	**/
 	public function sample(time:Dynamic, outputs:Dynamic, ?name:Dynamic, ?unused_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		DType of tensor returned by `sample`.
+		
+		Returns a DType.
+	**/
+	public var sample_ids_dtype : Dynamic;
+	/**
+		Shape of tensor returned by `sample`, excluding the batch dimension.
+		
+		Returns a `TensorShape`.
+	**/
+	public var sample_ids_shape : Dynamic;
+	public var sequence_length : Dynamic;
 }

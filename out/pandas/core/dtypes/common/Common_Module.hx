@@ -47,6 +47,19 @@ package pandas.core.dtypes.common;
 	**/
 	static public function _ensure_categorical(arr:Dynamic):Dynamic;
 	/**
+		Ensure a np.datetime64 array has dtype specifically 'datetime64[ns]'
+		
+		Parameters
+		----------
+		arr : ndarray
+		copy : boolean, default True
+		
+		Returns
+		-------
+		result : ndarray with dtype datetime64[ns]
+	**/
+	static public function _ensure_datetime64ns(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Ensure that an array object has a float dtype if possible.
 		
 		Parameters
@@ -68,6 +81,19 @@ package pandas.core.dtypes.common;
 	static public function _ensure_int8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Ensure a np.timedelta64 array has dtype specifically 'timedelta64[ns]'
+		
+		Parameters
+		----------
+		arr : ndarray
+		copy : boolean, default True
+		
+		Returns
+		-------
+		result : ndarray with dtype timedelta64[ns]
+	**/
+	static public function _ensure_timedelta64ns(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Get the dtype instance associated with an array
@@ -156,9 +182,9 @@ package pandas.core.dtypes.common;
 	**/
 	static public function _validate_date_like_dtype(dtype:Dynamic):Dynamic;
 	/**
-		DEPRECATED: This function will be removed in a future version.
-		
 		Check whether the provided array or dtype is of an integer dtype.
+		
+		.. deprecated:: 0.20.0
 		
 		In this function, timedelta64 instances are also considered "any-integer"
 		type objects and will return True.
@@ -196,6 +222,35 @@ package pandas.core.dtypes.common;
 		False
 	**/
 	static public function is_any_int_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if the object is array-like.
+		
+		For an object to be considered array-like, it must be list-like and
+		have a `dtype` attribute.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_array_like : bool
+		    Whether `obj` has array-like properties.
+		
+		Examples
+		--------
+		>>> is_array_like(np.array([1, 2, 3]))
+		True
+		>>> is_array_like(pd.Series(["a", "b"]))
+		True
+		>>> is_array_like(pd.Index(["2016-01-01"]))
+		True
+		>>> is_array_like([1, 2, 3])
+		False
+		>>> is_array_like(("a", "b"))
+		False
+	**/
+	static public function is_array_like(obj:Dynamic):Bool;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
@@ -702,6 +757,54 @@ package pandas.core.dtypes.common;
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
 	/**
+		Check whether two arrays have compatible dtypes to do a union.
+		numpy types are checked with ``is_dtype_equal``. Extension types are
+		checked separately.
+		
+		Parameters
+		----------
+		source : The first dtype to compare
+		target : The second dtype to compare
+		
+		Returns
+		----------
+		boolean : Whether or not the two dtypes are equal.
+		
+		>>> is_dtype_equal("int", int)
+		True
+		
+		>>> is_dtype_equal(CategoricalDtype(['a', 'b'],
+		...                CategoricalDtype(['b', 'c']))
+		True
+		
+		>>> is_dtype_equal(CategoricalDtype(['a', 'b'],
+		...                CategoricalDtype(['b', 'c'], ordered=True))
+		False
+	**/
+	static public function is_dtype_union_equal(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		Check if an object is a pandas extension array type.
+		
+		Parameters
+		----------
+		arr_or_dtype : object
+		
+		Returns
+		-------
+		bool
+		
+		Notes
+		-----
+		This checks whether an object implements the pandas extension
+		array interface. In pandas, this includes:
+		
+		* Categorical
+		
+		Third-party libraries may implement arrays or types satisfying
+		this interface as well.
+	**/
+	static public function is_extension_array_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Check whether an array-like is of a pandas extension class instance.
 		
 		Extension classes include categoricals, pandas sparse objects (i.e.
@@ -810,10 +913,10 @@ package pandas.core.dtypes.common;
 	**/
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		DEPRECATED: This function will be removed in a future version.
-		
 		Check whether the provided array or dtype is an instance of
 		numpy's float dtype.
+		
+		.. deprecated:: 0.20.0
 		
 		Unlike, `is_float_dtype`, this check is a lot stricter, as it requires
 		`isinstance` of `np.floating` and not `issubclass`.
@@ -1111,20 +1214,37 @@ package pandas.core.dtypes.common;
 	/**
 		Check if the object is a number.
 		
+		Returns True when the object is a number, and False if is not.
+		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : any type
+		    The object to check if is a number.
 		
 		Returns
 		-------
 		is_number : bool
 		    Whether `obj` is a number or not.
 		
+		See Also
+		--------
+		pandas.api.types.is_integer: checks a subgroup of numbers
+		
 		Examples
 		--------
-		>>> is_number(1)
+		>>> pd.api.types.is_number(1)
 		True
-		>>> is_number("foo")
+		>>> pd.api.types.is_number(7.15)
+		True
+		
+		Booleans are valid because they are int subclass.
+		
+		>>> pd.api.types.is_number(False)
+		True
+		
+		>>> pd.api.types.is_number("foo")
+		False
+		>>> pd.api.types.is_number("5")
 		False
 	**/
 	static public function is_number(obj:Dynamic):Bool;
@@ -1230,6 +1350,29 @@ package pandas.core.dtypes.common;
 		False
 	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check if obj or all elements of list-like is DateOffset
+		
+		Parameters
+		----------
+		arr_or_obj : object
+		
+		Returns
+		-------
+		boolean : Whether the object is a DateOffset or listlike of DatetOffsets
+		
+		Examples
+		--------
+		>>> is_offsetlike(pd.DateOffset(days=1))
+		True
+		>>> is_offsetlike('offset')
+		False
+		>>> is_offsetlike([pd.offsets.Minute(4), pd.offsets.MonthEnd()])
+		True
+		>>> is_offsetlike(np.array([pd.DateOffset(months=3), pd.Timestamp.now()]))
+		False
+	**/
+	static public function is_offsetlike(arr_or_obj:Dynamic):Dynamic;
 	/**
 		Check whether an array-like is a periodical index.
 		
@@ -1354,6 +1497,7 @@ package pandas.core.dtypes.common;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1574,6 +1718,8 @@ package pandas.core.dtypes.common;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -1682,6 +1828,7 @@ package pandas.core.dtypes.common;
 		np.dtype or a pandas dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
+	static public function re_type(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_and_binary_types : Dynamic;
 	static public var string_types : Dynamic;
 }

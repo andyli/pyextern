@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.preprocessing.image;
 @:pythonImport("keras.preprocessing.image", "Iterator") extern class Iterator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -30,6 +30,16 @@ package keras.preprocessing.image;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
+		Gets batch at position `index`.
+		
+		Arguments:
+		    index: position of the batch in the Sequence.
+		
+		Returns:
+		    A batch
+	**/
+	public function __getitem__(idx:Dynamic):Dynamic;
+	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
@@ -52,12 +62,25 @@ package keras.preprocessing.image;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Creates an infinite generator that iterate over the Sequence.
+		
+		Yields:
+		  Sequence items.
+	**/
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
+	/**
+		Number of batch in the Sequence.
+		
+		Returns:
+		    The number of batches in the Sequence.
+	**/
+	public function __len__():Dynamic;
 	/**
 		Return self<value.
 	**/
@@ -105,11 +128,30 @@ package keras.preprocessing.image;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _flow_index(n:Dynamic, ?batch_size:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic):Dynamic;
+	public function _flow_index():Dynamic;
+	/**
+		Gets a batch of transformed samples.
+		
+		# Arguments
+		    index_array: Array of sample indices to include in batch.
+		
+		# Returns
+		    A batch of transformed samples.
+	**/
+	public function _get_batches_of_transformed_samples(index_array:Dynamic):Dynamic;
+	public function _set_index_array():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	public function common_init(image_data_generator:Dynamic, target_size:Dynamic, color_mode:Dynamic, data_format:Dynamic, save_to_dir:Dynamic, save_prefix:Dynamic, save_format:Dynamic, subset:Dynamic, interpolation:Dynamic):Dynamic;
+	/**
+		Method called at the end of every epoch.
+		    
+	**/
+	public function on_epoch_end():Dynamic;
 	public function reset():Dynamic;
 }

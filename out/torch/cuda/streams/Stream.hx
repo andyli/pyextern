@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.cuda.streams;
 @:pythonImport("torch.cuda.streams", "Stream") extern class Stream {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -37,22 +37,16 @@ package torch.cuda.streams;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Initialize self.  See help(type(self)) for accurate signature.
-	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function ___init__():Dynamic;
+	public function new():Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,15 +97,12 @@ package torch.cuda.streams;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public var _as_parameter_ : Dynamic;
-	public var _cdata : Dynamic;
-	public var cuda_stream : Dynamic;
-	public var device : Dynamic;
 	public var priority : Dynamic;
 	static public function priority_range():Dynamic;
 	/**
@@ -134,6 +125,12 @@ package torch.cuda.streams;
 	public function record_event(?event:Dynamic):Dynamic;
 	/**
 		Wait for all the kernels in this stream to complete.
+		
+		.. note:: This is a wrapper around ``cudaStreamSynchronize()``: see
+		   `CUDA documentation`_ for more info.
+		
+		.. _CUDA documentation:
+		   http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__STREAM.html
 	**/
 	public function synchronize():Dynamic;
 	/**
@@ -141,6 +138,15 @@ package torch.cuda.streams;
 		
 		Arguments:
 		    event (Event): an event to wait for.
+		
+		.. note:: This is a wrapper around ``cudaStreamWaitEvent()``: see `CUDA
+		   documentation`_ for more info.
+		
+		   This function returns without waiting for :attr:`event`: only future
+		   operations are affected.
+		
+		.. _CUDA documentation:
+		   http://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__STREAM.html
 	**/
 	public function wait_event(event:Dynamic):Dynamic;
 	/**
@@ -151,6 +157,9 @@ package torch.cuda.streams;
 		
 		Arguments:
 		    stream (Stream): a stream to synchronize.
+		
+		.. note:: This function returns without waiting for currently enqueued
+		   kernels in :attr:`stream`: only future operations are affected.
 	**/
 	public function wait_stream(stream:Dynamic):Dynamic;
 }

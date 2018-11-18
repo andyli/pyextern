@@ -95,56 +95,6 @@ package scipy.sparse;
 	**/
 	static public function bmat(blocks:Dynamic, ?format:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		`cs_graph_components` is deprecated!
-		In the future, use csgraph.connected_components. Note that this new function has a slightly different interface: see the docstring for more information.
-		
-		
-		    Determine connected components of a graph stored as a compressed
-		    sparse row or column matrix.
-		
-		    For speed reasons, the symmetry of the matrix x is not checked. A
-		    nonzero at index `(i, j)` means that node `i` is connected to node
-		    `j` by an edge. The number of rows/columns of the matrix thus
-		    corresponds to the number of nodes in the graph.
-		
-		    Parameters
-		    -----------
-		    x : array_like or sparse matrix, 2 dimensions
-		        The adjacency matrix of the graph. Only the upper triangular part
-		        is used.
-		
-		    Returns
-		    --------
-		    n_comp : int
-		        The number of connected components.
-		    label : ndarray (ints, 1 dimension):
-		        The label array of each connected component (-2 is used to
-		        indicate empty rows in the matrix: 0 everywhere, including
-		        diagonal). This array has the length of the number of nodes,
-		        i.e. one label for each node of the graph. Nodes having the same
-		        label belong to the same connected component.
-		
-		    Notes
-		    ------
-		    The matrix is assumed to be symmetric and the upper triangular part
-		    of the matrix is used. The matrix is converted to a CSR matrix unless
-		    it is already a CSR.
-		
-		    Examples
-		    --------
-		    >>> from scipy.sparse.csgraph import connected_components
-		    >>> D = np.eye(4)
-		    >>> D[0,1] = D[1,0] = 1
-		    >>> cs_graph_components(D)
-		    (3, array([0, 0, 1, 2]))
-		    >>> from scipy.sparse import dok_matrix
-		    >>> cs_graph_components(dok_matrix(D))
-		    (3, array([0, 0, 1, 2]))
-		
-		    
-	**/
-	static public function cs_graph_components(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Construct a sparse matrix from diagonals.
 		
 		Parameters
@@ -244,7 +194,7 @@ package scipy.sparse;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 		>>> sparse.eye(3, dtype=np.int8)
-		<3x3 sparse matrix of type '<type 'numpy.int8'>'
+		<3x3 sparse matrix of type '<class 'numpy.int8'>'
 		    with 3 stored elements (1 diagonals) in DIAgonal format>
 	**/
 	static public function eye(m:Dynamic, ?n:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?format:Dynamic):Dynamic;
@@ -323,18 +273,233 @@ package scipy.sparse;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 		>>> identity(3, dtype='int8', format='dia')
-		<3x3 sparse matrix of type '<type 'numpy.int8'>'
+		<3x3 sparse matrix of type '<class 'numpy.int8'>'
 		        with 3 stored elements (1 diagonals) in DIAgonal format>
 	**/
 	static public function identity(n:Dynamic, ?dtype:Dynamic, ?format:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function issparse(x:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
+	/**
+		Is x of a bsr_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a bsr matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a bsr matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import bsr_matrix, isspmatrix_bsr
+		>>> isspmatrix_bsr(bsr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import bsr_matrix, csr_matrix, isspmatrix_bsr
+		>>> isspmatrix_bsr(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_bsr(x:Dynamic):Dynamic;
+	/**
+		Is x of coo_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a coo matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a coo matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import coo_matrix, isspmatrix_coo
+		>>> isspmatrix_coo(coo_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import coo_matrix, csr_matrix, isspmatrix_coo
+		>>> isspmatrix_coo(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_coo(x:Dynamic):Dynamic;
+	/**
+		Is x of csc_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csc matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csc matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csc_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_csc(x:Dynamic):Dynamic;
+	/**
+		Is x of csr_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csr matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csr matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix_csr
+		>>> isspmatrix_csr(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csr(csc_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_csr(x:Dynamic):Dynamic;
+	/**
+		Is x of dia_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a dia matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a dia matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import dia_matrix, isspmatrix_dia
+		>>> isspmatrix_dia(dia_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import dia_matrix, csr_matrix, isspmatrix_dia
+		>>> isspmatrix_dia(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_dia(x:Dynamic):Dynamic;
+	/**
+		Is x of dok_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a dok matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a dok matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import dok_matrix, isspmatrix_dok
+		>>> isspmatrix_dok(dok_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import dok_matrix, csr_matrix, isspmatrix_dok
+		>>> isspmatrix_dok(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_dok(x:Dynamic):Dynamic;
+	/**
+		Is x of lil_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a lil matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a lil matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import lil_matrix, isspmatrix_lil
+		>>> isspmatrix_lil(lil_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import lil_matrix, csr_matrix, isspmatrix_lil
+		>>> isspmatrix_lil(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_lil(x:Dynamic):Dynamic;
 	/**
 		kronecker product of sparse matrices A and B
@@ -419,6 +584,29 @@ package scipy.sparse;
 		--------
 		scipy.sparse.save_npz: Save a sparse matrix to a file using ``.npz`` format.
 		numpy.load: Load several arrays from a ``.npz`` archive.
+		
+		Examples
+		--------
+		Store sparse matrix to disk, and load it again:
+		
+		>>> import scipy.sparse
+		>>> sparse_matrix = scipy.sparse.csc_matrix(np.array([[0, 0, 3], [4, 0, 0]]))
+		>>> sparse_matrix
+		<2x3 sparse matrix of type '<class 'numpy.int64'>'
+		   with 2 stored elements in Compressed Sparse Column format>
+		>>> sparse_matrix.todense()
+		matrix([[0, 0, 3],
+		        [4, 0, 0]], dtype=int64)
+		
+		>>> scipy.sparse.save_npz('/tmp/sparse_matrix.npz', sparse_matrix)
+		>>> sparse_matrix = scipy.sparse.load_npz('/tmp/sparse_matrix.npz')
+		
+		>>> sparse_matrix
+		<2x3 sparse matrix of type '<class 'numpy.int64'>'
+		    with 2 stored elements in Compressed Sparse Column format>
+		>>> sparse_matrix.todense()
+		matrix([[0, 0, 3],
+		        [4, 0, 0]], dtype=int64)
 	**/
 	static public function load_npz(file:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -441,9 +629,30 @@ package scipy.sparse;
 		    Random number generator or random seed. If not given, the singleton
 		    numpy.random will be used.
 		
+		Returns
+		-------
+		res : sparse matrix
+		
 		Notes
 		-----
 		Only float types are supported for now.
+		
+		See Also
+		--------
+		scipy.sparse.random : Similar function that allows a user-specified random
+		    data source.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import rand
+		>>> matrix = rand(3, 4, density=0.25, format="csr", random_state=42)
+		>>> matrix
+		<3x4 sparse matrix of type '<class 'numpy.float64'>'
+		   with 3 stored elements in Compressed Sparse Row format>
+		>>> matrix.todense()
+		matrix([[ 0.        ,  0.59685016,  0.779691  ,  0.        ],
+		        [ 0.        ,  0.        ,  0.        ,  0.44583275],
+		        [ 0.        ,  0.        ,  0.        ,  0.        ]])
 	**/
 	static public function rand(m:Dynamic, n:Dynamic, ?density:Dynamic, ?format:Dynamic, ?dtype:Dynamic, ?random_state:Dynamic):Dynamic;
 	/**
@@ -475,6 +684,10 @@ package scipy.sparse;
 		    sampled using the same random state as is used for sampling
 		    the sparsity structure.
 		
+		Returns
+		-------
+		res : sparse matrix
+		
 		Examples
 		--------
 		>>> from scipy.sparse import random
@@ -490,6 +703,19 @@ package scipy.sparse;
 		array([[ 36.,   0.,  33.,   0.],   # random
 		       [  0.,   0.,   0.,   0.],
 		       [  0.,   0.,  36.,   0.]])
+		
+		>>> from scipy.sparse import random
+		>>> from scipy.stats import rv_continuous
+		>>> class CustomDistribution(rv_continuous):
+		...     def _rvs(self, *args, **kwargs):
+		...         return self._random_state.randn(*self._size)
+		>>> X = CustomDistribution(seed=2906)
+		>>> Y = X()  # get a frozen version of the distribution
+		>>> S = random(3, 4, density=0.25, random_state=2906, data_rvs=Y.rvs)
+		>>> S.A
+		array([[ 0.        ,  1.9467163 ,  0.13569738, -0.81205367],
+		       [ 0.        ,  0.        ,  0.        ,  0.        ],
+		       [ 0.        ,  0.        ,  0.        ,  0.        ]])
 		
 		Notes
 		-----
@@ -524,7 +750,7 @@ package scipy.sparse;
 		>>> import scipy.sparse
 		>>> sparse_matrix = scipy.sparse.csc_matrix(np.array([[0, 0, 3], [4, 0, 0]]))
 		>>> sparse_matrix
-		<2x3 sparse matrix of type '<type 'numpy.int64'>'
+		<2x3 sparse matrix of type '<class 'numpy.int64'>'
 		   with 2 stored elements in Compressed Sparse Column format>
 		>>> sparse_matrix.todense()
 		matrix([[0, 0, 3],
@@ -534,7 +760,7 @@ package scipy.sparse;
 		>>> sparse_matrix = scipy.sparse.load_npz('/tmp/sparse_matrix.npz')
 		
 		>>> sparse_matrix
-		<2x3 sparse matrix of type '<type 'numpy.int64'>'
+		<2x3 sparse matrix of type '<class 'numpy.int64'>'
 		   with 2 stored elements in Compressed Sparse Column format>
 		>>> sparse_matrix.todense()
 		matrix([[0, 0, 3],
@@ -575,68 +801,7 @@ package scipy.sparse;
 		       [0, 0, 3, 4]])
 	**/
 	static public function spdiags(data:Dynamic, diags:Dynamic, m:Dynamic, n:Dynamic, ?format:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		Return the lower triangular portion of a matrix in sparse format
 		
@@ -687,7 +852,7 @@ package scipy.sparse;
 		       [4, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0]])
 		>>> tril(A, format='csc')
-		<3x5 sparse matrix of type '<type 'numpy.int32'>'
+		<3x5 sparse matrix of type '<class 'numpy.int32'>'
 		        with 4 stored elements in Compressed Sparse Column format>
 	**/
 	static public function tril(A:Dynamic, ?k:Dynamic, ?format:Dynamic):Dynamic;
@@ -741,7 +906,7 @@ package scipy.sparse;
 		       [4, 5, 0, 6, 7],
 		       [0, 0, 8, 9, 0]])
 		>>> triu(A, format='csc')
-		<3x5 sparse matrix of type '<type 'numpy.int32'>'
+		<3x5 sparse matrix of type '<class 'numpy.int32'>'
 		        with 8 stored elements in Compressed Sparse Column format>
 	**/
 	static public function triu(A:Dynamic, ?k:Dynamic, ?format:Dynamic):Dynamic;

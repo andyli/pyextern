@@ -1,7 +1,41 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.tools.optimize_for_inference_lib;
 @:pythonImport("tensorflow.python.tools.optimize_for_inference_lib") extern class Optimize_for_inference_lib_Module {
-	static public var FLAGS : Dynamic;
+	static public var EPSILON_ATTR : Dynamic;
+	/**
+		Registry of 'Flag' objects.
+		
+		A 'FlagValues' can then scan command line arguments, passing flag
+		arguments through to the 'Flag' objects that it owns.  It also
+		provides easy access to the flag values.  Typically only one
+		'FlagValues' object is needed by an application: flags.FLAGS
+		
+		This class is heavily overloaded:
+		
+		'Flag' objects are registered via __setitem__:
+		     FLAGS['longname'] = x   # register a new flag
+		
+		The .value attribute of the registered 'Flag' objects can be accessed
+		as attributes of this 'FlagValues' object, through __getattr__.  Both
+		the long and short name of the original 'Flag' objects can be used to
+		access its value:
+		     FLAGS.longname          # parsed flag value
+		     FLAGS.x                 # parsed flag value (short name)
+		
+		Command line arguments are scanned and passed to the registered 'Flag'
+		objects through the __call__ method.  Unparsed arguments, including
+		argv[0] (e.g. the program name) are returned.
+		     argv = FLAGS(sys.argv)  # scan command line arguments
+		
+		The original registered Flag objects can be retrieved through the use
+		of the dictionary-like operator, __getitem__:
+		     x = FLAGS['longname']   # access the registered Flag object
+		
+		The str() operator of a 'FlagValues' object provides help for all of
+		the registered 'Flag' objects.
+	**/
+	static public function FLAGS(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var INPUT_ORDER : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -58,6 +92,8 @@ package tensorflow.python.tools.optimize_for_inference_lib;
 		
 		Args:
 		  input_graph_def: A GraphDef containing a model.
+		  output_node_names: A list of names of the nodes that produce the final
+		    results.
 		
 		Returns:
 		  Modified graph with resize and pad ops merged.
@@ -95,12 +131,15 @@ package tensorflow.python.tools.optimize_for_inference_lib;
 		    results.
 		  placeholder_type_enum: The AttrValue enum for the placeholder data type, or
 		      a list that specifies one value per input node name.
+		  toco_compatible: Boolean, if True, only runs optimizations that result in
+		    TOCO compatible graph operations (default=False).
 		
 		Returns:
 		  An optimized version of the input graph.
 	**/
-	static public function optimize_for_inference(input_graph_def:Dynamic, input_node_names:Dynamic, output_node_names:Dynamic, placeholder_type_enum:Dynamic):Dynamic;
+	static public function optimize_for_inference(input_graph_def:Dynamic, input_node_names:Dynamic, output_node_names:Dynamic, placeholder_type_enum:Dynamic, ?toco_compatible:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function scale_after_normalization(node:Dynamic):Dynamic;
 	/**
 		Extracts the values from a const NodeDef as a numpy ndarray.
 		

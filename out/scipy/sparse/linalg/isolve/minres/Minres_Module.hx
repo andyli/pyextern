@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package scipy.sparse.linalg.isolve.minres;
 @:pythonImport("scipy.sparse.linalg.isolve.minres") extern class Minres_Module {
-	static public var Ainfo : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -13,8 +12,6 @@ package scipy.sparse.linalg.isolve.minres;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
-	static public var footer : Dynamic;
-	static public var header : Dynamic;
 	/**
 		inner(a, b)
 		
@@ -101,8 +98,6 @@ package scipy.sparse.linalg.isolve.minres;
 		    initial guess to iterative method
 		b : array_like
 		    right hand side
-		xtype : {'f', 'd', 'F', 'D', None}, optional
-		    dtype of the x vector
 		
 		Returns
 		-------
@@ -119,7 +114,7 @@ package scipy.sparse.linalg.isolve.minres;
 		        converts the solution vector to the appropriate
 		        type and dimensions (e.g. (N,1) matrix)
 	**/
-	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic, ?xtype:Dynamic):Dynamic;
+	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic):Dynamic;
 	/**
 		Use MINimum RESidual iteration to solve Ax=b
 		
@@ -127,7 +122,6 @@ package scipy.sparse.linalg.isolve.minres;
 		the Conjugate Gradient method, A can be indefinite or singular.
 		
 		If shift != 0 then the method solves (A - shift*I)x = b
-		
 		
 		Parameters
 		----------
@@ -151,8 +145,8 @@ package scipy.sparse.linalg.isolve.minres;
 		x0  : {array, matrix}
 		    Starting guess for the solution.
 		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		    Tolerance to achieve. The algorithm terminates when the relative
+		    residual is below `tol`.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -164,33 +158,18 @@ package scipy.sparse.linalg.isolve.minres;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
-		
-		
-		
-		Notes
-		-----
-		THIS FUNCTION IS EXPERIMENTAL AND SUBJECT TO CHANGE!
 		
 		References
 		----------
 		Solution of sparse indefinite systems of linear equations,
 		    C. C. Paige and M. A. Saunders (1975),
 		    SIAM J. Numer. Anal. 12(4), pp. 617-629.
-		    http://www.stanford.edu/group/SOL/software/minres.html
+		    https://web.stanford.edu/group/SOL/software/minres/
 		
 		This file is a translation of the following MATLAB implementation:
-		    http://www.stanford.edu/group/SOL/software/minres/matlab/
+		    https://web.stanford.edu/group/SOL/software/minres/minres-matlab.zip
 	**/
-	static public function minres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?shift:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?show:Dynamic, ?check:Dynamic):Dynamic;
+	static public function minres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?shift:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?show:Dynamic, ?check:Dynamic):Dynamic;
 	/**
 		Matrix or vector norm.
 		
@@ -211,6 +190,9 @@ package scipy.sparse.linalg.isolve.minres;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will
@@ -328,11 +310,10 @@ package scipy.sparse.linalg.isolve.minres;
 	**/
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	static public function set_docstring(header:Dynamic, Ainfo:Dynamic, ?footer:Dynamic):Dynamic;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -359,6 +340,7 @@ package scipy.sparse.linalg.isolve.minres;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -391,14 +373,15 @@ package scipy.sparse.linalg.isolve.minres;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -408,17 +391,16 @@ package scipy.sparse.linalg.isolve.minres;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

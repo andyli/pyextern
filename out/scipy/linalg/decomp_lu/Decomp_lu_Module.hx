@@ -75,9 +75,9 @@ package scipy.linalg.decomp_lu;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -168,12 +168,10 @@ package scipy.linalg.decomp_lu;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -184,8 +182,37 @@ package scipy.linalg.decomp_lu;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -234,6 +261,14 @@ package scipy.linalg.decomp_lu;
 		Notes
 		-----
 		This is a LU factorization routine written for Scipy.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> p, l, u = lu(A)
+		>>> np.allclose(A - p @ l @ u, np.zeros((4, 4)))
+		True
 	**/
 	static public function lu(a:Dynamic, ?permute_l:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -273,6 +308,22 @@ package scipy.linalg.decomp_lu;
 		Notes
 		-----
 		This is a wrapper to the ``*GETRF`` routines from LAPACK.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu_factor
+		>>> from numpy import tril, triu, allclose, zeros, eye
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> lu, piv = lu_factor(A)
+		>>> piv
+		array([2, 2, 3, 3], dtype=int32)
+		
+		Convert LAPACK's ``piv`` array to NumPy index and test the permutation 
+		
+		>>> piv_py = [2, 0, 3, 1]
+		>>> L, U = np.tril(lu, k=-1) + np.eye(4), np.triu(lu)
+		>>> np.allclose(A[piv_py] - L @ U, np.zeros((4, 4)))
+		True
 	**/
 	static public function lu_factor(a:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -309,6 +360,16 @@ package scipy.linalg.decomp_lu;
 		See also
 		--------
 		lu_factor : LU factorize a matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu_factor, lu_solve
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> b = np.array([1, 1, 1, 1])
+		>>> lu, piv = lu_factor(A)
+		>>> x = lu_solve((lu, piv), b)
+		>>> np.allclose(A @ x - b, np.zeros((4,)))
+		True
 	**/
 	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;

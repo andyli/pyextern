@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.layers.ops.gen_sparse_feature_cross_op;
 @:pythonImport("tensorflow.contrib.layers.ops.gen_sparse_feature_cross_op") extern class Gen_sparse_feature_cross_op_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,6 +13,23 @@ package tensorflow.contrib.layers.ops.gen_sparse_feature_cross_op;
 	static public var _op_def_lib : Dynamic;
 	static public var _sparse_feature_cross_outputs : Dynamic;
 	static public var _sparse_feature_cross_v2_outputs : Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Generates sparse cross form a list of sparse tensors.
 		
@@ -78,6 +95,11 @@ package tensorflow.contrib.layers.ops.gen_sparse_feature_cross_op;
 	**/
 	static public function sparse_feature_cross(indices:Dynamic, values:Dynamic, shapes:Dynamic, dense:Dynamic, hashed_output:Dynamic, num_buckets:Dynamic, out_type:Dynamic, internal_type:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function sparse_feature_cross
+	**/
+	static public function sparse_feature_cross_eager_fallback(indices:Dynamic, values:Dynamic, shapes:Dynamic, dense:Dynamic, hashed_output:Dynamic, num_buckets:Dynamic, out_type:Dynamic, internal_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Generates sparse cross form a list of sparse tensors.
 		
 		The op takes two lists, one of 2D `SparseTensor` and one of 2D `Tensor`, each
@@ -142,4 +164,10 @@ package tensorflow.contrib.layers.ops.gen_sparse_feature_cross_op;
 		  output_shape: A `Tensor` of type `int64`. 1-D.  Shape of the concatenated `SparseTensor`.
 	**/
 	static public function sparse_feature_cross_v2(indices:Dynamic, values:Dynamic, shapes:Dynamic, dense:Dynamic, hashed_output:Dynamic, num_buckets:Dynamic, hash_key:Dynamic, out_type:Dynamic, internal_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function sparse_feature_cross_v2
+	**/
+	static public function sparse_feature_cross_v2_eager_fallback(indices:Dynamic, values:Dynamic, shapes:Dynamic, dense:Dynamic, hashed_output:Dynamic, num_buckets:Dynamic, hash_key:Dynamic, out_type:Dynamic, internal_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

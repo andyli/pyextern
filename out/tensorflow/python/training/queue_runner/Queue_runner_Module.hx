@@ -9,9 +9,13 @@ package tensorflow.python.training.queue_runner;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
-		Adds a `QueueRunner` to a collection in the graph.
+		Adds a `QueueRunner` to a collection in the graph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		To construct input pipelines, use the `tf.data` module.
 		
 		When building a complex model that uses many queues it is often difficult to
 		gather all the queue runners that need to be run.  This convenience function
@@ -26,8 +30,14 @@ package tensorflow.python.training.queue_runner;
 		    the queue runner to.  Defaults to `GraphKeys.QUEUE_RUNNERS`.
 	**/
 	static public function add_queue_runner(qr:Dynamic, ?collection:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
 	/**
-		Starts all queue runners collected in the graph.
+		Starts all queue runners collected in the graph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		To construct input pipelines, use the `tf.data` module.
 		
 		This is a companion method to `add_queue_runner()`.  It just starts
 		threads for all queue runners collected in the graph.  It returns
@@ -49,6 +59,16 @@ package tensorflow.python.training.queue_runner;
 		
 		Returns:
 		  A list of threads.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		  ValueError: If called without a default `tf.Session` registered.
+		
+		@compatibility(eager)
+		Not compatible with eager execution. To ingest data under eager execution,
+		use the `tf.data` API instead.
+		@end_compatibility
 	**/
 	static public function start_queue_runners(?sess:Dynamic, ?coord:Dynamic, ?daemon:Dynamic, ?start:Dynamic, ?collection:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

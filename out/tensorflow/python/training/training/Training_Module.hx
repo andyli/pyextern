@@ -1,13 +1,15 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.training;
 @:pythonImport("tensorflow.python.training.training") extern class Training_Module {
+	static public var DESCRIPTOR : Dynamic;
 	/**
 		Creates a `MonitoredSession` for training.
 		
 		For a chief, this utility sets proper session initializer/restorer. It also
 		creates hooks related to checkpoint and summary saving. For workers, this
 		utility sets proper session creator which waits for the chief to
-		initialize/restore.
+		initialize/restore. Please check `tf.train.MonitoredSession` for more
+		information.
 		
 		
 		Args:
@@ -23,27 +25,40 @@ package tensorflow.python.training.training;
 		  chief_only_hooks: list of `SessionRunHook` objects. Activate these hooks if
 		    `is_chief==True`, ignore otherwise.
 		  save_checkpoint_secs: The frequency, in seconds, that a checkpoint is saved
-		    using a default checkpoint saver. If `save_checkpoint_secs` is set to
-		    `None`, then the default checkpoint saver isn't used.
+		    using a default checkpoint saver. If both `save_checkpoint_steps` and
+		    `save_checkpoint_secs` are set to `None`, then the default checkpoint
+		    saver isn't used. If both are provided, then only `save_checkpoint_secs`
+		    is used. Default 600.
 		  save_summaries_steps: The frequency, in number of global steps, that the
 		    summaries are written to disk using a default summary saver. If both
 		    `save_summaries_steps` and `save_summaries_secs` are set to `None`, then
-		    the default summary saver isn't used.
+		    the default summary saver isn't used. Default 100.
 		  save_summaries_secs: The frequency, in secs, that the summaries are written
 		    to disk using a default summary saver.  If both `save_summaries_steps` and
 		    `save_summaries_secs` are set to `None`, then the default summary saver
-		    isn't used.
+		    isn't used. Default not enabled.
 		  config: an instance of `tf.ConfigProto` proto used to configure the session.
 		    It's the `config` argument of constructor of `tf.Session`.
 		  stop_grace_period_secs: Number of seconds given to threads to stop after
 		    `close()` has been called.
 		  log_step_count_steps: The frequency, in number of global steps, that the
 		    global step/sec is logged.
+		  max_wait_secs: Maximum time workers should wait for the session to
+		    become available. This should be kept relatively short to help detect
+		    incorrect code, but sometimes may need to be increased if the chief takes
+		    a while to start up.
+		  save_checkpoint_steps: The frequency, in number of global steps, that a
+		    checkpoint is saved using a default checkpoint saver. If both
+		    `save_checkpoint_steps` and `save_checkpoint_secs` are set to `None`, then
+		    the default checkpoint saver isn't used. If both are provided, then only
+		    `save_checkpoint_secs` is used. Default not enabled.
+		  summary_dir: A string.  Optional path to a directory where to
+		    save summaries. If None, checkpoint_dir is used instead.
 		
 		Returns:
 		  A `MonitoredSession` object.
 	**/
-	static public function MonitoredTrainingSession(?master:Dynamic, ?is_chief:Dynamic, ?checkpoint_dir:Dynamic, ?scaffold:Dynamic, ?hooks:Dynamic, ?chief_only_hooks:Dynamic, ?save_checkpoint_secs:Dynamic, ?save_summaries_steps:Dynamic, ?save_summaries_secs:Dynamic, ?config:Dynamic, ?stop_grace_period_secs:Dynamic, ?log_step_count_steps:Dynamic):Dynamic;
+	static public function MonitoredTrainingSession(?master:Dynamic, ?is_chief:Dynamic, ?checkpoint_dir:Dynamic, ?scaffold:Dynamic, ?hooks:Dynamic, ?chief_only_hooks:Dynamic, ?save_checkpoint_secs:Dynamic, ?save_summaries_steps:Dynamic, ?save_summaries_secs:Dynamic, ?config:Dynamic, ?stop_grace_period_secs:Dynamic, ?log_step_count_steps:Dynamic, ?max_wait_secs:Dynamic, ?save_checkpoint_steps:Dynamic, ?summary_dir:Dynamic):Dynamic;
 	static public function NewCheckpointReader(filepattern:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -53,9 +68,13 @@ package tensorflow.python.training.training;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
-		Adds a `QueueRunner` to a collection in the graph.
+		Adds a `QueueRunner` to a collection in the graph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		To construct input pipelines, use the `tf.data` module.
 		
 		When building a complex model that uses many queues it is often difficult to
 		gather all the queue runners that need to be run.  This convenience function
@@ -100,7 +119,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function basic_train_loop(supervisor:Dynamic, train_step_fn:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, ?master:Dynamic):Dynamic;
 	/**
-		Creates batches of tensors in `tensors`.
+		Creates batches of tensors in `tensors`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		The argument `tensors` can be a list or a dictionary of tensors.
 		The value returned by the function will be of the same type
@@ -143,7 +166,7 @@ package tensorflow.python.training.training;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -171,10 +194,19 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function batch(tensors:Dynamic, batch_size:Dynamic, ?num_threads:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Runs a list of tensors to fill a queue to create batches of examples.
+		Runs a list of tensors to fill a queue to create batches of examples. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		The `tensors_list` argument is a list of tuples of tensors, or a list of
 		dictionaries of tensors.  Each element in the list is treated similarly
@@ -230,7 +262,7 @@ package tensorflow.python.training.training;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -257,6 +289,11 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensor_list_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function batch_join(tensors_list:Dynamic, batch_size:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -275,6 +312,107 @@ package tensorflow.python.training.training;
 	**/
 	static public function checkpoint_exists(checkpoint_prefix:Dynamic):Dynamic;
 	/**
+		Applies cosine decay to the learning rate.
+		
+		See [Loshchilov & Hutter, ICLR2016], SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a cosine decay function
+		to a provided initial learning rate.  It requires a `global_step` value to
+		compute the decayed learning rate.  You can just pass a TensorFlow variable
+		that you increment at each training step.
+		
+		The function returns the decayed learning rate.  It is computed as:
+		```python
+		global_step = min(global_step, decay_steps)
+		cosine_decay = 0.5 * (1 + cos(pi * global_step / decay_steps))
+		decayed = (1 - alpha) * cosine_decay + alpha
+		decayed_learning_rate = learning_rate * decayed
+		```
+		
+		Example usage:
+		```python
+		decay_steps = 1000
+		lr_decayed = cosine_decay(learning_rate, global_step, decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  alpha: A scalar `float32` or `float64` Tensor or a Python number.
+		    Minimum learning rate value as a fraction of learning_rate.
+		  name: String. Optional name of the operation.  Defaults to 'CosineDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function cosine_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies cosine decay with restarts to the learning rate.
+		
+		See [Loshchilov & Hutter, ICLR2016], SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a cosine decay function with
+		restarts to a provided initial learning rate.  It requires a `global_step`
+		value to compute the decayed learning rate.  You can just pass a TensorFlow
+		variable that you increment at each training step.
+		
+		The function returns the decayed learning rate while taking into account
+		possible warm restarts. The learning rate multiplier first decays
+		from 1 to `alpha` for `first_decay_steps` steps. Then, a warm
+		restart is performed. Each new warm restart runs for `t_mul` times more steps
+		and with `m_mul` times smaller initial learning rate.
+		
+		Example usage:
+		```python
+		first_decay_steps = 1000
+		lr_decayed = cosine_decay_restarts(learning_rate, global_step,
+		                                   first_decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  first_decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  t_mul: A scalar `float32` or `float64` `Tensor` or a Python number.
+		    Used to derive the number of iterations in the i-th period
+		  m_mul: A scalar `float32` or `float64` `Tensor` or a Python number.
+		    Used to derive the initial learning rate of the i-th period:
+		  alpha: A scalar `float32` or `float64` Tensor or a Python number.
+		    Minimum learning rate value as a fraction of the learning_rate.
+		  name: String. Optional name of the operation.  Defaults to 'SGDRDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function cosine_decay_restarts(learning_rate:Dynamic, global_step:Dynamic, first_decay_steps:Dynamic, ?t_mul:Dynamic, ?m_mul:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Create global step tensor in graph.
 		
 		Args:
@@ -288,6 +426,17 @@ package tensorflow.python.training.training;
 		  ValueError: if global step tensor is already defined.
 	**/
 	static public function create_global_step(?graph:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	/**
+		A general quantization scheme is being developed in `tf.contrib.quantize`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		GraphDef quantized training rewriter is deprecated in the long term
+		
+		Consider using that instead, though since it is in the tf.contrib namespace,
+		it is not subject to backward compatibility guarantees.
+	**/
 	static public function do_quantize_training_on_graphdef(input_graph:Dynamic, num_bits:Dynamic):Dynamic;
 	/**
 		Applies exponential decay to the learning rate.
@@ -342,6 +491,12 @@ package tensorflow.python.training.training;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function exponential_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -360,13 +515,19 @@ package tensorflow.python.training.training;
 		  saver_def: `SaverDef` protocol buffer.
 		  collection_list: List of string keys to collect.
 		  as_text: If `True`, writes the `MetaGraphDef` as an ASCII proto.
-		  graph: The `Graph` to import into. If `None`, use the default graph.
+		  graph: The `Graph` to export. If `None`, use the default graph.
 		  export_scope: Optional `string`. Name scope under which to extract
 		    the subgraph. The scope name will be striped from the node definitions
 		    for easy import later into new name scopes. If `None`, the whole graph
 		    is exported. graph_def and export_scope cannot both be specified.
 		  clear_devices: Whether or not to clear the device field for an `Operation`
 		    or `Tensor` during export.
+		  clear_extraneous_savers: Remove any Saver-related information from the
+		      graph (both Save/Restore ops and SaverDefs) that are not associated
+		      with the provided SaverDef.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the NodeDefs. For a detailed guide, see
+		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		  **kwargs: Optional keyed arguments.
 		
 		Returns:
@@ -374,8 +535,14 @@ package tensorflow.python.training.training;
 		
 		Raises:
 		  ValueError: When the `GraphDef` is larger than 2GB.
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		Exporting/importing meta graphs is not supported. No graph exists when eager
+		execution is enabled.
+		@end_compatibility
 	**/
-	static public function export_meta_graph(?filename:Dynamic, ?meta_info_def:Dynamic, ?graph_def:Dynamic, ?saver_def:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic, ?graph:Dynamic, ?export_scope:Dynamic, ?clear_devices:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function export_meta_graph(?filename:Dynamic, ?meta_info_def:Dynamic, ?graph_def:Dynamic, ?saver_def:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic, ?graph:Dynamic, ?export_scope:Dynamic, ?clear_devices:Dynamic, ?clear_extraneous_savers:Dynamic, ?strip_default_attrs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates a checkpoint state proto.
 		
@@ -386,13 +553,22 @@ package tensorflow.python.training.training;
 		    checkpoints, sorted from oldest to newest.  If this is a non-empty list,
 		    the last element must be equal to model_checkpoint_path.  These paths
 		    are also saved in the CheckpointState proto.
-		
+		  all_model_checkpoint_timestamps: A list of floats, indicating the number of
+		    seconds since the Epoch when each checkpoint was generated.
+		  last_preserved_timestamp: A float, indicating the number of seconds since
+		    the Epoch when the last preserved checkpoint was written, e.g. due to a
+		    `keep_checkpoint_every_n_hours` parameter (see
+		    `tf.contrib.checkpoint.CheckpointManager` for an implementation).
 		Returns:
 		  CheckpointState proto with model_checkpoint_path and
 		  all_model_checkpoint_paths updated to either absolute paths or
 		  relative paths to the current save_dir.
+		
+		Raises:
+		  ValueError: If `all_model_checkpoint_timestamps` was provided but its length
+		    does not match `all_model_checkpoint_paths`.
 	**/
-	static public function generate_checkpoint_state_proto(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic):Dynamic;
+	static public function generate_checkpoint_state_proto(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?all_model_checkpoint_timestamps:Dynamic, ?last_preserved_timestamp:Dynamic):Dynamic;
 	/**
 		Returns the mtimes (modification timestamps) of the checkpoints.
 		
@@ -459,14 +635,45 @@ package tensorflow.python.training.training;
 	**/
 	static public function get_or_create_global_step(?graph:Dynamic):Dynamic;
 	/**
+		Gets or creates the steps_per_run variable.
+		
+		In Estimator, the user provided computation, the model_fn, is wrapped
+		inside a tf.while_loop for peak performance. The iterations of the loop are
+		specified by this variable, which adjusts its value on the CPU after each
+		device program execution and before the next execution.
+		
+		The purpose of using a variable, rather than a constant, is to allow
+		Estimator adapt the device training iterations according to the final steps
+		specified by users. For example, if the user sets the steps_per_run as
+		4 and steps as 10 in Estimator.train(), the steps_per_run
+		variable will have the following value before each training run.
+		
+		    - 1-st execution: steps_per_run = 4
+		    - 2-nd execution: steps_per_run = 4
+		    - 3-rd execution: steps_per_run = 2
+		
+		As model_fn increases the global step once per train_op invocation, the global
+		step is 10 after all executions, matching the steps=10 inputs passed in by
+		users.
+		
+		Returns:
+		  A TF non-trainable resource variable.
+		
+		Raises:
+		  RuntimeError: If multi steps_per_run variables were found.
+	**/
+	static public function get_or_create_steps_per_run_variable():Dynamic;
+	/**
 		Small helper to get the global step.
 		
 		```python
-		# Creates a variable to hold the global_step.
+		# Create a variable to hold the global_step.
 		global_step_tensor = tf.Variable(10, trainable=False, name='global_step')
-		# Creates a session.
+		# Create a session.
 		sess = tf.Session()
-		# Initializes the variable.
+		# Initialize the variable
+		sess.run(global_step_tensor.initializer)
+		# Get the variable value.
 		print('global_step: %s' % tf.train.global_step(sess, global_step_tensor))
 		
 		global_step: 10
@@ -546,10 +753,101 @@ package tensorflow.python.training.training;
 		
 		  A None value is returned if no variables exist in the `MetaGraphDef`
 		  (i.e., there are no variables to restore).
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		Exporting/importing meta graphs is not supported. No graph exists when eager
+		execution is enabled.
+		@end_compatibility
 	**/
 	static public function import_meta_graph(meta_graph_or_file:Dynamic, ?clear_devices:Dynamic, ?import_scope:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Output the rows of `input_tensor` to a queue for an input pipeline.
+		Initializes current variables with tensors loaded from given checkpoint.
+		
+		Note: This overrides default initialization ops of specified variables and
+		redefines dtype.
+		
+		Assignment map supports following syntax:
+		
+		* `'checkpoint_scope_name/': 'scope_name/'` - will load all variables in
+		  current `scope_name` from `checkpoint_scope_name` with matching tensor
+		  names.
+		* `'checkpoint_scope_name/some_other_variable': 'scope_name/variable_name'` -
+		  will initialize `scope_name/variable_name` variable
+		  from `checkpoint_scope_name/some_other_variable`.
+		* `'scope_variable_name': variable` - will initialize given `tf.Variable`
+		  object with tensor 'scope_variable_name' from the checkpoint.
+		* `'scope_variable_name': list(variable)` - will initialize list of
+		  partitioned variables with tensor 'scope_variable_name' from the checkpoint.
+		* `'/': 'scope_name/'` - will load all variables in current `scope_name` from
+		  checkpoint's root (e.g. no scope).
+		
+		Supports loading into partitioned variables, which are represented as
+		`'<variable>/part_<part #>'`.
+		
+		Example:
+		
+		```python
+		
+		# Say, '/tmp/model.ckpt' has the following tensors:
+		#  -- name='old_scope_1/var1', shape=[20, 2]
+		#  -- name='old_scope_1/var2', shape=[50, 4]
+		#  -- name='old_scope_2/var3', shape=[100, 100]
+		
+		# Create new model's variables
+		with tf.variable_scope('new_scope_1'):
+		  var1 = tf.get_variable('var1', shape=[20, 2],
+		                         initializer=tf.zeros_initializer())
+		with tf.variable_scope('new_scope_2'):
+		  var2 = tf.get_variable('var2', shape=[50, 4],
+		                         initializer=tf.zeros_initializer())
+		  # Partition into 5 variables along the first axis.
+		  var3 = tf.get_variable(name='var3', shape=[100, 100],
+		                         initializer=tf.zeros_initializer(),
+		                         partitioner=lambda shape, dtype: [5, 1])
+		
+		# Initialize all variables in `new_scope_1` from `old_scope_1`.
+		init_from_checkpoint('/tmp/model.ckpt', {'old_scope_1/': 'new_scope_1'})
+		
+		# Use names to specify which variables to initialize from checkpoint.
+		init_from_checkpoint('/tmp/model.ckpt',
+		                     {'old_scope_1/var1': 'new_scope_1/var1',
+		                      'old_scope_1/var2': 'new_scope_2/var2'})
+		
+		# Or use tf.Variable objects to identify what to initialize.
+		init_from_checkpoint('/tmp/model.ckpt',
+		                     {'old_scope_1/var1': var1,
+		                      'old_scope_1/var2': var2})
+		
+		# Initialize partitioned variables using variable's name
+		init_from_checkpoint('/tmp/model.ckpt',
+		                     {'old_scope_2/var3': 'new_scope_2/var3'})
+		
+		# Or specify the list of tf.Variable objects.
+		init_from_checkpoint('/tmp/model.ckpt',
+		                     {'old_scope_2/var3': var3._get_variable_list()})
+		
+		```
+		
+		Args:
+		  ckpt_dir_or_file: Directory with checkpoints file or path to checkpoint.
+		  assignment_map: Dict, where keys are names of the variables in the
+		    checkpoint and values are current variables or names of current variables
+		    (in default graph).
+		
+		Raises:
+		  tf.errors.OpError: If missing checkpoints or tensors in checkpoints.
+		  ValueError: If missing variables in current graph.
+	**/
+	static public function init_from_checkpoint(ckpt_dir_or_file:Dynamic, assignment_map:Dynamic):Dynamic;
+	/**
+		Output the rows of `input_tensor` to a queue for an input pipeline. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(input_tensor).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Note: if `num_epochs` is not `None`, this function creates local counter
 		`epochs`. Use `local_variables_initializer()` to initialize local variables.
@@ -583,6 +881,12 @@ package tensorflow.python.training.training;
 		
 		Raises:
 		  ValueError: If the shape of the input cannot be inferred from the arguments.
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function input_producer(input_tensor:Dynamic, ?element_shape:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?summary_name:Dynamic, ?name:Dynamic, ?cancel_op:Dynamic):Dynamic;
 	/**
@@ -597,7 +901,15 @@ package tensorflow.python.training.training;
 		The function returns the decayed learning rate.  It is computed as:
 		
 		```python
-		decayed_learning_rate = learning_rate / (1 + decay_rate * t)
+		decayed_learning_rate = learning_rate / (1 + decay_rate * global_step /
+		decay_step)
+		```
+		
+		or, if `staircase` is `True`, as:
+		
+		```python
+		decayed_learning_rate = learning_rate / (1 + decay_rate * floor(global_step /
+		decay_step))
 		```
 		
 		Example: decay 1/t with a rate of 0.5:
@@ -606,8 +918,10 @@ package tensorflow.python.training.training;
 		...
 		global_step = tf.Variable(0, trainable=False)
 		learning_rate = 0.1
-		k = 0.5
-		learning_rate = tf.train.inverse_time_decay(learning_rate, global_step, k)
+		decay_steps = 1.0
+		decay_rate = 0.5
+		learning_rate = tf.train.inverse_time_decay(learning_rate, global_step,
+		decay_steps, decay_rate)
 		
 		# Passing global_step to minimize() will increment it at each step.
 		learning_step = (
@@ -634,6 +948,12 @@ package tensorflow.python.training.training;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function inverse_time_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -650,7 +970,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function latest_checkpoint(checkpoint_dir:Dynamic, ?latest_filename:Dynamic):Dynamic;
 	/**
-		Returns tensor `num_epochs` times and then raises an `OutOfRange` error.
+		Returns tensor `num_epochs` times and then raises an `OutOfRange` error. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensors(tensor).repeat(num_epochs)`.
 		
 		Note: creates local counter `epochs`. Use `local_variables_initializer()` to
 		initialize local variables.
@@ -669,7 +993,109 @@ package tensorflow.python.training.training;
 	**/
 	static public function limit_epochs(tensor:Dynamic, ?num_epochs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Applies linear cosine decay to the learning rate.
+		
+		See [Bello et al., ICML2017] Neural Optimizer Search with RL.
+		https://arxiv.org/abs/1709.07417
+		
+		For the idea of warm starts here controlled by `num_periods`,
+		see [Loshchilov & Hutter, ICLR2016] SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		Note that linear cosine decay is more aggressive than cosine decay and
+		larger initial learning rates can typically be used.
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a linear cosine decay function
+		to a provided initial learning rate.  It requires a `global_step` value to
+		compute the decayed learning rate.  You can just pass a TensorFlow variable
+		that you increment at each training step.
+		
+		The function returns the decayed learning rate.  It is computed as:
+		```python
+		global_step = min(global_step, decay_steps)
+		linear_decay = (decay_steps - global_step) / decay_steps)
+		cosine_decay = 0.5 * (
+		    1 + cos(pi * 2 * num_periods * global_step / decay_steps))
+		decayed = (alpha + linear_decay) * cosine_decay + beta
+		decayed_learning_rate = learning_rate * decayed
+		```
+		
+		Example usage:
+		```python
+		decay_steps = 1000
+		lr_decayed = linear_cosine_decay(learning_rate, global_step, decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  num_periods: Number of periods in the cosine part of the decay.
+		    See computation above.
+		  alpha: See computation above.
+		  beta: See computation above.
+		  name: String.  Optional name of the operation.  Defaults to
+		    'LinearCosineDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function linear_cosine_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?num_periods:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns list of all variables in the checkpoint.
+		
+		Args:
+		  ckpt_dir_or_file: Directory with checkpoints file or path to checkpoint.
+		
+		Returns:
+		  List of tuples `(name, shape)`.
+	**/
+	static public function list_variables(ckpt_dir_or_file:Dynamic):Dynamic;
+	/**
+		Returns `CheckpointReader` for checkpoint found in `ckpt_dir_or_file`.
+		
+		If `ckpt_dir_or_file` resolves to a directory with multiple checkpoints,
+		reader for the latest checkpoint is returned.
+		
+		Args:
+		  ckpt_dir_or_file: Directory with checkpoints file or path to checkpoint
+		    file.
+		
+		Returns:
+		  `CheckpointReader` object.
+		
+		Raises:
+		  ValueError: If `ckpt_dir_or_file` resolves to a directory with no
+		    checkpoints.
+	**/
+	static public function load_checkpoint(ckpt_dir_or_file:Dynamic):Dynamic;
+	/**
+		Returns the tensor value of the given variable in the checkpoint.
+		
+		Args:
+		  ckpt_dir_or_file: Directory with checkpoints file or path to checkpoint.
+		  name: Name of the variable to return.
+		
+		Returns:
+		  A numpy `ndarray` with a copy of the value of this variable.
+	**/
+	static public function load_variable(ckpt_dir_or_file:Dynamic, name:Dynamic):Dynamic;
+	/**
 		Save the list of files matching pattern, so it is only computed once.
+		
+		NOTE: The order of the files returned can be non-deterministic.
 		
 		Args:
 		  pattern: A file pattern (glob), or 1D tensor of file patterns.
@@ -680,7 +1106,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function match_filenames_once(pattern:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Conditionally creates batches of tensors based on `keep_input`.
+		Conditionally creates batches of tensors based on `keep_input`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.filter(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		See docstring in `batch` for more details.
 		
@@ -717,7 +1147,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function maybe_batch(tensors:Dynamic, keep_input:Dynamic, batch_size:Dynamic, ?num_threads:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Runs a list of tensors to conditionally fill a queue to create batches.
+		Runs a list of tensors to conditionally fill a queue to create batches. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).filter(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		See docstring in `batch_join` for more details.
 		
@@ -727,8 +1161,8 @@ package tensorflow.python.training.training;
 		    added to the queue or not.  If it is a scalar and evaluates `True`, then
 		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
 		    is `True`, then each example is added to the queue only if the
-		    corresonding value in `keep_input` is `True`. This tensor essentially acts
-		    as a filtering mechanism.
+		    corresponding value in `keep_input` is `True`. This tensor essentially
+		    acts as a filtering mechanism.
 		  batch_size: An integer. The new batch size pulled from the queue.
 		  capacity: An integer. The maximum number of elements in the queue.
 		  enqueue_many: Whether each tensor in `tensor_list_list` is a single
@@ -754,7 +1188,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function maybe_batch_join(tensors_list:Dynamic, keep_input:Dynamic, batch_size:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Creates batches by randomly shuffling conditionally-enqueued tensors.
+		Creates batches by randomly shuffling conditionally-enqueued tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.filter(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		See docstring in `shuffle_batch` for more details.
 		
@@ -768,8 +1206,8 @@ package tensorflow.python.training.training;
 		    added to the queue or not.  If it is a scalar and evaluates `True`, then
 		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
 		    is `True`, then each example is added to the queue only if the
-		    corresonding value in `keep_input` is `True`. This tensor essentially acts
-		    as a filtering mechanism.
+		    corresponding value in `keep_input` is `True`. This tensor essentially
+		    acts as a filtering mechanism.
 		  num_threads: The number of threads enqueuing `tensor_list`.
 		  seed: Seed for the random shuffling within the queue.
 		  enqueue_many: Whether each tensor in `tensor_list` is a single example.
@@ -787,10 +1225,19 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function maybe_shuffle_batch(tensors:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, keep_input:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Create batches by randomly shuffling conditionally-enqueued tensors.
+		Create batches by randomly shuffling conditionally-enqueued tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).filter(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		See docstring in `shuffle_batch_join` for more details.
 		
@@ -804,8 +1251,8 @@ package tensorflow.python.training.training;
 		    added to the queue or not.  If it is a scalar and evaluates `True`, then
 		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
 		    is `True`, then each example is added to the queue only if the
-		    corresonding value in `keep_input` is `True`. This tensor essentially acts
-		    as a filtering mechanism.
+		    corresponding value in `keep_input` is `True`. This tensor essentially
+		    acts as a filtering mechanism.
 		  seed: Seed for the random shuffling within the queue.
 		  enqueue_many: Whether each tensor in `tensor_list_list` is a single
 		    example.
@@ -824,6 +1271,11 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function maybe_shuffle_batch_join(tensors_list:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, keep_input:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -838,7 +1290,15 @@ package tensorflow.python.training.training;
 		The function returns the decayed learning rate.  It is computed as:
 		
 		```python
-		decayed_learning_rate = learning_rate * exp(-decay_rate * global_step)
+		decayed_learning_rate = learning_rate * exp(-decay_rate * global_step /
+		decay_step)
+		```
+		
+		or, if `staircase` is `True`, as:
+		
+		```python
+		decayed_learning_rate = learning_rate * exp(-decay_rate * floor(global_step /
+		decay_step))
 		```
 		
 		Example: decay exponentially with a base of 0.96:
@@ -847,8 +1307,10 @@ package tensorflow.python.training.training;
 		...
 		global_step = tf.Variable(0, trainable=False)
 		learning_rate = 0.1
+		decay_steps = 5
 		k = 0.5
-		learning_rate = tf.train.exponential_time_decay(learning_rate, global_step, k)
+		learning_rate = tf.train.natural_exp_decay(learning_rate, global_step,
+		                                           decay_steps, k)
 		
 		# Passing global_step to minimize() will increment it at each step.
 		learning_step = (
@@ -875,13 +1337,86 @@ package tensorflow.python.training.training;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function natural_exp_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, decay_rate:Dynamic, ?staircase:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Applies noisy linear cosine decay to the learning rate.
+		
+		See [Bello et al., ICML2017] Neural Optimizer Search with RL.
+		https://arxiv.org/abs/1709.07417
+		
+		For the idea of warm starts here controlled by `num_periods`,
+		see [Loshchilov & Hutter, ICLR2016] SGDR: Stochastic Gradient Descent
+		with Warm Restarts. https://arxiv.org/abs/1608.03983
+		
+		Note that linear cosine decay is more aggressive than cosine decay and
+		larger initial learning rates can typically be used.
+		
+		When training a model, it is often recommended to lower the learning rate as
+		the training progresses.  This function applies a noisy linear
+		cosine decay function to a provided initial learning rate.
+		It requires a `global_step` value to compute the decayed learning rate.
+		You can just pass a TensorFlow variable that you increment at each
+		training step.
+		
+		The function returns the decayed learning rate.  It is computed as:
+		```python
+		global_step = min(global_step, decay_steps)
+		linear_decay = (decay_steps - global_step) / decay_steps)
+		cosine_decay = 0.5 * (
+		    1 + cos(pi * 2 * num_periods * global_step / decay_steps))
+		decayed = (alpha + linear_decay + eps_t) * cosine_decay + beta
+		decayed_learning_rate = learning_rate * decayed
+		```
+		where eps_t is 0-centered gaussian noise with variance
+		initial_variance / (1 + global_step) ** variance_decay
+		
+		Example usage:
+		```python
+		decay_steps = 1000
+		lr_decayed = noisy_linear_cosine_decay(
+		  learning_rate, global_step, decay_steps)
+		```
+		
+		Args:
+		  learning_rate: A scalar `float32` or `float64` Tensor or a Python number.
+		    The initial learning rate.
+		  global_step: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Global step to use for the decay computation.
+		  decay_steps: A scalar `int32` or `int64` `Tensor` or a Python number.
+		    Number of steps to decay over.
+		  initial_variance: initial variance for the noise. See computation above.
+		  variance_decay: decay for the noise's variance. See computation above.
+		  num_periods: Number of periods in the cosine part of the decay.
+		    See computation above.
+		  alpha: See computation above.
+		  beta: See computation above.
+		  name: String.  Optional name of the operation.  Defaults to
+		    'NoisyLinearCosineDecay'.
+		Returns:
+		  A scalar `Tensor` of the same type as `learning_rate`.  The decayed
+		  learning rate.
+		Raises:
+		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
+	**/
+	static public function noisy_linear_cosine_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?initial_variance:Dynamic, ?variance_decay:Dynamic, ?num_periods:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Piecewise constant from boundaries and interval values.
 		
-		Example: use a learning rate that's 1.0 for the first 100000 steps, 0.5
-		  for steps 100001 to 110000, and 0.1 for any additional steps.
+		Example: use a learning rate that's 1.0 for the first 100001 steps, 0.5
+		  for the next 10000 steps, and 0.1 for any additional steps.
 		
 		```python
 		global_step = tf.Variable(0, trainable=False)
@@ -897,7 +1432,7 @@ package tensorflow.python.training.training;
 		    `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`.
 		  boundaries: A list of `Tensor`s or `int`s or `float`s with strictly
 		    increasing entries, and with all elements having the same type as `x`.
-		  values: A list of `Tensor`s or float`s or `int`s that specifies the values
+		  values: A list of `Tensor`s or `float`s or `int`s that specifies the values
 		    for the intervals defined by `boundaries`. It should have one more element
 		    than `boundaries`, and all elements should have the same type.
 		  name: A string. Optional name of the operation. Defaults to
@@ -909,8 +1444,15 @@ package tensorflow.python.training.training;
 		  and values[-1] when `x > boundaries[-1]`.
 		
 		Raises:
-		  ValueError: if types of `x` and `buondaries` do not match, or types of all
-		      `values` do not match.
+		  ValueError: if types of `x` and `boundaries` do not match, or types of all
+		      `values` do not match or
+		      the number of elements in the lists does not match.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function piecewise_constant(x:Dynamic, boundaries:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -984,10 +1526,21 @@ package tensorflow.python.training.training;
 		
 		Raises:
 		  ValueError: if `global_step` is not supplied.
+		
+		@compatibility(eager)
+		When eager execution is enabled, this function returns a function which in
+		turn returns the decayed learning rate Tensor. This can be useful for changing
+		the learning rate value across different invocations of optimizer functions.
+		@end_compatibility
 	**/
 	static public function polynomial_decay(learning_rate:Dynamic, global_step:Dynamic, decay_steps:Dynamic, ?end_learning_rate:Dynamic, ?power:Dynamic, ?cycle:Dynamic, ?name:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
-		Produces the integers from 0 to limit-1 in a queue.
+		Produces the integers from 0 to limit-1 in a queue. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.range(limit).shuffle(limit).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Note: if `num_epochs` is not `None`, this function creates local counter
 		`epochs`. Use `local_variables_initializer()` to initialize local variables.
@@ -1009,6 +1562,11 @@ package tensorflow.python.training.training;
 		Returns:
 		  A Queue with the output integers.  A `QueueRunner` for the Queue
 		  is added to the current `Graph`'s `QUEUE_RUNNER` collection.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function range_input_producer(limit:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1056,7 +1614,7 @@ package tensorflow.python.training.training;
 		    than overriding them.
 		  cluster: `ClusterDef` proto or `ClusterSpec`.
 		  ps_ops: List of strings representing `Operation` types that need to be
-		    placed on `ps` devices.  If `None`, defaults to `["Variable"]`.
+		    placed on `ps` devices.  If `None`, defaults to `STANDARD_PS_OPS`.
 		  ps_strategy: A callable invoked for every ps `Operation` (i.e. matched by
 		    `ps_ops`), that takes the `Operation` and returns the ps task index to
 		    use.  If `None`, defaults to a round-robin strategy across all `ps`
@@ -1080,8 +1638,6 @@ package tensorflow.python.training.training;
 		
 		Returns:
 		  A `Tensor` of type `int64`.
-		  a (N,2) shaped matrix where N is the number of elements in the input
-		  vector. Each row contains the low and high parts of the fingerprint.
 	**/
 	static public function sdca_fprint(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1133,7 +1689,7 @@ package tensorflow.python.training.training;
 		    with a dense feature group.
 		  example_state_data: A `Tensor` of type `float32`.
 		    a list of vectors containing the example state data.
-		  loss_type: A `string` from: `"logistic_loss", "squared_loss", "hinge_loss", "smooth_hinge_loss"`.
+		  loss_type: A `string` from: `"logistic_loss", "squared_loss", "hinge_loss", "smooth_hinge_loss", "poisson_loss"`.
 		    Type of the primal loss. Currently SdcaSolver supports logistic,
 		    squared and hinge losses.
 		  l1: A `float`. Symmetric l1 regularization strength.
@@ -1142,19 +1698,16 @@ package tensorflow.python.training.training;
 		    Number of partitions of the global loss function.
 		  num_inner_iterations: An `int` that is `>= 1`.
 		    Number of iterations per mini-batch.
-		  adaptative: An optional `bool`. Defaults to `False`.
-		    Whether to use Adapative SDCA for the inner loop.
+		  adaptative: An optional `bool`. Defaults to `True`.
+		    Whether to use Adaptive SDCA for the inner loop.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (out_example_state_data, out_delta_sparse_weights, out_delta_dense_weights).
 		
-		  out_example_state_data: A `Tensor` of type `float32`. a list of vectors containing the updated example state
-		    data.
-		  out_delta_sparse_weights: A list with the same length as `sparse_example_indices` of `Tensor` objects with type `float32`. a list of vectors where each value is the delta
-		    weights associated with a sparse feature group.
-		  out_delta_dense_weights: A list with the same length as `dense_features` of `Tensor` objects with type `float32`. a list of vectors where the values are the delta
-		    weights associated with a dense feature group.
+		  out_example_state_data: A `Tensor` of type `float32`.
+		  out_delta_sparse_weights: A list with the same length as `sparse_example_indices` of `Tensor` objects with type `float32`.
+		  out_delta_dense_weights: A list with the same length as `dense_features` of `Tensor` objects with type `float32`.
 	**/
 	static public function sdca_optimizer(sparse_example_indices:Dynamic, sparse_feature_indices:Dynamic, sparse_feature_values:Dynamic, dense_features:Dynamic, example_weights:Dynamic, example_labels:Dynamic, sparse_indices:Dynamic, sparse_weights:Dynamic, dense_weights:Dynamic, example_state_data:Dynamic, loss_type:Dynamic, l1:Dynamic, l2:Dynamic, num_loss_partitions:Dynamic, num_inner_iterations:Dynamic, ?adaptative:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1174,7 +1727,11 @@ package tensorflow.python.training.training;
 	**/
 	static public function sdca_shrink_l1(weights:Dynamic, l1:Dynamic, l2:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Creates batches by randomly shuffling tensors.
+		Creates batches by randomly shuffling tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		This function adds the following to the current `Graph`:
 		
@@ -1223,7 +1780,7 @@ package tensorflow.python.training.training;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -1249,10 +1806,19 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function shuffle_batch(tensors:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Create batches by randomly shuffling tensors.
+		Create batches by randomly shuffling tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		The `tensors_list` argument is a list of tuples of tensors, or a list of
 		dictionaries of tensors.  Each element in the list is treated similarly
@@ -1294,7 +1860,7 @@ package tensorflow.python.training.training;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -1321,10 +1887,19 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function shuffle_batch_join(tensors_list:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Produces a slice of each `Tensor` in `tensor_list`.
+		Produces a slice of each `Tensor` in `tensor_list`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(tuple(tensor_list)).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Implemented using a Queue -- a `QueueRunner` for the Queue
 		is added to the current `Graph`'s `QUEUE_RUNNER` collection.
@@ -1351,10 +1926,19 @@ package tensorflow.python.training.training;
 		
 		Raises:
 		  ValueError: if `slice_input_producer` produces nothing from `tensor_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function slice_input_producer(tensor_list:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Starts all queue runners collected in the graph.
+		Starts all queue runners collected in the graph. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		To construct input pipelines, use the `tf.data` module.
 		
 		This is a companion method to `add_queue_runner()`.  It just starts
 		threads for all queue runners collected in the graph.  It returns
@@ -1376,10 +1960,23 @@ package tensorflow.python.training.training;
 		
 		Returns:
 		  A list of threads.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		  ValueError: If called without a default `tf.Session` registered.
+		
+		@compatibility(eager)
+		Not compatible with eager execution. To ingest data under eager execution,
+		use the `tf.data` API instead.
+		@end_compatibility
 	**/
 	static public function start_queue_runners(?sess:Dynamic, ?coord:Dynamic, ?daemon:Dynamic, ?start:Dynamic, ?collection:Dynamic):Dynamic;
 	/**
-		Output strings (e.g. filenames) to a queue for an input pipeline.
+		Output strings (e.g. filenames) to a queue for an input pipeline. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(string_tensor).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Note: if `num_epochs` is not `None`, this function creates local counter
 		`epochs`. Use `local_variables_initializer()` to initialize local variables.
@@ -1410,6 +2007,11 @@ package tensorflow.python.training.training;
 		Raises:
 		  ValueError: If the string_tensor is a null Python list.  At runtime,
 		  will fail with an assertion if string_tensor becomes a null tensor.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function string_input_producer(string_tensor:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?cancel_op:Dynamic):Dynamic;
 	/**
@@ -1451,6 +2053,7 @@ package tensorflow.python.training.training;
 		  `Event` protocol buffers.
 	**/
 	static public function summary_iterator(path:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Updates the content of the 'checkpoint' file.
 		
@@ -1466,16 +2069,60 @@ package tensorflow.python.training.training;
 		    are also saved in the CheckpointState proto.
 		  latest_filename: Optional name of the checkpoint file.  Default to
 		    'checkpoint'.
-		
+		  all_model_checkpoint_timestamps: Optional list of timestamps (floats,
+		    seconds since the Epoch) indicating when the checkpoints in
+		    `all_model_checkpoint_paths` were created.
+		  last_preserved_timestamp: A float, indicating the number of seconds since
+		    the Epoch when the last preserved checkpoint was written, e.g. due to a
+		    `keep_checkpoint_every_n_hours` parameter (see
+		    `tf.contrib.checkpoint.CheckpointManager` for an implementation).
 		Raises:
 		  RuntimeError: If any of the model checkpoint paths conflict with the file
 		    containing CheckpointSate.
 	**/
-	static public function update_checkpoint_state(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?latest_filename:Dynamic):Dynamic;
+	static public function update_checkpoint_state(save_dir:Dynamic, model_checkpoint_path:Dynamic, ?all_model_checkpoint_paths:Dynamic, ?latest_filename:Dynamic, ?all_model_checkpoint_timestamps:Dynamic, ?last_preserved_timestamp:Dynamic):Dynamic;
+	/**
+		Warm-starts a model using the given settings.
+		
+		If you are using a tf.estimator.Estimator, this will automatically be called
+		during training.
+		
+		Args:
+		  ckpt_to_initialize_from: [Required] A string specifying the directory with
+		    checkpoint file(s) or path to checkpoint from which to warm-start the
+		    model parameters.
+		  vars_to_warm_start: [Optional] One of the following:
+		
+		    - A regular expression (string) that captures which variables to
+		      warm-start (see tf.get_collection).  This expression will only consider
+		      variables in the TRAINABLE_VARIABLES collection.
+		    - A list of Variables to warm-start.
+		    - A list of strings, each representing a full variable name to warm-start.
+		    - `None`, in which case only variables specified in
+		      `var_name_to_vocab_info` will be warm-started.
+		
+		    Defaults to `'.*'`, which warm-starts all variables in the
+		    TRAINABLE_VARIABLES collection.  Note that this excludes variables such as
+		    accumulators and moving statistics from batch norm.
+		  var_name_to_vocab_info: [Optional] Dict of variable names (strings) to
+		    VocabInfo. The variable names should be "full" variables, not the names
+		    of the partitions.  If not explicitly provided, the variable is assumed to
+		    have no vocabulary.
+		  var_name_to_prev_var_name: [Optional] Dict of variable names (strings) to
+		    name of the previously-trained variable in `ckpt_to_initialize_from`. If
+		    not explicitly provided, the name of the variable is assumed to be same
+		    between previous checkpoint and current model.
+		Raises:
+		  ValueError: If the WarmStartSettings contains prev_var_name or VocabInfo
+		    configuration for variable names that are not used.  This is to ensure
+		    a stronger check for variable configuration than relying on users to
+		    examine the logs.
+	**/
+	static public function warm_start(ckpt_to_initialize_from:Dynamic, ?vars_to_warm_start:Dynamic, ?var_name_to_vocab_info:Dynamic, ?var_name_to_prev_var_name:Dynamic):Dynamic;
 	/**
 		Writes a graph proto to a file.
 		
-		The graph is written as a binary proto unless `as_text` is `True`.
+		The graph is written as a text proto unless `as_text` is `False`.
 		
 		```python
 		v = tf.Variable(0, name='my_variable')

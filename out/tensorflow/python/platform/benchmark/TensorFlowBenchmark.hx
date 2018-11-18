@@ -55,7 +55,7 @@ package tensorflow.python.platform.benchmark;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -106,7 +106,7 @@ package tensorflow.python.platform.benchmark;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -115,14 +115,16 @@ package tensorflow.python.platform.benchmark;
 		Returns full name of class and method calling report_benchmark.
 	**/
 	public function _get_name(?overwrite_name:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	static public function is_abstract():Dynamic;
 	/**
 		Report a benchmark.
 		
 		Args:
 		  iters: (optional) How many iterations were run
-		  cpu_time: (optional) Total cpu time in seconds
-		  wall_time: (optional) Total wall time in seconds
+		  cpu_time: (optional) median or mean cpu time in seconds.
+		  wall_time: (optional) median or mean wall time in seconds.
 		  throughput: (optional) Throughput (in MB/s)
 		  extras: (optional) Dict mapping string keys to additional benchmark info.
 		    Values may be either floats or values that are convertible to strings.
@@ -141,12 +143,12 @@ package tensorflow.python.platform.benchmark;
 		  burn_iters: Number of burn-in iterations to run.
 		  min_iters: Minimum number of iterations to use for timing.
 		  store_trace: Boolean, whether to run an extra untimed iteration and
-		    store the trace of iteration in the benchmark report.
+		    store the trace of iteration in returned extras.
 		    The trace will be stored as a string in Google Chrome trace format
-		    in the extras field "full_trace_chrome_format".
-		  store_memory_usage: Boolean, whether to run an extra
-		    untimed iteration, calculate memory usage, and store that in extras
-		    fields.
+		    in the extras field "full_trace_chrome_format". Note that trace
+		    will not be stored in test_log_pb2.TestResults proto.
+		  store_memory_usage: Boolean, whether to run an extra untimed iteration,
+		    calculate memory usage, and store that in extras fields.
 		  name: (optional) Override the BenchmarkEntry name with `name`.
 		    Otherwise it is inferred from the top-level method name.
 		  extras: (optional) Dict mapping string keys to additional benchmark info.
@@ -156,7 +158,9 @@ package tensorflow.python.platform.benchmark;
 		
 		Returns:
 		  A `dict` containing the key-value pairs that were passed to
-		  `report_benchmark`.
+		  `report_benchmark`. If `store_trace` option is used, then
+		  `full_chrome_trace_format` will be included in return dictionary even
+		  though it is not passed to `report_benchmark` with `extras`.
 	**/
 	public function run_op_benchmark(sess:Dynamic, op_or_tensor:Dynamic, ?feed_dict:Dynamic, ?burn_iters:Dynamic, ?min_iters:Dynamic, ?store_trace:Dynamic, ?store_memory_usage:Dynamic, ?name:Dynamic, ?extras:Dynamic, ?mbs:Dynamic):Dynamic;
 }

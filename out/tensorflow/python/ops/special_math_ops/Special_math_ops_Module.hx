@@ -61,6 +61,46 @@ package tensorflow.python.ops.special_math_ops;
 	**/
 	static public function _transpose_if_necessary(tensor:Dynamic, perm:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Computes the Bessel i0 function of `x` element-wise.
+		
+		Modified Bessel function of order 0.
+		
+		It is preferable to use the numerically stabler function `i0e(x)` instead.
+		
+		Args:
+		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
+		    `float32`, `float64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		
+		@compatibility(scipy)
+		Equivalent to scipy.special.i0
+		@end_compatibility
+	**/
+	static public function bessel_i0(x:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the Bessel i1 function of `x` element-wise.
+		
+		Modified Bessel function of order 1.
+		
+		It is preferable to use the numerically stabler function `i1e(x)` instead.
+		
+		Args:
+		  x: A `Tensor` or `SparseTensor`. Must be one of the following types: `half`,
+		    `float32`, `float64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` or `SparseTensor`, respectively. Has the same type as `x`.
+		
+		@compatibility(scipy)
+		Equivalent to scipy.special.i1
+		@end_compatibility
+	**/
+	static public function bessel_i1(x:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		A generalized contraction between tensors of arbitrary dimension.
@@ -118,6 +158,7 @@ package tensorflow.python.ops.special_math_ops;
 		    `numpy.einsum`.
 		  *inputs: the inputs to contract (each one a `Tensor`), whose shapes should
 		    be consistent with `equation`.
+		  name: A name for the operation (optional).
 		
 		Returns:
 		  The contracted `Tensor`, with shape determined by `equation`.
@@ -131,7 +172,7 @@ package tensorflow.python.ops.special_math_ops;
 		      indices in its subscript, or
 		    - the input shapes are inconsistent along a particular axis.
 	**/
-	static public function einsum(equation:Dynamic, ?inputs:python.VarArgs<Dynamic>):Dynamic;
+	static public function einsum(equation:Dynamic, ?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes \\(ln(|Beta(x)|)\\), reducing along the last dimension.
 		
@@ -160,4 +201,5 @@ package tensorflow.python.ops.special_math_ops;
 	**/
 	static public function lbeta(x:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

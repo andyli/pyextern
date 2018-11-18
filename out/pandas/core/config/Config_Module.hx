@@ -67,7 +67,7 @@ package pandas.core.config;
 	**/
 	static public function _warn_if_deprecated(key:Dynamic):Dynamic;
 	/**
-		contextmanager for multiple invocations of API  with a common prefix
+		contextmanager for multiple invocations of API with a common prefix
 		
 		supported API functions: (register / get / set )__option
 		
@@ -166,15 +166,14 @@ package pandas.core.config;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -182,7 +181,9 @@ package pandas.core.config;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -253,16 +254,22 @@ package pandas.core.config;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -306,11 +313,6 @@ package pandas.core.config;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -327,7 +329,7 @@ package pandas.core.config;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -372,12 +374,6 @@ package pandas.core.config;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -428,21 +424,22 @@ package pandas.core.config;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -453,6 +450,11 @@ package pandas.core.config;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -462,11 +464,23 @@ package pandas.core.config;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function describe_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_default_val(pat:Dynamic):Dynamic;
@@ -479,15 +493,14 @@ package pandas.core.config;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -495,7 +508,9 @@ package pandas.core.config;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -568,16 +583,22 @@ package pandas.core.config;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -621,11 +642,6 @@ package pandas.core.config;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -642,7 +658,7 @@ package pandas.core.config;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -687,12 +703,6 @@ package pandas.core.config;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -743,21 +753,22 @@ package pandas.core.config;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -768,6 +779,11 @@ package pandas.core.config;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -777,11 +793,23 @@ package pandas.core.config;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(x:Dynamic):Dynamic;
@@ -887,15 +915,14 @@ package pandas.core.config;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -903,7 +930,9 @@ package pandas.core.config;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -972,16 +1001,22 @@ package pandas.core.config;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -1025,11 +1060,6 @@ package pandas.core.config;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -1046,7 +1076,7 @@ package pandas.core.config;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -1091,12 +1121,6 @@ package pandas.core.config;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -1147,21 +1171,22 @@ package pandas.core.config;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -1172,6 +1197,11 @@ package pandas.core.config;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -1181,11 +1211,23 @@ package pandas.core.config;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function reset_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1197,15 +1239,14 @@ package pandas.core.config;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -1213,7 +1254,9 @@ package pandas.core.config;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -1288,16 +1331,22 @@ package pandas.core.config;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -1341,11 +1390,6 @@ package pandas.core.config;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -1362,7 +1406,7 @@ package pandas.core.config;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -1407,12 +1451,6 @@ package pandas.core.config;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -1463,21 +1501,22 @@ package pandas.core.config;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -1488,6 +1527,11 @@ package pandas.core.config;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -1497,11 +1541,23 @@ package pandas.core.config;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function set_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function u(s:Dynamic):Dynamic;

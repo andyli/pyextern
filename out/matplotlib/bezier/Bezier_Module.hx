@@ -10,7 +10,6 @@ package matplotlib.bezier;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _de_casteljau1(beta:Dynamic, t:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		returns
 		* 1 if two lines are parralel in same direction
@@ -22,7 +21,6 @@ package matplotlib.bezier;
 		concatenate list of paths into a single path.
 	**/
 	static public function concatenate_paths(paths:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Find a parameter t0 and t1 of the given bezier path which
 		bounds the intersecting points with a provided closed
@@ -34,11 +32,11 @@ package matplotlib.bezier;
 		
 		- bezier_point_at_t : a function which returns x, y coordinates at *t*
 		
-		- inside_closedpath : return True if the point is insed the path
+		- inside_closedpath : return True if the point is inside the path
 	**/
 	static public function find_bezier_t_intersecting_with_closedpath(bezier_point_at_t:Dynamic, inside_closedpath:Dynamic, ?t0:Dynamic, ?t1:Dynamic, ?tolerence:Dynamic):Dynamic;
 	/**
-		Find control points of the bezier line throught c1, mm, c2. We
+		Find control points of the bezier line through c1, mm, c2. We
 		simply assume that c1, mm, c2 which have parametric value 0, 0.5, and 1.
 	**/
 	static public function find_control_points(c1x:Dynamic, c1y:Dynamic, mmx:Dynamic, mmy:Dynamic, c2x:Dynamic, c2y:Dynamic):Dynamic;
@@ -77,11 +75,10 @@ package matplotlib.bezier;
 	static public function make_path_regular(p:Dynamic):Dynamic;
 	/**
 		Being similar to get_parallels, returns control points of two quadrativ
-		bezier lines having a width roughly parralel to given one separated by
+		bezier lines having a width roughly parallel to given one separated by
 		*width*.
 	**/
 	static public function make_wedged_bezier2(bezier2:Dynamic, width:Dynamic, ?w1:Dynamic, ?wm:Dynamic, ?w2:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		bezier : control points of the bezier segment
 		inside_closedpath : a function which returns true if the point is inside
@@ -98,9 +95,4 @@ package matplotlib.bezier;
 		becomes False.
 	**/
 	static public function split_path_inout(path:Dynamic, inside:Dynamic, ?tolerence:Dynamic, ?reorder_inout:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
-	/**
-		xor(a, b) -- Same as a ^ b.
-	**/
-	static public function xor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

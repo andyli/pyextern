@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.latex2e;
 @:pythonImport("docutils.writers.latex2e", "PreambleCmds") extern class PreambleCmds {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.writers.latex2e;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.writers.latex2e;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -111,11 +111,11 @@ package docutils.writers.latex2e;
 	@:native("abstract")
 	static public var _abstract : Dynamic;
 	static public var admonition : Dynamic;
-	static public var align_center : Dynamic;
 	static public var color : Dynamic;
 	static public var dedication : Dynamic;
 	static public var docinfo : Dynamic;
 	static public var documentsubtitle : Dynamic;
+	static public var duclass : Dynamic;
 	static public var error : Dynamic;
 	static public var fieldlist : Dynamic;
 	static public var float_settings : Dynamic;
@@ -135,8 +135,8 @@ package docutils.writers.latex2e;
 	static public var subtitle : Dynamic;
 	static public var table : Dynamic;
 	static public var textcomp : Dynamic;
+	static public var textsubscript : Dynamic;
 	static public var title : Dynamic;
 	static public var titlereference : Dynamic;
-	static public var topic : Dynamic;
 	static public var transition : Dynamic;
 }

@@ -178,18 +178,21 @@ package seaborn.widgets;
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
-		    hls, husl, any named matplotlib palette, list of colors
+		    name of matplotlib cmap, 'ch:<cubehelix arguments>', 'hls', 'husl',
+		    or a list of colors in any format matplotlib accepts
 		
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
 		Matplotlib palettes can be specified as reversed palettes by appending
-		"_r" to the name or as dark palettes by appending "_d" to the name.
+		"_r" to the name or as "dark" palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
 		
 		This function can also be used in a ``with`` statement to temporarily
 		set the color cycle for a plot or set of plots.
+		
+		See the :ref:`tutorial <palette_tutorial>` for more information.
 		
 		Parameters
 		----------
@@ -221,39 +224,53 @@ package seaborn.widgets;
 		Examples
 		--------
 		
-		Show one of the "seaborn palettes", which have the same basic order of hues
-		as the default matplotlib color cycle but more attractive colors.
+		Calling with no arguments returns all colors from the current default
+		color cycle:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> import seaborn as sns; sns.set()
+		    >>> sns.palplot(sns.color_palette())
+		
+		Show one of the other "seaborn palettes", which have the same basic order
+		of hues as the default matplotlib color cycle but more attractive colors.
+		Calling with the name of a palette will return 6 colors by default:
+		
+		.. plot::
+		    :context: close-figs
+		
 		    >>> sns.palplot(sns.color_palette("muted"))
 		
-		Use discrete values from one of the built-in matplotlib colormaps.
+		Use discrete values from one of the built-in matplotlib colormaps:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> sns.palplot(sns.color_palette("RdBu", n_colors=7))
 		
-		Make a "dark" matplotlib sequential palette variant. (This can be good
-		when coloring multiple lines or points that correspond to an ordered
-		variable, where you don't want the lightest lines to be invisible).
+		Make a customized cubehelix color palette:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> sns.palplot(sns.color_palette("Blues_d"))
+		    >>> sns.palplot(sns.color_palette("ch:2.5,-.2,dark=.3"))
 		
-		Use a categorical matplotlib palette, add some desaturation. (This can be
-		good when making plots with large patches, which look best with dimmer
-		colors).
+		Use a categorical matplotlib palette and add some desaturation:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> sns.palplot(sns.color_palette("Set1", n_colors=8, desat=.5))
+		
+		Make a "dark" matplotlib sequential palette variant. (This can be good
+		when coloring multiple lines or points that correspond to an ordered
+		variable, where you don't want the lightest lines to be invisible):
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.color_palette("Blues_d"))
 		
 		Use as a context manager:
 		
@@ -274,6 +291,10 @@ package seaborn.widgets;
 		also available as a matplotlib-based palette, but this function gives the
 		user more control over the look of the palette and has a different set of
 		defaults.
+		
+		In addition to using this function, it is also possible to generate a
+		cubehelix palette generally in seaborn using a string-shorthand; see the
+		example below.
 		
 		Parameters
 		----------
@@ -366,6 +387,13 @@ package seaborn.widgets;
 		
 		    >>> cmap = sns.cubehelix_palette(dark=0, light=1, as_cmap=True)
 		    >>> ax = sns.heatmap(x, cmap=cmap)
+		
+		Use through the :func:`color_palette` interface:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.color_palette("ch:2,r=.2,l=.6"))
 	**/
 	static public function cubehelix_palette(?n_colors:Dynamic, ?start:Dynamic, ?rot:Dynamic, ?gamma:Dynamic, ?hue:Dynamic, ?light:Dynamic, ?dark:Dynamic, ?reverse:Dynamic, ?as_cmap:Dynamic):Dynamic;
 	/**

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.axisgrid;
 @:pythonImport("seaborn.axisgrid", "JointGrid") extern class JointGrid {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,7 +46,7 @@ package seaborn.axisgrid;
 		    Data or names of variables in ``data``.
 		data : DataFrame, optional
 		    DataFrame when ``x`` and ``y`` are variable names.
-		size : numeric
+		height : numeric
 		    Size of each side of the figure in inches (it will be square).
 		ratio : numeric
 		    Ratio of joint axes size to marginal axes height.
@@ -148,7 +148,7 @@ package seaborn.axisgrid;
 		    :context: close-figs
 		
 		    >>> g = sns.JointGrid(x="total_bill", y="tip", data=tips,
-		    ...                   size=5, ratio=2)
+		    ...                   height=5, ratio=2)
 		    >>> g = g.plot_joint(sns.kdeplot, cmap="Reds_d")
 		    >>> g = g.plot_marginals(sns.kdeplot, color="r", shade=True)
 		
@@ -163,7 +163,7 @@ package seaborn.axisgrid;
 		    >>> g = g.plot_marginals(sns.kdeplot, color="m", shade=True)
 	**/
 	@:native("__init__")
-	public function ___init__(x:Dynamic, y:Dynamic, ?data:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic):Dynamic;
+	public function ___init__(x:Dynamic, y:Dynamic, ?data:Dynamic, ?height:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?size:Dynamic):Dynamic;
 	/**
 		Set up the grid of subplots.
 		
@@ -173,7 +173,7 @@ package seaborn.axisgrid;
 		    Data or names of variables in ``data``.
 		data : DataFrame, optional
 		    DataFrame when ``x`` and ``y`` are variable names.
-		size : numeric
+		height : numeric
 		    Size of each side of the figure in inches (it will be square).
 		ratio : numeric
 		    Ratio of joint axes size to marginal axes height.
@@ -275,7 +275,7 @@ package seaborn.axisgrid;
 		    :context: close-figs
 		
 		    >>> g = sns.JointGrid(x="total_bill", y="tip", data=tips,
-		    ...                   size=5, ratio=2)
+		    ...                   height=5, ratio=2)
 		    >>> g = g.plot_joint(sns.kdeplot, cmap="Reds_d")
 		    >>> g = g.plot_marginals(sns.kdeplot, color="r", shade=True)
 		
@@ -289,14 +289,14 @@ package seaborn.axisgrid;
 		    >>> g = g.plot_joint(sns.kdeplot, cmap="Purples_d")
 		    >>> g = g.plot_marginals(sns.kdeplot, color="m", shade=True)
 	**/
-	public function new(x:Dynamic, y:Dynamic, ?data:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic):Void;
+	public function new(x:Dynamic, y:Dynamic, ?data:Dynamic, ?height:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?size:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -347,13 +347,15 @@ package seaborn.axisgrid;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
 		Annotate the plot with a statistic about the relationship.
+		
+		*Deprecated and will be removed in a future version*.
 		
 		Parameters
 		----------

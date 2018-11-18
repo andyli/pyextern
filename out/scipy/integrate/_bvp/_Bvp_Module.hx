@@ -247,6 +247,9 @@ package scipy.integrate._bvp;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will
@@ -370,26 +373,29 @@ package scipy.integrate._bvp;
 		singular-value decomposition (SVD) and including all
 		*large* singular values.
 		
+		.. versionchanged:: 1.14
+		   Can now operate on stacks of matrices
+		
 		Parameters
 		----------
-		a : (M, N) array_like
-		  Matrix to be pseudo-inverted.
-		rcond : float
-		  Cutoff for small singular values.
-		  Singular values smaller (in modulus) than
-		  `rcond` * largest_singular_value (again, in modulus)
-		  are set to zero.
+		a : (..., M, N) array_like
+		    Matrix or stack of matrices to be pseudo-inverted.
+		rcond : (...) array_like of float
+		    Cutoff for small singular values.
+		    Singular values smaller (in modulus) than
+		    `rcond` * largest_singular_value (again, in modulus)
+		    are set to zero. Broadcasts against the stack of matrices
 		
 		Returns
 		-------
-		B : (N, M) ndarray
-		  The pseudo-inverse of `a`. If `a` is a `matrix` instance, then so
-		  is `B`.
+		B : (..., N, M) ndarray
+		    The pseudo-inverse of `a`. If `a` is a `matrix` instance, then so
+		    is `B`.
 		
 		Raises
 		------
 		LinAlgError
-		  If the SVD computation does not converge.
+		    If the SVD computation does not converge.
 		
 		Notes
 		-----
@@ -793,8 +799,6 @@ package scipy.integrate._bvp;
 		diag_pivot_thresh : float, optional
 		    Threshold used for a diagonal entry to be an acceptable pivot.
 		    See SuperLU user's guide for details [1]_
-		drop_tol : float, optional
-		    (deprecated) No effect.
 		relax : int, optional
 		    Expert option for customizing the degree of relaxing supernodes.
 		    See SuperLU user's guide for details [1]_
@@ -824,8 +828,22 @@ package scipy.integrate._bvp;
 		References
 		----------
 		.. [1] SuperLU http://crd.lbl.gov/~xiaoye/SuperLU/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import splu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = splu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
-	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?drop_tol:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
+	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
 		Stacked matrix multiply: out[i,:,:] = np.dot(a[i,:,:], b[i,:,:]).
 		

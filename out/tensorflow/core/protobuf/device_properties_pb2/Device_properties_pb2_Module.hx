@@ -4,6 +4,7 @@ package tensorflow.core.protobuf.device_properties_pb2;
 	static public var DESCRIPTOR : Dynamic;
 	static public var _DEVICEPROPERTIES : Dynamic;
 	static public var _DEVICEPROPERTIES_ENVIRONMENTENTRY : Dynamic;
+	static public var _NAMEDDEVICE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

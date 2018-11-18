@@ -32,6 +32,8 @@ package tensorflow.contrib.session_bundle.session_bundle;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -40,14 +42,14 @@ package tensorflow.contrib.session_bundle.session_bundle;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Load session bundle from the given path. (deprecated)
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		The function reads input from the export_dir, constructs the graph data to the
 		default graph and restores the parameters for the session created.
@@ -74,7 +76,7 @@ package tensorflow.contrib.session_bundle.session_bundle;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		Args:
 		  export_dir: string path to model checkpoint, for example 'model/00000123'

@@ -88,7 +88,9 @@ package tensorflow.contrib.slim.python.slim.nets.inception;
 		Constructs an Inception v2 network for classification as described in
 		http://arxiv.org/abs/1502.03167.
 		
-		The default image size used to train this network is 224x224.
+		The recommended image size used to train this network is 224x224. For image
+		sizes that differ substantially, it is recommended to use inception_v2_base()
+		and connect custom final layers to the output.
 		
 		Args:
 		  inputs: a tensor of shape [batch_size, height, width, channels].
@@ -103,8 +105,12 @@ package tensorflow.contrib.slim.python.slim.nets.inception;
 		    usage will be to set this value in (0, 1) to reduce the number of
 		    parameters or computation cost of the model.
 		  prediction_fn: a function to get predictions out of logits.
-		  spatial_squeeze: if True, logits is of shape is [B, C], if false logits is
+		  spatial_squeeze: if True, logits is of shape [B, C], if false logits is
 		      of shape [B, 1, 1, C], where B is batch_size and C is number of classes.
+		      Note that input image sizes other than 224x224 might lead to different
+		      spatial dimensions, and hence cannot be squeezed. In this event,
+		      it is best to set spatial_squeeze as False, and perform a reduce_mean
+		      over the resulting spatial dimensions with sizes exceeding 1.
 		  reuse: whether or not the network and its variables should be reused. To be
 		    able to reuse 'scope' must be given.
 		  scope: Optional variable_scope.
@@ -116,8 +122,7 @@ package tensorflow.contrib.slim.python.slim.nets.inception;
 		    activation.
 		
 		Raises:
-		  ValueError: if final_endpoint is not set to one of the predefined values,
-		              or depth_multiplier <= 0
+		  ValueError: if depth_multiplier <= 0.
 	**/
 	static public function inception_v2(inputs:Dynamic, ?num_classes:Dynamic, ?is_training:Dynamic, ?dropout_keep_prob:Dynamic, ?min_depth:Dynamic, ?depth_multiplier:Dynamic, ?prediction_fn:Dynamic, ?spatial_squeeze:Dynamic, ?reuse:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
@@ -194,7 +199,10 @@ package tensorflow.contrib.slim.python.slim.nets.inception;
 		    parameters or computation cost of the model.
 		  prediction_fn: a function to get predictions out of logits.
 		  spatial_squeeze: if True, logits is of shape is [B, C], if false logits is
-		      of shape [B, 1, 1, C], where B is batch_size and C is number of classes.
+		    of shape [B, 1, 1, C], where B is batch_size and C is number of classes.
+		    To use this parameter, the input images must be smaller
+		    than 300x300 pixels, in which case the output logit layer
+		    does not contain spatial information and can be removed.
 		  reuse: whether or not the network and its variables should be reused. To be
 		    able to reuse 'scope' must be given.
 		  scope: Optional variable_scope.
@@ -214,14 +222,17 @@ package tensorflow.contrib.slim.python.slim.nets.inception;
 		
 		Args:
 		  weight_decay: The weight decay to use for regularizing the model.
-		  stddev: The standard deviation of the trunctated normal weight initializer.
 		  batch_norm_var_collection: The name of the collection for the batch norm
 		    variables.
+		  batch_norm_decay: Decay for batch norm moving average
+		  batch_norm_epsilon: Small float added to variance to avoid division by zero
+		  updates_collections: Collections for the update ops of the layer
+		  use_fused_batchnorm: Enable fused batchnorm.
 		
 		Returns:
 		  An `arg_scope` to use for the inception v3 model.
 	**/
-	static public function inception_v3_arg_scope(?weight_decay:Dynamic, ?stddev:Dynamic, ?batch_norm_var_collection:Dynamic):Dynamic;
+	static public function inception_v3_arg_scope(?weight_decay:Dynamic, ?batch_norm_var_collection:Dynamic, ?batch_norm_decay:Dynamic, ?batch_norm_epsilon:Dynamic, ?updates_collections:Dynamic, ?use_fused_batchnorm:Dynamic):Dynamic;
 	/**
 		Inception model from http://arxiv.org/abs/1512.00567.
 		

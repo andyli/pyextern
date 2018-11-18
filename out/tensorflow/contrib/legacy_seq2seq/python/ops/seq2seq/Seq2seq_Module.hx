@@ -325,25 +325,6 @@ package tensorflow.contrib.legacy_seq2seq.python.ops.seq2seq;
 	**/
 	static public function embedding_tied_rnn_seq2seq(encoder_inputs:Dynamic, decoder_inputs:Dynamic, cell:Dynamic, num_symbols:Dynamic, embedding_size:Dynamic, ?num_decoder_symbols:Dynamic, ?output_projection:Dynamic, ?feed_previous:Dynamic, ?dtype:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Linear map: sum_i(args[i] * W[i]), where W[i] is a variable.
-		
-		Args:
-		  args: a 2D Tensor or a list of 2D, batch x n, Tensors.
-		  output_size: int, second dimension of W[i].
-		  bias: boolean, whether to add a bias term or not.
-		  bias_initializer: starting value to initialize the bias
-		    (default is all zeros).
-		  kernel_initializer: starting value to initialize the weight.
-		
-		Returns:
-		  A 2D Tensor with shape [batch x output_size] equal to
-		  sum_i(args[i] * W[i]), where W[i]s are newly created matrices.
-		
-		Raises:
-		  ValueError: if some of the arguments has unspecified or wrong shape.
-	**/
-	static public function linear(args:Dynamic, output_size:Dynamic, bias:Dynamic, ?bias_initializer:Dynamic, ?kernel_initializer:Dynamic):Dynamic;
-	/**
 		Create a sequence-to-sequence model with support for bucketing.
 		
 		The seq2seq argument is a function that defines a sequence-to-sequence model,

@@ -26,7 +26,53 @@ package scipy.sparse.spfuncs;
 	**/
 	static public function estimate_blocksize(A:Dynamic, ?efficiency:Dynamic):Dynamic;
 	static public function extract_diagonal(A:Dynamic):Dynamic;
+	/**
+		Is x of csc_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csc matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csc matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csc_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_csc(x:Dynamic):Dynamic;
+	/**
+		Is x of csr_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csr matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csr matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix_csr
+		>>> isspmatrix_csr(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csr(csc_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_csr(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

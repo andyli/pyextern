@@ -19,10 +19,6 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	**/
 	public function ClearField(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		A ProtocolMessage
-	**/
-	static public function ConstNodeInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -44,17 +40,9 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var GRAPH_INPUT_NODE_INFO_FIELD_NUMBER : Dynamic;
 	static public var GRAPH_OUTPUT_NODE_INFO_FIELD_NUMBER : Dynamic;
-	/**
-		A ProtocolMessage
-	**/
-	static public function GraphInputNodeInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		A ProtocolMessage
-	**/
-	static public function GraphOutputNodeInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var HEXAGON : Dynamic;
 	/**
 		Checks if a message field is set.
@@ -85,29 +73,13 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 	static public var NODE_OUTPUT_INFO_FIELD_NUMBER : Dynamic;
 	static public var NOP : Dynamic;
 	/**
-		A ProtocolMessage
-	**/
-	static public function NodeInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		A ProtocolMessage
-	**/
-	static public function NodeInput(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		A ProtocolMessage
-	**/
-	static public function NodeInputInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		A ProtocolMessage
-	**/
-	static public function NodeOutputInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -167,7 +139,7 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -222,7 +194,7 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -278,7 +250,7 @@ package tensorflow.core.framework.graph_transfer_info_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/

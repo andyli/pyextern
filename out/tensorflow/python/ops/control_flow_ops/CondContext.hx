@@ -20,9 +20,17 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	public function Enter():Dynamic;
 	/**
+		Start building a gradient colocated with an op.
+	**/
+	public function EnterGradientColocation(op:Dynamic, gradient_uid:Dynamic):Dynamic;
+	/**
 		Exit this control flow context.
 	**/
 	public function Exit():Dynamic;
+	/**
+		Start building a gradient colocated with an op.
+	**/
+	public function ExitGradientColocation(op:Dynamic, gradient_uid:Dynamic):Dynamic;
 	/**
 		Make a list of tensors available in the outer context.
 	**/
@@ -35,6 +43,9 @@ package tensorflow.python.ops.control_flow_ops;
 		Return the while context containing this context.
 	**/
 	public function GetWhileContext():Dynamic;
+	public function IsCondContext():Dynamic;
+	public function IsWhileContext():Dynamic;
+	public function IsXLAContext():Dynamic;
 	/**
 		Add `op` to the current context.
 	**/
@@ -49,7 +60,7 @@ package tensorflow.python.ops.control_flow_ops;
 		Remove any external control dependency on this op.
 	**/
 	public function _RemoveExternalControlEdges(op:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -120,7 +131,7 @@ package tensorflow.python.ops.control_flow_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -171,15 +182,11 @@ package tensorflow.python.ops.control_flow_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Returns a `ControlFlowContext` created from `values_def`.
-	**/
-	static public function _from_proto(values_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
 		Creates a new `CondContext` from protocol buffer.
 		
@@ -205,7 +212,7 @@ package tensorflow.python.ops.control_flow_ops;
 		Returns:
 		  A `ValuesDef` protocol buffer.
 	**/
-	public function _to_proto(?export_scope:Dynamic):Dynamic;
+	public function _to_values_def(?export_scope:Dynamic):Dynamic;
 	public var back_prop : Dynamic;
 	public var branch : Dynamic;
 	/**
@@ -220,6 +227,14 @@ package tensorflow.python.ops.control_flow_ops;
 	public var outer_context : Dynamic;
 	public var pivot : Dynamic;
 	public var pred : Dynamic;
+	/**
+		Serializes this into `context_def`.
+		
+		Args:
+		  context_def: a `ControlFlowContextDef` protocol buffer.
+		  export_scope: Optional `string`. Name scope to remove.
+	**/
+	public function to_control_flow_context_def(context_def:Dynamic, ?export_scope:Dynamic):Dynamic;
 	/**
 		Converts a `CondContext` to a `CondContextDef` protocol buffer.
 		

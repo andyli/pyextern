@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch._c;
 @:pythonImport("torch._C", "DoubleStorageBase") extern class DoubleStorageBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package torch._c;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -117,17 +117,16 @@ package torch._c;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _cdata : Dynamic;
+	static public function _free_weak_ref(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_shared_fd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_shared_fd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_shared_filename(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_using_fd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_using_filename(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _new_view(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_with_file(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _new_with_weak_ptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _root_storage(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _new_with_weak_ptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _set_cdata(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _set_from_file(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _share_fd_(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -141,6 +140,24 @@ package torch._c;
 	public function element_size(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function fill_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function from_buffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		from_file(filename, shared=False, size=0) -> Storage
+		
+		If `shared` is `True`, then memory is shared between all processes.
+		All changes are written to the file. If `shared` is `False`, then the changes on
+		the storage do not affect the file.
+		
+		`size` is the number of elements in the storage. If `shared` is `False`,
+		then the file must contain at least `size * sizeof(Type)` bytes
+		(`Type` is the type of storage). If `shared` is `True` the file will be
+		created if needed.
+		
+		Args:
+		    filename (str): file name to map
+		    shared (bool): whether to share memory
+		    size (int): number of elements in the storage
+	**/
+	static public function from_file(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function is_pinned(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function is_shared(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	@:native("new")

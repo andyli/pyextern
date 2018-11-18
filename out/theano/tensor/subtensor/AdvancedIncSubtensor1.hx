@@ -100,7 +100,7 @@ package theano.tensor.subtensor;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -153,7 +153,7 @@ package theano.tensor.subtensor;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -193,10 +193,10 @@ package theano.tensor.subtensor;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	/**
 		Optional: return a code string specific to the apply to be
 		inserted in the struct cleanup code.
@@ -492,7 +492,7 @@ package theano.tensor.subtensor;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -547,6 +547,7 @@ package theano.tensor.subtensor;
 		    Subclass does not implement this method.
 	**/
 	public function c_support_code_struct(node:Dynamic, name:Dynamic):Dynamic;
+	static public var check_input : Dynamic;
 	public function clone_inplace():Dynamic;
 	public function connection_pattern(node:Dynamic):Dynamic;
 	/**
@@ -573,9 +574,9 @@ package theano.tensor.subtensor;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	public function grad(inputs:Dynamic, grads:Dynamic):Dynamic;
 	public function infer_shape(node:Dynamic, ishapes:Dynamic):Dynamic;
-	public function inplace_increment1d_slow(x:Dynamic, idx:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
 		
@@ -626,6 +627,7 @@ package theano.tensor.subtensor;
 		fail and we try again 'py', prepare_node will be called twice.
 	**/
 	public function make_thunk(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, no_recycling:Dynamic, ?impl:Dynamic):Dynamic;
+	static public function params_type(?name:Dynamic):Dynamic;
 	/**
 		Required: Calculate the function on the inputs and put the variables in
 		the output storage. Return None.
@@ -656,7 +658,7 @@ package theano.tensor.subtensor;
 		MethodNotDefined
 		    The subclass does not override this method.
 	**/
-	public function perform(node:Dynamic, inp:Dynamic, out_:Dynamic):Dynamic;
+	public function perform(node:Dynamic, inp:Dynamic, out_:Dynamic, params:Dynamic):Dynamic;
 	/**
 		Make any special modifications that the Op needs before doing
 		make_thunk().
@@ -664,7 +666,7 @@ package theano.tensor.subtensor;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

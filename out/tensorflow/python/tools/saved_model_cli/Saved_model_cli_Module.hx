@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.tools.saved_model_cli;
 @:pythonImport("tensorflow.python.tools.saved_model_cli") extern class Saved_model_cli_Module {
+	static public var _OP_BLACKLIST : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,6 +10,10 @@ package tensorflow.python.tools.saved_model_cli;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Create a serialized tf.example from feature dictionary.
+	**/
+	static public function _create_example_string(example_dict:Dynamic):Dynamic;
 	/**
 		Gets TensorInfo for all inputs of the SignatureDef.
 		
@@ -44,8 +49,9 @@ package tensorflow.python.tools.saved_model_cli;
 		
 		Args:
 		  tensor_info: TensorInfo object to be printed.
+		  indent: How far (in increments of 2 spaces) to indent each line output
 	**/
-	static public function _print_tensor_info(tensor_info:Dynamic):Dynamic;
+	static public function _print_tensor_info(tensor_info:Dynamic, ?indent:Dynamic):Dynamic;
 	/**
 		Prints tag-set, SignatureDef and Inputs/Outputs information in SavedModel.
 		
@@ -67,8 +73,9 @@ package tensorflow.python.tools.saved_model_cli;
 		  tag_set: Group of tag(s) of the MetaGraphDef, in string format, separated by
 		      ','. For tag-set contains multiple tags, all tags must be passed in.
 		  signature_def_key: A SignatureDef key string.
+		  indent: How far (in increments of 2 spaces) to indent each line of output.
 	**/
-	static public function _show_inputs_outputs(saved_model_dir:Dynamic, tag_set:Dynamic, signature_def_key:Dynamic):Dynamic;
+	static public function _show_inputs_outputs(saved_model_dir:Dynamic, tag_set:Dynamic, signature_def_key:Dynamic, ?indent:Dynamic):Dynamic;
 	/**
 		Prints the keys for each SignatureDef in the SignatureDef map.
 		
@@ -101,9 +108,10 @@ package tensorflow.python.tools.saved_model_cli;
 	static public function create_parser():Dynamic;
 	static public var division : Dynamic;
 	/**
-		Gets MetaGraphDef from SavedModel.
+		DEPRECATED: Use saved_model_utils.get_meta_graph_def instead.
 		
-		Returns the MetaGraphDef for the given tag-set and SavedModel directory.
+		Gets MetaGraphDef from SavedModel. Returns the MetaGraphDef for the given
+		tag-set and SavedModel directory.
 		
 		Args:
 		  saved_model_dir: Directory containing the SavedModel to inspect or execute.
@@ -135,11 +143,14 @@ package tensorflow.python.tools.saved_model_cli;
 		  A SignatureDef map that maps from string keys to SignatureDefs.
 	**/
 	static public function get_signature_def_map(saved_model_dir:Dynamic, tag_set:Dynamic):Dynamic;
+	static public var integer_types : Dynamic;
 	/**
 		Parses input arg strings and create inputs feed_dict.
 		
 		Parses '--inputs' string for inputs to be loaded from file, and parses
 		'--input_exprs' string for inputs to be evaluated from python expression.
+		'--input_examples' string for inputs to be created from tf.example feature
+		dictionary list.
 		
 		Args:
 		  inputs_str: A string that specified where to load inputs. Each input is
@@ -165,9 +176,11 @@ package tensorflow.python.tools.saved_model_cli;
 		      to the specified input tensor, else SavedModel CLI will assume a
 		      dictionary is stored in the pickle file and the value corresponding to
 		      the variable_name will be used.
-		  input_exprs_str: A string that specified python expressions for inputs.
+		  input_exprs_str: A string that specifies python expressions for inputs.
 		      * In the format of: '<input_key>=<python expression>'.
 		      * numpy module is available as np.
+		  input_examples_str: A string that specifies tf.Example with dictionary.
+		      * In the format of: '<input_key>=<[{feature:value list}]>'
 		
 		Returns:
 		  A dictionary that maps input tensor keys to numpy ndarrays.
@@ -178,8 +191,29 @@ package tensorflow.python.tools.saved_model_cli;
 		  RuntimeError: An error when no key is specified, but the input file contains
 		      more than one numpy ndarrays.
 	**/
-	static public function load_inputs_from_input_arg_string(inputs_str:Dynamic, input_exprs_str:Dynamic):Dynamic;
+	static public function load_inputs_from_input_arg_string(inputs_str:Dynamic, input_exprs_str:Dynamic, input_examples_str:Dynamic):Dynamic;
 	static public function main():Dynamic;
+	/**
+		Parses input into dict that maps input keys to lists of tf.Example.
+		
+		Parses input string in the format of 'input_key1=[{feature_name:
+		feature_list}];input_key2=[{feature_name:feature_list}];' into a dictionary
+		that maps each input_key to its list of serialized tf.Example.
+		
+		Args:
+		  input_examples_str: A string that specifies a list of dictionaries of
+		  feature_names and their feature_lists for each input.
+		  Each input is separated by semicolon. For each input key:
+		    'input=[{feature_name1: feature_list1, feature_name2:feature_list2}]'
+		    items in feature_list can be the type of float, int, long or str.
+		
+		Returns:
+		  A dictionary that maps input keys to lists of serialized tf.Example.
+		
+		Raises:
+		  ValueError: An error when the given tf.Example is not a list.
+	**/
+	static public function preprocess_input_examples_arg_string(input_examples_str:Dynamic):Dynamic;
 	/**
 		Parses input arg into dictionary that maps input key to python expression.
 		
@@ -192,7 +226,7 @@ package tensorflow.python.tools.saved_model_cli;
 		      'input_key=<python expression>'
 		
 		Returns:
-		  A dictionary that maps input keys to python expressions.
+		  A dictionary that maps input keys to their values.
 		
 		Raises:
 		  RuntimeError: An error when the given input string is in a bad format.
@@ -254,15 +288,37 @@ package tensorflow.python.tools.saved_model_cli;
 		      it will be created.
 		  overwrite_flag: A boolean flag to allow overwrite output file if file with
 		      the same name exists.
+		  worker: If provided, the session will be run on the worker.  Valid worker
+		      specification is a bns or gRPC path.
+		  init_tpu: If true, the TPU system will be initialized after the session
+		      is created.
 		  tf_debug: A boolean flag to use TensorFlow Debugger (TFDBG) to observe the
 		      intermediate Tensor values and runtime GraphDefs while running the
 		      SavedModel.
 		
 		Raises:
+		  ValueError: When any of the input tensor keys is not valid.
 		  RuntimeError: An error when output file already exists and overwrite is not
 		  enabled.
 	**/
-	static public function run_saved_model_with_feed_dict(saved_model_dir:Dynamic, tag_set:Dynamic, signature_def_key:Dynamic, input_tensor_key_feed_dict:Dynamic, outdir:Dynamic, overwrite_flag:Dynamic, ?tf_debug:Dynamic):Dynamic;
+	static public function run_saved_model_with_feed_dict(saved_model_dir:Dynamic, tag_set:Dynamic, signature_def_key:Dynamic, input_tensor_key_feed_dict:Dynamic, outdir:Dynamic, overwrite_flag:Dynamic, ?worker:Dynamic, ?init_tpu:Dynamic, ?tf_debug:Dynamic):Dynamic;
+	/**
+		Function triggered by scan command.
+		
+		Args:
+		  args: A namespace parsed from command line.
+	**/
+	static public function scan(args:Dynamic):Dynamic;
+	/**
+		Scans meta_graph_def and reports if there are ops on blacklist.
+		
+		Print ops if they are on black list, or print success if no blacklisted ops
+		found.
+		
+		Args:
+		  meta_graph_def: MetaGraphDef protocol buffer.
+	**/
+	static public function scan_meta_graph_def(meta_graph_def:Dynamic):Dynamic;
 	/**
 		Function triggered by show command.
 		

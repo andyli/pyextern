@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.axisgrid;
 @:pythonImport("seaborn.axisgrid", "PairGrid") extern class PairGrid {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -62,10 +62,10 @@ package seaborn.axisgrid;
 		{x, y}_vars : lists of variable names, optional
 		    Variables within ``data`` to use separately for the rows and
 		    columns of the figure; i.e. to make a non-square plot.
-		size : scalar, optional
+		height : scalar, optional
 		    Height (in inches) of each facet.
 		aspect : scalar, optional
-		    Aspect * size gives the width (in inches) of each facet.
+		    Aspect * height gives the width (in inches) of each facet.
 		despine : boolean, optional
 		    Remove the top and right spines from the plots.
 		dropna : boolean, optional
@@ -171,7 +171,7 @@ package seaborn.axisgrid;
 		    >>> g = g.add_legend()
 	**/
 	@:native("__init__")
-	public function ___init__(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?height:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic, ?size:Dynamic):Dynamic;
 	/**
 		Initialize the plot figure and PairGrid object.
 		
@@ -197,10 +197,10 @@ package seaborn.axisgrid;
 		{x, y}_vars : lists of variable names, optional
 		    Variables within ``data`` to use separately for the rows and
 		    columns of the figure; i.e. to make a non-square plot.
-		size : scalar, optional
+		height : scalar, optional
 		    Height (in inches) of each facet.
 		aspect : scalar, optional
-		    Aspect * size gives the width (in inches) of each facet.
+		    Aspect * height gives the width (in inches) of each facet.
 		despine : boolean, optional
 		    Remove the top and right spines from the plots.
 		dropna : boolean, optional
@@ -305,14 +305,14 @@ package seaborn.axisgrid;
 		    >>> g = g.map(plt.scatter, linewidths=1, edgecolor="w", s=40)
 		    >>> g = g.add_legend()
 	**/
-	public function new(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic):Void;
+	public function new(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?height:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic, ?size:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -363,7 +363,7 @@ package seaborn.axisgrid;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -402,7 +402,7 @@ package seaborn.axisgrid;
 		    Title for the legend. The default reads from ``self._hue_var``.
 		label_order : list of labels, optional
 		    The order that the legend entries should appear in. The default
-		    reads from ``self.hue_names`` or sorts the keys in ``legend_data``.
+		    reads from ``self.hue_names``.
 		kwargs : key, value pairings
 		    Other keyword arguments are passed to the underlying legend methods
 		    on the Figure or Axes object.
@@ -420,7 +420,8 @@ package seaborn.axisgrid;
 		----------
 		func : callable plotting function
 		    Must take x, y arrays as positional arguments and draw onto the
-		    "currently active" matplotlib Axes.
+		    "currently active" matplotlib Axes. Also needs to accept kwargs
+		    called ``color`` and  ``label``.
 	**/
 	public function map(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -429,10 +430,9 @@ package seaborn.axisgrid;
 		Parameters
 		----------
 		func : callable plotting function
-		    Must take an x array as a positional arguments and draw onto the
-		    "currently active" matplotlib Axes. There is a special case when
-		    using a ``hue`` variable and ``plt.hist``; the histogram will be
-		    plotted with stacked bars.
+		    Must take an x array as a positional argument and draw onto the
+		    "currently active" matplotlib Axes. Also needs to accept kwargs
+		    called ``color`` and  ``label``.
 	**/
 	public function map_diag(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -442,7 +442,8 @@ package seaborn.axisgrid;
 		----------
 		func : callable plotting function
 		    Must take x, y arrays as positional arguments and draw onto the
-		    "currently active" matplotlib Axes.
+		    "currently active" matplotlib Axes. Also needs to accept kwargs
+		    called ``color`` and  ``label``.
 	**/
 	public function map_lower(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -452,7 +453,8 @@ package seaborn.axisgrid;
 		----------
 		func : callable plotting function
 		    Must take x, y arrays as positional arguments and draw onto the
-		    "currently active" matplotlib Axes.
+		    "currently active" matplotlib Axes. Also needs to accept kwargs
+		    called ``color`` and  ``label``.
 	**/
 	public function map_offdiag(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -462,7 +464,8 @@ package seaborn.axisgrid;
 		----------
 		func : callable plotting function
 		    Must take x, y arrays as positional arguments and draw onto the
-		    "currently active" matplotlib Axes.
+		    "currently active" matplotlib Axes. Also needs to accept kwargs
+		    called ``color`` and  ``label``.
 	**/
 	public function map_upper(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

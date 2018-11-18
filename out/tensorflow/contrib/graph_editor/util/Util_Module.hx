@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.graph_editor.util;
 @:pythonImport("tensorflow.contrib.graph_editor.util") extern class Util_Module {
+	static public var _DEFAULT_PLACEHOLDER_PREFIX : Dynamic;
 	static public var _INTERNAL_VARIABLE_RE : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -192,10 +193,11 @@ package tensorflow.contrib.graph_editor.util;
 		  shape: the tensor shape (optional).
 		  scope: absolute scope within which to create the placeholder. None
 		    means that the scope of t is preserved. "" means the root scope.
+		  prefix: placeholder name prefix.
 		Returns:
 		  A newly created tf.placeholder.
 	**/
-	static public function make_placeholder_from_dtype_and_shape(dtype:Dynamic, ?shape:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function make_placeholder_from_dtype_and_shape(dtype:Dynamic, ?shape:Dynamic, ?scope:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Create a `tf.placeholder` for the Graph Editor.
 		
@@ -206,12 +208,13 @@ package tensorflow.contrib.graph_editor.util;
 		    (see function placeholder_name).
 		  scope: absolute scope within which to create the placeholder. None
 		    means that the scope of `t` is preserved. `""` means the root scope.
+		  prefix: placeholder name prefix.
 		Returns:
 		  A newly created `tf.placeholder`.
 		Raises:
 		  TypeError: if `t` is not `None` or a `tf.Tensor`.
 	**/
-	static public function make_placeholder_from_tensor(t:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function make_placeholder_from_tensor(t:Dynamic, ?scope:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Create placeholder name for the graph editor.
 		
@@ -220,6 +223,7 @@ package tensorflow.contrib.graph_editor.util;
 		    on
 		  scope: absolute scope with which to prefix the placeholder's name. None
 		    means that the scope of t is preserved. "" means the root scope.
+		  prefix: placeholder name prefix.
 		Returns:
 		  A new placeholder name prefixed by "geph". Note that "geph" stands for
 		    Graph Editor PlaceHolder. This convention allows to quickly identify the
@@ -227,7 +231,7 @@ package tensorflow.contrib.graph_editor.util;
 		Raises:
 		  TypeError: if t is not None or a tf.Tensor.
 	**/
-	static public function placeholder_name(?t:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function placeholder_name(?t:Dynamic, ?scope:Dynamic, ?prefix:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function scope_basename(scope:Dynamic):Dynamic;
 	static public function scope_dirname(scope:Dynamic):Dynamic;
@@ -239,7 +243,7 @@ package tensorflow.contrib.graph_editor.util;
 		  tree: iterable or not. If iterable, its elements (child) can also be
 		    iterable or not.
 		  fn: function to apply to each leaves.
-		  iterable_type: type use to construct the resulting tree for unknwon
+		  iterable_type: type use to construct the resulting tree for unknown
 		    iterable, typically `list` or `tuple`.
 		Returns:
 		  A tree whose leaves has been transformed by `fn`.

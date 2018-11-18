@@ -173,9 +173,9 @@ package scipy.signal.filter_design;
 		--------
 		>>> a = [4, 3, 1, 2-2j, 2+2j, 2-1j, 2+1j, 2-1j, 2+1j, 1+1j, 1-1j]
 		>>> zc, zr = _cplxreal(a)
-		>>> print zc
+		>>> print(zc)
 		[ 1.+1.j  2.+1.j  2.+1.j  2.+2.j]
-		>>> print zr
+		>>> print(zr)
 		[ 1.  3.  4.]
 	**/
 	static public function _cplxreal(z:Dynamic, ?tol:Dynamic):Dynamic;
@@ -249,193 +249,11 @@ package scipy.signal.filter_design;
 	static public function _validate_sos(sos:Dynamic):Dynamic;
 	static public function _vratio(u:Dynamic, ineps:Dynamic, mp:Dynamic):Dynamic;
 	/**
-		Return a digital filter from an analog one using a bilinear transform.
-		
-		Transform a set of poles and zeros from the analog s-plane to the digital
-		z-plane using Tustin's method, which substitutes ``(z-1) / (z+1)`` for
-		``s``, maintaining the shape of the frequency response.
-		
-		Parameters
-		----------
-		z : array_like
-		    Zeros of the analog IIR filter transfer function.
-		p : array_like
-		    Poles of the analog IIR filter transfer function.
-		k : float
-		    System gain of the analog IIR filter transfer function.
-		fs : float
-		    Sample rate, as ordinary frequency (e.g. hertz). No prewarping is
-		    done in this function.
-		
-		Returns
-		-------
-		z : ndarray
-		    Zeros of the transformed digital filter transfer function.
-		p : ndarray
-		    Poles of the transformed digital filter transfer function.
-		k : float
-		    System gain of the transformed digital filter.
-	**/
-	static public function _zpkbilinear(z:Dynamic, p:Dynamic, k:Dynamic, fs:Dynamic):Dynamic;
-	/**
-		Transform a lowpass filter prototype to a bandpass filter.
-		
-		Return an analog band-pass filter with center frequency `wo` and
-		bandwidth `bw` from an analog low-pass filter prototype with unity
-		cutoff frequency, using zeros, poles, and gain ('zpk') representation.
-		
-		Parameters
-		----------
-		z : array_like
-		    Zeros of the analog IIR filter transfer function.
-		p : array_like
-		    Poles of the analog IIR filter transfer function.
-		k : float
-		    System gain of the analog IIR filter transfer function.
-		wo : float
-		    Desired passband center, as angular frequency (e.g. rad/s).
-		    Defaults to no change.
-		bw : float
-		    Desired passband width, as angular frequency (e.g. rad/s).
-		    Defaults to 1.
-		
-		Returns
-		-------
-		z : ndarray
-		    Zeros of the transformed band-pass filter transfer function.
-		p : ndarray
-		    Poles of the transformed band-pass filter transfer function.
-		k : float
-		    System gain of the transformed band-pass filter.
-		
-		Notes
-		-----
-		This is derived from the s-plane substitution
-		
-		.. math:: s \rightarrow \frac{s^2 + {\omega_0}^2}{s \cdot \mathrm{BW}}
-		
-		This is the "wideband" transformation, producing a passband with
-		geometric (log frequency) symmetry about `wo`.
-	**/
-	static public function _zpklp2bp(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
-	/**
-		Transform a lowpass filter prototype to a bandstop filter.
-		
-		Return an analog band-stop filter with center frequency `wo` and
-		stopband width `bw` from an analog low-pass filter prototype with unity
-		cutoff frequency, using zeros, poles, and gain ('zpk') representation.
-		
-		Parameters
-		----------
-		z : array_like
-		    Zeros of the analog IIR filter transfer function.
-		p : array_like
-		    Poles of the analog IIR filter transfer function.
-		k : float
-		    System gain of the analog IIR filter transfer function.
-		wo : float
-		    Desired stopband center, as angular frequency (e.g. rad/s).
-		    Defaults to no change.
-		bw : float
-		    Desired stopband width, as angular frequency (e.g. rad/s).
-		    Defaults to 1.
-		
-		Returns
-		-------
-		z : ndarray
-		    Zeros of the transformed band-stop filter transfer function.
-		p : ndarray
-		    Poles of the transformed band-stop filter transfer function.
-		k : float
-		    System gain of the transformed band-stop filter.
-		
-		Notes
-		-----
-		This is derived from the s-plane substitution
-		
-		.. math:: s \rightarrow \frac{s \cdot \mathrm{BW}}{s^2 + {\omega_0}^2}
-		
-		This is the "wideband" transformation, producing a stopband with
-		geometric (log frequency) symmetry about `wo`.
-	**/
-	static public function _zpklp2bs(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
-	/**
-		Transform a lowpass filter prototype to a highpass filter.
-		
-		Return an analog high-pass filter with cutoff frequency `wo`
-		from an analog low-pass filter prototype with unity cutoff frequency,
-		using zeros, poles, and gain ('zpk') representation.
-		
-		Parameters
-		----------
-		z : array_like
-		    Zeros of the analog IIR filter transfer function.
-		p : array_like
-		    Poles of the analog IIR filter transfer function.
-		k : float
-		    System gain of the analog IIR filter transfer function.
-		wo : float
-		    Desired cutoff, as angular frequency (e.g. rad/s).
-		    Defaults to no change.
-		
-		Returns
-		-------
-		z : ndarray
-		    Zeros of the transformed high-pass filter transfer function.
-		p : ndarray
-		    Poles of the transformed high-pass filter transfer function.
-		k : float
-		    System gain of the transformed high-pass filter.
-		
-		Notes
-		-----
-		This is derived from the s-plane substitution
-		
-		.. math:: s \rightarrow \frac{\omega_0}{s}
-		
-		This maintains symmetry of the lowpass and highpass responses on a
-		logarithmic scale.
-	**/
-	static public function _zpklp2hp(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
-	/**
-		Transform a lowpass filter prototype to a different frequency.
-		
-		Return an analog low-pass filter with cutoff frequency `wo`
-		from an analog low-pass filter prototype with unity cutoff frequency,
-		using zeros, poles, and gain ('zpk') representation.
-		
-		Parameters
-		----------
-		z : array_like
-		    Zeros of the analog IIR filter transfer function.
-		p : array_like
-		    Poles of the analog IIR filter transfer function.
-		k : float
-		    System gain of the analog IIR filter transfer function.
-		wo : float
-		    Desired cutoff, as angular frequency (e.g. rad/s).
-		    Defaults to no change.
-		
-		Returns
-		-------
-		z : ndarray
-		    Zeros of the transformed low-pass filter transfer function.
-		p : ndarray
-		    Poles of the transformed low-pass filter transfer function.
-		k : float
-		    System gain of the transformed low-pass filter.
-		
-		Notes
-		-----
-		This is derived from the s-plane substitution
-		
-		.. math:: s \rightarrow \frac{s}{\omega_0}
-	**/
-	static public function _zpklp2lp(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
-	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
+		
+		``np.abs`` is a shorthand for this function.
 		
 		Parameters
 		----------
@@ -459,6 +277,7 @@ package scipy.signal.filter_design;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -488,6 +307,8 @@ package scipy.signal.filter_design;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -510,6 +331,7 @@ package scipy.signal.filter_design;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -605,6 +427,7 @@ package scipy.signal.filter_design;
 		-------
 		arccosh : ndarray
 		    Array of the same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -663,8 +486,9 @@ package scipy.signal.filter_design;
 		
 		Returns
 		-------
-		out : ndarray
-		    Array of of the same shape as `x`.
+		out : ndarray or scalar
+		    Array of the same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -719,10 +543,10 @@ package scipy.signal.filter_design;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Out has the same shape as `x`.  Its real part is in
 		    ``[-pi/2, pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``).
-		    It is a scalar if `x` is a scalar.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -824,7 +648,15 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -934,9 +766,9 @@ package scipy.signal.filter_design;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -1238,8 +1070,51 @@ package scipy.signal.filter_design;
 		Return a digital filter from an analog one using a bilinear transform.
 		
 		The bilinear transform substitutes ``(z-1) / (z+1)`` for ``s``.
+		
+		See Also
+		--------
+		lp2lp, lp2hp, lp2bp, lp2bs
+		bilinear_zpk
 	**/
 	static public function bilinear(b:Dynamic, a:Dynamic, ?fs:Dynamic):Dynamic;
+	/**
+		Return a digital IIR filter from an analog one using a bilinear transform.
+		
+		Transform a set of poles and zeros from the analog s-plane to the digital
+		z-plane using Tustin's method, which substitutes ``(z-1) / (z+1)`` for
+		``s``, maintaining the shape of the frequency response.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		fs : float
+		    Sample rate, as ordinary frequency (e.g. hertz). No prewarping is
+		    done in this function.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed digital filter transfer function.
+		p : ndarray
+		    Poles of the transformed digital filter transfer function.
+		k : float
+		    System gain of the transformed digital filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2hp_zpk, lp2bp_zpk, lp2bs_zpk
+		bilinear
+		
+		Notes
+		-----
+		.. versionadded:: 1.1.0
+	**/
+	static public function bilinear_zpk(z:Dynamic, p:Dynamic, k:Dynamic, fs:Dynamic):Dynamic;
 	/**
 		Return (z,p,k) for analog prototype of Nth-order Butterworth filter.
 		
@@ -1418,6 +1293,7 @@ package scipy.signal.filter_design;
 		-------
 		y : ndarray or scalar
 		    The ceiling of each element in `x`, with `float` dtype.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1773,7 +1649,7 @@ package scipy.signal.filter_design;
 		
 		Returns
 		-------
-		val : int, ndarray
+		val : int, float, ndarray
 		    The total number of combinations.
 		
 		See Also
@@ -1799,7 +1675,7 @@ package scipy.signal.filter_design;
 	**/
 	static public function comb(N:Dynamic, k:Dynamic, ?exact:Dynamic, ?repetition:Dynamic):Dynamic;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -1809,7 +1685,12 @@ package scipy.signal.filter_design;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -1849,6 +1730,8 @@ package scipy.signal.filter_design;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -1899,6 +1782,7 @@ package scipy.signal.filter_design;
 		-------
 		y : ndarray
 		    The complex conjugate of `x`, with same dtype as `y`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -1936,8 +1820,9 @@ package scipy.signal.filter_design;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array of same shape as `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -2152,8 +2037,9 @@ package scipy.signal.filter_design;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -2383,7 +2269,7 @@ package scipy.signal.filter_design;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -2408,22 +2294,33 @@ package scipy.signal.filter_design;
 		Given the M-order numerator `b` and N-order denominator `a` of a digital
 		filter, compute its frequency response::
 		
-		             jw               -jw               -jwM
-		    jw    B(e  )  b[0] + b[1]e    + .... + b[M]e
-		 H(e  ) = ---- = -----------------------------------
-		             jw               -jw               -jwN
-		          A(e  )  a[0] + a[1]e    + .... + a[N]e
+		             jw                 -jw              -jwM
+		    jw    B(e  )    b[0] + b[1]e    + ... + b[M]e
+		 H(e  ) = ------ = -----------------------------------
+		             jw                 -jw              -jwN
+		          A(e  )    a[0] + a[1]e    + ... + a[N]e
 		
 		Parameters
 		----------
 		b : array_like
-		    numerator of a linear filter
+		    Numerator of a linear filter.  If `b` has dimension greater than 1,
+		    it is assumed that the coefficients are stored in the first dimension,
+		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
+		    array must be compatible for broadcasting.
 		a : array_like
-		    denominator of a linear filter
+		    Denominator of a linear filter.  If `b` has dimension greater than 1,
+		    it is assumed that the coefficients are stored in the first dimension,
+		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
+		    array must be compatible for broadcasting.
 		worN : {None, int, array_like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
+		    If None, then compute at 512 equally spaced frequencies.
+		    If a single integer, then compute at that many frequencies.  This is
+		    a convenient alternative to::
+		
+		        np.linspace(0, 2*pi if whole else pi, N, endpoint=False)
+		
+		    Using a number that is fast for FFT computations can result in
+		    faster computations (see Notes).
 		    If an array_like, compute the response at the frequencies given (in
 		    radians/sample).
 		whole : bool, optional
@@ -2445,13 +2342,29 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
+		freqz_zpk
 		sosfreqz
 		
 		Notes
 		-----
-		Using Matplotlib's "plot" function as the callable for `plot` produces
-		unexpected results,  this plots the real part of the complex transfer
-		function, not the magnitude.  Try ``lambda w, h: plot(w, abs(h))``.
+		Using Matplotlib's :func:`matplotlib.pyplot.plot` function as the callable
+		for `plot` produces unexpected results, as this plots the real part of the
+		complex transfer function, not the magnitude.
+		Try ``lambda w, h: plot(w, np.abs(h))``.
+		
+		A direct computation via (R)FFT is used to compute the frequency response
+		when the following conditions are met:
+		
+		1. An integer value is given for `worN`.
+		2. `worN` is fast to compute via FFT (i.e.,
+		   `next_fast_len(worN) <scipy.fftpack.next_fast_len>` equals `worN`).
+		3. The denominator coefficients are a single value (``a.shape[0] == 1``).
+		4. `worN` is at least as long as the numerator coefficients
+		   (``worN >= b.shape[0]``).
+		5. If ``b.ndim > 1``, then ``b.shape[-1] == 1``.
+		
+		For long FIR filters, the FFT approach can have lower error and be much
+		faster than the equivalent direct polynomial calculation.
 		
 		Examples
 		--------
@@ -2475,6 +2388,48 @@ package scipy.signal.filter_design;
 		>>> plt.grid()
 		>>> plt.axis('tight')
 		>>> plt.show()
+		
+		Broadcasting Examples
+		
+		Suppose we have two FIR filters whose coefficients are stored in the
+		rows of an array with shape (2, 25).  For this demonstration we'll
+		use random data:
+		
+		>>> np.random.seed(42)
+		>>> b = np.random.rand(2, 25)
+		
+		To compute the frequency response for these two filters with one call
+		to `freqz`, we must pass in ``b.T``, because `freqz` expects the first
+		axis to hold the coefficients. We must then extend the shape with a
+		trivial dimension of length 1 to allow broadcasting with the array
+		of frequencies.  That is, we pass in ``b.T[..., np.newaxis]``, which has
+		shape (25, 2, 1):
+		
+		>>> w, h = signal.freqz(b.T[..., np.newaxis], worN=1024)
+		>>> w.shape
+		(1024,)
+		>>> h.shape
+		(2, 1024)
+		
+		Now suppose we have two transfer functions, with the same numerator
+		coefficients ``b = [0.5, 0.5]``. The coefficients for the two denominators
+		are stored in the first dimension of the two-dimensional array  `a`::
+		
+		    a = [   1      1  ]
+		        [ -0.25, -0.5 ]
+		
+		>>> b = np.array([0.5, 0.5])
+		>>> a = np.array([[1, 1], [-0.25, -0.5]])
+		
+		Only `a` is more than one-dimensional.  To make it compatible for
+		broadcasting with the frequencies, we extend it with a trivial dimension
+		in the call to `freqz`:
+		
+		>>> w, h = signal.freqz(b, a[..., np.newaxis], worN=1024)
+		>>> w.shape
+		(1024,)
+		>>> h.shape
+		(2, 1024)
 	**/
 	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
 	/**
@@ -2497,11 +2452,9 @@ package scipy.signal.filter_design;
 		k : scalar
 		    Gain of a linear filter
 		worN : {None, int, array_like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
-		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample).
+		    If single integer (default 512, same as None), then compute at `worN`
+		    frequencies equally spaced around the unit circle. If an array_like,
+		    compute the response at the frequencies given (in radians/sample).
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
 		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
@@ -2523,7 +2476,7 @@ package scipy.signal.filter_design;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -2565,7 +2518,7 @@ package scipy.signal.filter_design;
 		system : tuple of array_like (b, a)
 		    Numerator and denominator coefficients of a filter transfer function.
 		w : {None, int, array-like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
+		    If None, then compute at 512 frequencies equally spaced
 		    around the unit circle.
 		    If a single integer, then compute at that many frequencies.
 		    If array, compute the delay at the frequencies given
@@ -2594,7 +2547,7 @@ package scipy.signal.filter_design;
 		
 		For the details of numerical computation of the group delay refer to [1]_.
 		
-		.. versionadded: 0.16.0
+		.. versionadded:: 0.16.0
 		
 		See Also
 		--------
@@ -2803,7 +2756,7 @@ package scipy.signal.filter_design;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		References
 		----------
@@ -2878,7 +2831,7 @@ package scipy.signal.filter_design;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		References
 		----------
@@ -2949,6 +2902,7 @@ package scipy.signal.filter_design;
 		y : ndarray
 		    The logarithm to the base 10 of `x`, element-wise. NaNs are
 		    returned where x is negative.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -3064,32 +3018,235 @@ package scipy.signal.filter_design;
 		Return an analog band-pass filter with center frequency `wo` and
 		bandwidth `bw` from an analog low-pass filter prototype with unity
 		cutoff frequency, in transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2lp, lp2hp, lp2bs, bilinear
+		lp2bp_zpk
 	**/
 	static public function lp2bp(b:Dynamic, a:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a bandpass filter.
+		
+		Return an analog band-pass filter with center frequency `wo` and
+		bandwidth `bw` from an analog low-pass filter prototype with unity
+		cutoff frequency, using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired passband center, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		bw : float
+		    Desired passband width, as angular frequency (e.g. rad/s).
+		    Defaults to 1.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed band-pass filter transfer function.
+		p : ndarray
+		    Poles of the transformed band-pass filter transfer function.
+		k : float
+		    System gain of the transformed band-pass filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2hp_zpk, lp2bs_zpk, bilinear
+		lp2bp
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s^2 + {\omega_0}^2}{s \cdot \mathrm{BW}}
+		
+		This is the "wideband" transformation, producing a passband with
+		geometric (log frequency) symmetry about `wo`.
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2bp_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
 	/**
 		Transform a lowpass filter prototype to a bandstop filter.
 		
 		Return an analog band-stop filter with center frequency `wo` and
 		bandwidth `bw` from an analog low-pass filter prototype with unity
 		cutoff frequency, in transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2lp, lp2hp, lp2bp, bilinear
+		lp2bs_zpk
 	**/
 	static public function lp2bs(b:Dynamic, a:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a bandstop filter.
+		
+		Return an analog band-stop filter with center frequency `wo` and
+		stopband width `bw` from an analog low-pass filter prototype with unity
+		cutoff frequency, using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired stopband center, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		bw : float
+		    Desired stopband width, as angular frequency (e.g. rad/s).
+		    Defaults to 1.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed band-stop filter transfer function.
+		p : ndarray
+		    Poles of the transformed band-stop filter transfer function.
+		k : float
+		    System gain of the transformed band-stop filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2hp_zpk, lp2bp_zpk, bilinear
+		lp2bs
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s \cdot \mathrm{BW}}{s^2 + {\omega_0}^2}
+		
+		This is the "wideband" transformation, producing a stopband with
+		geometric (log frequency) symmetry about `wo`.
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2bs_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
 	/**
 		Transform a lowpass filter prototype to a highpass filter.
 		
 		Return an analog high-pass filter with cutoff frequency `wo`
 		from an analog low-pass filter prototype with unity cutoff frequency, in
 		transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2lp, lp2bp, lp2bs, bilinear
+		lp2hp_zpk
 	**/
 	static public function lp2hp(b:Dynamic, a:Dynamic, ?wo:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a highpass filter.
+		
+		Return an analog high-pass filter with cutoff frequency `wo`
+		from an analog low-pass filter prototype with unity cutoff frequency,
+		using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired cutoff, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed high-pass filter transfer function.
+		p : ndarray
+		    Poles of the transformed high-pass filter transfer function.
+		k : float
+		    System gain of the transformed high-pass filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2bp_zpk, lp2bs_zpk, bilinear
+		lp2hp
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{\omega_0}{s}
+		
+		This maintains symmetry of the lowpass and highpass responses on a
+		logarithmic scale.
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2hp_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
 	/**
 		Transform a lowpass filter prototype to a different frequency.
 		
 		Return an analog low-pass filter with cutoff frequency `wo`
 		from an analog low-pass filter prototype with unity cutoff frequency, in
 		transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2hp, lp2bp, lp2bs, bilinear
+		lp2lp_zpk
 	**/
 	static public function lp2lp(b:Dynamic, a:Dynamic, ?wo:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a different frequency.
+		
+		Return an analog low-pass filter with cutoff frequency `wo`
+		from an analog low-pass filter prototype with unity cutoff frequency,
+		using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired cutoff, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed low-pass filter transfer function.
+		p : ndarray
+		    Poles of the transformed low-pass filter transfer function.
+		k : float
+		    System gain of the transformed low-pass filter.
+		
+		See Also
+		--------
+		lp2hp_zpk, lp2bp_zpk, lp2bs_zpk, bilinear
+		lp2lp
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s}{\omega_0}
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2lp_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
 	static public function maxflat():Dynamic;
 	/**
 		Return the character for the minimum-size type to which given types can
@@ -3252,9 +3409,10 @@ package scipy.signal.filter_design;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -3263,14 +3421,18 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -3365,11 +3527,6 @@ package scipy.signal.filter_design;
 		
 		>>> P = np.array([[0, 1./3], [-1./2, 0]])
 		>>> np.poly(P)
-		array([ 1.        ,  0.        ,  0.16666667])
-		
-		Or a square matrix object:
-		
-		>>> np.poly(np.matrix(P))
 		array([ 1.        ,  0.        ,  0.16666667])
 		
 		Note how in all cases the leading coefficient is always 1.
@@ -3546,8 +3703,12 @@ package scipy.signal.filter_design;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `prod` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		initial : scalar, optional
+		    The starting value for this product. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -3566,7 +3727,7 @@ package scipy.signal.filter_design;
 		raised on overflow.  That means that, on a 32-bit platform:
 		
 		>>> x = np.array([536870910, 536870910, 536870910, 536870910])
-		>>> np.prod(x) #random
+		>>> np.prod(x)  # random
 		16
 		
 		The product of an empty array is the neutral element 1:
@@ -3602,10 +3763,15 @@ package scipy.signal.filter_design;
 		is the default platform integer:
 		
 		>>> x = np.array([1, 2, 3], dtype=np.int8)
-		>>> np.prod(x).dtype == np.int
+		>>> np.prod(x).dtype == int
 		True
+		
+		You can also start the product with a value other than one:
+		
+		>>> np.prod([1, 2], initial=5)
+		10
 	**/
-	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	static public var r_ : Dynamic;
 	/**
 		Return the real part of the complex argument.
@@ -3754,6 +3920,7 @@ package scipy.signal.filter_design;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -3824,6 +3991,7 @@ package scipy.signal.filter_design;
 		-------
 		y : ndarray
 		    The corresponding hyperbolic sine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -3928,8 +4096,10 @@ package scipy.signal.filter_design;
 		    If None (default), then compute at 512 frequencies equally spaced
 		    around the unit circle.
 		    If a single integer, then compute at that many frequencies.
+		    Using a number that is fast for FFT computations can result in
+		    faster computations (see Notes of `freqz`).
 		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample).
+		    radians/sample; must be 1D).
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
 		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
@@ -4001,7 +4171,7 @@ package scipy.signal.filter_design;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -4028,6 +4198,7 @@ package scipy.signal.filter_design;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -4063,7 +4234,7 @@ package scipy.signal.filter_design;
 		Parameters
 		----------
 		x : array_like
-		  Input array.
+		    Input array.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -4079,7 +4250,8 @@ package scipy.signal.filter_design;
 		Returns
 		-------
 		y : ndarray
-		  The corresponding tangent values.
+		    The corresponding tangent values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -4214,14 +4386,15 @@ package scipy.signal.filter_design;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -4231,17 +4404,16 @@ package scipy.signal.filter_design;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))
@@ -4295,7 +4467,7 @@ package scipy.signal.filter_design;
 		*Algorithms*
 		
 		The current algorithms are designed specifically for use with digital
-		filters. (The output coefficents are not correct for analog filters.)
+		filters. (The output coefficients are not correct for analog filters.)
 		
 		The steps in the ``pairing='nearest'`` and ``pairing='keep_odd'``
 		algorithms are mostly shared. The ``nearest`` algorithm attempts to

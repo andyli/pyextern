@@ -7,6 +7,7 @@ package pandas._libs.algos;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __pyx_capi__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	static public function arrmap_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -52,9 +53,6 @@ package pandas._libs.algos;
 	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ensure_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var float16 : Dynamic;
-	static public var float32 : Dynamic;
-	static public var float64 : Dynamic;
 	/**
 		compute a 1-d indexer that is an ordering of the passed index,
 		ordered by the groups. This is a reverse of the label
@@ -70,10 +68,6 @@ package pandas._libs.algos;
 		return a tuple of (1-d indexer ordered by groups, group counts)
 	**/
 	static public function groupsort_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var int16 : Dynamic;
-	static public var int32 : Dynamic;
-	static public var int64 : Dynamic;
-	static public var int8 : Dynamic;
 	static public function is_lexsorted(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns
@@ -188,12 +182,6 @@ package pandas._libs.algos;
 		Better to do this with Cython because of the enormous speed boost.
 	**/
 	static public function map_indices_uint64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function max_subseq(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		A faster median
-	**/
-	static public function median(arr:Dynamic):Dynamic;
-	static public function min_subseq(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function nancorr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function nancorr_spearman(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pad_2d_inplace_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;

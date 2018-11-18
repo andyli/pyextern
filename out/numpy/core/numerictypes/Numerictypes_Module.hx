@@ -31,11 +31,6 @@ package numpy.core.numerictypes;
 	static public var _kind_list : Dynamic;
 	static public var _maxvals : Dynamic;
 	static public var _minvals : Dynamic;
-	/**
-		returns the type corresponding to a certain Python type
-	**/
-	static public function _python_type(t:Dynamic):Dynamic;
-	static public var _python_types : Dynamic;
 	static public function _register_types():Dynamic;
 	static public var _sctype2char_dict : Dynamic;
 	static public function _set_array_types():Dynamic;
@@ -96,7 +91,15 @@ package numpy.core.numerictypes;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -305,7 +308,101 @@ package numpy.core.numerictypes;
 	static public function busday_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	@:native("cast")
 	static public var _cast : Dynamic;
+	/**
+		datetime_as_string(arr, unit=None, timezone='naive', casting='same_kind')
+		
+		Convert an array of datetimes into an array of strings.
+		
+		Parameters
+		----------
+		arr : array_like of datetime64
+		    The array of UTC timestamps to format.
+		unit : str
+		    One of None, 'auto', or a :ref:`datetime unit <arrays.dtypes.dateunits>`.
+		timezone : {'naive', 'UTC', 'local'} or tzinfo
+		    Timezone information to use when displaying the datetime. If 'UTC', end
+		    with a Z to indicate UTC time. If 'local', convert to the local timezone
+		    first, and suffix with a +-#### timezone offset. If a tzinfo object,
+		    then do as with 'local', but use the specified timezone.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}
+		    Casting to allow when changing between datetime units.
+		
+		Returns
+		-------
+		str_arr : ndarray
+		    An array of strings the same shape as `arr`.
+		
+		Examples
+		--------
+		>>> d = np.arange('2002-10-27T04:30', 4*60, 60, dtype='M8[m]')
+		>>> d
+		array(['2002-10-27T04:30', '2002-10-27T05:30', '2002-10-27T06:30',
+		       '2002-10-27T07:30'], dtype='datetime64[m]')
+		
+		Setting the timezone to UTC shows the same information, but with a Z suffix
+		
+		>>> np.datetime_as_string(d, timezone='UTC')
+		array(['2002-10-27T04:30Z', '2002-10-27T05:30Z', '2002-10-27T06:30Z',
+		       '2002-10-27T07:30Z'], dtype='<U35')
+		
+		Note that we picked datetimes that cross a DST boundary. Passing in a
+		``pytz`` timezone object will print the appropriate offset
+		
+		>>> np.datetime_as_string(d, timezone=pytz.timezone('US/Eastern'))
+		array(['2002-10-27T00:30-0400', '2002-10-27T01:30-0400',
+		       '2002-10-27T01:30-0500', '2002-10-27T02:30-0500'], dtype='<U39')
+		
+		Passing in a unit will change the precision
+		
+		>>> np.datetime_as_string(d, unit='h')
+		array(['2002-10-27T04', '2002-10-27T05', '2002-10-27T06', '2002-10-27T07'],
+		      dtype='<U32')
+		>>> np.datetime_as_string(d, unit='s')
+		array(['2002-10-27T04:30:00', '2002-10-27T05:30:00', '2002-10-27T06:30:00',
+		       '2002-10-27T07:30:00'], dtype='<U38')
+		
+		'casting' can be used to specify whether precision can be changed
+		
+		>>> np.datetime_as_string(d, unit='h', casting='safe')
+		TypeError: Cannot create a datetime string as units 'h' from a NumPy
+		datetime with units 'm' according to the rule 'safe'
+	**/
 	static public function datetime_as_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		datetime_data(dtype, /)
+		
+		Get information about the step size of a date or time type.
+		
+		The returned tuple can be passed as the second argument of `datetime64` and
+		`timedelta64`.
+		
+		Parameters
+		----------
+		dtype : dtype
+		    The dtype object, which must be a `datetime64` or `timedelta64` type.
+		
+		Returns
+		-------
+		unit : str
+		    The :ref:`datetime unit <arrays.dtypes.dateunits>` on which this dtype
+		    is based.
+		count : int
+		    The number of base units in a step.
+		
+		Examples
+		--------
+		>>> dt_25s = np.dtype('timedelta64[25s]')
+		>>> np.datetime_data(dt_25s)
+		('s', 25)
+		>>> np.array(10, dt_25s).astype('timedelta64[s]')
+		array(250, dtype='timedelta64[s]')
+		
+		The result can be used to construct a datetime that uses the same units
+		as a timedelta::
+		
+		>>> np.datetime64('2010', np.datetime_data(dt_25s))
+		numpy.datetime64('2010-01-01T00:00:00','25s')
+	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -316,10 +413,11 @@ package numpy.core.numerictypes;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -332,7 +430,11 @@ package numpy.core.numerictypes;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -452,7 +554,7 @@ package numpy.core.numerictypes;
 		
 		Examples
 		--------
-		>>> np.find_common_type([], [np.int64, np.float32, np.complex])
+		>>> np.find_common_type([], [np.int64, np.float32, complex])
 		dtype('complex128')
 		>>> np.find_common_type([np.int64, np.float32], [])
 		dtype('float64')
@@ -468,7 +570,7 @@ package numpy.core.numerictypes;
 		Complex is of a different type, so it up-casts the float in the
 		`array_types` argument:
 		
-		>>> np.find_common_type([np.float32], [np.complex])
+		>>> np.find_common_type([np.float32], [complex])
 		dtype('complex128')
 		
 		Type specifier strings are convertible to dtypes and can therefore
@@ -588,9 +690,9 @@ package numpy.core.numerictypes;
 		
 		Examples
 		--------
-		>>> np.issubclass_(np.int32, np.int)
+		>>> np.issubclass_(np.int32, int)
 		True
-		>>> np.issubclass_(np.int32, np.float)
+		>>> np.issubclass_(np.int32, float)
 		False
 	**/
 	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Bool;
@@ -613,7 +715,7 @@ package numpy.core.numerictypes;
 		
 		Examples
 		--------
-		>>> np.issubdtype('S1', str)
+		>>> np.issubdtype('S1', np.string_)
 		True
 		>>> np.issubdtype(np.float64, np.float32)
 		False
@@ -640,9 +742,9 @@ package numpy.core.numerictypes;
 		--------
 		>>> np.issubsctype('S8', str)
 		True
-		>>> np.issubsctype(np.array([1]), np.int)
+		>>> np.issubsctype(np.array([1]), int)
 		True
-		>>> np.issubsctype(np.array([1]), np.float)
+		>>> np.issubsctype(np.array([1]), float)
 		False
 	**/
 	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Bool;
@@ -667,11 +769,11 @@ package numpy.core.numerictypes;
 		
 		Examples
 		--------
-		>>> np.maximum_sctype(np.int)
+		>>> np.maximum_sctype(int)
 		<type 'numpy.int64'>
 		>>> np.maximum_sctype(np.uint8)
 		<type 'numpy.uint64'>
-		>>> np.maximum_sctype(np.complex)
+		>>> np.maximum_sctype(complex)
 		<type 'numpy.complex192'>
 		
 		>>> np.maximum_sctype(str)
@@ -749,7 +851,7 @@ package numpy.core.numerictypes;
 		
 		Examples
 		--------
-		>>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
+		>>> for sctype in [np.int32, float, complex, np.string_, np.ndarray]:
 		...     print(np.sctype2char(sctype))
 		l
 		d

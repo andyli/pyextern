@@ -8,7 +8,7 @@ package matplotlib.path;
 	static public var MOVETO : Dynamic;
 	static public var NUM_VERTICES_FOR_CODE : Dynamic;
 	static public var STOP : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns a shallow copy of the `Path`, which will share the
 		vertices and codes with the source `Path`.
@@ -121,7 +121,7 @@ package matplotlib.path;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -173,7 +173,7 @@ package matplotlib.path;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -192,7 +192,6 @@ package matplotlib.path;
 		    ``interpolation_steps``.
 	**/
 	static public function _fast_from_codes_and_verts(verts:Dynamic, codes:Dynamic, ?internals:Dynamic):Dynamic;
-	static public var _hatch_dict : Dynamic;
 	static public var _unit_circle : Dynamic;
 	static public var _unit_circle_righthalf : Dynamic;
 	static public var _unit_rectangle : Dynamic;
@@ -202,6 +201,10 @@ package matplotlib.path;
 	/**
 		Return an arc on the unit circle from angle
 		*theta1* to angle *theta2* (in degrees).
+		
+		*theta2* is unwrapped to produce the shortest arc within 360 degrees.
+		That is, if *theta2* > *theta1* + 360, the arc will be from *theta1* to
+		*theta2* - 360 and not a full circle plus some extra overlap.
 		
 		If *n* is provided, it is the number of spline segments to make.
 		If *n* is not provided, the number of spline segments is
@@ -267,7 +270,7 @@ package matplotlib.path;
 		This is the class from which it is strongly suggested users should derive
 		custom scalar types.
 	**/
-	static public function code_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function code_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		The list of codes in the `Path` as a 1-D numpy array.  Each
 		code is one of `STOP`, `MOVETO`, `LINETO`, `CURVE3`, `CURVE4`
@@ -342,8 +345,10 @@ package matplotlib.path;
 		:class:`~matplotlib.transforms.Bbox`.
 		
 		*filled*, when True, treats the path as if it was filled.
-		That is, if one path completely encloses the other,
-		:meth:`intersects_path` will return True.
+		That is, if the path completely encloses the bounding box,
+		:meth:`intersects_bbox` will return True.
+		
+		The bounding box is always considered filled.
 	**/
 	public function intersects_bbox(bbox:Dynamic, ?filled:Dynamic):Dynamic;
 	/**
@@ -385,7 +390,8 @@ package matplotlib.path;
 		    If True, perform simplification, to remove
 		     vertices that do not affect the appearance of the path.  If
 		     False, perform no simplification.  If None, use the
-		     should_simplify member variable.
+		     should_simplify member variable.  See also the rcParams
+		     path.simplify and path.simplify_threshold.
 		curves : {True, False}, optional
 		    If True, curve segments will be returned as curve
 		    segments.  If False, all curves will be converted to line
@@ -406,7 +412,7 @@ package matplotlib.path;
 		numsides x 2) numpy array of vertices.  Return object is a
 		:class:`Path`
 		
-		.. plot:: mpl_examples/api/histogram_path_demo.py
+		.. plot:: gallery/misc/histogram_path.py
 	**/
 	static public function make_compound_path_from_polys(XY:Dynamic):Dynamic;
 	/**
@@ -427,7 +433,7 @@ package matplotlib.path;
 		polygon/polyline is an Nx2 array of vertices.  In other words,
 		each polygon has no ``MOVETO`` instructions or curves.  This
 		is useful for displaying in backends that do not support
-		compound paths or Bezier curves, such as GDK.
+		compound paths or Bezier curves.
 		
 		If *width* and *height* are both non-zero then the lines will
 		be simplified so that vertices outside of (0, 0), (width,
@@ -475,21 +481,18 @@ package matplotlib.path;
 	**/
 	static public function unit_rectangle():Dynamic;
 	/**
-		Return a :class:`Path` for a unit regular
-		asterisk with the given numVertices and radius of 1.0,
-		centered at (0, 0).
+		Return a :class:`Path` for a unit regular asterisk with the given
+		numVertices and radius of 1.0, centered at (0, 0).
 	**/
 	static public function unit_regular_asterisk(numVertices:Dynamic):Dynamic;
 	/**
-		Return a :class:`Path` instance for a unit regular
-		polygon with the given *numVertices* and radius of 1.0,
-		centered at (0, 0).
+		Return a :class:`Path` instance for a unit regular polygon with the
+		given *numVertices* and radius of 1.0, centered at (0, 0).
 	**/
 	static public function unit_regular_polygon(numVertices:Dynamic):Dynamic;
 	/**
-		Return a :class:`Path` for a unit regular star
-		with the given numVertices and radius of 1.0, centered at (0,
-		0).
+		Return a :class:`Path` for a unit regular star with the given
+		numVertices and radius of 1.0, centered at (0, 0).
 	**/
 	static public function unit_regular_star(numVertices:Dynamic, ?innerCircle:Dynamic):Dynamic;
 	/**
@@ -499,6 +502,10 @@ package matplotlib.path;
 	/**
 		Return a wedge of the unit circle from angle
 		*theta1* to angle *theta2* (in degrees).
+		
+		*theta2* is unwrapped to produce the shortest wedge within 360 degrees.
+		That is, if *theta2* > *theta1* + 360, the wedge will be from *theta1*
+		to *theta2* - 360 and not a full circle plus some extra overlap.
 		
 		If *n* is provided, it is the number of spline segments to make.
 		If *n* is not provided, the number of spline segments is

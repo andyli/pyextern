@@ -65,47 +65,10 @@ package theano.tensor.nnet.opt;
 		    of shape (batch size, nb filters, output row, output col).
 	**/
 	static public function conv2d(input:Dynamic, filters:Dynamic, ?image_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?kargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		3D "convolution" of multiple filters on a minibatch.
-		
-		(does not flip the kernel, moves kernel with a user specified stride)
-		
-		Parameters
-		----------
-		V
-		    Visible unit, input.
-		    Dimensions: (batch, row, column, time, in channel).
-		W
-		    Weights, filter.
-		    Dimensions: (out channel, row, column, time ,in channel).
-		b
-		    Bias, shape == (W.shape[0],).
-		d
-		    Strides when moving the filter over the input(dx, dy, dt).
-		
-		Notes
-		-----
-		The order of dimensions does not correspond to the one in `conv2d`.
-		This is for optimization.
-		
-		The GPU implementation is very slow. You should use
-		:func:`conv3d2d <theano.tensor.nnet.conv3d2d.conv3d>` or
-		:func:`conv3d_fft <theano.sandbox.cuda.fftconv.conv3d_fft>` for a
-		GPU graph instead.
-		
-		See Also
-		--------
-		Someone made a script that shows how to swap the axes
-		between both 3d convolution implementations in Theano. See
-		the last `attachment <https://groups.google.com/d/msg/theano-users/1S9_bZgHxVw/0cQR9a4riFUJ>`_
-	**/
-	static public function conv3D(V:Dynamic, W:Dynamic, b:Dynamic, d:Dynamic):Dynamic;
-	static public function convGrad3D(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function convTransp3D(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var conv_groupopt : Dynamic;
 	/**
 		Copies the stack trace from one or more tensor variables to
-		one or more tensor variables.
+		one or more tensor variables and returns the destination variables.
 		
 		Parameters
 		----------
@@ -133,18 +96,26 @@ package theano.tensor.nnet.opt;
 		    to: batch size, number of input channels, height and width (and
 		    possibly depth) of the image. None where undefined.
 		kernel_shape: tuple of int (symbolic or numeric) corresponding to the
-		    kernel shape. Its four (or five) elements must correspond respectively
-		    to: number of output channels, number of input channels, height and
-		    width (and possibly depth) of the kernel. None where undefined.
+		    kernel shape. For a normal convolution, its four (for 2D convolution)
+		    or five (for 3D convolution) elements must correspond respectively to :
+		    number of output channels, number of input channels, height and width
+		    (and possibly depth) of the kernel.
+		    For an unshared 2D convolution, its six channels must correspond to :
+		    number of output channels, height and width of the output, number of
+		    input channels, height and width of the kernel.
+		    None where undefined.
 		border_mode: string, int (symbolic or numeric) or tuple of int (symbolic
-		    or numeric). If it is a string, it must be 'valid', 'half' or 'full'.
-		    If it is a tuple, its two (or three) elements respectively correspond
-		    to the padding on height and width (and possibly depth) axis.
+		    or numeric) or pairs of ints. If it is a string, it must be 'valid',
+		    'half' or 'full'. If it is a tuple, its two (or three) elements respectively
+		    correspond to the padding on height and width (and possibly depth)
+		    axis. For asymmetric padding, provide a pair of ints for each dimension.
 		subsample: tuple of int (symbolic or numeric). Its two or three elements
 		    espectively correspond to the subsampling on height and width (and
 		    possibly depth) axis.
 		filter_dilation: tuple of int (symbolic or numeric). Its two or three
 		    elements correspond respectively to the dilation on height and width axis.
+		Note - The shape of the convolution output does not depend on the 'unshared'
+		    or the 'num_groups' parameters.
 		
 		Returns
 		-------
@@ -163,9 +134,6 @@ package theano.tensor.nnet.opt;
 	static public var local_conv2d_cpu : Dynamic;
 	static public var local_conv2d_gradinputs_cpu : Dynamic;
 	static public var local_conv2d_gradweight_cpu : Dynamic;
-	static public var local_conv3d_cpu : Dynamic;
-	static public var local_conv3d_gradinputs_cpu : Dynamic;
-	static public var local_conv3d_gradweight_cpu : Dynamic;
 	static public var local_inplace_sparse_block_gemv : Dynamic;
 	static public var local_inplace_sparse_block_outer : Dynamic;
 	static public function local_optimizer(tracks:Dynamic, ?inplace:Dynamic, ?requirements:Dynamic):Dynamic;

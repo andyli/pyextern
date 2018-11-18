@@ -2,6 +2,14 @@
 package scipy.io.netcdf;
 @:pythonImport("scipy.io.netcdf") extern class Netcdf_Module {
 	static public var ABSENT : Dynamic;
+	static public var FILLMAP : Dynamic;
+	static public var FILL_BYTE : Dynamic;
+	static public var FILL_CHAR : Dynamic;
+	static public var FILL_DOUBLE : Dynamic;
+	static public var FILL_FLOAT : Dynamic;
+	static public var FILL_INT : Dynamic;
+	static public var FILL_SHORT : Dynamic;
+	static public var IS_PYPY : Dynamic;
 	static public var LITTLE_ENDIAN : Dynamic;
 	static public var NC_ATTRIBUTE : Dynamic;
 	static public var NC_BYTE : Dynamic;
@@ -78,7 +86,15 @@ package scipy.io.netcdf;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -188,9 +204,9 @@ package scipy.io.netcdf;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -208,10 +224,11 @@ package scipy.io.netcdf;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -224,7 +241,11 @@ package scipy.io.netcdf;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -245,55 +266,46 @@ package scipy.io.netcdf;
 	**/
 	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fromstring(string, dtype=float, count=-1, sep='')
+		frombuffer(buffer, dtype=float, count=-1, offset=0)
 		
-		A new 1-D array initialized from raw binary or text data in a string.
+		Interpret a buffer as a 1-dimensional array.
 		
 		Parameters
 		----------
-		string : str
-		    A string containing the data.
+		buffer : buffer_like
+		    An object that exposes the buffer interface.
 		dtype : data-type, optional
-		    The data type of the array; default: float.  For binary input data,
-		    the data must be in exactly this format.
+		    Data-type of the returned array; default: float.
 		count : int, optional
-		    Read this number of `dtype` elements from the data.  If this is
-		    negative (the default), the count will be determined from the
-		    length of the data.
-		sep : str, optional
-		    If not provided or, equivalently, the empty string, the data will
-		    be interpreted as binary data; otherwise, as ASCII text with
-		    decimal numbers.  Also in this latter case, this argument is
-		    interpreted as the string separating numbers in the data; extra
-		    whitespace between elements is also ignored.
+		    Number of items to read. ``-1`` means all data in the buffer.
+		offset : int, optional
+		    Start reading the buffer from this offset (in bytes); default: 0.
 		
-		Returns
-		-------
-		arr : ndarray
-		    The constructed array.
+		Notes
+		-----
+		If the buffer has data that is not in machine byte-order, this should
+		be specified as part of the data-type, e.g.::
 		
-		Raises
-		------
-		ValueError
-		    If the string is not the correct size to satisfy the requested
-		    `dtype` and `count`.
+		  >>> dt = np.dtype(int)
+		  >>> dt = dt.newbyteorder('>')
+		  >>> np.frombuffer(buf, dtype=dt)
 		
-		See Also
-		--------
-		frombuffer, fromfile, fromiter
+		The data of the resulting array will not be byteswapped, but will be
+		interpreted correctly.
 		
 		Examples
 		--------
-		>>> np.fromstring('\x01\x02', dtype=np.uint8)
+		>>> s = 'hello world'
+		>>> np.frombuffer(s, dtype='S1', count=5, offset=6)
+		array(['w', 'o', 'r', 'l', 'd'],
+		      dtype='|S1')
+		
+		>>> np.frombuffer(b'\x01\x02', dtype=np.uint8)
 		array([1, 2], dtype=uint8)
-		>>> np.fromstring('1 2', dtype=int, sep=' ')
-		array([1, 2])
-		>>> np.fromstring('1, 2', dtype=int, sep=',')
-		array([1, 2])
-		>>> np.fromstring('\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
+		>>> np.frombuffer(b'\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
 		array([1, 2, 3], dtype=uint8)
 	**/
-	static public function fromstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var integer_types : Dynamic;
 	/**
 		mul(a, b) -- Same as a * b.

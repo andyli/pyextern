@@ -37,7 +37,8 @@ package scipy.misc.common;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -123,7 +124,15 @@ package scipy.misc.common;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -260,6 +269,96 @@ package scipy.misc.common;
 	static public function derivative(func:Dynamic, x0:Dynamic, ?dx:Dynamic, ?n:Dynamic, ?args:Dynamic, ?order:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
+		Load an electrocardiogram as an example for a one-dimensional signal.
+		
+		The returned signal is a 5 minute long electrocardiogram (ECG), a medical
+		recording of the heart's electrical activity, sampled at 360 Hz.
+		
+		Returns
+		-------
+		ecg : ndarray
+		    The electrocardiogram in millivolt (mV) sampled at 360 Hz.
+		
+		Notes
+		-----
+		The provided signal is an excerpt (19:35 to 24:35) from the `record 208`_
+		(lead MLII) provided by the MIT-BIH Arrhythmia Database [1]_ on
+		PhysioNet [2]_. The excerpt includes noise induced artifacts, typical
+		heartbeats as well as pathological changes.
+		
+		.. _record 208: https://physionet.org/physiobank/database/html/mitdbdir/records.htm#208
+		
+		.. versionadded:: 1.1.0
+		
+		References
+		----------
+		.. [1] Moody GB, Mark RG. The impact of the MIT-BIH Arrhythmia Database.
+		       IEEE Eng in Med and Biol 20(3):45-50 (May-June 2001).
+		       (PMID: 11446209); https://doi.org/10.13026/C2F305
+		.. [2] Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh,
+		       Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank,
+		       PhysioToolkit, and PhysioNet: Components of a New Research Resource
+		       for Complex Physiologic Signals. Circulation 101(23):e215-e220;
+		       https://doi.org/10.1161/01.CIR.101.23.e215
+		
+		Examples
+		--------
+		>>> from scipy.misc import electrocardiogram
+		>>> ecg = electrocardiogram()
+		>>> ecg
+		array([-0.245, -0.215, -0.185, ..., -0.405, -0.395, -0.385])
+		>>> ecg.shape, ecg.mean(), ecg.std()
+		((108000,), -0.16510875, 0.5992473991177294)
+		
+		As stated the signal features several areas with a different morphology.
+		E.g. the first few seconds show the electrical activity of a heart in
+		normal sinus rhythm as seen below.
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fs = 360
+		>>> time = np.arange(ecg.size) / fs
+		>>> plt.plot(time, ecg)
+		>>> plt.xlabel("time in s")
+		>>> plt.ylabel("ECG in mV")
+		>>> plt.xlim(9, 10.2)
+		>>> plt.ylim(-1, 1.5)
+		>>> plt.show()
+		
+		After second 16 however, the first premature ventricular contractions, also
+		called extrasystoles, appear. These have a different morphology compared to
+		typical heartbeats. The difference can easily be observed in the following
+		plot.
+		
+		>>> plt.plot(time, ecg)
+		>>> plt.xlabel("time in s")
+		>>> plt.ylabel("ECG in mV")
+		>>> plt.xlim(46.5, 50)
+		>>> plt.ylim(-2, 1.5)
+		>>> plt.show()
+		
+		At several points large artifacts disturb the recording, e.g.:
+		
+		>>> plt.plot(time, ecg)
+		>>> plt.xlabel("time in s")
+		>>> plt.ylabel("ECG in mV")
+		>>> plt.xlim(207, 215)
+		>>> plt.ylim(-2, 3.5)
+		>>> plt.show()
+		
+		Finally, examining the power spectrum reveals that most of the biosignal is
+		made up of lower frequencies. At 60 Hz the noise induced by the mains
+		electricity can be clearly observed.
+		
+		>>> from scipy.signal import welch
+		>>> f, Pxx = welch(ecg, fs=fs, nperseg=2048, scaling="spectrum")
+		>>> plt.semilogy(f, Pxx)
+		>>> plt.xlabel("Frequency in Hz")
+		>>> plt.ylabel("Power spectrum of the ECG in mV**2")
+		>>> plt.xlim(f[[0, -1]])
+		>>> plt.show()
+	**/
+	static public function electrocardiogram():Dynamic;
+	/**
 		Get a 1024 x 768, color image of a raccoon face.
 		
 		raccoon-procyon-lotor.jpg at http://www.public-domain-image.com
@@ -292,69 +391,63 @@ package scipy.misc.common;
 	**/
 	static public function face(?gray:Dynamic):Dynamic;
 	/**
-		fromstring(string, dtype=float, count=-1, sep='')
+		frombuffer(buffer, dtype=float, count=-1, offset=0)
 		
-		A new 1-D array initialized from raw binary or text data in a string.
+		Interpret a buffer as a 1-dimensional array.
 		
 		Parameters
 		----------
-		string : str
-		    A string containing the data.
+		buffer : buffer_like
+		    An object that exposes the buffer interface.
 		dtype : data-type, optional
-		    The data type of the array; default: float.  For binary input data,
-		    the data must be in exactly this format.
+		    Data-type of the returned array; default: float.
 		count : int, optional
-		    Read this number of `dtype` elements from the data.  If this is
-		    negative (the default), the count will be determined from the
-		    length of the data.
-		sep : str, optional
-		    If not provided or, equivalently, the empty string, the data will
-		    be interpreted as binary data; otherwise, as ASCII text with
-		    decimal numbers.  Also in this latter case, this argument is
-		    interpreted as the string separating numbers in the data; extra
-		    whitespace between elements is also ignored.
+		    Number of items to read. ``-1`` means all data in the buffer.
+		offset : int, optional
+		    Start reading the buffer from this offset (in bytes); default: 0.
 		
-		Returns
-		-------
-		arr : ndarray
-		    The constructed array.
+		Notes
+		-----
+		If the buffer has data that is not in machine byte-order, this should
+		be specified as part of the data-type, e.g.::
 		
-		Raises
-		------
-		ValueError
-		    If the string is not the correct size to satisfy the requested
-		    `dtype` and `count`.
+		  >>> dt = np.dtype(int)
+		  >>> dt = dt.newbyteorder('>')
+		  >>> np.frombuffer(buf, dtype=dt)
 		
-		See Also
-		--------
-		frombuffer, fromfile, fromiter
+		The data of the resulting array will not be byteswapped, but will be
+		interpreted correctly.
 		
 		Examples
 		--------
-		>>> np.fromstring('\x01\x02', dtype=np.uint8)
+		>>> s = 'hello world'
+		>>> np.frombuffer(s, dtype='S1', count=5, offset=6)
+		array(['w', 'o', 'r', 'l', 'd'],
+		      dtype='|S1')
+		
+		>>> np.frombuffer(b'\x01\x02', dtype=np.uint8)
 		array([1, 2], dtype=uint8)
-		>>> np.fromstring('1 2', dtype=int, sep=' ')
-		array([1, 2])
-		>>> np.fromstring('1, 2', dtype=int, sep=',')
-		array([1, 2])
-		>>> np.fromstring('\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
+		>>> np.frombuffer(b'\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
 		array([1, 2, 3], dtype=uint8)
 	**/
-	static public function fromstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Stack arrays in sequence horizontally (column wise).
 		
-		Take a sequence of arrays and stack them horizontally to make
-		a single array. Rebuild arrays divided by `hsplit`.
+		This is equivalent to concatenation along the second axis, except for 1-D
+		arrays where it concatenates along the first axis. Rebuilds arrays divided
+		by `hsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    All arrays must have the same shape along all but the second axis.
+		    The arrays must have the same shape along all but the second axis,
+		    except 1-D arrays which can be any length.
 		
 		Returns
 		-------
@@ -369,11 +462,6 @@ package scipy.misc.common;
 		concatenate : Join a sequence of arrays along an existing axis.
 		hsplit : Split array along second axis.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=1)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -390,33 +478,105 @@ package scipy.misc.common;
 	**/
 	static public function hstack(tup:Dynamic):Dynamic;
 	/**
-		Function that previously returned an example image
-		
-		.. note:: Removed in 0.17
+		Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files.
 		
 		Parameters
 		----------
-		None
+		file : file-like object, string, or pathlib.Path
+		    The file to read. File-like objects must support the
+		    ``seek()`` and ``read()`` methods. Pickled files require that the
+		    file-like object support the ``readline()`` method as well.
+		mmap_mode : {None, 'r+', 'r', 'w+', 'c'}, optional
+		    If not None, then memory-map the file, using the given mode (see
+		    `numpy.memmap` for a detailed description of the modes).  A
+		    memory-mapped array is kept on disk. However, it can be accessed
+		    and sliced like any ndarray.  Memory mapping is especially useful
+		    for accessing small fragments of large files without reading the
+		    entire file into memory.
+		allow_pickle : bool, optional
+		    Allow loading pickled object arrays stored in npy files. Reasons for
+		    disallowing pickles include security, as loading pickled data can
+		    execute arbitrary code. If pickles are disallowed, loading object
+		    arrays will fail.
+		    Default: True
+		fix_imports : bool, optional
+		    Only useful when loading Python 2 generated pickled files on Python 3,
+		    which includes npy/npz files containing object arrays. If `fix_imports`
+		    is True, pickle will try to map the old Python 2 names to the new names
+		    used in Python 3.
+		encoding : str, optional
+		    What encoding to use when reading Python 2 strings. Only useful when
+		    loading Python 2 generated pickled files in Python 3, which includes
+		    npy/npz files containing object arrays. Values other than 'latin1',
+		    'ASCII', and 'bytes' are not allowed, as they can corrupt numerical
+		    data. Default: 'ASCII'
 		
 		Returns
 		-------
-		None
+		result : array, tuple, dict, etc.
+		    Data stored in the file. For ``.npz`` files, the returned instance
+		    of NpzFile class must be closed to avoid leaking file descriptors.
 		
 		Raises
 		------
-		RuntimeError
-		    This functionality has been removed due to licensing reasons.
-		
-		Notes
-		-----
-		The image previously returned by this function has an incompatible license
-		and has been removed from SciPy. Please use `face` or `ascent` instead.
+		IOError
+		    If the input file does not exist or cannot be read.
+		ValueError
+		    The file contains an object array, but allow_pickle=False given.
 		
 		See Also
 		--------
-		face, ascent
+		save, savez, savez_compressed, loadtxt
+		memmap : Create a memory-map to an array stored in a file on disk.
+		lib.format.open_memmap : Create or load a memory-mapped ``.npy`` file.
+		
+		Notes
+		-----
+		- If the file contains pickle data, then whatever object is stored
+		  in the pickle is returned.
+		- If the file is a ``.npy`` file, then a single array is returned.
+		- If the file is a ``.npz`` file, then a dictionary-like object is
+		  returned, containing ``{filename: array}`` key-value pairs, one for
+		  each file in the archive.
+		- If the file is a ``.npz`` file, the returned value supports the
+		  context manager protocol in a similar fashion to the open function::
+		
+		    with load('foo.npz') as data:
+		        a = data['a']
+		
+		  The underlying file descriptor is closed when exiting the 'with'
+		  block.
+		
+		Examples
+		--------
+		Store data to disk, and load it again:
+		
+		>>> np.save('/tmp/123', np.array([[1, 2, 3], [4, 5, 6]]))
+		>>> np.load('/tmp/123.npy')
+		array([[1, 2, 3],
+		       [4, 5, 6]])
+		
+		Store compressed data to disk, and load it again:
+		
+		>>> a=np.array([[1, 2, 3], [4, 5, 6]])
+		>>> b=np.array([1, 2])
+		>>> np.savez('/tmp/123.npz', a=a, b=b)
+		>>> data = np.load('/tmp/123.npz')
+		>>> data['a']
+		array([[1, 2, 3],
+		       [4, 5, 6]])
+		>>> data['b']
+		array([1, 2])
+		>>> data.close()
+		
+		Mem-map the stored array, and then access the second row
+		directly from disk:
+		
+		>>> X = np.load('/tmp/123.npy', mmap_mode='r')
+		>>> X[1, :]
+		memmap([4, 5, 6])
 	**/
-	static public function lena():Dynamic;
+	static public function load(file:Dynamic, ?mmap_mode:Dynamic, ?allow_pickle:Dynamic, ?fix_imports:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public var newaxis : Dynamic;
 	static public var print_function : Dynamic;
 	/**
@@ -426,5 +586,5 @@ package scipy.misc.common;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

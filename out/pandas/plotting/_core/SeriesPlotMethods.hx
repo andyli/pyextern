@@ -70,8 +70,6 @@ package pandas.plotting._core;
 		position : float
 		    Specify relative alignments for bar plot layout.
 		    From 0 (left/bottom-end) to 1 (right/top-end). Default is 0.5 (center)
-		layout : tuple (optional)
-		    (rows, columns) for the layout of the plot
 		table : boolean, Series or DataFrame, default False
 		    If True, draw a table using the data in the DataFrame and the data will
 		    be transposed to meet matplotlib's default layout.
@@ -86,12 +84,12 @@ package pandas.plotting._core;
 		mark_right : boolean, default True
 		    When using a secondary_y axis, automatically mark the column
 		    labels with "(right)" in the legend
-		kwds : keywords
+		`**kwds` : keywords
 		    Options to pass to matplotlib plotting method
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
 		
 		Notes
 		-----
@@ -102,7 +100,7 @@ package pandas.plotting._core;
 		  From 0 (left/bottom-end) to 1 (right/top-end). Default is 0.5 (center)
 	**/
 	public function __call__(?kind:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?label:Dynamic, ?secondary_y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -153,7 +151,7 @@ package pandas.plotting._core;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -190,7 +188,7 @@ package pandas.plotting._core;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -209,7 +207,7 @@ package pandas.plotting._core;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -221,12 +219,14 @@ package pandas.plotting._core;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -240,138 +240,260 @@ package pandas.plotting._core;
 	/**
 		Area plot
 		
-		.. versionadded:: 0.17.0
-		
 		Parameters
 		----------
-		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		`**kwds` : optional
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
 	**/
 	public function area(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Vertical bar plot
 		
-		.. versionadded:: 0.17.0
-		
 		Parameters
 		----------
-		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		`**kwds` : optional
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
 	**/
 	public function bar(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Horizontal bar plot
 		
-		.. versionadded:: 0.17.0
-		
 		Parameters
 		----------
-		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		`**kwds` : optional
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
 	**/
 	public function barh(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Boxplot
 		
-		.. versionadded:: 0.17.0
-		
 		Parameters
 		----------
-		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		`**kwds` : optional
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
 	**/
 	public function box(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Kernel Density Estimate plot
+		Generate Kernel Density Estimate plot using Gaussian kernels.
 		
-		.. versionadded:: 0.17.0
+		In statistics, `kernel density estimation`_ (KDE) is a non-parametric
+		way to estimate the probability density function (PDF) of a random
+		variable. This function uses Gaussian kernels and includes automatic
+		bandwith determination.
+		
+		.. _kernel density estimation:
+		    https://en.wikipedia.org/wiki/Kernel_density_estimation
 		
 		Parameters
 		----------
+		bw_method : str, scalar or callable, optional
+		    The method used to calculate the estimator bandwidth. This can be
+		    'scott', 'silverman', a scalar constant or a callable.
+		    If None (default), 'scott' is used.
+		    See :class:`scipy.stats.gaussian_kde` for more information.
+		ind : NumPy array or integer, optional
+		    Evaluation points for the estimated PDF. If None (default),
+		    1000 equally spaced points are used. If `ind` is a NumPy array, the
+		    KDE is evaluated at the points passed. If `ind` is an integer,
+		    `ind` number of equally spaced points are used.
 		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : matplotlib.axes.Axes or numpy.ndarray of them
+		
+		See Also
+		--------
+		scipy.stats.gaussian_kde : Representation of a kernel-density
+		    estimate using Gaussian kernels. This is the function used
+		    internally to estimate the PDF.
+		DataFrame.plot.kde : Generate a KDE plot for a
+		    DataFrame.
+		
+		Examples
+		--------
+		Given a Series of points randomly sampled from an unknown
+		distribution, estimate its PDF using KDE with automatic
+		bandwidth determination and plot the results, evaluating them at
+		1000 equally spaced points (default):
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> s = pd.Series([1, 2, 2.5, 3, 3.5, 4, 5])
+		    >>> ax = s.plot.kde()
+		
+		A scalar bandwidth can be specified. Using a small bandwidth value can
+		lead to overfitting, while using a large bandwidth value may result
+		in underfitting:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = s.plot.kde(bw_method=0.3)
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = s.plot.kde(bw_method=3)
+		
+		Finally, the `ind` parameter determines the evaluation points for the
+		plot of the estimated PDF:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = s.plot.kde(ind=[1, 2, 3, 4, 5])
 	**/
-	public function density(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function density(?bw_method:Dynamic, ?ind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Histogram
-		
-		.. versionadded:: 0.17.0
 		
 		Parameters
 		----------
 		bins: integer, default 10
 		    Number of histogram bins to be used
-		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		`**kwds` : optional
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
 	**/
 	public function hist(?bins:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Kernel Density Estimate plot
+		Generate Kernel Density Estimate plot using Gaussian kernels.
 		
-		.. versionadded:: 0.17.0
+		In statistics, `kernel density estimation`_ (KDE) is a non-parametric
+		way to estimate the probability density function (PDF) of a random
+		variable. This function uses Gaussian kernels and includes automatic
+		bandwith determination.
+		
+		.. _kernel density estimation:
+		    https://en.wikipedia.org/wiki/Kernel_density_estimation
 		
 		Parameters
 		----------
+		bw_method : str, scalar or callable, optional
+		    The method used to calculate the estimator bandwidth. This can be
+		    'scott', 'silverman', a scalar constant or a callable.
+		    If None (default), 'scott' is used.
+		    See :class:`scipy.stats.gaussian_kde` for more information.
+		ind : NumPy array or integer, optional
+		    Evaluation points for the estimated PDF. If None (default),
+		    1000 equally spaced points are used. If `ind` is a NumPy array, the
+		    KDE is evaluated at the points passed. If `ind` is an integer,
+		    `ind` number of equally spaced points are used.
 		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : matplotlib.axes.Axes or numpy.ndarray of them
+		
+		See Also
+		--------
+		scipy.stats.gaussian_kde : Representation of a kernel-density
+		    estimate using Gaussian kernels. This is the function used
+		    internally to estimate the PDF.
+		DataFrame.plot.kde : Generate a KDE plot for a
+		    DataFrame.
+		
+		Examples
+		--------
+		Given a Series of points randomly sampled from an unknown
+		distribution, estimate its PDF using KDE with automatic
+		bandwidth determination and plot the results, evaluating them at
+		1000 equally spaced points (default):
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> s = pd.Series([1, 2, 2.5, 3, 3.5, 4, 5])
+		    >>> ax = s.plot.kde()
+		
+		A scalar bandwidth can be specified. Using a small bandwidth value can
+		lead to overfitting, while using a large bandwidth value may result
+		in underfitting:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = s.plot.kde(bw_method=0.3)
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = s.plot.kde(bw_method=3)
+		
+		Finally, the `ind` parameter determines the evaluation points for the
+		plot of the estimated PDF:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = s.plot.kde(ind=[1, 2, 3, 4, 5])
 	**/
-	public function kde(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function kde(?bw_method:Dynamic, ?ind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Line plot
 		
-		.. versionadded:: 0.17.0
-		
 		Parameters
 		----------
-		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		`**kwds` : optional
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
+		
+		Examples
+		--------
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> s = pd.Series([1, 3, 2])
+		    >>> s.plot.line()
 	**/
 	public function line(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pie chart
 		
-		.. versionadded:: 0.17.0
-		
 		Parameters
 		----------
-		**kwds : optional
-		    Keyword arguments to pass on to :py:meth:`pandas.Series.plot`.
+		`**kwds` : optional
+		    Additional keyword arguments are documented in
+		    :meth:`pandas.Series.plot`.
 		
 		Returns
 		-------
-		axes : matplotlib.AxesSubplot or np.array of them
+		axes : :class:`matplotlib.axes.Axes` or numpy.ndarray of them
 	**/
 	public function pie(?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

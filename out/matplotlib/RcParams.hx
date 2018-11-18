@@ -1,18 +1,27 @@
 /* This file is generated, do not edit! */
 package matplotlib;
 @:pythonImport("matplotlib", "RcParams") extern class RcParams {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _MutableMapping__marker : Dynamic;
+	static public var __abstractmethods__ : Dynamic;
 	/**
-		True if D has a key k, else False.
+		Metaclass for defining Abstract Base Classes (ABCs).
+		
+		Use this metaclass to create an ABC.  An ABC can be subclassed
+		directly, and then acts as a mix-in class.  You can also register
+		unrelated concrete classes (even built-in classes) and unrelated
+		ABCs as 'virtual subclasses' -- these and their descendants will
+		be considered subclasses of the registering ABC by the built-in
+		issubclass() function, but the registering ABC won't show up in
+		their MRO (Method Resolution Order) nor will method
+		implementations defined by the registering ABC be callable (not
+		even via super()).
 	**/
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
-	/**
-		Delete self[key].
-	**/
 	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
@@ -24,7 +33,7 @@ package matplotlib;
 	/**
 		Return self==value.
 	**/
-	public function __eq__(value:Dynamic):Dynamic;
+	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -61,9 +70,9 @@ package matplotlib;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Implement iter(self).
+		Yield sorted list of keys.
 	**/
 	public function __iter__():Dynamic;
 	/**
@@ -99,6 +108,7 @@ package matplotlib;
 		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
+	static public var __reversed__ : Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -111,6 +121,7 @@ package matplotlib;
 		D.__sizeof__() -> size of D in memory, in bytes
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __slots__ : Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -123,19 +134,23 @@ package matplotlib;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __subclasshook__(C:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _abc_cache : Dynamic;
+	static public var _abc_negative_cache : Dynamic;
+	static public var _abc_negative_cache_version : Dynamic;
+	static public var _abc_registry : Dynamic;
 	/**
 		D.clear() -> None.  Remove all items from D.
 	**/
-	public function clear(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function clear():Dynamic;
 	/**
 		D.copy() -> a shallow copy of D
 	**/
-	public function copy(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function copy():Dynamic;
 	/**
 		Return the subset of this RcParams dictionary whose keys match,
 		using :func:`re.search`, the given ``pattern``.
@@ -153,43 +168,74 @@ package matplotlib;
 	/**
 		D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
 	**/
-	public function get(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function get(key:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
 		D.items() -> a set-like object providing a view on D's items
 	**/
-	public function items(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function items():Dynamic;
 	/**
-		Return sorted list of keys.
+		D.keys() -> a set-like object providing a view on D's keys
 	**/
 	public function keys():Dynamic;
-	static public var msg_depr : Dynamic;
-	static public var msg_depr_ignore : Dynamic;
-	static public var msg_depr_set : Dynamic;
-	static public var msg_obsolete : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The msg_backend_obsolete function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var msg_backend_obsolete : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The msg_depr function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var msg_depr : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The msg_depr_ignore function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var msg_depr_ignore : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The msg_depr_set function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var msg_depr_set : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The msg_obsolete function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var msg_obsolete : Dynamic;
 	/**
 		D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
-		If key is not found, d is returned if given, otherwise KeyError is raised
+		If key is not found, d is returned if given, otherwise KeyError is raised.
 	**/
-	public function pop(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function pop(key:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
-		D.popitem() -> (k, v), remove and return some (key, value) pair as a
-		2-tuple; but raise KeyError if D is empty.
+		D.popitem() -> (k, v), remove and return some (key, value) pair
+		as a 2-tuple; but raise KeyError if D is empty.
 	**/
-	public function popitem(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function popitem():Dynamic;
 	/**
 		D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D
 	**/
-	public function setdefault(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function setdefault(key:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
-		D.update([E, ]**F) -> None.  Update D from dict/iterable E and F.
-		If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
-		If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
-		In either case, this is followed by: for k in F:  D[k] = F[k]
+		D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.
+		If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
+		If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
+		In either case, this is followed by: for k, v in F.items(): D[k] = v
 	**/
-	public function update(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function update(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var validate : Dynamic;
 	/**
-		Return values in order of sorted keys.
+		D.values() -> an object providing a view on D's values
 	**/
 	public function values():Dynamic;
 }

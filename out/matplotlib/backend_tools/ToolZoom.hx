@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_tools;
 @:pythonImport("matplotlib.backend_tools", "ToolZoom") extern class ToolZoom {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.backend_tools;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.backend_tools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -123,8 +123,10 @@ package matplotlib.backend_tools;
 	public function _release(event:Dynamic):Dynamic;
 	public function _switch_off_zoom_mode(event:Dynamic):Dynamic;
 	public function _switch_on_zoom_mode(event:Dynamic):Dynamic;
+	public var canvas : Dynamic;
 	static public var cursor : Dynamic;
 	static public var default_keymap : Dynamic;
+	static public var default_toggled : Dynamic;
 	static public var description : Dynamic;
 	/**
 		Destroy the tool
@@ -150,9 +152,18 @@ package matplotlib.backend_tools;
 	static public var radio_group : Dynamic;
 	public function scroll_zoom(event:Dynamic):Dynamic;
 	/**
+		Assign a figure to the tool
+		
+		Parameters
+		----------
+		figure: `Figure`
+	**/
+	public function set_figure(figure:Dynamic):Dynamic;
+	/**
 		State of the toggled tool
 	**/
 	public var toggled : Dynamic;
+	public var toolmanager : Dynamic;
 	/**
 		Calls `enable` or `disable` based on `toggled` value
 	**/

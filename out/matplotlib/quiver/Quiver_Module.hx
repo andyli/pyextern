@@ -14,11 +14,10 @@ package matplotlib.quiver;
 	static public function _parse_args(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _quiver_doc : Dynamic;
 	static public var _quiverkey_doc : Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
 		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependant renderer attributes or making
+		are useful for changing artist-dependent renderer attributes or making
 		other setup function calls, such as starting and flushing a mixed-mode
 		renderer.
 	**/
@@ -54,7 +53,4 @@ package matplotlib.quiver;
 		written as a helper for Axes.scatter().
 	**/
 	static public function delete_masked_points(?args:python.VarArgs<Dynamic>):Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

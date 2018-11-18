@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.legend;
 @:pythonImport("matplotlib.legend", "DraggableLegend") extern class DraggableLegend {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,16 +38,34 @@ package matplotlib.legend;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		update : If "loc", update *loc* parameter of
-		         legend upon finalizing. If "bbox", update
-		         *bbox_to_anchor* parameter.
+		Wrapper around a `.Legend` to support mouse dragging.
+		
+		Parameters
+		----------
+		legend : `.Legend`
+		    The `.Legend` instance to wrap.
+		use_blit : bool, optional
+		    Use blitting for faster image composition. For details see
+		    :ref:`func-animation`.
+		update : {'loc', 'bbox'}, optional
+		    If "loc", update the *loc* parameter of the legend upon finalizing.
+		    If "bbox", update the *bbox_to_anchor* parameter.
 	**/
 	@:native("__init__")
 	public function ___init__(legend:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Dynamic;
 	/**
-		update : If "loc", update *loc* parameter of
-		         legend upon finalizing. If "bbox", update
-		         *bbox_to_anchor* parameter.
+		Wrapper around a `.Legend` to support mouse dragging.
+		
+		Parameters
+		----------
+		legend : `.Legend`
+		    The `.Legend` instance to wrap.
+		use_blit : bool, optional
+		    Use blitting for faster image composition. For details see
+		    :ref:`func-animation`.
+		update : {'loc', 'bbox'}, optional
+		    If "loc", update the *loc* parameter of the legend upon finalizing.
+		    If "bbox", update the *bbox_to_anchor* parameter.
 	**/
 	public function new(legend:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Void;
 	/**
@@ -56,7 +74,7 @@ package matplotlib.legend;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,11 +125,12 @@ package matplotlib.legend;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _check_still_parented():Dynamic;
 	public function _update_bbox_to_anchor(loc_in_canvas:Dynamic):Dynamic;
 	public function _update_loc(loc_in_canvas:Dynamic):Dynamic;
 	public function artist_picker(legend:Dynamic, evt:Dynamic):Dynamic;

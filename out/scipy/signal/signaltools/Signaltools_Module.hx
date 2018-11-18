@@ -23,7 +23,6 @@ package scipy.signal.signaltools;
 		early 2015 MacBook Pro with 8GB RAM and an Intel i5 processor.
 	**/
 	static public function _fftconv_faster(x:Dynamic, h:Dynamic, mode:Dynamic):Dynamic;
-	static public function _fftconvolve_valid(volume:Dynamic, kernel:Dynamic):Dynamic;
 	/**
 		Forward-backward IIR filter that uses Gustafsson's method.
 		
@@ -88,6 +87,8 @@ package scipy.signal.signaltools;
 		See if numpy supports convolution of `volume` and `kernel` (i.e. both are
 		1D ndarrays and of the appropriate shape).  Numpy's 'same' mode uses the
 		size of the larger input, while Scipy's uses the size of the first input.
+		
+		Invalid mode strings will return False and be caught by the calling func.
 	**/
 	static public function _np_conv_ok(volume:Dynamic, kernel:Dynamic, mode:Dynamic):Dynamic;
 	/**
@@ -175,7 +176,7 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		isclose, all, any
+		isclose, all, any, equal
 		
 		Notes
 		-----
@@ -185,8 +186,13 @@ package scipy.signal.signaltools;
 		 absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))
 		
 		The above equation is not symmetric in `a` and `b`, so that
-		`allclose(a, b)` might be different from `allclose(b, a)` in
+		``allclose(a, b)`` might be different from ``allclose(b, a)`` in
 		some rare cases.
+		
+		The comparison of `a` and `b` uses standard broadcasting, which
+		means that `a` and `b` need not have the same shape in order for
+		``allclose(a, b)`` to evaluate to True.  The same is true for
+		`equal` but not `array_equal`.
 		
 		Examples
 		--------
@@ -223,8 +229,6 @@ package scipy.signal.signaltools;
 		arctan2
 		absolute
 		
-		
-		
 		Examples
 		--------
 		>>> np.angle([1.0, 1.0j, 1+1j])               # in radians
@@ -259,7 +263,8 @@ package scipy.signal.signaltools;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -306,7 +311,7 @@ package scipy.signal.signaltools;
 		axis : int or None, optional
 		    Axis along which to sort.  The default is -1 (the last axis). If None,
 		    the flattened array is used.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -320,6 +325,8 @@ package scipy.signal.signaltools;
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
 		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
+		    More generally, ``np.take_along_axis(a, index_array, axis=a)`` always
+		    yields the sorted `a`, irrespective of dimensionality.
 		
 		See Also
 		--------
@@ -350,13 +357,21 @@ package scipy.signal.signaltools;
 		array([[0, 3],
 		       [2, 2]])
 		
-		>>> np.argsort(x, axis=0)
+		>>> np.argsort(x, axis=0)  # sorts along first axis (down)
 		array([[0, 1],
 		       [1, 0]])
 		
-		>>> np.argsort(x, axis=1)
+		>>> np.argsort(x, axis=1)  # sorts along last axis (across)
 		array([[0, 1],
 		       [0, 1]])
+		
+		Indices of the sorted elements of a N-dimensional array:
+		
+		>>> ind = np.unravel_index(np.argsort(x, axis=None), x.shape)
+		>>> ind
+		(array([0, 1, 1, 0]), array([0, 0, 1, 1]))
+		>>> x[ind]  # same as np.sort(x, axis=None)
+		array([0, 2, 2, 3])
 		
 		Sorting with keys:
 		
@@ -425,7 +440,15 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -535,9 +558,9 @@ package scipy.signal.signaltools;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -845,6 +868,16 @@ package scipy.signal.signaltools;
 		    Sorted roots.
 		indx : ndarray
 		    Array of indices needed to sort the input `p`.
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> vals = [1, 4, 1+1.j, 3]
+		>>> p_sorted, indx = signal.cmplx_sort(vals)
+		>>> p_sorted
+		array([1.+0.j, 1.+1.j, 3.+0.j, 4.+0.j])
+		>>> indx
+		array([0, 2, 3, 1])
 	**/
 	static public function cmplx_sort(p:Dynamic):Dynamic;
 	/**
@@ -983,8 +1016,6 @@ package scipy.signal.signaltools;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -993,11 +1024,11 @@ package scipy.signal.signaltools;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
-		
 		boundary : str {'fill', 'wrap', 'symm'}, optional
 		    A flag indicating how to handle boundaries:
 		
@@ -1102,11 +1133,12 @@ package scipy.signal.signaltools;
 		
 		    z[...,k,...] = sum[..., i_l, ...] x[..., i_l,...] * conj(y[..., i_l - k,...])
 		
-		This way, if x and y are 1-D arrays and ``z = correlate(x, y, 'full')`` then
-		  
+		This way, if x and y are 1-D arrays and ``z = correlate(x, y, 'full')``
+		then
+		
 		.. math::
 		
-		      z[k] = (x * y)(k - N + 1) 
+		      z[k] = (x * y)(k - N + 1)
 		           = \sum_{l=0}^{||x||-1}x_l y_{l-k+N-1}^{*}
 		
 		for :math:`k = 0, 1, ..., ||x|| + ||y|| - 2`
@@ -1157,8 +1189,6 @@ package scipy.signal.signaltools;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1167,11 +1197,11 @@ package scipy.signal.signaltools;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
-		
 		boundary : str {'fill', 'wrap', 'symm'}, optional
 		    A flag indicating how to handle boundaries:
 		
@@ -1229,14 +1259,15 @@ package scipy.signal.signaltools;
 		
 		Parameters
 		----------
-		x : ndarray
+		x : array_like
 		    The signal to be downsampled, as an N-dimensional array.
 		q : int
-		    The downsampling factor. For downsampling factors higher than 13, it is
-		    recommended to call `decimate` multiple times.
+		    The downsampling factor. When using IIR downsampling, it is recommended
+		    to call `decimate` multiple times for downsampling factors higher than
+		    13.
 		n : int, optional
 		    The order of the filter (1 less than the length for 'fir'). Defaults to
-		    8 for 'iir' and 30 for 'fir'.
+		    8 for 'iir' and 20 times the downsampling factor for 'fir'.
 		ftype : str {'iir', 'fir'} or ``dlti`` instance, optional
 		    If 'iir' or 'fir', specifies the type of lowpass filter. If an instance
 		    of an `dlti` object, uses that object to filter before downsampling.
@@ -1245,11 +1276,8 @@ package scipy.signal.signaltools;
 		zero_phase : bool, optional
 		    Prevent phase shift by filtering with `filtfilt` instead of `lfilter`
 		    when using an IIR filter, and shifting the outputs back by the filter's
-		    group delay when using an FIR filter. A value of ``True`` is
-		    recommended, since a phase shift is generally not desired. Using
-		    ``None`` defaults to ``False`` for backwards compatibility. This
-		    default will change to ``True`` in a future release, so it is best to
-		    set this argument explicitly.
+		    group delay when using an FIR filter. The default value of ``True`` is
+		    recommended, since a phase shift is generally not desired.
 		
 		    .. versionadded:: 0.18.0
 		
@@ -1271,7 +1299,7 @@ package scipy.signal.signaltools;
 	**/
 	static public function decimate(x:Dynamic, q:Dynamic, ?n:Dynamic, ?ftype:Dynamic, ?axis:Dynamic, ?zero_phase:Dynamic):Dynamic;
 	/**
-		Deconvolves ``divisor`` out of ``signal``.
+		Deconvolves ``divisor`` out of ``signal`` using inverse filtering.
 		
 		Returns the quotient and remainder such that
 		``signal = convolve(divisor, quotient) + remainder``
@@ -1351,12 +1379,22 @@ package scipy.signal.signaltools;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -1478,8 +1516,9 @@ package scipy.signal.signaltools;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1573,7 +1612,7 @@ package scipy.signal.signaltools;
 		>>> y.shape
 		(1, 2)
 		
-		>>> y = np.expand_dims(x, axis=1)  # Equivalent to x[:,newaxis]
+		>>> y = np.expand_dims(x, axis=1)  # Equivalent to x[:,np.newaxis]
 		>>> y
 		array([[1],
 		       [2]])
@@ -1652,8 +1691,6 @@ package scipy.signal.signaltools;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1662,7 +1699,8 @@ package scipy.signal.signaltools;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
@@ -1715,25 +1753,13 @@ package scipy.signal.signaltools;
 	**/
 	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
-		A forward-backward filter.
+		Apply a digital filter forward and backward to a signal.
 		
-		This function applies a linear filter twice, once forward and once
-		backwards.  The combined filter has linear phase.
+		This function applies a linear digital filter twice, once forward and
+		once backwards.  The combined filter has zero phase and a filter order
+		twice that of the original.
 		
 		The function provides options for handling the edges of the signal.
-		
-		When `method` is "pad", the function pads the data along the given axis
-		in one of three ways: odd, even or constant.  The odd and even extensions
-		have the corresponding symmetry about the end point of the data.  The
-		constant extension extends the data with the values at the end points. On
-		both the forward and backward passes, the initial condition of the
-		filter is found by using `lfilter_zi` and scaling it by the end point of
-		the extended data.
-		
-		When `method` is "gust", Gustafsson's method [1]_ is used.  Initial
-		conditions are chosen for the forward and backward passes so that the
-		forward-backward filter gives the same result as the backward-forward
-		filter.
 		
 		Parameters
 		----------
@@ -1780,6 +1806,19 @@ package scipy.signal.signaltools;
 		
 		Notes
 		-----
+		When `method` is "pad", the function pads the data along the given axis
+		in one of three ways: odd, even or constant.  The odd and even extensions
+		have the corresponding symmetry about the end point of the data.  The
+		constant extension extends the data with the values at the end points. On
+		both the forward and backward passes, the initial condition of the
+		filter is found by using `lfilter_zi` and scaling it by the end point of
+		the extended data.
+		
+		When `method` is "gust", Gustafsson's method [1]_ is used.  Initial
+		conditions are chosen for the forward and backward passes so that the
+		forward-backward filter gives the same result as the backward-forward
+		filter.
+		
 		The option to use Gustaffson's method was added in scipy version 0.16.0.
 		
 		References
@@ -1804,7 +1843,7 @@ package scipy.signal.signaltools;
 		>>> x = xlow + xhigh
 		
 		Now create a lowpass Butterworth filter with a cutoff of 0.125 times
-		the Nyquist rate, or 125 Hz, and apply it to ``x`` with `filtfilt`.
+		the Nyquist frequency, or 125 Hz, and apply it to ``x`` with `filtfilt`.
 		The result should be approximately ``xlow``, with no phase shift.
 		
 		>>> b, a = signal.butter(8, 0.125)
@@ -1871,9 +1910,9 @@ package scipy.signal.signaltools;
 		filter.  The filter will have linear phase; it will be Type I if
 		`numtaps` is odd and Type II if `numtaps` is even.
 		
-		Type II filters always have zero response at the Nyquist rate, so a
+		Type II filters always have zero response at the Nyquist frequency, so a
 		ValueError exception is raised if firwin is called with `numtaps` even and
-		having a passband whose right end is at the Nyquist rate.
+		having a passband whose right end is at the Nyquist frequency.
 		
 		Parameters
 		----------
@@ -1905,13 +1944,17 @@ package scipy.signal.signaltools;
 		
 		    - 0 (DC) if the first passband starts at 0 (i.e. pass_zero
 		      is True)
-		    - `nyq` (the Nyquist rate) if the first passband ends at
+		    - `nyq` (the Nyquist frequency) if the first passband ends at
 		      `nyq` (i.e the filter is a single band highpass filter);
 		      center of first passband otherwise
 		
 		nyq : float, optional
-		    Nyquist frequency.  Each frequency in `cutoff` must be between 0
-		    and `nyq`.
+		    *Deprecated.  Use `fs` instead.*  This is the Nyquist frequency.
+		    Each frequency in `cutoff` must be between 0 and `nyq`. Default
+		    is 1.
+		fs : float, optional
+		    The sampling frequency of the signal.  Each frequency in `cutoff`
+		    must be between 0 and ``fs/2``.  Default is 2.
 		
 		Returns
 		-------
@@ -1922,11 +1965,11 @@ package scipy.signal.signaltools;
 		------
 		ValueError
 		    If any value in `cutoff` is less than or equal to 0 or greater
-		    than or equal to `nyq`, if the values in `cutoff` are not strictly
+		    than or equal to ``fs/2``, if the values in `cutoff` are not strictly
 		    monotonically increasing, or if `numtaps` is even but a passband
 		    includes the Nyquist frequency.
 		
-		See also
+		See Also
 		--------
 		firwin2
 		firls
@@ -1975,7 +2018,7 @@ package scipy.signal.signaltools;
 		>>> signal.firwin(numtaps, [f1, f2, f3, f4], pass_zero=False)
 		array([ 0.04890915,  0.91284326,  0.04890915])
 	**/
-	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic):Dynamic;
+	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		gcd(x, y) -> int
 		greatest common divisor of x and y
@@ -2009,8 +2052,9 @@ package scipy.signal.signaltools;
 		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
 		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
 		    deviation), `general_gaussian` (needs power, width), `slepian`
-		    (needs width), `chebwin` (needs attenuation), `exponential`
-		    (needs decay scale), `tukey` (needs taper fraction)
+		    (needs width), `dpss` (needs normalized half-bandwidth),
+		    `chebwin` (needs attenuation), `exponential` (needs decay scale),
+		    `tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -2410,7 +2454,9 @@ package scipy.signal.signaltools;
 	**/
 	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Array<Dynamic>;
 	/**
-		Compute an initial state `zi` for the lfilter function that corresponds
+		Construct initial conditions for lfilter for step response steady-state.
+		
+		Compute an initial state `zi` for the `lfilter` function that corresponds
 		to the steady state of the step response.
 		
 		A typical use of this function is to set the initial state so that the
@@ -2489,7 +2535,7 @@ package scipy.signal.signaltools;
 	**/
 	static public function lfilter_zi(b:Dynamic, a:Dynamic):Dynamic;
 	/**
-		Construct initial conditions for lfilter.
+		Construct initial conditions for lfilter given input and output vectors.
 		
 		Given a linear filter (b, a) and initial conditions on the output `y`
 		and the input `x`, return the initial conditions on the state vector zi
@@ -2565,7 +2611,7 @@ package scipy.signal.signaltools;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `mean` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -2710,9 +2756,10 @@ package scipy.signal.signaltools;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -2721,14 +2768,18 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -2875,11 +2926,6 @@ package scipy.signal.signaltools;
 		
 		>>> P = np.array([[0, 1./3], [-1./2, 0]])
 		>>> np.poly(P)
-		array([ 1.        ,  0.        ,  0.16666667])
-		
-		Or a square matrix object:
-		
-		>>> np.poly(np.matrix(P))
 		array([ 1.        ,  0.        ,  0.16666667])
 		
 		Note how in all cases the leading coefficient is always 1.
@@ -3166,7 +3212,7 @@ package scipy.signal.signaltools;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var r_ : Dynamic;
 	/**
 		Return a contiguous flattened array.
@@ -3203,10 +3249,9 @@ package scipy.signal.signaltools;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -3297,12 +3342,12 @@ package scipy.signal.signaltools;
 		-----
 		Machine epsilon varies from machine to machine and between data types
 		but Python floats on most platforms have a machine epsilon equal to
-		2.2204460492503131e-16.  You can use 'np.finfo(np.float).eps' to print
+		2.2204460492503131e-16.  You can use 'np.finfo(float).eps' to print
 		out the machine epsilon for floats.
 		
 		Examples
 		--------
-		>>> np.finfo(np.float).eps
+		>>> np.finfo(float).eps
 		2.2204460492503131e-16
 		
 		>>> np.real_if_close([2.1 + 4e-14j], tol=1000)
@@ -3451,7 +3496,7 @@ package scipy.signal.signaltools;
 		
 		The first sample of the returned vector is the same as the first
 		sample of the input vector. The spacing between samples is changed
-		from ``dx`` to ``dx * up / float(down)``.
+		from ``dx`` to ``dx * down / float(up)``.
 		
 		Examples
 		--------
@@ -3515,11 +3560,11 @@ package scipy.signal.signaltools;
 		Notes
 		-----
 		It is not always possible to change the shape of an array without
-		copying the data. If you want an error to be raise if the data is copied,
+		copying the data. If you want an error to be raised when the data is copied,
 		you should assign the new shape to the shape attribute of the array::
 		
 		 >>> a = np.zeros((10, 2))
-		 # A transpose make the array non-contiguous
+		 # A transpose makes the array non-contiguous
 		 >>> b = a.T
 		 # Taking a view makes it possible to modify the shape without modifying
 		 # the initial object.
@@ -3722,7 +3767,7 @@ package scipy.signal.signaltools;
 		axis : int or None, optional
 		    Axis along which to sort. If None, the array is flattened before
 		    sorting. The default is -1, which sorts along the last axis.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm. Default is 'quicksort'.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -3752,13 +3797,13 @@ package scipy.signal.signaltools;
 		order. The three available algorithms have the following
 		properties:
 		
-		=========== ======= ============= ============ =======
-		   kind      speed   worst case    work space  stable
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
+		   kind      speed   worst case    work space   stable
+		=========== ======= ============= ============ ========
 		'quicksort'    1     O(n^2)            0          no
 		'mergesort'    2     O(n*log(n))      ~n/2        yes
 		'heapsort'     3     O(n*log(n))       0          no
-		=========== ======= ============= ============ =======
+		=========== ======= ============= ============ ========
 		
 		All the sort algorithms make temporary copies of the data when
 		sorting along any but the last axis.  Consequently, sorting along
@@ -3786,6 +3831,10 @@ package scipy.signal.signaltools;
 		quicksort has been changed to an introsort which will switch
 		heapsort when it does not make enough progress. This makes its
 		worst case O(n*log(n)).
+		
+		'stable' automatically choses the best stable sorting algorithm
+		for the data type being sorted. It is currently mapped to
+		merge sort.
 		
 		Examples
 		--------
@@ -3820,7 +3869,7 @@ package scipy.signal.signaltools;
 	**/
 	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Filter data along one dimension using cascaded second-order sections
+		Filter data along one dimension using cascaded second-order sections.
 		
 		Filter a data sequence, `x`, using a digital IIR filter defined by
 		`sos`. This is implemented by performing `lfilter` for each
@@ -3890,7 +3939,9 @@ package scipy.signal.signaltools;
 	**/
 	static public function sosfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Dynamic;
 	/**
-		Compute an initial state `zi` for the sosfilt function that corresponds
+		Construct initial conditions for sosfilt for step response steady-state.
+		
+		Compute an initial state `zi` for the `sosfilt` function that corresponds
 		to the steady state of the step response.
 		
 		A typical use of this function is to set the initial state so that the
@@ -3940,7 +3991,7 @@ package scipy.signal.signaltools;
 	**/
 	static public function sosfilt_zi(sos:Dynamic):Dynamic;
 	/**
-		A forward-backward filter using cascaded second-order sections.
+		A forward-backward digital filter using cascaded second-order sections.
 		
 		See `filtfilt` for more complete information about this method.
 		
@@ -3988,20 +4039,69 @@ package scipy.signal.signaltools;
 		Notes
 		-----
 		.. versionadded:: 0.18.0
+		
+		Examples
+		--------
+		>>> from scipy.signal import sosfiltfilt, butter
+		>>> import matplotlib.pyplot as plt
+		
+		Create an interesting signal to filter.
+		
+		>>> n = 201
+		>>> t = np.linspace(0, 1, n)
+		>>> np.random.seed(123)
+		>>> x = 1 + (t < 0.5) - 0.25*t**2 + 0.05*np.random.randn(n)
+		
+		Create a lowpass Butterworth filter, and use it to filter `x`.
+		
+		>>> sos = butter(4, 0.125, output='sos')
+		>>> y = sosfiltfilt(sos, x)
+		
+		For comparison, apply an 8th order filter using `sosfilt`.  The filter
+		is initialized using the mean of the first four values of `x`.
+		
+		>>> from scipy.signal import sosfilt, sosfilt_zi
+		>>> sos8 = butter(8, 0.125, output='sos')
+		>>> zi = x[:4].mean() * sosfilt_zi(sos8)
+		>>> y2, zo = sosfilt(sos8, x, zi=zi)
+		
+		Plot the results.  Note that the phase of `y` matches the input, while
+		`y2` has a significant phase delay.
+		
+		>>> plt.plot(t, x, alpha=0.5, label='x(t)')
+		>>> plt.plot(t, y, label='y(t)')
+		>>> plt.plot(t, y2, label='y2(t)')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.xlabel('t')
+		>>> plt.show()
 	**/
 	static public function sosfiltfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?padtype:Dynamic, ?padlen:Dynamic):Dynamic;
 	/**
 		Take elements from an array along an axis.
 		
-		This function does the same thing as "fancy" indexing (indexing arrays
-		using arrays); however, it can be easier to use if you need elements
-		along a given axis.
+		When axis is not None, this function does the same thing as "fancy"
+		indexing (indexing arrays using arrays); however, it can be easier to use
+		if you need elements along a given axis. A call such as
+		``np.take(arr, indices, axis=3)`` is equivalent to
+		``arr[:,:,:,indices,...]``.
+		
+		Explained without fancy indexing, this is equivalent to the following use
+		of `ndindex`, which sets each of ``ii``, ``jj``, and ``kk`` to a tuple of
+		indices::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    Nj = indices.shape
+		    for ii in ndindex(Ni):
+		        for jj in ndindex(Nj):
+		            for kk in ndindex(Nk):
+		                out[ii + jj + kk] = a[ii + (indices[jj],) + kk]
 		
 		Parameters
 		----------
-		a : array_like
+		a : array_like (Ni..., M, Nk...)
 		    The source array.
-		indices : array_like
+		indices : array_like (Nj...)
 		    The indices of the values to extract.
 		
 		    .. versionadded:: 1.8.0
@@ -4010,7 +4110,7 @@ package scipy.signal.signaltools;
 		axis : int, optional
 		    The axis over which to select values. By default, the flattened
 		    input array is used.
-		out : ndarray, optional
+		out : ndarray, optional (Ni..., Nj..., Nk...)
 		    If provided, the result will be placed in this array. It should
 		    be of the appropriate shape and dtype.
 		mode : {'raise', 'wrap', 'clip'}, optional
@@ -4026,13 +4126,31 @@ package scipy.signal.signaltools;
 		
 		Returns
 		-------
-		subarray : ndarray
+		out : ndarray (Ni..., Nj..., Nk...)
 		    The returned array has the same type as `a`.
 		
 		See Also
 		--------
 		compress : Take elements using a boolean mask
 		ndarray.take : equivalent method
+		take_along_axis : Take elements by matching the array and the index arrays
+		
+		Notes
+		-----
+		
+		By eliminating the inner loop in the description above, and using `s_` to
+		build simple slice objects, `take` can be expressed  in terms of applying
+		fancy indexing to each 1-d slice::
+		
+		    Ni, Nk = a.shape[:axis], a.shape[axis+1:]
+		    for ii in ndindex(Ni):
+		        for kk in ndindex(Nj):
+		            out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]
+		
+		For this reason, it is equivalent to (but faster than) the following use
+		of `apply_along_axis`::
+		
+		    out = np.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)
 		
 		Examples
 		--------
@@ -4103,10 +4221,11 @@ package scipy.signal.signaltools;
 		Find the unique elements of an array.
 		
 		Returns the sorted unique elements of an array. There are three optional
-		outputs in addition to the unique elements: the indices of the input array
-		that give the unique values, the indices of the unique array that
-		reconstruct the input array, and the number of times each unique value
-		comes up in the input array.
+		outputs in addition to the unique elements:
+		
+		* the indices of the input array that give the unique values
+		* the indices of the unique array that reconstruct the input array
+		* the number of times each unique value comes up in the input array
 		
 		Parameters
 		----------
@@ -4122,16 +4241,18 @@ package scipy.signal.signaltools;
 		return_counts : bool, optional
 		    If True, also return the number of times each unique item appears
 		    in `ar`.
+		
 		    .. versionadded:: 1.9.0
+		
 		axis : int or None, optional
-		    The axis to operate on. If None, `ar` will be flattened beforehand.
-		    Otherwise, duplicate items will be removed along the provided axis,
-		    with all the other axes belonging to the each of the unique elements.
-		    Object arrays or structured arrays that contain objects are not
-		    supported if the `axis` kwarg is used.
+		    The axis to operate on. If None, `ar` will be flattened. If an integer,
+		    the subarrays indexed by the given axis will be flattened and treated
+		    as the elements of a 1-D array with the dimension of the given axis,
+		    see the notes for more details.  Object arrays or structured arrays
+		    that contain objects are not supported if the `axis` kwarg is used. The
+		    default is None.
+		
 		    .. versionadded:: 1.13.0
-		
-		
 		
 		Returns
 		-------
@@ -4146,12 +4267,24 @@ package scipy.signal.signaltools;
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
+		
 		    .. versionadded:: 1.9.0
 		
 		See Also
 		--------
 		numpy.lib.arraysetops : Module with a number of other functions for
 		                        performing set operations on arrays.
+		
+		Notes
+		-----
+		When an axis is specified the subarrays indexed by the axis are sorted.
+		This is done by making the specified axis the first dimension of the array
+		and then flattening the subarrays in C order. The flattened subarrays are
+		then viewed as a structured type with each element given a label, with the
+		effect that we end up with a 1-D array of structured types that can be
+		treated in the same way as any other 1-D array. The result is that the
+		flattened subarrays are sorted in lexicographic order starting with the
+		first element.
 		
 		Examples
 		--------
@@ -4434,7 +4567,7 @@ package scipy.signal.signaltools;
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
-		       [False,  True, False]], dtype=bool)
+		       [False,  True, False]])
 		>>> np.where(ix)
 		(array([1, 1, 2]), array([0, 1, 1]))
 	**/
@@ -4470,14 +4603,15 @@ package scipy.signal.signaltools;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -4487,17 +4621,16 @@ package scipy.signal.signaltools;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))
@@ -4545,11 +4678,10 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		ones_like : Return an array of ones with shape and type of input.
 		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		zeros : Return a new array setting values to zero.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
 		
 		Examples
 		--------
@@ -4562,7 +4694,7 @@ package scipy.signal.signaltools;
 		array([[0, 0, 0],
 		       [0, 0, 0]])
 		
-		>>> y = np.arange(3, dtype=np.float)
+		>>> y = np.arange(3, dtype=float)
 		>>> y
 		array([ 0.,  1.,  2.])
 		>>> np.zeros_like(y)

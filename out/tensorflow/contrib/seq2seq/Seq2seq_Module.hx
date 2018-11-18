@@ -45,26 +45,29 @@ package tensorflow.contrib.seq2seq;
 	/**
 		Calculates the full beams from the per-step ids and parent beam ids.
 		
-		This op implements the following mathematical equations:
+		On CPU, if an out of bound parent id is found, an error is returned.
+		On GPU, if an out of bound parent id is found, a -1 is stored in the
+		corresponding output value and the execution for that beam returns early.
 		
-		```python
-		TODO(ebrevdo): fill in
-		```
+		For a given beam, past the time step containing the first decoded `end_token`
+		all values are filled in with `end_token`.
+		
+		TODO(ebrevdo): fill in the remainder of this docstring.
 		
 		Args:
 		  step_ids: A `Tensor`. Must be one of the following types: `int32`.
 		    `[max_time, batch_size, beam_width]`.
 		  parent_ids: A `Tensor`. Must have the same type as `step_ids`.
 		    `[max_time, batch_size, beam_width]`.
-		  sequence_length: A `Tensor`. Must have the same type as `step_ids`.
-		    `[batch_size, beam_width]`.
+		  max_sequence_lengths: A `Tensor` of type `int32`. `[batch_size]`.
+		  end_token: A `Tensor`. Must have the same type as `step_ids`. `[]`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `step_ids`.
 		  `[max_time, batch_size, beam_width]`.
 	**/
-	static public function gather_tree(step_ids:Dynamic, parent_ids:Dynamic, sequence_length:Dynamic, ?name:Dynamic):Dynamic;
+	static public function gather_tree(step_ids:Dynamic, parent_ids:Dynamic, max_sequence_lengths:Dynamic, end_token:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns batched one-hot vectors.
 		
@@ -77,6 +80,64 @@ package tensorflow.contrib.seq2seq;
 		  A batched one-hot tensor.
 	**/
 	static public function hardmax(logits:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Compute monotonic attention distribution from choosing probabilities.
+		
+		Monotonic attention implies that the input sequence is processed in an
+		explicitly left-to-right manner when generating the output sequence.  In
+		addition, once an input sequence element is attended to at a given output
+		timestep, elements occurring before it cannot be attended to at subsequent
+		output timesteps.  This function generates attention distributions according
+		to these assumptions.  For more information, see `Online and Linear-Time
+		Attention by Enforcing Monotonic Alignments`.
+		
+		Args:
+		  p_choose_i: Probability of choosing input sequence/memory element i.  Should
+		    be of shape (batch_size, input_sequence_length), and should all be in the
+		    range [0, 1].
+		  previous_attention: The attention distribution from the previous output
+		    timestep.  Should be of shape (batch_size, input_sequence_length).  For
+		    the first output timestep, preevious_attention[n] should be [1, 0, 0, ...,
+		    0] for all n in [0, ... batch_size - 1].
+		  mode: How to compute the attention distribution.  Must be one of
+		    'recursive', 'parallel', or 'hard'.
+		      * 'recursive' uses tf.scan to recursively compute the distribution.
+		        This is slowest but is exact, general, and does not suffer from
+		        numerical instabilities.
+		      * 'parallel' uses parallelized cumulative-sum and cumulative-product
+		        operations to compute a closed-form solution to the recurrence
+		        relation defining the attention distribution.  This makes it more
+		        efficient than 'recursive', but it requires numerical checks which
+		        make the distribution non-exact.  This can be a problem in particular
+		        when input_sequence_length is long and/or p_choose_i has entries very
+		        close to 0 or 1.
+		      * 'hard' requires that the probabilities in p_choose_i are all either 0
+		        or 1, and subsequently uses a more efficient and exact solution.
+		
+		Returns:
+		  A tensor of shape (batch_size, input_sequence_length) representing the
+		  attention distributions for each sequence in the batch.
+		
+		Raises:
+		  ValueError: mode is not one of 'recursive', 'parallel', 'hard'.
+	**/
+	static public function monotonic_attention(p_choose_i:Dynamic, previous_attention:Dynamic, mode:Dynamic):Dynamic;
+	/**
+		Computes cumprod of x in logspace using cumsum to avoid underflow.
+		
+		The cumprod function and its gradient can result in numerical instabilities
+		when its argument has very small and/or zero values.  As long as the argument
+		is all positive, we can instead compute the cumulative product as
+		exp(cumsum(log(x))).  This function can be called identically to tf.cumprod.
+		
+		Args:
+		  x: Tensor to take the cumulative product of.
+		  *args: Passed on to cumsum; these are identical to those in cumprod.
+		  **kwargs: Passed on to cumsum; these are identical to those in cumprod.
+		Returns:
+		  Cumulative product of x.
+	**/
+	static public function safe_cumprod(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Weighted cross-entropy loss for a sequence of logits.
 		

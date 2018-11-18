@@ -9,17 +9,17 @@ package matplotlib.projections.polar;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
-		Create a new "blended" transform using *x_transform* to transform
-		the *x*-axis and *y_transform* to transform the *y*-axis.
+		Determine if a wedge (in degrees) spans the full circle.
 		
-		A faster version of the blended transform is returned for the case
-		where both child transforms are affine.
+		The condition is derived from :class:`~matplotlib.patches.Wedge`.
 	**/
-	static public function blended_transform_factory(x_transform:Dynamic, y_transform:Dynamic):Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
+	static public function _is_full_circle_deg(thetamin:Dynamic, thetamax:Dynamic):Dynamic;
+	/**
+		Determine if a wedge (in radians) spans the full circle.
+		
+		The condition is derived from :class:`~matplotlib.patches.Wedge`.
+	**/
+	static public function _is_full_circle_rad(thetamin:Dynamic, thetamax:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

@@ -18,7 +18,6 @@ package theano.misc.pkl_utils;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var config : Dynamic;
-	static public var cuda_ndarray : Dynamic;
 	static public var division : Dynamic;
 	/**
 		Pickles an object to a zip file using external persistence.

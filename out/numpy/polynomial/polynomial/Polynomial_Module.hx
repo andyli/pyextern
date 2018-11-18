@@ -546,7 +546,8 @@ package numpy.polynomial.polynomial;
 		Raises
 		------
 		ValueError
-		    If ``m < 1``, ``len(k) > m``.
+		    If ``m < 1``, ``len(k) > m``, ``np.ndim(lbnd) != 0``, or
+		    ``np.ndim(scl) != 0``.
 		
 		See Also
 		--------
@@ -557,7 +558,7 @@ package numpy.polynomial.polynomial;
 		Note that the result of each integration is *multiplied* by `scl`.  Why
 		is this important to note?  Say one is making a linear change of
 		variable :math:`u = ax + b` in an integral relative to `x`. Then
-		.. math::`dx = du/a`, so one will need to set `scl` equal to
+		:math:`dx = du/a`, so one will need to set `scl` equal to
 		:math:`1/a` - perhaps not what one would have first thought.
 		
 		Examples
@@ -801,13 +802,13 @@ package numpy.polynomial.polynomial;
 		
 		Examples
 		--------
-		>>> from numpy import polynomial as P
-		>>> P.trimcoef((0,0,3,0,5,0,0))
+		>>> from numpy.polynomial import polyutils as pu
+		>>> pu.trimcoef((0,0,3,0,5,0,0))
 		array([ 0.,  0.,  3.,  0.,  5.])
-		>>> P.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
+		>>> pu.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
 		array([ 0.])
 		>>> i = complex(0,1) # works for complex
-		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
+		>>> pu.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
 	static public function polytrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;

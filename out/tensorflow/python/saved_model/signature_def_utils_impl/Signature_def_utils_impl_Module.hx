@@ -9,6 +9,40 @@ package tensorflow.python.saved_model.signature_def_utils_impl;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Determine whether the argument is a servable 'classify' SignatureDef.
+	**/
+	static public function _is_valid_classification_signature(signature_def:Dynamic):Dynamic;
+	/**
+		Determine whether the argument is a servable 'predict' SignatureDef.
+	**/
+	static public function _is_valid_predict_signature(signature_def:Dynamic):Dynamic;
+	/**
+		Determine whether the argument is a servable 'regress' SignatureDef.
+	**/
+	static public function _is_valid_regression_signature(signature_def:Dynamic):Dynamic;
+	/**
+		Creates a signature for training and eval data.
+		
+		This function produces signatures that describe the inputs and outputs
+		of a supervised process, such as training or evaluation, that
+		results in loss, metrics, and the like. Note that this function only requires
+		inputs to be not None.
+		
+		Args:
+		  method_name: Method name of the SignatureDef as a string.
+		  inputs: dict of string to `Tensor`.
+		  loss: dict of string to `Tensor` representing computed loss.
+		  predictions: dict of string to `Tensor` representing the output predictions.
+		  metrics: dict of string to `Tensor` representing metric ops.
+		
+		Returns:
+		  A train- or eval-flavored signature_def.
+		
+		Raises:
+		  ValueError: If inputs or outputs is `None`.
+	**/
+	static public function _supervised_signature_def(method_name:Dynamic, inputs:Dynamic, ?loss:Dynamic, ?predictions:Dynamic, ?metrics:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Utility function to build a SignatureDef protocol buffer.
@@ -27,10 +61,15 @@ package tensorflow.python.saved_model.signature_def_utils_impl;
 	/**
 		Creates classification signature from given examples and predictions.
 		
+		This function produces signatures intended for use with the TensorFlow Serving
+		Classify API (tensorflow_serving/apis/prediction_service.proto), and so
+		constrains the input and output types to those allowed by TensorFlow Serving.
+		
 		Args:
-		  examples: `Tensor`.
-		  classes: `Tensor`.
-		  scores: `Tensor`.
+		  examples: A string `Tensor`, expected to accept serialized tf.Examples.
+		  classes: A string `Tensor`.  Note that the ClassificationResponse message
+		    requires that class labels are strings, not integers or anything else.
+		  scores: a float `Tensor`.
 		
 		Returns:
 		  A classification-flavored signature_def.
@@ -41,7 +80,15 @@ package tensorflow.python.saved_model.signature_def_utils_impl;
 	static public function classification_signature_def(examples:Dynamic, classes:Dynamic, scores:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
+		Determine whether a SignatureDef can be served by TensorFlow Serving.
+	**/
+	static public function is_valid_signature(signature_def:Dynamic):Dynamic;
+	/**
 		Creates prediction signature from given inputs and outputs.
+		
+		This function produces signatures intended for use with the TensorFlow Serving
+		Predict API (tensorflow_serving/apis/prediction_service.proto). This API
+		imposes no constraints on the input and output types.
 		
 		Args:
 		  inputs: dict of string to `Tensor`.
@@ -58,9 +105,13 @@ package tensorflow.python.saved_model.signature_def_utils_impl;
 	/**
 		Creates regression signature from given examples and predictions.
 		
+		This function produces signatures intended for use with the TensorFlow Serving
+		Regress API (tensorflow_serving/apis/prediction_service.proto), and so
+		constrains the input and output types to those allowed by TensorFlow Serving.
+		
 		Args:
-		  examples: `Tensor`.
-		  predictions: `Tensor`.
+		  examples: A string `Tensor`, expected to accept serialized tf.Examples.
+		  predictions: A float `Tensor`.
 		
 		Returns:
 		  A regression-flavored signature_def.
@@ -69,4 +120,7 @@ package tensorflow.python.saved_model.signature_def_utils_impl;
 		  ValueError: If examples is `None`.
 	**/
 	static public function regression_signature_def(examples:Dynamic, predictions:Dynamic):Dynamic;
+	static public function supervised_eval_signature_def(inputs:Dynamic, loss:Dynamic, ?predictions:Dynamic, ?metrics:Dynamic):Dynamic;
+	static public function supervised_train_signature_def(inputs:Dynamic, loss:Dynamic, ?predictions:Dynamic, ?metrics:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

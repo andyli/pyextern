@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.training_util;
 @:pythonImport("tensorflow.python.training.training_util") extern class Training_util_Module {
+	static public var GLOBAL_STEP_READ_KEY : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,6 +10,32 @@ package tensorflow.python.training.training_util;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Gets global step read tensor in graph.
+		
+		Args:
+		  graph: The graph in which to create the global step read tensor. If missing,
+		    use default graph.
+		
+		Returns:
+		  Global step read tensor.
+		
+		Raises:
+		  RuntimeError: if multiple items found in collection GLOBAL_STEP_READ_KEY.
+	**/
+	static public function _get_global_step_read(?graph:Dynamic):Dynamic;
+	/**
+		Gets or creates global step read tensor in graph.
+		
+		Args:
+		  graph: The graph in which to create the global step read tensor. If missing,
+		    use default graph.
+		
+		Returns:
+		  Global step read tensor if there is global_step_tensor else return None.
+	**/
+	static public function _get_or_create_global_step_read(?graph:Dynamic):Dynamic;
+	static public function _increment_global_step(increment:Dynamic, ?graph:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Asserts `global_step_tensor` is a scalar int `Variable` or `Tensor`.
@@ -64,11 +91,13 @@ package tensorflow.python.training.training_util;
 		Small helper to get the global step.
 		
 		```python
-		# Creates a variable to hold the global_step.
+		# Create a variable to hold the global_step.
 		global_step_tensor = tf.Variable(10, trainable=False, name='global_step')
-		# Creates a session.
+		# Create a session.
 		sess = tf.Session()
-		# Initializes the variable.
+		# Initialize the variable
+		sess.run(global_step_tensor.initializer)
+		# Get the variable value.
 		print('global_step: %s' % tf.train.global_step(sess, global_step_tensor))
 		
 		global_step: 10
@@ -84,10 +113,11 @@ package tensorflow.python.training.training_util;
 	**/
 	static public function global_step(sess:Dynamic, global_step_tensor:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Writes a graph proto to a file.
 		
-		The graph is written as a binary proto unless `as_text` is `True`.
+		The graph is written as a text proto unless `as_text` is `False`.
 		
 		```python
 		v = tf.Variable(0, name='my_variable')

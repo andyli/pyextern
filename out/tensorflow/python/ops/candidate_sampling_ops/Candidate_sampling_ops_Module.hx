@@ -124,7 +124,7 @@ package tensorflow.python.ops.candidate_sampling_ops;
 		    `distortion = 1.0` gives regular unigram sampling (as defined by the vocab
 		    file), and `distortion = 0.0` gives a uniform distribution.
 		  num_reserved_ids: Optionally some reserved IDs can be added in the range
-		    `[0, num_reserved_ids]` by the users. One use case is that a special
+		    `[0, num_reserved_ids)` by the users. One use case is that a special
 		    unknown word token is used as ID 0. These IDs will have a sampling
 		    probability of 0.
 		  num_shards: A sampler can be used to sample from a subset of the original
@@ -254,6 +254,7 @@ package tensorflow.python.ops.candidate_sampling_ops;
 	**/
 	static public function log_uniform_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Samples a set of classes using a uniform base distribution.
 		

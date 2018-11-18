@@ -169,7 +169,7 @@ package numpy.lib.scimath;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `any` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -195,7 +195,7 @@ package numpy.lib.scimath;
 		True
 		
 		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.any([-1, 0, 5])
 		True
@@ -206,7 +206,7 @@ package numpy.lib.scimath;
 		>>> o=np.array([False])
 		>>> z=np.any([-1, 4, 5], out=o)
 		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
+		(array([ True]), array([ True]))
 		>>> # Check now that z is a reference to o
 		>>> z is o
 		True
@@ -328,7 +328,7 @@ package numpy.lib.scimath;
 		--------
 		>>> np.set_printoptions(precision=4)
 		
-		>>> np.emath.arctanh(np.matrix(np.eye(2)))
+		>>> np.emath.arctanh(np.eye(2))
 		array([[ Inf,   0.],
 		       [  0.,  Inf]])
 		>>> np.emath.arctanh([1j])
@@ -394,9 +394,9 @@ package numpy.lib.scimath;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -428,7 +428,7 @@ package numpy.lib.scimath;
 		Examples
 		--------
 		>>> np.isreal([1+1j, 1+0j, 4.5, 3, 2, 2j])
-		array([False,  True,  True,  True,  True, False], dtype=bool)
+		array([False,  True,  True,  True,  True, False])
 	**/
 	static public function isreal(x:Dynamic):Dynamic;
 	/**

@@ -1,23 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.signal.ltisys;
 @:pythonImport("scipy.signal.ltisys", "lti") extern class Lti {
-	/**
-		State matrix of the `StateSpace` system.
-	**/
-	public var A : Dynamic;
-	/**
-		Input matrix of the `StateSpace` system.
-	**/
-	public var B : Dynamic;
-	/**
-		Output matrix of the `StateSpace` system.
-	**/
-	public var C : Dynamic;
-	/**
-		Feedthrough matrix of the `StateSpace` system.
-	**/
-	public var D : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -72,7 +56,7 @@ package scipy.signal.ltisys;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,7 +107,7 @@ package scipy.signal.ltisys;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -181,10 +165,6 @@ package scipy.signal.ltisys;
 	**/
 	public function bode(?w:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Denominator of the `TransferFunction` system.
-	**/
-	public var den : Dynamic;
-	/**
 		Return the sampling time of the system, `None` for `lti` systems.
 	**/
 	public var dt : Dynamic;
@@ -197,18 +177,10 @@ package scipy.signal.ltisys;
 	**/
 	public function freqresp(?w:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Gain of the `ZerosPolesGain` system.
-	**/
-	public var gain : Dynamic;
-	/**
 		Return the impulse response of a continuous-time system.
 		See `impulse` for details.
 	**/
 	public function impulse(?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
-	/**
-		Numerator of the `TransferFunction` system.
-	**/
-	public var num : Dynamic;
 	/**
 		Return the response of a continuous-time system to input `U`.
 		See `lsim` for details.

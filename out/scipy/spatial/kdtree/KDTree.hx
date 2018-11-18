@@ -4,7 +4,7 @@ package scipy.spatial.kdtree;
 	public function _KDTree__build(idx:Dynamic, maxes:Dynamic, mins:Dynamic):Dynamic;
 	public function _KDTree__query(x:Dynamic, ?k:Dynamic, ?eps:Dynamic, ?p:Dynamic, ?distance_upper_bound:Dynamic):Dynamic;
 	public function _KDTree__query_ball_point(x:Dynamic, r:Dynamic, ?p:Dynamic, ?eps:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,7 +55,7 @@ package scipy.spatial.kdtree;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -106,7 +106,7 @@ package scipy.spatial.kdtree;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -257,7 +257,7 @@ package scipy.spatial.kdtree;
 		--------
 		>>> from scipy import spatial
 		>>> x, y = np.mgrid[0:5, 0:5]
-		>>> points = zip(x.ravel(), y.ravel())
+		>>> points = np.c_[x.ravel(), y.ravel()]
 		>>> tree = spatial.KDTree(points)
 		>>> tree.query_ball_point([2, 0], 1)
 		[5, 10, 11, 15]

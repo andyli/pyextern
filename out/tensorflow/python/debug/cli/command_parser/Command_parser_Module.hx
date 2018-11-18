@@ -77,6 +77,18 @@ package tensorflow.python.debug.cli.command_parser;
 	**/
 	static public function extract_output_file_path(args:Dynamic):Dynamic;
 	/**
+		Get an ArgumentParser for a command that prints tensor values.
+		
+		Examples of such commands include print_tensor and print_feed.
+		
+		Args:
+		  description: Description of the ArgumentParser.
+		
+		Returns:
+		  An instance of argparse.ArgumentParser.
+	**/
+	static public function get_print_tensor_argparser(description:Dynamic):Dynamic;
+	/**
 		Parse command string into a list of arguments.
 		
 		- Disregards whitespace inside double quotes and brackets.

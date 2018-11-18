@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.rnn.python.ops.core_rnn_cell;
 @:pythonImport("tensorflow.contrib.rnn.python.ops.core_rnn_cell") extern class Core_rnn_cell_Module {
+	static public var _BIAS_VARIABLE_NAME : Dynamic;
+	static public var _WEIGHTS_VARIABLE_NAME : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,14 +12,10 @@ package tensorflow.contrib.rnn.python.ops.core_rnn_cell;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Checks that a given object is an RNNCell by using duck typing.
-	**/
-	static public function _like_rnncell(cell:Dynamic):Dynamic;
-	/**
 		Linear map: sum_i(args[i] * W[i]), where W[i] is a variable.
 		
 		Args:
-		  args: a 2D Tensor or a list of 2D, batch x n, Tensors.
+		  args: a 2D Tensor or a list of 2D, batch, n, Tensors.
 		  output_size: int, second dimension of W[i].
 		  bias: boolean, whether to add a bias term or not.
 		  bias_initializer: starting value to initialize the bias
@@ -25,7 +23,7 @@ package tensorflow.contrib.rnn.python.ops.core_rnn_cell;
 		  kernel_initializer: starting value to initialize the weight.
 		
 		Returns:
-		  A 2D Tensor with shape [batch x output_size] equal to
+		  A 2D Tensor with shape `[batch, output_size]` equal to
 		  sum_i(args[i] * W[i]), where W[i]s are newly created matrices.
 		
 		Raises:

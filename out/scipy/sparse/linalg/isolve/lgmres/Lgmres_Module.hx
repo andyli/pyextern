@@ -10,6 +10,52 @@ package scipy.sparse.linalg.isolve.lgmres;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		FGMRES Arnoldi process, with optional projection or augmentation
+		
+		Parameters
+		----------
+		matvec : callable
+		    Operation A*x
+		v0 : ndarray
+		    Initial vector, normalized to nrm2(v0) == 1
+		m : int
+		    Number of GMRES rounds
+		atol : float
+		    Absolute tolerance for early exit
+		lpsolve : callable
+		    Left preconditioner L
+		rpsolve : callable
+		    Right preconditioner R
+		CU : list of (ndarray, ndarray)
+		    Columns of matrices C and U in GCROT
+		outer_v : list of ndarrays
+		    Augmentation vectors in LGMRES
+		prepend_outer_v : bool, optional
+		    Whether augmentation vectors come before or after 
+		    Krylov iterates
+		
+		Raises
+		------
+		LinAlgError
+		    If nans encountered
+		
+		Returns
+		-------
+		Q, R : ndarray
+		    QR decomposition of the upper Hessenberg H=QR
+		B : ndarray
+		    Projections corresponding to matrix C
+		vs : list of ndarray
+		    Columns of matrix V
+		zs : list of ndarray
+		    Columns of matrix Z
+		y : ndarray
+		    Solution to ||H y - e_1||_2 = min!
+		res : float
+		    The final (preconditioned) residual norm
+	**/
+	static public function _fgmres(matvec:Dynamic, v0:Dynamic, m:Dynamic, atol:Dynamic, ?lpsolve:Dynamic, ?rpsolve:Dynamic, ?cs:Dynamic, ?outer_v:Dynamic, ?prepend_outer_v:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -49,6 +95,17 @@ package scipy.sparse.linalg.isolve.lgmres;
 		types {float32, float64, complex64, complex128} respectively.
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
+		
+		Examples
+		--------
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_gemv = LA.get_blas_funcs('gemv', (a,))
+		>>> x_gemv.typecode
+		'd'
+		>>> x_gemv = LA.get_blas_funcs('gemv',(a*1j,))
+		>>> x_gemv.typecode
+		'z'
 	**/
 	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -69,12 +126,10 @@ package scipy.sparse.linalg.isolve.lgmres;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -85,8 +140,37 @@ package scipy.sparse.linalg.isolve.lgmres;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -104,9 +188,14 @@ package scipy.sparse.linalg.isolve.lgmres;
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float, optional
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is `tol`.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : int, optional
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -137,6 +226,9 @@ package scipy.sparse.linalg.isolve.lgmres;
 		store_outer_Av : bool, optional
 		    Whether LGMRES should store also A*v in addition to vectors `v`
 		    in the `outer_v` list. Default is True.
+		prepend_outer_v : bool, optional 
+		    Whether to put outer_v augmentation vectors before Krylov iterates.
+		    In standard LGMRES, prepend_outer_v=False.
 		
 		Returns
 		-------
@@ -167,72 +259,25 @@ package scipy.sparse.linalg.isolve.lgmres;
 		
 		References
 		----------
-		.. [1] A.H. Baker and E.R. Jessup and T. Manteuffel,
-		         SIAM J. Matrix Anal. Appl. 26, 962 (2005).
-		.. [2] A.H. Baker, PhD thesis, University of Colorado (2003).
-		         http://amath.colorado.edu/activities/thesis/allisonb/Thesis.ps
-	**/
-	static public function lgmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?inner_m:Dynamic, ?outer_k:Dynamic, ?outer_v:Dynamic, ?store_outer_Av:Dynamic):Dynamic;
-	/**
-		Compute least-squares solution to equation Ax = b.
+		.. [1] A.H. Baker and E.R. Jessup and T. Manteuffel, "A Technique for
+		         Accelerating the Convergence of Restarted GMRES", SIAM J. Matrix
+		         Anal. Appl. 26, 962 (2005).
+		.. [2] A.H. Baker, "On Improving the Performance of the Linear Solver
+		         restarted GMRES", PhD thesis, University of Colorado (2003).
 		
-		Compute a vector x such that the 2-norm ``|b - A x|`` is minimized.
-		
-		Parameters
-		----------
-		a : (M, N) array_like
-		    Left hand side matrix (2-D array).
-		b : (M,) or (M, K) array_like
-		    Right hand side matrix or vector (1-D or 2-D array).
-		cond : float, optional
-		    Cutoff for 'small' singular values; used to determine effective
-		    rank of a. Singular values smaller than
-		    ``rcond * largest_singular_value`` are considered zero.
-		overwrite_a : bool, optional
-		    Discard data in `a` (may enhance performance). Default is False.
-		overwrite_b : bool, optional
-		    Discard data in `b` (may enhance performance). Default is False.
-		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
-		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		lapack_driver: str, optional
-		    Which LAPACK driver is used to solve the least-squares problem.
-		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
-		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
-		    faster on many problems.  ``'gelss'`` was used historically.  It is
-		    generally slow but uses less memory.
-		
-		    .. versionadded:: 0.17.0
-		
-		Returns
-		-------
-		x : (N,) or (N, K) ndarray
-		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : () or (1,) or (K,) ndarray
-		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``> M``, or ``'gelsy'`` is used,
-		    this is an empty array. If b was 1-D, this is an (1,) shape array,
-		    otherwise the shape is (K,).
-		rank : int
-		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray or None
-		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
-		
-		Raises
-		------
-		LinAlgError
-		    If computation does not converge.
-		
-		ValueError
-		    When parameters are wrong.
-		
-		See Also
+		Examples
 		--------
-		optimize.nnls : linear least squares with non-negativity constraint
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lgmres
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> b = np.array([2, 4, -1], dtype=float)
+		>>> x, exitCode = lgmres(A, b)
+		>>> print(exitCode)            # 0 indicates successful convergence
+		0
+		>>> np.allclose(A.dot(x), b)
+		True
 	**/
-	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
+	static public function lgmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?inner_m:Dynamic, ?outer_k:Dynamic, ?outer_v:Dynamic, ?store_outer_Av:Dynamic, ?prepend_outer_v:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Make a linear system Ax=b
 		
@@ -247,8 +292,6 @@ package scipy.sparse.linalg.isolve.lgmres;
 		    initial guess to iterative method
 		b : array_like
 		    right hand side
-		xtype : {'f', 'd', 'F', 'D', None}, optional
-		    dtype of the x vector
 		
 		Returns
 		-------
@@ -265,134 +308,6 @@ package scipy.sparse.linalg.isolve.lgmres;
 		        converts the solution vector to the appropriate
 		        type and dimensions (e.g. (N,1) matrix)
 	**/
-	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic, ?xtype:Dynamic):Dynamic;
+	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		qr_insert(Q, R, u, k, which='row', rcond=None, overwrite_qru=False, check_finite=True)
-		
-		QR update on row or column insertions
-		
-		If ``A = Q R`` is the QR factorization of ``A``, return the QR
-		factorization of ``A`` where rows or columns have been inserted starting
-		at row or column ``k``.
-		
-		Parameters
-		----------
-		Q : (M, M) array_like
-		    Unitary/orthogonal matrix from the QR decomposition of A.
-		R : (M, N) array_like
-		    Upper triangular matrix from the QR decomposition of A.
-		u : (N,), (p, N), (M,), or (M, p) array_like
-		    Rows or columns to insert
-		k : int
-		    Index before which `u` is to be inserted.
-		which: {'row', 'col'}, optional
-		    Determines if rows or columns will be inserted, defaults to 'row'
-		rcond : float
-		    Lower bound on the reciprocal condition number of ``Q`` augmented with
-		    ``u/||u||`` Only used when updating economic mode (thin, (M,N) (N,N))
-		    decompositions.  If None, machine precision is used.  Defaults to
-		    None.
-		overwrite_qru : bool, optional
-		    If True, consume Q, R, and u, if possible, while performing the update,
-		    otherwise make copies as necessary. Defaults to False.
-		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
-		    Disabling may give a performance gain, but may result in problems
-		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		    Default is True.
-		
-		Returns
-		-------
-		Q1 : ndarray
-		    Updated unitary/orthogonal factor
-		R1 : ndarray
-		    Updated upper triangular factor
-		
-		Raises
-		------
-		LinAlgError :
-		    If updating a (M,N) (N,N) factorization and the reciprocal condition
-		    number of Q augmented with u/||u|| is smaller than rcond.
-		
-		See Also
-		--------
-		qr, qr_multiply, qr_delete, qr_update
-		
-		Notes
-		-----
-		This routine does not guarantee that the diagonal entries of ``R1`` are
-		positive.
-		
-		.. versionadded:: 0.16.0
-		
-		References
-		----------
-		
-		.. [1] Golub, G. H. & Van Loan, C. F. Matrix Computations, 3rd Ed.
-		       (Johns Hopkins University Press, 1996).
-		
-		.. [2] Daniel, J. W., Gragg, W. B., Kaufman, L. & Stewart, G. W.
-		       Reorthogonalization and stable algorithms for updating the
-		       Gram-Schmidt QR factorization. Math. Comput. 30, 772-795 (1976).
-		
-		.. [3] Reichel, L. & Gragg, W. B. Algorithm 686: FORTRAN Subroutines for
-		       Updating the QR Decomposition. ACM Trans. Math. Softw. 16, 369-377
-		       (1990).
-		
-		Examples
-		--------
-		>>> from scipy import linalg
-		>>> a = np.array([[  3.,  -2.,  -2.],
-		...               [  6.,  -7.,   4.],
-		...               [  7.,   8.,  -6.]])
-		>>> q, r = linalg.qr(a)
-		
-		Given this QR decomposition, update q and r when 2 rows are inserted.
-		
-		>>> u = np.array([[  6.,  -9.,  -3.],
-		...               [ -3.,  10.,   1.]])
-		>>> q1, r1 = linalg.qr_insert(q, r, u, 2, 'row')
-		>>> q1
-		array([[-0.25445668,  0.02246245,  0.18146236, -0.72798806,  0.60979671],  # may vary (signs)
-		       [-0.50891336,  0.23226178, -0.82836478, -0.02837033, -0.00828114],
-		       [-0.50891336,  0.35715302,  0.38937158,  0.58110733,  0.35235345],
-		       [ 0.25445668, -0.52202743, -0.32165498,  0.36263239,  0.65404509],
-		       [-0.59373225, -0.73856549,  0.16065817, -0.0063658 , -0.27595554]])
-		>>> r1
-		array([[-11.78982612,   6.44623587,   3.81685018],  # may vary (signs)
-		       [  0.        , -16.01393278,   3.72202865],
-		       [  0.        ,   0.        ,  -6.13010256],
-		       [  0.        ,   0.        ,   0.        ],
-		       [  0.        ,   0.        ,   0.        ]])
-		
-		The update is equivalent, but faster than the following.
-		
-		>>> a1 = np.insert(a, 2, u, 0)
-		>>> a1
-		array([[  3.,  -2.,  -2.],
-		       [  6.,  -7.,   4.],
-		       [  6.,  -9.,  -3.],
-		       [ -3.,  10.,   1.],
-		       [  7.,   8.,  -6.]])
-		>>> q_direct, r_direct = linalg.qr(a1)
-		
-		Check that we have equivalent results:
-		
-		>>> np.dot(q1, r1)
-		array([[  3.,  -2.,  -2.],
-		       [  6.,  -7.,   4.],
-		       [  6.,  -9.,  -3.],
-		       [ -3.,  10.,   1.],
-		       [  7.,   8.,  -6.]])
-		
-		>>> np.allclose(np.dot(q1, r1), a1)
-		True
-		
-		And the updated Q is still unitary:
-		
-		>>> np.allclose(np.dot(q1.T, q1), np.eye(5))
-		True
-	**/
-	static public function qr_insert(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.gen_logging_ops;
 @:pythonImport("tensorflow.python.ops.gen_logging_ops") extern class Gen_logging_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -29,6 +29,38 @@ package tensorflow.python.ops.gen_logging_ops;
 	**/
 	static public function _assert(condition:Dynamic, data:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function _assert
+	**/
+	static public function _assert_eager_fallback(condition:Dynamic, data:Dynamic, ?summarize:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public var _op_def_lib : Dynamic;
+	/**
+		Prints a list of tensors.
+		
+		Passes `input` through to `output` and prints `data` when evaluating.
+		
+		Args:
+		  input: A `Tensor`. The tensor passed to `output`
+		  data: A list of `Tensor` objects.
+		    A list of tensors to print out when op is evaluated.
+		  message: An optional `string`. Defaults to `""`.
+		    A string, prefix of the error message.
+		  first_n: An optional `int`. Defaults to `-1`.
+		    Only log `first_n` number of times. -1 disables logging.
+		  summarize: An optional `int`. Defaults to `3`.
+		    Only print this many entries of each tensor.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function _print(input:Dynamic, data:Dynamic, ?message:Dynamic, ?first_n:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function _print
+	**/
+	static public function _print_eager_fallback(input:Dynamic, data:Dynamic, ?message:Dynamic, ?first_n:Dynamic, ?summarize:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Outputs a `Summary` protocol buffer with audio.
 		
 		The summary has up to `max_outputs` summary values containing audio. The
@@ -53,9 +85,14 @@ package tensorflow.python.ops.gen_logging_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`. Scalar. Serialized `Summary` protocol buffer.
+		  A `Tensor` of type `string`.
 	**/
-	static public function _audio_summary(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic):Dynamic;
+	static public function audio_summary(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function audio_summary
+	**/
+	static public function audio_summary_eager_fallback(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with audio.
 		
@@ -82,9 +119,31 @@ package tensorflow.python.ops.gen_logging_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`. Scalar. Serialized `Summary` protocol buffer.
+		  A `Tensor` of type `string`.
 	**/
-	static public function _audio_summary_v2(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic):Dynamic;
+	static public function audio_summary_v2(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function audio_summary_v2
+	**/
+	static public function audio_summary_v2_eager_fallback(tag:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with a histogram.
 		
@@ -97,14 +156,19 @@ package tensorflow.python.ops.gen_logging_ops;
 		Args:
 		  tag: A `Tensor` of type `string`.
 		    Scalar.  Tag to use for the `Summary.Value`.
-		  values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		    Any shape. Values to use to build the histogram.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`. Scalar. Serialized `Summary` protocol buffer.
+		  A `Tensor` of type `string`.
 	**/
-	static public function _histogram_summary(tag:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	static public function histogram_summary(tag:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function histogram_summary
+	**/
+	static public function histogram_summary_eager_fallback(tag:Dynamic, values:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with images.
 		
@@ -136,7 +200,7 @@ package tensorflow.python.ops.gen_logging_ops;
 		   generated sequentially as '*tag* /image/0', '*tag* /image/1', etc.
 		
 		The `bad_color` argument is the color to use in the generated images for
-		non-finite input values.  It is a `unit8` 1-D tensor of length `channels`.
+		non-finite input values.  It is a `uint8` 1-D tensor of length `channels`.
 		Each element must be in the range `[0, 255]` (It represents the value of a
 		pixel in the output image).  Non-finite values in the input tensor are
 		replaced by this tensor in the output image.  The default value is the color
@@ -145,7 +209,7 @@ package tensorflow.python.ops.gen_logging_ops;
 		Args:
 		  tag: A `Tensor` of type `string`.
 		    Scalar. Used to build the `tag` attribute of the summary values.
-		  tensor: A `Tensor`. Must be one of the following types: `uint8`, `float32`, `half`.
+		  tensor: A `Tensor`. Must be one of the following types: `uint8`, `float32`, `half`, `float64`.
 		    4-D of shape `[batch_size, height, width, channels]` where
 		    `channels` is 1, 3, or 4.
 		  max_images: An optional `int` that is `>= 1`. Defaults to `3`.
@@ -155,9 +219,14 @@ package tensorflow.python.ops.gen_logging_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`. Scalar. Serialized `Summary` protocol buffer.
+		  A `Tensor` of type `string`.
 	**/
-	static public function _image_summary(tag:Dynamic, tensor:Dynamic, ?max_images:Dynamic, ?bad_color:Dynamic, ?name:Dynamic):Dynamic;
+	static public function image_summary(tag:Dynamic, tensor:Dynamic, ?max_images:Dynamic, ?bad_color:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function image_summary
+	**/
+	static public function image_summary_eager_fallback(tag:Dynamic, tensor:Dynamic, ?max_images:Dynamic, ?bad_color:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Merges summaries.
 		
@@ -176,31 +245,34 @@ package tensorflow.python.ops.gen_logging_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`. Scalar. Serialized `Summary` protocol buffer.
+		  A `Tensor` of type `string`.
 	**/
-	static public function _merge_summary(inputs:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _op_def_lib : Dynamic;
+	static public function merge_summary(inputs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Prints a list of tensors.
+		This is the slowpath function for Eager mode.
+		This is for function merge_summary
+	**/
+	static public function merge_summary_eager_fallback(inputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Prints a string scalar.
 		
-		Passes `input` through to `output` and prints `data` when evaluating.
+		Prints a string scalar to the desired output_stream.
 		
 		Args:
-		  input: A `Tensor`. The tensor passed to `output`
-		  data: A list of `Tensor` objects.
-		    A list of tensors to print out when op is evaluated.
-		  message: An optional `string`. Defaults to `""`.
-		    A string, prefix of the error message.
-		  first_n: An optional `int`. Defaults to `-1`.
-		    Only log `first_n` number of times. -1 disables logging.
-		  summarize: An optional `int`. Defaults to `3`.
-		    Only print this many entries of each tensor.
+		  input: A `Tensor` of type `string`. The string scalar to print.
+		  output_stream: An optional `string` from: `"stdout", "stderr", "log(info)", "log(warning)", "log(error)"`. Defaults to `"stderr"`.
+		    A string specifying the output stream or logging level to print to.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  The unmodified `input` tensor
+		  The created Operation.
 	**/
-	static public function _print(input:Dynamic, data:Dynamic, ?message:Dynamic, ?first_n:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	static public function print_v2(input:Dynamic, ?output_stream:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function print_v2
+	**/
+	static public function print_v2_eager_fallback(input:Dynamic, ?output_stream:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with scalar values.
 		
@@ -209,17 +281,25 @@ package tensorflow.python.ops.gen_logging_ops;
 		
 		Args:
 		  tags: A `Tensor` of type `string`. Tags for the summary.
-		  values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  values: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		    Same shape as `tags.  Values for the summary.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `string`.
-		  Scalar.  Serialized `Summary` protocol buffer.
 	**/
-	static public function _scalar_summary(tags:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	static public function scalar_summary(tags:Dynamic, values:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function scalar_summary
+	**/
+	static public function scalar_summary_eager_fallback(tags:Dynamic, values:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with a tensor.
+		
+		This op is being phased out in favor of TensorSummaryV2, which lets callers pass
+		a tag as well as a serialized SummaryMetadata proto string that contains
+		plugin-specific data. We will keep this op to maintain backwards compatibility.
 		
 		Args:
 		  tensor: A `Tensor`. A tensor to serialize.
@@ -233,5 +313,52 @@ package tensorflow.python.ops.gen_logging_ops;
 		Returns:
 		  A `Tensor` of type `string`.
 	**/
-	static public function _tensor_summary(tensor:Dynamic, ?description:Dynamic, ?labels:Dynamic, ?display_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tensor_summary(tensor:Dynamic, ?description:Dynamic, ?labels:Dynamic, ?display_name:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_summary
+	**/
+	static public function tensor_summary_eager_fallback(tensor:Dynamic, ?description:Dynamic, ?labels:Dynamic, ?display_name:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Outputs a `Summary` protocol buffer with a tensor and per-plugin data.
+		
+		Args:
+		  tag: A `Tensor` of type `string`.
+		    A string attached to this summary. Used for organization in TensorBoard.
+		  tensor: A `Tensor`. A tensor to serialize.
+		  serialized_summary_metadata: A `Tensor` of type `string`.
+		    A serialized SummaryMetadata proto. Contains plugin
+		    data.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`.
+	**/
+	static public function tensor_summary_v2(tag:Dynamic, tensor:Dynamic, serialized_summary_metadata:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function tensor_summary_v2
+	**/
+	static public function tensor_summary_v2_eager_fallback(tag:Dynamic, tensor:Dynamic, serialized_summary_metadata:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Provides the time since epoch in seconds.
+		
+		Returns the timestamp as a `float64` for seconds since the Unix epoch.
+		
+		Note: the timestamp is computed when the op is executed, not when it is added
+		to the graph.
+		
+		Args:
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float64`.
+	**/
+	static public function timestamp(?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function timestamp
+	**/
+	static public function timestamp_eager_fallback(?name:Dynamic, ?ctx:Dynamic):Dynamic;
 }

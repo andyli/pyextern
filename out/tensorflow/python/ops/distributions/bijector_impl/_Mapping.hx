@@ -5,7 +5,7 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -100,14 +100,15 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		Args:
 		  x: `Tensor`. Forward.
 		  y: `Tensor`. Inverse.
-		  ildj: `Tensor`. Inverse log det Jacobian.
+		  ildj_map: `Dictionary`. This is a mapping from event_ndims to a `Tensor`
+		    representing the inverse log det jacobian.
 		  kwargs: Python dictionary. Extra args supplied to
 		    forward/inverse/etc functions.
 		
 		Returns:
 		  mapping: New instance of _Mapping.
 	**/
-	static public function __new__(cls:Dynamic, ?x:Dynamic, ?y:Dynamic, ?ildj:Dynamic, ?kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?x:Dynamic, ?y:Dynamic, ?ildj_map:Dynamic, ?kwargs:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -146,7 +147,7 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -165,9 +166,13 @@ package tensorflow.python.ops.distributions.bijector_impl;
 	**/
 	public function _merge(old:Dynamic, _new:Dynamic):Dynamic;
 	/**
+		Helper to merge two dictionaries.
+	**/
+	public function _merge_dicts(?old:Dynamic, ?_new:Dynamic):Dynamic;
+	/**
 		Return a new _Mapping object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
@@ -176,7 +181,7 @@ package tensorflow.python.ops.distributions.bijector_impl;
 	/**
 		Alias for field number 2
 	**/
-	public var ildj : Dynamic;
+	public var ildj_map : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -192,7 +197,8 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		Args:
 		  x: `Tensor`. Forward.
 		  y: `Tensor`. Inverse.
-		  ildj: `Tensor`. Inverse log det Jacobian.
+		  ildj_map: `Dictionary`. This is a mapping from event_ndims to a `Tensor`
+		    representing the inverse log det jacobian.
 		  kwargs: Python dictionary. Extra args supplied to
 		    forward/inverse/etc functions.
 		  mapping: Instance of _Mapping to merge. Can only be specified if no other
@@ -204,7 +210,7 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		Raises:
 		  ValueError: if mapping and any other arg is not `None`.
 	**/
-	public function merge(?x:Dynamic, ?y:Dynamic, ?ildj:Dynamic, ?kwargs:Dynamic, ?mapping:Dynamic):Dynamic;
+	public function merge(?x:Dynamic, ?y:Dynamic, ?ildj_map:Dynamic, ?kwargs:Dynamic, ?mapping:Dynamic):Dynamic;
 	/**
 		Alias for field number 0
 	**/

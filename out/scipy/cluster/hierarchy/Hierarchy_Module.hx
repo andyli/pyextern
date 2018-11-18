@@ -23,18 +23,18 @@ package scipy.cluster.hierarchy;
 	static public function _convert_to_bool(X:Dynamic):Dynamic;
 	static public function _convert_to_double(X:Dynamic):Dynamic;
 	/**
-		Copies the array if its base points to a parent array.
+		Copy the array if its base points to a parent array.
 	**/
 	static public function _copy_array_if_base_present(a:Dynamic):Dynamic;
 	/**
-		Accepts a tuple of arrays T. Copies the array T[i] if its base array
+		Accept a tuple of arrays T. Copies the array T[i] if its base array
 		points to an actual array. Otherwise, the reference is just copied.
 		This is useful if the arrays are being passed to a C function that
 		does not do proper striding.
 	**/
 	static public function _copy_arrays_if_base_present(T:Dynamic):Dynamic;
 	/**
-		Calculates the endpoints of the links as well as the labels for the
+		Calculate the endpoints of the links as well as the labels for the
 		the dendrogram rooted at the node with index i. iv is the independent
 		variable value to plot the left-most leaf node below the root node i
 		(if orientation='top', this would be the left-most x value where the
@@ -78,7 +78,7 @@ package scipy.cluster.hierarchy;
 	static public function _get_tick_text_size(p:Dynamic):Dynamic;
 	static public var _link_line_colors : Dynamic;
 	/**
-		Returns clustering nodes in bottom-up order by distance.
+		Return clustering nodes in bottom-up order by distance.
 		
 		Parameters
 		----------
@@ -93,19 +93,29 @@ package scipy.cluster.hierarchy;
 	static public function _order_cluster_tree(Z:Dynamic):Array<Dynamic>;
 	static public function _plot_dendrogram(icoords:Dynamic, dcoords:Dynamic, ivl:Dynamic, p:Dynamic, n:Dynamic, mh:Dynamic, orientation:Dynamic, no_labels:Dynamic, color_list:Dynamic, ?leaf_font_size:Dynamic, ?leaf_rotation:Dynamic, ?contraction_marks:Dynamic, ?ax:Dynamic, ?above_threshold_color:Dynamic):Dynamic;
 	/**
-		Generates a random distance matrix stored in condensed form. A
-		pnts * (pnts - 1) / 2 sized vector is returned.
+		Generate a random distance matrix stored in condensed form.
+		
+		Parameters
+		----------
+		pnts : int
+		    The number of points in the distance matrix. Has to be at least 2.
+		
+		Returns
+		-------
+		D : ndarray
+		    A ``pnts * (pnts - 1) / 2`` sized vector is returned.
 	**/
 	static public function _randdm(pnts:Dynamic):Dynamic;
 	/**
-		Removes duplicates AND preserves the original order of the elements.
+		Remove duplicates AND preserve the original order of the elements.
+		
 		The set class is not guaranteed to do this.
 	**/
 	static public function _remove_dups(L:Dynamic):Dynamic;
 	static public function _warning(s:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Performs average/UPGMA linkage on a condensed distance matrix
+		Perform average/UPGMA linkage on a condensed distance matrix.
 		
 		Parameters
 		----------
@@ -126,7 +136,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function average(y:Dynamic):Dynamic;
 	/**
-		Performs centroid/UPGMC linkage.
+		Perform centroid/UPGMC linkage.
 		
 		See `linkage` for more information on the input matrix,
 		return structure, and algorithm.
@@ -166,7 +176,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function centroid(y:Dynamic):Dynamic;
 	/**
-		Performs complete/max/farthest point linkage on a condensed distance matrix
+		Perform complete/max/farthest point linkage on a condensed distance matrix.
 		
 		Parameters
 		----------
@@ -188,7 +198,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function complete(y:Dynamic):Dynamic;
 	/**
-		Calculates the cophenetic distances between each observation in
+		Calculate the cophenetic distances between each observation in
 		the hierarchical clustering defined by the linkage ``Z``.
 		
 		Suppose ``p`` and ``q`` are original observations in
@@ -221,7 +231,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function cophenet(Z:Dynamic, ?Y:Dynamic):Dynamic;
 	/**
-		Checks for correspondence between linkage and condensed distance matrices
+		Check for correspondence between linkage and condensed distance matrices.
 		
 		They must have the same number of original observations for
 		the check to succeed.
@@ -262,10 +272,10 @@ package scipy.cluster.hierarchy;
 		cutree : array
 		    An array indicating group membership at each agglomeration step.  I.e.,
 		    for a full cut tree, in the first column each data point is in its own
-		    cluster.  At the next step, two nodes are merged.  Finally all singleton
-		    and non-singleton clusters are in one group.  If `n_clusters` or
-		    `height` is given, the columns correspond to the columns of `n_clusters` or
-		    `height`.
+		    cluster.  At the next step, two nodes are merged.  Finally all
+		    singleton and non-singleton clusters are in one group.  If `n_clusters`
+		    or `height` is given, the columns correspond to the columns of
+		    `n_clusters` or `height`.
 		
 		Examples
 		--------
@@ -288,7 +298,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function cut_tree(Z:Dynamic, ?n_clusters:Dynamic, ?height:Dynamic):Array<Dynamic>;
 	/**
-		Plots the hierarchical clustering as a dendrogram.
+		Plot the hierarchical clustering as a dendrogram.
 		
 		The dendrogram illustrates how each cluster is
 		composed by drawing a U-shaped link between a non-singleton
@@ -526,7 +536,8 @@ package scipy.cluster.hierarchy;
 		>>> fig, axes = plt.subplots(1, 2, figsize=(8, 3))
 		>>> dn1 = hierarchy.dendrogram(Z, ax=axes[0], above_threshold_color='y',
 		...                            orientation='top')
-		>>> dn2 = hierarchy.dendrogram(Z, ax=axes[1], above_threshold_color='#bcbddc',
+		>>> dn2 = hierarchy.dendrogram(Z, ax=axes[1],
+		...                            above_threshold_color='#bcbddc',
 		...                            orientation='right')
 		>>> hierarchy.set_link_color_palette(None)  # reset to default after use
 		>>> plt.show()
@@ -534,7 +545,7 @@ package scipy.cluster.hierarchy;
 	static public function dendrogram(Z:Dynamic, ?p:Dynamic, ?truncate_mode:Dynamic, ?color_threshold:Dynamic, ?get_leaves:Dynamic, ?orientation:Dynamic, ?labels:Dynamic, ?count_sort:Dynamic, ?distance_sort:Dynamic, ?show_leaf_counts:Dynamic, ?no_plot:Dynamic, ?no_labels:Dynamic, ?leaf_font_size:Dynamic, ?leaf_rotation:Dynamic, ?leaf_label_func:Dynamic, ?show_contracted:Dynamic, ?link_color_func:Dynamic, ?ax:Dynamic, ?above_threshold_color:Dynamic):python.Dict<Dynamic, Dynamic>;
 	static public var division : Dynamic;
 	/**
-		Forms flat clusters from the hierarchical clustering defined by
+		Form flat clusters from the hierarchical clustering defined by
 		the given linkage matrix.
 		
 		Parameters
@@ -548,23 +559,27 @@ package scipy.cluster.hierarchy;
 		    The criterion to use in forming flat clusters. This can
 		    be any of the following values:
 		
-		      ``inconsistent`` : If a cluster node and all its
+		      ``inconsistent`` : 
+		          If a cluster node and all its
 		          descendants have an inconsistent value less than or equal
 		          to `t` then all its leaf descendants belong to the
 		          same flat cluster. When no non-singleton cluster meets
 		          this criterion, every node is assigned to its own
 		          cluster. (Default)
 		
-		      ``distance`` : Forms flat clusters so that the original
+		      ``distance`` : 
+		          Forms flat clusters so that the original
 		          observations in each flat cluster have no greater a
 		          cophenetic distance than `t`.
 		
-		      ``maxclust`` : Finds a minimum threshold ``r`` so that
+		      ``maxclust`` : 
+		          Finds a minimum threshold ``r`` so that
 		          the cophenetic distance between any two original
 		          observations in the same flat cluster is no more than
 		          ``r`` and no more than `t` flat clusters are formed.
 		
-		      ``monocrit`` : Forms a flat cluster from a cluster node c
+		      ``monocrit`` : 
+		          Forms a flat cluster from a cluster node c
 		          with index i when ``monocrit[j] <= t``.
 		
 		          For example, to threshold on the maximum mean distance
@@ -574,7 +589,8 @@ package scipy.cluster.hierarchy;
 		              MR = maxRstat(Z, R, 3)
 		              cluster(Z, t=0.8, criterion='monocrit', monocrit=MR)
 		
-		      ``maxclust_monocrit`` : Forms a flat cluster from a
+		      ``maxclust_monocrit`` : 
+		          Forms a flat cluster from a
 		          non-singleton cluster node ``c`` when ``monocrit[i] <=
 		          r`` for all cluster indices ``i`` below and including
 		          ``c``. ``r`` is minimized such that no more than ``t``
@@ -661,7 +677,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function fclusterdata(X:Dynamic, t:Dynamic, ?criterion:Dynamic, ?metric:Dynamic, ?depth:Dynamic, ?method:Dynamic, ?R:Dynamic):Dynamic;
 	/**
-		Converts a linkage matrix generated by MATLAB(TM) to a new
+		Convert a linkage matrix generated by MATLAB(TM) to a new
 		linkage matrix compatible with this module.
 		
 		The conversion does two things:
@@ -688,7 +704,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function from_mlab_linkage(Z:Dynamic):Dynamic;
 	/**
-		Calculates inconsistency statistics on a linkage matrix.
+		Calculate inconsistency statistics on a linkage matrix.
 		
 		Parameters
 		----------
@@ -702,7 +718,7 @@ package scipy.cluster.hierarchy;
 		Returns
 		-------
 		R : ndarray
-		    A :math:`(n-1)` by 5 matrix where the ``i``'th row contains the link
+		    A :math:`(n-1)` by 4 matrix where the ``i``'th row contains the link
 		    statistics for the non-singleton cluster ``i``. The link statistics are
 		    computed over the link heights for links :math:`d` levels below the
 		    cluster ``i``. ``R[i,0]`` and ``R[i,1]`` are the mean and standard
@@ -716,10 +732,33 @@ package scipy.cluster.hierarchy;
 		-----
 		This function behaves similarly to the MATLAB(TM) ``inconsistent``
 		function.
+		
+		Examples
+		--------
+		>>> from scipy.cluster.hierarchy import inconsistent, linkage
+		>>> from matplotlib import pyplot as plt
+		>>> X = [[i] for i in [2, 8, 0, 4, 1, 9, 9, 0]]
+		>>> Z = linkage(X, 'ward')
+		>>> print(Z)
+		[[ 5.          6.          0.          2.        ]
+		 [ 2.          7.          0.          2.        ]
+		 [ 0.          4.          1.          2.        ]
+		 [ 1.          8.          1.15470054  3.        ]
+		 [ 9.         10.          2.12132034  4.        ]
+		 [ 3.         12.          4.11096096  5.        ]
+		 [11.         13.         14.07183949  8.        ]]
+		>>> inconsistent(Z)
+		array([[ 0.        ,  0.        ,  1.        ,  0.        ],
+		       [ 0.        ,  0.        ,  1.        ,  0.        ],
+		       [ 1.        ,  0.        ,  1.        ,  0.        ],
+		       [ 0.57735027,  0.81649658,  2.        ,  0.70710678],
+		       [ 1.04044011,  1.06123822,  3.        ,  1.01850858],
+		       [ 3.11614065,  1.40688837,  2.        ,  0.70710678],
+		       [ 6.44583366,  6.76770586,  3.        ,  1.12682288]])
 	**/
 	static public function inconsistent(Z:Dynamic, ?d:Dynamic):Dynamic;
 	/**
-		Determines if two different cluster assignments are equivalent.
+		Determine if two different cluster assignments are equivalent.
 		
 		Parameters
 		----------
@@ -736,7 +775,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function is_isomorphic(T1:Dynamic, T2:Dynamic):Bool;
 	/**
-		Returns True if the linkage passed is monotonic.
+		Return True if the linkage passed is monotonic.
 		
 		The linkage is monotonic if for every cluster :math:`s` and :math:`t`
 		joined, the distance between them is no less than the distance
@@ -754,7 +793,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function is_monotonic(Z:Dynamic):Bool;
 	/**
-		Returns True if the inconsistency matrix passed is valid.
+		Return True if the inconsistency matrix passed is valid.
 		
 		It must be a :math:`n` by 4 array of doubles. The standard
 		deviations ``R[:,1]`` must be nonnegative. The link counts
@@ -781,7 +820,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function is_valid_im(R:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Bool;
 	/**
-		Checks the validity of a linkage matrix.
+		Check the validity of a linkage matrix.
 		
 		A linkage matrix is valid if it is a two dimensional array (type double)
 		with :math:`n` rows and 4 columns.  The first two columns must contain
@@ -817,7 +856,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function is_valid_linkage(Z:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Bool;
 	/**
-		Returns the root nodes in a hierarchical clustering.
+		Return the root nodes in a hierarchical clustering.
 		
 		Returns the root nodes in a hierarchical clustering corresponding
 		to a cut defined by a flat cluster assignment vector ``T``. See
@@ -867,7 +906,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function leaders(Z:Dynamic, T:Dynamic):Dynamic;
 	/**
-		Returns a list of leaf node ids
+		Return a list of leaf node ids.
 		
 		The return corresponds to the observation vector index as it appears
 		in the tree from left to right. Z is a linkage matrix.
@@ -885,13 +924,13 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function leaves_list(Z:Dynamic):Dynamic;
 	/**
-		Performs hierarchical/agglomerative clustering.
+		Perform hierarchical/agglomerative clustering.
 		
-		The input y may be either a 1d compressed distance matrix
+		The input y may be either a 1d condensed distance matrix
 		or a 2d array of observation vectors.
 		
-		If y is a 1d compressed distance matrix,
-		then y must be a :math:`{n \choose 2}` sized
+		If y is a 1d condensed distance matrix,
+		then y must be a :math:`\binom{n}{2}` sized
 		vector where n is the number of original observations paired
 		in the distance matrix. The behavior of this function is very
 		similar to the MATLAB linkage function.
@@ -1011,7 +1050,7 @@ package scipy.cluster.hierarchy;
 		
 		Warning: When the minimum distance pair in the forest is chosen, there
 		may be two or more pairs with the same minimum distance. This
-		implementation may chose a different minimum than the MATLAB
+		implementation may choose a different minimum than the MATLAB
 		version.
 		
 		Parameters
@@ -1020,9 +1059,9 @@ package scipy.cluster.hierarchy;
 		    A condensed distance matrix. A condensed distance matrix
 		    is a flat array containing the upper triangular of the distance matrix.
 		    This is the form that ``pdist`` returns. Alternatively, a collection of
-		    :math:`m` observation vectors in :math:`n` dimensions may be passed as an
-		    :math:`m` by :math:`n` array. All elements of the condensed distance matrix
-		    must be finite, i.e. no NaNs or infs.
+		    :math:`m` observation vectors in :math:`n` dimensions may be passed as
+		    an :math:`m` by :math:`n` array. All elements of the condensed distance
+		    matrix must be finite, i.e. no NaNs or infs.
 		method : str, optional
 		    The linkage algorithm to use. See the ``Linkage Methods`` section below
 		    for full descriptions.
@@ -1031,6 +1070,14 @@ package scipy.cluster.hierarchy;
 		    observation vectors; ignored otherwise. See the ``pdist``
 		    function for a list of valid distance metrics. A custom distance
 		    function can also be used.
+		optimal_ordering : bool, optional
+		    If True, the linkage matrix will be reordered so that the distance
+		    between successive leaves is minimal. This results in a more intuitive
+		    tree structure when the data are visualized. defaults to False, because
+		    this algorithm can be slow, particularly on large datasets [2]_. See 
+		    also the `optimal_leaf_ordering` function.
+		    
+		    .. versionadded:: 1.0.0
 		
 		Returns
 		-------
@@ -1062,11 +1109,29 @@ package scipy.cluster.hierarchy;
 		----------
 		.. [1] Daniel Mullner, "Modern hierarchical, agglomerative clustering
 		       algorithms", :arXiv:`1109.2378v1`.
+		.. [2] Ziv Bar-Joseph, David K. Gifford, Tommi S. Jaakkola, "Fast optimal
+		       leaf ordering for hierarchical clustering", 2001. Bioinformatics
+		       https://doi.org/10.1093/bioinformatics/17.suppl_1.S22
+		
+		Examples
+		--------
+		>>> from scipy.cluster.hierarchy import dendrogram, linkage
+		>>> from matplotlib import pyplot as plt
+		>>> X = [[i] for i in [2, 8, 0, 4, 1, 9, 9, 0]]
+		
+		>>> Z = linkage(X, 'ward')
+		>>> fig = plt.figure(figsize=(25, 10))
+		>>> dn = dendrogram(Z)
+		
+		>>> Z = linkage(X, 'single')
+		>>> fig = plt.figure(figsize=(25, 10))
+		>>> dn = dendrogram(Z)
+		>>> plt.show()
 	**/
-	static public function linkage(y:Dynamic, ?method:Dynamic, ?metric:Dynamic):Dynamic;
+	static public function linkage(y:Dynamic, ?method:Dynamic, ?metric:Dynamic, ?optimal_ordering:Dynamic):Dynamic;
 	/**
-		Returns the maximum statistic for each non-singleton cluster and
-		its descendents.
+		Return the maximum statistic for each non-singleton cluster and its
+		descendents.
 		
 		Parameters
 		----------
@@ -1089,7 +1154,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function maxRstat(Z:Dynamic, R:Dynamic, i:Dynamic):Dynamic;
 	/**
-		Returns the maximum distance between any non-singleton cluster.
+		Return the maximum distance between any non-singleton cluster.
 		
 		Parameters
 		----------
@@ -1108,7 +1173,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function maxdists(Z:Dynamic):Dynamic;
 	/**
-		Returns the maximum inconsistency coefficient for each
+		Return the maximum inconsistency coefficient for each
 		non-singleton cluster and its descendents.
 		
 		Parameters
@@ -1126,7 +1191,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function maxinconsts(Z:Dynamic, R:Dynamic):Dynamic;
 	/**
-		Performs median/WPGMC linkage.
+		Perform median/WPGMC linkage.
 		
 		See `linkage` for more information on the return structure
 		and algorithm.
@@ -1167,8 +1232,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function median(y:Dynamic):Dynamic;
 	/**
-		Returns the number of original observations of the linkage matrix
-		passed.
+		Return the number of original observations of the linkage matrix passed.
 		
 		Parameters
 		----------
@@ -1181,6 +1245,43 @@ package scipy.cluster.hierarchy;
 		    The number of original observations in the linkage.
 	**/
 	static public function num_obs_linkage(Z:Dynamic):Int;
+	/**
+		Given a linkage matrix Z and distance, reorder the cut tree.
+		
+		Parameters
+		----------
+		Z : ndarray
+		    The hierarchical clustering encoded as a linkage matrix. See
+		    `linkage` for more information on the return structure and
+		    algorithm.
+		y : ndarray
+		    The condensed distance matrix from which Z was generated.
+		    Alternatively, a collection of m observation vectors in n
+		    dimensions may be passed as a m by n array.
+		metric : str or function, optional
+		    The distance metric to use in the case that y is a collection of
+		    observation vectors; ignored otherwise. See the ``pdist``
+		    function for a list of valid distance metrics. A custom distance
+		    function can also be used.
+		
+		Returns
+		-------
+		Z_ordered : ndarray
+		    A copy of the linkage matrix Z, reordered to minimize the distance
+		    between adjacent leaves.
+		
+		Examples
+		--------
+		>>> from scipy.cluster import hierarchy
+		>>> np.random.seed(23)
+		>>> X = np.random.randn(10,10)
+		>>> Z = hierarchy.ward(X)
+		>>> hierarchy.leaves_list(Z)
+		array([0, 5, 3, 9, 6, 8, 1, 4, 2, 7], dtype=int32)
+		>>> hierarchy.leaves_list(hierarchy.optimal_leaf_ordering(Z, X))
+		array([3, 9, 0, 5, 8, 2, 7, 4, 1, 6], dtype=int32)
+	**/
+	static public function optimal_leaf_ordering(Z:Dynamic, y:Dynamic, ?metric:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Set list of matplotlib color codes for use by dendrogram.
@@ -1217,8 +1318,8 @@ package scipy.cluster.hierarchy;
 		Examples
 		--------
 		>>> from scipy.cluster import hierarchy
-		>>> ytdist = np.array([662., 877., 255., 412., 996., 295., 468., 268., 400.,
-		...                    754., 564., 138., 219., 869., 669.])
+		>>> ytdist = np.array([662., 877., 255., 412., 996., 295., 468., 268.,
+		...                    400., 754., 564., 138., 219., 869., 669.])
 		>>> Z = hierarchy.linkage(ytdist, 'single')
 		>>> dn = hierarchy.dendrogram(Z, no_plot=True)
 		>>> dn['color_list']
@@ -1238,7 +1339,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function set_link_color_palette(palette:Dynamic):Dynamic;
 	/**
-		Performs single/min/nearest linkage on the condensed distance matrix ``y``
+		Perform single/min/nearest linkage on the condensed distance matrix ``y``.
 		
 		Parameters
 		----------
@@ -1259,7 +1360,7 @@ package scipy.cluster.hierarchy;
 	static public function single(y:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**
-		Converts a linkage matrix to a MATLAB(TM) compatible one.
+		Convert a linkage matrix to a MATLAB(TM) compatible one.
 		
 		Converts a linkage matrix ``Z`` generated by the linkage function
 		of this module to a MATLAB(TM) compatible one. The return linkage
@@ -1282,7 +1383,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function to_mlab_linkage(Z:Dynamic):Dynamic;
 	/**
-		Converts a linkage matrix into an easy-to-use tree object.
+		Convert a linkage matrix into an easy-to-use tree object.
 		
 		The reference to the root `ClusterNode` object is returned (by default).
 		
@@ -1339,7 +1440,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function to_tree(Z:Dynamic, ?rd:Dynamic):Dynamic;
 	/**
-		Performs Ward's linkage on a condensed distance matrix.
+		Perform Ward's linkage on a condensed distance matrix.
 		
 		See `linkage` for more information on the return structure
 		and algorithm.
@@ -1377,7 +1478,7 @@ package scipy.cluster.hierarchy;
 	**/
 	static public function ward(y:Dynamic):Dynamic;
 	/**
-		Performs weighted/WPGMA linkage on the condensed distance matrix.
+		Perform weighted/WPGMA linkage on the condensed distance matrix.
 		
 		See `linkage` for more information on the return
 		structure and algorithm.

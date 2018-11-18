@@ -25,7 +25,7 @@ package docutils.frontend;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -76,7 +76,7 @@ package docutils.frontend;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -351,7 +351,7 @@ package docutils.frontend;
 		If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 		In either case, this is followed by: for k, v in F.items(): D[k] = v
 	**/
-	public function update(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function update(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call the validator function and implement overrides on all applicable
 		settings.

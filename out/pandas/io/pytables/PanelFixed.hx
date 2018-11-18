@@ -8,7 +8,7 @@ package pandas.io.pytables;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -48,18 +48,18 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,7 +115,7 @@ package pandas.io.pytables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return a pretty representation of myself 
 	**/
@@ -163,21 +163,29 @@ package pandas.io.pytables;
 	static public var ndim : Dynamic;
 	public var nrows : Dynamic;
 	/**
-		Represents wide format panel data, stored as 3-dimensional array
+		 Represents wide format panel data, stored as 3-dimensional array
 		
-		Parameters
-		----------
-		data : ndarray (items x major x minor), or dict of DataFrames
-		items : Index or array-like
-		    axis=0
-		major_axis : Index or array-like
-		    axis=1
-		minor_axis : Index or array-like
-		    axis=2
-		dtype : dtype, default None
-		    Data type to force, otherwise infer
-		copy : boolean, default False
-		    Copy data from inputs. Only affects DataFrame / 2d ndarray input
+		.. deprecated:: 0.20.0
+		    The recommended way to represent 3-D data are with a MultiIndex on a
+		    DataFrame via the :attr:`~Panel.to_frame()` method or with the
+		    `xarray package <http://xarray.pydata.org/en/stable/>`__.
+		    Pandas provides a :attr:`~Panel.to_xarray()` method to automate this
+		    conversion.
+		
+		 Parameters
+		 ----------
+		 data : ndarray (items x major x minor), or dict of DataFrames
+		 items : Index or array-like
+		     axis=0
+		 major_axis : Index or array-like
+		     axis=1
+		 minor_axis : Index or array-like
+		     axis=2
+		 dtype : dtype, default None
+		     Data type to force, otherwise infer
+		 copy : boolean, default False
+		     Copy data from inputs. Only affects DataFrame / 2d ndarray input
+		 
 	**/
 	static public function obj_type(?data:Dynamic, ?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?copy:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public var pandas_kind : Dynamic;

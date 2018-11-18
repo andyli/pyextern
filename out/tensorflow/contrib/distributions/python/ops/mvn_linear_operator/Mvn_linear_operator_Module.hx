@@ -11,7 +11,11 @@ package tensorflow.contrib.distributions.python.ops.mvn_linear_operator;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Batched KL divergence `KL(a || b)` for multivariate Normals.
+		Batched KL divergence `KL(a || b)` for multivariate Normals. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed after 2018-10-01.
+		Instructions for updating:
+		The TensorFlow Distributions library has moved to TensorFlow Probability (https://github.com/tensorflow/probability). You should update all references to use `tfp.distributions` instead of `tf.contrib.distributions`.
 		
 		With `X`, `Y` both multivariate Normals in `R^k` with means `mu_a`, `mu_b` and
 		covariance `C_a`, `C_b` respectively,

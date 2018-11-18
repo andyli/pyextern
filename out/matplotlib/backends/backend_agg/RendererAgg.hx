@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_agg;
 @:pythonImport("matplotlib.backends.backend_agg", "RendererAgg") extern class RendererAgg {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package matplotlib.backends.backend_agg;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,7 +105,7 @@ package matplotlib.backends.backend_agg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -113,44 +113,47 @@ package matplotlib.backends.backend_agg;
 	/**
 		draw the text by converting them to paths using textpath module.
 		
-		*prop*
+		Parameters
+		----------
+		prop : `matplotlib.font_manager.FontProperties`
 		  font property
 		
-		*s*
+		s : str
 		  text to be converted
 		
-		*usetex*
+		usetex : bool
 		  If True, use matplotlib usetex mode.
 		
-		*ismath*
+		ismath : bool
 		  If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _draw_text_as_path(gc:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
 	/**
-		Get the font for text instance t, cacheing for efficiency
+		Get the font for text instance t, caching for efficiency
 	**/
 	public function _get_agg_font(prop:Dynamic):Dynamic;
-	public function _get_hinting_flag():Dynamic;
 	/**
 		return the text path and transform
 		
-		*prop*
+		Parameters
+		----------
+		prop : `matplotlib.font_manager.FontProperties`
 		  font property
 		
-		*s*
+		s : str
 		  text to be converted
 		
-		*usetex*
+		usetex : bool
 		  If True, use matplotlib usetex mode.
 		
-		*ismath*
+		ismath : bool
 		  If True, use mathtext parser. If "TeX", use *usetex* mode.
 	**/
 	public function _get_text_path_transform(x:Dynamic, y:Dynamic, s:Dynamic, prop:Dynamic, angle:Dynamic, ismath:Dynamic):Dynamic;
 	/**
 		This is a helper method (along with
 		:meth:`_iter_collection_raw_paths`) to make it easier to write
-		a space-efficent :meth:`draw_path_collection` implementation in a
+		a space-efficient :meth:`draw_path_collection` implementation in a
 		backend.
 		
 		This method yields all of the path, offset and graphics
@@ -175,7 +178,7 @@ package matplotlib.backends.backend_agg;
 	public function _iter_collection(gc:Dynamic, master_transform:Dynamic, all_transforms:Dynamic, path_ids:Dynamic, offsets:Dynamic, offsetTrans:Dynamic, facecolors:Dynamic, edgecolors:Dynamic, linewidths:Dynamic, linestyles:Dynamic, antialiaseds:Dynamic, urls:Dynamic, offset_position:Dynamic):Dynamic;
 	/**
 		This is a helper method (along with :meth:`_iter_collection`) to make
-		it easier to write a space-efficent :meth:`draw_path_collection`
+		it easier to write a space-efficient :meth:`draw_path_collection`
 		implementation in a backend.
 		
 		This method yields all of the base path/transform
@@ -206,47 +209,56 @@ package matplotlib.backends.backend_agg;
 		Is only currently used by :mod:`~matplotlib.backends.backend_svg`
 	**/
 	public function close_group(s:Dynamic):Dynamic;
-	static public var debug : Dynamic;
 	/**
 		Draw a Gouraud-shaded triangle.
 		
-		*points* is a 3x2 array of (x, y) points for the triangle.
+		Parameters
+		----------
+		points : array_like, shape=(3, 2)
+		    Array of (x, y) points for the triangle.
 		
-		*colors* is a 3x4 array of RGBA colors for each point of the
-		triangle.
+		colors : array_like, shape=(3, 4)
+		    RGBA colors for each point of the triangle.
 		
-		*transform* is an affine transform to apply to the points.
+		transform : `matplotlib.transforms.Transform`
+		    An affine transform to apply to the points.
 	**/
 	public function draw_gouraud_triangle(gc:Dynamic, points:Dynamic, colors:Dynamic, transform:Dynamic):Dynamic;
 	/**
 		Draws a series of Gouraud triangles.
 		
-		*points* is a Nx3x2 array of (x, y) points for the trianglex.
+		Parameters
+		----------
+		points : array_like, shape=(N, 3, 2)
+		    Array of *N* (x, y) points for the triangles.
 		
-		*colors* is a Nx3x4 array of RGBA colors for each point of the
-		triangles.
+		colors : array_like, shape=(N, 3, 4)
+		    Array of *N* RGBA colors for each point of the triangles.
 		
-		*transform* is an affine transform to apply to the points.
+		transform : `matplotlib.transforms.Transform`
+		    An affine transform to apply to the points.
 	**/
 	public function draw_gouraud_triangles(gc:Dynamic, triangles_array:Dynamic, colors_array:Dynamic, transform:Dynamic):Dynamic;
 	/**
 		Draw an RGBA image.
 		
-		*gc*
-		    a :class:`GraphicsContextBase` instance with clipping information.
+		Parameters
+		----------
+		gc : `GraphicsContextBase`
+		    a graphics context with clipping information.
 		
-		*x*
+		x : scalar
 		    the distance in physical units (i.e., dots or pixels) from the left
 		    hand side of the canvas.
 		
-		*y*
+		y : scalar
 		    the distance in physical units (i.e., dots or pixels) from the
 		    bottom side of the canvas.
 		
-		*im*
-		    An NxMx4 array of RGBA pixels (of dtype uint8).
+		im : array_like, shape=(N, M, 4), dtype=np.uint8
+		    An array of RGBA pixels.
 		
-		*transform*
+		transform : `matplotlib.transforms.Affine2DBase`
 		    If and only if the concrete backend is written such that
 		    :meth:`option_scale_image` returns ``True``, an affine
 		    transformation *may* be passed to :meth:`draw_image`. It takes the
@@ -264,21 +276,23 @@ package matplotlib.backends.backend_agg;
 		that behavior, those vertices should be removed before calling
 		this function.
 		
-		*gc*
-		    the :class:`GraphicsContextBase` instance
-		
-		*marker_trans*
-		    is an affine transform applied to the marker.
-		
-		*trans*
-		     is an affine transform applied to the path.
-		
 		This provides a fallback implementation of draw_markers that
 		makes multiple calls to :meth:`draw_path`.  Some backends may
 		want to override this method in order to draw the marker only
 		once and reuse it multiple times.
+		
+		Parameters
+		----------
+		gc : `GraphicsContextBase`
+		    The graphics context
+		
+		marker_trans : `matplotlib.transforms.Transform`
+		    An affine transform applied to the marker.
+		
+		trans : `matplotlib.transforms.Transform`
+		    An affine transform applied to the path.
 	**/
-	public function draw_markers(?kl:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	public function draw_markers(gc:Dynamic, marker_path:Dynamic, marker_trans:Dynamic, path:Dynamic, trans:Dynamic, ?rgbFace:Dynamic):Dynamic;
 	/**
 		Draw the math text using matplotlib.mathtext
 	**/
@@ -308,7 +322,7 @@ package matplotlib.backends.backend_agg;
 		recommended to use those generators, so that changes to the
 		behavior of :meth:`draw_path_collection` can be made globally.
 	**/
-	public function draw_path_collection(?kl:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	public function draw_path_collection(gc:Dynamic, master_transform:Dynamic, paths:Dynamic, all_transforms:Dynamic, offsets:Dynamic, offsetTrans:Dynamic, facecolors:Dynamic, edgecolors:Dynamic, linewidths:Dynamic, linestyles:Dynamic, antialiaseds:Dynamic, urls:Dynamic, offset_position:Dynamic):Dynamic;
 	/**
 		This provides a fallback implementation of
 		:meth:`draw_quad_mesh` that generates paths and then calls
@@ -344,12 +358,9 @@ package matplotlib.backends.backend_agg;
 	**/
 	public function get_texmanager():Dynamic;
 	/**
-		get the width and height in display coords of the string s
-		with FontPropertry prop
-		
-		# passing rgb is a little hack to make caching in the
-		# texmanager more efficient.  It is not meant to be used
-		# outside the backend
+		Get the width, height, and descent (offset from the bottom
+		to the baseline), in display coords, of the string *s* with
+		:class:`~matplotlib.font_manager.FontProperties` *prop*
 	**/
 	public function get_text_width_height_descent(s:Dynamic, prop:Dynamic, ismath:Dynamic):Dynamic;
 	static public var lock : Dynamic;

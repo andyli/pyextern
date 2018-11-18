@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.cloud.python.ops.bigquery_reader_ops;
 @:pythonImport("tensorflow.contrib.cloud.python.ops.bigquery_reader_ops", "BigQueryReader") extern class BigQueryReader {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package tensorflow.contrib.cloud.python.ops.bigquery_reader_ops;
 		
 		Raises:
 		  TypeError: - If features is neither None nor a dict or
-		             - If columns is is neither None nor a list or
+		             - If columns is neither None nor a list or
 		             - If both features and columns are None or set.
 	**/
 	@:native("__init__")
@@ -80,7 +80,7 @@ package tensorflow.contrib.cloud.python.ops.bigquery_reader_ops;
 		
 		Raises:
 		  TypeError: - If features is neither None nor a dict or
-		             - If columns is is neither None nor a list or
+		             - If columns is neither None nor a list or
 		             - If both features and columns are None or set.
 	**/
 	public function new(project_id:Dynamic, dataset_id:Dynamic, table_id:Dynamic, timestamp_millis:Dynamic, num_partitions:Dynamic, ?features:Dynamic, ?columns:Dynamic, ?test_end_point:Dynamic, ?name:Dynamic):Void;
@@ -90,7 +90,7 @@ package tensorflow.contrib.cloud.python.ops.bigquery_reader_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -141,11 +141,13 @@ package tensorflow.contrib.cloud.python.ops.bigquery_reader_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Returns the number of records this reader has produced.
 		
@@ -183,7 +185,7 @@ package tensorflow.contrib.cloud.python.ops.bigquery_reader_ops;
 	**/
 	public function partitions(?name:Dynamic):Dynamic;
 	/**
-		Returns the next record (key, value pair) produced by a reader.
+		Returns the next record (key, value) pair produced by a reader.
 		
 		Will dequeue a work unit from queue if necessary (e.g. when the
 		Reader needs to start reading from a new file since it has
@@ -201,7 +203,7 @@ package tensorflow.contrib.cloud.python.ops.bigquery_reader_ops;
 	**/
 	public function read(queue:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns up to num_records (key, value pairs) produced by a reader.
+		Returns up to num_records (key, value) pairs produced by a reader.
 		
 		Will dequeue a work unit from queue if necessary (e.g., when the
 		Reader needs to start reading from a new file since it has

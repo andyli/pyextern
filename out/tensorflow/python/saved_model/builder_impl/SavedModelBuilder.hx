@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.saved_model.builder_impl;
 @:pythonImport("tensorflow.python.saved_model.builder_impl", "SavedModelBuilder") extern class SavedModelBuilder {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.python.saved_model.builder_impl;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,31 +103,45 @@ package tensorflow.python.saved_model.builder_impl;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Add main op to the SavedModel.
-		
-		Args:
-		  main_op: Main op to run as part of graph initialization.
-		
-		Raises:
-		  TypeError if main op is not of type `Operation`.
+		Add asset and op collections to be saved.
 	**/
-	public function _add_main_op(main_op:Dynamic):Dynamic;
+	public function _add_collections(assets_collection:Dynamic, main_op:Dynamic, train_op:Dynamic):Dynamic;
 	/**
-		Add legacy init op to the SavedModel.
+		Add train op to the SavedModel.
+		
+		Note that this functionality is in development, and liable to be
+		moved elsewhere.
 		
 		Args:
-		  legacy_init_op: Optional legacy init op to support backward compatibility.
+		  train_op: Op or group of ops that are used for training. These are
+		    stored as a collection with key TRAIN_OP_KEY, but not executed.
 		
 		Raises:
-		  TypeError if legacy init op is not of type `Operation`.
+		  TypeError if Train op is not of type `Operation`.
 	**/
-	public function _maybe_add_legacy_init_op(?legacy_init_op:Dynamic):Dynamic;
+	public function _add_train_op(train_op:Dynamic):Dynamic;
+	/**
+		Adds main op to the SavedModel.
+		
+		Args:
+		  main_op: Main op to run as part of graph initialization. If None, no
+		    main op will be added to the graph.
+		
+		Raises:
+		  TypeError: if main op is provided but is not of type `Operation`.
+		  ValueError: if the Graph already contains an init op.
+	**/
+	public function _maybe_add_main_op(main_op:Dynamic):Dynamic;
+	/**
+		Creates a sharded saver if one does not already exist.
+	**/
+	public function _maybe_create_saver(?saver:Dynamic):Dynamic;
 	/**
 		Saves asset to the meta graph and writes asset files to disk.
 		
@@ -148,6 +162,9 @@ package tensorflow.python.saved_model.builder_impl;
 		      def.
 	**/
 	public function _tag_and_add_meta_graph(meta_graph_def:Dynamic, tags:Dynamic, signature_def_map:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	/**
 		Validates the `SignatureDef` entries in the signature def map.
 		
@@ -162,7 +179,8 @@ package tensorflow.python.saved_model.builder_impl;
 	/**
 		Validates the `TensorInfo` proto.
 		
-		Checks if the `name` and `dtype` fields exist and are non-empty.
+		Checks if the `encoding` (`name` or `coo_sparse`) and `dtype` fields exist
+		and are non-empty.
 		
 		Args:
 		  tensor_info: `TensorInfo` protocol buffer to validate.
@@ -173,7 +191,11 @@ package tensorflow.python.saved_model.builder_impl;
 	**/
 	public function _validate_tensor_info(tensor_info:Dynamic):Dynamic;
 	/**
-		Adds the current meta graph to the SavedModel.
+		Adds the current meta graph to the SavedModel. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		Pass your op to the equivalent parameter main_op instead.
 		
 		Creates a Saver in the current scope and uses the Saver to export the meta
 		graph def. Invoking this API requires the `add_meta_graph_and_variables()`
@@ -187,18 +209,30 @@ package tensorflow.python.saved_model.builder_impl;
 		      that this collection should be a subset of the assets saved as part of
 		      the first meta graph in the SavedModel.
 		  legacy_init_op: Legacy support for op or group of ops to execute after the
-		      restore op upon a load.
+		      restore op upon a load. Deprecated; please use main_op instead.
 		  clear_devices: Set to true if the device info on the default graph should
 		      be cleared.
-		  main_op: Op or group of ops to execute when the graph is loaded.
+		  main_op: Op or group of ops to execute when the graph is loaded. Note
+		      that when the main_op is specified it is run after the restore op at
+		      load-time.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the NodeDefs. For a detailed guide, see
+		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
+		  saver: An instance of tf.train.Saver that will be used to export the
+		    metagraph. If None, a sharded Saver that restores all variables will
+		    be used.
 		
 		Raises:
 		  AssertionError: If the variables for the SavedModel have not been saved
-		      yet.
+		      yet, or if the graph already contains one or more legacy init ops.
 	**/
-	public function add_meta_graph(tags:Dynamic, ?signature_def_map:Dynamic, ?assets_collection:Dynamic, ?legacy_init_op:Dynamic, ?clear_devices:Dynamic, ?main_op:Dynamic):Dynamic;
+	public function add_meta_graph(tags:Dynamic, ?signature_def_map:Dynamic, ?assets_collection:Dynamic, ?legacy_init_op:Dynamic, ?clear_devices:Dynamic, ?main_op:Dynamic, ?strip_default_attrs:Dynamic, ?saver:Dynamic):Dynamic;
 	/**
-		Adds the current meta graph to the SavedModel and saves variables.
+		Adds the current meta graph to the SavedModel and saves variables. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		Pass your op to the equivalent parameter main_op instead.
 		
 		Creates a Saver to save the variables from the provided session. Exports the
 		corresponding meta graph def. This function assumes that the variables to be
@@ -214,12 +248,20 @@ package tensorflow.python.saved_model.builder_impl;
 		    def.
 		  assets_collection: Assets collection to be saved with SavedModel.
 		  legacy_init_op: Legacy support for op or group of ops to execute after the
-		      restore op upon a load.
+		      restore op upon a load. Deprecated; please use main_op instead.
 		  clear_devices: Set to true if the device info on the default graph should
 		      be cleared.
-		  main_op: Op or group of ops to execute when the graph is loaded.
+		  main_op: Op or group of ops to execute when the graph is loaded. Note
+		      that when the main_op is specified it is run after the restore op at
+		      load-time.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the NodeDefs. For a detailed guide, see
+		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
+		  saver: An instance of tf.train.Saver that will be used to export the
+		    metagraph and save variables. If None, a sharded Saver that restores
+		    all variables will be used.
 	**/
-	public function add_meta_graph_and_variables(sess:Dynamic, tags:Dynamic, ?signature_def_map:Dynamic, ?assets_collection:Dynamic, ?legacy_init_op:Dynamic, ?clear_devices:Dynamic, ?main_op:Dynamic):Dynamic;
+	public function add_meta_graph_and_variables(sess:Dynamic, tags:Dynamic, ?signature_def_map:Dynamic, ?assets_collection:Dynamic, ?legacy_init_op:Dynamic, ?clear_devices:Dynamic, ?main_op:Dynamic, ?strip_default_attrs:Dynamic, ?saver:Dynamic):Dynamic;
 	/**
 		Writes a `SavedModel` protocol buffer to disk.
 		

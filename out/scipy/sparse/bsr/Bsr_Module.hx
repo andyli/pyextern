@@ -18,6 +18,10 @@ package scipy.sparse.bsr;
 	static public function bsr_matvecs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bsr_sort_indices(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bsr_transpose(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Imitate numpy.matrix handling of shape arguments
+	**/
+	static public function check_shape(args:Dynamic, ?current_shape:Dynamic):Dynamic;
 	static public function csr_matmat_pass1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -50,10 +54,61 @@ package scipy.sparse.bsr;
 	static public function getdtype(dtype:Dynamic, ?a:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
 		Is x a valid 2-tuple of dimensions?
-		    
+		
+		If nonneg, also checks that the dimensions are non-negative.
 	**/
-	static public function isshape(x:Dynamic):Dynamic;
+	static public function isshape(x:Dynamic, ?nonneg:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
+	/**
+		Is x of a bsr_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a bsr matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a bsr matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import bsr_matrix, isspmatrix_bsr
+		>>> isspmatrix_bsr(bsr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import bsr_matrix, csr_matrix, isspmatrix_bsr
+		>>> isspmatrix_bsr(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_bsr(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function to_native(A:Dynamic):Dynamic;

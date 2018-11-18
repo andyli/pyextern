@@ -65,6 +65,7 @@ package tensorflow.python.debug.cli.tensor_format;
 		    [start_column, end_column].
 	**/
 	static public function _locate_elements_in_line(line:Dynamic, indices_list:Dynamic, ref_indices:Dynamic):Dynamic;
+	static public function _pad_string_to_length(string:Dynamic, length:Dynamic):Dynamic;
 	static public function _validate_indices_list(indices_list:Dynamic, formatted:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
@@ -78,6 +79,10 @@ package tensorflow.python.debug.cli.tensor_format;
 		    suppress the tensor name line in the return value.
 		  include_metadata: Whether metadata such as dtype and shape are to be
 		    included in the formatted text.
+		  auxiliary_message: An auxiliary message to display under the tensor label,
+		    dtype and shape information lines.
+		  include_numeric_summary: Whether a text summary of the numeric values (if
+		    applicable) will be included.
 		  np_printoptions: A dictionary of keyword arguments that are passed to a
 		    call of np.set_printoptions() to set the text format for display numpy
 		    ndarrays.
@@ -89,7 +94,7 @@ package tensorflow.python.debug.cli.tensor_format;
 		  indicate which indices in the array the first element of each line
 		  corresponds to.
 	**/
-	static public function format_tensor(tensor:Dynamic, tensor_label:Dynamic, ?include_metadata:Dynamic, ?np_printoptions:Dynamic, ?highlight_options:Dynamic):Dynamic;
+	static public function format_tensor(tensor:Dynamic, tensor_label:Dynamic, ?include_metadata:Dynamic, ?auxiliary_message:Dynamic, ?include_numeric_summary:Dynamic, ?np_printoptions:Dynamic, ?highlight_options:Dynamic):Dynamic;
 	/**
 		Locate a tensor element in formatted text lines, given element indices.
 		
@@ -129,5 +134,20 @@ package tensorflow.python.debug.cli.tensor_format;
 		       order.
 	**/
 	static public function locate_tensor_element(formatted:Dynamic, indices:Dynamic):Dynamic;
+	/**
+		Get a text summary of a numeric tensor.
+		
+		This summary is only available for numeric (int*, float*, complex*) and
+		Boolean tensors.
+		
+		Args:
+		  tensor: (`numpy.ndarray`) the tensor value object to be summarized.
+		
+		Returns:
+		  The summary text as a `RichTextLines` object. If the type of `tensor` is not
+		  numeric or Boolean, a single-line `RichTextLines` object containing a
+		  warning message will reflect that.
+	**/
+	static public function numeric_summary(tensor:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

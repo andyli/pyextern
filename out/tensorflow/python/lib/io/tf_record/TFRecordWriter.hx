@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.lib.io.tf_record;
 @:pythonImport("tensorflow.python.lib.io.tf_record", "TFRecordWriter") extern class TFRecordWriter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -50,10 +50,12 @@ package tensorflow.python.lib.io.tf_record;
 		
 		Args:
 		  path: The path to the TFRecords file.
-		  options: (optional) A TFRecordOptions object.
+		  options: (optional) String specifying compression type,
+		      `TFRecordCompressionType`, or `TFRecordOptions` object.
 		
 		Raises:
 		  IOError: If `path` cannot be opened for writing.
+		  ValueError: If valid compression_type can't be determined from `options`.
 	**/
 	@:native("__init__")
 	public function ___init__(path:Dynamic, ?options:Dynamic):Dynamic;
@@ -62,10 +64,12 @@ package tensorflow.python.lib.io.tf_record;
 		
 		Args:
 		  path: The path to the TFRecords file.
-		  options: (optional) A TFRecordOptions object.
+		  options: (optional) String specifying compression type,
+		      `TFRecordCompressionType`, or `TFRecordOptions` object.
 		
 		Raises:
 		  IOError: If `path` cannot be opened for writing.
+		  ValueError: If valid compression_type can't be determined from `options`.
 	**/
 	public function new(path:Dynamic, ?options:Dynamic):Void;
 	/**
@@ -74,7 +78,7 @@ package tensorflow.python.lib.io.tf_record;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -125,15 +129,22 @@ package tensorflow.python.lib.io.tf_record;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	/**
 		Close the file.
 	**/
 	public function close():Dynamic;
+	/**
+		Flush the file.
+	**/
+	public function flush():Dynamic;
 	/**
 		Write a string record to the file.
 		

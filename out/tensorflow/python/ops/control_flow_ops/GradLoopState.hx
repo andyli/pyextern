@@ -16,7 +16,7 @@ package tensorflow.python.ops.control_flow_ops;
 		Returns:
 		  The current value (the top of the stack).
 	**/
-	public function AddBackPropAccumulatedValue(history_value:Dynamic, value:Dynamic, ?dead_branch:Dynamic):Dynamic;
+	public function AddBackpropAccumulatedValue(history_value:Dynamic, value:Dynamic, ?dead_branch:Dynamic):Dynamic;
 	/**
 		Add an accumulator for each forward tensor that is needed in backprop.
 		
@@ -47,6 +47,8 @@ package tensorflow.python.ops.control_flow_ops;
 		
 		Raises:
 		  TypeError: For internal errors involving the value condition context.
+		  ValueError: If `value` is inside a XLA scope and a valid max size
+		    for the stack can't be found.
 	**/
 	public function AddForwardAccumulator(value:Dynamic, ?dead_branch:Dynamic):Dynamic;
 	/**
@@ -64,7 +66,7 @@ package tensorflow.python.ops.control_flow_ops;
 		  The same tensor obtained from the saved history.
 	**/
 	public function GetRealValue(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -115,7 +117,7 @@ package tensorflow.python.ops.control_flow_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -166,7 +168,7 @@ package tensorflow.python.ops.control_flow_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

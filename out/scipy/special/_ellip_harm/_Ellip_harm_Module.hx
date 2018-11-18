@@ -60,7 +60,7 @@ package scipy.special._ellip_harm;
 		
 		Notes
 		-----
-		The geometric intepretation of the ellipsoidal functions is
+		The geometric interpretation of the ellipsoidal functions is
 		explained in [2]_, [3]_, [4]_.  The `signm` and `signn` arguments control the
 		sign of prefactors for functions according to their type::
 		
@@ -73,7 +73,7 @@ package scipy.special._ellip_harm;
 		
 		References
 		----------
-		.. [1] Digital Libary of Mathematical Functions 29.12
+		.. [1] Digital Library of Mathematical Functions 29.12
 		   http://dlmf.nist.gov/29.12
 		.. [2] Bardhan and Knepley, "Computational science and
 		   re-discovery: open-source implementations of

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_bases;
 @:pythonImport("matplotlib.backend_bases", "ToolContainerBase") extern class ToolContainerBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.backend_bases;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,17 +103,18 @@ package matplotlib.backend_bases;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Find the image based on its name
+		Find the image based on its name.
 	**/
 	public function _get_image_filename(image:Dynamic):Dynamic;
+	static public var _icon_extension : Dynamic;
 	/**
-		Captures the 'tool_removed_event' signal and removes the tool
+		Captures the 'tool_removed_event' signal and removes the tool.
 	**/
 	public function _remove_tool_cbk(event:Dynamic):Dynamic;
 	/**
@@ -193,7 +194,7 @@ package matplotlib.backend_bases;
 		Parameters
 		----------
 		name : String
-		    Name(id) of the tool triggered from within the container
+		    Name (id) of the tool triggered from within the container
 	**/
 	public function trigger_tool(name:Dynamic):Dynamic;
 }

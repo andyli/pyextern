@@ -40,6 +40,7 @@ package keras.utils.generic_utils;
 	**/
 	static public function custom_object_scope(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function deserialize_keras_object(identifier:Dynamic, ?module_objects:Dynamic, ?custom_objects:Dynamic, ?printable_module_name:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Serializes a user defined function.
 		
@@ -100,5 +101,92 @@ package keras.utils.generic_utils;
 		    bool, whether `fn` accepts a `name` keyword argument.
 	**/
 	static public function has_arg(fn:Dynamic, name:Dynamic, ?accept_all:Dynamic):Dynamic;
+	static public function is_all_none(iterable_or_element:Dynamic):Dynamic;
+	static public function object_list_uid(object_list:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
+	/**
+		Slices an array or list of arrays.
+		
+		This takes an array-like, or a list of
+		array-likes, and outputs:
+		    - arrays[start:stop] if `arrays` is an array-like
+		    - [x[start:stop] for x in arrays] if `arrays` is a list
+		
+		Can also work on list/array of indices: `_slice_arrays(x, indices)`
+		
+		# Arguments
+		    arrays: Single array or list of arrays.
+		    start: can be an integer index (start index)
+		        or a list/array of indices
+		    stop: integer (stop index); should be None if
+		        `start` was a list.
+		
+		# Returns
+		    A slice of the array(s).
+	**/
+	static public function slice_arrays(arrays:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
+	/**
+		Normalizes a list/tensor into a list.
+		
+		If a tensor is passed, we return
+		a list of size 1 containing the tensor.
+		
+		# Arguments
+		    x: target object to be normalized.
+		    allow_tuple: If False and x is a tuple,
+		        it will be converted into a list
+		        with a single element (the tuple).
+		        Else converts the tuple to a list.
+		
+		# Returns
+		    A list.
+	**/
+	static public function to_list(x:Dynamic, ?allow_tuple:Dynamic):Dynamic;
+	/**
+		Converts a tuple or a list to the correct `data_format`.
+		
+		It does so by switching the positions of its elements.
+		
+		# Arguments
+		    shape: Tuple or list, often representing shape,
+		        corresponding to `'channels_last'`.
+		    target_format: A string, either `'channels_first'` or `'channels_last'`.
+		    spatial_axes: A tuple of integers.
+		        Correspond to the indexes of the spatial axes.
+		        For example, if you pass a shape
+		        representing (batch_size, timesteps, rows, cols, channels),
+		        then `spatial_axes=(2, 3)`.
+		
+		# Returns
+		    A tuple or list, with the elements permuted according
+		    to `target_format`.
+		
+		# Example
+		```python
+		    >>> from keras.utils.generic_utils import transpose_shape
+		    >>> transpose_shape((16, 128, 128, 32),'channels_first', spatial_axes=(1, 2))
+		    (16, 32, 128, 128)
+		    >>> transpose_shape((16, 128, 128, 32), 'channels_last', spatial_axes=(1, 2))
+		    (16, 128, 128, 32)
+		    >>> transpose_shape((128, 128, 32), 'channels_first', spatial_axes=(0, 1))
+		    (32, 128, 128)
+		```
+		
+		# Raises
+		    ValueError: if `value` or the global `data_format` invalid.
+	**/
+	static public function transpose_shape(shape:Dynamic, target_format:Dynamic, spatial_axes:Dynamic):Dynamic;
+	/**
+		Gets the first element if the iterable has only one value.
+		
+		Otherwise return the iterable.
+		
+		# Argument:
+		    x: A list or tuple.
+		
+		# Returns:
+		    The same iterable or the first element.
+	**/
+	static public function unpack_singleton(x:Dynamic):Dynamic;
 }

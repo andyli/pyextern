@@ -67,11 +67,7 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_v2;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Defines the default ResNet arg scope. (deprecated arguments)
-		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2017-08-01.
-		Instructions for updating:
-		Pass is_training directly to the network instead of the arg_scope.
+		Defines the default ResNet arg scope.
 		
 		TODO(gpapan): The batch-normalization related default values above are
 		  appropriate for use in conjunction with the reference ResNet models
@@ -79,8 +75,6 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_v2;
 		  training ResNets from scratch, they might need to be tuned.
 		
 		Args:
-		  is_training: Whether or not we are training the parameters in the batch
-		    normalization layers of the model. (deprecated)
 		  weight_decay: The weight decay to use for regularizing the model.
 		  batch_norm_decay: The moving average decay when estimating layer activation
 		    statistics in batch normalization.
@@ -92,7 +86,7 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_v2;
 		Returns:
 		  An `arg_scope` to use for the resnet models.
 	**/
-	static public function resnet_arg_scope(?is_training:Dynamic, ?weight_decay:Dynamic, ?batch_norm_decay:Dynamic, ?batch_norm_epsilon:Dynamic, ?batch_norm_scale:Dynamic):Dynamic;
+	static public function resnet_arg_scope(?weight_decay:Dynamic, ?batch_norm_decay:Dynamic, ?batch_norm_epsilon:Dynamic, ?batch_norm_scale:Dynamic):Dynamic;
 	/**
 		Generator for v2 (preactivation) ResNet models.
 		
@@ -123,8 +117,7 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_v2;
 		    is a resnet_utils.Block object describing the units in the block.
 		  num_classes: Number of predicted classes for classification tasks. If None
 		    we return the features before the logit layer.
-		  is_training: whether is training or not. If None, the value inherited from
-		    the resnet_arg_scope is used. Specifying value None is deprecated.
+		  is_training: whether batch_norm layers are in training mode.
 		  global_pool: If True, we perform global average pooling before computing the
 		    logits. Set to True for image classification, False for dense prediction.
 		  output_stride: If None, then the output will be computed at the nominal
@@ -156,7 +149,7 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_v2;
 	/**
 		ResNet-101 model of [1]. See resnet_v2() for arg and return description.
 	**/
-	static public function resnet_v2_101(inputs:Dynamic, ?num_classes:Dynamic, ?global_pool:Dynamic, ?is_training:Dynamic, ?output_stride:Dynamic, ?reuse:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function resnet_v2_101(inputs:Dynamic, ?num_classes:Dynamic, ?is_training:Dynamic, ?global_pool:Dynamic, ?output_stride:Dynamic, ?reuse:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
 		ResNet-152 model of [1]. See resnet_v2() for arg and return description.
 	**/

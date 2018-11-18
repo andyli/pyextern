@@ -2,21 +2,15 @@
 package scipy.stats._continuous_distns;
 @:pythonImport("scipy.stats._continuous_distns", "frechet_r_gen") extern class Frechet_r_gen {
 	/**
-		Freeze the distribution for the given arguments.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution.  Should include all
-		    the non-optional arguments, may include ``loc`` and ``scale``.
-		
-		Returns
-		-------
-		rv_frozen : rv_frozen instance
-		    The frozen distribution.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function __call__(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __call__(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -68,7 +62,7 @@ package scipy.stats._continuous_distns;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,7 +114,7 @@ package scipy.stats._continuous_distns;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -215,445 +209,158 @@ package scipy.stats._continuous_distns;
 	**/
 	public function _updated_ctor_param():Dynamic;
 	/**
-		Cumulative distribution function of the given RV.
-		
-		Parameters
-		----------
-		x : array_like
-		    quantiles
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		cdf : ndarray
-		    Cumulative distribution function evaluated at `x`
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function cdf(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function cdf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Differential entropy of the RV.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information).
-		loc : array_like, optional
-		    Location parameter (default=0).
-		scale : array_like, optional  (continuous distributions only).
-		    Scale parameter (default=1).
-		
-		Notes
-		-----
-		Entropy is defined base `e`:
-		
-		>>> drv = rv_discrete(values=((0, 1), (0.5, 0.5)))
-		>>> np.allclose(drv.entropy(), np.log(2.0))
-		True
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function entropy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function entropy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Calculate expected value of a function with respect to the
-		distribution.
-		
-		The expected value of a function ``f(x)`` with respect to a
-		distribution ``dist`` is defined as::
-		
-		            ubound
-		    E[x] = Integral(f(x) * dist.pdf(x))
-		            lbound
-		
-		Parameters
-		----------
-		func : callable, optional
-		    Function for which integral is calculated. Takes only one argument.
-		    The default is the identity mapping f(x) = x.
-		args : tuple, optional
-		    Shape parameters of the distribution.
-		loc : float, optional
-		    Location parameter (default=0).
-		scale : float, optional
-		    Scale parameter (default=1).
-		lb, ub : scalar, optional
-		    Lower and upper bound for integration. Default is set to the
-		    support of the distribution.
-		conditional : bool, optional
-		    If True, the integral is corrected by the conditional probability
-		    of the integration interval.  The return value is the expectation
-		    of the function, conditional on being in the given interval.
-		    Default is False.
-		
-		Additional keyword arguments are passed to the integration routine.
-		
-		Returns
-		-------
-		expect : float
-		    The calculated expected value.
-		
-		Notes
-		-----
-		The integration behavior of this function is inherited from
-		`integrate.quad`.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function expect(?func:Dynamic, ?args:Dynamic, ?loc:Dynamic, ?scale:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic, ?kwds:python.KwArgs<Dynamic>):Float;
+	static public function expect(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return MLEs for shape (if applicable), location, and scale
-		parameters from data.
-		
-		MLE stands for Maximum Likelihood Estimate.  Starting estimates for
-		the fit are given by input arguments; for any arguments not provided
-		with starting estimates, ``self._fitstart(data)`` is called to generate
-		such.
-		
-		One can hold some parameters fixed to specific values by passing in
-		keyword arguments ``f0``, ``f1``, ..., ``fn`` (for shape parameters)
-		and ``floc`` and ``fscale`` (for location and scale parameters,
-		respectively).
-		
-		Parameters
-		----------
-		data : array_like
-		    Data to use in calculating the MLEs.
-		args : floats, optional
-		    Starting value(s) for any shape-characterizing arguments (those not
-		    provided will be determined by a call to ``_fitstart(data)``).
-		    No default value.
-		kwds : floats, optional
-		    Starting values for the location and scale parameters; no default.
-		    Special keyword arguments are recognized as holding certain
-		    parameters fixed:
-		
-		    - f0...fn : hold respective shape parameters fixed.
-		      Alternatively, shape parameters to fix can be specified by name.
-		      For example, if ``self.shapes == "a, b"``, ``fa``and ``fix_a``
-		      are equivalent to ``f0``, and ``fb`` and ``fix_b`` are
-		      equivalent to ``f1``.
-		
-		    - floc : hold location parameter fixed to specified value.
-		
-		    - fscale : hold scale parameter fixed to specified value.
-		
-		    - optimizer : The optimizer to use.  The optimizer must take ``func``,
-		      and starting position as the first two arguments,
-		      plus ``args`` (for extra arguments to pass to the
-		      function to be optimized) and ``disp=0`` to suppress
-		      output as keyword arguments.
-		
-		Returns
-		-------
-		mle_tuple : tuple of floats
-		    MLEs for any shape parameters (if applicable), followed by those
-		    for location and scale. For most random variables, shape statistics
-		    will be returned, but there are exceptions (e.g. ``norm``).
-		
-		Notes
-		-----
-		This fit is computed by maximizing a log-likelihood function, with
-		penalty applied for samples outside of range of the distribution. The
-		returned answer is not guaranteed to be the globally optimal MLE, it
-		may only be locally optimal, or the optimization may fail altogether.
-		
-		
-		Examples
-		--------
-		
-		Generate some data to fit: draw random variates from the `beta`
-		distribution
-		
-		>>> from scipy.stats import beta
-		>>> a, b = 1., 2.
-		>>> x = beta.rvs(a, b, size=1000)
-		
-		Now we can fit all four parameters (``a``, ``b``, ``loc`` and ``scale``):
-		
-		>>> a1, b1, loc1, scale1 = beta.fit(x)
-		
-		We can also use some prior knowledge about the dataset: let's keep
-		``loc`` and ``scale`` fixed:
-		
-		>>> a1, b1, loc1, scale1 = beta.fit(x, floc=0, fscale=1)
-		>>> loc1, scale1
-		(0, 1)
-		
-		We can also keep shape parameters fixed by using ``f``-keywords. To
-		keep the zero-th shape parameter ``a`` equal 1, use ``f0=1`` or,
-		equivalently, ``fa=1``:
-		
-		>>> a1, b1, loc1, scale1 = beta.fit(x, fa=1, floc=0, fscale=1)
-		>>> a1
-		1
-		
-		Not all distributions return estimates for the shape parameters.
-		``norm`` for example just returns estimates for location and scale:
-		
-		>>> from scipy.stats import norm
-		>>> x = norm.rvs(a, b, size=1000, random_state=123)
-		>>> loc1, scale1 = norm.fit(x)
-		>>> loc1, scale1
-		(0.92087172783841631, 2.0015750750324668)
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function fit(data:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function fit(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Estimate loc and scale parameters from data using 1st and 2nd moments.
-		
-		Parameters
-		----------
-		data : array_like
-		    Data to fit.
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information).
-		
-		Returns
-		-------
-		Lhat : float
-		    Estimated location parameter for the data.
-		Shat : float
-		    Estimated scale parameter for the data.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function fit_loc_scale(data:Dynamic, ?args:python.VarArgs<Dynamic>):Float;
+	static public function fit_loc_scale(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Freeze the distribution for the given arguments.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution.  Should include all
-		    the non-optional arguments, may include ``loc`` and ``scale``.
-		
-		Returns
-		-------
-		rv_frozen : rv_frozen instance
-		    The frozen distribution.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function freeze(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function freeze(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Confidence interval with equal areas around the median.
-		
-		Parameters
-		----------
-		alpha : array_like of float
-		    Probability that an rv will be drawn from the returned range.
-		    Each value should be in the range [0, 1].
-		arg1, arg2, ... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information).
-		loc : array_like, optional
-		    location parameter, Default is 0.
-		scale : array_like, optional
-		    scale parameter, Default is 1.
-		
-		Returns
-		-------
-		a, b : ndarray of float
-		    end-points of range that contain ``100 * alpha %`` of the rv's
-		    possible values.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function interval(alpha:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function interval(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Inverse survival function (inverse of `sf`) at q of the given RV.
-		
-		Parameters
-		----------
-		q : array_like
-		    upper tail probability
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		x : ndarray or scalar
-		    Quantile corresponding to the upper tail probability q.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function isf(q:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function isf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Log of the cumulative distribution function at x of the given RV.
-		
-		Parameters
-		----------
-		x : array_like
-		    quantiles
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		logcdf : array_like
-		    Log of the cumulative distribution function evaluated at x
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function logcdf(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function logcdf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Log of the probability density function at x of the given RV.
-		
-		This uses a more numerically accurate calculation if available.
-		
-		Parameters
-		----------
-		x : array_like
-		    quantiles
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		logpdf : array_like
-		    Log of the probability density function evaluated at x
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function logpdf(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function logpdf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Log of the survival function of the given RV.
-		
-		Returns the log of the "survival function," defined as (1 - `cdf`),
-		evaluated at `x`.
-		
-		Parameters
-		----------
-		x : array_like
-		    quantiles
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		logsf : ndarray
-		    Log of the survival function evaluated at `x`.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function logsf(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function logsf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Mean of the distribution.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		mean : float
-		    the mean of the distribution
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function mean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
+	static public function mean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Median of the distribution.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    Location parameter, Default is 0.
-		scale : array_like, optional
-		    Scale parameter, Default is 1.
-		
-		Returns
-		-------
-		median : float
-		    The median of the distribution.
-		
-		See Also
-		--------
-		stats.distributions.rv_discrete.ppf
-		    Inverse of the CDF
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
+	static public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		n-th order non-central moment of distribution.
-		
-		Parameters
-		----------
-		n : int, n >= 1
-		    Order of moment.
-		arg1, arg2, arg3,... : float
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information).
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function moment(n:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function moment(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return negative loglikelihood function.
-		
-		Notes
-		-----
-		This is ``-sum(log pdf(x, theta), axis=0)`` where `theta` are the
-		parameters (including loc and scale).
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function nnlf(theta:Dynamic, x:Dynamic):Dynamic;
+	static public function nnlf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Probability density function at x of the given RV.
-		
-		Parameters
-		----------
-		x : array_like
-		    quantiles
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		pdf : ndarray
-		    Probability density function evaluated at x
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function pdf(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function pdf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Percent point function (inverse of `cdf`) at q of the given RV.
-		
-		Parameters
-		----------
-		q : array_like
-		    lower tail probability
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		x : array_like
-		    quantile corresponding to the lower tail probability q.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function ppf(q:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function ppf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get or set the RandomState object for generating random variates.
 		
@@ -665,114 +372,49 @@ package scipy.stats._continuous_distns;
 	**/
 	public var random_state : Dynamic;
 	/**
-		Random variates of given type.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information).
-		loc : array_like, optional
-		    Location parameter (default=0).
-		scale : array_like, optional
-		    Scale parameter (default=1).
-		size : int or tuple of ints, optional
-		    Defining number of random variates (default is 1).
-		random_state : None or int or ``np.random.RandomState`` instance, optional
-		    If int or RandomState, use it for drawing the random variates.
-		    If None, rely on ``self.random_state``.
-		    Default is None.
-		
-		Returns
-		-------
-		rvs : ndarray or scalar
-		    Random variates of given `size`.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function rvs(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function rvs(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Survival function (1 - `cdf`) at x of the given RV.
-		
-		Parameters
-		----------
-		x : array_like
-		    quantiles
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		sf : array_like
-		    Survival function evaluated at x
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function sf(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function sf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Some statistics of the given RV.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional (continuous RVs only)
-		    scale parameter (default=1)
-		moments : str, optional
-		    composed of letters ['mvsk'] defining which moments to compute:
-		    'm' = mean,
-		    'v' = variance,
-		    's' = (Fisher's) skew,
-		    'k' = (Fisher's) kurtosis.
-		    (default is 'mv')
-		
-		Returns
-		-------
-		stats : sequence
-		    of requested moments.
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function stats(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function stats(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Standard deviation of the distribution.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		std : float
-		    standard deviation of the distribution
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
-	public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
+	static public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Variance of the distribution.
-		
-		Parameters
-		----------
-		arg1, arg2, arg3,... : array_like
-		    The shape parameter(s) for the distribution (see docstring of the
-		    instance object for more information)
-		loc : array_like, optional
-		    location parameter (default=0)
-		scale : array_like, optional
-		    scale parameter (default=1)
-		
-		Returns
-		-------
-		var : float
-		    the variance of the distribution
+		`frechet_r` is deprecated!
+		The distribution `frechet_r` is a synonym for `weibull_min`; this historical
+		usage is deprecated because of possible confusion with the (quite different)
+		Frechet distribution.  To preserve the existing behavior of the program, use
+		`scipy.stats.weibull_min`.  For the Frechet distribution (i.e. the Type II
+		extreme value distribution), use `scipy.stats.invweibull`.
 	**/
 	@:native("var")
-	public function _var(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
+	static public function _var(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

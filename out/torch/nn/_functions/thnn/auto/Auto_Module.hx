@@ -13,10 +13,13 @@ package torch.nn._functions.thnn.auto;
 	static public var _all_functions : Dynamic;
 	static public function _find_buffers(args:Dynamic, ignored_args:Dynamic):Dynamic;
 	static public function _generate_function_classes(scope_dict:Dynamic):Dynamic;
-	static public function _make_function_class(class_name:Dynamic, update_output:Dynamic, update_grad_input:Dynamic, acc_grad_parameters:Dynamic):Dynamic;
-	static public function _make_function_class_criterion(class_name:Dynamic, update_output:Dynamic, update_grad_input:Dynamic, acc_grad_parameters:Dynamic):Dynamic;
+	static public function _make_function_class(class_name:Dynamic, update_output:Dynamic, update_grad_input:Dynamic, acc_grad_parameters:Dynamic, double_backwards_fn:Dynamic, symbolic_fn:Dynamic):Dynamic;
+	static public function _make_function_class_criterion(class_name:Dynamic, update_output:Dynamic, update_grad_input:Dynamic, acc_grad_parameters:Dynamic, double_backwards_fn:Dynamic, symbolic_fn:Dynamic):Dynamic;
+	static public var double_backwards_fns : Dynamic;
 	static public var function_by_name : Dynamic;
 	static public var function_list : Dynamic;
+	static public function once_differentiable(fn:Dynamic):Dynamic;
 	static public function parse_header(path:Dynamic):Dynamic;
+	static public var symbolic_fns : Dynamic;
 	static public var type2backend : Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.transforms.universal;
 @:pythonImport("docutils.transforms.universal", "SmartQuotes") extern class SmartQuotes {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.transforms.universal;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.transforms.universal;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -114,4 +114,7 @@ package docutils.transforms.universal;
 	public function apply():Dynamic;
 	static public var default_priority : Dynamic;
 	public function get_tokens(txtnodes:Dynamic):Dynamic;
+	static public var literal_nodes : Dynamic;
+	static public var nodes_to_skip : Dynamic;
+	static public var smartquotes_action : Dynamic;
 }

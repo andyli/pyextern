@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.internals;
 @:pythonImport("pandas.core.internals", "NonConsolidatableMixIn") extern class NonConsolidatableMixIn {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,21 +38,31 @@ package pandas.core.internals;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initialize a non-consolidatable block.
+		
+		'ndim' may be inferred from 'placement'.
+		
+		This will call continue to call __init__ for the other base
+		classes mixed in with this Mixin.
 	**/
 	@:native("__init__")
-	public function ___init__(values:Dynamic, placement:Dynamic, ?ndim:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(values:Dynamic, placement:Dynamic, ?ndim:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initialize a non-consolidatable block.
+		
+		'ndim' may be inferred from 'placement'.
+		
+		This will call continue to call __init__ for the other base
+		classes mixed in with this Mixin.
 	**/
-	public function new(values:Dynamic, placement:Dynamic, ?ndim:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(values:Dynamic, placement:Dynamic, ?ndim:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,21 +113,37 @@ package pandas.core.internals;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _can_consolidate : Dynamic;
-	static public var _holder : Dynamic;
 	/**
 		return a slice of my values (but densify first) 
 	**/
 	public function _slice(slicer:Dynamic):Dynamic;
 	public function _try_cast_result(result:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Return a list of unstacked blocks of self
+		
+		Parameters
+		----------
+		unstacker_func : callable
+		    Partially applied unstacker.
+		new_columns : Index
+		    All columns of the unstacked BlockManager.
+		
+		Returns
+		-------
+		blocks : list of Block
+		    New blocks of unstacked values.
+		mask : array_like of bool
+		    The mask of columns of `blocks` we should keep.
+	**/
+	public function _unstack(unstacker_func:Dynamic, new_columns:Dynamic):Dynamic;
 	static public var _validate_ndim : Dynamic;
 	static public var _verify_integrity : Dynamic;
-	public function get(item:Dynamic):Dynamic;
 	/**
 		need to to_dense myself (and always return a ndim sized object) 
 	**/
@@ -138,7 +164,7 @@ package pandas.core.internals;
 		
 		Returns
 		-------
-		a new block(s), the result of the putmask
+		a new block, the result of the putmask
 	**/
 	public function putmask(mask:Dynamic, _new:Dynamic, ?align:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
 	public function set(locs:Dynamic, values:Dynamic, ?check:Dynamic):Dynamic;

@@ -10,6 +10,7 @@ package keras.datasets.cifar10;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Downloads a file from a URL if it not already in the cache.
 		
@@ -70,4 +71,5 @@ package keras.datasets.cifar10;
 		    Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
 	**/
 	static public function load_data():Dynamic;
+	static public var print_function : Dynamic;
 }

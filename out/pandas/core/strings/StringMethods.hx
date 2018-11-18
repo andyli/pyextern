@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.strings;
 @:pythonImport("pandas.core.strings", "StringMethods") extern class StringMethods {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package pandas.core.strings;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -105,7 +105,7 @@ package pandas.core.strings;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -114,64 +114,233 @@ package pandas.core.strings;
 		Prevents setting additional attributes
 	**/
 	public function _freeze():Dynamic;
+	/**
+		Auxiliary function for :meth:`str.cat`. Turn potentially mixed input
+		into a list of Series (elements without an index must match the length
+		of the calling Series/Index).
+		
+		Parameters
+		----------
+		others : Series, DataFrame, np.ndarray, list-like or list-like of
+		    objects that are either Series, np.ndarray (1-dim) or list-like
+		ignore_index : boolean, default False
+		    Determines whether to forcefully align others with index of caller
+		
+		Returns
+		-------
+		tuple : (others transformed into list of Series,
+		         boolean whether FutureWarning should be raised)
+	**/
+	public function _get_series_list(others:Dynamic, ?ignore_index:Dynamic):Dynamic;
+	static public function _make_accessor(data:Dynamic):Dynamic;
+	static public function _validate(data:Dynamic):Dynamic;
 	public function _wrap_result(result:Dynamic, ?use_codes:Dynamic, ?name:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to be capitalized.
+		
 		Equivalent to :meth:`str.capitalize`.
 		
 		Returns
 		-------
-		converted : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.lower : Converts all characters to lowercase.
+		Series.str.upper : Converts all characters to uppercase.
+		Series.str.title : Converts first character of each word to uppercase and
+		    remaining to lowercase.
+		Series.str.capitalize : Converts first character to uppercase and
+		    remaining to lowercase.
+		Series.str.swapcase : Converts uppercase to lowercase and lowercase to
+		    uppercase.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['lower', 'CAPITALS', 'this is a sentence', 'SwApCaSe'])
+		>>> s
+		0                 lower
+		1              CAPITALS
+		2    this is a sentence
+		3              SwApCaSe
+		dtype: object
+		
+		>>> s.str.lower()
+		0                 lower
+		1              capitals
+		2    this is a sentence
+		3              swapcase
+		dtype: object
+		
+		>>> s.str.upper()
+		0                 LOWER
+		1              CAPITALS
+		2    THIS IS A SENTENCE
+		3              SWAPCASE
+		dtype: object
+		
+		>>> s.str.title()
+		0                 Lower
+		1              Capitals
+		2    This Is A Sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.capitalize()
+		0                 Lower
+		1              Capitals
+		2    This is a sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.swapcase()
+		0                 LOWER
+		1              capitals
+		2    THIS IS A SENTENCE
+		3              sWaPcAsE
+		dtype: object
 	**/
 	public function capitalize():Dynamic;
 	/**
 		Concatenate strings in the Series/Index with given separator.
 		
+		If `others` is specified, this function concatenates the Series/Index
+		and elements of `others` element-wise.
+		If `others` is not passed, then all values in the Series/Index are
+		concatenated into a single string with a given `sep`.
+		
 		Parameters
 		----------
-		others : list-like, or list of list-likes
-		  If None, returns str concatenating strings of the Series
+		others : Series, Index, DataFrame, np.ndarrary or list-like
+		    Series, Index, DataFrame, np.ndarray (one- or two-dimensional) and
+		    other list-likes of strings must have the same length as the
+		    calling Series/Index, with the exception of indexed objects (i.e.
+		    Series/Index/DataFrame) if `join` is not None.
+		
+		    If others is a list-like that contains a combination of Series,
+		    np.ndarray (1-dim) or list-like, then all elements will be unpacked
+		    and must satisfy the above criteria individually.
+		
+		    If others is None, the method returns the concatenation of all
+		    strings in the calling Series/Index.
 		sep : string or None, default None
+		    If None, concatenates without any separator.
 		na_rep : string or None, default None
-		    If None, NA in the series are ignored.
+		    Representation that is inserted for all missing values:
+		
+		    - If `na_rep` is None, and `others` is None, missing values in the
+		      Series/Index are omitted from the result.
+		    - If `na_rep` is None, and `others` is not None, a row containing a
+		      missing value in any of the columns (before concatenation) will
+		      have a missing value in the result.
+		join : {'left', 'right', 'outer', 'inner'}, default None
+		    Determines the join-style between the calling Series/Index and any
+		    Series/Index/DataFrame in `others` (objects without an index need
+		    to match the length of the calling Series/Index). If None,
+		    alignment is disabled, but this option will be removed in a future
+		    version of pandas and replaced with a default of `'left'`. To
+		    disable alignment, use `.values` on any Series/Index/DataFrame in
+		    `others`.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
-		concat : Series/Index of objects or str
+		concat : str or Series/Index of objects
+		    If `others` is None, `str` is returned, otherwise a `Series/Index`
+		    (same type as caller) of objects is returned.
+		
+		See Also
+		--------
+		split : Split each string in the Series/Index
 		
 		Examples
 		--------
-		When ``na_rep`` is `None` (default behavior), NaN value(s)
-		in the Series are ignored.
+		When not passing `others`, all values are concatenated into a single
+		string:
 		
-		>>> Series(['a','b',np.nan,'c']).str.cat(sep=' ')
-		'a b c'
+		>>> s = pd.Series(['a', 'b', np.nan, 'd'])
+		>>> s.str.cat(sep=' ')
+		'a b d'
 		
-		>>> Series(['a','b',np.nan,'c']).str.cat(sep=' ', na_rep='?')
-		'a b ? c'
+		By default, NA values in the Series are ignored. Using `na_rep`, they
+		can be given a representation:
 		
-		If ``others`` is specified, corresponding values are
-		concatenated with the separator. Result will be a Series of strings.
+		>>> s.str.cat(sep=' ', na_rep='?')
+		'a b ? d'
 		
-		>>> Series(['a', 'b', 'c']).str.cat(['A', 'B', 'C'], sep=',')
+		If `others` is specified, corresponding values are concatenated with
+		the separator. Result will be a Series of strings.
+		
+		>>> s.str.cat(['A', 'B', 'C', 'D'], sep=',')
 		0    a,A
 		1    b,B
-		2    c,C
+		2    NaN
+		3    d,D
 		dtype: object
 		
-		Otherwise, strings in the Series are concatenated. Result will be a string.
+		Missing values will remain missing in the result, but can again be
+		represented using `na_rep`
 		
-		>>> Series(['a', 'b', 'c']).str.cat(sep=',')
-		'a,b,c'
-		
-		Also, you can pass a list of list-likes.
-		
-		>>> Series(['a', 'b']).str.cat([['x', 'y'], ['1', '2']], sep=',')
-		0    a,x,1
-		1    b,y,2
+		>>> s.str.cat(['A', 'B', 'C', 'D'], sep=',', na_rep='-')
+		0    a,A
+		1    b,B
+		2    -,C
+		3    d,D
 		dtype: object
+		
+		If `sep` is not specified, the values are concatenated without
+		separation.
+		
+		>>> s.str.cat(['A', 'B', 'C', 'D'], na_rep='-')
+		0    aA
+		1    bB
+		2    -C
+		3    dD
+		dtype: object
+		
+		Series with different indexes can be aligned before concatenation. The
+		`join`-keyword works as in other methods.
+		
+		>>> t = pd.Series(['d', 'a', 'e', 'c'], index=[3, 0, 4, 2])
+		>>> s.str.cat(t, join=None, na_rep='-')
+		0    ad
+		1    ba
+		2    -e
+		3    dc
+		dtype: object
+		>>>
+		>>> s.str.cat(t, join='left', na_rep='-')
+		0    aa
+		1    b-
+		2    -c
+		3    dd
+		dtype: object
+		>>>
+		>>> s.str.cat(t, join='outer', na_rep='-')
+		0    aa
+		1    b-
+		2    -c
+		3    dd
+		4    -e
+		dtype: object
+		>>>
+		>>> s.str.cat(t, join='inner', na_rep='-')
+		0    aa
+		2    -c
+		3    dd
+		dtype: object
+		>>>
+		>>> s.str.cat(t, join='right', na_rep='-')
+		3    dd
+		0    aa
+		4    -e
+		2    -c
+		dtype: object
+		
+		For more examples, see :ref:`here <text.concatenate>`.
 	**/
-	public function cat(?others:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic):Dynamic;
+	public function cat(?others:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?join:Dynamic):Dynamic;
 	/**
 		Filling left and right side of strings in the Series/Index with an
 		additional character. Equivalent to :meth:`str.center`.
@@ -190,42 +359,187 @@ package pandas.core.strings;
 	**/
 	public function center(width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
-		Return boolean Series/``array`` whether given pattern/regex is
-		contained in each string in the Series/Index.
+		Test if pattern or regex is contained within a string of a Series or Index.
+		
+		Return boolean Series or Index based on whether a given pattern or regex is
+		contained within a string of a Series or Index.
 		
 		Parameters
 		----------
-		pat : string
-		    Character sequence or regular expression
-		case : boolean, default True
-		    If True, case sensitive
+		pat : str
+		    Character sequence or regular expression.
+		case : bool, default True
+		    If True, case sensitive.
 		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
-		na : default NaN, fill value for missing values.
+		    Flags to pass through to the re module, e.g. re.IGNORECASE.
+		na : default NaN
+		    Fill value for missing values.
 		regex : bool, default True
-		    If True use re.search, otherwise use Python in operator
+		    If True, assumes the pat is a regular expression.
+		
+		    If False, treats the pat as a literal string.
 		
 		Returns
 		-------
-		contained : Series/array of boolean values
+		Series or Index of boolean values
+		    A Series or Index of boolean values indicating whether the
+		    given pattern is contained within the string of each element
+		    of the Series or Index.
 		
 		See Also
 		--------
 		match : analogous, but stricter, relying on re.match instead of re.search
+		
+		Examples
+		--------
+		
+		Returning a Series of booleans using only a literal pattern.
+		
+		>>> s1 = pd.Series(['Mouse', 'dog', 'house and parrot', '23', np.NaN])
+		>>> s1.str.contains('og', regex=False)
+		0    False
+		1     True
+		2    False
+		3    False
+		4      NaN
+		dtype: object
+		
+		Returning an Index of booleans using only a literal pattern.
+		
+		>>> ind = pd.Index(['Mouse', 'dog', 'house and parrot', '23.0', np.NaN])
+		>>> ind.str.contains('23', regex=False)
+		Index([False, False, False, True, nan], dtype='object')
+		
+		Specifying case sensitivity using `case`.
+		
+		>>> s1.str.contains('oG', case=True, regex=True)
+		0    False
+		1    False
+		2    False
+		3    False
+		4      NaN
+		dtype: object
+		
+		Specifying `na` to be `False` instead of `NaN` replaces NaN values
+		with `False`. If Series or Index does not contain NaN values
+		the resultant dtype will be `bool`, otherwise, an `object` dtype.
+		
+		>>> s1.str.contains('og', na=False, regex=True)
+		0    False
+		1     True
+		2    False
+		3    False
+		4    False
+		dtype: bool
+		
+		Returning 'house' and 'parrot' within same string.
+		
+		>>> s1.str.contains('house|parrot', regex=True)
+		0    False
+		1    False
+		2     True
+		3    False
+		4      NaN
+		dtype: object
+		
+		Ignoring case sensitivity using `flags` with regex.
+		
+		>>> import re
+		>>> s1.str.contains('PARROT', flags=re.IGNORECASE, regex=True)
+		0    False
+		1    False
+		2     True
+		3    False
+		4      NaN
+		dtype: object
+		
+		Returning any digit using regular expression.
+		
+		>>> s1.str.contains('\d', regex=True)
+		0    False
+		1    False
+		2    False
+		3     True
+		4      NaN
+		dtype: object
+		
+		Ensure `pat` is a not a literal pattern when `regex` is set to True.
+		Note in the following example one might expect only `s2[1]` and `s2[3]` to
+		return `True`. However, '.0' as a regex matches any character
+		followed by a 0.
+		
+		>>> s2 = pd.Series(['40','40.0','41','41.0','35'])
+		>>> s2.str.contains('.0', regex=True)
+		0     True
+		1     True
+		2    False
+		3     True
+		4    False
+		dtype: bool
 	**/
 	public function contains(pat:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?na:Dynamic, ?regex:Dynamic):Dynamic;
 	/**
 		Count occurrences of pattern in each string of the Series/Index.
 		
+		This function is used to count the number of times a particular regex
+		pattern is repeated in each of the string elements of the
+		:class:`~pandas.Series`.
+		
 		Parameters
 		----------
-		pat : string, valid regular expression
-		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
+		pat : str
+		    Valid regular expression.
+		flags : int, default 0, meaning no flags
+		    Flags for the `re` module. For a complete list, `see here
+		    <https://docs.python.org/3/howto/regex.html#compilation-flags>`_.
+		**kwargs
+		    For compatability with other string methods. Not used.
 		
 		Returns
 		-------
-		counts : Series/Index of integer values
+		counts : Series or Index
+		    Same type as the calling object containing the integer counts.
+		
+		Notes
+		-----
+		Some characters need to be escaped when passing in `pat`.
+		eg. ``'$'`` has a special meaning in regex and must be escaped when
+		finding this literal character.
+		
+		See Also
+		--------
+		re : Standard library module for regular expressions.
+		str.count : Standard library version, without regular expression support.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['A', 'B', 'Aaba', 'Baca', np.nan, 'CABA', 'cat'])
+		>>> s.str.count('a')
+		0    0.0
+		1    0.0
+		2    2.0
+		3    2.0
+		4    NaN
+		5    0.0
+		6    1.0
+		dtype: float64
+		
+		Escape ``'$'`` to find the literal dollar sign.
+		
+		>>> s = pd.Series(['$', 'B', 'Aab$', '$$ca', 'C$B$', 'cat'])
+		>>> s.str.count('\$')
+		0    1
+		1    0
+		2    1
+		3    2
+		4    2
+		5    0
+		dtype: int64
+		
+		This is also available on Index
+		
+		>>> pd.Index(['A', 'A', 'Aaba', 'cat']).str.count('a')
+		Int64Index([0, 0, 2, 1], dtype='int64')
 	**/
 	public function count(pat:Dynamic, ?flags:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -258,26 +572,59 @@ package pandas.core.strings;
 	**/
 	public function encode(encoding:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
-		Return boolean Series indicating whether each string in the
-		Series/Index ends with passed pattern. Equivalent to
-		:meth:`str.endswith`.
+		Test if the end of each string element matches a pattern.
+		
+		Equivalent to :meth:`str.endswith`.
 		
 		Parameters
 		----------
-		pat : string
-		    Character sequence
-		na : bool, default NaN
+		pat : str
+		    Character sequence. Regular expressions are not accepted.
+		na : object, default NaN
+		    Object shown if element tested is not a string.
 		
 		Returns
 		-------
-		endswith : Series/array of boolean values
+		Series or Index of bool
+		    A Series of booleans indicating whether the given pattern matches
+		    the end of each string element.
+		
+		See Also
+		--------
+		str.endswith : Python standard library string method.
+		Series.str.startswith : Same as endswith, but tests the start of string.
+		Series.str.contains : Tests if string element contains a pattern.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['bat', 'bear', 'caT', np.nan])
+		>>> s
+		0     bat
+		1    bear
+		2     caT
+		3     NaN
+		dtype: object
+		
+		>>> s.str.endswith('t')
+		0     True
+		1    False
+		2    False
+		3      NaN
+		dtype: object
+		
+		Specifying `na` to be `False` instead of `NaN`.
+		
+		>>> s.str.endswith('t', na=False)
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function endswith(pat:Dynamic, ?na:Dynamic):Dynamic;
 	/**
 		For each subject string in the Series, extract groups from the
 		first match of regular expression pat.
-		
-		.. versionadded:: 0.13.0
 		
 		Parameters
 		----------
@@ -286,10 +633,11 @@ package pandas.core.strings;
 		flags : int, default 0 (no flags)
 		    re module flags, e.g. re.IGNORECASE
 		
-		.. versionadded:: 0.18.0
-		expand : bool, default False
+		expand : bool, default True
 		    * If True, return DataFrame.
 		    * If False, return Series/Index/DataFrame.
+		
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
@@ -311,7 +659,7 @@ package pandas.core.strings;
 		Non-matches will be NaN.
 		
 		>>> s = Series(['a1', 'b2', 'c3'])
-		>>> s.str.extract('([ab])(\d)')
+		>>> s.str.extract(r'([ab])(\d)')
 		     0    1
 		0    a    1
 		1    b    2
@@ -319,7 +667,7 @@ package pandas.core.strings;
 		
 		A pattern may contain optional groups.
 		
-		>>> s.str.extract('([ab])?(\d)')
+		>>> s.str.extract(r'([ab])?(\d)')
 		     0  1
 		0    a  1
 		1    b  2
@@ -327,7 +675,7 @@ package pandas.core.strings;
 		
 		Named groups will become column names in the result.
 		
-		>>> s.str.extract('(?P<letter>[ab])(?P<digit>\d)')
+		>>> s.str.extract(r'(?P<letter>[ab])(?P<digit>\d)')
 		  letter digit
 		0      a     1
 		1      b     2
@@ -336,7 +684,7 @@ package pandas.core.strings;
 		A pattern with one group will return a DataFrame with one column
 		if expand=True.
 		
-		>>> s.str.extract('[ab](\d)', expand=True)
+		>>> s.str.extract(r'[ab](\d)', expand=True)
 		     0
 		0    1
 		1    2
@@ -344,7 +692,7 @@ package pandas.core.strings;
 		
 		A pattern with one group will return a Series if expand=False.
 		
-		>>> s.str.extract('[ab](\d)', expand=False)
+		>>> s.str.extract(r'[ab](\d)', expand=False)
 		0      1
 		1      2
 		2    NaN
@@ -385,7 +733,7 @@ package pandas.core.strings;
 		Indices with no matches will not appear in the result.
 		
 		>>> s = Series(["a1a2", "b1", "c1"], index=["A", "B", "C"])
-		>>> s.str.extractall("[ab](\d)")
+		>>> s.str.extractall(r"[ab](\d)")
 		         0
 		  match
 		A 0      1
@@ -394,7 +742,7 @@ package pandas.core.strings;
 		
 		Capture group names are used for column names of the result.
 		
-		>>> s.str.extractall("[ab](?P<digit>\d)")
+		>>> s.str.extractall(r"[ab](?P<digit>\d)")
 		        digit
 		  match
 		A 0         1
@@ -403,7 +751,7 @@ package pandas.core.strings;
 		
 		A pattern with two groups will return a DataFrame with two columns.
 		
-		>>> s.str.extractall("(?P<letter>[ab])(?P<digit>\d)")
+		>>> s.str.extractall(r"(?P<letter>[ab])(?P<digit>\d)")
 		        letter digit
 		  match
 		A 0          a     1
@@ -412,7 +760,7 @@ package pandas.core.strings;
 		
 		Optional groups that do not match are NaN in the result.
 		
-		>>> s.str.extractall("(?P<letter>[ab])?(?P<digit>\d)")
+		>>> s.str.extractall(r"(?P<letter>[ab])?(?P<digit>\d)")
 		        letter digit
 		  match
 		A 0          a     1
@@ -445,37 +793,143 @@ package pandas.core.strings;
 	**/
 	public function find(sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
 	/**
-		Find all occurrences of pattern or regular expression in the
-		Series/Index. Equivalent to :func:`re.findall`.
+		Find all occurrences of pattern or regular expression in the Series/Index.
+		
+		Equivalent to applying :func:`re.findall` to all the elements in the
+		Series/Index.
 		
 		Parameters
 		----------
 		pat : string
-		    Pattern or regular expression
-		flags : int, default 0 (no flags)
-		    re module flags, e.g. re.IGNORECASE
+		    Pattern or regular expression.
+		flags : int, default 0
+		    ``re`` module flags, e.g. `re.IGNORECASE` (default is 0, which means
+		    no flags).
 		
 		Returns
 		-------
-		matches : Series/Index of lists
+		Series/Index of lists of strings
+		    All non-overlapping matches of pattern or regular expression in each
+		    string of this Series/Index.
 		
 		See Also
 		--------
-		extractall : returns DataFrame with one column per capture group
+		count : Count occurrences of pattern or regular expression in each string
+		    of the Series/Index.
+		extractall : For each string in the Series, extract groups from all matches
+		    of regular expression and return a DataFrame with one row for each
+		    match and one column for each group.
+		re.findall : The equivalent ``re`` function to all non-overlapping matches
+		    of pattern or regular expression in string, as a list of strings.
+		
+		Examples
+		--------
+		
+		>>> s = pd.Series(['Lion', 'Monkey', 'Rabbit'])
+		
+		The search for the pattern 'Monkey' returns one match:
+		
+		>>> s.str.findall('Monkey')
+		0          []
+		1    [Monkey]
+		2          []
+		dtype: object
+		
+		On the other hand, the search for the pattern 'MONKEY' doesn't return any
+		match:
+		
+		>>> s.str.findall('MONKEY')
+		0    []
+		1    []
+		2    []
+		dtype: object
+		
+		Flags can be added to the pattern or regular expression. For instance,
+		to find the pattern 'MONKEY' ignoring the case:
+		
+		>>> import re
+		>>> s.str.findall('MONKEY', flags=re.IGNORECASE)
+		0          []
+		1    [Monkey]
+		2          []
+		dtype: object
+		
+		When the pattern matches more than one string in the Series, all matches
+		are returned:
+		
+		>>> s.str.findall('on')
+		0    [on]
+		1    [on]
+		2      []
+		dtype: object
+		
+		Regular expressions are supported too. For instance, the search for all the
+		strings ending with the word 'on' is shown next:
+		
+		>>> s.str.findall('on$')
+		0    [on]
+		1      []
+		2      []
+		dtype: object
+		
+		If the pattern is found more than once in the same string, then a list of
+		multiple strings is returned:
+		
+		>>> s.str.findall('b')
+		0        []
+		1        []
+		2    [b, b]
+		dtype: object
 	**/
 	public function findall(pat:Dynamic, ?flags:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Extract element from each component at specified position.
+		
 		Extract element from lists, tuples, or strings in each element in the
 		Series/Index.
 		
 		Parameters
 		----------
 		i : int
-		    Integer index (location)
+		    Position of element to extract.
 		
 		Returns
 		-------
 		items : Series/Index of objects
+		
+		Examples
+		--------
+		>>> s = pd.Series(["String",
+		           (1, 2, 3),
+		           ["a", "b", "c"],
+		           123, -456,
+		           {1:"Hello", "2":"World"}])
+		>>> s
+		0                        String
+		1                     (1, 2, 3)
+		2                     [a, b, c]
+		3                           123
+		4                          -456
+		5    {1: 'Hello', '2': 'World'}
+		dtype: object
+		
+		>>> s.str.get(1)
+		0        t
+		1        2
+		2        b
+		3      NaN
+		4      NaN
+		5    Hello
+		dtype: object
+		
+		>>> s.str.get(-1)
+		0      g
+		1      3
+		2      c
+		3    NaN
+		4    NaN
+		5    NaN
+		dtype: object
 	**/
 	public function get(i:Dynamic):Dynamic;
 	/**
@@ -616,17 +1070,59 @@ package pandas.core.strings;
 	**/
 	public function isupper():Dynamic;
 	/**
-		Join lists contained as elements in the Series/Index with
-		passed delimiter. Equivalent to :meth:`str.join`.
+		Join lists contained as elements in the Series/Index with passed delimiter.
+		
+		If the elements of a Series are lists themselves, join the content of these
+		lists using the delimiter passed to the function.
+		This function is an equivalent to :meth:`str.join`.
 		
 		Parameters
 		----------
-		sep : string
-		    Delimiter
+		sep : str
+		    Delimiter to use between list entries.
 		
 		Returns
 		-------
-		joined : Series/Index of objects
+		Series/Index: object
+		
+		Notes
+		-----
+		If any of the lists does not contain string objects the result of the join
+		will be `NaN`.
+		
+		See Also
+		--------
+		str.join : Standard library version of this method.
+		Series.str.split : Split strings around given separator/delimiter.
+		
+		Examples
+		--------
+		
+		Example with a list that contains non-string elements.
+		
+		>>> s = pd.Series([['lion', 'elephant', 'zebra'],
+		...                [1.1, 2.2, 3.3],
+		...                ['cat', np.nan, 'dog'],
+		...                ['cow', 4.5, 'goat']
+		...                ['duck', ['swan', 'fish'], 'guppy']])
+		>>> s
+		0        [lion, elephant, zebra]
+		1                [1.1, 2.2, 3.3]
+		2                [cat, nan, dog]
+		3               [cow, 4.5, goat]
+		4    [duck, [swan, fish], guppy]
+		dtype: object
+		
+		Join all lists using an '-', the lists containing object(s) of types other
+		than str will become a NaN.
+		
+		>>> s.str.join('-')
+		0    lion-elephant-zebra
+		1                    NaN
+		2                    NaN
+		3                    NaN
+		4                    NaN
+		dtype: object
 	**/
 	public function join(sep:Dynamic):Dynamic;
 	/**
@@ -656,11 +1152,68 @@ package pandas.core.strings;
 	public function ljust(width:Dynamic, ?fillchar:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to lowercase.
+		
 		Equivalent to :meth:`str.lower`.
 		
 		Returns
 		-------
-		converted : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.lower : Converts all characters to lowercase.
+		Series.str.upper : Converts all characters to uppercase.
+		Series.str.title : Converts first character of each word to uppercase and
+		    remaining to lowercase.
+		Series.str.capitalize : Converts first character to uppercase and
+		    remaining to lowercase.
+		Series.str.swapcase : Converts uppercase to lowercase and lowercase to
+		    uppercase.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['lower', 'CAPITALS', 'this is a sentence', 'SwApCaSe'])
+		>>> s
+		0                 lower
+		1              CAPITALS
+		2    this is a sentence
+		3              SwApCaSe
+		dtype: object
+		
+		>>> s.str.lower()
+		0                 lower
+		1              capitals
+		2    this is a sentence
+		3              swapcase
+		dtype: object
+		
+		>>> s.str.upper()
+		0                 LOWER
+		1              CAPITALS
+		2    THIS IS A SENTENCE
+		3              SWAPCASE
+		dtype: object
+		
+		>>> s.str.title()
+		0                 Lower
+		1              Capitals
+		2    This Is A Sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.capitalize()
+		0                 Lower
+		1              Capitals
+		2    This is a sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.swapcase()
+		0                 LOWER
+		1              capitals
+		2    THIS IS A SENTENCE
+		3              sWaPcAsE
+		dtype: object
 	**/
 	public function lower():Dynamic;
 	/**
@@ -684,7 +1237,8 @@ package pandas.core.strings;
 		flags : int, default 0 (no flags)
 		    re module flags, e.g. re.IGNORECASE
 		na : default NaN, fill value for missing values.
-		as_indexer : DEPRECATED
+		as_indexer
+		    .. deprecated:: 0.21.0
 		
 		Returns
 		-------
@@ -818,25 +1372,50 @@ package pandas.core.strings;
 		flags : int, default 0 (no flags)
 		    - re module flags, e.g. re.IGNORECASE
 		    - Cannot be set if `pat` is a compiled regex
+		regex : boolean, default True
+		    - If True, assumes the passed-in pattern is a regular expression.
+		    - If False, treats the pattern as a literal string
+		    - Cannot be set to False if `pat` is a compiled regex or `repl` is
+		      a callable.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
 		replaced : Series/Index of objects
 		
+		Raises
+		------
+		ValueError
+		    * if `regex` is False and `repl` is a callable or `pat` is a compiled
+		      regex
+		    * if `pat` is a compiled regex and `case` or `flags` is set
+		
 		Notes
 		-----
 		When `pat` is a compiled regex, all flags should be included in the
-		compiled regex. Use of `case` or `flags` with a compiled regex will
-		raise an error.
+		compiled regex. Use of `case`, `flags`, or `regex=False` with a compiled
+		regex will raise an error.
 		
 		Examples
 		--------
-		When `repl` is a string, every `pat` is replaced as with
-		:meth:`str.replace`. NaN value(s) in the Series are left as is.
+		When `pat` is a string and `regex` is True (the default), the given `pat`
+		is compiled as a regex. When `repl` is a string, it replaces matching
+		regex patterns as with :meth:`re.sub`. NaN value(s) in the Series are
+		left as is:
 		
-		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace('f', 'b')
-		0    boo
-		1    buz
+		>>> pd.Series(['foo', 'fuz', np.nan]).str.replace('f.', 'ba', regex=True)
+		0    bao
+		1    baz
+		2    NaN
+		dtype: object
+		
+		When `pat` is a string and `regex` is False, every `pat` is replaced with
+		`repl` as with :meth:`str.replace`:
+		
+		>>> pd.Series(['f.o', 'fuz', np.nan]).str.replace('f.', 'ba', regex=False)
+		0    bao
+		1    fuz
 		2    NaN
 		dtype: object
 		
@@ -879,7 +1458,7 @@ package pandas.core.strings;
 		2    NaN
 		dtype: object
 	**/
-	public function replace(pat:Dynamic, repl:Dynamic, ?n:Dynamic, ?_case:Dynamic, ?flags:Dynamic):Dynamic;
+	public function replace(pat:Dynamic, repl:Dynamic, ?n:Dynamic, ?_case:Dynamic, ?flags:Dynamic, ?regex:Dynamic):Dynamic;
 	/**
 		Return highest indexes in each strings in the Series/Index
 		where the substring is fully contained between [start:end].
@@ -993,8 +1572,6 @@ package pandas.core.strings;
 		string, starting at the end of the string and working to the front.
 		Equivalent to :meth:`str.rsplit`.
 		
-		.. versionadded:: 0.16.2
-		
 		Parameters
 		----------
 		pat : string, default None
@@ -1034,57 +1611,229 @@ package pandas.core.strings;
 	**/
 	public function slice(?start:Dynamic, ?stop:Dynamic, ?step:Dynamic):Dynamic;
 	/**
-		Replace a slice of each string in the Series/Index with another
-		string.
+		Replace a positional slice of a string with another value.
 		
 		Parameters
 		----------
-		start : int or None
-		stop : int or None
-		repl : str or None
-		    String for replacement
+		start : int, optional
+		    Left index position to use for the slice. If not specified (None),
+		    the slice is unbounded on the left, i.e. slice from the start
+		    of the string.
+		stop : int, optional
+		    Right index position to use for the slice. If not specified (None),
+		    the slice is unbounded on the right, i.e. slice until the
+		    end of the string.
+		repl : str, optional
+		    String for replacement. If not specified (None), the sliced region
+		    is replaced with an empty string.
 		
 		Returns
 		-------
-		replaced : Series/Index of objects
+		replaced : Series or Index
+		    Same type as the original object.
+		
+		See Also
+		--------
+		Series.str.slice : Just slicing without replacement.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['a', 'ab', 'abc', 'abdc', 'abcde'])
+		>>> s
+		0        a
+		1       ab
+		2      abc
+		3     abdc
+		4    abcde
+		dtype: object
+		
+		Specify just `start`, meaning replace `start` until the end of the
+		string with `repl`.
+		
+		>>> s.str.slice_replace(1, repl='X')
+		0    aX
+		1    aX
+		2    aX
+		3    aX
+		4    aX
+		dtype: object
+		
+		Specify just `stop`, meaning the start of the string to `stop` is replaced
+		with `repl`, and the rest of the string is included.
+		
+		>>> s.str.slice_replace(stop=2, repl='X')
+		0       X
+		1       X
+		2      Xc
+		3     Xdc
+		4    Xcde
+		dtype: object
+		
+		Specify `start` and `stop`, meaning the slice from `start` to `stop` is
+		replaced with `repl`. Everything before or after `start` and `stop` is
+		included as is.
+		
+		>>> s.str.slice_replace(start=1, stop=3, repl='X')
+		0      aX
+		1      aX
+		2      aX
+		3     aXc
+		4    aXde
+		dtype: object
 	**/
 	public function slice_replace(?start:Dynamic, ?stop:Dynamic, ?repl:Dynamic):Dynamic;
 	/**
-		Split each string (a la re.split) in the Series/Index by given
-		pattern, propagating NA values. Equivalent to :meth:`str.split`.
+		Split strings around given separator/delimiter.
+		
+		Split each string in the caller's values by given
+		pattern, propagating NaN values. Equivalent to :meth:`str.split`.
 		
 		Parameters
 		----------
-		pat : string, default None
-		    String or regular expression to split on. If None, splits on whitespace
+		pat : str, optional
+		    String or regular expression to split on.
+		    If not specified, split on whitespace.
 		n : int, default -1 (all)
-		    None, 0 and -1 will be interpreted as return all splits
+		    Limit number of splits in output.
+		    ``None``, 0 and -1 will be interpreted as return all splits.
 		expand : bool, default False
-		    * If True, return DataFrame/MultiIndex expanding dimensionality.
-		    * If False, return Series/Index.
+		    Expand the splitted strings into separate columns.
 		
-		    .. versionadded:: 0.16.1
-		return_type : deprecated, use `expand`
+		    * If ``True``, return DataFrame/MultiIndex expanding dimensionality.
+		    * If ``False``, return Series/Index, containing lists of strings.
 		
 		Returns
 		-------
-		split : Series/Index or DataFrame/MultiIndex of objects
+		Series, Index, DataFrame or MultiIndex
+		    Type matches caller unless ``expand=True`` (see Notes).
+		
+		Notes
+		-----
+		The handling of the `n` keyword depends on the number of found splits:
+		
+		- If found splits > `n`,  make first `n` splits only
+		- If found splits <= `n`, make all splits
+		- If for a certain row the number of found splits < `n`,
+		  append `None` for padding up to `n` if ``expand=True``
+		
+		If using ``expand=True``, Series and Index callers return DataFrame and
+		MultiIndex objects, respectively.
+		
+		See Also
+		--------
+		str.split : Standard library version of this method.
+		Series.str.get_dummies : Split each string into dummy variables.
+		Series.str.partition : Split string on a separator, returning
+		    the before, separator, and after components.
+		
+		Examples
+		--------
+		>>> s = pd.Series(["this is good text", "but this is even better"])
+		
+		By default, split will return an object of the same size
+		having lists containing the split elements
+		
+		>>> s.str.split()
+		0           [this, is, good, text]
+		1    [but, this, is, even, better]
+		dtype: object
+		>>> s.str.split("random")
+		0          [this is good text]
+		1    [but this is even better]
+		dtype: object
+		
+		When using ``expand=True``, the split elements will expand out into
+		separate columns.
+		
+		For Series object, output return type is DataFrame.
+		
+		>>> s.str.split(expand=True)
+		      0     1     2     3       4
+		0  this    is  good  text    None
+		1   but  this    is  even  better
+		>>> s.str.split(" is ", expand=True)
+		          0            1
+		0      this    good text
+		1  but this  even better
+		
+		For Index object, output return type is MultiIndex.
+		
+		>>> i = pd.Index(["ba 100 001", "ba 101 002", "ba 102 003"])
+		>>> i.str.split(expand=True)
+		MultiIndex(levels=[['ba'], ['100', '101', '102'], ['001', '002', '003']],
+		       labels=[[0, 0, 0], [0, 1, 2], [0, 1, 2]])
+		
+		Parameter `n` can be used to limit the number of splits in the output.
+		
+		>>> s.str.split("is", n=1)
+		0          [th,  is good text]
+		1    [but th,  is even better]
+		dtype: object
+		>>> s.str.split("is", n=1, expand=True)
+		        0                1
+		0      th     is good text
+		1  but th   is even better
+		
+		If NaN is present, it is propagated throughout the columns
+		during the split.
+		
+		>>> s = pd.Series(["this is good text", "but this is even better", np.nan])
+		>>> s.str.split(n=3, expand=True)
+		      0     1     2            3
+		0  this    is  good         text
+		1   but  this    is  even better
+		2   NaN   NaN   NaN          NaN
 	**/
 	public function split(?pat:Dynamic, ?n:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
-		Return boolean Series/``array`` indicating whether each string in the
-		Series/Index starts with passed pattern. Equivalent to
-		:meth:`str.startswith`.
+		Test if the start of each string element matches a pattern.
+		
+		Equivalent to :meth:`str.startswith`.
 		
 		Parameters
 		----------
-		pat : string
-		    Character sequence
-		na : bool, default NaN
+		pat : str
+		    Character sequence. Regular expressions are not accepted.
+		na : object, default NaN
+		    Object shown if element tested is not a string.
 		
 		Returns
 		-------
-		startswith : Series/array of boolean values
+		Series or Index of bool
+		    A Series of booleans indicating whether the given pattern matches
+		    the start of each string element.
+		
+		See Also
+		--------
+		str.startswith : Python standard library string method.
+		Series.str.endswith : Same as startswith, but tests the end of string.
+		Series.str.contains : Tests if string element contains a pattern.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['bat', 'Bear', 'cat', np.nan])
+		>>> s
+		0     bat
+		1    Bear
+		2     cat
+		3     NaN
+		dtype: object
+		
+		>>> s.str.startswith('b')
+		0     True
+		1    False
+		2    False
+		3      NaN
+		dtype: object
+		
+		Specifying `na` to be `False` instead of `NaN`.
+		
+		>>> s.str.startswith('b', na=False)
+		0     True
+		1    False
+		2    False
+		3    False
+		dtype: bool
 	**/
 	public function startswith(pat:Dynamic, ?na:Dynamic):Dynamic;
 	/**
@@ -1098,20 +1847,134 @@ package pandas.core.strings;
 	public function strip(?to_strip:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to be swapcased.
+		
 		Equivalent to :meth:`str.swapcase`.
 		
 		Returns
 		-------
-		converted : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.lower : Converts all characters to lowercase.
+		Series.str.upper : Converts all characters to uppercase.
+		Series.str.title : Converts first character of each word to uppercase and
+		    remaining to lowercase.
+		Series.str.capitalize : Converts first character to uppercase and
+		    remaining to lowercase.
+		Series.str.swapcase : Converts uppercase to lowercase and lowercase to
+		    uppercase.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['lower', 'CAPITALS', 'this is a sentence', 'SwApCaSe'])
+		>>> s
+		0                 lower
+		1              CAPITALS
+		2    this is a sentence
+		3              SwApCaSe
+		dtype: object
+		
+		>>> s.str.lower()
+		0                 lower
+		1              capitals
+		2    this is a sentence
+		3              swapcase
+		dtype: object
+		
+		>>> s.str.upper()
+		0                 LOWER
+		1              CAPITALS
+		2    THIS IS A SENTENCE
+		3              SWAPCASE
+		dtype: object
+		
+		>>> s.str.title()
+		0                 Lower
+		1              Capitals
+		2    This Is A Sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.capitalize()
+		0                 Lower
+		1              Capitals
+		2    This is a sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.swapcase()
+		0                 LOWER
+		1              capitals
+		2    THIS IS A SENTENCE
+		3              sWaPcAsE
+		dtype: object
 	**/
 	public function swapcase():Dynamic;
 	/**
 		Convert strings in the Series/Index to titlecase.
+		
 		Equivalent to :meth:`str.title`.
 		
 		Returns
 		-------
-		converted : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.lower : Converts all characters to lowercase.
+		Series.str.upper : Converts all characters to uppercase.
+		Series.str.title : Converts first character of each word to uppercase and
+		    remaining to lowercase.
+		Series.str.capitalize : Converts first character to uppercase and
+		    remaining to lowercase.
+		Series.str.swapcase : Converts uppercase to lowercase and lowercase to
+		    uppercase.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['lower', 'CAPITALS', 'this is a sentence', 'SwApCaSe'])
+		>>> s
+		0                 lower
+		1              CAPITALS
+		2    this is a sentence
+		3              SwApCaSe
+		dtype: object
+		
+		>>> s.str.lower()
+		0                 lower
+		1              capitals
+		2    this is a sentence
+		3              swapcase
+		dtype: object
+		
+		>>> s.str.upper()
+		0                 LOWER
+		1              CAPITALS
+		2    THIS IS A SENTENCE
+		3              SWAPCASE
+		dtype: object
+		
+		>>> s.str.title()
+		0                 Lower
+		1              Capitals
+		2    This Is A Sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.capitalize()
+		0                 Lower
+		1              Capitals
+		2    This is a sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.swapcase()
+		0                 LOWER
+		1              capitals
+		2    THIS IS A SENTENCE
+		3              sWaPcAsE
+		dtype: object
 	**/
 	public function title():Dynamic;
 	/**
@@ -1142,11 +2005,68 @@ package pandas.core.strings;
 	public function translate(table:Dynamic, ?deletechars:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to uppercase.
+		
 		Equivalent to :meth:`str.upper`.
 		
 		Returns
 		-------
-		converted : Series/Index of objects
+		Series/Index of objects
+		
+		See Also
+		--------
+		Series.str.lower : Converts all characters to lowercase.
+		Series.str.upper : Converts all characters to uppercase.
+		Series.str.title : Converts first character of each word to uppercase and
+		    remaining to lowercase.
+		Series.str.capitalize : Converts first character to uppercase and
+		    remaining to lowercase.
+		Series.str.swapcase : Converts uppercase to lowercase and lowercase to
+		    uppercase.
+		
+		Examples
+		--------
+		>>> s = pd.Series(['lower', 'CAPITALS', 'this is a sentence', 'SwApCaSe'])
+		>>> s
+		0                 lower
+		1              CAPITALS
+		2    this is a sentence
+		3              SwApCaSe
+		dtype: object
+		
+		>>> s.str.lower()
+		0                 lower
+		1              capitals
+		2    this is a sentence
+		3              swapcase
+		dtype: object
+		
+		>>> s.str.upper()
+		0                 LOWER
+		1              CAPITALS
+		2    THIS IS A SENTENCE
+		3              SWAPCASE
+		dtype: object
+		
+		>>> s.str.title()
+		0                 Lower
+		1              Capitals
+		2    This Is A Sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.capitalize()
+		0                 Lower
+		1              Capitals
+		2    This is a sentence
+		3              Swapcase
+		dtype: object
+		
+		>>> s.str.swapcase()
+		0                 LOWER
+		1              capitals
+		2    THIS IS A SENTENCE
+		3              sWaPcAsE
+		dtype: object
 	**/
 	public function upper():Dynamic;
 	/**

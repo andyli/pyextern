@@ -8,7 +8,7 @@ package pandas.core.indexes.accessors;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -48,18 +48,18 @@ package pandas.core.indexes.accessors;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(values:Dynamic, index:Dynamic, name:Dynamic, ?orig:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic, orig:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(values:Dynamic, index:Dynamic, name:Dynamic, ?orig:Dynamic):Void;
+	public function new(data:Dynamic, orig:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -96,7 +96,7 @@ package pandas.core.indexes.accessors;
 	**/
 	public function __setattr__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -115,7 +115,7 @@ package pandas.core.indexes.accessors;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -127,6 +127,7 @@ package pandas.core.indexes.accessors;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		add accessors to cls from the delegate class
 		
@@ -147,8 +148,9 @@ package pandas.core.indexes.accessors;
 	public function _delegate_method(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _delegate_property_get(name:Dynamic):Dynamic;
 	public function _delegate_property_set(name:Dynamic, value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -159,6 +161,7 @@ package pandas.core.indexes.accessors;
 		Prevents setting additional attributes
 	**/
 	public function _freeze():Dynamic;
+	public function _get_values():Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/

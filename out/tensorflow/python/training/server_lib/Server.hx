@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.server_lib;
 @:pythonImport("tensorflow.python.training.server_lib", "Server") extern class Server {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,8 +55,9 @@ package tensorflow.python.training.server_lib;
 		    job. Defaults to the value in `server_or_cluster_def`, if specified.
 		    Otherwise defaults to 0 if the server's job has only one task.
 		  protocol: (Optional.) Specifies the protocol to be used by the server.
-		    Acceptable values include `"grpc"`. Defaults to the value in
-		    `server_or_cluster_def`, if specified. Otherwise defaults to `"grpc"`.
+		    Acceptable values include `"grpc", "grpc+verbs"`. Defaults to the
+		    value in `server_or_cluster_def`, if specified. Otherwise defaults to
+		    `"grpc"`.
 		  config: (Options.) A `tf.ConfigProto` that specifies default
 		    configuration options for all sessions that run on this server.
 		  start: (Optional.) Boolean, indicating whether to start the server
@@ -86,8 +87,9 @@ package tensorflow.python.training.server_lib;
 		    job. Defaults to the value in `server_or_cluster_def`, if specified.
 		    Otherwise defaults to 0 if the server's job has only one task.
 		  protocol: (Optional.) Specifies the protocol to be used by the server.
-		    Acceptable values include `"grpc"`. Defaults to the value in
-		    `server_or_cluster_def`, if specified. Otherwise defaults to `"grpc"`.
+		    Acceptable values include `"grpc", "grpc+verbs"`. Defaults to the
+		    value in `server_or_cluster_def`, if specified. Otherwise defaults to
+		    `"grpc"`.
 		  config: (Options.) A `tf.ConfigProto` that specifies default
 		    configuration options for all sessions that run on this server.
 		  start: (Optional.) Boolean, indicating whether to start the server
@@ -104,7 +106,7 @@ package tensorflow.python.training.server_lib;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -155,11 +157,13 @@ package tensorflow.python.training.server_lib;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Creates a new single-process cluster running on the local host.
 		
@@ -208,7 +212,7 @@ package tensorflow.python.training.server_lib;
 		Returns the target for a `tf.Session` to connect to this server.
 		
 		To create a
-		@{tf.Session} that
+		`tf.Session` that
 		connects to this server, use the following snippet:
 		
 		```python

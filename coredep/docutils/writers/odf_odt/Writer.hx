@@ -3,7 +3,7 @@ package docutils.writers.odf_odt;
 @:pythonImport("docutils.writers.odf_odt", "Writer") extern class Writer {
 	static public var EXTENSION : Dynamic;
 	static public var MIME_TYPE : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -54,7 +54,7 @@ package docutils.writers.odf_odt;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,7 +105,7 @@ package docutils.writers.odf_odt;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -177,6 +177,10 @@ package docutils.writers.odf_odt;
 	**/
 	public function translate():Dynamic;
 	static public var unknown_reference_resolvers : Dynamic;
+	/**
+		Update xml style sheet element with language and region/country.
+	**/
+	public function update_stylesheet(stylesheet_root:Dynamic, language_code:Dynamic, region_code:Dynamic):Dynamic;
 	/**
 		Process a document into its final form.
 		

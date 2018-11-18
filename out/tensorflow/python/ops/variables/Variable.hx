@@ -16,15 +16,6 @@ package tensorflow.python.ops.variables;
 	**/
 	static public function SaveSliceInfo(?full_name:Dynamic, ?full_shape:Dynamic, ?var_offset:Dynamic, ?var_shape:Dynamic, ?save_slice_info_def:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
-		Converts this variable to a Tensor.
-		
-		See @{tf.Variable.value}.
-		
-		Returns:
-		  A `Tensor` containing the value of the variable.
-	**/
-	public function _AsTensor():Dynamic;
-	/**
 		Register overloads for all operators.
 	**/
 	static public function _OverloadAllOperators():Dynamic;
@@ -36,7 +27,7 @@ package tensorflow.python.ops.variables;
 		Args:
 		  operator: string. The operator name.
 	**/
-	static public function _OverloadOperator(operator:Dynamic):Dynamic;
+	static public function _OverloadOperator(_operator:Dynamic):Dynamic;
 	/**
 		Utility function for converting a Variable to a Tensor.
 	**/
@@ -44,40 +35,46 @@ package tensorflow.python.ops.variables;
 	/**
 		Computes the absolute value of a tensor.
 		
-		Given a tensor of real numbers `x`, this operation returns a tensor
-		containing the absolute value of each element in `x`. For example, if x is
-		an input element and y is an output element, this operation computes
-		\\\\(y = |x|\\\\).
+		Given a tensor `x` of complex numbers, this operation returns a tensor of type
+		`float32` or `float64` that is the absolute value of each element in `x`. All
+		elements in `x` must be complex numbers of the form \\(a + bj\\). The
+		absolute value is computed as \\( \sqrt{a^2 + b^2}\\).  For example:
+		```python
+		x = tf.constant([[-2.25 + 4.75j], [-3.25 + 5.75j]])
+		tf.abs(x)  # [5.25594902, 6.60492229]
+		```
 		
 		Args:
-		  x: A `Tensor` or `SparseTensor` of type `float32`, `float64`, `int32`, or
-		    `int64`.
+		  x: A `Tensor` or `SparseTensor` of type `float16`, `float32`, `float64`,
+		    `int32`, `int64`, `complex64` or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` or `SparseTensor` the same size and type as `x` with absolute
 		    values.
+		  Note, for `complex64` or `complex128` input, the returned `Tensor` will be
+		    of type `float32` or `float64`, respectively.
 	**/
-	public function __abs__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __abs__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns x + y element-wise.
 		
-		*NOTE*: `Add` supports broadcasting. `AddN` does not. More about broadcasting
+		*NOTE*: `math.add` supports broadcasting. `AddN` does not. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __add__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __add__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns the truth value of x AND y element-wise.
 		
-		*NOTE*: `LogicalAnd` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_and` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -88,9 +85,12 @@ package tensorflow.python.ops.variables;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __and__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __and__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var __array_priority__ : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Metaclass to allow construction of tf.Variable to be overridden.
+	**/
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -111,7 +111,7 @@ package tensorflow.python.ops.variables;
 		Returns:
 		  `x / y` returns the quotient of x and y.
 	**/
-	public function __div__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __div__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.
@@ -126,9 +126,6 @@ package tensorflow.python.ops.variables;
 		`x // y` floor division in Python 3 and in Python 2.7 with
 		`from __future__ import division`.
 		
-		Note that for efficiency, `floordiv` uses C semantics for negative numbers
-		(unlike Python and Numpy).
-		
 		`x` and `y` must have the same type, and the result will have the same type
 		as well.
 		
@@ -138,12 +135,12 @@ package tensorflow.python.ops.variables;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  `x / y` rounded down (except possibly towards zero for negative integers).
+		  `x / y` rounded down.
 		
 		Raises:
 		  TypeError: If the inputs are complex.
 	**/
-	public function __floordiv__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __floordiv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -151,18 +148,18 @@ package tensorflow.python.ops.variables;
 	/**
 		Returns the truth value of (x >= y) element-wise.
 		
-		*NOTE*: `GreaterEqual` supports broadcasting. More about broadcasting
+		*NOTE*: `math.greater_equal` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __ge__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __ge__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
@@ -171,8 +168,8 @@ package tensorflow.python.ops.variables;
 		Creates a slice helper object given a variable.
 		
 		This allows creating a sub-tensor from part of the current contents
-		of a variable.  See ${tf.Tensor$`Tensor.__getitem__`}
-		for detailed examples of slicing.
+		of a variable. See `tf.Tensor.__getitem__` for detailed examples
+		of slicing.
 		
 		This function in addition also allows assignment to a sliced range.
 		This is similar to `__setitem__` functionality in Python. However,
@@ -180,15 +177,15 @@ package tensorflow.python.ops.variables;
 		operation for grouping or passing to `sess.run()`.
 		For example,
 		
-		```prettyprint
+		```python
 		import tensorflow as tf
 		A = tf.Variable([[1,2,3], [4,5,6], [7,8,9]], dtype=tf.float32)
 		with tf.Session() as sess:
 		  sess.run(tf.global_variables_initializer())
-		  print sess.run(A[:2, :2]) # => [[1,2], [4,5]]
+		  print(sess.run(A[:2, :2]))  # => [[1,2], [4,5]]
 		
 		  op = A[:2,:2].assign(22. * tf.ones((2, 2)))
-		  print sess.run(op) # => [[22, 22, 3], [22, 22, 6], [7,8,9]]
+		  print(sess.run(op))  # => [[22, 22, 3], [22, 22, 6], [7,8,9]]
 		```
 		
 		Note that assignments currently do not support NumPy broadcasting
@@ -207,36 +204,165 @@ package tensorflow.python.ops.variables;
 		  ValueError: If a slice range is negative size.
 		  TypeError: If the slice indices aren't int, slice, or Ellipsis.
 	**/
-	public function __getitem__(slice_spec:Dynamic):Dynamic;
+	static public function __getitem__(_var:Dynamic, slice_spec:Dynamic):Dynamic;
 	/**
 		Returns the truth value of (x > y) element-wise.
 		
-		*NOTE*: `Greater` supports broadcasting. More about broadcasting
+		*NOTE*: `math.greater` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __gt__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __gt__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
+	public function __iadd__(other:Dynamic):Dynamic;
+	public function __idiv__(other:Dynamic):Dynamic;
+	public function __imul__(other:Dynamic):Dynamic;
+	/**
+		Creates a new variable with value `initial_value`.
+		
+		The new variable is added to the graph collections listed in `collections`,
+		which defaults to `[GraphKeys.GLOBAL_VARIABLES]`.
+		
+		If `trainable` is `True` the variable is also added to the graph collection
+		`GraphKeys.TRAINABLE_VARIABLES`.
+		
+		This constructor creates both a `variable` Op and an `assign` Op to set the
+		variable to its initial value.
+		
+		Args:
+		  initial_value: A `Tensor`, or Python object convertible to a `Tensor`,
+		    which is the initial value for the Variable. The initial value must have
+		    a shape specified unless `validate_shape` is set to False. Can also be a
+		    callable with no argument that returns the initial value when called. In
+		    that case, `dtype` must be specified. (Note that initializer functions
+		    from init_ops.py must first be bound to a shape before being used here.)
+		  trainable: If `True`, the default, GradientTapes automatically watch uses
+		    of this variable.
+		  validate_shape: If `False`, allows the variable to be initialized with a
+		    value of unknown shape. If `True`, the default, the shape of
+		    `initial_value` must be known.
+		  caching_device: Optional device string describing where the Variable
+		    should be cached for reading.  Defaults to the Variable's device.
+		    If not `None`, caches on another device.  Typical use is to cache
+		    on the device where the Ops using the Variable reside, to deduplicate
+		    copying through `Switch` and other conditional statements.
+		  name: Optional name for the variable. Defaults to `'Variable'` and gets
+		    uniquified automatically.
+		  variable_def: `VariableDef` protocol buffer. If not `None`, recreates
+		    the Variable object with its contents, referencing the variable's nodes
+		    in the graph, which must already exist. The graph is not changed.
+		    `variable_def` and the other arguments are mutually exclusive.
+		  dtype: If set, initial_value will be converted to the given type.
+		    If `None`, either the datatype will be kept (if `initial_value` is
+		    a Tensor), or `convert_to_tensor` will decide.
+		  import_scope: Optional `string`. Name scope to add to the
+		    `Variable.` Only used when initializing from protocol buffer.
+		  constraint: An optional projection function to be applied to the variable
+		    after being updated by an `Optimizer` (e.g. used to implement norm
+		    constraints or value constraints for layer weights). The function must
+		    take as input the unprojected Tensor representing the value of the
+		    variable and return the Tensor for the projected value
+		    (which must have the same shape). Constraints are not safe to
+		    use when doing asynchronous distributed training.
+		  synchronization: Indicates when a distributed a variable will be
+		    aggregated. Accepted values are constants defined in the class
+		    `tf.VariableSynchronization`. By default the synchronization is set to
+		    `AUTO` and the current `DistributionStrategy` chooses
+		    when to synchronize. If `synchronization` is set to `ON_READ`,
+		    `trainable` must not be set to `True`.
+		  aggregation: Indicates how a distributed variable will be aggregated.
+		    Accepted values are constants defined in the class
+		    `tf.VariableAggregation`.
+		
+		Raises:
+		  ValueError: If both `variable_def` and initial_value are specified.
+		  ValueError: If the initial value is not specified, or does not have a
+		    shape and `validate_shape` is `True`.
+		  RuntimeError: If eager execution is enabled.
+	**/
 	@:native("__init__")
-	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function new(?kwargs:python.KwArgs<Dynamic>):Void;
+	public function ___init__(?initial_value:Dynamic, ?trainable:Dynamic, ?validate_shape:Dynamic, ?caching_device:Dynamic, ?name:Dynamic, ?variable_def:Dynamic, ?dtype:Dynamic, ?import_scope:Dynamic, ?constraint:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
+	/**
+		Creates a new variable with value `initial_value`.
+		
+		The new variable is added to the graph collections listed in `collections`,
+		which defaults to `[GraphKeys.GLOBAL_VARIABLES]`.
+		
+		If `trainable` is `True` the variable is also added to the graph collection
+		`GraphKeys.TRAINABLE_VARIABLES`.
+		
+		This constructor creates both a `variable` Op and an `assign` Op to set the
+		variable to its initial value.
+		
+		Args:
+		  initial_value: A `Tensor`, or Python object convertible to a `Tensor`,
+		    which is the initial value for the Variable. The initial value must have
+		    a shape specified unless `validate_shape` is set to False. Can also be a
+		    callable with no argument that returns the initial value when called. In
+		    that case, `dtype` must be specified. (Note that initializer functions
+		    from init_ops.py must first be bound to a shape before being used here.)
+		  trainable: If `True`, the default, GradientTapes automatically watch uses
+		    of this variable.
+		  validate_shape: If `False`, allows the variable to be initialized with a
+		    value of unknown shape. If `True`, the default, the shape of
+		    `initial_value` must be known.
+		  caching_device: Optional device string describing where the Variable
+		    should be cached for reading.  Defaults to the Variable's device.
+		    If not `None`, caches on another device.  Typical use is to cache
+		    on the device where the Ops using the Variable reside, to deduplicate
+		    copying through `Switch` and other conditional statements.
+		  name: Optional name for the variable. Defaults to `'Variable'` and gets
+		    uniquified automatically.
+		  variable_def: `VariableDef` protocol buffer. If not `None`, recreates
+		    the Variable object with its contents, referencing the variable's nodes
+		    in the graph, which must already exist. The graph is not changed.
+		    `variable_def` and the other arguments are mutually exclusive.
+		  dtype: If set, initial_value will be converted to the given type.
+		    If `None`, either the datatype will be kept (if `initial_value` is
+		    a Tensor), or `convert_to_tensor` will decide.
+		  import_scope: Optional `string`. Name scope to add to the
+		    `Variable.` Only used when initializing from protocol buffer.
+		  constraint: An optional projection function to be applied to the variable
+		    after being updated by an `Optimizer` (e.g. used to implement norm
+		    constraints or value constraints for layer weights). The function must
+		    take as input the unprojected Tensor representing the value of the
+		    variable and return the Tensor for the projected value
+		    (which must have the same shape). Constraints are not safe to
+		    use when doing asynchronous distributed training.
+		  synchronization: Indicates when a distributed a variable will be
+		    aggregated. Accepted values are constants defined in the class
+		    `tf.VariableSynchronization`. By default the synchronization is set to
+		    `AUTO` and the current `DistributionStrategy` chooses
+		    when to synchronize. If `synchronization` is set to `ON_READ`,
+		    `trainable` must not be set to `True`.
+		  aggregation: Indicates how a distributed variable will be aggregated.
+		    Accepted values are constants defined in the class
+		    `tf.VariableAggregation`.
+		
+		Raises:
+		  ValueError: If both `variable_def` and initial_value are specified.
+		  ValueError: If the initial value is not specified, or does not have a
+		    shape and `validate_shape` is `True`.
+		  RuntimeError: If eager execution is enabled.
+	**/
+	public function new(?initial_value:Dynamic, ?trainable:Dynamic, ?validate_shape:Dynamic, ?caching_device:Dynamic, ?name:Dynamic, ?variable_def:Dynamic, ?dtype:Dynamic, ?import_scope:Dynamic, ?constraint:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns the truth value of NOT x element-wise.
 		
@@ -247,53 +373,47 @@ package tensorflow.python.ops.variables;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __invert__(?args:python.VarArgs<Dynamic>):Dynamic;
-	/**
-		Dummy method to prevent iteration. Do not call.
-		
-		NOTE(mrry): If we register __getitem__ as an overloaded operator,
-		Python will valiantly attempt to iterate over the variable's Tensor from 0
-		to infinity.  Declaring this method prevents this unintended behavior.
-		
-		Raises:
-		  TypeError: when invoked.
-	**/
-	public function __iter__():Dynamic;
+	static public function __invert__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function __ipow__(other:Dynamic):Dynamic;
+	public function __irealdiv__(other:Dynamic):Dynamic;
+	public function __isub__(other:Dynamic):Dynamic;
+	public function __itruediv__(other:Dynamic):Dynamic;
 	/**
 		Returns the truth value of (x <= y) element-wise.
 		
-		*NOTE*: `LessEqual` supports broadcasting. More about broadcasting
+		*NOTE*: `math.less_equal` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __le__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __le__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns the truth value of (x < y) element-wise.
 		
-		*NOTE*: `Less` supports broadcasting. More about broadcasting
+		*NOTE*: `math.less` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  x: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __lt__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __lt__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
-		The inputs must be matrices (or tensors of rank > 2, representing batches of
-		matrices), with matching inner dimensions, possibly after transposition.
+		The inputs must, following any transpositions, be tensors of rank >= 2
+		where the inner 2 dimensions specify valid matrix multiplication arguments,
+		and any further outer dimensions match.
 		
 		Both matrices must be of the same type. The supported types are:
 		`float16`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
@@ -312,35 +432,46 @@ package tensorflow.python.ops.variables;
 		
 		```python
 		# 2-D tensor `a`
-		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3]) => [[1. 2. 3.]
-		                                                      [4. 5. 6.]]
+		# [[1, 2, 3],
+		#  [4, 5, 6]]
+		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3])
+		
 		# 2-D tensor `b`
-		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2]) => [[7. 8.]
-		                                                         [9. 10.]
-		                                                         [11. 12.]]
-		c = tf.matmul(a, b) => [[58 64]
-		                        [139 154]]
+		# [[ 7,  8],
+		#  [ 9, 10],
+		#  [11, 12]]
+		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2])
+		
+		# `a` * `b`
+		# [[ 58,  64],
+		#  [139, 154]]
+		c = tf.matmul(a, b)
 		
 		
 		# 3-D tensor `a`
+		# [[[ 1,  2,  3],
+		#   [ 4,  5,  6]],
+		#  [[ 7,  8,  9],
+		#   [10, 11, 12]]]
 		a = tf.constant(np.arange(1, 13, dtype=np.int32),
-		                shape=[2, 2, 3])                  => [[[ 1.  2.  3.]
-		                                                       [ 4.  5.  6.]],
-		                                                      [[ 7.  8.  9.]
-		                                                       [10. 11. 12.]]]
+		                shape=[2, 2, 3])
 		
 		# 3-D tensor `b`
+		# [[[13, 14],
+		#   [15, 16],
+		#   [17, 18]],
+		#  [[19, 20],
+		#   [21, 22],
+		#   [23, 24]]]
 		b = tf.constant(np.arange(13, 25, dtype=np.int32),
-		                shape=[2, 3, 2])                   => [[[13. 14.]
-		                                                        [15. 16.]
-		                                                        [17. 18.]],
-		                                                       [[19. 20.]
-		                                                        [21. 22.]
-		                                                        [23. 24.]]]
-		c = tf.matmul(a, b) => [[[ 94 100]
-		                         [229 244]],
-		                        [[508 532]
-		                         [697 730]]]
+		                shape=[2, 3, 2])
+		
+		# `a` * `b`
+		# [[[ 94, 100],
+		#   [229, 244]],
+		#  [[508, 532],
+		#   [697, 730]]]
+		c = tf.matmul(a, b)
 		
 		# Since python >= 3.5 the @ operator is supported (see PEP 465).
 		# In TensorFlow, it simply calls the `tf.matmul()` function, so the
@@ -378,7 +509,7 @@ package tensorflow.python.ops.variables;
 		  ValueError: If transpose_a and adjoint_a, or transpose_b and adjoint_b
 		    are both set to True.
 	**/
-	public function __matmul__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __matmul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
 		
@@ -389,19 +520,19 @@ package tensorflow.python.ops.variables;
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `float32`, `float64`.
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `bfloat16`, `half`, `float32`, `float64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __mod__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __mod__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Dispatches cwise mul for "Dense*Dense" and "Dense*Sparse".
 	**/
-	public function __mul__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __mul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return self!=value.
 	**/
@@ -412,13 +543,13 @@ package tensorflow.python.ops.variables;
 		I.e., \\(y = -x\\).
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __neg__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __neg__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
@@ -426,7 +557,7 @@ package tensorflow.python.ops.variables;
 	/**
 		Returns the truth value of x OR y element-wise.
 		
-		*NOTE*: `LogicalOr` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_or` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -437,49 +568,49 @@ package tensorflow.python.ops.variables;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __or__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __or__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Computes the power of one value to another.
 		
-		Given a tensor `x` and a tensor `y`, this operation computes \\\\(x^y\\\\) for
+		Given a tensor `x` and a tensor `y`, this operation computes \\(x^y\\) for
 		corresponding elements in `x` and `y`. For example:
 		
-		```
-		# tensor 'x' is [[2, 2], [3, 3]]
-		# tensor 'y' is [[8, 16], [2, 3]]
-		tf.pow(x, y) ==> [[256, 65536], [9, 27]]
+		```python
+		x = tf.constant([[2, 2], [3, 3]])
+		y = tf.constant([[8, 16], [2, 3]])
+		tf.pow(x, y)  # [[256, 65536], [9, 27]]
 		```
 		
 		Args:
-		  x: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
-		  y: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
+		  x: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
+		  y: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`.
 	**/
-	public function __pow__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __pow__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns x + y element-wise.
 		
-		*NOTE*: `Add` supports broadcasting. `AddN` does not. More about broadcasting
+		*NOTE*: `math.add` supports broadcasting. `AddN` does not. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `int16`, `int32`, `int64`, `complex64`, `complex128`, `string`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __radd__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __radd__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns the truth value of x AND y element-wise.
 		
-		*NOTE*: `LogicalAnd` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_and` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -490,7 +621,7 @@ package tensorflow.python.ops.variables;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __rand__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rand__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Divide two values using Python 2 semantics. Used for Tensor.__div__.
 		
@@ -501,7 +632,7 @@ package tensorflow.python.ops.variables;
 		Returns:
 		  `x / y` returns the quotient of x and y.
 	**/
-	public function __rdiv__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rdiv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -523,9 +654,6 @@ package tensorflow.python.ops.variables;
 		`x // y` floor division in Python 3 and in Python 2.7 with
 		`from __future__ import division`.
 		
-		Note that for efficiency, `floordiv` uses C semantics for negative numbers
-		(unlike Python and Numpy).
-		
 		`x` and `y` must have the same type, and the result will have the same type
 		as well.
 		
@@ -535,17 +663,18 @@ package tensorflow.python.ops.variables;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  `x / y` rounded down (except possibly towards zero for negative integers).
+		  `x / y` rounded down.
 		
 		Raises:
 		  TypeError: If the inputs are complex.
 	**/
-	public function __rfloordiv__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rfloordiv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
 		
-		The inputs must be matrices (or tensors of rank > 2, representing batches of
-		matrices), with matching inner dimensions, possibly after transposition.
+		The inputs must, following any transpositions, be tensors of rank >= 2
+		where the inner 2 dimensions specify valid matrix multiplication arguments,
+		and any further outer dimensions match.
 		
 		Both matrices must be of the same type. The supported types are:
 		`float16`, `float32`, `float64`, `int32`, `complex64`, `complex128`.
@@ -564,35 +693,46 @@ package tensorflow.python.ops.variables;
 		
 		```python
 		# 2-D tensor `a`
-		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3]) => [[1. 2. 3.]
-		                                                      [4. 5. 6.]]
+		# [[1, 2, 3],
+		#  [4, 5, 6]]
+		a = tf.constant([1, 2, 3, 4, 5, 6], shape=[2, 3])
+		
 		# 2-D tensor `b`
-		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2]) => [[7. 8.]
-		                                                         [9. 10.]
-		                                                         [11. 12.]]
-		c = tf.matmul(a, b) => [[58 64]
-		                        [139 154]]
+		# [[ 7,  8],
+		#  [ 9, 10],
+		#  [11, 12]]
+		b = tf.constant([7, 8, 9, 10, 11, 12], shape=[3, 2])
+		
+		# `a` * `b`
+		# [[ 58,  64],
+		#  [139, 154]]
+		c = tf.matmul(a, b)
 		
 		
 		# 3-D tensor `a`
+		# [[[ 1,  2,  3],
+		#   [ 4,  5,  6]],
+		#  [[ 7,  8,  9],
+		#   [10, 11, 12]]]
 		a = tf.constant(np.arange(1, 13, dtype=np.int32),
-		                shape=[2, 2, 3])                  => [[[ 1.  2.  3.]
-		                                                       [ 4.  5.  6.]],
-		                                                      [[ 7.  8.  9.]
-		                                                       [10. 11. 12.]]]
+		                shape=[2, 2, 3])
 		
 		# 3-D tensor `b`
+		# [[[13, 14],
+		#   [15, 16],
+		#   [17, 18]],
+		#  [[19, 20],
+		#   [21, 22],
+		#   [23, 24]]]
 		b = tf.constant(np.arange(13, 25, dtype=np.int32),
-		                shape=[2, 3, 2])                   => [[[13. 14.]
-		                                                        [15. 16.]
-		                                                        [17. 18.]],
-		                                                       [[19. 20.]
-		                                                        [21. 22.]
-		                                                        [23. 24.]]]
-		c = tf.matmul(a, b) => [[[ 94 100]
-		                         [229 244]],
-		                        [[508 532]
-		                         [697 730]]]
+		                shape=[2, 3, 2])
+		
+		# `a` * `b`
+		# [[[ 94, 100],
+		#   [229, 244]],
+		#  [[508, 532],
+		#   [697, 730]]]
+		c = tf.matmul(a, b)
 		
 		# Since python >= 3.5 the @ operator is supported (see PEP 465).
 		# In TensorFlow, it simply calls the `tf.matmul()` function, so the
@@ -630,7 +770,7 @@ package tensorflow.python.ops.variables;
 		  ValueError: If transpose_a and adjoint_a, or transpose_b and adjoint_b
 		    are both set to True.
 	**/
-	public function __rmatmul__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rmatmul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns element-wise remainder of division. When `x < 0` xor `y < 0` is
 		
@@ -641,22 +781,22 @@ package tensorflow.python.ops.variables;
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `float32`, `float64`.
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`, `bfloat16`, `half`, `float32`, `float64`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __rmod__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rmod__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Dispatches cwise mul for "Dense*Dense" and "Dense*Sparse".
 	**/
-	public function __rmul__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rmul__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns the truth value of x OR y element-wise.
 		
-		*NOTE*: `LogicalOr` supports broadcasting. More about broadcasting
+		*NOTE*: `math.logical_or` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
@@ -667,50 +807,50 @@ package tensorflow.python.ops.variables;
 		Returns:
 		  A `Tensor` of type `bool`.
 	**/
-	public function __ror__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __ror__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Computes the power of one value to another.
 		
-		Given a tensor `x` and a tensor `y`, this operation computes \\\\(x^y\\\\) for
+		Given a tensor `x` and a tensor `y`, this operation computes \\(x^y\\) for
 		corresponding elements in `x` and `y`. For example:
 		
-		```
-		# tensor 'x' is [[2, 2], [3, 3]]
-		# tensor 'y' is [[8, 16], [2, 3]]
-		tf.pow(x, y) ==> [[256, 65536], [9, 27]]
+		```python
+		x = tf.constant([[2, 2], [3, 3]])
+		y = tf.constant([[8, 16], [2, 3]])
+		tf.pow(x, y)  # [[256, 65536], [9, 27]]
 		```
 		
 		Args:
-		  x: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
-		  y: A `Tensor` of type `float32`, `float64`, `int32`, `int64`, `complex64`,
-		   or `complex128`.
+		  x: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
+		  y: A `Tensor` of type `float16`, `float32`, `float64`, `int32`, `int64`,
+		   `complex64`, or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`.
 	**/
-	public function __rpow__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rpow__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns x - y element-wise.
 		
-		*NOTE*: `Sub` supports broadcasting. More about broadcasting
+		*NOTE*: `Subtract` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __rsub__(?args:python.VarArgs<Dynamic>):Dynamic;
-	public function __rtruediv__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rsub__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rtruediv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		x ^ y = (x | y) & ~(x & y).
 	**/
-	public function __rxor__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __rxor__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -727,18 +867,18 @@ package tensorflow.python.ops.variables;
 	/**
 		Returns x - y element-wise.
 		
-		*NOTE*: `Sub` supports broadcasting. More about broadcasting
+		*NOTE*: `Subtract` supports broadcasting. More about broadcasting
 		[here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html)
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`, `int32`, `int64`, `complex64`, `complex128`.
+		  x: A `Tensor`. Must be one of the following types: `bfloat16`, `half`, `float32`, `float64`, `uint8`, `int8`, `uint16`, `int16`, `int32`, `int64`, `complex64`, `complex128`.
 		  y: A `Tensor`. Must have the same type as `x`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `x`.
 	**/
-	public function __sub__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __sub__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -747,8 +887,8 @@ package tensorflow.python.ops.variables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __truediv__(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __truediv__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -756,80 +896,195 @@ package tensorflow.python.ops.variables;
 	/**
 		x ^ y = (x | y) & ~(x & y).
 	**/
-	public function __xor__(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function __xor__(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Conversion function for Graph.as_graph_element().
-	**/
-	public function _as_graph_element():Dynamic;
-	public function _get_save_slice_info():Dynamic;
-	/**
-		Creates a new variable from arguments.
+		Restore-on-create for a variable be saved with this `Checkpointable`.
+		
+		If the user has requested that this object or another `Checkpointable` which
+		depends on this object be restored from a checkpoint (deferred loading
+		before variable object creation), `initializer` may be ignored and the value
+		from the checkpoint used instead.
 		
 		Args:
-		  initial_value: A `Tensor`, or Python object convertible to a `Tensor`,
-		    which is the initial value for the Variable. The initial value must have
-		    a shape specified unless `validate_shape` is set to False. Can also be a
-		    callable with no argument that returns the initial value when called.
-		    (Note that initializer functions  from init_ops.py must first be bound
-		     to a shape before being used here.)
-		  trainable: If `True`, the default, also adds the variable to the graph
-		    collection `GraphKeys.TRAINABLE_VARIABLES`. This collection is used as
-		    the default list of variables to use by the `Optimizer` classes.
-		  collections: List of graph collections keys. The new variable is added to
-		    these collections. Defaults to `[GraphKeys.GLOBAL_VARIABLES]`.
-		  validate_shape: If `False`, allows the variable to be initialized with a
-		    value of unknown shape. If `True`, the default, the shape of
-		    `initial_value` must be known.
-		  caching_device: Optional device string or function describing where the
-		    Variable should be cached for reading.  Defaults to the Variable's
-		    device.  If not `None`, caches on another device.  Typical use is to
-		    cache on the device where the Ops using the Variable reside, to
-		    deduplicate copying through `Switch` and other conditional statements.
-		  name: Optional name for the variable. Defaults to `'Variable'` and gets
-		    uniquified automatically.
-		  dtype: If set, initial_value will be converted to the given type.
-		    If None, either the datatype will be kept (if initial_value is
-		   a Tensor) or float32 will be used (if it is a Python object convertible
-		   to a Tensor).
-		  expected_shape: Deprecated. Ignored.
-		
-		Raises:
-		  ValueError: If the initial value is not specified, or does not have a
-		    shape and `validate_shape` is `True`.
-	**/
-	public function _init_from_args(?initial_value:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?validate_shape:Dynamic, ?caching_device:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?expected_shape:Dynamic):Dynamic;
-	/**
-		Recreates the Variable object from a `VariableDef` protocol buffer.
-		
-		Args:
-		  variable_def: `VariableDef` protocol buffer, describing a variable
-		      whose nodes already exists in the graph.
-		  import_scope: Optional `string`. Name scope to add.
-	**/
-	public function _init_from_proto(variable_def:Dynamic, ?import_scope:Dynamic):Dynamic;
-	/**
-		Returns a reference to this variable.
-		
-		You usually do not need to call this method as all ops that need a reference
-		to the variable call it automatically.
-		
-		Returns is a `Tensor` which holds a reference to the variable.  You can
-		assign a new value to the variable by passing the tensor to an assign op.
-		See @{tf.Variable.value} if you want to get the value of the
-		variable.
+		  name: A name for the variable. Must be unique within this object.
+		  shape: The shape of the variable.
+		  dtype: The data type of the variable.
+		  initializer: The initializer to use. Ignored if there is a deferred
+		    restoration left over from a call to
+		    `_restore_from_checkpoint_position`.
+		  getter: The getter to wrap which actually fetches the variable.
+		  overwrite: If True, disables unique name and type checks.
+		  **kwargs_for_getter: Passed to the getter.
 		
 		Returns:
-		  A `Tensor` that is a reference to the variable.
+		  The new variable object.
+		
+		Raises:
+		  ValueError: If the variable name is not unique.
 	**/
-	public function _ref():Dynamic;
+	public function _add_variable_with_custom_getter(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?getter:Dynamic, ?overwrite:Dynamic, ?kwargs_for_getter:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Sets the slice info for this `Variable`.
+		All dependencies of this object.
+		
+		May be overridden to include conditional dependencies.
+		
+		Returns:
+		  A list of `CheckpointableReference` objects indicating named
+		  `Checkpointable` dependencies which should be saved along with this
+		  object.
+	**/
+	public var _checkpoint_dependencies : Dynamic;
+	/**
+		A dictionary with deferred dependencies.
+		
+		Stores restorations for other Checkpointable objects on which this object
+		may eventually depend. May be overridden by sub-classes (e.g. Optimizers use
+		conditional dependencies based the current graph, and so need separate
+		management of deferred dependencies too).
+		
+		Returns:
+		  A dictionary mapping from local name to a list of _CheckpointPosition
+		  objects.
+	**/
+	public var _deferred_dependencies : Dynamic;
+	/**
+		Returns a dictionary of values to checkpoint with this object.
+		
+		Keys in the returned dictionary are local to this object and in a separate
+		namespace from dependencies. Values may either be `SaveableObject` factories
+		or variables easily converted to `SaveableObject`s (as in `tf.train.Saver`'s
+		`var_list` constructor argument).
+		
+		`SaveableObjects` have a name set, which Checkpointable needs to generate
+		itself. So rather than returning `SaveableObjects` directly, this method
+		should return a dictionary of callables which take `name` arguments and
+		return `SaveableObjects` with that name.
+		
+		If this object may also be passed to the global-name-based `tf.train.Saver`,
+		the returned callables should have a default value for their name argument
+		(i.e. be callable with no arguments).
+		
+		Returned values must be saved only by this object; if any value may be
+		shared, it should instead be a dependency. For example, variable objects
+		save their own values with the key `VARIABLE_VALUE_KEY`, but objects which
+		reference variables simply add a dependency.
+		
+		Returns:
+		  The dictionary mapping attribute names to `SaveableObject` factories
+		  described above. For example:
+		  {VARIABLE_VALUE_KEY:
+		   lambda name="global_name_for_this_object":
+		   SaveableObject(name=name, ...)}
+	**/
+	public function _gather_saveables_for_checkpoint():Dynamic;
+	/**
+		Pop and load any deferred checkpoint restores into `checkpointable`.
+		
+		This method does not add a new dependency on `checkpointable`, but it does
+		check if any outstanding/deferred dependencies have been queued waiting for
+		this dependency to be added (matched based on `name`). If so,
+		`checkpointable` and its dependencies are restored. The restorations are
+		considered fulfilled and so are deleted.
+		
+		`_track_checkpointable` is more appropriate for adding a
+		normal/unconditional dependency, and includes handling for deferred
+		restorations. This method allows objects such as `Optimizer` to use the same
+		restoration logic while managing conditional dependencies themselves, by
+		overriding `_checkpoint_dependencies` and `_lookup_dependency` to change the
+		object's dependencies based on the context it is saved/restored in (a single
+		optimizer instance can have state associated with multiple graphs).
 		
 		Args:
-		  save_slice_info: A `Variable.SaveSliceInfo` object.
+		  name: The name of the dependency within this object (`self`), used to
+		    match `checkpointable` with values saved in a checkpoint.
+		  checkpointable: The Checkpointable object to restore (inheriting from
+		    `CheckpointableBase`).
 	**/
-	public function _set_save_slice_info(save_slice_info:Dynamic):Dynamic;
-	public function _strided_slice_assign(begin:Dynamic, end:Dynamic, strides:Dynamic, value:Dynamic, name:Dynamic, begin_mask:Dynamic, end_mask:Dynamic, ellipsis_mask:Dynamic, new_axis_mask:Dynamic, shrink_axis_mask:Dynamic):Dynamic;
+	public function _handle_deferred_dependencies(name:Dynamic, checkpointable:Dynamic):Dynamic;
+	/**
+		Look up a dependency by name.
+		
+		May be overridden to include conditional dependencies.
+		
+		Args:
+		  name: The local name of the dependency.
+		Returns:
+		  A `Checkpointable` object, or `None` if no dependency by this name was
+		  found.
+	**/
+	public function _lookup_dependency(name:Dynamic):Dynamic;
+	/**
+		Initialize dependency management.
+		
+		Not __init__, since most objects will forget to call it.
+	**/
+	public function _maybe_initialize_checkpointable():Dynamic;
+	/**
+		Restore the object's attributes from a name-based checkpoint.
+	**/
+	public function _name_based_attribute_restore(checkpoint:Dynamic):Dynamic;
+	/**
+		If automatic dependency tracking is enabled, ignores `value`.
+	**/
+	public function _no_dependency(value:Dynamic):Dynamic;
+	/**
+		Return a dependency's value for restore-on-create.
+		
+		Note the restoration is not deleted; if for some reason preload is called
+		and then not assigned to the variable (for example because a custom getter
+		overrides the initializer), the assignment will still happen once the
+		variable is tracked (determined based on checkpoint.restore_uid).
+		
+		Args:
+		  name: The object-local name of the dependency holding the variable's
+		    value.
+		  shape: The shape of the variable being loaded into.
+		Returns:
+		  An callable for use as a variable's initializer/initial_value, or None if
+		  one should not be set (either because there was no variable with this name
+		  in the checkpoint or because it needs more complex deserialization). Any
+		  non-trivial deserialization will happen when the variable object is
+		  tracked.
+	**/
+	public function _preload_simple_restoration(name:Dynamic, shape:Dynamic):Dynamic;
+	/**
+		Restore this object and its dependencies (may be deferred).
+	**/
+	public function _restore_from_checkpoint_position(checkpoint_position:Dynamic):Dynamic;
+	/**
+		Restore this object, and either queue its dependencies or defer them.
+	**/
+	public function _single_restoration_from_checkpoint_position(checkpoint_position:Dynamic, visit_queue:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Declare a dependency on another `Checkpointable` object.
+		
+		Indicates that checkpoints for this object should include variables from
+		`checkpointable`.
+		
+		Variables in a checkpoint are mapped to `Checkpointable`s based on the names
+		provided when the checkpoint was written. To avoid breaking existing
+		checkpoints when modifying a class, neither variable names nor dependency
+		names (the names passed to `_track_checkpointable`) may change.
+		
+		Args:
+		  checkpointable: A `Checkpointable` which this object depends on.
+		  name: A local name for `checkpointable`, used for loading checkpoints into
+		    the correct objects.
+		  overwrite: Boolean, whether silently replacing dependencies is OK. Used
+		    for __setattr__, where throwing an error on attribute reassignment would
+		    be inappropriate.
+		
+		Returns:
+		  `checkpointable`, for convenience when declaring a dependency and
+		  assigning to a member variable in one statement.
+		
+		Raises:
+		  TypeError: If `checkpointable` does not inherit from `Checkpointable`.
+		  ValueError: If another object is already tracked by this name.
+	**/
+	public function _track_checkpointable(checkpointable:Dynamic, name:Dynamic, ?overwrite:Dynamic):Dynamic;
 	/**
 		Assigns a new value to the variable.
 		
@@ -838,12 +1093,15 @@ package tensorflow.python.ops.variables;
 		Args:
 		  value: A `Tensor`. The new value for this variable.
 		  use_locking: If `True`, use locking during the assignment.
+		  name: The name of the operation to be created
+		  read_value: if True, will return something which evaluates to the
+		    new value of the variable; if False will return the assign op.
 		
 		Returns:
 		  A `Tensor` that will hold the new value of this variable after
 		  the assignment has completed.
 	**/
-	public function assign(value:Dynamic, ?use_locking:Dynamic):Dynamic;
+	public function assign(value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?read_value:Dynamic):Dynamic;
 	/**
 		Adds a value to this variable.
 		
@@ -852,12 +1110,15 @@ package tensorflow.python.ops.variables;
 		Args:
 		  delta: A `Tensor`. The value to add to this variable.
 		  use_locking: If `True`, use locking during the operation.
+		  name: The name of the operation to be created
+		  read_value: if True, will return something which evaluates to the
+		    new value of the variable; if False will return the assign op.
 		
 		Returns:
 		  A `Tensor` that will hold the new value of this variable after
 		  the addition has completed.
 	**/
-	public function assign_add(delta:Dynamic, ?use_locking:Dynamic):Dynamic;
+	public function assign_add(delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?read_value:Dynamic):Dynamic;
 	/**
 		Subtracts a value from this variable.
 		
@@ -866,12 +1127,23 @@ package tensorflow.python.ops.variables;
 		Args:
 		  delta: A `Tensor`. The value to subtract from this variable.
 		  use_locking: If `True`, use locking during the operation.
+		  name: The name of the operation to be created
+		  read_value: if True, will return something which evaluates to the
+		    new value of the variable; if False will return the assign op.
 		
 		Returns:
 		  A `Tensor` that will hold the new value of this variable after
 		  the subtraction has completed.
 	**/
-	public function assign_sub(delta:Dynamic, ?use_locking:Dynamic):Dynamic;
+	public function assign_sub(delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?read_value:Dynamic):Dynamic;
+	/**
+		Returns the constraint function associated with this variable.
+		
+		Returns:
+		  The constraint function that was passed to the variable constructor.
+		  Can be `None` if no constraint was passed.
+	**/
+	public var constraint : Dynamic;
 	/**
 		Increments this variable until it reaches `limit`.
 		
@@ -908,7 +1180,7 @@ package tensorflow.python.ops.variables;
 		
 		This convenience method requires a session where the graph
 		containing this variable has been launched. If no session is
-		passed, the default session is used.  See @{tf.Session} for more
+		passed, the default session is used.  See `tf.Session` for more
 		information on launching a graph and on sessions.
 		
 		```python
@@ -981,13 +1253,13 @@ package tensorflow.python.ops.variables;
 	**/
 	public var initializer : Dynamic;
 	/**
-		Load new value into this variable
+		Load new value into this variable.
 		
 		Writes new value to variable's memory. Doesn't add ops to the graph.
 		
 		This convenience method requires a session where the graph
 		containing this variable has been launched. If no session is
-		passed, the default session is used.  See @{tf.Session} for more
+		passed, the default session is used.  See `tf.Session` for more
 		information on launching a graph and on sessions.
 		
 		```python
@@ -1033,14 +1305,12 @@ package tensorflow.python.ops.variables;
 	**/
 	public function read_value():Dynamic;
 	/**
-		Subtracts `IndexedSlices` from this variable.
-		
-		This is essentially a shortcut for `scatter_sub(self, sparse_delta.indices,
-		sparse_delta.values)`.
+		Adds `IndexedSlices` to this variable.
 		
 		Args:
-		  sparse_delta: `IndexedSlices` to be subtracted from this variable.
+		  sparse_delta: `IndexedSlices` to be assigned to this variable.
 		  use_locking: If `True`, use locking during the operation.
+		  name: the name of the operation.
 		
 		Returns:
 		  A `Tensor` that will hold the new value of this variable after
@@ -1049,7 +1319,189 @@ package tensorflow.python.ops.variables;
 		Raises:
 		  ValueError: if `sparse_delta` is not an `IndexedSlices`.
 	**/
-	public function scatter_sub(sparse_delta:Dynamic, ?use_locking:Dynamic):Dynamic;
+	public function scatter_add(sparse_delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies sparse addition to individual values or slices in a Variable.
+		
+		`ref` is a `Tensor` with rank `P` and `indices` is a `Tensor` of rank `Q`.
+		
+		`indices` must be integer tensor, containing indices into `ref`.
+		It must be shape `[d_0, ..., d_{Q-2}, K]` where `0 < K <= P`.
+		
+		The innermost dimension of `indices` (with length `K`) corresponds to
+		indices into elements (if `K = P`) or slices (if `K < P`) along the `K`th
+		dimension of `ref`.
+		
+		`updates` is `Tensor` of rank `Q-1+P-K` with shape:
+		
+		```
+		[d_0, ..., d_{Q-2}, ref.shape[K], ..., ref.shape[P-1]].
+		```
+		
+		For example, say we want to add 4 scattered elements to a rank-1 tensor to
+		8 elements. In Python, that update would look like this:
+		
+		```python
+		    ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8])
+		    indices = tf.constant([[4], [3], [1] ,[7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    add = ref.scatter_nd_add(indices, updates)
+		    with tf.Session() as sess:
+		      print sess.run(add)
+		```
+		
+		The resulting update to ref would look like this:
+		
+		    [1, 13, 3, 14, 14, 6, 7, 20]
+		
+		See `tf.scatter_nd` for more details about how to make updates to
+		slices.
+		
+		Args:
+		  indices: The indices to be used in the operation.
+		  updates: The values to be used in the operation.
+		  name: the name of the operation.
+		
+		Returns:
+		  A `Tensor` that will hold the new value of this variable after
+		  the scattered subtraction has completed.
+		
+		Raises:
+		  ValueError: if `sparse_delta` is not an `IndexedSlices`.
+	**/
+	public function scatter_nd_add(indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies sparse subtraction to individual values or slices in a Variable.
+		
+		`ref` is a `Tensor` with rank `P` and `indices` is a `Tensor` of rank `Q`.
+		
+		`indices` must be integer tensor, containing indices into `ref`.
+		It must be shape `[d_0, ..., d_{Q-2}, K]` where `0 < K <= P`.
+		
+		The innermost dimension of `indices` (with length `K`) corresponds to
+		indices into elements (if `K = P`) or slices (if `K < P`) along the `K`th
+		dimension of `ref`.
+		
+		`updates` is `Tensor` of rank `Q-1+P-K` with shape:
+		
+		```
+		[d_0, ..., d_{Q-2}, ref.shape[K], ..., ref.shape[P-1]].
+		```
+		
+		For example, say we want to add 4 scattered elements to a rank-1 tensor to
+		8 elements. In Python, that update would look like this:
+		
+		```python
+		    ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8])
+		    indices = tf.constant([[4], [3], [1] ,[7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    op = ref.scatter_nd_sub(indices, updates)
+		    with tf.Session() as sess:
+		      print sess.run(op)
+		```
+		
+		The resulting update to ref would look like this:
+		
+		    [1, -9, 3, -6, -6, 6, 7, -4]
+		
+		See `tf.scatter_nd` for more details about how to make updates to
+		slices.
+		
+		Args:
+		  indices: The indices to be used in the operation.
+		  updates: The values to be used in the operation.
+		  name: the name of the operation.
+		
+		Returns:
+		  A `Tensor` that will hold the new value of this variable after
+		  the scattered subtraction has completed.
+		
+		Raises:
+		  ValueError: if `sparse_delta` is not an `IndexedSlices`.
+	**/
+	public function scatter_nd_sub(indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies sparse assignment to individual values or slices in a Variable.
+		
+		`ref` is a `Tensor` with rank `P` and `indices` is a `Tensor` of rank `Q`.
+		
+		`indices` must be integer tensor, containing indices into `ref`.
+		It must be shape `[d_0, ..., d_{Q-2}, K]` where `0 < K <= P`.
+		
+		The innermost dimension of `indices` (with length `K`) corresponds to
+		indices into elements (if `K = P`) or slices (if `K < P`) along the `K`th
+		dimension of `ref`.
+		
+		`updates` is `Tensor` of rank `Q-1+P-K` with shape:
+		
+		```
+		[d_0, ..., d_{Q-2}, ref.shape[K], ..., ref.shape[P-1]].
+		```
+		
+		For example, say we want to add 4 scattered elements to a rank-1 tensor to
+		8 elements. In Python, that update would look like this:
+		
+		```python
+		    ref = tf.Variable([1, 2, 3, 4, 5, 6, 7, 8])
+		    indices = tf.constant([[4], [3], [1] ,[7]])
+		    updates = tf.constant([9, 10, 11, 12])
+		    op = ref.scatter_nd_assign(indices, updates)
+		    with tf.Session() as sess:
+		      print sess.run(op)
+		```
+		
+		The resulting update to ref would look like this:
+		
+		    [1, 11, 3, 10, 9, 6, 7, 12]
+		
+		See `tf.scatter_nd` for more details about how to make updates to
+		slices.
+		
+		Args:
+		  indices: The indices to be used in the operation.
+		  updates: The values to be used in the operation.
+		  name: the name of the operation.
+		
+		Returns:
+		  A `Tensor` that will hold the new value of this variable after
+		  the scattered subtraction has completed.
+		
+		Raises:
+		  ValueError: if `sparse_delta` is not an `IndexedSlices`.
+	**/
+	public function scatter_nd_update(indices:Dynamic, updates:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Subtracts `IndexedSlices` from this variable.
+		
+		Args:
+		  sparse_delta: `IndexedSlices` to be subtracted from this variable.
+		  use_locking: If `True`, use locking during the operation.
+		  name: the name of the operation.
+		
+		Returns:
+		  A `Tensor` that will hold the new value of this variable after
+		  the scattered subtraction has completed.
+		
+		Raises:
+		  ValueError: if `sparse_delta` is not an `IndexedSlices`.
+	**/
+	public function scatter_sub(sparse_delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Assigns `IndexedSlices` to this variable.
+		
+		Args:
+		  sparse_delta: `IndexedSlices` to be assigned to this variable.
+		  use_locking: If `True`, use locking during the operation.
+		  name: the name of the operation.
+		
+		Returns:
+		  A `Tensor` that will hold the new value of this variable after
+		  the scattered subtraction has completed.
+		
+		Raises:
+		  ValueError: if `sparse_delta` is not an `IndexedSlices`.
+	**/
+	public function scatter_update(sparse_delta:Dynamic, ?use_locking:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Overrides the shape for this variable.
 		
@@ -1075,6 +1527,7 @@ package tensorflow.python.ops.variables;
 		  in the specified name scope.
 	**/
 	public function to_proto(?export_scope:Dynamic):Dynamic;
+	public var trainable : Dynamic;
 	/**
 		Returns the last snapshot of this variable.
 		

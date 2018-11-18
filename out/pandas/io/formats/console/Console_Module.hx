@@ -12,7 +12,7 @@ package pandas.io.formats.console;
 	static public var _initial_defencoding : Dynamic;
 	/**
 		Try to find the most capable encoding supported by the console.
-		slighly modified from the way IPython handles the same issue.
+		slightly modified from the way IPython handles the same issue.
 	**/
 	static public function detect_console_encoding():Dynamic;
 	/**

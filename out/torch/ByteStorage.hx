@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch;
 @:pythonImport("torch", "ByteStorage") extern class ByteStorage {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__():Dynamic;
 	public function __deepcopy__(memo:Dynamic):Dynamic;
 	/**
@@ -62,7 +62,7 @@ package torch;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -109,7 +109,7 @@ package torch;
 		__sizeof__() -> int
 		size of object in memory, in bytes
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -122,12 +122,13 @@ package torch;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public var _cdata : Dynamic;
+	static public function _free_weak_ref(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_shared_fd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Creates a new storage in shared memory with the same data type
@@ -137,10 +138,8 @@ package torch;
 	static public function _new_shared_filename(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_using_fd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_using_filename(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _new_view(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _new_with_file(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _new_with_weak_ptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function _root_storage(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _new_with_weak_ptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _set_cdata(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _set_from_file(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _share_fd_(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -174,11 +173,13 @@ package torch;
 		
 		Args:
 		    device (int): The destination GPU id. Defaults to the current device.
-		    async (bool): If True and the source is in pinned memory, the copy will
-		                  be asynchronous with respect to the host. Otherwise, the
-		                  argument has no effect.
+		    non_blocking (bool): If ``True`` and the source is in pinned memory,
+		        the copy will be asynchronous with respect to the host. Otherwise,
+		        the argument has no effect.
+		    **kwargs: For compatibility, may contain the key ``async`` in place of
+		        the ``non_blocking`` argument.
 	**/
-	public function cuda(?device:Dynamic, ?async:Dynamic):Dynamic;
+	public function cuda(?device:Dynamic, ?non_blocking:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function data_ptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Casts this storage to double type
@@ -191,6 +192,24 @@ package torch;
 	**/
 	public function float():Dynamic;
 	static public function from_buffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		from_file(filename, shared=False, size=0) -> Storage
+		
+		If `shared` is `True`, then memory is shared between all processes.
+		All changes are written to the file. If `shared` is `False`, then the changes on
+		the storage do not affect the file.
+		
+		`size` is the number of elements in the storage. If `shared` is `False`,
+		then the file must contain at least `size * sizeof(Type)` bytes
+		(`Type` is the type of storage). If `shared` is `True` the file will be
+		created if needed.
+		
+		Args:
+		    filename (str): file name to map
+		    shared (bool): whether to share memory
+		    size (int): number of elements in the storage
+	**/
+	static public function from_file(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Casts this storage to half type
 	**/
@@ -234,17 +253,20 @@ package torch;
 	**/
 	public function tolist():Dynamic;
 	/**
-		Casts this object to the specified type.
+		Returns the type if `dtype` is not provided, else casts this object to
+		the specified type.
 		
 		If this is already of the correct type, no copy is performed and the
 		original object is returned.
 		
 		Args:
-		    new_type (type or string): The desired type
-		    async (bool): If True, and the source is in pinned memory and
-		                  destination is on the GPU or vice versa, the copy is
-		                  performed asynchronously with respect to the host.
-		                  Otherwise, the argument has no effect.
+		    dtype (type or string): The desired type
+		    non_blocking (bool): If ``True``, and the source is in pinned memory
+		        and destination is on the GPU or vice versa, the copy is performed
+		        asynchronously with respect to the host. Otherwise, the argument
+		        has no effect.
+		    **kwargs: For compatibility, may contain the key ``async`` in place of
+		        the ``non_blocking`` argument. The ``async`` arg is deprecated.
 	**/
-	public function type(?new_type:Dynamic, ?async:Dynamic):Dynamic;
+	public function type(?dtype:Dynamic, ?non_blocking:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

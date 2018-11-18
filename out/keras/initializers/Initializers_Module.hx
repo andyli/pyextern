@@ -29,6 +29,7 @@ package keras.initializers;
 	static public var absolute_import : Dynamic;
 	static public function deserialize(config:Dynamic, ?custom_objects:Dynamic):Dynamic;
 	static public function deserialize_keras_object(identifier:Dynamic, ?module_objects:Dynamic, ?custom_objects:Dynamic, ?printable_module_name:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public function get(identifier:Dynamic):Dynamic;
 	/**
 		Glorot normal initializer, also called Xavier normal initializer.
@@ -138,6 +139,7 @@ package keras.initializers;
 		    http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf
 	**/
 	static public function lecun_uniform(?seed:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function serialize(initializer:Dynamic):Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
 }

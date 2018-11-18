@@ -106,6 +106,12 @@ package scipy.sparse.linalg._onenormest;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -174,6 +180,20 @@ package scipy.sparse.linalg._onenormest;
 		.. [2] Awad H. Al-Mohy and Nicholas J. Higham (2009),
 		       "A new scaling and squaring algorithm for the matrix exponential."
 		       SIAM J. Matrix Anal. Appl. Vol. 31, No. 3, pp. 970-989.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import onenormest
+		>>> A = csc_matrix([[1., 0., 0.], [5., 8., 2.], [0., -1., 0.]], dtype=float)
+		>>> A.todense()
+		matrix([[ 1.,  0.,  0.],
+		        [ 5.,  8.,  2.],
+		        [ 0., -1.,  0.]])
+		>>> onenormest(A)
+		9.0
+		>>> np.linalg.norm(A.todense(), ord=1)
+		9.0
 	**/
 	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	static public var print_function : Dynamic;

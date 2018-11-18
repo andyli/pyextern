@@ -38,7 +38,7 @@ package tensorflow.python.ops.image_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Adjust the brightness of RGB or Grayscale images.
 		
@@ -88,16 +88,49 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function adjust_contrast(images:Dynamic, contrast_factor:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function adjust_contrast
+	**/
+	static public function adjust_contrast_eager_fallback(images:Dynamic, contrast_factor:Dynamic, min_value:Dynamic, max_value:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Adjust the contrast of one or more images.
+		
+		`images` is a tensor of at least 3 dimensions.  The last 3 dimensions are
+		interpreted as `[height, width, channels]`.  The other dimensions only
+		represent a collection of images, such as `[batch, height, width, channels].`
+		
+		Contrast is adjusted independently for each channel of each image.
+		
+		For each channel, the Op first computes the mean of the image pixels in the
+		channel and then adjusts each component of each pixel to
+		`(x - mean) * contrast_factor + mean`.
+		
+		Args:
+		  images: A `Tensor` of type `float32`. Images to adjust.  At least 3-D.
+		  contrast_factor: A `Tensor` of type `float32`.
+		    A float multiplier for adjusting contrast.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`.
+	**/
+	static public function adjust_contrastv2(images:Dynamic, contrast_factor:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function adjust_contrastv2
+	**/
+	static public function adjust_contrastv2_eager_fallback(images:Dynamic, contrast_factor:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Performs Gamma Correction on the input image.
 		
-		  Also known as Power Law Transform. This function transforms the
-		  input image pixelwise according to the equation Out = In**gamma
-		  after scaling each pixel to the range 0 to 1.
+		Also known as Power Law Transform. This function transforms the
+		input image pixelwise according to the equation `Out = In**gamma`
+		after scaling each pixel to the range 0 to 1.
 		
 		Args:
 		  image : A Tensor.
-		  gamma : A scalar. Non negative real number.
-		  gain  : A scalar. The constant multiplier.
+		  gamma : A scalar or tensor. Non negative real number.
+		  gain  : A scalar or tensor. The constant multiplier.
 		
 		Returns:
 		  A Tensor. Gamma corrected output image.
@@ -139,6 +172,30 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function adjust_hue(image:Dynamic, delta:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function adjust_hue
+	**/
+	static public function adjust_hue_eager_fallback(images:Dynamic, delta:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Adjust jpeg encoding quality of an RGB image.
+		
+		This is a convenience method that adjusts jpeg encoding quality of an
+		RGB image.
+		
+		`image` is an RGB image.  The image's encoding quality is adjusted
+		to `jpeg_quality`.
+		`jpeg_quality` must be in the interval `[0, 100]`.
+		
+		Args:
+		  image: RGB image or images. Size of the last dimension must be 3.
+		  jpeg_quality: int.  jpeg encoding quality.
+		  name: A name for this operation (optional).
+		
+		Returns:
+		  Adjusted image(s), same shape and DType as `image`.
+	**/
+	static public function adjust_jpeg_quality(image:Dynamic, jpeg_quality:Dynamic, ?name:Dynamic):Dynamic;
+	/**
 		Adjust saturation of an RGB image.
 		
 		This is a convenience method that converts an RGB image to float
@@ -161,7 +218,12 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function adjust_saturation(image:Dynamic, saturation_factor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Crop the central region of the image.
+		This is the slowpath function for Eager mode.
+		This is for function adjust_saturation
+	**/
+	static public function adjust_saturation_eager_fallback(images:Dynamic, scale:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Crop the central region of the image(s).
 		
 		Remove the outer parts of an image but retain the central region of the image
 		along each dimension. If we specify central_fraction = 0.5, this function
@@ -174,15 +236,19 @@ package tensorflow.python.ops.image_ops;
 		    |        |   where "X" is the central 50% of the image.
 		     --------
 		
+		This function works on either a single image (`image` is a 3-D Tensor), or a
+		batch of images (`image` is a 4-D Tensor).
+		
 		Args:
-		  image: 3-D float Tensor of shape [height, width, depth]
+		  image: Either a 3-D float Tensor of shape [height, width, depth], or a 4-D
+		    Tensor of shape [batch_size, height, width, depth].
 		  central_fraction: float (0, 1], fraction of size to crop
 		
 		Raises:
 		  ValueError: if central_crop_fraction is not within (0, 1].
 		
 		Returns:
-		  3-D float Tensor
+		  3-D / 4-D float Tensor, as per the input.
 	**/
 	static public function central_crop(image:Dynamic, central_fraction:Dynamic):Dynamic;
 	/**
@@ -215,19 +281,71 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function convert_image_dtype(image:Dynamic, dtype:Dynamic, ?saturate:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Extracts crops from the input image tensor and bilinearly resizes them (possibly
+		Extracts crops from the input image tensor and resizes them.
 		
-		with aspect ratio change) to a common output size specified by `crop_size`. This
-		is more general than the `crop_to_bounding_box` op which extracts a fixed size
-		slice from the input image and does not allow resizing or aspect ratio change.
+		Extracts crops from the input image tensor and resizes them using bilinear
+		sampling or nearest neighbor sampling (possibly with aspect ratio change) to a
+		common output size specified by `crop_size`. This is more general than the
+		`crop_to_bounding_box` op which extracts a fixed size slice from the input image
+		and does not allow resizing or aspect ratio change.
 		
 		Returns a tensor with `crops` from the input `image` at positions defined at the
 		bounding box locations in `boxes`. The cropped boxes are all resized (with
-		bilinear interpolation) to a fixed `size = [crop_height, crop_width]`. The
-		result is a 4-D tensor `[num_boxes, crop_height, crop_width, depth]`.
+		bilinear or nearest neighbor interpolation) to a fixed
+		`size = [crop_height, crop_width]`. The result is a 4-D tensor
+		`[num_boxes, crop_height, crop_width, depth]`. The resizing is corner aligned.
+		In particular, if `boxes = [[0, 0, 1, 1]]`, the method will give identical
+		results to using `tf.image.resize_bilinear()` or
+		`tf.image.resize_nearest_neighbor()`(depends on the `method` argument) with
+		`align_corners=True`.
 		
 		Args:
-		  image: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
+		  image: A `Tensor`. Must be one of the following types: `uint8`, `uint16`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
+		    A 4-D tensor of shape `[batch, image_height, image_width, depth]`.
+		    Both `image_height` and `image_width` need to be positive.
+		  boxes: A `Tensor` of type `float32`.
+		    A 2-D tensor of shape `[num_boxes, 4]`. The `i`-th row of the tensor
+		    specifies the coordinates of a box in the `box_ind[i]` image and is specified
+		    in normalized coordinates `[y1, x1, y2, x2]`. A normalized coordinate value of
+		    `y` is mapped to the image coordinate at `y * (image_height - 1)`, so as the
+		    `[0, 1]` interval of normalized image height is mapped to
+		    `[0, image_height - 1]` in image height coordinates. We do allow `y1` > `y2`, in
+		    which case the sampled crop is an up-down flipped version of the original
+		    image. The width dimension is treated similarly. Normalized coordinates
+		    outside the `[0, 1]` range are allowed, in which case we use
+		    `extrapolation_value` to extrapolate the input image values.
+		  box_ind: A `Tensor` of type `int32`.
+		    A 1-D tensor of shape `[num_boxes]` with int32 values in `[0, batch)`.
+		    The value of `box_ind[i]` specifies the image that the `i`-th box refers to.
+		  crop_size: A `Tensor` of type `int32`.
+		    A 1-D tensor of 2 elements, `size = [crop_height, crop_width]`. All
+		    cropped image patches are resized to this size. The aspect ratio of the image
+		    content is not preserved. Both `crop_height` and `crop_width` need to be
+		    positive.
+		  method: An optional `string` from: `"bilinear", "nearest"`. Defaults to `"bilinear"`.
+		    A string specifying the sampling method for resizing. It can be either
+		    `"bilinear"` or `"nearest"` and default to `"bilinear"`. Currently two sampling
+		    methods are supported: Bilinear and Nearest Neighbor.
+		  extrapolation_value: An optional `float`. Defaults to `0`.
+		    Value used for extrapolation, when applicable.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `float32`.
+	**/
+	static public function crop_and_resize(image:Dynamic, boxes:Dynamic, box_ind:Dynamic, crop_size:Dynamic, ?method:Dynamic, ?extrapolation_value:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function crop_and_resize
+	**/
+	static public function crop_and_resize_eager_fallback(image:Dynamic, boxes:Dynamic, box_ind:Dynamic, crop_size:Dynamic, ?method:Dynamic, ?extrapolation_value:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradient of the crop_and_resize op wrt the input boxes tensor.
+		
+		Args:
+		  grads: A `Tensor` of type `float32`.
+		    A 4-D tensor of shape `[num_boxes, crop_height, crop_width, depth]`.
+		  image: A `Tensor`. Must be one of the following types: `uint8`, `uint16`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
 		    A 4-D tensor of shape `[batch, image_height, image_width, depth]`.
 		    Both `image_height` and `image_width` need to be positive.
 		  boxes: A `Tensor` of type `float32`.
@@ -244,23 +362,59 @@ package tensorflow.python.ops.image_ops;
 		  box_ind: A `Tensor` of type `int32`.
 		    A 1-D tensor of shape `[num_boxes]` with int32 values in `[0, batch)`.
 		    The value of `box_ind[i]` specifies the image that the `i`-th box refers to.
-		  crop_size: A `Tensor` of type `int32`.
-		    A 1-D tensor of 2 elements, `size = [crop_height, crop_width]`. All
-		    cropped image patches are resized to this size. The aspect ratio of the image
-		    content is not preserved. Both `crop_height` and `crop_width` need to be
-		    positive.
 		  method: An optional `string` from: `"bilinear"`. Defaults to `"bilinear"`.
 		    A string specifying the interpolation method. Only 'bilinear' is
 		    supported for now.
-		  extrapolation_value: An optional `float`. Defaults to `0`.
-		    Value used for extrapolation, when applicable.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A 4-D tensor of shape `[num_boxes, crop_height, crop_width, depth]`.
 	**/
-	static public function crop_and_resize(image:Dynamic, boxes:Dynamic, box_ind:Dynamic, crop_size:Dynamic, ?method:Dynamic, ?extrapolation_value:Dynamic, ?name:Dynamic):Dynamic;
+	static public function crop_and_resize_grad_boxes(grads:Dynamic, image:Dynamic, boxes:Dynamic, box_ind:Dynamic, ?method:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function crop_and_resize_grad_boxes
+	**/
+	static public function crop_and_resize_grad_boxes_eager_fallback(grads:Dynamic, image:Dynamic, boxes:Dynamic, box_ind:Dynamic, ?method:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradient of the crop_and_resize op wrt the input image tensor.
+		
+		Args:
+		  grads: A `Tensor` of type `float32`.
+		    A 4-D tensor of shape `[num_boxes, crop_height, crop_width, depth]`.
+		  boxes: A `Tensor` of type `float32`.
+		    A 2-D tensor of shape `[num_boxes, 4]`. The `i`-th row of the tensor
+		    specifies the coordinates of a box in the `box_ind[i]` image and is specified
+		    in normalized coordinates `[y1, x1, y2, x2]`. A normalized coordinate value of
+		    `y` is mapped to the image coordinate at `y * (image_height - 1)`, so as the
+		    `[0, 1]` interval of normalized image height is mapped to
+		    `[0, image_height - 1] in image height coordinates. We do allow y1 > y2, in
+		    which case the sampled crop is an up-down flipped version of the original
+		    image. The width dimension is treated similarly. Normalized coordinates
+		    outside the `[0, 1]` range are allowed, in which case we use
+		    `extrapolation_value` to extrapolate the input image values.
+		  box_ind: A `Tensor` of type `int32`.
+		    A 1-D tensor of shape `[num_boxes]` with int32 values in `[0, batch)`.
+		    The value of `box_ind[i]` specifies the image that the `i`-th box refers to.
+		  image_size: A `Tensor` of type `int32`.
+		    A 1-D tensor with value `[batch, image_height, image_width, depth]`
+		    containing the original image size. Both `image_height` and `image_width` need
+		    to be positive.
+		  T: A `tf.DType` from: `tf.float32, tf.half, tf.float64`.
+		  method: An optional `string` from: `"bilinear", "nearest"`. Defaults to `"bilinear"`.
+		    A string specifying the interpolation method. Only 'bilinear' is
+		    supported for now.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `T`.
+	**/
+	static public function crop_and_resize_grad_image(grads:Dynamic, boxes:Dynamic, box_ind:Dynamic, image_size:Dynamic, T:Dynamic, ?method:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function crop_and_resize_grad_image
+	**/
+	static public function crop_and_resize_grad_image_eager_fallback(grads:Dynamic, boxes:Dynamic, box_ind:Dynamic, image_size:Dynamic, T:Dynamic, ?method:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Crops an image to a specified bounding box.
 		
@@ -292,6 +446,88 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function crop_to_bounding_box(image:Dynamic, offset_height:Dynamic, offset_width:Dynamic, target_height:Dynamic, target_width:Dynamic):Dynamic;
 	/**
+		Decode and Crop a JPEG-encoded image to a uint8 tensor.
+		
+		The attr `channels` indicates the desired number of color channels for the
+		decoded image.
+		
+		Accepted values are:
+		
+		*   0: Use the number of channels in the JPEG-encoded image.
+		*   1: output a grayscale image.
+		*   3: output an RGB image.
+		
+		If needed, the JPEG-encoded image is transformed to match the requested number
+		of color channels.
+		
+		The attr `ratio` allows downscaling the image by an integer factor during
+		decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
+		downscaling the image later.
+		
+		
+		It is equivalent to a combination of decode and crop, but much faster by only
+		decoding partial jpeg image.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D.  The JPEG-encoded image.
+		  crop_window: A `Tensor` of type `int32`.
+		    1-D.  The crop window: [crop_y, crop_x, crop_height, crop_width].
+		  channels: An optional `int`. Defaults to `0`.
+		    Number of color channels for the decoded image.
+		  ratio: An optional `int`. Defaults to `1`. Downscaling ratio.
+		  fancy_upscaling: An optional `bool`. Defaults to `True`.
+		    If true use a slower but nicer upscaling of the
+		    chroma planes (yuv420/422 only).
+		  try_recover_truncated: An optional `bool`. Defaults to `False`.
+		    If true try to recover an image from truncated input.
+		  acceptable_fraction: An optional `float`. Defaults to `1`.
+		    The minimum required fraction of lines before a truncated
+		    input is accepted.
+		  dct_method: An optional `string`. Defaults to `""`.
+		    string specifying a hint about the algorithm used for
+		    decompression.  Defaults to "" which maps to a system-specific
+		    default.  Currently valid values are ["INTEGER_FAST",
+		    "INTEGER_ACCURATE"].  The hint may be ignored (e.g., the internal
+		    jpeg library changes to a version that does not have that specific
+		    option.)
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `uint8`.
+	**/
+	static public function decode_and_crop_jpeg(contents:Dynamic, crop_window:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function decode_and_crop_jpeg
+	**/
+	static public function decode_and_crop_jpeg_eager_fallback(contents:Dynamic, crop_window:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decode the first frame of a BMP-encoded image to a uint8 tensor.
+		
+		The attr `channels` indicates the desired number of color channels for the
+		decoded image.
+		
+		Accepted values are:
+		
+		*   0: Use the number of channels in the BMP-encoded image.
+		*   3: output an RGB image.
+		*   4: output an RGBA image.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D.  The BMP-encoded image.
+		  channels: An optional `int`. Defaults to `0`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `uint8`.
+	**/
+	static public function decode_bmp(contents:Dynamic, ?channels:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function decode_bmp
+	**/
+	static public function decode_bmp_eager_fallback(contents:Dynamic, ?channels:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Decode the first frame of a GIF-encoded image to a uint8 tensor.
 		
 		GIF with frame or transparency compression are not supported
@@ -308,36 +544,43 @@ package tensorflow.python.ops.image_ops;
 		
 		Returns:
 		  A `Tensor` of type `uint8`.
-		  4-D with shape `[num_frames, height, width, 3]`. RGB order
 	**/
 	static public function decode_gif(contents:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Convenience function for `decode_gif`, `decode_jpeg`, and `decode_png`.
+		This is the slowpath function for Eager mode.
+		This is for function decode_gif
+	**/
+	static public function decode_gif_eager_fallback(contents:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Convenience function for `decode_bmp`, `decode_gif`, `decode_jpeg`,
+		and `decode_png`.
 		
-		Detects whether an image is a GIF, JPEG, or PNG, and performs the appropriate
-		operation to convert the input bytes `string` into a `Tensor` of type `uint8`.
+		Detects whether an image is a BMP, GIF, JPEG, or PNG, and performs the
+		appropriate operation to convert the input bytes `string` into a `Tensor`
+		of type `dtype`.
 		
 		Note: `decode_gif` returns a 4-D array `[num_frames, height, width, 3]`, as
-		opposed to `decode_jpeg` and `decode_png`, which return 3-D arrays
-		`[height, width, num_channels]`. Make sure to take this into account when
-		constructing your graph if you are intermixing GIF files with JPEG and/or PNG
-		files.
+		opposed to `decode_bmp`, `decode_jpeg` and `decode_png`, which return 3-D
+		arrays `[height, width, num_channels]`. Make sure to take this into account
+		when constructing your graph if you are intermixing GIF files with BMP, JPEG,
+		and/or PNG files.
 		
 		Args:
 		  contents: 0-D `string`. The encoded image bytes.
 		  channels: An optional `int`. Defaults to `0`. Number of color channels for
 		    the decoded image.
+		  dtype: The desired DType of the returned `Tensor`.
 		  name: A name for the operation (optional)
 		
 		Returns:
-		  `Tensor` with type `uint8` with shape `[height, width, num_channels]` for
-		    JPEG and PNG images and shape `[num_frames, height, width, 3]` for GIF
-		    images.
+		  `Tensor` with type `dtype` and shape `[height, width, num_channels]` for
+		    BMP, JPEG, and PNG images and shape `[num_frames, height, width, 3]` for
+		    GIF images.
 		
 		Raises:
 		  ValueError: On incorrect number of channels.
 	**/
-	static public function decode_image(contents:Dynamic, ?channels:Dynamic, ?name:Dynamic):Dynamic;
+	static public function decode_image(contents:Dynamic, ?channels:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Decode a JPEG-encoded image to a uint8 tensor.
 		
@@ -356,6 +599,7 @@ package tensorflow.python.ops.image_ops;
 		The attr `ratio` allows downscaling the image by an integer factor during
 		decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
 		downscaling the image later.
+		
 		
 		This op also supports decoding PNGs and non-animated GIFs since the interface is
 		the same, though it is cleaner to use `tf.image.decode_image`.
@@ -383,9 +627,14 @@ package tensorflow.python.ops.image_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `uint8`. 3-D with shape `[height, width, channels]`..
+		  A `Tensor` of type `uint8`.
 	**/
 	static public function decode_jpeg(contents:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function decode_jpeg
+	**/
+	static public function decode_jpeg_eager_fallback(contents:Dynamic, ?channels:Dynamic, ?ratio:Dynamic, ?fancy_upscaling:Dynamic, ?try_recover_truncated:Dynamic, ?acceptable_fraction:Dynamic, ?dct_method:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Decode a PNG-encoded image to a uint8 or uint16 tensor.
 		
@@ -413,9 +662,32 @@ package tensorflow.python.ops.image_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `dtype`. 3-D with shape `[height, width, channels]`.
+		  A `Tensor` of type `dtype`.
 	**/
 	static public function decode_png(contents:Dynamic, ?channels:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function decode_png
+	**/
+	static public function decode_png_eager_fallback(contents:Dynamic, ?channels:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Draw bounding boxes on a batch of images.
 		
@@ -425,9 +697,9 @@ package tensorflow.python.ops.image_ops;
 		bounding box coordinates are floats in `[0.0, 1.0]` relative to the width and
 		height of the underlying image.
 		
-		For example, if an image is 100 x 200 pixels and the bounding box is
-		`[0.1, 0.2, 0.5, 0.9]`, the bottom-left and upper-right coordinates of the
-		bounding box will be `(10, 40)` to `(50, 180)`.
+		For example, if an image is 100 x 200 pixels (height x width) and the bounding
+		box is `[0.1, 0.2, 0.5, 0.9]`, the upper-left and bottom-right coordinates of
+		the bounding box will be `(40, 10)` to `(180, 50)` (in (x,y) coordinates).
 		
 		Parts of the bounding box may fall outside the image.
 		
@@ -441,10 +713,13 @@ package tensorflow.python.ops.image_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `images`.
-		  4-D with the same shape as `images`. The batch of input images with
-		  bounding boxes drawn on the images.
 	**/
 	static public function draw_bounding_boxes(images:Dynamic, boxes:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function draw_bounding_boxes
+	**/
+	static public function draw_bounding_boxes_eager_fallback(images:Dynamic, boxes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		JPEG-encode an image.
 		
@@ -490,9 +765,14 @@ package tensorflow.python.ops.image_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`. 0-D. JPEG-encoded image.
+		  A `Tensor` of type `string`.
 	**/
 	static public function encode_jpeg(image:Dynamic, ?format:Dynamic, ?quality:Dynamic, ?progressive:Dynamic, ?optimize_size:Dynamic, ?chroma_downsampling:Dynamic, ?density_unit:Dynamic, ?x_density:Dynamic, ?y_density:Dynamic, ?xmp_metadata:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function encode_jpeg
+	**/
+	static public function encode_jpeg_eager_fallback(image:Dynamic, ?format:Dynamic, ?quality:Dynamic, ?progressive:Dynamic, ?optimize_size:Dynamic, ?chroma_downsampling:Dynamic, ?density_unit:Dynamic, ?x_density:Dynamic, ?y_density:Dynamic, ?xmp_metadata:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		PNG-encode an image.
 		
@@ -515,9 +795,14 @@ package tensorflow.python.ops.image_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `string`. 0-D. PNG-encoded image.
+		  A `Tensor` of type `string`.
 	**/
 	static public function encode_png(image:Dynamic, ?compression:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function encode_png
+	**/
+	static public function encode_png_eager_fallback(image:Dynamic, ?compression:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Extracts a glimpse from the input tensor.
 		
@@ -567,41 +852,76 @@ package tensorflow.python.ops.image_ops;
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A tensor representing the glimpses `[batch_size,
-		  glimpse_height, glimpse_width, channels]`.
 	**/
 	static public function extract_glimpse(input:Dynamic, size:Dynamic, offsets:Dynamic, ?centered:Dynamic, ?normalized:Dynamic, ?uniform_noise:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function extract_glimpse
+	**/
+	static public function extract_glimpse_eager_fallback(input:Dynamic, size:Dynamic, offsets:Dynamic, ?centered:Dynamic, ?normalized:Dynamic, ?uniform_noise:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Extract the shape information of a JPEG-encoded image.
+		
+		This op only parses the image header, so it is much faster than DecodeJpeg.
+		
+		Args:
+		  contents: A `Tensor` of type `string`. 0-D. The JPEG-encoded image.
+		  output_type: An optional `tf.DType` from: `tf.int32, tf.int64`. Defaults to `tf.int32`.
+		    (Optional) The output type of the operation (int32 or int64).
+		    Defaults to int32.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `output_type`.
+	**/
+	static public function extract_jpeg_shape(contents:Dynamic, ?output_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function extract_jpeg_shape
+	**/
+	static public function extract_jpeg_shape_eager_fallback(contents:Dynamic, ?output_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Set the shape to 3 dimensional if we don't know anything else.
+		
+		Args:
+		  image: original image size
+		  result: flipped or transformed image
+		
+		Returns:
+		  An image whose shape is at least None,None,None.
+	**/
+	static public function fix_image_flip_shape(image:Dynamic, result:Dynamic):Dynamic;
+	/**
 		Flip an image horizontally (left to right).
 		
-		Outputs the contents of `image` flipped along the second dimension, which is
-		`width`.
+		Outputs the contents of `image` flipped along the width dimension.
 		
 		See also `reverse()`.
 		
 		Args:
-		  image: A 3-D tensor of shape `[height, width, channels].`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		
 		Returns:
-		  A 3-D tensor of the same type and shape as `image`.
+		  A tensor of the same type and shape as `image`.
 		
 		Raises:
 		  ValueError: if the shape of `image` not supported.
 	**/
 	static public function flip_left_right(image:Dynamic):Dynamic;
 	/**
-		Flip an image horizontally (upside down).
+		Flip an image vertically (upside down).
 		
-		Outputs the contents of `image` flipped along the first dimension, which is
-		`height`.
+		Outputs the contents of `image` flipped along the height dimension.
 		
 		See also `reverse()`.
 		
 		Args:
-		  image: A 3-D tensor of shape `[height, width, channels].`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		
 		Returns:
-		  A 3-D tensor of the same type and shape as `image`.
+		  A tensor of the same type and shape as `image`.
 		
 		Raises:
 		  ValueError: if the shape of `image` not supported.
@@ -631,14 +951,131 @@ package tensorflow.python.ops.image_ops;
 		See `rgb_to_hsv` for a description of the HSV encoding.
 		
 		Args:
-		  images: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  images: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    1-D or higher rank. HSV data to convert. Last dimension must be size 3.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `images`. `images` converted to RGB.
+		  A `Tensor`. Has the same type as `images`.
 	**/
 	static public function hsv_to_rgb(images:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function hsv_to_rgb
+	**/
+	static public function hsv_to_rgb_eager_fallback(images:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Returns image gradients (dy, dx) for each color channel.
+		
+		Both output tensors have the same shape as the input: [batch_size, h, w,
+		d]. The gradient values are organized so that [I(x+1, y) - I(x, y)] is in
+		location (x, y). That means that dy will always have zeros in the last row,
+		and dx will always have zeros in the last column.
+		
+		Arguments:
+		  image: Tensor with shape [batch_size, h, w, d].
+		
+		Returns:
+		  Pair of tensors (dy, dx) holding the vertical and horizontal image
+		  gradients (1-step finite difference).
+		
+		Raises:
+		  ValueError: If `image` is not a 4D tensor.
+	**/
+	static public function image_gradients(image:Dynamic):Dynamic;
+	/**
+		Convenience function to check if the 'contents' encodes a JPEG image.
+		
+		Args:
+		  contents: 0-D `string`. The encoded image bytes.
+		  name: A name for the operation (optional)
+		
+		Returns:
+		   A scalar boolean tensor indicating if 'contents' may be a JPEG image.
+		   is_jpeg is susceptible to false positives.
+	**/
+	static public function is_jpeg(contents:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Greedily selects a subset of bounding boxes in descending order of score.
+		
+		Prunes away boxes that have high intersection-over-union (IOU) overlap
+		with previously selected boxes.  Bounding boxes are supplied as
+		[y1, x1, y2, x2], where (y1, x1) and (y2, x2) are the coordinates of any
+		diagonal pair of box corners and the coordinates can be provided as normalized
+		(i.e., lying in the interval [0, 1]) or absolute.  Note that this algorithm
+		is agnostic to where the origin is in the coordinate system.  Note that this
+		algorithm is invariant to orthogonal transformations and translations
+		of the coordinate system; thus translating or reflections of the coordinate
+		system result in the same boxes being selected by the algorithm.
+		The output of this operation is a set of integers indexing into the input
+		collection of bounding boxes representing the selected boxes.  The bounding
+		box coordinates corresponding to the selected indices can then be obtained
+		using the `tf.gather operation`.  For example:
+		  selected_indices = tf.image.non_max_suppression(
+		      boxes, scores, max_output_size, iou_threshold)
+		  selected_boxes = tf.gather(boxes, selected_indices)
+		
+		Args:
+		  boxes: A 2-D float `Tensor` of shape `[num_boxes, 4]`.
+		  scores: A 1-D float `Tensor` of shape `[num_boxes]` representing a single
+		    score corresponding to each box (each row of boxes).
+		  max_output_size: A scalar integer `Tensor` representing the maximum number
+		    of boxes to be selected by non max suppression.
+		  iou_threshold: A float representing the threshold for deciding whether boxes
+		    overlap too much with respect to IOU.
+		  score_threshold: A float representing the threshold for deciding when to
+		    remove boxes based on score.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  selected_indices: A 1-D integer `Tensor` of shape `[M]` representing the
+		    selected indices from the boxes tensor, where `M <= max_output_size`.
+	**/
+	static public function non_max_suppression(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, ?iou_threshold:Dynamic, ?score_threshold:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function non_max_suppression
+	**/
+	static public function non_max_suppression_eager_fallback(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, ?iou_threshold:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Greedily selects a subset of bounding boxes in descending order of score.
+		
+		Performs algorithmically equivalent operation to tf.image.non_max_suppression,
+		with the addition of an optional parameter which zero-pads the output to
+		be of size `max_output_size`.
+		The output of this operation is a tuple containing the set of integers
+		indexing into the input collection of bounding boxes representing the selected
+		boxes and the number of valid indices in the index set.  The bounding box
+		coordinates corresponding to the selected indices can then be obtained using
+		the `tf.slice` and `tf.gather` operations.  For example:
+		  selected_indices_padded, num_valid = tf.image.non_max_suppression_padded(
+		      boxes, scores, max_output_size, iou_threshold,
+		      score_threshold, pad_to_max_output_size=True)
+		  selected_indices = tf.slice(
+		      selected_indices_padded, tf.constant([0]), num_valid)
+		  selected_boxes = tf.gather(boxes, selected_indices)
+		
+		Args:
+		  boxes: A 2-D float `Tensor` of shape `[num_boxes, 4]`.
+		  scores: A 1-D float `Tensor` of shape `[num_boxes]` representing a single
+		    score corresponding to each box (each row of boxes).
+		  max_output_size: A scalar integer `Tensor` representing the maximum number
+		    of boxes to be selected by non max suppression.
+		  iou_threshold: A float representing the threshold for deciding whether boxes
+		    overlap too much with respect to IOU.
+		  score_threshold: A float representing the threshold for deciding when to
+		    remove boxes based on score.
+		  pad_to_max_output_size: bool.  If True, size of `selected_indices` output
+		    is padded to `max_output_size`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  selected_indices: A 1-D integer `Tensor` of shape `[M]` representing the
+		    selected indices from the boxes tensor, where `M <= max_output_size`.
+		  valid_outputs: A scalar integer `Tensor` denoting how many elements in
+		  `selected_indices` are valid.  Valid elements occur first, then padding.
+	**/
+	static public function non_max_suppression_padded(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, ?iou_threshold:Dynamic, ?score_threshold:Dynamic, ?pad_to_max_output_size:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Greedily selects a subset of bounding boxes in descending order of score,
 		
@@ -657,30 +1094,168 @@ package tensorflow.python.ops.image_ops;
 		box coordinates corresponding to the selected indices can then be obtained
 		using the `tf.gather operation`.  For example:
 		
-		  selected_indices = tf.image.non_max_suppression(
+		  selected_indices = tf.image.non_max_suppression_v2(
 		      boxes, scores, max_output_size, iou_threshold)
 		  selected_boxes = tf.gather(boxes, selected_indices)
 		
 		Args:
-		  boxes: A `Tensor` of type `float32`.
+		  boxes: A `Tensor`. Must be one of the following types: `half`, `float32`.
 		    A 2-D float tensor of shape `[num_boxes, 4]`.
-		  scores: A `Tensor` of type `float32`.
+		  scores: A `Tensor`. Must have the same type as `boxes`.
 		    A 1-D float tensor of shape `[num_boxes]` representing a single
 		    score corresponding to each box (each row of boxes).
 		  max_output_size: A `Tensor` of type `int32`.
 		    A scalar integer tensor representing the maximum number of
 		    boxes to be selected by non max suppression.
-		  iou_threshold: An optional `float`. Defaults to `0.5`.
-		    A float representing the threshold for deciding whether boxes
-		    overlap too much with respect to IOU.
+		  iou_threshold: A `Tensor` of type `float32`.
+		    A 0-D float tensor representing the threshold for deciding whether
+		    boxes overlap too much with respect to IOU.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor` of type `int32`.
-		  A 1-D integer tensor of shape `[M]` representing the selected
-		  indices from the boxes tensor, where `M <= max_output_size`.
 	**/
-	static public function non_max_suppression(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, ?iou_threshold:Dynamic, ?name:Dynamic):Dynamic;
+	static public function non_max_suppression_v2(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, iou_threshold:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function non_max_suppression_v2
+	**/
+	static public function non_max_suppression_v2_eager_fallback(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, iou_threshold:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Greedily selects a subset of bounding boxes in descending order of score,
+		
+		pruning away boxes that have high intersection-over-union (IOU) overlap
+		with previously selected boxes.  Bounding boxes with score less than
+		`score_threshold` are removed.  Bounding boxes are supplied as
+		[y1, x1, y2, x2], where (y1, x1) and (y2, x2) are the coordinates of any
+		diagonal pair of box corners and the coordinates can be provided as normalized
+		(i.e., lying in the interval [0, 1]) or absolute.  Note that this algorithm
+		is agnostic to where the origin is in the coordinate system and more
+		generally is invariant to orthogonal transformations and translations
+		of the coordinate system; thus translating or reflections of the coordinate
+		system result in the same boxes being selected by the algorithm.
+		The output of this operation is a set of integers indexing into the input
+		collection of bounding boxes representing the selected boxes.  The bounding
+		box coordinates corresponding to the selected indices can then be obtained
+		using the `tf.gather operation`.  For example:
+		  selected_indices = tf.image.non_max_suppression_v2(
+		      boxes, scores, max_output_size, iou_threshold, score_threshold)
+		  selected_boxes = tf.gather(boxes, selected_indices)
+		
+		Args:
+		  boxes: A `Tensor`. Must be one of the following types: `half`, `float32`.
+		    A 2-D float tensor of shape `[num_boxes, 4]`.
+		  scores: A `Tensor`. Must have the same type as `boxes`.
+		    A 1-D float tensor of shape `[num_boxes]` representing a single
+		    score corresponding to each box (each row of boxes).
+		  max_output_size: A `Tensor` of type `int32`.
+		    A scalar integer tensor representing the maximum number of
+		    boxes to be selected by non max suppression.
+		  iou_threshold: A `Tensor` of type `float32`.
+		    A 0-D float tensor representing the threshold for deciding whether
+		    boxes overlap too much with respect to IOU.
+		  score_threshold: A `Tensor` of type `float32`.
+		    A 0-D float tensor representing the threshold for deciding when to remove
+		    boxes based on score.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `int32`.
+	**/
+	static public function non_max_suppression_v3(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, iou_threshold:Dynamic, score_threshold:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function non_max_suppression_v3
+	**/
+	static public function non_max_suppression_v3_eager_fallback(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, iou_threshold:Dynamic, score_threshold:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Greedily selects a subset of bounding boxes in descending order of score,
+		
+		pruning away boxes that have high intersection-over-union (IOU) overlap
+		with previously selected boxes.  Bounding boxes with score less than
+		`score_threshold` are removed.  Bounding boxes are supplied as
+		[y1, x1, y2, x2], where (y1, x1) and (y2, x2) are the coordinates of any
+		diagonal pair of box corners and the coordinates can be provided as normalized
+		(i.e., lying in the interval [0, 1]) or absolute.  Note that this algorithm
+		is agnostic to where the origin is in the coordinate system and more
+		generally is invariant to orthogonal transformations and translations
+		of the coordinate system; thus translating or reflections of the coordinate
+		system result in the same boxes being selected by the algorithm.
+		The output of this operation is a set of integers indexing into the input
+		collection of bounding boxes representing the selected boxes.  The bounding
+		box coordinates corresponding to the selected indices can then be obtained
+		using the `tf.gather operation`.  For example:
+		  selected_indices = tf.image.non_max_suppression_v2(
+		      boxes, scores, max_output_size, iou_threshold, score_threshold)
+		  selected_boxes = tf.gather(boxes, selected_indices)
+		
+		Args:
+		  boxes: A `Tensor`. Must be one of the following types: `half`, `float32`.
+		    A 2-D float tensor of shape `[num_boxes, 4]`.
+		  scores: A `Tensor`. Must have the same type as `boxes`.
+		    A 1-D float tensor of shape `[num_boxes]` representing a single
+		    score corresponding to each box (each row of boxes).
+		  max_output_size: A `Tensor` of type `int32`.
+		    A scalar integer tensor representing the maximum number of
+		    boxes to be selected by non max suppression.
+		  iou_threshold: A `Tensor` of type `float32`.
+		    A 0-D float tensor representing the threshold for deciding whether
+		    boxes overlap too much with respect to IOU.
+		  score_threshold: A `Tensor` of type `float32`.
+		    A 0-D float tensor representing the threshold for deciding when to remove
+		    boxes based on score.
+		  pad_to_max_output_size: An optional `bool`. Defaults to `False`.
+		    If true, the output `selected_indices` is padded to be of length
+		    `max_output_size`. Defaults to false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (selected_indices, valid_outputs).
+		
+		  selected_indices: A `Tensor` of type `int32`.
+		  valid_outputs: A `Tensor` of type `int32`.
+	**/
+	static public function non_max_suppression_v4(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, iou_threshold:Dynamic, score_threshold:Dynamic, ?pad_to_max_output_size:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function non_max_suppression_v4
+	**/
+	static public function non_max_suppression_v4_eager_fallback(boxes:Dynamic, scores:Dynamic, max_output_size:Dynamic, iou_threshold:Dynamic, score_threshold:Dynamic, ?pad_to_max_output_size:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Greedily selects a subset of bounding boxes in descending order of score.
+		
+		Prunes away boxes that have high overlap with previously selected boxes.
+		N-by-n overlap values are supplied as square matrix.
+		The output of this operation is a set of integers indexing into the input
+		collection of bounding boxes representing the selected boxes.  The bounding
+		box coordinates corresponding to the selected indices can then be obtained
+		using the `tf.gather operation`.  For example:
+		  selected_indices = tf.image.non_max_suppression_overlaps(
+		      overlaps, scores, max_output_size, iou_threshold)
+		  selected_boxes = tf.gather(boxes, selected_indices)
+		
+		Args:
+		  overlaps: A 2-D float `Tensor` of shape `[num_boxes, num_boxes]`.
+		  scores: A 1-D float `Tensor` of shape `[num_boxes]` representing a single
+		    score corresponding to each box (each row of boxes).
+		  max_output_size: A scalar integer `Tensor` representing the maximum number
+		    of boxes to be selected by non max suppression.
+		  overlap_threshold: A float representing the threshold for deciding whether
+		    boxes overlap too much with respect to the provided overlap values.
+		  score_threshold: A float representing the threshold for deciding when to
+		    remove boxes based on score.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  selected_indices: A 1-D integer `Tensor` of shape `[M]` representing the
+		    selected indices from the overlaps tensor, where `M <= max_output_size`.
+	**/
+	static public function non_max_suppression_with_overlaps(overlaps:Dynamic, scores:Dynamic, max_output_size:Dynamic, ?overlap_threshold:Dynamic, ?score_threshold:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function non_max_suppression_with_overlaps
+	**/
+	static public function non_max_suppression_with_overlaps_eager_fallback(overlaps:Dynamic, scores:Dynamic, max_output_size:Dynamic, overlap_threshold:Dynamic, score_threshold:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Pad `image` with zeros to the specified `height` and `width`.
 		
@@ -712,7 +1287,7 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function pad_to_bounding_box(image:Dynamic, offset_height:Dynamic, offset_width:Dynamic, target_height:Dynamic, target_width:Dynamic):Dynamic;
 	/**
-		Linearly scales `image` to have zero mean and unit norm.
+		Linearly scales `image` to have zero mean and unit variance.
 		
 		This op computes `(x - mean) / adjusted_stddev`, where `mean` is the average
 		of all values in image, and
@@ -731,6 +1306,73 @@ package tensorflow.python.ops.image_ops;
 		  ValueError: if the shape of 'image' is incompatible with this function.
 	**/
 	static public function per_image_standardization(image:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
+	/**
+		Returns the Peak Signal-to-Noise Ratio between a and b.
+		
+		This is intended to be used on signals (or images). Produces a PSNR value for
+		each image in batch.
+		
+		The last three dimensions of input are expected to be [height, width, depth].
+		
+		Example:
+		
+		```python
+		    # Read images from file.
+		    im1 = tf.decode_png('path/to/im1.png')
+		    im2 = tf.decode_png('path/to/im2.png')
+		    # Compute PSNR over tf.uint8 Tensors.
+		    psnr1 = tf.image.psnr(im1, im2, max_val=255)
+		
+		    # Compute PSNR over tf.float32 Tensors.
+		    im1 = tf.image.convert_image_dtype(im1, tf.float32)
+		    im2 = tf.image.convert_image_dtype(im2, tf.float32)
+		    psnr2 = tf.image.psnr(im1, im2, max_val=1.0)
+		    # psnr1 and psnr2 both have type tf.float32 and are almost equal.
+		```
+		
+		Arguments:
+		  a: First set of images.
+		  b: Second set of images.
+		  max_val: The dynamic range of the images (i.e., the difference between the
+		    maximum the and minimum allowed values).
+		  name: Namespace to embed the computation in.
+		
+		Returns:
+		  The scalar PSNR between a and b. The returned tensor has type `tf.float32`
+		  and shape [batch_size, 1].
+	**/
+	static public function psnr(a:Dynamic, b:Dynamic, max_val:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Resize quantized `images` to `size` using quantized bilinear interpolation.
+		
+		Input images and output images must be quantized types.
+		
+		Args:
+		  images: A `Tensor`. Must be one of the following types: `quint8`, `qint32`, `float32`.
+		    4-D with shape `[batch, height, width, channels]`.
+		  size:  A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
+		    new size for the images.
+		  min: A `Tensor` of type `float32`.
+		  max: A `Tensor` of type `float32`.
+		  align_corners: An optional `bool`. Defaults to `False`.
+		    If true, the centers of the 4 corner pixels of the input and output tensors are
+		    aligned, preserving the values at the corner pixels. Defaults to false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (resized_images, out_min, out_max).
+		
+		  resized_images: A `Tensor`. Has the same type as `images`.
+		  out_min: A `Tensor` of type `float32`.
+		  out_max: A `Tensor` of type `float32`.
+	**/
+	static public function quantized_resize_bilinear(images:Dynamic, size:Dynamic, min:Dynamic, max:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_resize_bilinear
+	**/
+	static public function quantized_resize_bilinear_eager_fallback(images:Dynamic, size:Dynamic, min:Dynamic, max:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Adjust the brightness of images by a random factor.
 		
@@ -741,7 +1383,7 @@ package tensorflow.python.ops.image_ops;
 		  image: An image.
 		  max_delta: float, must be non-negative.
 		  seed: A Python integer. Used to create a random seed. See
-		    @{tf.set_random_seed}
+		    `tf.set_random_seed`
 		    for behavior.
 		
 		Returns:
@@ -762,7 +1404,7 @@ package tensorflow.python.ops.image_ops;
 		  lower: float.  Lower bound for the random contrast factor.
 		  upper: float.  Upper bound for the random contrast factor.
 		  seed: A Python integer. Used to create a random seed. See
-		    @{tf.set_random_seed}
+		    `tf.set_random_seed`
 		    for behavior.
 		
 		Returns:
@@ -773,19 +1415,52 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function random_contrast(image:Dynamic, lower:Dynamic, upper:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
+		Randomly crop `image`.
+		
+		`size` is a 1-D int64 tensor with 2 elements representing the crop height and
+		width.  The values must be non negative.
+		
+		This Op picks a random location in `image` and crops a `height` by `width`
+		rectangle from that location.  The random location is picked so the cropped
+		area will fit inside the original image.
+		
+		Args:
+		  image: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int16`, `int32`, `int64`, `float32`, `float64`.
+		    3-D of shape `[height, width, channels]`.
+		  size: A `Tensor` of type `int64`.
+		    1-D of length 2 containing: `crop_height`, `crop_width`..
+		  seed: An optional `int`. Defaults to `0`.
+		    If either seed or seed2 are set to be non-zero, the random number
+		    generator is seeded by the given seed.  Otherwise, it is seeded by a
+		    random seed.
+		  seed2: An optional `int`. Defaults to `0`.
+		    An second seed to avoid seed collision.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `image`.
+	**/
+	static public function random_crop(image:Dynamic, size:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function random_crop
+	**/
+	static public function random_crop_eager_fallback(image:Dynamic, size:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Randomly flip an image horizontally (left to right).
 		
 		With a 1 in 2 chance, outputs the contents of `image` flipped along the
 		second dimension, which is `width`.  Otherwise output the image as-is.
 		
 		Args:
-		  image: A 3-D tensor of shape `[height, width, channels].`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		  seed: A Python integer. Used to create a random seed. See
-		    @{tf.set_random_seed}
+		    `tf.set_random_seed`
 		    for behavior.
 		
 		Returns:
-		  A 3-D tensor of the same type and shape as `image`.
+		  A tensor of the same type and shape as `image`.
 		
 		Raises:
 		  ValueError: if the shape of `image` not supported.
@@ -798,14 +1473,14 @@ package tensorflow.python.ops.image_ops;
 		dimension, which is `height`.  Otherwise output the image as-is.
 		
 		Args:
-		  image: A 3-D tensor of shape `[height, width, channels].`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		  seed: A Python integer. Used to create a random seed. See
-		    @{tf.set_random_seed}
+		    `tf.set_random_seed`
 		    for behavior.
 		
 		Returns:
-		  A 3-D tensor of the same type and shape as `image`.
-		
+		  A tensor of the same type and shape as `image`.
 		Raises:
 		  ValueError: if the shape of `image` not supported.
 	**/
@@ -827,12 +1502,35 @@ package tensorflow.python.ops.image_ops;
 		    set_random_seed for its interaction with the graph-level random seed.
 		
 		Returns:
-		  3-D float tensor of shape `[height, width, channels]`.
+		  Adjusted image(s), same shape and DType as `image`.
 		
 		Raises:
 		  ValueError: if `max_delta` is invalid.
 	**/
 	static public function random_hue(image:Dynamic, max_delta:Dynamic, ?seed:Dynamic):Dynamic;
+	/**
+		Randomly changes jpeg encoding quality for inducing jpeg noise.
+		
+		`min_jpeg_quality` must be in the interval `[0, 100]` and less than
+		`max_jpeg_quality`.
+		`max_jpeg_quality` must be in the interval `[0, 100]`.
+		
+		Args:
+		  image: RGB image or images. Size of the last dimension must be 3.
+		  min_jpeg_quality: Minimum jpeg encoding quality to use.
+		  max_jpeg_quality: Maximum jpeg encoding quality to use.
+		  seed: An operation-specific seed. It will be used in conjunction
+		    with the graph-level seed to determine the real seeds that will be
+		    used in this operation. Please see the documentation of
+		    set_random_seed for its interaction with the graph-level random seed.
+		
+		Returns:
+		  Adjusted image(s), same shape and DType as `image`.
+		
+		Raises:
+		  ValueError: if `min_jpeg_quality` or `max_jpeg_quality` is invalid.
+	**/
+	static public function random_jpeg_quality(image:Dynamic, min_jpeg_quality:Dynamic, max_jpeg_quality:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Adjust the saturation of an RGB image by a random factor.
 		
@@ -860,64 +1558,129 @@ package tensorflow.python.ops.image_ops;
 		
 		Input images can be of different types but output images are always float.
 		
+		The range of pixel values for the output image might be slightly different
+		from the range for the input image because of limited numerical precision.
+		To guarantee an output range, for example `[0.0, 1.0]`, apply
+		`tf.clip_by_value` to the output.
+		
+		Each output pixel is computed by first transforming the pixel's footprint into
+		the input tensor and then averaging the pixels that intersect the footprint. An
+		input pixel's contribution to the average is weighted by the fraction of its
+		area that intersects the footprint.  This is the same as OpenCV's INTER_AREA.
+		
 		Args:
-		  images: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
+		  images: A `Tensor`. Must be one of the following types: `int8`, `uint8`, `int16`, `uint16`, `int32`, `int64`, `half`, `float32`, `float64`.
 		    4-D with shape `[batch, height, width, channels]`.
 		  size:  A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
 		    new size for the images.
 		  align_corners: An optional `bool`. Defaults to `False`.
-		    If true, rescale input by (new_height - 1) / (height - 1), which
-		    exactly aligns the 4 corners of images and resized images. If false, rescale
-		    by new_height / height. Treat similarly the width dimension.
+		    If true, the centers of the 4 corner pixels of the input and output tensors are
+		    aligned, preserving the values at the corner pixels. Defaults to false.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `float32`. 4-D with shape
-		  `[batch, new_height, new_width, channels]`.
+		  A `Tensor` of type `float32`.
 	**/
 	static public function resize_area(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resize_area
+	**/
+	static public function resize_area_eager_fallback(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Resize `images` to `size` using bicubic interpolation.
 		
 		Input images can be of different types but output images are always float.
 		
 		Args:
-		  images: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
+		  images: A `Tensor`. Must be one of the following types: `int8`, `uint8`, `int16`, `uint16`, `int32`, `int64`, `half`, `float32`, `float64`.
 		    4-D with shape `[batch, height, width, channels]`.
 		  size:  A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
 		    new size for the images.
 		  align_corners: An optional `bool`. Defaults to `False`.
-		    If true, rescale input by (new_height - 1) / (height - 1), which
-		    exactly aligns the 4 corners of images and resized images. If false, rescale
-		    by new_height / height. Treat similarly the width dimension.
+		    If true, the centers of the 4 corner pixels of the input and output tensors are
+		    aligned, preserving the values at the corner pixels. Defaults to false.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `float32`. 4-D with shape
-		  `[batch, new_height, new_width, channels]`.
+		  A `Tensor` of type `float32`.
 	**/
 	static public function resize_bicubic(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resize_bicubic
+	**/
+	static public function resize_bicubic_eager_fallback(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradient of bicubic interpolation.
+		
+		Args:
+		  grads: A `Tensor` of type `float32`.
+		    4-D with shape `[batch, height, width, channels]`.
+		  original_image: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		    4-D with shape `[batch, orig_height, orig_width, channels]`,
+		    The image tensor that was resized.
+		  align_corners: An optional `bool`. Defaults to `False`.
+		    If true, the centers of the 4 corner pixels of the input and grad tensors are
+		    aligned. Defaults to false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `original_image`.
+	**/
+	static public function resize_bicubic_grad(grads:Dynamic, original_image:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resize_bicubic_grad
+	**/
+	static public function resize_bicubic_grad_eager_fallback(grads:Dynamic, original_image:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Resize `images` to `size` using bilinear interpolation.
 		
 		Input images can be of different types but output images are always float.
 		
 		Args:
-		  images: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
+		  images: A `Tensor`. Must be one of the following types: `int8`, `uint8`, `int16`, `uint16`, `int32`, `int64`, `bfloat16`, `half`, `float32`, `float64`.
 		    4-D with shape `[batch, height, width, channels]`.
 		  size:  A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
 		    new size for the images.
 		  align_corners: An optional `bool`. Defaults to `False`.
-		    If true, rescale input by (new_height - 1) / (height - 1), which
-		    exactly aligns the 4 corners of images and resized images. If false, rescale
-		    by new_height / height. Treat similarly the width dimension.
+		    If true, the centers of the 4 corner pixels of the input and output tensors are
+		    aligned, preserving the values at the corner pixels. Defaults to false.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `float32`. 4-D with shape
-		  `[batch, new_height, new_width, channels]`.
+		  A `Tensor` of type `float32`.
 	**/
 	static public function resize_bilinear(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resize_bilinear
+	**/
+	static public function resize_bilinear_eager_fallback(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradient of bilinear interpolation.
+		
+		Args:
+		  grads: A `Tensor` of type `float32`.
+		    4-D with shape `[batch, height, width, channels]`.
+		  original_image: A `Tensor`. Must be one of the following types: `float32`, `bfloat16`, `half`, `float64`.
+		    4-D with shape `[batch, orig_height, orig_width, channels]`,
+		    The image tensor that was resized.
+		  align_corners: An optional `bool`. Defaults to `False`.
+		    If true, the centers of the 4 corner pixels of the input and grad tensors are
+		    aligned. Defaults to false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `original_image`.
+	**/
+	static public function resize_bilinear_grad(grads:Dynamic, original_image:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resize_bilinear_grad
+	**/
+	static public function resize_bilinear_grad_eager_fallback(grads:Dynamic, original_image:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Crops and/or pads an image to a target width and height.
 		
@@ -948,11 +1711,38 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function resize_image_with_crop_or_pad(image:Dynamic, target_height:Dynamic, target_width:Dynamic):Dynamic;
 	/**
+		Resizes and pads an image to a target width and height.
+		
+		Resizes an image to a target width and height by keeping
+		the aspect ratio the same without distortion. If the target
+		dimensions don't match the image dimensions, the image
+		is resized and then padded with zeroes to match requested
+		dimensions.
+		
+		Args:
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
+		  target_height: Target height.
+		  target_width: Target width.
+		  method: Method to use for resizing image. See `resize_images()`
+		
+		Raises:
+		  ValueError: if `target_height` or `target_width` are zero or negative.
+		
+		Returns:
+		  Resized and padded image.
+		  If `images` was 4-D, a 4-D float Tensor of shape
+		  `[batch, new_height, new_width, channels]`.
+		  If `images` was 3-D, a 3-D float Tensor of shape
+		  `[new_height, new_width, channels]`.
+	**/
+	static public function resize_image_with_pad(image:Dynamic, target_height:Dynamic, target_width:Dynamic, ?method:Dynamic):Dynamic;
+	/**
 		Resize `images` to `size` using the specified `method`.
 		
 		Resized images will be distorted if their original aspect ratio is not
 		the same as `size`.  To avoid distortions see
-		@{tf.image.resize_image_with_crop_or_pad}.
+		`tf.image.resize_image_with_pad`.
 		
 		`method` can be one of:
 		
@@ -964,14 +1754,25 @@ package tensorflow.python.ops.image_ops;
 		  https://en.wikipedia.org/wiki/Bicubic_interpolation)
 		*   <b>`ResizeMethod.AREA`</b>: Area interpolation.
 		
+		The return value has the same type as `images` if `method` is
+		`ResizeMethod.NEAREST_NEIGHBOR`. It will also have the same type as `images`
+		if the size of `images` can be statically determined to be the same as `size`,
+		because `images` is returned in this case. Otherwise, the return value has
+		type `float32`.
+		
 		Args:
 		  images: 4-D Tensor of shape `[batch, height, width, channels]` or
 		          3-D Tensor of shape `[height, width, channels]`.
 		  size: A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
 		        new size for the images.
 		  method: ResizeMethod.  Defaults to `ResizeMethod.BILINEAR`.
-		  align_corners: bool. If true, exactly align all 4 corners of the input and
-		                 output. Defaults to `false`.
+		  align_corners: bool.  If True, the centers of the 4 corner pixels of the
+		      input and output tensors are aligned, preserving the values at the
+		      corner pixels. Defaults to `False`.
+		  preserve_aspect_ratio: Whether to preserve the aspect ratio. If this is set,
+		    then `images` will be resized to a size that fits in `size` while
+		    preserving the aspect ratio of the original image. Scales up the image if
+		    `size` is bigger than the current size of the `image`. Defaults to False.
 		
 		Raises:
 		  ValueError: if the shape of `images` is incompatible with the
@@ -985,26 +1786,51 @@ package tensorflow.python.ops.image_ops;
 		  If `images` was 3-D, a 3-D float Tensor of shape
 		  `[new_height, new_width, channels]`.
 	**/
-	static public function resize_images(images:Dynamic, size:Dynamic, ?method:Dynamic, ?align_corners:Dynamic):Dynamic;
+	static public function resize_images(images:Dynamic, size:Dynamic, ?method:Dynamic, ?align_corners:Dynamic, ?preserve_aspect_ratio:Dynamic):Dynamic;
 	/**
 		Resize `images` to `size` using nearest neighbor interpolation.
 		
 		Args:
-		  images: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int16`, `int32`, `int64`, `half`, `float32`, `float64`.
+		  images: A `Tensor`. Must be one of the following types: `int8`, `uint8`, `int16`, `uint16`, `int32`, `int64`, `half`, `float32`, `float64`.
 		    4-D with shape `[batch, height, width, channels]`.
 		  size:  A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
 		    new size for the images.
 		  align_corners: An optional `bool`. Defaults to `False`.
-		    If true, rescale input by (new_height - 1) / (height - 1), which
-		    exactly aligns the 4 corners of images and resized images. If false, rescale
-		    by new_height / height. Treat similarly the width dimension.
+		    If true, the centers of the 4 corner pixels of the input and output tensors are
+		    aligned, preserving the values at the corner pixels. Defaults to false.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `images`. 4-D with shape
-		  `[batch, new_height, new_width, channels]`.
+		  A `Tensor`. Has the same type as `images`.
 	**/
 	static public function resize_nearest_neighbor(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resize_nearest_neighbor
+	**/
+	static public function resize_nearest_neighbor_eager_fallback(images:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradient of nearest neighbor interpolation.
+		
+		Args:
+		  grads: A `Tensor`. Must be one of the following types: `uint8`, `int8`, `int32`, `half`, `float32`, `float64`.
+		    4-D with shape `[batch, height, width, channels]`.
+		  size:  A 1-D int32 Tensor of 2 elements: `orig_height, orig_width`. The
+		    original input size.
+		  align_corners: An optional `bool`. Defaults to `False`.
+		    If true, the centers of the 4 corner pixels of the input and grad tensors are
+		    aligned. Defaults to false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `grads`.
+	**/
+	static public function resize_nearest_neighbor_grad(grads:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function resize_nearest_neighbor_grad
+	**/
+	static public function resize_nearest_neighbor_grad_eager_fallback(grads:Dynamic, size:Dynamic, ?align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Converts one or more images from RGB to Grayscale.
 		
@@ -1033,26 +1859,168 @@ package tensorflow.python.ops.image_ops;
 		corresponds to pure red, hue 1/3 is pure green, and 2/3 is pure blue.
 		
 		Args:
-		  images: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  images: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    1-D or higher rank. RGB data to convert. Last dimension must be size 3.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `images`. `images` converted to HSV.
+		  A `Tensor`. Has the same type as `images`.
 	**/
 	static public function rgb_to_hsv(images:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Rotate an image counter-clockwise by 90 degrees.
+		This is the slowpath function for Eager mode.
+		This is for function rgb_to_hsv
+	**/
+	static public function rgb_to_hsv_eager_fallback(images:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Converts one or more images from RGB to YIQ.
+		
+		Outputs a tensor of the same shape as the `images` tensor, containing the YIQ
+		value of the pixels.
+		The output is only well defined if the value in images are in [0,1].
 		
 		Args:
-		  image: A 3-D tensor of shape `[height, width, channels]`.
+		  images: 2-D or higher rank. Image data to convert. Last dimension must be
+		  size 3.
+		
+		Returns:
+		  images: tensor with the same shape as `images`.
+	**/
+	static public function rgb_to_yiq(images:Dynamic):Dynamic;
+	/**
+		Converts one or more images from RGB to YUV.
+		
+		Outputs a tensor of the same shape as the `images` tensor, containing the YUV
+		value of the pixels.
+		The output is only well defined if the value in images are in [0,1].
+		
+		Args:
+		  images: 2-D or higher rank. Image data to convert. Last dimension must be
+		  size 3.
+		
+		Returns:
+		  images: tensor with the same shape as `images`.
+	**/
+	static public function rgb_to_yuv(images:Dynamic):Dynamic;
+	/**
+		Rotate image(s) counter-clockwise by 90 degrees.
+		
+		Args:
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		  k: A scalar integer. The number of times the image is rotated by 90 degrees.
 		  name: A name for this operation (optional).
 		
 		Returns:
-		  A rotated 3-D tensor of the same type and shape as `image`.
+		  A rotated tensor of the same type and shape as `image`.
+		
+		Raises:
+		  ValueError: if the shape of `image` not supported.
 	**/
 	static public function rot90(image:Dynamic, ?k:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Generate a single randomly distorted bounding box for an image.
+		
+		Bounding box annotations are often supplied in addition to ground-truth labels
+		in image recognition or object localization tasks. A common technique for
+		training such a system is to randomly distort an image while preserving
+		its content, i.e. *data augmentation*. This Op outputs a randomly distorted
+		localization of an object, i.e. bounding box, given an `image_size`,
+		`bounding_boxes` and a series of constraints.
+		
+		The output of this Op is a single bounding box that may be used to crop the
+		original image. The output is returned as 3 tensors: `begin`, `size` and
+		`bboxes`. The first 2 tensors can be fed directly into `tf.slice` to crop the
+		image. The latter may be supplied to `tf.image.draw_bounding_boxes` to
+		visualize
+		what the bounding box looks like.
+		
+		Bounding boxes are supplied and returned as `[y_min, x_min, y_max, x_max]`.
+		The
+		bounding box coordinates are floats in `[0.0, 1.0]` relative to the width and
+		height of the underlying image.
+		
+		For example,
+		
+		```python
+		    # Generate a single distorted bounding box.
+		    begin, size, bbox_for_draw = tf.image.sample_distorted_bounding_box(
+		        tf.shape(image),
+		        bounding_boxes=bounding_boxes,
+		        min_object_covered=0.1)
+		
+		    # Draw the bounding box in an image summary.
+		    image_with_box = tf.image.draw_bounding_boxes(tf.expand_dims(image, 0),
+		                                                  bbox_for_draw)
+		    tf.summary.image('images_with_box', image_with_box)
+		
+		    # Employ the bounding box to distort the image.
+		    distorted_image = tf.slice(image, begin, size)
+		```
+		
+		Note that if no bounding box information is available, setting
+		`use_image_if_no_bounding_boxes = true` will assume there is a single implicit
+		bounding box covering the whole image. If `use_image_if_no_bounding_boxes` is
+		false and no bounding boxes are supplied, an error is raised.
+		
+		Args:
+		  image_size: A `Tensor`. Must be one of the following types: `uint8`, `int8`,
+		    `int16`, `int32`, `int64`.
+		    1-D, containing `[height, width, channels]`.
+		  bounding_boxes: A `Tensor` of type `float32`.
+		    3-D with shape `[batch, N, 4]` describing the N bounding boxes
+		    associated with the image.
+		  seed: An optional `int`. Defaults to `0`.
+		    If either `seed` or `seed2` are set to non-zero, the random number
+		    generator is seeded by the given `seed`.  Otherwise, it is seeded by a
+		      random
+		    seed.
+		  seed2: An optional `int`. Defaults to `0`.
+		    A second seed to avoid seed collision.
+		  min_object_covered: A Tensor of type `float32`. Defaults to `0.1`.
+		    The cropped area of the image must contain at least this
+		    fraction of any bounding box supplied. The value of this parameter should
+		      be
+		    non-negative. In the case of 0, the cropped area does not need to overlap
+		    any of the bounding boxes supplied.
+		  aspect_ratio_range: An optional list of `floats`. Defaults to `[0.75,
+		    1.33]`.
+		    The cropped area of the image must have an aspect ratio =
+		    width / height within this range.
+		  area_range: An optional list of `floats`. Defaults to `[0.05, 1]`.
+		    The cropped area of the image must contain a fraction of the
+		    supplied image within this range.
+		  max_attempts: An optional `int`. Defaults to `100`.
+		    Number of attempts at generating a cropped region of the image
+		    of the specified constraints. After `max_attempts` failures, return the
+		      entire
+		    image.
+		  use_image_if_no_bounding_boxes: An optional `bool`. Defaults to `False`.
+		    Controls behavior if no bounding boxes supplied.
+		    If true, assume an implicit bounding box covering the whole input. If
+		      false,
+		    raise an error.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (begin, size, bboxes).
+		
+		  begin: A `Tensor`. Has the same type as `image_size`. 1-D, containing
+		  `[offset_height, offset_width, 0]`. Provide as input to
+		    `tf.slice`.
+		  size: A `Tensor`. Has the same type as `image_size`. 1-D, containing
+		  `[target_height, target_width, -1]`. Provide as input to
+		    `tf.slice`.
+		  bboxes: A `Tensor` of type `float32`. 3-D with shape `[1, 1, 4]` containing
+		  the distorted bounding box.
+		    Provide as input to `tf.image.draw_bounding_boxes`.
+	**/
+	static public function sample_distorted_bounding_box(image_size:Dynamic, bounding_boxes:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?min_object_covered:Dynamic, ?aspect_ratio_range:Dynamic, ?area_range:Dynamic, ?max_attempts:Dynamic, ?use_image_if_no_bounding_boxes:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function sample_distorted_bounding_box
+	**/
+	static public function sample_distorted_bounding_box_eager_fallback(image_size:Dynamic, bounding_boxes:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?min_object_covered:Dynamic, ?aspect_ratio_range:Dynamic, ?area_range:Dynamic, ?max_attempts:Dynamic, ?use_image_if_no_bounding_boxes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Generate a single randomly distorted bounding box for an image.
 		
@@ -1084,7 +2052,7 @@ package tensorflow.python.ops.image_ops;
 		    # Draw the bounding box in an image summary.
 		    image_with_box = tf.image.draw_bounding_boxes(tf.expand_dims(image, 0),
 		                                                  bbox_for_draw)
-		    tf.image_summary('images_with_box', image_with_box)
+		    tf.summary.image('images_with_box', image_with_box)
 		
 		    # Employ the bounding box to distort the image.
 		    distorted_image = tf.slice(image, begin, size)
@@ -1101,23 +2069,23 @@ package tensorflow.python.ops.image_ops;
 		  bounding_boxes: A `Tensor` of type `float32`.
 		    3-D with shape `[batch, N, 4]` describing the N bounding boxes
 		    associated with the image.
+		  min_object_covered: A `Tensor` of type `float32`.
+		    The cropped area of the image must contain at least this
+		    fraction of any bounding box supplied. The value of this parameter should be
+		    non-negative. In the case of 0, the cropped area does not need to overlap
+		    any of the bounding boxes supplied.
 		  seed: An optional `int`. Defaults to `0`.
 		    If either `seed` or `seed2` are set to non-zero, the random number
 		    generator is seeded by the given `seed`.  Otherwise, it is seeded by a random
 		    seed.
 		  seed2: An optional `int`. Defaults to `0`.
 		    A second seed to avoid seed collision.
-		  min_object_covered: An optional `float`. Defaults to `0.1`.
-		    The cropped area of the image must contain at least this
-		    fraction of any bounding box supplied. The value of this parameter should be
-		    non-negative. In the case of 0, the cropped area does not need to overlap
-		    any of the bounding boxes supplied.
 		  aspect_ratio_range: An optional list of `floats`. Defaults to `[0.75, 1.33]`.
 		    The cropped area of the image must have an aspect ratio =
 		    width / height within this range.
 		  area_range: An optional list of `floats`. Defaults to `[0.05, 1]`.
 		    The cropped area of the image must contain a fraction of the
-		    supplied image within in this range.
+		    supplied image within this range.
 		  max_attempts: An optional `int`. Defaults to `100`.
 		    Number of attempts at generating a cropped region of the image
 		    of the specified constraints. After `max_attempts` failures, return the entire
@@ -1131,14 +2099,107 @@ package tensorflow.python.ops.image_ops;
 		Returns:
 		  A tuple of `Tensor` objects (begin, size, bboxes).
 		
-		  begin: A `Tensor`. Has the same type as `image_size`. 1-D, containing `[offset_height, offset_width, 0]`. Provide as input to
-		    `tf.slice`.
-		  size: A `Tensor`. Has the same type as `image_size`. 1-D, containing `[target_height, target_width, -1]`. Provide as input to
-		    `tf.slice`.
-		  bboxes: A `Tensor` of type `float32`. 3-D with shape `[1, 1, 4]` containing the distorted bounding box.
-		    Provide as input to `tf.image.draw_bounding_boxes`.
+		  begin: A `Tensor`. Has the same type as `image_size`.
+		  size: A `Tensor`. Has the same type as `image_size`.
+		  bboxes: A `Tensor` of type `float32`.
 	**/
-	static public function sample_distorted_bounding_box(image_size:Dynamic, bounding_boxes:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?min_object_covered:Dynamic, ?aspect_ratio_range:Dynamic, ?area_range:Dynamic, ?max_attempts:Dynamic, ?use_image_if_no_bounding_boxes:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sample_distorted_bounding_box_v2(image_size:Dynamic, bounding_boxes:Dynamic, min_object_covered:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?aspect_ratio_range:Dynamic, ?area_range:Dynamic, ?max_attempts:Dynamic, ?use_image_if_no_bounding_boxes:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function sample_distorted_bounding_box_v2
+	**/
+	static public function sample_distorted_bounding_box_v2_eager_fallback(image_size:Dynamic, bounding_boxes:Dynamic, min_object_covered:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?aspect_ratio_range:Dynamic, ?area_range:Dynamic, ?max_attempts:Dynamic, ?use_image_if_no_bounding_boxes:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Returns a tensor holding Sobel edge maps.
+		
+		Arguments:
+		  image: Image tensor with shape [batch_size, h, w, d] and type float32 or
+		  float64.  The image(s) must be 2x2 or larger.
+		
+		Returns:
+		  Tensor holding edge maps for each channel. Returns a tensor with shape
+		  [batch_size, h, w, d, 2] where the last two dimensions hold [[dy[0], dx[0]],
+		  [dy[1], dx[1]], ..., [dy[d-1], dx[d-1]]] calculated using the Sobel filter.
+	**/
+	static public function sobel_edges(image:Dynamic):Dynamic;
+	/**
+		Computes SSIM index between img1 and img2.
+		
+		This function is based on the standard SSIM implementation from:
+		Wang, Z., Bovik, A. C., Sheikh, H. R., & Simoncelli, E. P. (2004). Image
+		quality assessment: from error visibility to structural similarity. IEEE
+		transactions on image processing.
+		
+		Note: The true SSIM is only defined on grayscale.  This function does not
+		perform any colorspace transform.  (If input is already YUV, then it will
+		compute YUV SSIM average.)
+		
+		Details:
+		  - 11x11 Gaussian filter of width 1.5 is used.
+		  - k1 = 0.01, k2 = 0.03 as in the original paper.
+		
+		The image sizes must be at least 11x11 because of the filter size.
+		
+		Example:
+		
+		```python
+		    # Read images from file.
+		    im1 = tf.decode_png('path/to/im1.png')
+		    im2 = tf.decode_png('path/to/im2.png')
+		    # Compute SSIM over tf.uint8 Tensors.
+		    ssim1 = tf.image.ssim(im1, im2, max_val=255)
+		
+		    # Compute SSIM over tf.float32 Tensors.
+		    im1 = tf.image.convert_image_dtype(im1, tf.float32)
+		    im2 = tf.image.convert_image_dtype(im2, tf.float32)
+		    ssim2 = tf.image.ssim(im1, im2, max_val=1.0)
+		    # ssim1 and ssim2 both have type tf.float32 and are almost equal.
+		```
+		
+		Args:
+		  img1: First image batch.
+		  img2: Second image batch.
+		  max_val: The dynamic range of the images (i.e., the difference between the
+		    maximum the and minimum allowed values).
+		
+		Returns:
+		  A tensor containing an SSIM value for each image in batch.  Returned SSIM
+		  values are in range (-1, 1], when pixel values are non-negative. Returns
+		  a tensor with shape: broadcast(img1.shape[:-3], img2.shape[:-3]).
+	**/
+	static public function ssim(img1:Dynamic, img2:Dynamic, max_val:Dynamic):Dynamic;
+	/**
+		Computes the MS-SSIM between img1 and img2.
+		
+		This function assumes that `img1` and `img2` are image batches, i.e. the last
+		three dimensions are [height, width, channels].
+		
+		Note: The true SSIM is only defined on grayscale.  This function does not
+		perform any colorspace transform.  (If input is already YUV, then it will
+		compute YUV SSIM average.)
+		
+		Original paper: Wang, Zhou, Eero P. Simoncelli, and Alan C. Bovik. "Multiscale
+		structural similarity for image quality assessment." Signals, Systems and
+		Computers, 2004.
+		
+		Arguments:
+		  img1: First image batch.
+		  img2: Second image batch. Must have the same rank as img1.
+		  max_val: The dynamic range of the images (i.e., the difference between the
+		    maximum the and minimum allowed values).
+		  power_factors: Iterable of weights for each of the scales. The number of
+		    scales used is the length of the list. Index 0 is the unscaled
+		    resolution's weight and each increasing scale corresponds to the image
+		    being downsampled by 2.  Defaults to (0.0448, 0.2856, 0.3001, 0.2363,
+		    0.1333), which are the values obtained in the original paper.
+		
+		Returns:
+		  A tensor containing an MS-SSIM value for each image in batch.  The values
+		  are in range [0, 1].  Returns a tensor with shape:
+		  broadcast(img1.shape[:-3], img2.shape[:-3]).
+	**/
+	static public function ssim_multiscale(img1:Dynamic, img2:Dynamic, max_val:Dynamic, ?power_factors:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate and return the total variation for one or more images.
 		
@@ -1174,18 +2235,54 @@ package tensorflow.python.ops.image_ops;
 	**/
 	static public function total_variation(images:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Transpose an image by swapping the first and second dimension.
+		Transpose image(s) by swapping the height and width dimension.
 		
 		See also `transpose()`.
 		
 		Args:
-		  image: 3-D tensor of shape `[height, width, channels]`
+		  image: 4-D Tensor of shape `[batch, height, width, channels]` or
+		         3-D Tensor of shape `[height, width, channels]`.
 		
 		Returns:
-		  A 3-D tensor of shape `[width, height, channels]`
+		  If `image` was 4-D, a 4-D float Tensor of shape
+		 `[batch, width, height, channels]`
+		  If `image` was 3-D, a 3-D float Tensor of shape
+		 `[width, height, channels]`
 		
 		Raises:
 		  ValueError: if the shape of `image` not supported.
 	**/
 	static public function transpose_image(image:Dynamic):Dynamic;
+	/**
+		Converts one or more images from YIQ to RGB.
+		
+		Outputs a tensor of the same shape as the `images` tensor, containing the RGB
+		value of the pixels.
+		The output is only well defined if the Y value in images are in [0,1],
+		I value are in [-0.5957,0.5957] and Q value are in [-0.5226,0.5226].
+		
+		Args:
+		  images: 2-D or higher rank. Image data to convert. Last dimension must be
+		  size 3.
+		
+		Returns:
+		  images: tensor with the same shape as `images`.
+	**/
+	static public function yiq_to_rgb(images:Dynamic):Dynamic;
+	/**
+		Converts one or more images from YUV to RGB.
+		
+		Outputs a tensor of the same shape as the `images` tensor, containing the RGB
+		value of the pixels.
+		The output is only well defined if the Y value in images are in [0,1],
+		U and V value are in [-0.5,0.5].
+		
+		Args:
+		  images: 2-D or higher rank. Image data to convert. Last dimension must be
+		  size 3.
+		
+		Returns:
+		  images: tensor with the same shape as `images`.
+	**/
+	static public function yuv_to_rgb(images:Dynamic):Dynamic;
 }

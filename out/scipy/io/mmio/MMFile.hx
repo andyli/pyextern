@@ -6,6 +6,7 @@ package scipy.io.mmio;
 	static public var FIELD_INTEGER : Dynamic;
 	static public var FIELD_PATTERN : Dynamic;
 	static public var FIELD_REAL : Dynamic;
+	static public var FIELD_UNSIGNED : Dynamic;
 	static public var FIELD_VALUES : Dynamic;
 	static public var FORMAT_ARRAY : Dynamic;
 	static public var FORMAT_COORDINATE : Dynamic;
@@ -15,7 +16,7 @@ package scipy.io.mmio;
 	static public var SYMMETRY_SKEW_SYMMETRIC : Dynamic;
 	static public var SYMMETRY_SYMMETRIC : Dynamic;
 	static public var SYMMETRY_VALUES : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -65,7 +66,7 @@ package scipy.io.mmio;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -117,7 +118,7 @@ package scipy.io.mmio;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _cols : Dynamic;
 	public var _entries : Dynamic;
 	public var _field : Dynamic;

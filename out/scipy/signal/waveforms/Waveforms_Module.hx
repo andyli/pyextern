@@ -13,7 +13,7 @@ package scipy.signal.waveforms;
 	/**
 		Calculate the phase used by chirp_phase to generate its output.
 		
-		See `chirp_phase` for a description of the arguments.
+		See `chirp` for a description of the arguments.
 	**/
 	static public function _chirp_phase(t:Dynamic, f0:Dynamic, t1:Dynamic, f1:Dynamic, ?method:Dynamic, ?vertex_zero:Dynamic):Dynamic;
 	/**
@@ -82,9 +82,9 @@ package scipy.signal.waveforms;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -173,6 +173,83 @@ package scipy.signal.waveforms;
 		    ``f(t) = f0*f1*t1 / ((f0 - f1)*t + f1*t1)``
 		
 		    f0 and f1 must be nonzero.
+		
+		Examples
+		--------
+		The following will be used in the examples:
+		
+		>>> from scipy.signal import chirp, spectrogram
+		>>> import matplotlib.pyplot as plt
+		
+		For the first example, we'll plot the waveform for a linear chirp
+		from 6 Hz to 1 Hz over 10 seconds:
+		
+		>>> t = np.linspace(0, 10, 5001)
+		>>> w = chirp(t, f0=6, f1=1, t1=10, method='linear')
+		>>> plt.plot(t, w)
+		>>> plt.title("Linear Chirp, f(0)=6, f(10)=1")
+		>>> plt.xlabel('t (sec)')
+		>>> plt.show()
+		
+		For the remaining examples, we'll use higher frequency ranges,
+		and demonstrate the result using `scipy.signal.spectrogram`.
+		We'll use a 10 second interval sampled at 8000 Hz.
+		
+		>>> fs = 8000
+		>>> T = 10
+		>>> t = np.linspace(0, T, T*fs, endpoint=False)
+		
+		Quadratic chirp from 1500 Hz to 250 Hz over 10 seconds
+		(vertex of the parabolic curve of the frequency is at t=0):
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='quadratic')
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Quadratic Chirp, f(0)=1500, f(10)=250')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
+		
+		Quadratic chirp from 1500 Hz to 250 Hz over 10 seconds
+		(vertex of the parabolic curve of the frequency is at t=10):
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='quadratic',
+		...           vertex_zero=False)
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Quadratic Chirp, f(0)=2500, f(10)=250\n' +
+		...           '(vertex_zero=False)')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
+		
+		Logarithmic chirp from 1500 Hz to 250 Hz over 10 seconds:
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='logarithmic')
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Logarithmic Chirp, f(0)=1500, f(10)=250')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
+		
+		Hyperbolic chirp from 1500 Hz to 250 Hz over 10 seconds:
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='hyperbolic')
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Hyperbolic Chirp, f(0)=1500, f(10)=250')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
 	**/
 	static public function chirp(t:Dynamic, f0:Dynamic, t1:Dynamic, f1:Dynamic, ?method:Dynamic, ?phi:Dynamic, ?vertex_zero:Dynamic):Dynamic;
 	/**
@@ -200,6 +277,7 @@ package scipy.signal.waveforms;
 		-------
 		y : ndarray
 		    The corresponding cosine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -252,8 +330,9 @@ package scipy.signal.waveforms;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Output array, element-wise exponential of `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -339,7 +418,7 @@ package scipy.signal.waveforms;
 		>>> condition
 		array([[ True, False, False,  True],
 		       [False, False,  True, False],
-		       [False,  True, False, False]], dtype=bool)
+		       [False,  True, False, False]])
 		>>> np.extract(condition, arr)
 		array([0, 3, 6, 9])
 		
@@ -436,6 +515,7 @@ package scipy.signal.waveforms;
 		-------
 		y : ndarray
 		    The natural logarithm of `x`, element-wise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -475,8 +555,18 @@ package scipy.signal.waveforms;
 		
 		Computes the remainder complementary to the `floor_divide` function.  It is
 		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
-		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
-		function.
+		as the divisor `x2`. The MATLAB function equivalent to ``np.remainder``
+		is ``mod``.
+		
+		.. warning::
+		
+		    This should not be confused with:
+		
+		    * Python 3.7's `math.remainder` and C's ``remainder``, which
+		      computes the IEEE remainder, which are the complement to
+		      ``round(x1 / x2)``.
+		    * The MATLAB ``rem`` function and or the C ``%`` operator which is the
+		      complement to ``int(x1 / x2)``.
 		
 		Parameters
 		----------
@@ -500,13 +590,13 @@ package scipy.signal.waveforms;
 		-------
 		y : ndarray
 		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
-		    Returns a scalar if both  `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
 		floor_divide : Equivalent of Python ``//`` operator.
 		divmod : Simultaneous floor division and remainder.
-		fmod : Equivalent of the Matlab(TM) ``rem`` function.
+		fmod : Equivalent of the MATLAB ``rem`` function.
 		divide, floor
 		
 		Notes
@@ -746,6 +836,7 @@ package scipy.signal.waveforms;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -791,7 +882,7 @@ package scipy.signal.waveforms;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -818,6 +909,7 @@ package scipy.signal.waveforms;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -951,6 +1043,33 @@ package scipy.signal.waveforms;
 		
 		where `phase` is the integral from 0 to `t` of ``2 * pi * f(t)``,
 		``f(t)`` as defined above.
+		
+		Examples
+		--------
+		Compute the waveform with instantaneous frequency::
+		
+		    f(t) = 0.025*t**3 - 0.36*t**2 + 1.25*t + 2
+		
+		over the interval 0 <= t <= 10.
+		
+		>>> from scipy.signal import sweep_poly
+		>>> p = np.poly1d([0.025, -0.36, 1.25, 2.0])
+		>>> t = np.linspace(0, 10, 5001)
+		>>> w = sweep_poly(t, p)
+		
+		Plot it:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.subplot(2, 1, 1)
+		>>> plt.plot(t, w)
+		>>> plt.title("Sweep Poly\nwith frequency " +
+		...           "$f(t) = 0.025t^3 - 0.36t^2 + 1.25t + 2$")
+		>>> plt.subplot(2, 1, 2)
+		>>> plt.plot(t, p(t), 'r', label='f(t)')
+		>>> plt.legend()
+		>>> plt.xlabel('t')
+		>>> plt.tight_layout()
+		>>> plt.show()
 	**/
 	static public function sweep_poly(t:Dynamic, poly:Dynamic, ?phi:Dynamic):Dynamic;
 	/**
@@ -1032,14 +1151,15 @@ package scipy.signal.waveforms;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1049,17 +1169,16 @@ package scipy.signal.waveforms;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

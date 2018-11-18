@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_managers;
 @:pythonImport("matplotlib.backend_managers", "ToolManager") extern class ToolManager {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package matplotlib.backend_managers;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(canvas:Dynamic):Dynamic;
+	public function ___init__(?figure:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(canvas:Dynamic):Void;
+	public function new(?figure:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.backend_managers;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -161,6 +161,14 @@ package matplotlib.backend_managers;
 	**/
 	public function add_tool(name:Dynamic, tool:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Canvas managed by FigureManager
+	**/
+	public var canvas : Dynamic;
+	/**
+		Figure that holds the canvas
+	**/
+	public var figure : Dynamic;
+	/**
 		Return the tool object, also accepts the actual tool for convenience
 		
 		Parameters
@@ -197,6 +205,16 @@ package matplotlib.backend_managers;
 		    Name of the Tool
 	**/
 	public function remove_tool(name:Dynamic):Dynamic;
+	/**
+		Bind the given figure to the tools.
+		
+		Parameters
+		----------
+		figure : `.Figure`
+		update_tools : bool
+		    Force tools to update figure
+	**/
+	public function set_figure(figure:Dynamic, ?update_tools:Dynamic):Dynamic;
 	/**
 		Connect event with string *s* to *func*.
 		

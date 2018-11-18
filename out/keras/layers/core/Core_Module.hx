@@ -54,4 +54,5 @@ package keras.layers.core;
 		    bool, whether `fn` accepts a `name` keyword argument.
 	**/
 	static public function has_arg(fn:Dynamic, name:Dynamic, ?accept_all:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

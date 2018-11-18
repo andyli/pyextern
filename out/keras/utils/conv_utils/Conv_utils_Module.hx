@@ -9,13 +9,14 @@ package keras.utils.conv_utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Determines input length of a convolution given output length.
 		
 		# Arguments
 		    output_length: integer.
 		    filter_size: integer.
-		    padding: one of "same", "valid", "full".
+		    padding: one of `"same"`, `"valid"`, `"full"`.
 		    stride: integer.
 		
 		# Returns
@@ -28,7 +29,7 @@ package keras.utils.conv_utils;
 		# Arguments
 		    input_length: integer.
 		    filter_size: integer.
-		    padding: one of "same", "valid", "full".
+		    padding: one of `"same"`, `"valid"`, `"full"`.
 		    stride: integer.
 		    dilation: dilation rate, integer.
 		
@@ -51,18 +52,34 @@ package keras.utils.conv_utils;
 		    ValueError: in case of invalid kernel shape or invalid data_format.
 	**/
 	static public function convert_kernel(kernel:Dynamic):Dynamic;
-	static public function deconv_length(dim_size:Dynamic, stride_size:Dynamic, kernel_size:Dynamic, padding:Dynamic):Dynamic;
-	static public function normalize_data_format(value:Dynamic):Dynamic;
+	/**
+		Determines output length of a transposed convolution given input length.
+		
+		# Arguments
+		    dim_size: Integer, the input length.
+		    stride_size: Integer, the stride along the dimension of `dim_size`.
+		    kernel_size: Integer, the kernel size along the dimension of
+		        `dim_size`.
+		    padding: One of `"same"`, `"valid"`, `"full"`.
+		    output_padding: Integer, amount of padding along the output dimension,
+		        Can be set to `None` in which case the output length is inferred.
+		    dilation: dilation rate, integer.
+		
+		# Returns
+		    The output length (integer).
+	**/
+	static public function deconv_length(dim_size:Dynamic, stride_size:Dynamic, kernel_size:Dynamic, padding:Dynamic, output_padding:Dynamic, ?dilation:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public function normalize_padding(value:Dynamic):Dynamic;
 	/**
 		Transforms a single int or iterable of ints into an int tuple.
 		
 		# Arguments
-		    value: The value to validate and convert. Could an int, or any iterable
+		    value: The value to validate and convert. Could be an int, or any iterable
 		      of ints.
 		    n: The size of the tuple to be returned.
-		    name: The name of the argument being validated, e.g. "strides" or
-		      "kernel_size". This is only used to format error messages.
+		    name: The name of the argument being validated, e.g. `strides` or
+		      `kernel_size`. This is only used to format error messages.
 		
 		# Returns
 		    A tuple of n integers.
@@ -72,4 +89,5 @@ package keras.utils.conv_utils;
 		    passed.
 	**/
 	static public function normalize_tuple(value:Dynamic, n:Dynamic, name:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

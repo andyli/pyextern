@@ -15,6 +15,7 @@ package tensorflow.python.debug.cli.cli_shared;
 	static public var TIME_UNIT_MS : Dynamic;
 	static public var TIME_UNIT_S : Dynamic;
 	static public var TIME_UNIT_US : Dynamic;
+	static public var _HORIZONTAL_BAR : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -23,29 +24,6 @@ package tensorflow.python.debug.cli.cli_shared;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Obtain the name or string representation of a fetch.
-		
-		Args:
-		  fetch: The fetch in question.
-		
-		Returns:
-		  If the attribute 'name' is available, return the name. Otherwise, return
-		  str(fetch).
-	**/
-	static public function _get_fetch_name(fetch:Dynamic):Dynamic;
-	/**
-		Get a flattened list of the names in run() call fetches.
-		
-		Args:
-		  fetches: Fetches of the `Session.run()` call. It maybe a Tensor, an
-		    Operation or a Variable. It may also be nested lists, tuples or
-		    dicts. See doc of `Session.run()` for more details.
-		
-		Returns:
-		  (list of str) A flattened list of fetch names from `fetches`.
-	**/
-	static public function _get_fetch_names(fetches:Dynamic):Dynamic;
 	/**
 		Generate a RichTextLines object that describes a recommended command.
 		
@@ -106,11 +84,16 @@ package tensorflow.python.debug.cli.cli_shared;
 		  highlight_options: (tensor_format.HighlightOptions) options to highlight
 		    elements of the tensor. See the doc of tensor_format.format_tensor()
 		    for more details.
+		  include_numeric_summary: Whether a text summary of the numeric values (if
+		    applicable) will be included.
+		  write_path: A path to save the tensor value (after any slicing) to
+		    (optional). `numpy.save()` is used to save the value.
 		
 		Returns:
-		  (str) Formatted str representing the (potentially sliced) tensor.
+		  An instance of `debugger_cli_common.RichTextLines` representing the
+		  (potentially sliced) tensor.
 	**/
-	static public function format_tensor(tensor:Dynamic, tensor_name:Dynamic, np_printoptions:Dynamic, ?print_all:Dynamic, ?tensor_slicing:Dynamic, ?highlight_options:Dynamic):Dynamic;
+	static public function format_tensor(tensor:Dynamic, tensor_name:Dynamic, np_printoptions:Dynamic, ?print_all:Dynamic, ?tensor_slicing:Dynamic, ?highlight_options:Dynamic, ?include_numeric_summary:Dynamic, ?write_path:Dynamic):Dynamic;
 	/**
 		Generate formatted intro for TensorFlow run-time error.
 		
@@ -131,12 +114,14 @@ package tensorflow.python.debug.cli.cli_shared;
 		    for more details.
 		  feed_dict: Feeds to the `Session.run()` call. See doc of `Session.run()`
 		    for more details.
+		  is_callable_runner: (bool) whether a runner returned by
+		      Session.make_callable is being run.
 		
 		Returns:
 		  (str) A short description of the run() call, including information about
 		    the fetche(s) and feed(s).
 	**/
-	static public function get_run_short_description(run_call_count:Dynamic, fetches:Dynamic, feed_dict:Dynamic):Dynamic;
+	static public function get_run_short_description(run_call_count:Dynamic, fetches:Dynamic, feed_dict:Dynamic, ?is_callable_runner:Dynamic):Dynamic;
 	/**
 		Generate formatted intro for run-start UI.
 		
@@ -148,15 +133,18 @@ package tensorflow.python.debug.cli.cli_shared;
 		    for more details.
 		  tensor_filters: (dict) A dict from tensor-filter name to tensor-filter
 		    callable.
+		  is_callable_runner: (bool) whether a runner returned by
+		      Session.make_callable is being run.
 		
 		Returns:
 		  (RichTextLines) Formatted intro message about the `Session.run()` call.
 	**/
-	static public function get_run_start_intro(run_call_count:Dynamic, fetches:Dynamic, feed_dict:Dynamic, tensor_filters:Dynamic):Dynamic;
+	static public function get_run_start_intro(run_call_count:Dynamic, fetches:Dynamic, feed_dict:Dynamic, tensor_filters:Dynamic, ?is_callable_runner:Dynamic):Dynamic;
 	/**
 		Make an ASCII representation of the tfdbg logo.
 	**/
 	static public function get_tfdbg_logo():Dynamic;
+	static public function numpy_printoptions_from_screen_info(screen_info:Dynamic):Dynamic;
 	/**
 		Process ranges highlight string.
 		

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 @:pythonImport("tensorflow.contrib.rnn.ops.gen_lstm_ops") extern class Gen_lstm_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -40,7 +40,7 @@ package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 		  seq_len_max: A `Tensor` of type `int64`.
 		    Maximum time length actually used by this input. Outputs are padded
 		    with zeros beyond this length.
-		  x: A `Tensor`. Must be one of the following types: `float32`.
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`.
 		    The sequence input to the LSTM, shape (timelen, batch_size, num_inputs).
 		  cs_prev: A `Tensor`. Must have the same type as `x`.
 		    Value of the initial cell state.
@@ -74,6 +74,11 @@ package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 	**/
 	static public function block_lstm(seq_len_max:Dynamic, x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, ?forget_bias:Dynamic, ?cell_clip:Dynamic, ?use_peephole:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function block_lstm
+	**/
+	static public function block_lstm_eager_fallback(seq_len_max:Dynamic, x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, ?forget_bias:Dynamic, ?cell_clip:Dynamic, ?use_peephole:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes the LSTM cell backward propagation for the entire time sequence.
 		
 		This implementation is to be used in conjunction of LSTMBlock.
@@ -82,7 +87,7 @@ package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 		  seq_len_max: A `Tensor` of type `int64`.
 		    Maximum time length actually used by this input. Outputs are padded
 		    with zeros beyond this length.
-		  x: A `Tensor`. Must be one of the following types: `float32`.
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`.
 		    The sequence input to the LSTM, shape (timelen, batch_size, num_inputs).
 		  cs_prev: A `Tensor`. Must have the same type as `x`.
 		    Value of the initial cell state.
@@ -131,6 +136,28 @@ package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 	**/
 	static public function block_lstm_grad(seq_len_max:Dynamic, x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, i:Dynamic, cs:Dynamic, f:Dynamic, o:Dynamic, ci:Dynamic, co:Dynamic, h:Dynamic, cs_grad:Dynamic, h_grad:Dynamic, use_peephole:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function block_lstm_grad
+	**/
+	static public function block_lstm_grad_eager_fallback(seq_len_max:Dynamic, x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, i:Dynamic, cs:Dynamic, f:Dynamic, o:Dynamic, ci:Dynamic, co:Dynamic, h:Dynamic, cs_grad:Dynamic, h_grad:Dynamic, use_peephole:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
 		Computes the LSTM cell forward propagation for 1 time step.
 		
 		This implementation uses 1 weight matrix and 1 bias vector, and there's an
@@ -159,7 +186,7 @@ package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 		```
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`.
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`.
 		    The input to the LSTM cell, shape (batch_size, num_inputs).
 		  cs_prev: A `Tensor`. Must have the same type as `x`.
 		    Value of the cell state at previous time step.
@@ -193,12 +220,17 @@ package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 	**/
 	static public function lstm_block_cell(x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, ?forget_bias:Dynamic, ?cell_clip:Dynamic, ?use_peephole:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function lstm_block_cell
+	**/
+	static public function lstm_block_cell_eager_fallback(x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, ?forget_bias:Dynamic, ?cell_clip:Dynamic, ?use_peephole:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes the LSTM cell backward propagation for 1 timestep.
 		
 		This implementation is to be used in conjunction of LSTMBlockCell.
 		
 		Args:
-		  x: A `Tensor`. Must be one of the following types: `float32`.
+		  x: A `Tensor`. Must be one of the following types: `half`, `float32`.
 		    The input to the LSTM cell, shape (batch_size, num_inputs).
 		  cs_prev: A `Tensor`. Must have the same type as `x`.
 		    The previous cell state.
@@ -235,4 +267,10 @@ package tensorflow.contrib.rnn.ops.gen_lstm_ops;
 		  wco_grad: A `Tensor`. Has the same type as `x`. The gradient for wco to be back-propped.
 	**/
 	static public function lstm_block_cell_grad(x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, i:Dynamic, cs:Dynamic, f:Dynamic, o:Dynamic, ci:Dynamic, co:Dynamic, cs_grad:Dynamic, h_grad:Dynamic, use_peephole:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function lstm_block_cell_grad
+	**/
+	static public function lstm_block_cell_grad_eager_fallback(x:Dynamic, cs_prev:Dynamic, h_prev:Dynamic, w:Dynamic, wci:Dynamic, wcf:Dynamic, wco:Dynamic, b:Dynamic, i:Dynamic, cs:Dynamic, f:Dynamic, o:Dynamic, ci:Dynamic, co:Dynamic, cs_grad:Dynamic, h_grad:Dynamic, use_peephole:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

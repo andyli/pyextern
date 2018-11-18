@@ -11,6 +11,7 @@ package scipy.spatial.qhull;
 	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
+	static public function _copy_docstr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compute barycentric affine coordinate transformations for given
 		simplices.

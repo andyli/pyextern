@@ -5,7 +5,7 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -95,9 +95,9 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Create new instance of BeamSearchDecoderState(cell_state, log_probs, finished, lengths)
+		Create new instance of BeamSearchDecoderState(cell_state, log_probs, finished, lengths, accumulated_attention_probs)
 	**/
-	static public function __new__(_cls:Dynamic, cell_state:Dynamic, log_probs:Dynamic, finished:Dynamic, lengths:Dynamic):Dynamic;
+	static public function __new__(_cls:Dynamic, cell_state:Dynamic, log_probs:Dynamic, finished:Dynamic, lengths:Dynamic, accumulated_attention_probs:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -136,7 +136,7 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -149,8 +149,12 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 	/**
 		Return a new BeamSearchDecoderState object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
+	/**
+		Alias for field number 4
+	**/
+	public var accumulated_attention_probs : Dynamic;
 	/**
 		Alias for field number 0
 	**/

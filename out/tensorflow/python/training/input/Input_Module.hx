@@ -48,7 +48,7 @@ package tensorflow.python.training.input;
 		
 		The input `SparseTensor` objects' indices are assumed ordered in
 		standard lexicographic order.  If this is not the case, after this
-		step run `sparse_reorder` to restore index ordering.
+		step run `sparse.reorder` to restore index ordering.
 		
 		For example, if the serialized input is a `[2, 3]` matrix representing two
 		original `SparseTensor` objects:
@@ -125,10 +125,6 @@ package tensorflow.python.training.input;
 		Helper function for `shuffle_batch_join` and `maybe_shuffle_batch_join`.
 	**/
 	static public function _shuffle_batch_join(tensors_list:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, keep_input:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		A `tf.cond` that does nothing when the condition is static.
-	**/
-	static public function _smart_cond(pred:Dynamic, if_true:Dynamic, if_false:Dynamic):Dynamic;
 	/**
 		Add a minibatch `SparseTensor` to a `SparseTensorsMap`, return `N` handles.
 		
@@ -219,7 +215,11 @@ package tensorflow.python.training.input;
 	static public function _which_queue(dynamic_pad:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Creates batches of tensors in `tensors`.
+		Creates batches of tensors in `tensors`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		The argument `tensors` can be a list or a dictionary of tensors.
 		The value returned by the function will be of the same type
@@ -262,7 +262,7 @@ package tensorflow.python.training.input;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -290,10 +290,19 @@ package tensorflow.python.training.input;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function batch(tensors:Dynamic, batch_size:Dynamic, ?num_threads:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Runs a list of tensors to fill a queue to create batches of examples.
+		Runs a list of tensors to fill a queue to create batches of examples. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		The `tensors_list` argument is a list of tuples of tensors, or a list of
 		dictionaries of tensors.  Each element in the list is treated similarly
@@ -349,7 +358,7 @@ package tensorflow.python.training.input;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -376,11 +385,20 @@ package tensorflow.python.training.input;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensor_list_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function batch_join(tensors_list:Dynamic, batch_size:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Output the rows of `input_tensor` to a queue for an input pipeline.
+		Output the rows of `input_tensor` to a queue for an input pipeline. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(input_tensor).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Note: if `num_epochs` is not `None`, this function creates local counter
 		`epochs`. Use `local_variables_initializer()` to initialize local variables.
@@ -414,10 +432,20 @@ package tensorflow.python.training.input;
 		
 		Raises:
 		  ValueError: If the shape of the input cannot be inferred from the arguments.
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function input_producer(input_tensor:Dynamic, ?element_shape:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?summary_name:Dynamic, ?name:Dynamic, ?cancel_op:Dynamic):Dynamic;
 	/**
-		Returns tensor `num_epochs` times and then raises an `OutOfRange` error.
+		Returns tensor `num_epochs` times and then raises an `OutOfRange` error. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensors(tensor).repeat(num_epochs)`.
 		
 		Note: creates local counter `epochs`. Use `local_variables_initializer()` to
 		initialize local variables.
@@ -438,6 +466,8 @@ package tensorflow.python.training.input;
 	/**
 		Save the list of files matching pattern, so it is only computed once.
 		
+		NOTE: The order of the files returned can be non-deterministic.
+		
 		Args:
 		  pattern: A file pattern (glob), or 1D tensor of file patterns.
 		  name: A name for the operations (optional).
@@ -447,7 +477,11 @@ package tensorflow.python.training.input;
 	**/
 	static public function match_filenames_once(pattern:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Conditionally creates batches of tensors based on `keep_input`.
+		Conditionally creates batches of tensors based on `keep_input`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.filter(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		See docstring in `batch` for more details.
 		
@@ -484,7 +518,11 @@ package tensorflow.python.training.input;
 	**/
 	static public function maybe_batch(tensors:Dynamic, keep_input:Dynamic, batch_size:Dynamic, ?num_threads:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Runs a list of tensors to conditionally fill a queue to create batches.
+		Runs a list of tensors to conditionally fill a queue to create batches. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).filter(...).batch(batch_size)` (or `padded_batch(...)` if `dynamic_pad=True`).
 		
 		See docstring in `batch_join` for more details.
 		
@@ -494,8 +532,8 @@ package tensorflow.python.training.input;
 		    added to the queue or not.  If it is a scalar and evaluates `True`, then
 		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
 		    is `True`, then each example is added to the queue only if the
-		    corresonding value in `keep_input` is `True`. This tensor essentially acts
-		    as a filtering mechanism.
+		    corresponding value in `keep_input` is `True`. This tensor essentially
+		    acts as a filtering mechanism.
 		  batch_size: An integer. The new batch size pulled from the queue.
 		  capacity: An integer. The maximum number of elements in the queue.
 		  enqueue_many: Whether each tensor in `tensor_list_list` is a single
@@ -521,7 +559,11 @@ package tensorflow.python.training.input;
 	**/
 	static public function maybe_batch_join(tensors_list:Dynamic, keep_input:Dynamic, batch_size:Dynamic, ?capacity:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?dynamic_pad:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Creates batches by randomly shuffling conditionally-enqueued tensors.
+		Creates batches by randomly shuffling conditionally-enqueued tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.filter(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		See docstring in `shuffle_batch` for more details.
 		
@@ -535,8 +577,8 @@ package tensorflow.python.training.input;
 		    added to the queue or not.  If it is a scalar and evaluates `True`, then
 		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
 		    is `True`, then each example is added to the queue only if the
-		    corresonding value in `keep_input` is `True`. This tensor essentially acts
-		    as a filtering mechanism.
+		    corresponding value in `keep_input` is `True`. This tensor essentially
+		    acts as a filtering mechanism.
 		  num_threads: The number of threads enqueuing `tensor_list`.
 		  seed: Seed for the random shuffling within the queue.
 		  enqueue_many: Whether each tensor in `tensor_list` is a single example.
@@ -554,10 +596,19 @@ package tensorflow.python.training.input;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function maybe_shuffle_batch(tensors:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, keep_input:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Create batches by randomly shuffling conditionally-enqueued tensors.
+		Create batches by randomly shuffling conditionally-enqueued tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).filter(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		See docstring in `shuffle_batch_join` for more details.
 		
@@ -571,8 +622,8 @@ package tensorflow.python.training.input;
 		    added to the queue or not.  If it is a scalar and evaluates `True`, then
 		    `tensors` are all added to the queue. If it is a vector and `enqueue_many`
 		    is `True`, then each example is added to the queue only if the
-		    corresonding value in `keep_input` is `True`. This tensor essentially acts
-		    as a filtering mechanism.
+		    corresponding value in `keep_input` is `True`. This tensor essentially
+		    acts as a filtering mechanism.
 		  seed: Seed for the random shuffling within the queue.
 		  enqueue_many: Whether each tensor in `tensor_list_list` is a single
 		    example.
@@ -591,11 +642,20 @@ package tensorflow.python.training.input;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function maybe_shuffle_batch_join(tensors_list:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, keep_input:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Produces the integers from 0 to limit-1 in a queue.
+		Produces the integers from 0 to limit-1 in a queue. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.range(limit).shuffle(limit).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Note: if `num_epochs` is not `None`, this function creates local counter
 		`epochs`. Use `local_variables_initializer()` to initialize local variables.
@@ -617,10 +677,19 @@ package tensorflow.python.training.input;
 		Returns:
 		  A Queue with the output integers.  A `QueueRunner` for the Queue
 		  is added to the current `Graph`'s `QUEUE_RUNNER` collection.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function range_input_producer(limit:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Creates batches by randomly shuffling tensors.
+		Creates batches by randomly shuffling tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		This function adds the following to the current `Graph`:
 		
@@ -669,7 +738,7 @@ package tensorflow.python.training.input;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -695,10 +764,19 @@ package tensorflow.python.training.input;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function shuffle_batch(tensors:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Create batches by randomly shuffling tensors.
+		Create batches by randomly shuffling tensors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.interleave(...).shuffle(min_after_dequeue).batch(batch_size)`.
 		
 		The `tensors_list` argument is a list of tuples of tensors, or a list of
 		dictionaries of tensors.  Each element in the list is treated similarly
@@ -740,7 +818,7 @@ package tensorflow.python.training.input;
 		`batch_size` is returned when the queue is closed and there are not enough
 		elements to fill the batch, otherwise the pending elements are discarded.
 		In addition, all output tensors' static shapes, as accessed via the
-		`get_shape` method will have a first `Dimension` value of `None`, and
+		`shape` property will have a first `Dimension` value of `None`, and
 		operations that depend on fixed batch_size would fail.
 		
 		Args:
@@ -767,10 +845,19 @@ package tensorflow.python.training.input;
 		Raises:
 		  ValueError: If the `shapes` are not specified, and cannot be
 		    inferred from the elements of `tensors_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function shuffle_batch_join(tensors_list:Dynamic, batch_size:Dynamic, capacity:Dynamic, min_after_dequeue:Dynamic, ?seed:Dynamic, ?enqueue_many:Dynamic, ?shapes:Dynamic, ?allow_smaller_final_batch:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Produces a slice of each `Tensor` in `tensor_list`.
+		Produces a slice of each `Tensor` in `tensor_list`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(tuple(tensor_list)).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Implemented using a Queue -- a `QueueRunner` for the Queue
 		is added to the current `Graph`'s `QUEUE_RUNNER` collection.
@@ -797,10 +884,19 @@ package tensorflow.python.training.input;
 		
 		Raises:
 		  ValueError: if `slice_input_producer` produces nothing from `tensor_list`.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function slice_input_producer(tensor_list:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Output strings (e.g. filenames) to a queue for an input pipeline.
+		Output strings (e.g. filenames) to a queue for an input pipeline. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Queue-based input pipelines have been replaced by `tf.data`. Use `tf.data.Dataset.from_tensor_slices(string_tensor).shuffle(tf.shape(input_tensor, out_type=tf.int64)[0]).repeat(num_epochs)`. If `shuffle=False`, omit the `.shuffle(...)`.
 		
 		Note: if `num_epochs` is not `None`, this function creates local counter
 		`epochs`. Use `local_variables_initializer()` to initialize local variables.
@@ -831,6 +927,12 @@ package tensorflow.python.training.input;
 		Raises:
 		  ValueError: If the string_tensor is a null Python list.  At runtime,
 		  will fail with an assertion if string_tensor becomes a null tensor.
+		
+		@compatibility(eager)
+		Input pipelines based on Queues are not supported when eager execution is
+		enabled. Please use the `tf.data` API to ingest data under eager execution.
+		@end_compatibility
 	**/
 	static public function string_input_producer(string_tensor:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?seed:Dynamic, ?capacity:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?cancel_op:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

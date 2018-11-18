@@ -10,6 +10,7 @@ package keras.datasets.cifar;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Internal utility for parsing CIFAR data.
 		
@@ -22,4 +23,5 @@ package keras.datasets.cifar;
 		    A tuple `(data, labels)`.
 	**/
 	static public function load_batch(fpath:Dynamic, ?label_key:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

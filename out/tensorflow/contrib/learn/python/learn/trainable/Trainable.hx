@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.learn.python.learn.trainable;
 @:pythonImport("tensorflow.contrib.learn.python.learn.trainable", "Trainable") extern class Trainable {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.contrib.learn.python.learn.trainable;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -74,7 +74,7 @@ package tensorflow.contrib.learn.python.learn.trainable;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -117,7 +117,7 @@ package tensorflow.contrib.learn.python.learn.trainable;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -126,13 +126,20 @@ package tensorflow.contrib.learn.python.learn.trainable;
 		Trains a model given training data `x` predictions and `y` labels.
 		
 		Args:
-		  x: Matrix of shape [n_samples, n_features...] or the dictionary of Matrices.
-		     Can be iterator that returns arrays of features or dictionary of arrays of features.
-		     The training input samples for fitting the model. If set, `input_fn` must be `None`.
-		  y: Vector or matrix [n_samples] or [n_samples, n_outputs] or the dictionary of same.
-		     Can be iterator that returns array of labels or dictionary of array of labels.
-		     The training label values (class labels in classification, real numbers in regression).
-		     If set, `input_fn` must be `None`. Note: For classification, label values must
+		  x: Matrix of shape [n_samples, n_features...] or the dictionary of
+		    Matrices.
+		     Can be iterator that returns arrays of features or dictionary of arrays
+		       of features.
+		     The training input samples for fitting the model. If set, `input_fn`
+		       must be `None`.
+		  y: Vector or matrix [n_samples] or [n_samples, n_outputs] or the
+		    dictionary of same.
+		     Can be iterator that returns array of labels or dictionary of array of
+		       labels.
+		     The training label values (class labels in classification, real numbers
+		       in regression).
+		     If set, `input_fn` must be `None`. Note: For classification, label
+		       values must
 		     be integers representing the class index (i.e. values from 0 to
 		     n_classes-1).
 		  input_fn: Input function returning a tuple of:
@@ -142,7 +149,7 @@ package tensorflow.contrib.learn.python.learn.trainable;
 		  steps: Number of steps for which to train model. If `None`, train forever.
 		    'steps' works incrementally. If you call two times fit(steps=10) then
 		    training occurs in total 20 steps. If you don't want to have incremental
-		    behaviour please set `max_steps` instead. If set, `max_steps` must be
+		    behavior please set `max_steps` instead. If set, `max_steps` must be
 		    `None`.
 		  batch_size: minibatch size to use on the input, defaults to first
 		    dimension of `x`. Must be `None` if `input_fn` is provided.

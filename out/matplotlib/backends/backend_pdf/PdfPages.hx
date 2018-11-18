@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_pdf;
 @:pythonImport("matplotlib.backends.backend_pdf", "PdfPages") extern class PdfPages {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -44,38 +44,60 @@ package matplotlib.backends.backend_pdf;
 		Parameters
 		----------
 		
-		filename: str
+		filename : str
 		    Plots using :meth:`PdfPages.savefig` will be written to a file at
 		    this location. The file is opened at once and any older file with
 		    the same name is overwritten.
-		keep_empty: bool, optional
+		keep_empty : bool, optional
 		    If set to False, then empty pdf files will be deleted automatically
 		    when closed.
+		metadata : dictionary, optional
+		    Information dictionary object (see PDF reference section 10.2.1
+		    'Document Information Dictionary'), e.g.:
+		    `{'Creator': 'My software', 'Author': 'Me',
+		    'Title': 'Awesome fig'}`
+		
+		    The standard keys are `'Title'`, `'Author'`, `'Subject'`,
+		    `'Keywords'`, `'Creator'`, `'Producer'`, `'CreationDate'`,
+		    `'ModDate'`, and `'Trapped'`. Values have been predefined
+		    for `'Creator'`, `'Producer'` and `'CreationDate'`. They
+		    can be removed by setting them to `None`.
 	**/
 	@:native("__init__")
-	public function ___init__(filename:Dynamic, ?keep_empty:Dynamic):Dynamic;
+	public function ___init__(filename:Dynamic, ?keep_empty:Dynamic, ?metadata:Dynamic):Dynamic;
 	/**
 		Create a new PdfPages object.
 		
 		Parameters
 		----------
 		
-		filename: str
+		filename : str
 		    Plots using :meth:`PdfPages.savefig` will be written to a file at
 		    this location. The file is opened at once and any older file with
 		    the same name is overwritten.
-		keep_empty: bool, optional
+		keep_empty : bool, optional
 		    If set to False, then empty pdf files will be deleted automatically
 		    when closed.
+		metadata : dictionary, optional
+		    Information dictionary object (see PDF reference section 10.2.1
+		    'Document Information Dictionary'), e.g.:
+		    `{'Creator': 'My software', 'Author': 'Me',
+		    'Title': 'Awesome fig'}`
+		
+		    The standard keys are `'Title'`, `'Author'`, `'Subject'`,
+		    `'Keywords'`, `'Creator'`, `'Producer'`, `'CreationDate'`,
+		    `'ModDate'`, and `'Trapped'`. Values have been predefined
+		    for `'Creator'`, `'Producer'` and `'CreationDate'`. They
+		    can be removed by setting them to `None`.
 	**/
-	public function new(filename:Dynamic, ?keep_empty:Dynamic):Void;
+	public function new(filename:Dynamic, ?keep_empty:Dynamic, ?metadata:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -127,7 +149,7 @@ package matplotlib.backends.backend_pdf;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _file : Dynamic;
 	/**
 		Add a new text note to the page to be saved next. The optional
@@ -161,7 +183,7 @@ package matplotlib.backends.backend_pdf;
 		Parameters
 		----------
 		
-		figure: :class:`~matplotlib.figure.Figure` or int, optional
+		figure : :class:`~matplotlib.figure.Figure` or int, optional
 		    Specifies what figure is saved to file. If not specified, the
 		    active figure is saved. If a :class:`~matplotlib.figure.Figure`
 		    instance is provided, this figure is saved. If an int is specified,

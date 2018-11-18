@@ -5,7 +5,7 @@ package numpy;
 		Call self as a function.
 	**/
 	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,7 +55,7 @@ package numpy;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -106,9 +106,9 @@ package numpy;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		accumulate(array, axis=0, dtype=None, out=None, keepdims=None)
+		accumulate(array, axis=0, dtype=None, out=None)
 		
 		Accumulate the result of applying the operator to all elements.
 		
@@ -145,8 +145,6 @@ package numpy;
 		
 		    .. versionchanged:: 1.13.0
 		       Tuples are allowed for keyword argument.
-		keepdims : bool
-		    Has no effect. Deprecated, and will be removed in future.
 		
 		Returns
 		-------
@@ -191,10 +189,10 @@ package numpy;
 		
 		Performs unbuffered in place operation on operand 'a' for elements
 		specified by 'indices'. For addition ufunc, this method is equivalent to
-		`a[indices] += b`, except that results are accumulated for elements that
-		are indexed more than once. For example, `a[[0,0]] += 1` will only
+		``a[indices] += b``, except that results are accumulated for elements that
+		are indexed more than once. For example, ``a[[0,0]] += 1`` will only
 		increment the first element once because of buffering, whereas
-		`add.at(a, [0,0], 1)` will increment the first element twice.
+		``add.at(a, [0,0], 1)`` will increment the first element twice.
 		
 		.. versionadded:: 1.8.0
 		
@@ -219,16 +217,12 @@ package numpy;
 		>>> print(a)
 		array([-1, -2, 3, 4])
 		
-		::
-		
 		Increment items 0 and 1, and increment item 2 twice:
 		
 		>>> a = np.array([1, 2, 3, 4])
 		>>> np.add.at(a, [0, 1, 2, 2], 1)
 		>>> print(a)
 		array([2, 3, 5, 4])
-		
-		::
 		
 		Add items 0 and 1 in first array to second array,
 		and store results in first array:
@@ -406,7 +400,7 @@ package numpy;
 	**/
 	public function outer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		reduce(a, axis=0, dtype=None, out=None, keepdims=False)
+		reduce(a, axis=0, dtype=None, out=None, keepdims=False, initial)
 		
 		Reduces `a`'s dimension by one, by applying ufunc along one axis.
 		
@@ -462,6 +456,14 @@ package numpy;
 		    the result will broadcast correctly against the original `arr`.
 		
 		    .. versionadded:: 1.7.0
+		initial : scalar, optional
+		    The value with which to start the reduction.
+		    If the ufunc has no identity or the dtype is object, this defaults
+		    to None - otherwise it defaults to ufunc.identity.
+		    If ``None`` is given, the first element of the reduction is used,
+		    and an error is thrown if the reduction is empty.
+		    
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -493,6 +495,24 @@ package numpy;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
+		       
+		You can use the ``initial`` keyword argument to initialize the reduction with a
+		different value.
+		
+		>>> np.add.reduce([10], initial=5)
+		15
+		>>> np.add.reduce(np.ones((2, 2, 2)), axis=(0, 2), initializer=10)
+		array([14., 14.])
+		
+		Allows reductions of empty arrays where they would normally fail, i.e.
+		for ufuncs without an identity.
+		
+		>>> np.minimum.reduce([], initial=np.inf)
+		inf
+		>>> np.minimum.reduce([])
+		Traceback (most recent call last):
+		    ...
+		ValueError: zero-size array to reduction operation minimum which has no identity
 	**/
 	public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -600,6 +620,35 @@ package numpy;
 		       [ 2184.,    15.]])
 	**/
 	public function reduceat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Definition of the core elements a generalized ufunc operates on.
+		
+		The signature determines how the dimensions of each input/output array
+		are split into core and loop dimensions:
+		
+		1. Each dimension in the signature is matched to a dimension of the
+		   corresponding passed-in array, starting from the end of the shape tuple.
+		2. Core dimensions assigned to the same label in the signature must have
+		   exactly matching sizes, no broadcasting is performed.
+		3. The core dimensions are removed from all inputs and the remaining
+		   dimensions are broadcast together, defining the loop dimensions.
+		
+		Notes
+		-----
+		Generalized ufuncs are used internally in many linalg functions, and in
+		the testing suite; the examples below are taken from these.
+		For ufuncs that operate on scalars, the signature is `None`, which is
+		equivalent to '()' for every argument.
+		
+		Examples
+		--------
+		>>> np.core.umath_tests.matrix_multiply.signature
+		'(m,n),(n,p)->(m,p)'
+		>>> np.linalg._umath_linalg.det.signature
+		'(m,m)->()'
+		>>> np.add.signature is None
+		True  # equivalent to '(),()->()'
+	**/
 	public var signature : Dynamic;
 	/**
 		Returns a list with types grouped input->output.

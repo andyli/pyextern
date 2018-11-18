@@ -12,7 +12,7 @@ package pandas.core.reshape.tile;
 	static public function _bins_to_cuts(x:Dynamic, bins:Dynamic, ?right:Dynamic, ?labels:Dynamic, ?precision:Dynamic, ?include_lowest:Dynamic, ?dtype:Dynamic, ?duplicates:Dynamic):Dynamic;
 	/**
 		if the passed data is of datetime/timedelta type,
-		this method converts it to integer so that cut method can
+		this method converts it to numeric so that cut method can
 		handle it
 	**/
 	static public function _coerce_to_type(x:Dynamic):Dynamic;
@@ -22,7 +22,7 @@ package pandas.core.reshape.tile;
 		
 		Parameters
 		----------
-		bins : list-liek of bins
+		bins : list-like of bins
 		dtype : dtype of data
 		
 		Raises
@@ -49,7 +49,7 @@ package pandas.core.reshape.tile;
 	/**
 		handles preprocessing for cut where we convert passed
 		input to array, strip the index information and store it
-		seperately
+		separately
 	**/
 	static public function _preprocess_for_cut(x:Dynamic):Dynamic;
 	/**
@@ -58,78 +58,178 @@ package pandas.core.reshape.tile;
 	static public function _round_frac(x:Dynamic, precision:Dynamic):Dynamic;
 	static public function _trim_zeros(x:Dynamic):Dynamic;
 	/**
-		Return indices of half-open bins to which each value of `x` belongs.
+		Bin values into discrete intervals.
+		
+		Use `cut` when you need to segment and sort data values into bins. This
+		function is also useful for going from a continuous variable to a
+		categorical variable. For example, `cut` could convert ages to groups of
+		age ranges. Supports binning into an equal number of bins, or a
+		pre-specified array of bins.
 		
 		Parameters
 		----------
 		x : array-like
-		    Input array to be binned. It has to be 1-dimensional.
-		bins : int, sequence of scalars, or IntervalIndex
-		    If `bins` is an int, it defines the number of equal-width bins in the
-		    range of `x`. However, in this case, the range of `x` is extended
-		    by .1% on each side to include the min or max values of `x`. If
-		    `bins` is a sequence it defines the bin edges allowing for
-		    non-uniform bin width. No extension of the range of `x` is done in
-		    this case.
-		right : bool, optional
-		    Indicates whether the bins include the rightmost edge or not. If
-		    right == True (the default), then the bins [1,2,3,4] indicate
-		    (1,2], (2,3], (3,4].
-		labels : array or boolean, default None
-		    Used as labels for the resulting bins. Must be of the same length as
-		    the resulting bins. If False, return only integer indicators of the
-		    bins.
-		retbins : bool, optional
-		    Whether to return the bins or not. Can be useful if bins is given
+		    The input array to be binned. Must be 1-dimensional.
+		bins : int, sequence of scalars, or pandas.IntervalIndex
+		    The criteria to bin by.
+		
+		    * int : Defines the number of equal-width bins in the range of `x`. The
+		      range of `x` is extended by .1% on each side to include the minimum
+		      and maximum values of `x`.
+		    * sequence of scalars : Defines the bin edges allowing for non-uniform
+		      width. No extension of the range of `x` is done.
+		    * IntervalIndex : Defines the exact bins to be used.
+		
+		right : bool, default True
+		    Indicates whether `bins` includes the rightmost edge or not. If
+		    ``right == True`` (the default), then the `bins` ``[1, 2, 3, 4]``
+		    indicate (1,2], (2,3], (3,4]. This argument is ignored when
+		    `bins` is an IntervalIndex.
+		labels : array or bool, optional
+		    Specifies the labels for the returned bins. Must be the same length as
+		    the resulting bins. If False, returns only integer indicators of the
+		    bins. This affects the type of the output container (see below).
+		    This argument is ignored when `bins` is an IntervalIndex.
+		retbins : bool, default False
+		    Whether to return the bins or not. Useful when bins is provided
 		    as a scalar.
-		precision : int, optional
-		    The precision at which to store and display the bins labels
-		include_lowest : bool, optional
+		precision : int, default 3
+		    The precision at which to store and display the bins labels.
+		include_lowest : bool, default False
 		    Whether the first interval should be left-inclusive or not.
+		duplicates : {default 'raise', 'drop'}, optional
+		    If bin edges are not unique, raise ValueError or drop non-uniques.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
-		out : Categorical or Series or array of integers if labels is False
-		    The return type (Categorical or Series) depends on the input: a Series
-		    of type category if input is a Series else Categorical. Bins are
-		    represented as categories when categorical data is returned.
-		bins : ndarray of floats
-		    Returned only if `retbins` is True.
+		out : pandas.Categorical, Series, or ndarray
+		    An array-like object representing the respective bin for each value
+		    of `x`. The type depends on the value of `labels`.
+		
+		    * True (default) : returns a Series for Series `x` or a
+		      pandas.Categorical for all other inputs. The values stored within
+		      are Interval dtype.
+		
+		    * sequence of scalars : returns a Series for Series `x` or a
+		      pandas.Categorical for all other inputs. The values stored within
+		      are whatever the type in the sequence is.
+		
+		    * False : returns an ndarray of integers.
+		
+		bins : numpy.ndarray or IntervalIndex.
+		    The computed or specified bins. Only returned when `retbins=True`.
+		    For scalar or sequence `bins`, this is an ndarray with the computed
+		    bins. If set `duplicates=drop`, `bins` will drop non-unique bin. For
+		    an IntervalIndex `bins`, this is equal to `bins`.
+		
+		See Also
+		--------
+		qcut : Discretize variable into equal-sized buckets based on rank
+		    or based on sample quantiles.
+		pandas.Categorical : Array type for storing data that come from a
+		    fixed set of values.
+		Series : One-dimensional array with axis labels (including time series).
+		pandas.IntervalIndex : Immutable Index implementing an ordered,
+		    sliceable set.
 		
 		Notes
 		-----
-		The `cut` function can be useful for going from a continuous variable to
-		a categorical variable. For example, `cut` could convert ages to groups
-		of age ranges.
-		
-		Any NA values will be NA in the result.  Out of bounds values will be NA in
-		the resulting Categorical object
-		
+		Any NA values will be NA in the result. Out of bounds values will be NA in
+		the resulting Series or pandas.Categorical object.
 		
 		Examples
 		--------
-		>>> pd.cut(np.array([.2, 1.4, 2.5, 6.2, 9.7, 2.1]), 3, retbins=True)
-		([(0.191, 3.367], (0.191, 3.367], (0.191, 3.367], (3.367, 6.533],
-		  (6.533, 9.7], (0.191, 3.367]]
-		Categories (3, object): [(0.191, 3.367] < (3.367, 6.533] < (6.533, 9.7]],
-		array([ 0.1905    ,  3.36666667,  6.53333333,  9.7       ]))
+		Discretize into three equal-sized bins.
 		
-		>>> pd.cut(np.array([.2, 1.4, 2.5, 6.2, 9.7, 2.1]), 3,
-		           labels=["good","medium","bad"])
-		[good, good, good, medium, bad, good]
-		Categories (3, object): [good < medium < bad]
+		>>> pd.cut(np.array([1, 7, 5, 4, 6, 3]), 3)
+		... # doctest: +ELLIPSIS
+		[(0.994, 3.0], (5.0, 7.0], (3.0, 5.0], (3.0, 5.0], (5.0, 7.0], ...
+		Categories (3, interval[float64]): [(0.994, 3.0] < (3.0, 5.0] ...
 		
-		>>> pd.cut(np.ones(5), 4, labels=False)
-		array([1, 1, 1, 1, 1], dtype=int64)
+		>>> pd.cut(np.array([1, 7, 5, 4, 6, 3]), 3, retbins=True)
+		... # doctest: +ELLIPSIS
+		([(0.994, 3.0], (5.0, 7.0], (3.0, 5.0], (3.0, 5.0], (5.0, 7.0], ...
+		Categories (3, interval[float64]): [(0.994, 3.0] < (3.0, 5.0] ...
+		array([0.994, 3.   , 5.   , 7.   ]))
+		
+		Discovers the same bins, but assign them specific labels. Notice that
+		the returned Categorical's categories are `labels` and is ordered.
+		
+		>>> pd.cut(np.array([1, 7, 5, 4, 6, 3]),
+		...        3, labels=["bad", "medium", "good"])
+		[bad, good, medium, medium, good, bad]
+		Categories (3, object): [bad < medium < good]
+		
+		``labels=False`` implies you just want the bins back.
+		
+		>>> pd.cut([0, 1, 1, 2], bins=4, labels=False)
+		array([0, 1, 1, 3])
+		
+		Passing a Series as an input returns a Series with categorical dtype:
+		
+		>>> s = pd.Series(np.array([2, 4, 6, 8, 10]),
+		...               index=['a', 'b', 'c', 'd', 'e'])
+		>>> pd.cut(s, 3)
+		... # doctest: +ELLIPSIS
+		a    (1.992, 4.667]
+		b    (1.992, 4.667]
+		c    (4.667, 7.333]
+		d     (7.333, 10.0]
+		e     (7.333, 10.0]
+		dtype: category
+		Categories (3, interval[float64]): [(1.992, 4.667] < (4.667, ...
+		
+		Passing a Series as an input returns a Series with mapping value.
+		It is used to map numerically to intervals based on bins.
+		
+		>>> s = pd.Series(np.array([2, 4, 6, 8, 10]),
+		...               index=['a', 'b', 'c', 'd', 'e'])
+		>>> pd.cut(s, [0, 2, 4, 6, 8, 10], labels=False, retbins=True, right=False)
+		... # doctest: +ELLIPSIS
+		(a    0.0
+		 b    1.0
+		 c    2.0
+		 d    3.0
+		 e    4.0
+		 dtype: float64, array([0, 2, 4, 6, 8]))
+		
+		Use `drop` optional when bins is not unique
+		
+		>>> pd.cut(s, [0, 2, 4, 6, 10, 10], labels=False, retbins=True,
+		...    right=False, duplicates='drop')
+		... # doctest: +ELLIPSIS
+		(a    0.0
+		 b    1.0
+		 c    2.0
+		 d    3.0
+		 e    3.0
+		 dtype: float64, array([0, 2, 4, 6, 8]))
+		
+		Passing an IntervalIndex for `bins` results in those categories exactly.
+		Notice that values not covered by the IntervalIndex are set to NaN. 0
+		is to the left of the first bin (which is closed on the right), and 1.5
+		falls between two bins.
+		
+		>>> bins = pd.IntervalIndex.from_tuples([(0, 1), (2, 3), (4, 5)])
+		>>> pd.cut([0, 0.5, 1.5, 2.5, 4.5], bins)
+		[NaN, (0, 1], NaN, (2, 3], (4, 5]]
+		Categories (3, interval[int64]): [(0, 1] < (2, 3] < (4, 5]]
 	**/
-	static public function cut(x:Dynamic, bins:Dynamic, ?right:Dynamic, ?labels:Dynamic, ?retbins:Dynamic, ?precision:Dynamic, ?include_lowest:Dynamic):Dynamic;
+	static public function cut(x:Dynamic, bins:Dynamic, ?right:Dynamic, ?labels:Dynamic, ?retbins:Dynamic, ?precision:Dynamic, ?include_lowest:Dynamic, ?duplicates:Dynamic):Dynamic;
 	/**
-		Effeciently infer the type of a passed val, or list-like
+		Efficiently infer the type of a passed val, or list-like
 		array of values. Return a string describing the type.
 		
 		Parameters
 		----------
 		value : scalar, list, ndarray, or pandas type
+		skipna : bool, default False
+		    Ignore NaN values when inferring the type. The default of ``False``
+		    will be deprecated in a later version of pandas.
+		
+		    .. versionadded:: 0.21.0
 		
 		Returns
 		-------
@@ -143,6 +243,7 @@ package pandas.core.reshape.tile;
 		- integer
 		- mixed-integer
 		- mixed-integer-float
+		- decimal
 		- complex
 		- categorical
 		- boolean
@@ -171,6 +272,12 @@ package pandas.core.reshape.tile;
 		>>> infer_dtype(['foo', 'bar'])
 		'string'
 		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=True)
+		'string'
+		
+		>>> infer_dtype(['a', np.nan, 'b'], skipna=False)
+		'mixed'
+		
 		>>> infer_dtype([b'foo', b'bar'])
 		'bytes'
 		
@@ -185,6 +292,9 @@ package pandas.core.reshape.tile;
 		
 		>>> infer_dtype(['a', 1])
 		'mixed-integer'
+		
+		>>> infer_dtype([Decimal(1), Decimal(2.0)])
+		'decimal'
 		
 		>>> infer_dtype([True, False])
 		'boolean'
@@ -262,6 +372,38 @@ package pandas.core.reshape.tile;
 		False
 	**/
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return True if given value is scalar.
@@ -276,6 +418,7 @@ package pandas.core.reshape.tile;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -301,27 +444,84 @@ package pandas.core.reshape.tile;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	/**
 		Quantile-based discretization function. Discretize variable into
 		equal-sized buckets based on rank or based on sample quantiles. For example
@@ -330,7 +530,7 @@ package pandas.core.reshape.tile;
 		
 		Parameters
 		----------
-		x : ndarray or Series
+		x : 1d ndarray or Series
 		q : integer or array of quantiles
 		    Number of quantiles. 10 for deciles, 4 for quartiles, etc. Alternately
 		    array of quantiles, e.g. [0, .25, .5, .75, 1.] for quartiles
@@ -364,15 +564,17 @@ package pandas.core.reshape.tile;
 		Examples
 		--------
 		>>> pd.qcut(range(5), 4)
-		[[0, 1], [0, 1], (1, 2], (2, 3], (3, 4]]
-		Categories (4, object): [[0, 1] < (1, 2] < (2, 3] < (3, 4]]
+		... # doctest: +ELLIPSIS
+		[(-0.001, 1.0], (-0.001, 1.0], (1.0, 2.0], (2.0, 3.0], (3.0, 4.0]]
+		Categories (4, interval[float64]): [(-0.001, 1.0] < (1.0, 2.0] ...
 		
-		>>> pd.qcut(range(5), 3, labels=["good","medium","bad"])
+		>>> pd.qcut(range(5), 3, labels=["good", "medium", "bad"])
+		... # doctest: +SKIP
 		[good, good, medium, bad, bad]
 		Categories (3, object): [good < medium < bad]
 		
 		>>> pd.qcut(range(5), 4, labels=False)
-		array([0, 0, 1, 2, 3], dtype=int64)
+		array([0, 0, 1, 2, 3])
 	**/
 	static public function qcut(x:Dynamic, q:Dynamic, ?labels:Dynamic, ?retbins:Dynamic, ?precision:Dynamic, ?duplicates:Dynamic):Dynamic;
 	/**
@@ -382,7 +584,7 @@ package pandas.core.reshape.tile;
 		----------
 		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
-		    .. versionadded: 0.18.1
+		    .. versionadded:: 0.18.1
 		
 		       or DataFrame/dict-like
 		
@@ -408,7 +610,7 @@ package pandas.core.reshape.tile;
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
-		    .. versionadded: 0.16.1
+		    .. versionadded:: 0.16.1
 		
 		utc : boolean, default None
 		    Return UTC DatetimeIndex if True (converting any tz-aware
@@ -446,7 +648,13 @@ package pandas.core.reshape.tile;
 		    - If Timestamp convertible, origin is set to Timestamp identified by
 		      origin.
 		
-		    .. versionadded: 0.20.0
+		    .. versionadded:: 0.20.0
+		cache : boolean, default False
+		    If True, use a cache of unique, converted dates to apply the datetime
+		    conversion. May produce sigificant speed-up when parsing duplicate date
+		    strings, especially ones with timezone offsets.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
@@ -459,11 +667,11 @@ package pandas.core.reshape.tile;
 		
 		    In case when it is not possible to return designated types (e.g. when
 		    any element of input is before Timestamp.min or after Timestamp.max)
-		    return will have datetime.datetime type (or correspoding array/Series).
+		    return will have datetime.datetime type (or corresponding
+		    array/Series).
 		
 		Examples
 		--------
-		
 		Assembling a datetime from multiple columns of a DataFrame. The keys can be
 		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
 		'ms', 'us', 'ns']) or plurals of the same
@@ -525,8 +733,13 @@ package pandas.core.reshape.tile;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		Convert argument to timedelta
 		
@@ -573,6 +786,11 @@ package pandas.core.reshape.tile;
 		>>> pd.to_timedelta(np.arange(5), unit='d')
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 }

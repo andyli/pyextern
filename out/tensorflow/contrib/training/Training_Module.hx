@@ -196,7 +196,7 @@ package tensorflow.contrib.training;
 		This function is implemented using several queues. A `QueueRunner` for the
 		queues is added to the current `Graph`'s `QUEUE_RUNNER` collection.
 		
-		As the returned tensors are the result of of a dequeue operation, evaluating
+		As the returned tensors are the result of a dequeue operation, evaluating
 		them will throw a `tf.errors.OutOfRangeError` when the input queue is
 		exhausted.  If these tensors are feeding another input queue, its queue runner
 		will catch this exception, however, if they are used in your main thread
@@ -361,7 +361,7 @@ package tensorflow.contrib.training;
 		
 		This behavior gives control to callers on what to do if checkpoints do not
 		come fast enough or stop being generated.  For example, if callers have a way
-		to detect that the training has stopped and know that no new new checkpoints
+		to detect that the training has stopped and know that no new checkpoints
 		will be generated, they can provide a `timeout_fn` that returns `True` when
 		the training has stopped.  If they know that the training is still going on
 		they return `False` instead.
@@ -391,6 +391,10 @@ package tensorflow.contrib.training;
 		  A list of clipped gradient to variable pairs.
 	**/
 	static public function clip_gradient_norms(gradients_to_variables:Dynamic, max_norm:Dynamic):Dynamic;
+	/**
+		Returns a `transform_grads_fn` function for gradient clipping.
+	**/
+	static public function clip_gradient_norms_fn(max_norm:Dynamic):Dynamic;
 	/**
 		Creates an `Operation` that evaluates the gradients and returns the loss.
 		
@@ -424,6 +428,35 @@ package tensorflow.contrib.training;
 	**/
 	static public function create_train_op(total_loss:Dynamic, optimizer:Dynamic, ?global_step:Dynamic, ?update_ops:Dynamic, ?variables_to_train:Dynamic, ?transform_grads_fn:Dynamic, ?summarize_gradients:Dynamic, ?gate_gradients:Dynamic, ?aggregation_method:Dynamic, ?colocate_gradients_with_ops:Dynamic, ?check_numerics:Dynamic):Dynamic;
 	/**
+		Enqueue components into queue from `PrependFromQueueAndPaddedBatchDataset`.
+		
+		The components' dtypes and shapes must be compatible with the `output_shapes`
+		attribute of the `dataset` created by
+		`prepend_from_queue_and_padded_batch_dataset`.  This operation supports both
+		non-batched and batched modes.
+		
+		For more details, see the example in the docstring for
+		`prepend_from_queue_and_padded_batch_dataset`.
+		
+		Args:
+		  queue: `variant` scalar or vector tensor.
+		    The tensor emitted by the first component of the iterator associated with
+		    `prepend_from_queue_and_padded_batch_dataset`.  If this is a scalar,
+		    then the `components` input tensors should not have a prepended batch
+		    dimension.
+		  components: Nested tuple of tensors, each with a leading batch dimension
+		    if `queue` is a vector.  The structure, dtypes, and shapes
+		    (excluding batch dimension) must match the nested tuples
+		    `dataset.output_types[1]` and `dataset.output_shapes[1]` (the non-queue
+		    output types and shapes) of the `dataset` emitted by
+		    the original `prepend_from_queue_and_padded_batch_dataset` call.
+		
+		Returns:
+		  An `Operation` that enqueues `components` into the dataset(s) associated
+		  with entries of `queue`.
+	**/
+	static public function enqueue_in_queue_dataset(queue:Dynamic, components:Dynamic):Dynamic;
+	/**
 		Evaluates the model at the given checkpoint path.
 		
 		During a single evaluation, the `eval_ops` is run until the session is
@@ -439,7 +472,7 @@ package tensorflow.contrib.training;
 		
 		One may also consider using a `tf.contrib.training.SummaryAtEndHook` to record
 		summaries after the `eval_ops` have run. If `eval_ops` is `None`, the
-		summaries run immedietly after the model checkpoint has been restored.
+		summaries run immediately after the model checkpoint has been restored.
 		
 		Note that `evaluate_once` creates a local variable used to track the number of
 		evaluations run via `tf.contrib.training.get_or_create_eval_step`.
@@ -485,7 +518,7 @@ package tensorflow.contrib.training;
 		
 		One may also consider using a `tf.contrib.training.SummaryAtEndHook` to record
 		summaries after the `eval_ops` have run. If `eval_ops` is `None`, the
-		summaries run immedietly after the model checkpoint has been restored.
+		summaries run immediately after the model checkpoint has been restored.
 		
 		Note that `evaluate_once` creates a local variable used to track the number of
 		evaluations run via `tf.contrib.training.get_or_create_eval_step`.
@@ -494,7 +527,7 @@ package tensorflow.contrib.training;
 		
 		Args:
 		  checkpoint_dir: The directory where checkpoints are stored.
-		  master: The BNS address of the TensorFlow master.
+		  master: The address of the TensorFlow master.
 		  scaffold: An tf.train.Scaffold instance for initializing variables and
 		    restoring variables. Note that `scaffold.init_fn` is used by the function
 		    to restore the checkpoint. If you supply a custom init_fn, then it must
@@ -551,14 +584,24 @@ package tensorflow.contrib.training;
 	**/
 	static public function multiply_gradients(grads_and_vars:Dynamic, gradient_multipliers:Dynamic):Dynamic;
 	/**
-		Parses hyperparameter values from a string into a python map..
+		Parses hyperparameter values from a string into a python map.
 		
 		`values` is a string containing comma-separated `name=value` pairs.
 		For each pair, the value of the hyperparameter named `name` is set to
 		`value`.
 		
-		If a hyperparameter name appears multiple times in `values`, the last
-		value is used.
+		If a hyperparameter name appears multiple times in `values`, a ValueError
+		is raised (e.g. 'a=1,a=2', 'a[1]=1,a[1]=2').
+		
+		If a hyperparameter name in both an index assignment and scalar assignment,
+		a ValueError is raised.  (e.g. 'a=[1,2,3],a[0] = 1').
+		
+		The hyperparameter name may contain '.' symbols, which will result in an
+		attribute name that is only accessible through the getattr and setattr
+		functions.  (And must be first explicit added through add_hparam.)
+		
+		WARNING: Use of '.' in your variable names is allowed, but is not well
+		supported and not recommended.
 		
 		The `value` in `name=value` must follows the syntax according to the
 		type of the parameter:
@@ -571,7 +614,11 @@ package tensorflow.contrib.training;
 		*  Scalar string: A non-empty sequence of characters, excluding comma,
 		   spaces, and square brackets.  E.g.: foo, bar_1.
 		*  List: A comma separated list of scalar values of the parameter type
-		   enclosed in square backets.  E.g.: [1,2,3], [1.0,1e-12], [high,low].
+		   enclosed in square brackets.  E.g.: [1,2,3], [1.0,1e-12], [high,low].
+		
+		When index assignment is used, the corresponding type_map key should be the
+		list name.  E.g. for "arr[1]=0" the type_map must have the key "arr" (not
+		"arr[1]").
 		
 		Args:
 		  values: String.  Comma separated list of `name=value` pairs where
@@ -584,60 +631,81 @@ package tensorflow.contrib.training;
 		    'x=[0.1,0.2]' will parse successfully if type_map['x'] = float.
 		
 		Returns:
-		  A python map containing the name, value pairs.
+		  A python map mapping each name to either:
+		  * A scalar value.
+		  * A list of scalar values.
+		  * A dictionary mapping index numbers to scalar values.
+		  (e.g. "x=5,L=[1,2],arr[1]=3" results in {'x':5,'L':[1,2],'arr':{1:3}}")
 		
 		Raises:
-		  ValueError: If `values` cannot be parsed.
+		  ValueError: If there is a problem with input.
+		  * If `values` cannot be parsed.
+		  * If a list is assigned to a list index (e.g. 'a[1] = [1,2,3]').
+		  * If the same rvalue is assigned two different values (e.g. 'a=1,a=2',
+		    'a[1]=1,a[1]=2', or 'a=1,a=[1]')
 	**/
 	static public function parse_values(values:Dynamic, type_map:Dynamic):Dynamic;
 	/**
-		Easily feed data from a python generator into TensorFlow queues.
+		A transformation that prepends a queue to a `Dataset` and batches results.
 		
-		Example usage:
+		A vector of handles to the queue is returned as the first component of the
+		associated iterator.  This vector can be passed to `enqueue_in_queue_dataset`
+		to add new elements to the queue.
+		
+		Below is an example of how this dataset might be used to split incoming
+		variable-length sequences into "head" and "rest" parts, where "rest" parts
+		are re-enqueued back into the dataset.  A more realistic example would
+		perform some calculation on the "head" and modify some components of "rest"
+		with the result (before re-enqueueing).
 		
 		```python
-		def generator():
-		  for i in range(3):
-		    yield {"value": i}
+		dataset = tf.data.Dataset.from_tensor_slices([2*x for x in range(10)])
+		# Make a dataset of variable-length vectors and their lengths.
+		dataset = dataset.map(lambda count: (count, tf.ones((count,))))
+		# Emit a queue we can prepend to, and counts/values as padded batch.
+		dataset = dataset.apply(
+		    tf.contrib.training.prepend_from_queue_and_padded_batch_dataset(
+		      batch_size=10))
+		dataset = dataset.prefetch(1)
 		
-		features = {
-		  "value": tf.FixedLenFeature(shape=[], dtype=dtypes.int32)
-		}
+		iterator = dataset.make_one_shot_iterator()
+		queue, (count, padded_value) = iterator.get_next()
 		
-		tensor_dict = tf.contrib.training.python_input(generator, features)
-		batched_dict = tf.train.batch(
-		  tensor_dict, batch_size=2, allow_smaller_final_batch=True)
+		# Split the padded_value into two pieces: head and rest
+		rest_indices = tf.squeeze(tf.where(count > 3), axis=1)
+		bound = tf.minimum(3, tf.reduce_max(count))
+		value_head = padded_value[:, :bound]
+		count_rest = tf.gather(count - 3, rest_indices)
+		value_rest = tf.gather(padded_value[:, bound:], rest_indices)
+		queue_rest = tf.gather(queue, rest_indices)
+		enqueue_rest_op = tf.contrib.training.enqueue_in_queue_dataset(
+		  queue_rest, (count_rest, value_rest))
+		with tf.control_dependencies([enqueue_rest_op]):
+		  calculation = fn(value_head)
 		
-		s = tf.Session()
-		tf.train.start_queue_runners()
-		
-		batch1 = s.run(batched_dict)  # returns {"value": np.array([0, 1])}
-		batch2 = s.run(batched_dict)  # returns {"value": np.array([2])}
-		s.run(batched_dict)  # error: Queue is closed (generator finished at i==3)
+		while True:  # Will raise OutOfRange when finished with all pieces.
+		  session.run(calculation)
 		```
 		
 		Args:
-		  generator: A python generator that takes no arguments, and yields dicts
-		    containing a single minibatch entry one at a time.
-		  features: A python `dict` mapping keys expected from the generator to
-		    instances of `tf.FixedLenFeature`, or `tf.FixedLenSequenceFeature`.
-		  name: (Optional) A name for the operations.
+		  batch_size: `int64` scalar tensor.  The batch size to use when performing
+		    padded batching.
+		  padding_values: (optional) Nested tuple of scalar tensors.  If provided,
+		    the structure and dtypes of padding_values should match that of
+		    incoming dataset's `output_types`.
+		  padded_shapes: (optional) Nested tuple of `int64` vector tensors.
+		    If provided, the structure must match that of the incoming dataset's
+		    `output_types`.  If not provided, the incoming dataset's `output_shapes`
+		    is used.  Any unknown (`None` or `-1`) dimensions in the shapes are
+		    treated as being unique per-batch: for each batch time, an unknown
+		    dimension is replaced with the maximum given value of this dimension
+		    across all tensors for the given component in the batch.
 		
 		Returns:
-		  A dict mapping keys of the `features` dict to `Tensor` objects.
-		  These `Tensor` objects are outputs of a queue that is fed by `generator`.
-		
-		Raises:
-		  TypeError: If generator is not callable or features is not a dict.
-		  TypeError: If any of features' values are not a Feature object.
-		  NotImplementedError: If any of features' values are instances of
-		    `SparseFeature` or `VarLenFeature`  (these are not currently supported).
-		  ValueError: If any FixedLenSequenceFeatures contain a default value
-		    (this field is not supported).
-		  ValueError: if any FixedLenSequenceFeatures have allow_missing=False
-		    (this field is not supported).
+		  A `Dataset` transformation function, which can be passed to
+		  `tf.data.Dataset.apply`.
 	**/
-	static public function python_input(generator:Dynamic, features:Dynamic, ?name:Dynamic):Dynamic;
+	static public function prepend_from_queue_and_padded_batch_dataset(batch_size:Dynamic, ?padding_values:Dynamic, ?padded_shapes:Dynamic):Dynamic;
 	/**
 		Stochastically creates batches by rejection sampling.
 		
@@ -699,7 +767,7 @@ package tensorflow.contrib.training;
 		
 		Args:
 		  inputs: A list of tensors, each of which has a shape of `[batch_size, ...]`
-		  rates: A tensor of shape `[batch_size]` contiaining the resampling rates
+		  rates: A tensor of shape `[batch_size]` containing the resampling rates
 		     for each input.
 		  scope: Scope for the op.
 		  seed: Random seed to use.
@@ -720,7 +788,7 @@ package tensorflow.contrib.training;
 		  tensors: List of tensors for data. All tensors are either one item or a
 		      batch, according to enqueue_many.
 		  labels: Tensor for label of data. Label is a single integer or a batch,
-		      depending on enqueue_many. It is not a one-hot vector.
+		      depending on `enqueue_many`. It is not a one-hot vector.
 		  target_probs: Target class proportions in batch. An object whose type has a
 		      registered Tensor conversion function.
 		  batch_size: Size of batch to be returned.
@@ -734,9 +802,10 @@ package tensorflow.contrib.training;
 		      examples and for the final queue with the proper class proportions.
 		  name: Optional prefix for ops created by this function.
 		Raises:
-		  ValueError: enqueue_many is True and labels doesn't have a batch
-		      dimension, or if enqueue_many is False and labels isn't a scalar.
-		  ValueError: enqueue_many is True, and batch dimension on data and labels
+		  ValueError: If `tensors` isn't iterable.
+		  ValueError: `enqueue_many` is True and labels doesn't have a batch
+		      dimension, or if `enqueue_many` is False and labels isn't a scalar.
+		  ValueError: `enqueue_many` is True, and batch dimension on data and labels
 		      don't match.
 		  ValueError: if probs don't sum to one.
 		  ValueError: if a zero initial probability class has a nonzero target
@@ -782,6 +851,11 @@ package tensorflow.contrib.training;
 		    `save_summaries_steps` is set to `None`, then the default summary saver
 		    isn't used.
 		  config: An instance of `tf.ConfigProto`.
+		  max_wait_secs: Maximum time workers should wait for the session to
+		    become available. This should be kept relatively short to help detect
+		    incorrect code, but sometimes may need to be increased if the chief takes
+		    a while to start up.
+		  run_metadata: A [`RunMetadata`] protocol buffer.
 		
 		Returns:
 		  the value of the loss function after training.
@@ -790,7 +864,7 @@ package tensorflow.contrib.training;
 		  ValueError: if `logdir` is `None` and either `save_checkpoint_secs` or
 		  `save_summaries_steps` are `None.
 	**/
-	static public function train(train_op:Dynamic, logdir:Dynamic, ?master:Dynamic, ?is_chief:Dynamic, ?scaffold:Dynamic, ?hooks:Dynamic, ?chief_only_hooks:Dynamic, ?save_checkpoint_secs:Dynamic, ?save_summaries_steps:Dynamic, ?config:Dynamic):Dynamic;
+	static public function train(train_op:Dynamic, logdir:Dynamic, ?master:Dynamic, ?is_chief:Dynamic, ?scaffold:Dynamic, ?hooks:Dynamic, ?chief_only_hooks:Dynamic, ?save_checkpoint_secs:Dynamic, ?save_summaries_steps:Dynamic, ?config:Dynamic, ?max_wait_secs:Dynamic, ?run_metadata:Dynamic):Dynamic;
 	/**
 		Waits until a new checkpoint file is found.
 		

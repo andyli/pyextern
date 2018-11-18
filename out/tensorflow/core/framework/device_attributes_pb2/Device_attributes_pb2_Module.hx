@@ -4,6 +4,8 @@ package tensorflow.core.framework.device_attributes_pb2;
 	static public var DESCRIPTOR : Dynamic;
 	static public var _DEVICEATTRIBUTES : Dynamic;
 	static public var _DEVICELOCALITY : Dynamic;
+	static public var _INTERCONNECTLINK : Dynamic;
+	static public var _LOCALLINKS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

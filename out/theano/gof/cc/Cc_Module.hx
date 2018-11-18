@@ -80,8 +80,18 @@ package theano.gof.cc;
 		
 		It sets information about current error, then goto the code
 		actually handling the failure, which is defined in struct_gen().
+		
+		Parameters
+		----------
+		sub: dict
+		    Contains other code snippets that can be substituted,
+		    in particular 'failure_var' and 'id'.
+		use_goto: bool, True by default
+		    Include a "goto" statement to the failure label.
+		    Passing False is sometimes required, in which cases we have to
+		    be careful to avoid executing incorrect code.
 	**/
-	static public function failure_code(sub:Dynamic):Dynamic;
+	static public function failure_code(sub:Dynamic, ?use_goto:Dynamic):Dynamic;
 	/**
 		Code for failure in the struct init.
 		

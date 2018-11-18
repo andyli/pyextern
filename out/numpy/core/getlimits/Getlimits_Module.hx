@@ -120,7 +120,15 @@ package numpy.core.getlimits;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -195,8 +203,9 @@ package numpy.core.getlimits;
 		
 		Returns
 		-------
-		out : ndarray
+		out : ndarray or scalar
 		    Element-wise 2 to the power `x`.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -241,6 +250,7 @@ package numpy.core.getlimits;
 		y : ndarray
 		    The logarithm to the base 10 of `x`, element-wise. NaNs are
 		    returned where x is negative.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------

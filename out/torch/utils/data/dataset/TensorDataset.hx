@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package torch.utils.data.dataset;
 @:pythonImport("torch.utils.data.dataset", "TensorDataset") extern class TensorDataset {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __add__(other:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,18 +43,18 @@ package torch.utils.data.dataset;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(data_tensor:Dynamic, target_tensor:Dynamic):Dynamic;
+	public function ___init__(?tensors:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(data_tensor:Dynamic, target_tensor:Dynamic):Void;
+	public function new(?tensors:python.VarArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,7 +106,7 @@ package torch.utils.data.dataset;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

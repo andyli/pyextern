@@ -74,6 +74,88 @@ package scipy.linalg;
 	**/
 	static public function block_diag(?arrs:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		Converts complex eigenvalues ``w`` and eigenvectors ``v`` to real
+		eigenvalues in a block diagonal form ``wr`` and the associated real
+		eigenvectors ``vr``, such that::
+		
+		    vr @ wr = X @ vr
+		
+		continues to hold, where ``X`` is the original array for which ``w`` and
+		``v`` are the eigenvalues and eigenvectors.
+		
+		.. versionadded:: 1.1.0
+		
+		Parameters
+		----------
+		w : (..., M) array_like
+		    Complex or real eigenvalues, an array or stack of arrays
+		
+		    Conjugate pairs must not be interleaved, else the wrong result
+		    will be produced. So ``[1+1j, 1, 1-1j]`` will give a correct result, but
+		    ``[1+1j, 2+1j, 1-1j, 2-1j]`` will not.
+		
+		v : (..., M, M) array_like
+		    Complex or real eigenvectors, a square array or stack of square arrays.
+		
+		Returns
+		-------
+		wr : (..., M, M) ndarray
+		    Real diagonal block form of eigenvalues
+		vr : (..., M, M) ndarray
+		    Real eigenvectors associated with ``wr``
+		
+		See Also
+		--------
+		eig : Eigenvalues and right eigenvectors for non-symmetric arrays
+		rsf2csf : Convert real Schur form to complex Schur form
+		
+		Notes
+		-----
+		``w``, ``v`` must be the eigenstructure for some *real* matrix ``X``.
+		For example, obtained by ``w, v = scipy.linalg.eig(X)`` or
+		``w, v = numpy.linalg.eig(X)`` in which case ``X`` can also represent
+		stacked arrays.
+		
+		.. versionadded:: 1.1.0
+		
+		Examples
+		--------
+		>>> X = np.array([[1, 2, 3], [0, 4, 5], [0, -5, 4]])
+		>>> X
+		array([[ 1,  2,  3],
+		       [ 0,  4,  5],
+		       [ 0, -5,  4]])
+		
+		>>> from scipy import linalg
+		>>> w, v = linalg.eig(X)
+		>>> w
+		array([ 1.+0.j,  4.+5.j,  4.-5.j])
+		>>> v
+		array([[ 1.00000+0.j     , -0.01906-0.40016j, -0.01906+0.40016j],
+		       [ 0.00000+0.j     ,  0.00000-0.64788j,  0.00000+0.64788j],
+		       [ 0.00000+0.j     ,  0.64788+0.j     ,  0.64788-0.j     ]])
+		
+		>>> wr, vr = linalg.cdf2rdf(w, v)
+		>>> wr
+		array([[ 1.,  0.,  0.],
+		       [ 0.,  4.,  5.],
+		       [ 0., -5.,  4.]])
+		>>> vr
+		array([[ 1.     ,  0.40016, -0.01906],
+		       [ 0.     ,  0.64788,  0.     ],
+		       [ 0.     ,  0.     ,  0.64788]])
+		
+		>>> vr @ wr
+		array([[ 1.     ,  1.69593,  1.9246 ],
+		       [ 0.     ,  2.59153,  3.23942],
+		       [ 0.     , -3.23942,  2.59153]])
+		>>> X @ vr
+		array([[ 1.     ,  1.69593,  1.9246 ],
+		       [ 0.     ,  2.59153,  3.23942],
+		       [ 0.     , -3.23942,  2.59153]])
+	**/
+	static public function cdf2rdf(w:Dynamic, v:Dynamic):Dynamic;
+	/**
 		Compute the Cholesky decomposition of a matrix, to use in cho_solve
 		
 		Returns a matrix containing the Cholesky decomposition,
@@ -116,6 +198,19 @@ package scipy.linalg;
 		--------
 		cho_solve : Solve a linear set equations using the Cholesky factorization
 		            of a matrix.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> c
+		array([[3.        , 1.        , 0.33333333, 1.66666667],
+		       [3.        , 2.44948974, 1.90515869, -0.27216553],
+		       [1.        , 5.        , 2.29330749, 0.8559528 ],
+		       [5.        , 1.        , 2.        , 1.55418563]])
+		>>> np.allclose(np.triu(c).T @ np. triu(c) - A, np.zeros((4, 4)))
+		True
 	**/
 	static public function cho_factor(a:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -142,17 +237,27 @@ package scipy.linalg;
 		See also
 		--------
 		cho_factor : Cholesky factorization of a matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor, cho_solve
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> x = cho_solve((c, low), [1, 1, 1, 1])
+		>>> np.allclose(A @ x - [1, 1, 1, 1], np.zeros(4))
+		True
 	**/
 	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
-		Solve the linear equations A x = b, given the Cholesky factorization of A.
+		Solve the linear equations ``A x = b``, given the Cholesky factorization of
+		the banded hermitian ``A``.
 		
 		Parameters
 		----------
-		(cb, lower) : tuple, (array, bool)
+		(cb, lower) : tuple, (ndarray, bool)
 		    `cb` is the Cholesky factorization of A, as given by cholesky_banded.
 		    `lower` must be the same value that was given to cholesky_banded.
-		b : array
+		b : array_like
 		    Right-hand side
 		overwrite_b : bool, optional
 		    If True, the function will overwrite the values in `b`.
@@ -174,6 +279,17 @@ package scipy.linalg;
 		-----
 		
 		.. versionadded:: 0.8.0
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cholesky_banded, cho_solve_banded
+		>>> Ab = np.array([[0, 0, 1j, 2, 3j], [0, -1, -2, 3, 4], [9, 8, 7, 6, 9]])
+		>>> A = np.diag(Ab[0,2:], k=2) + np.diag(Ab[1,1:], k=1)
+		>>> A = A + A.conj().T + np.diag(Ab[2, :])
+		>>> c = cholesky_banded(Ab)
+		>>> x = cho_solve_banded((c, False), np.ones(5))
+		>>> np.allclose(A @ x - np.ones(5), np.zeros(5))
+		True
 	**/
 	static public function cho_solve_banded(cb_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
@@ -207,13 +323,13 @@ package scipy.linalg;
 		
 		Examples
 		--------
-		>>> from scipy import array, linalg, dot
-		>>> a = array([[1,-2j],[2j,5]])
-		>>> L = linalg.cholesky(a, lower=True)
+		>>> from scipy.linalg import cholesky
+		>>> a = np.array([[1,-2j],[2j,5]])
+		>>> L = cholesky(a, lower=True)
 		>>> L
 		array([[ 1.+0.j,  0.+0.j],
 		       [ 0.+2.j,  1.+0.j]])
-		>>> dot(L, L.T.conj())
+		>>> L @ L.T.conj()
 		array([[ 1.+0.j,  0.-2.j],
 		       [ 0.+2.j,  5.+0.j]])
 	**/
@@ -256,6 +372,18 @@ package scipy.linalg;
 		-------
 		c : (u + 1, M) ndarray
 		    Cholesky factorization of a, in the same banded format as ab
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cholesky_banded
+		>>> from numpy import allclose, zeros, diag
+		>>> Ab = np.array([[0, 0, 1j, 2, 3j], [0, -1, -2, 3, 4], [9, 8, 7, 6, 9]])
+		>>> A = np.diag(Ab[0,2:], k=2) + np.diag(Ab[1,1:], k=1)
+		>>> A = A + A.conj().T + np.diag(Ab[2, :])
+		>>> c = cholesky_banded(Ab)
+		>>> C = np.diag(c[0, 2:], k=2) + np.diag(c[1, 1:], k=1) + np.diag(c[2, :])
+		>>> np.allclose(C.conj().T @ C - A, np.zeros((5, 5)))
+		True
 	**/
 	static public function cholesky_banded(ab:Dynamic, ?overwrite_ab:Dynamic, ?lower:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -271,10 +399,11 @@ package scipy.linalg;
 		A : (N, N) ndarray
 		    A circulant matrix whose first column is `c`.
 		
-		See also
+		See Also
 		--------
 		toeplitz : Toeplitz matrix
 		hankel : Hankel matrix
+		solve_circulant : Solve a circulant system.
 		
 		Notes
 		-----
@@ -289,6 +418,70 @@ package scipy.linalg;
 		       [3, 2, 1]])
 	**/
 	static public function circulant(c:Dynamic):Dynamic;
+	/**
+		"
+		Find low-rank matrix approximation via the Clarkson-Woodruff Transform.
+		
+		Given an input_matrix ``A`` of size ``(n, d)``, compute a matrix ``A'`` of
+		size (sketch_size, d) which holds:
+		
+		.. math:: ||Ax|| = (1 \pm \epsilon)||A'x||
+		
+		with high probability.
+		
+		The error is related to the number of rows of the sketch and it is bounded
+		
+		.. math:: poly(r(\epsilon^{-1}))
+		
+		Parameters
+		----------
+		input_matrix: array_like
+		    Input matrix, of shape ``(n, d)``.
+		sketch_size: int
+		    Number of rows for the sketch.
+		seed : None or int or `numpy.random.RandomState` instance, optional
+		    This parameter defines the ``RandomState`` object to use for drawing
+		    random variates.
+		    If None (or ``np.random``), the global ``np.random`` state is used.
+		    If integer, it is used to seed the local ``RandomState`` instance.
+		    Default is None.
+		
+		Returns
+		-------
+		A' : array_like
+		    Sketch of the input matrix ``A``, of size ``(sketch_size, d)``.
+		
+		Notes
+		-----
+		This is an implementation of the Clarkson-Woodruff Transform (CountSketch).
+		``A'`` can be computed in principle in ``O(nnz(A))`` (with ``nnz`` meaning
+		the number of nonzero entries), however we don't take advantage of sparse
+		matrices in this implementation.
+		
+		Examples
+		--------
+		Given a big dense matrix ``A``:
+		
+		>>> from scipy import linalg
+		>>> n_rows, n_columns, sketch_n_rows = (2000, 100, 100)
+		>>> threshold = 0.1
+		>>> tmp = np.random.normal(0, 0.1, n_rows*n_columns)
+		>>> A = np.reshape(tmp, (n_rows, n_columns))
+		>>> sketch = linalg.clarkson_woodruff_transform(A, sketch_n_rows)
+		>>> sketch.shape
+		(100, 100)
+		>>> normA = linalg.norm(A)
+		>>> norm_sketch = linalg.norm(sketch)
+		
+		Now with high probability, the condition ``abs(normA-normSketch) <
+		threshold`` holds.
+		
+		References
+		----------
+		.. [1] Kenneth L. Clarkson and David P. Woodruff. Low rank approximation and
+		       regression in input sparsity time. In STOC, 2013.
+	**/
+	static public function clarkson_woodruff_transform(input_matrix:Dynamic, sketch_size:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Create a companion matrix.
 		
@@ -510,6 +703,25 @@ package scipy.linalg;
 		-------
 		S : (M, N) ndarray
 		    The S-matrix in the singular value decomposition
+		
+		See Also
+		--------
+		svd : Singular value decomposition of a matrix
+		svdvals : Compute singular values of a matrix.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import diagsvd
+		>>> vals = np.array([1, 2, 3])  # The array representing the computed svd
+		>>> diagsvd(vals, 3, 4)
+		array([[1, 0, 0, 0],
+		       [0, 2, 0, 0],
+		       [0, 0, 3, 0]])
+		>>> diagsvd(vals, 4, 3)
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [0, 0, 3],
+		       [0, 0, 0]])
 	**/
 	static public function diagsvd(s:Dynamic, M:Dynamic, N:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -571,7 +783,38 @@ package scipy.linalg;
 		
 		See Also
 		--------
+		eigvals : eigenvalues of general arrays
 		eigh : Eigenvalues and right eigenvectors for symmetric/Hermitian arrays.
+		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
+		    band matrices
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
+		
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a) == linalg.eig(a)[0]
+		array([ True,  True])
+		>>> linalg.eig(a, left=True, right=False)[1] # normalized left eigenvector
+		array([[-0.70710678+0.j        , -0.70710678-0.j        ],
+		       [-0.        +0.70710678j, -0.        -0.70710678j]])
+		>>> linalg.eig(a, left=False, right=True)[1] # normalized right eigenvector
+		array([[0.70710678+0.j        , 0.70710678-0.j        ],
+		       [0.        -0.70710678j, 0.        +0.70710678j]])
 	**/
 	static public function eig(a:Dynamic, ?b:Dynamic, ?left:Dynamic, ?right:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
@@ -647,7 +890,36 @@ package scipy.linalg;
 		    The normalized eigenvector corresponding to the eigenvalue w[i] is
 		    the column v[:,i].
 		
-		Raises LinAlgError if eigenvalue computation does not converge
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
+		
+		See Also
+		--------
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eig : eigenvalues and right eigenvectors of general arrays.
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eig_banded
+		>>> A = np.array([[1, 5, 2, 0], [5, 2, 5, 2], [2, 5, 3, 5], [0, 2, 5, 4]])
+		>>> Ab = np.array([[1, 2, 3, 4], [5, 5, 5, 0], [2, 2, 0, 0]])
+		>>> w, v = eig_banded(Ab, lower=True)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
+		>>> w = eig_banded(Ab, lower=True, eigvals_only=True)
+		>>> w
+		array([-4.26200532, -2.22987175,  3.95222349, 12.53965359])
+		
+		Request only the eigenvalues between ``[-3, 4]``
+		
+		>>> w, v = eig_banded(Ab, lower=True, select='v', select_range=[-3, 4])
+		>>> w
+		array([-2.22987175,  3.95222349])
 	**/
 	static public function eig_banded(a_band:Dynamic, ?lower:Dynamic, ?eigvals_only:Dynamic, ?overwrite_a_band:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?max_ev:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -730,9 +1002,114 @@ package scipy.linalg;
 		
 		See Also
 		--------
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w, v = eigh(A)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
 	**/
 	static public function eigh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?eigvals_only:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
+		Solve eigenvalue problem for a real symmetric tridiagonal matrix.
+		
+		Find eigenvalues `w` and optionally right eigenvectors `v` of ``a``::
+		
+		    a v[:,i] = w[i] v[:,i]
+		    v.H v    = identity
+		
+		For a real symmetric matrix ``a`` with diagonal elements `d` and
+		off-diagonal elements `e`.
+		
+		Parameters
+		----------
+		d : ndarray, shape (ndim,)
+		    The diagonal elements of the array.
+		e : ndarray, shape (ndim-1,)
+		    The off-diagonal elements of the array.
+		select : {'a', 'v', 'i'}, optional
+		    Which eigenvalues to calculate
+		
+		    ======  ========================================
+		    select  calculated
+		    ======  ========================================
+		    'a'     All eigenvalues
+		    'v'     Eigenvalues in the interval (min, max]
+		    'i'     Eigenvalues with indices min <= i <= max
+		    ======  ========================================
+		select_range : (min, max), optional
+		    Range of selected eigenvalues
+		check_finite : bool, optional
+		    Whether to check that the input matrix contains only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		tol : float
+		    The absolute tolerance to which each eigenvalue is required
+		    (only used when 'stebz' is the `lapack_driver`).
+		    An eigenvalue (or cluster) is considered to have converged if it
+		    lies in an interval of this width. If <= 0. (default),
+		    the value ``eps*|a|`` is used where eps is the machine precision,
+		    and ``|a|`` is the 1-norm of the matrix ``a``.
+		lapack_driver : str
+		    LAPACK function to use, can be 'auto', 'stemr', 'stebz', 'sterf',
+		    or 'stev'. When 'auto' (default), it will use 'stemr' if ``select='a'``
+		    and 'stebz' otherwise. When 'stebz' is used to find the eigenvalues and
+		    ``eigvals_only=False``, then a second LAPACK call (to ``?STEIN``) is
+		    used to find the corresponding eigenvectors. 'sterf' can only be
+		    used when ``eigvals_only=True`` and ``select='a'``. 'stev' can only
+		    be used when ``select='a'``.
+		
+		Returns
+		-------
+		w : (M,) ndarray
+		    The eigenvalues, in ascending order, each repeated according to its
+		    multiplicity.
+		v : (M, M) ndarray
+		    The normalized eigenvector corresponding to the eigenvalue ``w[i]`` is
+		    the column ``v[:,i]``.
+		
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
+		
+		See Also
+		--------
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
+		    band matrices
+		
+		Notes
+		-----
+		This function makes use of LAPACK ``S/DSTEMR`` routines.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigh_tridiagonal
+		>>> d = 3*np.ones(4)
+		>>> e = -1*np.ones(3)
+		>>> w, v = eigh_tridiagonal(d, e)
+		>>> A = np.diag(d) + np.diag(e, k=1) + np.diag(e, k=-1)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
+	**/
+	static public function eigh_tridiagonal(d:Dynamic, e:Dynamic, ?eigvals_only:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?check_finite:Dynamic, ?tol:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Compute eigenvalues from an ordinary or generalized eigenvalue problem.
 		
@@ -777,9 +1154,27 @@ package scipy.linalg;
 		
 		See Also
 		--------
-		eigvalsh : eigenvalues of symmetric or Hermitian arrays,
 		eig : eigenvalues and right eigenvectors of general arrays.
-		eigh : eigenvalues and eigenvectors of symmetric/Hermitian arrays.
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.array([[0., -1.], [1., 0.]])
+		>>> linalg.eigvals(a)
+		array([0.+1.j, 0.-1.j])
+		
+		>>> b = np.array([[0., 1.], [1., 1.]])
+		>>> linalg.eigvals(a, b)
+		array([ 1.+0.j, -1.+0.j])
+		
+		>>> a = np.array([[3., 0., 0.], [0., 8., 0.], [0., 0., 7.]])
+		>>> linalg.eigvals(a, homogeneous_eigvals=True)
+		array([[3.+0.j, 8.+0.j, 7.+0.j],
+		       [1.+0.j, 1.+0.j, 1.+0.j]])
 	**/
 	static public function eigvals(a:Dynamic, ?b:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?homogeneous_eigvals:Dynamic):Dynamic;
 	/**
@@ -843,15 +1238,29 @@ package scipy.linalg;
 		    The eigenvalues, in ascending order, each repeated according to its
 		    multiplicity.
 		
-		Raises LinAlgError if eigenvalue computation does not converge
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
 		
 		See Also
 		--------
 		eig_banded : eigenvalues and right eigenvectors for symmetric/Hermitian
 		    band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
 		eigvals : eigenvalues of general arrays
 		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigvals_banded
+		>>> A = np.array([[1, 5, 2, 0], [5, 2, 5, 2], [2, 5, 3, 5], [0, 2, 5, 4]])
+		>>> Ab = np.array([[1, 2, 3, 4], [5, 5, 5, 0], [2, 2, 0, 0]])
+		>>> w = eigvals_banded(Ab, lower=True)
+		>>> w
+		array([-4.26200532, -2.22987175,  3.95222349, 12.53965359])
 	**/
 	static public function eigvals_banded(a_band:Dynamic, ?lower:Dynamic, ?overwrite_a_band:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -916,11 +1325,101 @@ package scipy.linalg;
 		
 		See Also
 		--------
-		eigvals : eigenvalues of general arrays
 		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
-		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigvals : eigenvalues of general arrays
+		eigvals_banded : eigenvalues for symmetric/Hermitian band matrices
+		eigvalsh_tridiagonal : eigenvalues of symmetric/Hermitian tridiagonal
+		    matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigvalsh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w = eigvalsh(A)
+		>>> w
+		array([-3.74637491, -0.76263923,  6.08502336, 12.42399079])
 	**/
 	static public function eigvalsh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
+		Solve eigenvalue problem for a real symmetric tridiagonal matrix.
+		
+		Find eigenvalues `w` of ``a``::
+		
+		    a v[:,i] = w[i] v[:,i]
+		    v.H v    = identity
+		
+		For a real symmetric matrix ``a`` with diagonal elements `d` and
+		off-diagonal elements `e`.
+		
+		Parameters
+		----------
+		d : ndarray, shape (ndim,)
+		    The diagonal elements of the array.
+		e : ndarray, shape (ndim-1,)
+		    The off-diagonal elements of the array.
+		select : {'a', 'v', 'i'}, optional
+		    Which eigenvalues to calculate
+		
+		    ======  ========================================
+		    select  calculated
+		    ======  ========================================
+		    'a'     All eigenvalues
+		    'v'     Eigenvalues in the interval (min, max]
+		    'i'     Eigenvalues with indices min <= i <= max
+		    ======  ========================================
+		select_range : (min, max), optional
+		    Range of selected eigenvalues
+		check_finite : bool, optional
+		    Whether to check that the input matrix contains only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		tol : float
+		    The absolute tolerance to which each eigenvalue is required
+		    (only used when ``lapack_driver='stebz'``).
+		    An eigenvalue (or cluster) is considered to have converged if it
+		    lies in an interval of this width. If <= 0. (default),
+		    the value ``eps*|a|`` is used where eps is the machine precision,
+		    and ``|a|`` is the 1-norm of the matrix ``a``.
+		lapack_driver : str
+		    LAPACK function to use, can be 'auto', 'stemr', 'stebz',  'sterf',
+		    or 'stev'. When 'auto' (default), it will use 'stemr' if ``select='a'``
+		    and 'stebz' otherwise. 'sterf' and 'stev' can only be used when
+		    ``select='a'``.
+		
+		Returns
+		-------
+		w : (M,) ndarray
+		    The eigenvalues, in ascending order, each repeated according to its
+		    multiplicity.
+		
+		Raises
+		------
+		LinAlgError
+		    If eigenvalue computation does not converge.
+		
+		See Also
+		--------
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigvalsh_tridiagonal, eigvalsh
+		>>> d = 3*np.ones(4)
+		>>> e = -1*np.ones(3)
+		>>> w = eigvalsh_tridiagonal(d, e)
+		>>> A = np.diag(d) + np.diag(e, k=1) + np.diag(e, k=-1)
+		>>> w2 = eigvalsh(A)  # Verify with other eigenvalue routines
+		>>> np.allclose(w - w2, np.zeros(4))
+		True
+	**/
+	static public function eigvalsh_tridiagonal(d:Dynamic, e:Dynamic, ?select:Dynamic, ?select_range:Dynamic, ?check_finite:Dynamic, ?tol:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Compute the matrix exponential using Pade approximation.
 		
@@ -962,43 +1461,7 @@ package scipy.linalg;
 		array([[ 0.42645930+1.89217551j, -2.13721484-0.97811252j],
 		       [ 1.06860742+0.48905626j, -1.71075555+0.91406299j]])
 	**/
-	static public function expm(A:Dynamic, ?q:Dynamic):Dynamic;
-	/**
-		`expm2` is deprecated, use `expm` instead!
-		
-		
-		Compute the matrix exponential using eigenvalue decomposition.
-		
-		Parameters
-		----------
-		A : (N, N) array_like
-		    Matrix to be exponentiated
-		
-		Returns
-		-------
-		expm2 : (N, N) ndarray
-		    Matrix exponential of `A`
-	**/
-	static public function expm2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`expm3` is deprecated, use `expm` instead!
-		
-		
-		Compute the matrix exponential using Taylor series.
-		
-		Parameters
-		----------
-		A : (N, N) array_like
-		    Matrix to be exponentiated
-		q : int
-		    Order of the Taylor series used is `q-1`
-		
-		Returns
-		-------
-		expm3 : (N, N) ndarray
-		    Matrix exponential of `A`
-	**/
-	static public function expm3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function expm(A:Dynamic):Dynamic;
 	/**
 		Relative condition number of the matrix exponential in the Frobenius norm.
 		
@@ -1028,6 +1491,14 @@ package scipy.linalg;
 		--------
 		expm : Compute the exponential of a matrix.
 		expm_frechet : Compute the Frechet derivative of the matrix exponential.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import expm_cond
+		>>> A = np.array([[-0.3, 0.2, 0.6], [0.6, 0.3, -0.1], [-0.7, 1.2, 0.9]])
+		>>> k = expm_cond(A)
+		>>> k
+		1.7787805864469866
 	**/
 	static public function expm_cond(A:Dynamic, ?check_finite:Dynamic):Float;
 	/**
@@ -1132,6 +1603,18 @@ package scipy.linalg;
 		    Inferred Numpy data type.
 		prefer_fortran : bool
 		    Whether to prefer Fortran order routines over C order.
+		
+		Examples
+		--------
+		>>> import scipy.linalg.blas as bla
+		>>> a = np.random.rand(10,15)
+		>>> b = np.asfortranarray(a)  # Change the memory layout order
+		>>> bla.find_best_blas_type((a,))
+		('d', dtype('float64'), False)
+		>>> bla.find_best_blas_type((a*1j,))
+		('z', dtype('complex128'), False)
+		>>> bla.find_best_blas_type((b,))
+		('d', dtype('float64'), True)
 	**/
 	static public function find_best_blas_type(?arrays:Dynamic, ?dtype:Dynamic):String;
 	/**
@@ -1269,6 +1752,17 @@ package scipy.linalg;
 		types {float32, float64, complex64, complex128} respectively.
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
+		
+		Examples
+		--------
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_gemv = LA.get_blas_funcs('gemv', (a,))
+		>>> x_gemv.typecode
+		'd'
+		>>> x_gemv = LA.get_blas_funcs('gemv',(a*1j,))
+		>>> x_gemv.typecode
+		'z'
 	**/
 	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -1289,12 +1783,10 @@ package scipy.linalg;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -1305,8 +1797,37 @@ package scipy.linalg;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -1367,7 +1888,7 @@ package scipy.linalg;
 		A : (len(c), len(r)) ndarray
 		    The Hankel matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
 		
-		See also
+		See Also
 		--------
 		toeplitz : Toeplitz matrix
 		circulant : circulant matrix
@@ -1450,6 +1971,19 @@ package scipy.linalg;
 		Q : (M, M) ndarray
 		    Unitary/orthogonal similarity transformation matrix ``A = Q H Q^H``.
 		    Only returned if ``calc_q=True``.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import hessenberg
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> H, Q = hessenberg(A, calc_q=True)
+		>>> H
+		array([[  2.        , -11.65843866,   1.42005301,   0.25349066],
+		       [ -9.94987437,  14.53535354,  -5.31022304,   2.43081618],
+		       [  0.        ,  -1.83299243,   0.38969961,  -0.51527034],
+		       [  0.        ,   0.        ,  -3.83189513,   1.07494686]])
+		>>> np.allclose(Q @ H @ Q.conj().T - A, np.zeros((4, 4)))
+		True
 	**/
 	static public function hessenberg(a:Dynamic, ?calc_q:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -1680,10 +2214,119 @@ package scipy.linalg;
 	**/
 	static public function kron(a:Dynamic, b:Dynamic):Dynamic;
 	/**
+		Computes the LDLt or Bunch-Kaufman factorization of a symmetric/
+		hermitian matrix.
+		
+		This function returns a block diagonal matrix D consisting blocks of size
+		at most 2x2 and also a possibly permuted unit lower triangular matrix
+		``L`` such that the factorization ``A = L D L^H`` or ``A = L D L^T``
+		holds. If ``lower`` is False then (again possibly permuted) upper
+		triangular matrices are returned as outer factors.
+		
+		The permutation array can be used to triangularize the outer factors
+		simply by a row shuffle, i.e., ``lu[perm, :]`` is an upper/lower
+		triangular matrix. This is also equivalent to multiplication with a
+		permutation matrix ``P.dot(lu)`` where ``P`` is a column-permuted
+		identity matrix ``I[:, perm]``.
+		
+		Depending on the value of the boolean ``lower``, only upper or lower
+		triangular part of the input array is referenced. Hence a triangular
+		matrix on entry would give the same result as if the full matrix is
+		supplied.
+		
+		Parameters
+		----------
+		a : array_like
+		    Square input array
+		lower : bool, optional
+		    This switches between the lower and upper triangular outer factors of
+		    the factorization. Lower triangular (``lower=True``) is the default.
+		hermitian : bool, optional
+		    For complex-valued arrays, this defines whether ``a = a.conj().T`` or
+		    ``a = a.T`` is assumed. For real-valued arrays, this switch has no
+		    effect.
+		overwrite_a : bool, optional
+		    Allow overwriting data in ``a`` (may enhance performance). The default
+		    is False.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		
+		Returns
+		-------
+		lu : ndarray
+		    The (possibly) permuted upper/lower triangular outer factor of the
+		    factorization.
+		d : ndarray
+		    The block diagonal multiplier of the factorization.
+		perm : ndarray
+		    The row-permutation index array that brings lu into triangular form.
+		
+		Raises
+		------
+		ValueError
+		    If input array is not square.
+		ComplexWarning
+		    If a complex-valued array with nonzero imaginary parts on the
+		    diagonal is given and hermitian is set to True.
+		
+		Examples
+		--------
+		Given an upper triangular array `a` that represents the full symmetric
+		array with its entries, obtain `l`, 'd' and the permutation vector `perm`:
+		
+		>>> import numpy as np
+		>>> from scipy.linalg import ldl
+		>>> a = np.array([[2, -1, 3], [0, 2, 0], [0, 0, 1]])
+		>>> lu, d, perm = ldl(a, lower=0) # Use the upper part
+		>>> lu
+		array([[ 0. ,  0. ,  1. ],
+		       [ 0. ,  1. , -0.5],
+		       [ 1. ,  1. ,  1.5]])
+		>>> d
+		array([[-5. ,  0. ,  0. ],
+		       [ 0. ,  1.5,  0. ],
+		       [ 0. ,  0. ,  2. ]])
+		>>> perm
+		array([2, 1, 0])
+		>>> lu[perm, :]
+		array([[ 1. ,  1. ,  1.5],
+		       [ 0. ,  1. , -0.5],
+		       [ 0. ,  0. ,  1. ]])
+		>>> lu.dot(d).dot(lu.T)
+		array([[ 2., -1.,  3.],
+		       [-1.,  2.,  0.],
+		       [ 3.,  0.,  1.]])
+		
+		Notes
+		-----
+		This function uses ``?SYTRF`` routines for symmetric matrices and
+		``?HETRF`` routines for Hermitian matrices from LAPACK. See [1]_ for
+		the algorithm details.
+		
+		Depending on the ``lower`` keyword value, only lower or upper triangular
+		part of the input array is referenced. Moreover, this keyword also defines
+		the structure of the outer factors of the factorization.
+		
+		.. versionadded:: 1.1.0
+		
+		See also
+		--------
+		cholesky, lu
+		
+		References
+		----------
+		.. [1] J.R. Bunch, L. Kaufman, Some stable methods for calculating
+		   inertia and solving symmetric linear systems, Math. Comput. Vol.31,
+		   1977. DOI: 10.2307/2005787
+	**/
+	static public function ldl(A:Dynamic, ?lower:Dynamic, ?hermitian:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
 		Create a Leslie matrix.
 		
 		Given the length n array of fecundity coefficients `f` and the length
-		n-1 array of survival coefficents `s`, return the associated Leslie matrix.
+		n-1 array of survival coefficients `s`, return the associated Leslie matrix.
 		
 		Parameters
 		----------
@@ -1805,7 +2448,7 @@ package scipy.linalg;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		lapack_driver: str, optional
+		lapack_driver : str, optional
 		    Which LAPACK driver is used to solve the least-squares problem.
 		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
 		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
@@ -1818,11 +2461,11 @@ package scipy.linalg;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : () or (1,) or (K,) ndarray
+		residues : (0,) or () or (K,) ndarray
 		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``> M``, or ``'gelsy'`` is used,
-		    this is an empty array. If b was 1-D, this is an (1,) shape array,
-		    otherwise the shape is (K,).
+		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
+		    this is a length zero array. If b was 1-D, this is a () shape array
+		    (numpy scalar), otherwise the shape is (K,).
 		rank : int
 		    Effective rank of matrix `a`.
 		s : (min(M,N),) ndarray or None
@@ -1840,6 +2483,50 @@ package scipy.linalg;
 		See Also
 		--------
 		optimize.nnls : linear least squares with non-negativity constraint
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lstsq
+		>>> import matplotlib.pyplot as plt
+		
+		Suppose we have the following data:
+		
+		>>> x = np.array([1, 2.5, 3.5, 4, 5, 7, 8.5])
+		>>> y = np.array([0.3, 1.1, 1.5, 2.0, 3.2, 6.6, 8.6])
+		
+		We want to fit a quadratic polynomial of the form ``y = a + b*x**2``
+		to this data.  We first form the "design matrix" M, with a constant
+		column of 1s and a column containing ``x**2``:
+		
+		>>> M = x[:, np.newaxis]**[0, 2]
+		>>> M
+		array([[  1.  ,   1.  ],
+		       [  1.  ,   6.25],
+		       [  1.  ,  12.25],
+		       [  1.  ,  16.  ],
+		       [  1.  ,  25.  ],
+		       [  1.  ,  49.  ],
+		       [  1.  ,  72.25]])
+		
+		We want to find the least-squares solution to ``M.dot(p) = y``,
+		where ``p`` is a vector with length 2 that holds the parameters
+		``a`` and ``b``.
+		
+		>>> p, res, rnk, s = lstsq(M, y)
+		>>> p
+		array([ 0.20925829,  0.12013861])
+		
+		Plot the data and the fitted curve.
+		
+		>>> plt.plot(x, y, 'o', label='data')
+		>>> xx = np.linspace(0, 9, 101)
+		>>> yy = p[0] + p[1]*xx**2
+		>>> plt.plot(xx, yy, label='least squares fit, $y = a + bx^2$')
+		>>> plt.xlabel('x')
+		>>> plt.ylabel('y')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.show()
 	**/
 	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
@@ -1888,6 +2575,14 @@ package scipy.linalg;
 		Notes
 		-----
 		This is a LU factorization routine written for Scipy.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> p, l, u = lu(A)
+		>>> np.allclose(A - p @ l @ u, np.zeros((4, 4)))
+		True
 	**/
 	static public function lu(a:Dynamic, ?permute_l:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -1927,6 +2622,22 @@ package scipy.linalg;
 		Notes
 		-----
 		This is a wrapper to the ``*GETRF`` routines from LAPACK.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu_factor
+		>>> from numpy import tril, triu, allclose, zeros, eye
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> lu, piv = lu_factor(A)
+		>>> piv
+		array([2, 2, 3, 3], dtype=int32)
+		
+		Convert LAPACK's ``piv`` array to NumPy index and test the permutation 
+		
+		>>> piv_py = [2, 0, 3, 1]
+		>>> L, U = np.tril(lu, k=-1) + np.eye(4), np.triu(lu)
+		>>> np.allclose(A[piv_py] - L @ U, np.zeros((4, 4)))
+		True
 	**/
 	static public function lu_factor(a:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -1963,6 +2674,16 @@ package scipy.linalg;
 		See also
 		--------
 		lu_factor : LU factorize a matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu_factor, lu_solve
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> b = np.array([1, 1, 1, 1])
+		>>> lu, piv = lu_factor(A)
+		>>> x = lu_solve((lu, piv), b)
+		>>> np.allclose(A @ x - b, np.zeros((4,)))
+		True
 	**/
 	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
@@ -2042,13 +2763,13 @@ package scipy.linalg;
 		>>> np.abs(x).sum(axis=0) / np.abs(x).sum(axis=1)
 		array([ 3.66666667,  0.4995005 ,  0.91312162])
 		
-		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1) # 1-norms approx. equal
-		array([ 1.10625   ,  0.90547703,  1.00011878])
+		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1)
+		array([ 1.2       ,  1.27041742,  0.92658316])  # may vary
 		
 		>>> permscale  # only powers of 2 (0.5 == 2^(-1))
-		array([[  0.5,   0. ,   0. ],
-		       [  0. ,   1. ,   0. ],
-		       [  0. ,   0. ,  16. ]])
+		array([[  0.5,   0. ,  0. ],  # may vary
+		       [  0. ,   1. ,  0. ],
+		       [  0. ,   0. ,  1. ]])
 		
 		References
 		----------
@@ -2181,6 +2902,56 @@ package scipy.linalg;
 	**/
 	static public function norm(a:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
+		Construct an orthonormal basis for the null space of A using SVD
+		
+		Parameters
+		----------
+		A : (M, N) array_like
+		    Input array
+		rcond : float, optional
+		    Relative condition number. Singular values ``s`` smaller than
+		    ``rcond * max(s)`` are considered zero.
+		    Default: floating point eps * max(M,N).
+		
+		Returns
+		-------
+		Z : (N, K) ndarray
+		    Orthonormal basis for the null space of A.
+		    K = dimension of effective null space, as determined by rcond
+		
+		See also
+		--------
+		svd : Singular value decomposition of a matrix
+		orth : Matrix range
+		
+		Examples
+		--------
+		One-dimensional null space:
+		
+		>>> from scipy.linalg import null_space
+		>>> A = np.array([[1, 1], [1, 1]])
+		>>> ns = null_space(A)
+		>>> ns * np.sign(ns[0,0])  # Remove the sign ambiguity of the vector
+		array([[ 0.70710678],
+		       [-0.70710678]])
+		
+		Two-dimensional null space:
+		
+		>>> B = np.random.rand(3, 5)
+		>>> Z = null_space(B)
+		>>> Z.shape
+		(5, 2)
+		>>> np.allclose(B.dot(Z), 0)
+		True
+		
+		The basis vectors are orthonormal (up to rounding error):
+		
+		>>> Z.T.dot(Z)
+		array([[  1.00000000e+00,   6.92087741e-17],
+		       [  6.92087741e-17,   1.00000000e+00]])
+	**/
+	static public function null_space(A:Dynamic, ?rcond:Dynamic):Dynamic;
+	/**
 		QZ decomposition for a pair of matrices with reordering.
 		
 		.. versionadded:: 0.17.0
@@ -2213,7 +2984,6 @@ package scipy.linalg;
 		    considered to lie outside the unit circle. For the eigenvalue
 		    ``(alpha, beta) = (0, 0)`` the predefined sorting functions
 		    all return `False`.
-		
 		output : str {'real','complex'}, optional
 		    Construct the real or complex QZ decomposition for real matrices.
 		    Default is 'real'.
@@ -2249,12 +3019,24 @@ package scipy.linalg;
 		that would result if the 2-by-2 diagonal blocks of the real generalized
 		Schur form of (A,B) were further reduced to triangular form using complex
 		unitary transformations. If ALPHAI(j) is zero, then the j-th eigenvalue is
-		real; if positive, then the ``j``-th and ``(j+1)``-st eigenvalues are a complex
-		conjugate pair, with ``ALPHAI(j+1)`` negative.
+		real; if positive, then the ``j``-th and ``(j+1)``-st eigenvalues are a
+		complex conjugate pair, with ``ALPHAI(j+1)`` negative.
 		
 		See also
 		--------
 		qz
+		
+		Examples
+		--------
+		>>> from scipy.linalg import ordqz
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> B = np.array([[0, 6, 0, 0], [5, 0, 2, 1], [5, 2, 6, 6], [4, 7, 7, 7]])
+		>>> AA, BB, alpha, beta, Q, Z = ordqz(A, B, sort='lhp')
+		
+		Since we have sorted for left half plane eigenvalues, negatives come first
+		
+		>>> (alpha/beta).real < 0
+		array([ True,  True, False, False], dtype=bool)
 	**/
 	static public function ordqz(A:Dynamic, B:Dynamic, ?sort:Dynamic, ?output:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -2264,26 +3046,40 @@ package scipy.linalg;
 		----------
 		A : (M, N) array_like
 		    Input array
+		rcond : float, optional
+		    Relative condition number. Singular values ``s`` smaller than
+		    ``rcond * max(s)`` are considered zero.
+		    Default: floating point eps * max(M,N).
 		
 		Returns
 		-------
 		Q : (M, K) ndarray
 		    Orthonormal basis for the range of A.
-		    K = effective rank of A, as determined by automatic cutoff
+		    K = effective rank of A, as determined by rcond
 		
 		See also
 		--------
 		svd : Singular value decomposition of a matrix
+		null_space : Matrix null space
+		
+		Examples
+		--------
+		>>> from scipy.linalg import orth
+		>>> A = np.array([[2, 0, 0], [0, 5, 0]])  # rank 2 array
+		>>> orth(A)
+		array([[0., 1.],
+		       [1., 0.]])
+		>>> orth(A.T)
+		array([[0., 1.],
+		       [1., 0.],
+		       [0., 0.]])
 	**/
-	static public function orth(A:Dynamic):Dynamic;
+	static public function orth(A:Dynamic, ?rcond:Dynamic):Dynamic;
 	/**
 		Compute the matrix solution of the orthogonal Procrustes problem.
 		
 		Given matrices A and B of equal shape, find an orthogonal matrix R
-		that most closely maps A to B [1]_.
-		Note that unlike higher level Procrustes analyses of spatial data,
-		this function only uses orthogonal transformations like rotations
-		and reflections, and it does not use scaling or translation.
+		that most closely maps A to B using the algorithm given in [1]_.
 		
 		Parameters
 		----------
@@ -2300,27 +3096,44 @@ package scipy.linalg;
 		-------
 		R : (N, N) ndarray
 		    The matrix solution of the orthogonal Procrustes problem.
-		    Minimizes the Frobenius norm of dot(A, R) - B, subject to
-		    dot(R.T, R) == I.
+		    Minimizes the Frobenius norm of ``(A @ R) - B``, subject to
+		    ``R.T @ R = I``.
 		scale : float
-		    Sum of the singular values of ``dot(A.T, B)``.
+		    Sum of the singular values of ``A.T @ B``.
 		
 		Raises
 		------
 		ValueError
-		    If the input arrays are incompatibly shaped.
-		    This may also be raised if matrix A or B contains an inf or nan
-		    and check_finite is True, or if the matrix product AB contains
-		    an inf or nan.
+		    If the input array shapes don't match or if check_finite is True and
+		    the arrays contain Inf or NaN.
 		
 		Notes
 		-----
+		Note that unlike higher level Procrustes analyses of spatial data, this
+		function only uses orthogonal transformations like rotations and
+		reflections, and it does not use scaling or translation.
+		
 		.. versionadded:: 0.15.0
 		
 		References
 		----------
 		.. [1] Peter H. Schonemann, "A generalized solution of the orthogonal
 		       Procrustes problem", Psychometrica -- Vol. 31, No. 1, March, 1996.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import orthogonal_procrustes
+		>>> A = np.array([[ 2,  0,  1], [-2,  0,  0]])
+		
+		Flip the order of columns and check for the anti-diagonal mapping
+		
+		>>> R, sca = orthogonal_procrustes(A, np.fliplr(A))
+		>>> R
+		array([[-5.34384992e-17,  0.00000000e+00,  1.00000000e+00],
+		       [ 0.00000000e+00,  1.00000000e+00,  0.00000000e+00],
+		       [ 1.00000000e+00,  0.00000000e+00, -7.85941422e-17]])
+		>>> sca
+		9.0
 	**/
 	static public function orthogonal_procrustes(A:Dynamic, B:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -2942,13 +3755,13 @@ package scipy.linalg;
 		
 		Parameters
 		----------
-		a : array_like, shape (M, N)
-		    Matrix to be decomposed
-		c : array_like, one- or two-dimensional
-		    calculate the product of c and q, depending on the mode:
+		a : (M, N), array_like
+		    Input array
+		c : array_like
+		    Input array to be multiplied by ``q``.
 		mode : {'left', 'right'}, optional
-		    ``dot(Q, c)`` is returned if mode is 'left',
-		    ``dot(c, Q)`` is returned if mode is 'right'.
+		    ``Q @ c`` is returned if mode is 'left', ``c @ Q`` is returned if
+		    mode is 'right'.
 		    The shape of c must be appropriate for the matrix multiplications,
 		    if mode is 'left', ``min(a.shape) == c.shape[0]``,
 		    if mode is 'right', ``a.shape[0] == c.shape[1]``.
@@ -2963,30 +3776,48 @@ package scipy.linalg;
 		overwrite_c : bool, optional
 		    Whether data in c is overwritten (may improve performance).
 		    If this is used, c must be big enough to keep the result,
-		    i.e. c.shape[0] = a.shape[0] if mode is 'left'.
-		
+		    i.e. ``c.shape[0]`` = ``a.shape[0]`` if mode is 'left'.
 		
 		Returns
 		-------
-		CQ : float or complex ndarray
-		    the product of Q and c, as defined in mode
-		R : float or complex ndarray
-		    Of shape (K, N), ``K = min(M, N)``.
-		P : ndarray of ints
-		    Of shape (N,) for ``pivoting=True``.
-		    Not returned if ``pivoting=False``.
+		CQ : ndarray
+		    The product of ``Q`` and ``c``.
+		R : (K, N), ndarray
+		    R array of the resulting QR factorization where ``K = min(M, N)``.
+		P : (N,) ndarray
+		    Integer pivot array. Only returned when ``pivoting=True``.
 		
 		Raises
 		------
 		LinAlgError
-		    Raised if decomposition fails
+		    Raised if QR decomposition fails.
 		
 		Notes
 		-----
-		This is an interface to the LAPACK routines dgeqrf, zgeqrf,
-		dormqr, zunmqr, dgeqp3, and zgeqp3.
+		This is an interface to the LAPACK routines ``?GEQRF``, ``?ORMQR``,
+		``?UNMQR``, and ``?GEQP3``.
 		
 		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		>>> from scipy.linalg import qr_multiply, qr
+		>>> A = np.array([[1, 3, 3], [2, 3, 2], [2, 3, 3], [1, 3, 2]])
+		>>> qc, r1, piv1 = qr_multiply(A, 2*np.eye(4), pivoting=1)
+		>>> qc
+		array([[-1.,  1., -1.],
+		       [-1., -1.,  1.],
+		       [-1., -1., -1.],
+		       [-1.,  1.,  1.]])
+		>>> r1
+		array([[-6., -3., -5.            ],
+		       [ 0., -1., -1.11022302e-16],
+		       [ 0.,  0., -1.            ]])
+		>>> piv1
+		array([1, 0, 2], dtype=int32)
+		>>> q2, r2, piv2 = qr(A, mode='economic', pivoting=1)
+		>>> np.allclose(2*q2 - qc, np.zeros((4, 3)))
+		True
 	**/
 	static public function qr_multiply(a:Dynamic, c:Dynamic, ?mode:Dynamic, ?pivoting:Dynamic, ?conjugate:Dynamic, ?overwrite_a:Dynamic, ?overwrite_c:Dynamic):Dynamic;
 	/**
@@ -3300,15 +4131,14 @@ package scipy.linalg;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> from numpy import random, dot, allclose
-		>>> a = random.randn(6, 9)
+		>>> a = np.random.randn(6, 9)
 		>>> r, q = linalg.rq(a)
-		>>> allclose(a, dot(r, q))
+		>>> np.allclose(a, r @ q)
 		True
 		>>> r.shape, q.shape
 		((6, 9), (9, 9))
 		>>> r2 = linalg.rq(a, mode='r')
-		>>> allclose(r, r2)
+		>>> np.allclose(r, r2)
 		True
 		>>> r3, q3 = linalg.rq(a, mode='economic')
 		>>> r3.shape, q3.shape
@@ -3324,24 +4154,47 @@ package scipy.linalg;
 		Parameters
 		----------
 		T : (M, M) array_like
-		    Real Schur form of the original matrix
+		    Real Schur form of the original array
 		Z : (M, M) array_like
 		    Schur transformation matrix
 		check_finite : bool, optional
-		    Whether to check that the input matrices contain only finite numbers.
+		    Whether to check that the input arrays contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
 		
 		Returns
 		-------
 		T : (M, M) ndarray
-		    Complex Schur form of the original matrix
+		    Complex Schur form of the original array
 		Z : (M, M) ndarray
 		    Schur transformation matrix corresponding to the complex form
 		
-		See also
+		See Also
 		--------
-		schur : Schur decompose a matrix
+		schur : Schur decomposition of an array
+		
+		Examples
+		--------
+		>>> from scipy.linalg import schur, rsf2csf
+		>>> A = np.array([[0, 2, 2], [0, 1, 2], [1, 0, 1]])
+		>>> T, Z = schur(A)
+		>>> T
+		array([[ 2.65896708,  1.42440458, -1.92933439],
+		       [ 0.        , -0.32948354, -0.49063704],
+		       [ 0.        ,  1.31178921, -0.32948354]])
+		>>> Z
+		array([[0.72711591, -0.60156188, 0.33079564],
+		       [0.52839428, 0.79801892, 0.28976765],
+		       [0.43829436, 0.03590414, -0.89811411]])
+		>>> T2 , Z2 = rsf2csf(T, Z)
+		>>> T2
+		array([[2.65896708+0.j, -1.64592781+0.743164187j, -1.21516887+1.00660462j],
+		       [0.+0.j , -0.32948354+8.02254558e-01j, -0.82115218-2.77555756e-17j],
+		       [0.+0.j , 0.+0.j, -0.32948354-0.802254558j]])
+		>>> Z2
+		array([[0.72711591+0.j,  0.28220393-0.31385693j,  0.51319638-0.17258824j],
+		       [0.52839428+0.j,  0.24720268+0.41635578j, -0.68079517-0.15118243j],
+		       [0.43829436+0.j, -0.76618703+0.01873251j, -0.03063006+0.46857912j]])
 	**/
 	static public function rsf2csf(T:Dynamic, Z:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -3410,6 +4263,35 @@ package scipy.linalg;
 		See also
 		--------
 		rsf2csf : Convert real Schur form to complex Schur form
+		
+		Examples
+		--------
+		>>> from scipy.linalg import schur, eigvals
+		>>> A = np.array([[0, 2, 2], [0, 1, 2], [1, 0, 1]])
+		>>> T, Z = schur(A)
+		>>> T
+		array([[ 2.65896708,  1.42440458, -1.92933439],
+		       [ 0.        , -0.32948354, -0.49063704],
+		       [ 0.        ,  1.31178921, -0.32948354]])
+		>>> Z
+		array([[0.72711591, -0.60156188, 0.33079564],
+		       [0.52839428, 0.79801892, 0.28976765],
+		       [0.43829436, 0.03590414, -0.89811411]])
+		
+		>>> T2, Z2 = schur(A, output='complex')
+		>>> T2
+		array([[ 2.65896708, -1.22839825+1.32378589j,  0.42590089+1.51937378j],
+		       [ 0.        , -0.32948354+0.80225456j, -0.59877807+0.56192146j],
+		       [ 0.        ,  0.                    , -0.32948354-0.80225456j]])
+		>>> eigvals(T2)
+		array([2.65896708, -0.32948354+0.80225456j, -0.32948354-0.80225456j])
+		
+		An arbitrary custom eig-sorting condition, having positive imaginary part, 
+		which is satisfied by only one eigenvalue
+		
+		>>> T3, Z3, sdim = schur(A, output='complex', sort=lambda x: x.imag > 0)
+		>>> sdim
+		1
 	**/
 	static public function schur(a:Dynamic, ?output:Dynamic, ?lwork:Dynamic, ?overwrite_a:Dynamic, ?sort:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -3556,8 +4438,8 @@ package scipy.linalg;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -3570,8 +4452,10 @@ package scipy.linalg;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -3594,7 +4478,7 @@ package scipy.linalg;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
@@ -3634,6 +4518,34 @@ package scipy.linalg;
 		x : (M,) or (M, K) ndarray
 		    The solution to the system a x = b.  Returned shape depends on the
 		    shape of `b`.
+		
+		Examples
+		--------
+		Solve the banded system a x = b, where::
+		
+		        [5  2 -1  0  0]       [0]
+		        [1  4  2 -1  0]       [1]
+		    a = [0  1  3  2 -1]   b = [2]
+		        [0  0  1  2  2]       [2]
+		        [0  0  0  1  1]       [3]
+		
+		There is one nonzero diagonal below the main diagonal (l = 1), and
+		two above (u = 2).  The diagonal banded form of the matrix is::
+		
+		         [*  * -1 -1 -1]
+		    ab = [*  2  2  2  2]
+		         [5  4  3  2  1]
+		         [1  1  1  1  *]
+		
+		>>> from scipy.linalg import solve_banded
+		>>> ab = np.array([[0,  0, -1, -1, -1],
+		...                [0,  2,  2,  2,  2],
+		...                [5,  4,  3,  2,  1],
+		...                [1,  1,  1,  1,  0]])
+		>>> b = np.array([0, 1, 2, 2, 3])
+		>>> x = solve_banded((1, 2), ab, b)
+		>>> x
+		array([-2.37288136,  3.93220339, -4.        ,  4.3559322 , -1.3559322 ])
 	**/
 	static public function solve_banded(l_and_u:Dynamic, ab:Dynamic, b:Dynamic, ?overwrite_ab:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -3695,7 +4607,7 @@ package scipy.linalg;
 		
 		See Also
 		--------
-		circulant
+		circulant : circulant matrix
 		
 		Notes
 		-----
@@ -3881,8 +4793,72 @@ package scipy.linalg;
 		
 		.. [3] P. Benner, "Symplectic Balancing of Hamiltonian Matrices", 2001,
 		   SIAM J. Sci. Comput., 2001, Vol.22(5), DOI: 10.1137/S1064827500367993
+		
+		Examples
+		--------
+		Given `a`, `b`, `q`, and `r` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[4, 3], [-4.5, -3.5]])
+		>>> b = np.array([[1], [-1]])
+		>>> q = np.array([[9, 6], [6, 4.]])
+		>>> r = 1
+		>>> x = linalg.solve_continuous_are(a, b, q, r)
+		>>> x
+		array([[ 21.72792206,  14.48528137],
+		       [ 14.48528137,   9.65685425]])
+		>>> np.allclose(a.T.dot(x) + x.dot(a)-x.dot(b).dot(b.T).dot(x), -q)
+		True
 	**/
 	static public function solve_continuous_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic, ?e:Dynamic, ?s:Dynamic, ?balanced:Dynamic):Dynamic;
+	/**
+		Solves the continuous Lyapunov equation :math:`AX + XA^H = Q`.
+		
+		Uses the Bartels-Stewart algorithm to find :math:`X`.
+		
+		Parameters
+		----------
+		a : array_like
+		    A square matrix
+		
+		q : array_like
+		    Right-hand side square matrix
+		
+		Returns
+		-------
+		x : ndarray
+		    Solution to the continuous Lyapunov equation
+		
+		See Also
+		--------
+		solve_discrete_lyapunov : computes the solution to the discrete-time
+		    Lyapunov equation
+		solve_sylvester : computes the solution to the Sylvester equation
+		
+		Notes
+		-----
+		The continuous Lyapunov equation is a special form of the Sylvester
+		equation, hence this solver relies on LAPACK routine ?TRSYL.
+		
+		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		Given `a` and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[-3, -2, 0], [-1, -1, 0], [0, -5, -1]])
+		>>> b = np.array([2, 4, -1])
+		>>> q = np.eye(3)
+		>>> x = linalg.solve_continuous_lyapunov(a, q)
+		>>> x
+		array([[ -0.75  ,   0.875 ,  -3.75  ],
+		       [  0.875 ,  -1.375 ,   5.3125],
+		       [ -3.75  ,   5.3125, -27.0625]])
+		>>> np.allclose(a.dot(x) + x.dot(a.T), q)
+		True
+	**/
+	static public function solve_continuous_lyapunov(a:Dynamic, q:Dynamic):Dynamic;
 	/**
 		Solves the discrete-time algebraic Riccati equation (DARE).
 		
@@ -3982,6 +4958,23 @@ package scipy.linalg;
 		
 		.. [3] P. Benner, "Symplectic Balancing of Hamiltonian Matrices", 2001,
 		   SIAM J. Sci. Comput., 2001, Vol.22(5), DOI: 10.1137/S1064827500367993
+		
+		Examples
+		--------
+		Given `a`, `b`, `q`, and `r` solve for `x`:
+		
+		>>> from scipy import linalg as la
+		>>> a = np.array([[0, 1], [0, -1]])
+		>>> b = np.array([[1, 0], [2, 1]])
+		>>> q = np.array([[-4, -4], [-4, 7]])
+		>>> r = np.array([[9, 3], [3, 1]])
+		>>> x = la.solve_discrete_are(a, b, q, r)
+		>>> x
+		array([[-4., -4.],
+		       [-4.,  7.]])
+		>>> R = la.solve(r + b.T.dot(x).dot(b), b.T.dot(x).dot(a))
+		>>> np.allclose(a.T.dot(x).dot(a) - x - a.T.dot(x).dot(b).dot(R), -q)
+		True
 	**/
 	static public function solve_discrete_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic, ?e:Dynamic, ?s:Dynamic, ?balanced:Dynamic):Dynamic;
 	/**
@@ -4006,7 +4999,8 @@ package scipy.linalg;
 		
 		See Also
 		--------
-		solve_lyapunov : computes the solution to the continuous Lyapunov equation
+		solve_continuous_lyapunov : computes the solution to the continuous-time
+		    Lyapunov equation
 		
 		Notes
 		-----
@@ -4032,10 +5026,24 @@ package scipy.linalg;
 		----------
 		.. [1] Hamilton, James D. Time Series Analysis, Princeton: Princeton
 		   University Press, 1994.  265.  Print.
-		   http://www.scribd.com/doc/20577138/Hamilton-1994-Time-Series-Analysis
+		   http://doc1.lbfl.li/aca/FLMF037168.pdf
 		.. [2] Gajic, Z., and M.T.J. Qureshi. 2008.
 		   Lyapunov Matrix Equation in System Stability and Control.
 		   Dover Books on Engineering Series. Dover Publications.
+		
+		Examples
+		--------
+		Given `a` and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[0.2, 0.5],[0.7, -0.9]])
+		>>> q = np.eye(2)
+		>>> x = linalg.solve_discrete_lyapunov(a, q)
+		>>> x
+		array([[ 0.70872893,  1.43518822],
+		       [ 1.43518822, -2.4266315 ]])
+		>>> np.allclose(a.dot(x).dot(a.T)-x, -q)
+		True
 	**/
 	static public function solve_discrete_lyapunov(a:Dynamic, q:Dynamic, ?method:Dynamic):Dynamic;
 	/**
@@ -4053,20 +5061,37 @@ package scipy.linalg;
 		
 		Returns
 		-------
-		x : array_like
+		x : ndarray
 		    Solution to the continuous Lyapunov equation
 		
 		See Also
 		--------
+		solve_discrete_lyapunov : computes the solution to the discrete-time
+		    Lyapunov equation
 		solve_sylvester : computes the solution to the Sylvester equation
 		
 		Notes
 		-----
-		Because the continuous Lyapunov equation is just a special form of the
-		Sylvester equation, this solver relies entirely on solve_sylvester for a
-		solution.
+		The continuous Lyapunov equation is a special form of the Sylvester
+		equation, hence this solver relies on LAPACK routine ?TRSYL.
 		
 		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		Given `a` and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[-3, -2, 0], [-1, -1, 0], [0, -5, -1]])
+		>>> b = np.array([2, 4, -1])
+		>>> q = np.eye(3)
+		>>> x = linalg.solve_continuous_lyapunov(a, q)
+		>>> x
+		array([[ -0.75  ,   0.875 ,  -3.75  ],
+		       [  0.875 ,  -1.375 ,   5.3125],
+		       [ -3.75  ,   5.3125, -27.0625]])
+		>>> np.allclose(a.dot(x) + x.dot(a.T), q)
+		True
 	**/
 	static public function solve_lyapunov(a:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -4102,6 +5127,22 @@ package scipy.linalg;
 		``*TRSYL`` from LAPACK directly.
 		
 		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		Given `a`, `b`, and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[-3, -2, 0], [-1, -1, 3], [3, -5, -1]])
+		>>> b = np.array([[1]])
+		>>> q = np.array([[1],[2],[3]])
+		>>> x = linalg.solve_sylvester(a, b, q)
+		>>> x
+		array([[ 0.0625],
+		       [-0.5625],
+		       [ 0.6875]])
+		>>> np.allclose(a.dot(x) + x.dot(b), q)
+		True
 	**/
 	static public function solve_sylvester(a:Dynamic, b:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -4133,10 +5174,42 @@ package scipy.linalg;
 		    The solution to the system ``T x = b``.  Shape of return matches shape
 		    of `b`.
 		
+		See Also
+		--------
+		toeplitz : Toeplitz matrix
+		
 		Notes
 		-----
 		The solution is computed using Levinson-Durbin recursion, which is faster
 		than generic least-squares methods, but can be less numerically stable.
+		
+		Examples
+		--------
+		Solve the Toeplitz system T x = b, where::
+		
+		        [ 1 -1 -2 -3]       [1]
+		    T = [ 3  1 -1 -2]   b = [2]
+		        [ 6  3  1 -1]       [2]
+		        [10  6  3  1]       [5]
+		
+		To specify the Toeplitz matrix, only the first column and the first
+		row are needed.
+		
+		>>> c = np.array([1, 3, 6, 10])    # First column of T
+		>>> r = np.array([1, -1, -2, -3])  # First row of T
+		>>> b = np.array([1, 2, 2, 5])
+		
+		>>> from scipy.linalg import solve_toeplitz, toeplitz
+		>>> x = solve_toeplitz((c, r), b)
+		>>> x
+		array([ 1.66666667, -1.        , -2.66666667,  2.33333333])
+		
+		Check the result by creating the full Toeplitz matrix and
+		multiplying it by `x`.  We should get `b`.
+		
+		>>> T = toeplitz(c, r)
+		>>> T.dot(x)
+		array([ 1.,  2.,  2.,  5.])
 	**/
 	static public function solve_toeplitz(c_or_cr:Dynamic, b:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -4184,6 +5257,24 @@ package scipy.linalg;
 		Notes
 		-----
 		.. versionadded:: 0.9.0
+		
+		Examples
+		--------
+		Solve the lower triangular system a x = b, where::
+		
+		         [3  0  0  0]       [4]
+		    a =  [2  1  0  0]   b = [2]
+		         [1  0  1  0]       [4]
+		         [1  1  1  1]       [2]
+		
+		>>> from scipy.linalg import solve_triangular
+		>>> a = np.array([[3, 0, 0, 0], [2, 1, 0, 0], [1, 0, 1, 0], [1, 1, 1, 1]])
+		>>> b = np.array([4, 2, 4, 2])
+		>>> x = solve_triangular(a, b, lower=True)
+		>>> x
+		array([ 1.33333333, -0.66666667,  2.66666667, -1.33333333])
+		>>> a.dot(x)  # Check the result
+		array([ 4.,  2.,  4.,  2.])
 	**/
 	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -4231,6 +5322,49 @@ package scipy.linalg;
 		x : (M,) or (M, K) ndarray
 		    The solution to the system a x = b.  Shape of return matches shape
 		    of `b`.
+		
+		Examples
+		--------
+		Solve the banded system A x = b, where::
+		
+		        [ 4  2 -1  0  0  0]       [1]
+		        [ 2  5  2 -1  0  0]       [2]
+		    A = [-1  2  6  2 -1  0]   b = [2]
+		        [ 0 -1  2  7  2 -1]       [3]
+		        [ 0  0 -1  2  8  2]       [3]
+		        [ 0  0  0 -1  2  9]       [3]
+		
+		>>> from scipy.linalg import solveh_banded
+		
+		`ab` contains the main diagonal and the nonzero diagonals below the
+		main diagonal.  That is, we use the lower form:
+		
+		>>> ab = np.array([[ 4,  5,  6,  7, 8, 9],
+		...                [ 2,  2,  2,  2, 2, 0],
+		...                [-1, -1, -1, -1, 0, 0]])
+		>>> b = np.array([1, 2, 2, 3, 3, 3])
+		>>> x = solveh_banded(ab, b, lower=True)
+		>>> x
+		array([ 0.03431373,  0.45938375,  0.05602241,  0.47759104,  0.17577031,
+		        0.34733894])
+		
+		
+		Solve the Hermitian banded system H x = b, where::
+		
+		        [ 8   2-1j   0     0  ]        [ 1  ]
+		    H = [2+1j  5     1j    0  ]    b = [1+1j]
+		        [ 0   -1j    9   -2-1j]        [1-2j]
+		        [ 0    0   -2+1j   6  ]        [ 0  ]
+		
+		In this example, we put the upper diagonals in the array `hb`:
+		
+		>>> hb = np.array([[0, 2-1j, 1j, -2-1j],
+		...                [8,  5,    9,   6  ]])
+		>>> b = np.array([1, 1+1j, 1-2j, 0])
+		>>> x = solveh_banded(hb, b)
+		>>> x
+		array([ 0.07318536-0.02939412j,  0.11877624+0.17696461j,
+		        0.10077984-0.23035393j, -0.00479904-0.09358128j])
 	**/
 	static public function solveh_banded(ab:Dynamic, b:Dynamic, ?overwrite_ab:Dynamic, ?overwrite_b:Dynamic, ?lower:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -4277,23 +5411,84 @@ package scipy.linalg;
 	**/
 	static public function sqrtm(A:Dynamic, ?disp:Dynamic, ?blocksize:Dynamic):Dynamic;
 	/**
+		Compute the subspace angles between two matrices.
+		
+		Parameters
+		----------
+		A : (M, N) array_like
+		    The first input array.
+		B : (M, K) array_like
+		    The second input array.
+		
+		Returns
+		-------
+		angles : ndarray, shape (min(N, K),)
+		    The subspace angles between the column spaces of `A` and `B`.
+		
+		See Also
+		--------
+		orth
+		svd
+		
+		Notes
+		-----
+		This computes the subspace angles according to the formula
+		provided in [1]_. For equivalence with MATLAB and Octave behavior,
+		use ``angles[0]``.
+		
+		.. versionadded:: 1.0
+		
+		References
+		----------
+		.. [1] Knyazev A, Argentati M (2002) Principal Angles between Subspaces
+		       in an A-Based Scalar Product: Algorithms and Perturbation
+		       Estimates. SIAM J. Sci. Comput. 23:2008-2040.
+		
+		Examples
+		--------
+		A Hadamard matrix, which has orthogonal columns, so we expect that
+		the suspace angle to be :math:`\frac{\pi}{2}`:
+		
+		>>> from scipy.linalg import hadamard, subspace_angles
+		>>> H = hadamard(4)
+		>>> print(H)
+		[[ 1  1  1  1]
+		 [ 1 -1  1 -1]
+		 [ 1  1 -1 -1]
+		 [ 1 -1 -1  1]]
+		>>> np.rad2deg(subspace_angles(H[:, :2], H[:, 2:]))
+		array([ 90.,  90.])
+		
+		And the subspace angle of a matrix to itself should be zero:
+		
+		>>> subspace_angles(H[:, :2], H[:, :2]) <= 2 * np.finfo(float).eps
+		array([ True,  True], dtype=bool)
+		
+		The angles between non-orthogonal subspaces are in between these extremes:
+		
+		>>> x = np.random.RandomState(0).randn(4, 3)
+		>>> np.rad2deg(subspace_angles(x[:, :2], x[:, [2]]))
+		array([ 55.832])
+	**/
+	static public function subspace_angles(A:Dynamic, B:Dynamic):Dynamic;
+	/**
 		Singular Value Decomposition.
 		
-		Factorizes the matrix a into two unitary matrices U and Vh, and
-		a 1-D array s of singular values (real, non-negative) such that
-		``a == U*S*Vh``, where S is a suitably shaped matrix of zeros with
-		main diagonal s.
+		Factorizes the matrix `a` into two unitary matrices ``U`` and ``Vh``, and
+		a 1-D array ``s`` of singular values (real, non-negative) such that
+		``a == U @ S @ Vh``, where ``S`` is a suitably shaped matrix of zeros with
+		main diagonal ``s``.
 		
 		Parameters
 		----------
 		a : (M, N) array_like
 		    Matrix to decompose.
 		full_matrices : bool, optional
-		    If True, `U` and `Vh` are of shape ``(M,M)``, ``(N,N)``.
-		    If False, the shapes are ``(M,K)`` and ``(K,N)``, where
-		    ``K = min(M,N)``.
+		    If True (default), `U` and `Vh` are of shape ``(M, M)``, ``(N, N)``.
+		    If False, the shapes are ``(M, K)`` and ``(K, N)``, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether to compute also `U` and `Vh` in addition to `s`.
+		    Whether to compute also ``U`` and ``Vh`` in addition to ``s``.
 		    Default is True.
 		overwrite_a : bool, optional
 		    Whether to overwrite `a`; may improve performance.
@@ -4314,15 +5509,15 @@ package scipy.linalg;
 		-------
 		U : ndarray
 		    Unitary matrix having left singular vectors as columns.
-		    Of shape ``(M,M)`` or ``(M,K)``, depending on `full_matrices`.
+		    Of shape ``(M, M)`` or ``(M, K)``, depending on `full_matrices`.
 		s : ndarray
 		    The singular values, sorted in non-increasing order.
 		    Of shape (K,), with ``K = min(M, N)``.
 		Vh : ndarray
 		    Unitary matrix having right singular vectors as rows.
-		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
+		    Of shape ``(N, N)`` or ``(K, N)`` depending on `full_matrices`.
 		
-		For ``compute_uv=False``, only `s` is returned.
+		For ``compute_uv=False``, only ``s`` is returned.
 		
 		Raises
 		------
@@ -4337,15 +5532,28 @@ package scipy.linalg;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6) + 1.j*np.random.randn(9, 6)
+		>>> m, n = 9, 6
+		>>> a = np.random.randn(m, n) + 1.j*np.random.randn(m, n)
 		>>> U, s, Vh = linalg.svd(a)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 9), (6, 6), (6,))
+		>>> U.shape,  s.shape, Vh.shape
+		((9, 9), (6,), (6, 6))
+		
+		Reconstruct the original matrix from the decomposition:
+		
+		>>> sigma = np.zeros((m, n))
+		>>> for i in range(min(m, n)):
+		...     sigma[i, i] = s[i]
+		>>> a1 = np.dot(U, np.dot(sigma, Vh))
+		>>> np.allclose(a, a1)
+		True
+		
+		Alternatively, use ``full_matrices=False`` (notice that the shape of
+		``U`` is then ``(m, n)`` instead of ``(m, m)``):
 		
 		>>> U, s, Vh = linalg.svd(a, full_matrices=False)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = linalg.diagsvd(s, 6, 6)
+		>>> U.shape, s.shape, Vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> S = np.diag(s)
 		>>> np.allclose(a, np.dot(U, np.dot(S, Vh)))
 		True
 		
@@ -4390,10 +5598,50 @@ package scipy.linalg;
 		>>> svdvals(a)
 		array([], dtype=float64)
 		
-		See also
+		See Also
 		--------
 		svd : Compute the full singular value decomposition of a matrix.
 		diagsvd : Construct the Sigma matrix, given the vector s.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import svdvals
+		>>> m = np.array([[1.0, 0.0],
+		...               [2.0, 3.0],
+		...               [1.0, 1.0],
+		...               [0.0, 2.0],
+		...               [1.0, 0.0]])
+		>>> svdvals(m)
+		array([ 4.28091555,  1.63516424])
+		
+		We can verify the maximum singular value of `m` by computing the maximum
+		length of `m.dot(u)` over all the unit vectors `u` in the (x,y) plane.
+		We approximate "all" the unit vectors with a large sample.  Because
+		of linearity, we only need the unit vectors with angles in [0, pi].
+		
+		>>> t = np.linspace(0, np.pi, 2000)
+		>>> u = np.array([np.cos(t), np.sin(t)])
+		>>> np.linalg.norm(m.dot(u), axis=0).max()
+		4.2809152422538475
+		
+		`p` is a projection matrix with rank 1.  With exact arithmetic,
+		its singular values would be [1, 0, 0, 0].
+		
+		>>> v = np.array([0.1, 0.3, 0.9, 0.3])
+		>>> p = np.outer(v, v)
+		>>> svdvals(p)
+		array([  1.00000000e+00,   2.02021698e-17,   1.56692500e-17,
+		         8.15115104e-34])
+		
+		The singular values of an orthogonal matrix are all 1.  Here we
+		create a random orthogonal matrix by using the `rvs()` method of
+		`scipy.stats.ortho_group`.
+		
+		>>> from scipy.stats import ortho_group
+		>>> np.random.seed(123)
+		>>> orth = ortho_group.rvs(4)
+		>>> svdvals(orth)
+		array([ 1.,  1.,  1.,  1.])
 	**/
 	static public function svdvals(a:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -4462,68 +5710,7 @@ package scipy.linalg;
 		       [ -2.80626879, -10.42757629]])
 	**/
 	static public function tanm(A:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		Construct a Toeplitz matrix.
 		
@@ -4548,10 +5735,11 @@ package scipy.linalg;
 		A : (len(c), len(r)) ndarray
 		    The Toeplitz matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
 		
-		See also
+		See Also
 		--------
 		circulant : circulant matrix
 		hankel : Hankel matrix
+		solve_toeplitz : Solve a Toeplitz system.
 		
 		Notes
 		-----

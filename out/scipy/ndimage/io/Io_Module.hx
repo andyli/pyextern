@@ -13,6 +13,11 @@ package scipy.ndimage.io;
 	static public var _have_pil : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
-	static public function imread(fname:Dynamic, ?flatten:Dynamic, ?mode:Dynamic):Dynamic;
+	/**
+		`imread` is deprecated!
+		`imread` is deprecated in SciPy 1.0.0.
+		Use ``matplotlib.pyplot.imread`` instead.
+	**/
+	static public function imread(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 }

@@ -151,11 +151,17 @@ package tensorflow.contrib.graph_editor;
 		Args:
 		  info: Transform._TmpInfo instance.
 		  op: the `tf.Operation` to be copied.
+		  new_inputs: The new inputs for this op.
 		  copy_shape: also copy the shape of the tensor
+		  nodedef_fn: If provided, a function that will be run on the NodeDef
+		    and should return a mutated NodeDef before a new Operation is created.
+		    This is useful as certain features cannot be set on the Operation and
+		    must be modified in NodeDef.
+		
 		Returns:
 		  A `(op, op_outputs)` tuple containing the transformed op and its outputs.
 	**/
-	static public function copy_op_handler(info:Dynamic, op:Dynamic, ?copy_shape:Dynamic):Dynamic;
+	static public function copy_op_handler(info:Dynamic, op:Dynamic, new_inputs:Dynamic, ?copy_shape:Dynamic, ?nodedef_fn:Dynamic):Dynamic;
 	/**
 		Copy a subgraph, replacing some of its inputs.
 		
@@ -327,6 +333,9 @@ package tensorflow.contrib.graph_editor;
 		  within_ops: an iterable of `tf.Operation` within which the search is
 		    restricted. If `within_ops` is `None`, the search is performed within
 		    the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  stop_at_ts: an iterable of tensors at which the graph walk stops.
 		  control_inputs: if True, control inputs will be used while moving backward.
 		Returns:
@@ -335,7 +344,7 @@ package tensorflow.contrib.graph_editor;
 		  TypeError: if `seed_ops` or `within_ops` cannot be converted to a list of
 		    `tf.Operation`.
 	**/
-	static public function get_backward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?stop_at_ts:Dynamic, ?control_inputs:Dynamic):Dynamic;
+	static public function get_backward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?stop_at_ts:Dynamic, ?control_inputs:Dynamic):Dynamic;
 	/**
 		Return all the consuming ops of the tensors in ts.
 		
@@ -358,6 +367,9 @@ package tensorflow.contrib.graph_editor;
 		  within_ops: an iterable of `tf.Operation` within which the search is
 		    restricted. If `within_ops` is `None`, the search is performed within
 		    the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  stop_at_ts: an iterable of tensors at which the graph walk stops.
 		  control_outputs: a `util.ControlOutputs` instance or None.
 		    If not `None`, it will be used while walking the graph forward.
@@ -367,7 +379,7 @@ package tensorflow.contrib.graph_editor;
 		  TypeError: if `seed_ops` or `within_ops` cannot be converted to a list of
 		    `tf.Operation`.
 	**/
-	static public function get_forward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?stop_at_ts:Dynamic, ?control_outputs:Dynamic):Dynamic;
+	static public function get_forward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?stop_at_ts:Dynamic, ?control_outputs:Dynamic):Dynamic;
 	/**
 		Return all the generating ops of the tensors in `ts`.
 		
@@ -437,6 +449,9 @@ package tensorflow.contrib.graph_editor;
 		  within_ops: an iterable of tf.Operation within which the search is
 		    restricted. If within_ops is None, the search is performed within
 		    the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  control_inputs: A boolean indicating whether control inputs are enabled.
 		  control_outputs: An instance of util.ControlOutputs or None. If not None,
 		    control outputs are enabled.
@@ -451,7 +466,7 @@ package tensorflow.contrib.graph_editor;
 		  TypeError: if `forward_seed_ops` or `backward_seed_ops` or `within_ops`
 		    cannot be converted to a list of `tf.Operation`.
 	**/
-	static public function get_walks_intersection_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
+	static public function get_walks_intersection_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
 	/**
 		Return the union of a forward and a backward walk.
 		
@@ -468,6 +483,9 @@ package tensorflow.contrib.graph_editor;
 		    resulting set.
 		  within_ops: restrict the search within those operations. If within_ops is
 		    None, the search is done within the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  control_inputs: A boolean indicating whether control inputs are enabled.
 		  control_outputs: An instance of util.ControlOutputs or None. If not None,
 		    control outputs are enabled.
@@ -482,7 +500,7 @@ package tensorflow.contrib.graph_editor;
 		  TypeError: if forward_seed_ops or backward_seed_ops or within_ops cannot be
 		    converted to a list of tf.Operation.
 	**/
-	static public function get_walks_union_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
+	static public function get_walks_union_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
 	/**
 		Return all the `tf.Operation` within the given boundary.
 		
@@ -585,10 +603,11 @@ package tensorflow.contrib.graph_editor;
 		  shape: the tensor shape (optional).
 		  scope: absolute scope within which to create the placeholder. None
 		    means that the scope of t is preserved. "" means the root scope.
+		  prefix: placeholder name prefix.
 		Returns:
 		  A newly created tf.placeholder.
 	**/
-	static public function make_placeholder_from_dtype_and_shape(dtype:Dynamic, ?shape:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function make_placeholder_from_dtype_and_shape(dtype:Dynamic, ?shape:Dynamic, ?scope:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Create a `tf.placeholder` for the Graph Editor.
 		
@@ -599,12 +618,13 @@ package tensorflow.contrib.graph_editor;
 		    (see function placeholder_name).
 		  scope: absolute scope within which to create the placeholder. None
 		    means that the scope of `t` is preserved. `""` means the root scope.
+		  prefix: placeholder name prefix.
 		Returns:
 		  A newly created `tf.placeholder`.
 		Raises:
 		  TypeError: if `t` is not `None` or a `tf.Tensor`.
 	**/
-	static public function make_placeholder_from_tensor(t:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function make_placeholder_from_tensor(t:Dynamic, ?scope:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Return a compiled regular expression.
 		
@@ -620,7 +640,7 @@ package tensorflow.contrib.graph_editor;
 		Create a SubGraphView from selected operations and passthrough tensors.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Operation` 3) (array of) `tf.Tensor`. Those objects will be converted
 		    into a list of operations and a list of candidate for passthrough tensors.
 		  **kwargs: keyword graph is used 1) to check that the ops and ts are from
@@ -656,10 +676,11 @@ package tensorflow.contrib.graph_editor;
 		  shape: the tensor shape (optional).
 		  scope: absolute scope within which to create the placeholder. None
 		    means that the scope of t is preserved. "" means the root scope.
+		  prefix: placeholder name prefix.
 		Returns:
 		  A newly created tf.placeholder.
 	**/
-	static public function ph(dtype:Dynamic, ?shape:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function ph(dtype:Dynamic, ?shape:Dynamic, ?scope:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Create placeholder name for the graph editor.
 		
@@ -668,6 +689,7 @@ package tensorflow.contrib.graph_editor;
 		    on
 		  scope: absolute scope with which to prefix the placeholder's name. None
 		    means that the scope of t is preserved. "" means the root scope.
+		  prefix: placeholder name prefix.
 		Returns:
 		  A new placeholder name prefixed by "geph". Note that "geph" stands for
 		    Graph Editor PlaceHolder. This convention allows to quickly identify the
@@ -675,7 +697,7 @@ package tensorflow.contrib.graph_editor;
 		Raises:
 		  TypeError: if t is not None or a tf.Tensor.
 	**/
-	static public function placeholder_name(?t:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function placeholder_name(?t:Dynamic, ?scope:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Remove the control inputs cops from co.
 		
@@ -704,23 +726,51 @@ package tensorflow.contrib.graph_editor;
 	**/
 	static public function replace_t_with_placeholder_handler(info:Dynamic, t:Dynamic):Dynamic;
 	/**
-		Re-route all the inputs of sgv0 to sgv1 (see reroute_inputs).
+		Re-route all the inputs of two subgraphs.
+		
+		Args:
+		  sgv0: the first subgraph to have its inputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		  sgv1: the second subgraph to have its inputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		Returns:
+		  A tuple `(sgv0, sgv1)` of subgraph views with their inputs swapped.
+		    Note that the function argument sgv0 and sgv1 are also modified in place.
+		Raises:
+		  StandardError: if sgv0 or sgv1 cannot be converted to a SubGraphView using
+		    the same rules than the function subgraph.make_view.
 	**/
 	static public function reroute_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Re-route the inputs and outputs of sgv0 to sgv1 (see _reroute).
+		Re-route the inputs and outputs of sgv0 to sgv1 (see _reroute_sgv).
 	**/
 	static public function reroute_ios(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Re-route all the outputs of sgv0 to sgv1 (see _reroute_outputs).
+		Re-route all the outputs of two operations.
+		
+		Args:
+		  sgv0: the first subgraph to have its outputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		  sgv1: the second subgraph to have its outputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		Returns:
+		  A tuple `(sgv0, sgv1)` of subgraph views with their outputs swapped.
+		    Note that the function argument sgv0 and sgv1 are also modified in place.
+		Raises:
+		  StandardError: if sgv0 or sgv1 cannot be converted to a SubGraphView using
+		    the same rules than the function subgraph.make_view.
 	**/
 	static public function reroute_outputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
 		For each tensor's pair, replace the end of t1 by the end of t0.
 		
-		B0 B1     B0 B1
-		|  |    => |/
-		A0 A1     A0 A1
+		    B0 B1     B0 B1
+		    |  |    => |/
+		    A0 A1     A0 A1
 		
 		The end of the tensors in ts1 are left dangling.
 		
@@ -743,7 +793,7 @@ package tensorflow.contrib.graph_editor;
 		Helper to select operations.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Operation`. `tf.Tensor` instances are silently ignored.
 		  **kwargs: 'graph': `tf.Graph` in which to perform the regex query.This is
 		    required when using regex.
@@ -766,7 +816,7 @@ package tensorflow.contrib.graph_editor;
 		Helper to select operations and tensors.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Operation` 3) (array of) tf.Tensor. Regular expressions matching
 		    tensors must start with the comment `"(?#ts)"`, for instance:
 		    `"(?#ts)^foo/.*"`.
@@ -790,7 +840,7 @@ package tensorflow.contrib.graph_editor;
 		Helper to select tensors.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Tensor`. `tf.Operation` instances are silently ignored.
 		  **kwargs: 'graph': `tf.Graph` in which to perform the regex query.This is
 		    required when using regex.
@@ -813,7 +863,7 @@ package tensorflow.contrib.graph_editor;
 		Create a SubGraphView from selected operations and passthrough tensors.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Operation` 3) (array of) `tf.Tensor`. Those objects will be converted
 		    into a list of operations and a list of candidate for passthrough tensors.
 		  **kwargs: keyword graph is used 1) to check that the ops and ts are from
@@ -842,19 +892,19 @@ package tensorflow.contrib.graph_editor;
 	**/
 	static public function swap_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Swap the inputs and outputs of sgv1 to sgv0 (see _reroute).
+		Swap the inputs and outputs of sgv1 to sgv0 (see _reroute_sgv).
 	**/
 	static public function swap_ios(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Swap all the outputs of sgv0 and sgv1 (see _reroute_outputs).
+		Swap all the outputs of sgv0 and sgv1 (see reroute_outputs).
 	**/
 	static public function swap_outputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
 		For each tensor's pair, swap the end of (t0,t1).
 		
-		B0 B1     B0 B1
-		|  |    =>  X
-		A0 A1     A0 A1
+		    B0 B1     B0 B1
+		    |  |    =>  X
+		    A0 A1     A0 A1
 		
 		Args:
 		  ts0: an object convertible to a list of `tf.Tensor`.

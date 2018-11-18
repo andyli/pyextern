@@ -10,15 +10,14 @@ package torch.nn.parallel.scatter_gather;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Gathers variables from different GPUs on a specified device
+		Gathers tensors from different GPUs on a specified device
 		  (-1 means the CPU).
 	**/
 	static public function gather(outputs:Dynamic, target_device:Dynamic, ?dim:Dynamic):Dynamic;
 	/**
-		Slices variables into approximately equal chunks and
-		distributes them accross given GPUs. Duplicates
-		references to objects that are not variables. Does not
-		support Tensors.
+		Slices tensors into approximately equal chunks and
+		distributes them across given GPUs. Duplicates
+		references to objects that are not tensors.
 	**/
 	static public function scatter(inputs:Dynamic, target_gpus:Dynamic, ?dim:Dynamic):Dynamic;
 	/**

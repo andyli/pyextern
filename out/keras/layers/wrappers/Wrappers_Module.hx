@@ -10,6 +10,7 @@ package keras.layers.wrappers;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Checks if a callable accepts a given keyword argument.
 		
@@ -29,4 +30,6 @@ package keras.layers.wrappers;
 		    bool, whether `fn` accepts a `name` keyword argument.
 	**/
 	static public function has_arg(fn:Dynamic, name:Dynamic, ?accept_all:Dynamic):Dynamic;
+	static public function object_list_uid(object_list:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

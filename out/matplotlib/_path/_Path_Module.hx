@@ -54,6 +54,10 @@ package matplotlib._path;
 	**/
 	static public function path_intersects_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		path_intersects_rectangle(path, rect_x1, rect_y1, rect_x2, rect_y2, filled=False)
+	**/
+	static public function path_intersects_rectangle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		point_in_path(x, y, radius, path, trans)
 	**/
 	static public function point_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;

@@ -1,8 +1,9 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.pywrap_tensorflow_internal;
 @:pythonImport("tensorflow.python.pywrap_tensorflow_internal", "CheckpointReader") extern class CheckpointReader {
+	public function _GetVariableToDataTypeMap():Dynamic;
 	public function _HasTensor(name:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -55,7 +56,7 @@ package tensorflow.python.pywrap_tensorflow_internal;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -100,8 +101,8 @@ package tensorflow.python.pywrap_tensorflow_internal;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function __swig_destroy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __swig_destroy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __swig_getmethods__ : Dynamic;
 	static public var __swig_setmethods__ : Dynamic;
 	/**
@@ -110,6 +111,7 @@ package tensorflow.python.pywrap_tensorflow_internal;
 	public var __weakref__ : Dynamic;
 	public function debug_string():Dynamic;
 	public function get_tensor(tensor_str:Dynamic):Dynamic;
+	public function get_variable_to_dtype_map():Dynamic;
 	public function get_variable_to_shape_map():Dynamic;
 	public function has_tensor(tensor_str:Dynamic):Dynamic;
 }

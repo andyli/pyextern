@@ -38,7 +38,7 @@ package tensorflow.contrib.training.python.training.resample;
 		
 		Args:
 		  inputs: A list of tensors, each of which has a shape of `[batch_size, ...]`
-		  rates: A tensor of shape `[batch_size]` contiaining the resampling rates
+		  rates: A tensor of shape `[batch_size]` containing the resampling rates
 		     for each input.
 		  scope: Scope for the op.
 		  seed: Random seed to use.

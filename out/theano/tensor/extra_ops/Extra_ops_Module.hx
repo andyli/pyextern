@@ -195,7 +195,42 @@ package theano.tensor.extra_ops;
 	**/
 	static public function fill_diagonal_offset(a:Dynamic, val:Dynamic, offset:Dynamic):Dynamic;
 	static public function fill_diagonal_offset_(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function int_t(?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Converts a tuple of index arrays into an array of flat
+		indices, applying boundary modes to the multi-index.
+		
+		Parameters
+		----------
+		multi_index : tuple of Theano or NumPy arrays
+		    A tuple of integer arrays, one array for each dimension.
+		dims : tuple of ints
+		    The shape of array into which the indices from ``multi_index`` apply.
+		mode : {'raise', 'wrap', 'clip'}, optional
+		    Specifies how out-of-bounds indices are handled.  Can specify
+		    either one mode or a tuple of modes, one mode per index.
+		    * 'raise' -- raise an error (default)
+		    * 'wrap' -- wrap around
+		    * 'clip' -- clip to the range
+		    In 'clip' mode, a negative index which would normally
+		    wrap will clip to 0 instead.
+		order : {'C', 'F'}, optional
+		    Determines whether the multi-index should be viewed as
+		    indexing in row-major (C-style) or column-major
+		    (Fortran-style) order.
+		
+		Returns
+		-------
+		raveled_indices : Theano array
+		    An array of indices into the flattened version of an array
+		    of dimensions ``dims``.
+		
+		See Also
+		--------
+		unravel_index
+	**/
+	static public function ravel_multi_index(multi_index:Dynamic, dims:Dynamic, ?mode:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Repeat elements of an array.
 		
@@ -317,4 +352,38 @@ package theano.tensor.extra_ops;
 		    the one hot encoding of the corresponding ``y[i]`` value.
 	**/
 	static public function to_one_hot(y:Dynamic, nb_class:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Converts a flat index or array of flat indices into a tuple
+		of coordinate arrays.
+		
+		This method is similar to the NumPy version, except for the
+		additional ``ndim`` parameter. This parameter is required if
+		the length of ``dims`` cannot be determined automatically.
+		
+		Parameters
+		----------
+		indices : Theano or NumPy array
+		    An integer array whose elements are indices into the flattened
+		    version of an array of dimensions ``dims``.
+		dims : tuple of ints
+		    The shape of the array to use for unraveling ``indices``.
+		order : {'C', 'F'}, optional
+		    Determines whether the indices should be viewed as indexing in
+		    row-major (C-style) or column-major (Fortran-style) order.
+		ndim : int, optional
+		    Specifies the number of dimensions, i.e., the length of
+		    ``dims``. This is required if the dimensions cannot be determined
+		    automatically from ``dims`` itself.
+		
+		Returns
+		-------
+		unraveled_coords : tuple of ndarray
+		    Each array in the tuple has the same shape as the ``indices``
+		    array.
+		
+		See Also
+		--------
+		ravel_multi_index
+	**/
+	static public function unravel_index(indices:Dynamic, dims:Dynamic, ?order:Dynamic, ?ndim:Dynamic):Dynamic;
 }

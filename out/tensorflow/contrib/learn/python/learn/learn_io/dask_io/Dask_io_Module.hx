@@ -23,9 +23,46 @@ package tensorflow.contrib.learn.python.learn.learn_io.dask_io;
 	**/
 	static public function _get_divisions(df:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Extract data from dask.Series or dask.DataFrame for predictors.
+		Extract data from dask.Series or dask.DataFrame for predictors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please feed input to tf.data to support dask.
 		
 		Given a distributed dask.DataFrame or dask.Series containing columns or names
 		for one or more predictors, this operation returns a single dask.DataFrame or
@@ -41,7 +78,11 @@ package tensorflow.contrib.learn.python.learn.learn_io.dask_io;
 	**/
 	static public function extract_dask_data(data:Dynamic):Dynamic;
 	/**
-		Extract data from dask.Series or dask.DataFrame for labels.
+		Extract data from dask.Series or dask.DataFrame for labels. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please feed input to tf.data to support dask.
 		
 		Given a distributed dask.DataFrame or dask.Series containing exactly one
 		column or name, this operation returns a single dask.DataFrame or dask.Series

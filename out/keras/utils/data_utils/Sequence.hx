@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.utils.data_utils;
 @:pythonImport("keras.utils.data_utils", "Sequence") extern class Sequence {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -62,7 +62,11 @@ package keras.utils.data_utils;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Create a generator that iterate over the Sequence.
+	**/
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,9 +124,14 @@ package keras.utils.data_utils;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Method called at the end of every epoch.
+		        
+	**/
+	public function on_epoch_end():Dynamic;
 }

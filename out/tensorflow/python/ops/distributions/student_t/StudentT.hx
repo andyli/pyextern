@@ -120,7 +120,7 @@ package tensorflow.python.ops.distributions.student_t;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -171,7 +171,7 @@ package tensorflow.python.ops.distributions.student_t;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -192,6 +192,7 @@ package tensorflow.python.ops.distributions.student_t;
 	public function _call_survival_function(value:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _cdf(x:Dynamic):Dynamic;
 	public function _covariance():Dynamic;
+	public function _cross_entropy(other:Dynamic):Dynamic;
 	public function _entropy():Dynamic;
 	public function _event_shape():Dynamic;
 	public function _event_shape_tensor():Dynamic;
@@ -203,6 +204,7 @@ package tensorflow.python.ops.distributions.student_t;
 		Implementation for `is_scalar_batch` and `is_scalar_event`.
 	**/
 	public function _is_scalar_helper(static_shape:Dynamic, dynamic_shape_fn:Dynamic):Dynamic;
+	public function _kl_divergence(other:Dynamic):Dynamic;
 	public function _log_cdf(value:Dynamic):Dynamic;
 	public function _log_normalization():Dynamic;
 	public function _log_prob(x:Dynamic):Dynamic;
@@ -220,7 +222,8 @@ package tensorflow.python.ops.distributions.student_t;
 	**/
 	public function _name_scope(?name:Dynamic, ?values:Dynamic):Dynamic;
 	static public function _param_shapes(sample_shape:Dynamic):Dynamic;
-	public function _prob(x:Dynamic):Dynamic;
+	public var _parameters : Dynamic;
+	public function _prob(value:Dynamic):Dynamic;
 	public function _quantile(value:Dynamic):Dynamic;
 	public function _sample_n(n:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
@@ -229,6 +232,8 @@ package tensorflow.python.ops.distributions.student_t;
 	public function _set_sample_static_shape(x:Dynamic, sample_shape:Dynamic):Dynamic;
 	public function _stddev():Dynamic;
 	public function _survival_function(value:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		The variance for Student's T equals
 		
@@ -290,7 +295,7 @@ package tensorflow.python.ops.distributions.student_t;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  cdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -342,7 +347,7 @@ package tensorflow.python.ops.distributions.student_t;
 		length-`k'` vector.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  covariance: Floating-point `Tensor` with shape `[B1, ..., Bn, k', k']`
@@ -350,6 +355,29 @@ package tensorflow.python.ops.distributions.student_t;
 		    `k' = reduce_prod(self.event_shape)`.
 	**/
 	public function covariance(?name:Dynamic):Dynamic;
+	/**
+		Computes the (Shannon) cross entropy.
+		
+		Denote this distribution (`self`) by `P` and the `other` distribution by
+		`Q`. Assuming `P, Q` are absolutely continuous with respect to
+		one another and permit densities `p(x) dr(x)` and `q(x) dr(x)`, (Shanon)
+		cross entropy is defined as:
+		
+		```none
+		H[P, Q] = E_p[-log q(X)] = -int_F p(x) log q(x) dr(x)
+		```
+		
+		where `F` denotes the support of the random variable `X ~ P`.
+		
+		Args:
+		  other: `tfp.distributions.Distribution` instance.
+		  name: Python `str` prepended to names of ops created by this function.
+		
+		Returns:
+		  cross_entropy: `self.dtype` `Tensor` with shape `[B1, ..., Bn]`
+		    representing `n` different calculations of (Shanon) cross entropy.
+	**/
+	public function cross_entropy(other:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Degrees of freedom in these Student's t distribution(s).
 	**/
@@ -385,7 +413,7 @@ package tensorflow.python.ops.distributions.student_t;
 		Indicates that `batch_shape == []`.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  is_scalar_batch: `bool` scalar `Tensor`.
@@ -395,12 +423,38 @@ package tensorflow.python.ops.distributions.student_t;
 		Indicates that `event_shape == []`.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  is_scalar_event: `bool` scalar `Tensor`.
 	**/
 	public function is_scalar_event(?name:Dynamic):Dynamic;
+	/**
+		Computes the Kullback--Leibler divergence.
+		
+		Denote this distribution (`self`) by `p` and the `other` distribution by
+		`q`. Assuming `p, q` are absolutely continuous with respect to reference
+		measure `r`, the KL divergence is defined as:
+		
+		```none
+		KL[p, q] = E_p[log(p(X)/q(X))]
+		         = -int_F p(x) log q(x) dr(x) + int_F p(x) log p(x) dr(x)
+		         = H[p, q] - H[p]
+		```
+		
+		where `F` denotes the support of the random variable `X ~ p`, `H[., .]`
+		denotes (Shanon) cross entropy, and `H[.]` denotes (Shanon) entropy.
+		
+		Args:
+		  other: `tfp.distributions.Distribution` instance.
+		  name: Python `str` prepended to names of ops created by this function.
+		
+		Returns:
+		  kl_divergence: `self.dtype` `Tensor` with shape `[B1, ..., Bn]`
+		    representing `n` different calculations of the Kullback-Leibler
+		    divergence.
+	**/
+	public function kl_divergence(other:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Locations of these Student's t distribution(s).
 	**/
@@ -420,7 +474,7 @@ package tensorflow.python.ops.distributions.student_t;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  logcdf: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -432,7 +486,7 @@ package tensorflow.python.ops.distributions.student_t;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  log_prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -455,7 +509,7 @@ package tensorflow.python.ops.distributions.student_t;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
@@ -529,7 +583,7 @@ package tensorflow.python.ops.distributions.student_t;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  prob: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -547,7 +601,7 @@ package tensorflow.python.ops.distributions.student_t;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  quantile: a `Tensor` of shape `sample_shape(x) + self.batch_shape` with
@@ -597,7 +651,7 @@ package tensorflow.python.ops.distributions.student_t;
 		denotes expectation, and `stddev.shape = batch_shape + event_shape`.
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  stddev: Floating-point `Tensor` with shape identical to
@@ -617,7 +671,7 @@ package tensorflow.python.ops.distributions.student_t;
 		
 		Args:
 		  value: `float` or `double` `Tensor`.
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  `Tensor` of shape `sample_shape(x) + self.batch_shape` with values of type
@@ -652,7 +706,7 @@ package tensorflow.python.ops.distributions.student_t;
 		```
 		
 		Args:
-		  name: The name to give this op.
+		  name: Python `str` prepended to names of ops created by this function.
 		
 		Returns:
 		  variance: Floating-point `Tensor` with shape identical to

@@ -210,7 +210,7 @@ package theano.tensor.nnet.bn;
 	static public var bn_groupopt : Dynamic;
 	/**
 		Copies the stack trace from one or more tensor variables to
-		one or more tensor variables.
+		one or more tensor variables and returns the destination variables.
 		
 		Parameters
 		----------

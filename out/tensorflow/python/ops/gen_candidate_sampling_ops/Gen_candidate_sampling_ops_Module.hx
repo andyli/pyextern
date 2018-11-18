@@ -1,22 +1,23 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.gen_candidate_sampling_ops;
 @:pythonImport("tensorflow.python.ops.gen_candidate_sampling_ops") extern class Gen_candidate_sampling_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
-	static public var __all_candidate_sampler_outputs : Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
-	static public var __compute_accidental_hits_outputs : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
-	static public var __fixed_unigram_candidate_sampler_outputs : Dynamic;
-	static public var __learned_unigram_candidate_sampler_outputs : Dynamic;
 	static public var __loader__ : Dynamic;
-	static public var __log_uniform_candidate_sampler_outputs : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __thread_unsafe_unigram_candidate_sampler_outputs : Dynamic;
-	static public var __uniform_candidate_sampler_outputs : Dynamic;
+	static public var _all_candidate_sampler_outputs : Dynamic;
+	static public var _compute_accidental_hits_outputs : Dynamic;
+	static public var _fixed_unigram_candidate_sampler_outputs : Dynamic;
+	static public var _learned_unigram_candidate_sampler_outputs : Dynamic;
+	static public var _log_uniform_candidate_sampler_outputs : Dynamic;
+	static public var _op_def_lib : Dynamic;
+	static public var _thread_unsafe_unigram_candidate_sampler_outputs : Dynamic;
+	static public var _uniform_candidate_sampler_outputs : Dynamic;
 	/**
 		Generates labels for candidate sampling with a learned unigram distribution.
 		
@@ -51,17 +52,16 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
 		
-		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
-		    the ID of a sampled candidate.
-		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
-		    the number of times each candidate is expected to occur in a batch
-		    of sampled candidates. If unique=true, then this is a probability.
-		  sampled_expected_count: A `Tensor` of type `float32`. A vector of length num_sampled, for each sampled
-		    candidate representing the number of times the candidate is expected
-		    to occur in a batch of sampled candidates.  If unique=true, then this is a
-		    probability.
+		  sampled_candidates: A `Tensor` of type `int64`.
+		  true_expected_count: A `Tensor` of type `float32`.
+		  sampled_expected_count: A `Tensor` of type `float32`.
 	**/
-	static public function _all_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function all_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function all_candidate_sampler
+	**/
+	static public function all_candidate_sampler_eager_fallback(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the ids of the positions in sampled_candidates that match true_labels.
 		
@@ -87,13 +87,33 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		Returns:
 		  A tuple of `Tensor` objects (indices, ids, weights).
 		
-		  indices: A `Tensor` of type `int32`. A vector of indices corresponding to rows of true_candidates.
-		  ids: A `Tensor` of type `int64`. A vector of IDs of positions in sampled_candidates that match a true_label
-		    for the row with the corresponding index in indices.
-		  weights: A `Tensor` of type `float32`. A vector of the same length as indices and ids, in which each element
-		    is -FLOAT_MAX.
+		  indices: A `Tensor` of type `int32`.
+		  ids: A `Tensor` of type `int64`.
+		  weights: A `Tensor` of type `float32`.
 	**/
-	static public function _compute_accidental_hits(true_classes:Dynamic, sampled_candidates:Dynamic, num_true:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function compute_accidental_hits(true_classes:Dynamic, sampled_candidates:Dynamic, num_true:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function compute_accidental_hits
+	**/
+	static public function compute_accidental_hits_eager_fallback(true_classes:Dynamic, sampled_candidates:Dynamic, num_true:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Generates labels for candidate sampling with a learned unigram distribution.
 		
@@ -165,17 +185,16 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
 		
-		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
-		    the ID of a sampled candidate.
-		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
-		    the number of times each candidate is expected to occur in a batch
-		    of sampled candidates. If unique=true, then this is a probability.
-		  sampled_expected_count: A `Tensor` of type `float32`. A vector of length num_sampled, for each sampled
-		    candidate representing the number of times the candidate is expected
-		    to occur in a batch of sampled candidates.  If unique=true, then this is a
-		    probability.
+		  sampled_candidates: A `Tensor` of type `int64`.
+		  true_expected_count: A `Tensor` of type `float32`.
+		  sampled_expected_count: A `Tensor` of type `float32`.
 	**/
-	static public function _fixed_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?vocab_file:Dynamic, ?distortion:Dynamic, ?num_reserved_ids:Dynamic, ?num_shards:Dynamic, ?shard:Dynamic, ?unigrams:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function fixed_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?vocab_file:Dynamic, ?distortion:Dynamic, ?num_reserved_ids:Dynamic, ?num_shards:Dynamic, ?shard:Dynamic, ?unigrams:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fixed_unigram_candidate_sampler
+	**/
+	static public function fixed_unigram_candidate_sampler_eager_fallback(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?vocab_file:Dynamic, ?distortion:Dynamic, ?num_reserved_ids:Dynamic, ?num_shards:Dynamic, ?shard:Dynamic, ?unigrams:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Generates labels for candidate sampling with a learned unigram distribution.
 		
@@ -213,17 +232,16 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
 		
-		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
-		    the ID of a sampled candidate.
-		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
-		    the number of times each candidate is expected to occur in a batch
-		    of sampled candidates. If unique=true, then this is a probability.
-		  sampled_expected_count: A `Tensor` of type `float32`. A vector of length num_sampled, for each sampled
-		    candidate representing the number of times the candidate is expected
-		    to occur in a batch of sampled candidates.  If unique=true, then this is a
-		    probability.
+		  sampled_candidates: A `Tensor` of type `int64`.
+		  true_expected_count: A `Tensor` of type `float32`.
+		  sampled_expected_count: A `Tensor` of type `float32`.
 	**/
-	static public function _learned_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function learned_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function learned_unigram_candidate_sampler
+	**/
+	static public function learned_unigram_candidate_sampler_eager_fallback(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Generates labels for candidate sampling with a log-uniform distribution.
 		
@@ -261,18 +279,17 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
 		
-		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
-		    the ID of a sampled candidate.
-		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
-		    the number of times each candidate is expected to occur in a batch
-		    of sampled candidates. If unique=true, then this is a probability.
-		  sampled_expected_count: A `Tensor` of type `float32`. A vector of length num_sampled, for each sampled
-		    candidate representing the number of times the candidate is expected
-		    to occur in a batch of sampled candidates.  If unique=true, then this is a
-		    probability.
+		  sampled_candidates: A `Tensor` of type `int64`.
+		  true_expected_count: A `Tensor` of type `float32`.
+		  sampled_expected_count: A `Tensor` of type `float32`.
 	**/
-	static public function _log_uniform_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _op_def_lib : Dynamic;
+	static public function log_uniform_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function log_uniform_candidate_sampler
+	**/
+	static public function log_uniform_candidate_sampler_eager_fallback(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates labels for candidate sampling with a learned unigram distribution.
 		
@@ -310,17 +327,16 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
 		
-		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
-		    the ID of a sampled candidate.
-		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
-		    the number of times each candidate is expected to occur in a batch
-		    of sampled candidates. If unique=true, then this is a probability.
-		  sampled_expected_count: A `Tensor` of type `float32`. A vector of length num_sampled, for each sampled
-		    candidate representing the number of times the candidate is expected
-		    to occur in a batch of sampled candidates.  If unique=true, then this is a
-		    probability.
+		  sampled_candidates: A `Tensor` of type `int64`.
+		  true_expected_count: A `Tensor` of type `float32`.
+		  sampled_expected_count: A `Tensor` of type `float32`.
 	**/
-	static public function _thread_unsafe_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function thread_unsafe_unigram_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function thread_unsafe_unigram_candidate_sampler
+	**/
+	static public function thread_unsafe_unigram_candidate_sampler_eager_fallback(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Generates labels for candidate sampling with a uniform distribution.
 		
@@ -358,15 +374,14 @@ package tensorflow.python.ops.gen_candidate_sampling_ops;
 		Returns:
 		  A tuple of `Tensor` objects (sampled_candidates, true_expected_count, sampled_expected_count).
 		
-		  sampled_candidates: A `Tensor` of type `int64`. A vector of length num_sampled, in which each element is
-		    the ID of a sampled candidate.
-		  true_expected_count: A `Tensor` of type `float32`. A batch_size * num_true matrix, representing
-		    the number of times each candidate is expected to occur in a batch
-		    of sampled candidates. If unique=true, then this is a probability.
-		  sampled_expected_count: A `Tensor` of type `float32`. A vector of length num_sampled, for each sampled
-		    candidate representing the number of times the candidate is expected
-		    to occur in a batch of sampled candidates.  If unique=true, then this is a
-		    probability.
+		  sampled_candidates: A `Tensor` of type `int64`.
+		  true_expected_count: A `Tensor` of type `float32`.
+		  sampled_expected_count: A `Tensor` of type `float32`.
 	**/
-	static public function _uniform_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function uniform_candidate_sampler(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function uniform_candidate_sampler
+	**/
+	static public function uniform_candidate_sampler_eager_fallback(true_classes:Dynamic, num_true:Dynamic, num_sampled:Dynamic, unique:Dynamic, range_max:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 }

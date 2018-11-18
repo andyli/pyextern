@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.gen_spectral_ops;
 @:pythonImport("tensorflow.python.ops.gen_spectral_ops") extern class Gen_spectral_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,73 +10,120 @@ package tensorflow.python.ops.gen_spectral_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-	**/
-	static public function _batch_fft(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-	**/
-	static public function _batch_fft2d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-	**/
-	static public function _batch_fft3d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-	**/
-	static public function _batch_ifft(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-	**/
-	static public function _batch_ifft2d(input:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		TODO: add doc.
-		
-		Args:
-		  input: A `Tensor` of type `complex64`.
-		  name: A name for the operation (optional).
-		
-		Returns:
-		  A `Tensor` of type `complex64`.
-	**/
-	static public function _batch_ifft3d(input:Dynamic, ?name:Dynamic):Dynamic;
 	static public var _op_def_lib : Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor` of type `complex64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `complex64`.
+	**/
+	static public function batch_fft(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor` of type `complex64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `complex64`.
+	**/
+	static public function batch_fft2d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_fft2d
+	**/
+	static public function batch_fft2d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor` of type `complex64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `complex64`.
+	**/
+	static public function batch_fft3d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_fft3d
+	**/
+	static public function batch_fft3d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_fft
+	**/
+	static public function batch_fft_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor` of type `complex64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `complex64`.
+	**/
+	static public function batch_ifft(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor` of type `complex64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `complex64`.
+	**/
+	static public function batch_ifft2d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_ifft2d
+	**/
+	static public function batch_ifft2d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor` of type `complex64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `complex64`.
+	**/
+	static public function batch_ifft3d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_ifft3d
+	**/
+	static public function batch_ifft3d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_ifft
+	**/
+	static public function batch_ifft_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Fast Fourier transform.
 		
@@ -84,17 +131,12 @@ package tensorflow.python.ops.gen_spectral_ops;
 		dimension of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most
-		    dimension of `input` is replaced with its 1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.fft
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function fft(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -104,19 +146,19 @@ package tensorflow.python.ops.gen_spectral_ops;
 		2 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 2
-		    dimensions of `input` are replaced with their 2D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.fft2
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function fft2d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fft2d
+	**/
+	static public function fft2d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		3D fast Fourier transform.
 		
@@ -124,19 +166,24 @@ package tensorflow.python.ops.gen_spectral_ops;
 		dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 3
-		    dimensions of `input` are replaced with their 3D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.fftn with 3 dimensions.
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function fft3d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fft3d
+	**/
+	static public function fft3d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fft
+	**/
+	static public function fft_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Inverse fast Fourier transform.
 		
@@ -144,17 +191,12 @@ package tensorflow.python.ops.gen_spectral_ops;
 		inner-most dimension of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most
-		    dimension of `input` is replaced with its inverse 1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.ifft
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function ifft(input:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -164,19 +206,19 @@ package tensorflow.python.ops.gen_spectral_ops;
 		inner-most 2 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 2
-		    dimensions of `input` are replaced with their inverse 2D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.ifft2
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function ifft2d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function ifft2d
+	**/
+	static public function ifft2d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Inverse 3D fast Fourier transform.
 		
@@ -184,19 +226,24 @@ package tensorflow.python.ops.gen_spectral_ops;
 		inner-most 3 dimensions of `input`.
 		
 		Args:
-		  input: A `Tensor` of type `complex64`. A complex64 tensor.
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    A complex64 tensor.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same shape as `input`. The inner-most 3
-		    dimensions of `input` are replaced with their inverse 3D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.ifftn with 3 dimensions.
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function ifft3d(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function ifft3d
+	**/
+	static public function ifft3d_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function ifft
+	**/
+	static public function ifft_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Inverse real-valued fast Fourier transform.
 		
@@ -210,6 +257,10 @@ package tensorflow.python.ops.gen_spectral_ops;
 		compute `input` is odd, it should be provided since it cannot be inferred
 		properly.
 		
+		Along the axis `IRFFT` is computed on, if `fft_length / 2 + 1` is smaller
+		than the corresponding dimension of `input`, the dimension is cropped. If it is
+		larger, the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -218,13 +269,6 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A float32 tensor of the same rank as `input`. The inner-most
-		    dimension of `input` is replaced with the `fft_length` samples of its inverse
-		    1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.irfft
-		  @end_compatibility
 	**/
 	static public function irfft(input:Dynamic, fft_length:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -240,6 +284,11 @@ package tensorflow.python.ops.gen_spectral_ops;
 		to compute `input` is odd, it should be provided since it cannot be inferred
 		properly.
 		
+		Along each axis `IRFFT2D` is computed on, if `fft_length` (or
+		`fft_length / 2 + 1` for the inner-most dimension) is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -248,15 +297,13 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A float32 tensor of the same rank as `input`. The inner-most 2
-		    dimensions of `input` are replaced with the `fft_length` samples of their
-		    inverse 2D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.irfft2
-		  @end_compatibility
 	**/
 	static public function irfft2d(input:Dynamic, fft_length:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function irfft2d
+	**/
+	static public function irfft2d_eager_fallback(input:Dynamic, fft_length:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Inverse 3D real-valued fast Fourier transform.
 		
@@ -270,6 +317,11 @@ package tensorflow.python.ops.gen_spectral_ops;
 		to compute `input` is odd, it should be provided since it cannot be inferred
 		properly.
 		
+		Along each axis `IRFFT3D` is computed on, if `fft_length` (or
+		`fft_length / 2 + 1` for the inner-most dimension) is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `complex64`. A complex64 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -278,15 +330,18 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `float32`.
-		  A float32 tensor of the same rank as `input`. The inner-most 3
-		    dimensions of `input` are replaced with the `fft_length` samples of their
-		    inverse 3D real Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.irfftn with 3 dimensions.
-		  @end_compatibility
 	**/
 	static public function irfft3d(input:Dynamic, fft_length:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function irfft3d
+	**/
+	static public function irfft3d_eager_fallback(input:Dynamic, fft_length:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function irfft
+	**/
+	static public function irfft_eager_fallback(input:Dynamic, fft_length:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Real-valued fast Fourier transform.
 		
@@ -297,6 +352,10 @@ package tensorflow.python.ops.gen_spectral_ops;
 		`fft_length / 2 + 1` unique components of the FFT: the zero-frequency term,
 		followed by the `fft_length / 2` positive-frequency terms.
 		
+		Along the axis `RFFT` is computed on, if `fft_length` is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `float32`. A float32 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -305,13 +364,6 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same rank as `input`. The inner-most
-		    dimension of `input` is replaced with the `fft_length / 2 + 1` unique
-		    frequency components of its 1D Fourier transform.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.rfft
-		  @end_compatibility
 	**/
 	static public function rfft(input:Dynamic, fft_length:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -325,6 +377,10 @@ package tensorflow.python.ops.gen_spectral_ops;
 		of `output`: the zero-frequency term, followed by the `fft_length / 2`
 		positive-frequency terms.
 		
+		Along each axis `RFFT2D` is computed on, if `fft_length` is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `float32`. A float32 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -333,16 +389,13 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same rank as `input`. The inner-most 2
-		    dimensions of `input` are replaced with their 2D Fourier transform. The
-		    inner-most dimension contains `fft_length / 2 + 1` unique frequency
-		    components.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.rfft2
-		  @end_compatibility
 	**/
 	static public function rfft2d(input:Dynamic, fft_length:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function rfft2d
+	**/
+	static public function rfft2d_eager_fallback(input:Dynamic, fft_length:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		3D real-valued fast Fourier transform.
 		
@@ -354,6 +407,10 @@ package tensorflow.python.ops.gen_spectral_ops;
 		of `output`: the zero-frequency term, followed by the `fft_length / 2`
 		positive-frequency terms.
 		
+		Along each axis `RFFT3D` is computed on, if `fft_length` is smaller than the
+		corresponding dimension of `input`, the dimension is cropped. If it is larger,
+		the dimension is padded with zeros.
+		
 		Args:
 		  input: A `Tensor` of type `float32`. A float32 tensor.
 		  fft_length: A `Tensor` of type `int32`.
@@ -362,14 +419,17 @@ package tensorflow.python.ops.gen_spectral_ops;
 		
 		Returns:
 		  A `Tensor` of type `complex64`.
-		  A complex64 tensor of the same rank as `input`. The inner-most 3
-		    dimensions of `input` are replaced with the their 3D Fourier transform. The
-		    inner-most dimension contains `fft_length / 2 + 1` unique frequency
-		    components.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.fft.rfftn with 3 dimensions.
-		  @end_compatibility
 	**/
 	static public function rfft3d(input:Dynamic, fft_length:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function rfft3d
+	**/
+	static public function rfft3d_eager_fallback(input:Dynamic, fft_length:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function rfft
+	**/
+	static public function rfft_eager_fallback(input:Dynamic, fft_length:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

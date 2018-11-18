@@ -10,4 +10,5 @@ package torch.legacy.nn.normalize;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function clear(self:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public var inf : Dynamic;
 }

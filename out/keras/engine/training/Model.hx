@@ -27,7 +27,7 @@ package keras.engine.training;
 		        for its `build` call.
 	**/
 	public function __call__(inputs:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,6 +55,7 @@ package keras.engine.training;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -67,18 +68,18 @@ package keras.engine.training;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(inputs:Dynamic, outputs:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(inputs:Dynamic, outputs:Dynamic, ?name:Dynamic):Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -112,6 +113,7 @@ package keras.engine.training;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -129,7 +131,7 @@ package keras.engine.training;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -141,42 +143,25 @@ package keras.engine.training;
 		    input_tensors: list of input tensors.
 		    output_tensors: list of output tensors.
 		    input_masks: list of input masks (a mask can be a tensor, or None).
-		    output_masks: list of output masks (a mask can be a tensor, or None).
+		    output_masks: list of output masks
+		        (a mask can be a tensor, or None).
 		    input_shapes: list of input shape tuples.
 		    output_shapes: list of output shape tuples.
 		    arguments: dictionary of keyword arguments that were passed to the
 		        `call` method of the layer at the call that created the node.
 	**/
 	public function _add_inbound_node(input_tensors:Dynamic, output_tensors:Dynamic, input_masks:Dynamic, output_masks:Dynamic, input_shapes:Dynamic, output_shapes:Dynamic, ?arguments:Dynamic):Dynamic;
+	public function _base_init(?name:Dynamic):Dynamic;
 	/**
-		Abstract fit function for `f(ins)`.
+		Check trainable weights count consistency.
 		
-		Assume that f returns a list, labeled by out_labels.
-		
-		# Arguments
-		    f: Keras function returning a list of tensors
-		    ins: list of tensors to be fed to `f`
-		    out_labels: list of strings, display names of
-		        the outputs of `f`
-		    batch_size: integer batch size
-		    epochs: number of times to iterate over the data
-		    verbose: verbosity mode, 0, 1 or 2
-		    callbacks: list of callbacks to be called during training
-		    val_f: Keras function to call for validation
-		    val_ins: list of tensors to be fed to `val_f`
-		    shuffle: whether to shuffle the data at the beginning of each epoch
-		    callback_metrics: list of strings, the display names of the metrics
-		        passed to the callbacks. They should be the
-		        concatenation of list the display names of the outputs of
-		         `f` and the list of display names of the outputs of `f_val`.
-		    initial_epoch: epoch at which to start training
-		        (useful for resuming a previous training run)
-		
-		# Returns
-		    `History` object.
+		This will raise a warning if `trainable_weights` and
+		`_collected_trainable_weights` are inconsistent (i.e. have different
+		number of parameters).
+		Inconsistency will typically arise when one modifies `model.trainable`
+		without calling `model.compile` again.
 	**/
-	public function _fit_loop(f:Dynamic, ins:Dynamic, ?out_labels:Dynamic, ?batch_size:Dynamic, ?epochs:Dynamic, ?verbose:Dynamic, ?callbacks:Dynamic, ?val_f:Dynamic, ?val_ins:Dynamic, ?shuffle:Dynamic, ?callback_metrics:Dynamic, ?initial_epoch:Dynamic):Dynamic;
-	public function _get_deduped_metrics_names():Dynamic;
+	public function _check_trainable_weights_consistency():Dynamic;
 	/**
 		Retrieves an attribute (e.g. input_tensors) from a node.
 		
@@ -200,41 +185,49 @@ package keras.engine.training;
 		    ValueError: If the index is does not match any node.
 	**/
 	public function _get_node_attribute_at_index(node_index:Dynamic, attr:Dynamic, attr_name:Dynamic):Dynamic;
+	public function _init_graph_network(inputs:Dynamic, outputs:Dynamic, ?name:Dynamic):Dynamic;
+	public function _init_subclassed_network(?name:Dynamic):Dynamic;
 	public function _make_predict_function():Dynamic;
 	public function _make_test_function():Dynamic;
 	public function _make_train_function():Dynamic;
 	/**
-		Abstract method to loop over some data in batches.
+		Converts a layer and its index to a unique (immutable type) name.
+		
+		This function is used internally with `self._network_nodes`.
 		
 		# Arguments
-		    f: Keras function returning a list of tensors.
-		    ins: list of tensors to be fed to `f`.
-		    batch_size: integer batch size.
-		    verbose: verbosity mode.
+		    layer: The layer.
+		    node_index: The layer's position (e.g. via enumerate) in a list of
+		        nodes.
 		
 		# Returns
-		    Array of predictions (if the model has a single output)
-		    or list of arrays of predictions
-		    (if the model has multiple outputs).
+		    The unique name.
 	**/
-	public function _predict_loop(f:Dynamic, ins:Dynamic, ?batch_size:Dynamic, ?verbose:Dynamic):Dynamic;
-	public function _standardize_user_data(x:Dynamic, y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?check_batch_axis:Dynamic, ?batch_size:Dynamic):Dynamic;
+	static public function _node_key(layer:Dynamic, node_index:Dynamic):Dynamic;
 	/**
-		Abstract method to loop over some data in batches.
+		Set model's input and output specs based on the input data received.
+		
+		This is to be used for Model subclasses, which do not know at instantiation
+		time what their inputs look like.
 		
 		# Arguments
-		    f: Keras function returning a list of tensors.
-		    ins: list of tensors to be fed to `f`.
-		    batch_size: integer batch size.
-		    verbose: verbosity mode.
-		
-		# Returns
-		    Scalar loss (if the model has a single output and no metrics)
-		    or list of scalars (if the model has multiple outputs
-		    and/or metrics). The attribute `model.metrics_names` will give you
-		    the display labels for the scalar outputs.
+		  inputs: Single array, or list of arrays. The arrays could be placeholders,
+		    Numpy arrays, or data tensors.
+		    - if placeholders: the model is built on top of these placeholders,
+		      and we expect Numpy data to be fed for them when calling `fit`/etc.
+		    - if Numpy data: we create placeholders matching the shape of the Numpy
+		      arrays. We expect Numpy data to be fed for these placeholders
+		      when calling `fit`/etc.
+		    - if data tensors: the model is built on top of these tensors.
+		      We do not expect any Numpy data to be provided when calling `fit`/etc.
+		  outputs: Optional output tensors (if already computed by running
+		    the model).
+		  training: Boolean or None. Only relevant in symbolic mode. Specifies
+		    whether to build the model's graph in inference mode (False), training
+		    mode (True), or using the Keras learning phase (None).
 	**/
-	public function _test_loop(f:Dynamic, ins:Dynamic, ?batch_size:Dynamic, ?verbose:Dynamic):Dynamic;
+	public function _set_inputs(inputs:Dynamic, ?outputs:Dynamic, ?training:Dynamic):Dynamic;
+	public function _standardize_user_data(x:Dynamic, ?y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?check_array_lengths:Dynamic, ?batch_size:Dynamic):Dynamic;
 	/**
 		Util hared between different serialization methods.
 		
@@ -242,8 +235,9 @@ package keras.engine.training;
 		    Model config with Keras version information added.
 	**/
 	public function _updated_config():Dynamic;
+	public function _uses_dynamic_learning_phase():Dynamic;
 	/**
-		Add losses to the layer.
+		Adds losses to the layer.
 		
 		The loss may potentially be conditional on some inputs tensors,
 		for instance activity losses are conditional on the layer's inputs.
@@ -259,7 +253,7 @@ package keras.engine.training;
 	**/
 	public function add_loss(losses:Dynamic, ?inputs:Dynamic):Dynamic;
 	/**
-		Add updates to the layer.
+		Adds updates to the layer.
 		
 		The updates may potentially be conditional on some inputs tensors,
 		for instance batch norm updates are conditional on the layer's inputs.
@@ -318,7 +312,7 @@ package keras.engine.training;
 	public function build(input_shape:Dynamic):Dynamic;
 	public var built : Dynamic;
 	/**
-		Call the model on new inputs.
+		Calls the model on new inputs.
 		
 		In this case `call` just reapplies
 		all ops in the graph to the new inputs
@@ -340,15 +334,15 @@ package keras.engine.training;
 		Configures the model for training.
 		
 		# Arguments
-		    optimizer: str (name of optimizer) or optimizer object.
+		    optimizer: String (name of optimizer) or optimizer instance.
 		        See [optimizers](/optimizers).
-		    loss: str (name of objective function) or objective function.
+		    loss: String (name of objective function) or objective function.
 		        See [losses](/losses).
 		        If the model has multiple outputs, you can use a different loss
 		        on each output by passing a dictionary or a list of losses.
 		        The loss value that will be minimized by the model
 		        will then be the sum of all individual losses.
-		    metrics: list of metrics to be evaluated by the model
+		    metrics: List of metrics to be evaluated by the model
 		        during training and testing.
 		        Typically you will use `metrics=['accuracy']`.
 		        To specify different metrics for different outputs of a
@@ -363,21 +357,32 @@ package keras.engine.training;
 		        If a list, it is expected to have a 1:1 mapping
 		        to the model's outputs. If a tensor, it is expected to map
 		        output names (strings) to scalar coefficients.
-		    sample_weight_mode: if you need to do timestep-wise
+		    sample_weight_mode: If you need to do timestep-wise
 		        sample weighting (2D weights), set this to `"temporal"`.
 		        `None` defaults to sample-wise weights (1D).
 		        If the model has multiple outputs, you can use a different
 		        `sample_weight_mode` on each output by passing a
 		        dictionary or a list of modes.
-		    **kwargs: when using the Theano/CNTK backends, these arguments
-		        are passed into K.function. When using the TensorFlow backend,
+		    weighted_metrics: List of metrics to be evaluated and weighted
+		        by sample_weight or class_weight during training and testing.
+		    target_tensors: By default, Keras will create placeholders for the
+		        model's target, which will be fed with the target data during
+		        training. If instead you would like to use your own
+		        target tensors (in turn, Keras will not expect external
+		        Numpy data for these targets at training time), you
+		        can specify them via the `target_tensors` argument. It can be
+		        a single tensor (for a single-output model), a list of tensors,
+		        or a dict mapping output names to target tensors.
+		    **kwargs: When using the Theano/CNTK backends, these arguments
+		        are passed into `K.function`.
+		        When using the TensorFlow backend,
 		        these arguments are passed into `tf.Session.run`.
 		
 		# Raises
 		    ValueError: In case of invalid arguments for
 		        `optimizer`, `loss`, `metrics` or `sample_weight_mode`.
 	**/
-	public function compile(optimizer:Dynamic, loss:Dynamic, ?metrics:Dynamic, ?loss_weights:Dynamic, ?sample_weight_mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function compile(optimizer:Dynamic, ?loss:Dynamic, ?metrics:Dynamic, ?loss_weights:Dynamic, ?sample_weight_mode:Dynamic, ?weighted_metrics:Dynamic, ?target_tensors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes an output mask tensor.
 		
@@ -406,9 +411,8 @@ package keras.engine.training;
 		    An input shape tuple.
 	**/
 	public function compute_output_shape(input_shape:Dynamic):Dynamic;
-	public var constraints : Dynamic;
 	/**
-		Count the total number of scalars composing the weights.
+		Counts the total number of scalars composing the weights.
 		
 		# Returns
 		    An integer count.
@@ -424,20 +428,39 @@ package keras.engine.training;
 		Computation is done in batches.
 		
 		# Arguments
-		    x: Numpy array of test data,
-		        or list of Numpy arrays if the model has multiple inputs.
-		        If all inputs in the model are named,
-		        you can also pass a dictionary
-		        mapping input names to Numpy arrays.
-		    y: Numpy array of target data,
-		        or list of Numpy arrays if the model has multiple outputs.
-		        If all outputs in the model are named,
-		        you can also pass a dictionary
-		        mapping output names to Numpy arrays.
-		    batch_size: integer. Number of samples per gradient update.
-		    verbose: verbosity mode, 0 or 1.
-		    sample_weight: Array of weights to weight the contribution
-		        of different samples to the loss and metrics.
+		    x: Numpy array of test data (if the model has a single input),
+		        or list of Numpy arrays (if the model has multiple inputs).
+		        If input layers in the model are named, you can also pass a
+		        dictionary mapping input names to Numpy arrays.
+		        `x` can be `None` (default) if feeding from
+		        framework-native tensors (e.g. TensorFlow data tensors).
+		    y: Numpy array of target (label) data
+		        (if the model has a single output),
+		        or list of Numpy arrays (if the model has multiple outputs).
+		        If output layers in the model are named, you can also pass a
+		        dictionary mapping output names to Numpy arrays.
+		        `y` can be `None` (default) if feeding from
+		        framework-native tensors (e.g. TensorFlow data tensors).
+		    batch_size: Integer or `None`.
+		        Number of samples per evaluation step.
+		        If unspecified, `batch_size` will default to 32.
+		    verbose: 0 or 1. Verbosity mode.
+		        0 = silent, 1 = progress bar.
+		    sample_weight: Optional Numpy array of weights for
+		        the test samples, used for weighting the loss function.
+		        You can either pass a flat (1D)
+		        Numpy array with the same length as the input samples
+		        (1:1 mapping between weights and samples),
+		        or in the case of temporal data,
+		        you can pass a 2D array with shape
+		        `(samples, sequence_length)`,
+		        to apply a different weight to every timestep of every sample.
+		        In this case you should make sure to specify
+		        `sample_weight_mode="temporal"` in `compile()`.
+		    steps: Integer or `None`.
+		        Total number of steps (batches of samples)
+		        before declaring the evaluation round finished.
+		        Ignored with the default value of `None`.
 		
 		# Returns
 		    Scalar test loss (if the model has a single output and no metrics)
@@ -445,7 +468,7 @@ package keras.engine.training;
 		    and/or metrics). The attribute `model.metrics_names` will give you
 		    the display labels for the scalar outputs.
 	**/
-	public function evaluate(x:Dynamic, y:Dynamic, ?batch_size:Dynamic, ?verbose:Dynamic, ?sample_weight:Dynamic):Dynamic;
+	public function evaluate(?x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?verbose:Dynamic, ?sample_weight:Dynamic, ?steps:Dynamic):Dynamic;
 	/**
 		Evaluates the model on a data generator.
 		
@@ -456,13 +479,17 @@ package keras.engine.training;
 		    generator: Generator yielding tuples (inputs, targets)
 		        or (inputs, targets, sample_weights)
 		        or an instance of Sequence (keras.utils.Sequence)
-		            object in order to avoid duplicate data
-		            when using multiprocessing.
+		        object in order to avoid duplicate data
+		        when using multiprocessing.
 		    steps: Total number of steps (batches of samples)
 		        to yield from `generator` before stopping.
+		        Optional for `Sequence`: if unspecified, will use
+		        the `len(generator)` as a number of steps.
 		    max_queue_size: maximum size for the generator queue
-		    workers: maximum number of processes to spin up
-		        when using process based threading
+		    workers: Integer. Maximum number of processes to spin up
+		        when using process based threading.
+		        If unspecified, `workers` will default to 1. If 0, will
+		        execute the generator on the main thread.
 		    use_multiprocessing: if True, use process based threading.
 		        Note that because
 		        this implementation relies on multiprocessing,
@@ -470,6 +497,7 @@ package keras.engine.training;
 		        non picklable arguments to the generator
 		        as they can't be passed
 		        easily to children processes.
+		    verbose: verbosity mode, 0 or 1.
 		
 		# Returns
 		    Scalar test loss (if the model has a single output and no metrics)
@@ -481,69 +509,104 @@ package keras.engine.training;
 		    ValueError: In case the generator yields
 		        data in an invalid format.
 	**/
-	public function evaluate_generator(generator:Dynamic, steps:Dynamic, ?max_queue_size:Dynamic, ?workers:Dynamic, ?use_multiprocessing:Dynamic):Dynamic;
+	public function evaluate_generator(generator:Dynamic, ?steps:Dynamic, ?max_queue_size:Dynamic, ?workers:Dynamic, ?use_multiprocessing:Dynamic, ?verbose:Dynamic):Dynamic;
 	/**
-		Trains the model for a fixed number of epochs (iterations on a dataset).
+		Trains the model for a given number of epochs (iterations on a dataset).
 		
 		# Arguments
-		    x: Numpy array of training data,
-		        or list of Numpy arrays if the model has multiple inputs.
-		        If all inputs in the model are named,
-		        you can also pass a dictionary
-		        mapping input names to Numpy arrays.
-		    y: Numpy array of target data,
-		        or list of Numpy arrays if the model has multiple outputs.
-		        If all outputs in the model are named,
-		        you can also pass a dictionary
-		        mapping output names to Numpy arrays.
-		    batch_size: integer. Number of samples per gradient update.
-		    epochs: integer, the number of times to iterate
-		        over the training data arrays.
-		    verbose: 0, 1, or 2. Verbosity mode.
-		        0 = silent, 1 = verbose, 2 = one log line per epoch.
-		    callbacks: list of callbacks to be called during training.
+		    x: Numpy array of training data (if the model has a single input),
+		        or list of Numpy arrays (if the model has multiple inputs).
+		        If input layers in the model are named, you can also pass a
+		        dictionary mapping input names to Numpy arrays.
+		        `x` can be `None` (default) if feeding from
+		        framework-native tensors (e.g. TensorFlow data tensors).
+		    y: Numpy array of target (label) data
+		        (if the model has a single output),
+		        or list of Numpy arrays (if the model has multiple outputs).
+		        If output layers in the model are named, you can also pass a
+		        dictionary mapping output names to Numpy arrays.
+		        `y` can be `None` (default) if feeding from
+		        framework-native tensors (e.g. TensorFlow data tensors).
+		    batch_size: Integer or `None`.
+		        Number of samples per gradient update.
+		        If unspecified, `batch_size` will default to 32.
+		    epochs: Integer. Number of epochs to train the model.
+		        An epoch is an iteration over the entire `x` and `y`
+		        data provided.
+		        Note that in conjunction with `initial_epoch`,
+		        `epochs` is to be understood as "final epoch".
+		        The model is not trained for a number of iterations
+		        given by `epochs`, but merely until the epoch
+		        of index `epochs` is reached.
+		    verbose: Integer. 0, 1, or 2. Verbosity mode.
+		        0 = silent, 1 = progress bar, 2 = one line per epoch.
+		    callbacks: List of `keras.callbacks.Callback` instances.
+		        List of callbacks to apply during training.
 		        See [callbacks](/callbacks).
-		    validation_split: float between 0 and 1:
-		        fraction of the training data to be used as validation data.
+		    validation_split: Float between 0 and 1.
+		        Fraction of the training data to be used as validation data.
 		        The model will set apart this fraction of the training data,
 		        will not train on it, and will evaluate
 		        the loss and any model metrics
 		        on this data at the end of each epoch.
-		    validation_data: data on which to evaluate
-		        the loss and any model metrics
-		        at the end of each epoch. The model will not
-		        be trained on this data.
-		        This could be a tuple (x_val, y_val)
-		        or a tuple (x_val, y_val, val_sample_weights).
-		    shuffle: boolean, whether to shuffle the training data
-		        before each epoch.
-		    class_weight: optional dictionary mapping
-		        class indices (integers) to
-		        a weight (float) to apply to the model's loss for the samples
-		        from this class during training.
-		        This can be useful to tell the model to "pay more attention" to
-		        samples from an under-represented class.
-		    sample_weight: optional array of the same length as x, containing
-		        weights to apply to the model's loss for each sample.
-		        In the case of temporal data, you can pass a 2D array
-		        with shape (samples, sequence_length),
+		        The validation data is selected from the last samples
+		        in the `x` and `y` data provided, before shuffling.
+		    validation_data: tuple `(x_val, y_val)` or tuple
+		        `(x_val, y_val, val_sample_weights)` on which to evaluate
+		        the loss and any model metrics at the end of each epoch.
+		        The model will not be trained on this data.
+		        `validation_data` will override `validation_split`.
+		    shuffle: Boolean (whether to shuffle the training data
+		        before each epoch) or str (for 'batch').
+		        'batch' is a special option for dealing with the
+		        limitations of HDF5 data; it shuffles in batch-sized chunks.
+		        Has no effect when `steps_per_epoch` is not `None`.
+		    class_weight: Optional dictionary mapping class indices (integers)
+		        to a weight (float) value, used for weighting the loss function
+		        (during training only).
+		        This can be useful to tell the model to
+		        "pay more attention" to samples from
+		        an under-represented class.
+		    sample_weight: Optional Numpy array of weights for
+		        the training samples, used for weighting the loss function
+		        (during training only). You can either pass a flat (1D)
+		        Numpy array with the same length as the input samples
+		        (1:1 mapping between weights and samples),
+		        or in the case of temporal data,
+		        you can pass a 2D array with shape
+		        `(samples, sequence_length)`,
 		        to apply a different weight to every timestep of every sample.
 		        In this case you should make sure to specify
-		        sample_weight_mode="temporal" in compile().
-		    initial_epoch: epoch at which to start training
-		        (useful for resuming a previous training run)
+		        `sample_weight_mode="temporal"` in `compile()`.
+		    initial_epoch: Integer.
+		        Epoch at which to start training
+		        (useful for resuming a previous training run).
+		    steps_per_epoch: Integer or `None`.
+		        Total number of steps (batches of samples)
+		        before declaring one epoch finished and starting the
+		        next epoch. When training with input tensors such as
+		        TensorFlow data tensors, the default `None` is equal to
+		        the number of samples in your dataset divided by
+		        the batch size, or 1 if that cannot be determined.
+		    validation_steps: Only relevant if `steps_per_epoch`
+		        is specified. Total number of steps (batches of samples)
+		        to validate before stopping.
 		
 		# Returns
-		    A `History` instance. Its `history` attribute contains
-		    all information collected during training.
+		    A `History` object. Its `History.history` attribute is
+		    a record of training loss values and metrics values
+		    at successive epochs, as well as validation loss values
+		    and validation metrics values (if applicable).
 		
 		# Raises
+		    RuntimeError: If the model was never compiled.
 		    ValueError: In case of mismatch between the provided input data
 		        and what the model expects.
 	**/
-	public function fit(?x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?epochs:Dynamic, ?verbose:Dynamic, ?callbacks:Dynamic, ?validation_split:Dynamic, ?validation_data:Dynamic, ?shuffle:Dynamic, ?class_weight:Dynamic, ?sample_weight:Dynamic, ?initial_epoch:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function fit(?x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?epochs:Dynamic, ?verbose:Dynamic, ?callbacks:Dynamic, ?validation_split:Dynamic, ?validation_data:Dynamic, ?shuffle:Dynamic, ?class_weight:Dynamic, ?sample_weight:Dynamic, ?initial_epoch:Dynamic, ?steps_per_epoch:Dynamic, ?validation_steps:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Fits the model on data yielded batch-by-batch by a Python generator.
+		Trains the model on data generated batch-by-batch by a Python generator
+		(or an instance of `Sequence`).
 		
 		The generator is run in parallel to the model, for efficiency.
 		For instance, this allows you to do real-time data augmentation
@@ -554,71 +617,109 @@ package keras.engine.training;
 		using `use_multiprocessing=True`.
 		
 		# Arguments
-		    generator: a generator or an instance of Sequence (keras.utils.Sequence)
-		            object in order to avoid duplicate data
-		            when using multiprocessing.
+		    generator: A generator or an instance of `Sequence`
+		        (`keras.utils.Sequence`) object in order to avoid
+		        duplicate data when using multiprocessing.
 		        The output of the generator must be either
-		        - a tuple (inputs, targets)
-		        - a tuple (inputs, targets, sample_weights).
-		        All arrays should contain the same number of samples.
+		        - a tuple `(inputs, targets)`
+		        - a tuple `(inputs, targets, sample_weights)`.
+		        This tuple (a single output of the generator) makes a single
+		        batch. Therefore, all arrays in this tuple must have the same
+		        length (equal to the size of this batch). Different batches may
+		        have different sizes. For example, the last batch of the epoch
+		        is commonly smaller than the others, if the size of the dataset
+		        is not divisible by the batch size.
 		        The generator is expected to loop over its data
 		        indefinitely. An epoch finishes when `steps_per_epoch`
 		        batches have been seen by the model.
-		    steps_per_epoch: Total number of steps (batches of samples)
+		    steps_per_epoch: Integer.
+		        Total number of steps (batches of samples)
 		        to yield from `generator` before declaring one epoch
 		        finished and starting the next epoch. It should typically
-		        be equal to the number of unique samples if your dataset
+		        be equal to the number of samples of your dataset
 		        divided by the batch size.
-		    epochs: integer, total number of iterations on the data.
-		    verbose: verbosity mode, 0, 1, or 2.
-		    callbacks: list of callbacks to be called during training.
-		    validation_data: this can be either
-		        - a generator for the validation data
-		        - a tuple (inputs, targets)
-		        - a tuple (inputs, targets, sample_weights).
+		        Optional for `Sequence`: if unspecified, will use
+		        the `len(generator)` as a number of steps.
+		    epochs: Integer. Number of epochs to train the model.
+		        An epoch is an iteration over the entire data provided,
+		        as defined by `steps_per_epoch`.
+		        Note that in conjunction with `initial_epoch`,
+		        `epochs` is to be understood as "final epoch".
+		        The model is not trained for a number of iterations
+		        given by `epochs`, but merely until the epoch
+		        of index `epochs` is reached.
+		    verbose: Integer. 0, 1, or 2. Verbosity mode.
+		        0 = silent, 1 = progress bar, 2 = one line per epoch.
+		    callbacks: List of `keras.callbacks.Callback` instances.
+		        List of callbacks to apply during training.
+		        See [callbacks](/callbacks).
+		    validation_data: This can be either
+		        - a generator or a `Sequence` object for the validation data
+		        - tuple `(x_val, y_val)`
+		        - tuple `(x_val, y_val, val_sample_weights)`
+		        on which to evaluate
+		        the loss and any model metrics at the end of each epoch.
+		        The model will not be trained on this data.
 		    validation_steps: Only relevant if `validation_data`
 		        is a generator. Total number of steps (batches of samples)
-		        to yield from `generator` before stopping.
-		    class_weight: dictionary mapping class indices to a weight
-		        for the class.
-		    max_queue_size: maximum size for the generator queue
-		    workers: maximum number of processes to spin up
-		        when using process based threading
-		    use_multiprocessing: if True, use process based threading.
-		        Note that because
-		        this implementation relies on multiprocessing,
-		        you should not pass
-		        non picklable arguments to the generator
-		        as they can't be passed
-		        easily to children processes.
-		    initial_epoch: epoch at which to start training
-		        (useful for resuming a previous training run)
+		        to yield from `validation_data` generator before stopping
+		        at the end of every epoch. It should typically
+		        be equal to the number of samples of your
+		        validation dataset divided by the batch size.
+		        Optional for `Sequence`: if unspecified, will use
+		        the `len(validation_data)` as a number of steps.
+		    class_weight: Optional dictionary mapping class indices (integers)
+		        to a weight (float) value, used for weighting the loss function
+		        (during training only). This can be useful to tell the model to
+		        "pay more attention" to samples
+		        from an under-represented class.
+		    max_queue_size: Integer. Maximum size for the generator queue.
+		        If unspecified, `max_queue_size` will default to 10.
+		    workers: Integer. Maximum number of processes to spin up
+		        when using process-based threading.
+		        If unspecified, `workers` will default to 1. If 0, will
+		        execute the generator on the main thread.
+		    use_multiprocessing: Boolean.
+		        If `True`, use process-based threading.
+		        If unspecified, `use_multiprocessing` will default to `False`.
+		        Note that because this implementation
+		        relies on multiprocessing,
+		        you should not pass non-picklable arguments to the generator
+		        as they can't be passed easily to children processes.
+		    shuffle: Boolean. Whether to shuffle the order of the batches at
+		        the beginning of each epoch. Only used with instances
+		        of `Sequence` (`keras.utils.Sequence`).
+		        Has no effect when `steps_per_epoch` is not `None`.
+		    initial_epoch: Integer.
+		        Epoch at which to start training
+		        (useful for resuming a previous training run).
 		
 		# Returns
-		    A `History` object.
+		    A `History` object. Its `History.history` attribute is
+		    a record of training loss values and metrics values
+		    at successive epochs, as well as validation loss values
+		    and validation metrics values (if applicable).
+		
+		# Raises
+		    ValueError: In case the generator yields data in an invalid format.
 		
 		# Example
 		
 		```python
-		    def generate_arrays_from_file(path):
-		        while 1:
-		            f = open(path)
+		def generate_arrays_from_file(path):
+		    while True:
+		        with open(path) as f:
 		            for line in f:
 		                # create numpy arrays of input data
 		                # and labels, from each line in the file
 		                x1, x2, y = process_line(line)
 		                yield ({'input_1': x1, 'input_2': x2}, {'output': y})
-		            f.close()
 		
-		    model.fit_generator(generate_arrays_from_file('/my_file.txt'),
-		                        steps_per_epoch=10000, epochs=10)
+		model.fit_generator(generate_arrays_from_file('/my_file.txt'),
+		                    steps_per_epoch=10000, epochs=10)
 		```
-		
-		# Raises
-		    ValueError: In case the generator yields
-		        data in an invalid format.
 	**/
-	public function fit_generator(generator:Dynamic, steps_per_epoch:Dynamic, ?epochs:Dynamic, ?verbose:Dynamic, ?callbacks:Dynamic, ?validation_data:Dynamic, ?validation_steps:Dynamic, ?class_weight:Dynamic, ?max_queue_size:Dynamic, ?workers:Dynamic, ?use_multiprocessing:Dynamic, ?initial_epoch:Dynamic):Dynamic;
+	public function fit_generator(generator:Dynamic, ?steps_per_epoch:Dynamic, ?epochs:Dynamic, ?verbose:Dynamic, ?callbacks:Dynamic, ?validation_data:Dynamic, ?validation_steps:Dynamic, ?class_weight:Dynamic, ?max_queue_size:Dynamic, ?workers:Dynamic, ?use_multiprocessing:Dynamic, ?shuffle:Dynamic, ?initial_epoch:Dynamic):Dynamic;
 	/**
 		Instantiates a Model from its config (output of `get_config()`).
 		
@@ -645,7 +746,7 @@ package keras.engine.training;
 		
 		The config of a layer does not include connectivity
 		information, nor the layer class name. These are handled
-		by `Container` (one layer of abstraction above).
+		by `Network` (one layer of abstraction above).
 		
 		# Returns
 		    Python dictionary.
@@ -694,6 +795,8 @@ package keras.engine.training;
 	public function get_input_shape_at(node_index:Dynamic):Dynamic;
 	/**
 		Retrieves a layer based on either its name (unique) or index.
+		
+		If `name` and `index` are both provided, `index` will take precedence.
 		
 		Indices are based on order of horizontal graph traversal (bottom-up).
 		
@@ -810,6 +913,7 @@ package keras.engine.training;
 		        or a single instance if the model has only one input.
 	**/
 	public var input_spec : Dynamic;
+	public var layers : Dynamic;
 	/**
 		Loads all layer weights from a HDF5 save file.
 		
@@ -829,16 +933,23 @@ package keras.engine.training;
 		    filepath: String, path to the weights file to load.
 		    by_name: Boolean, whether to load weights by name
 		        or by topological order.
+		    skip_mismatch: Boolean, whether to skip loading of layers
+		        where there is a mismatch in the number of weights,
+		        or a mismatch in the shape of the weight
+		        (only valid when `by_name`=True).
+		    reshape: Reshape weights to fit the layer when the correct number
+		        of weight arrays is present but their shape does not match.
+		
 		
 		# Raises
 		    ImportError: If h5py is not available.
 	**/
-	public function load_weights(filepath:Dynamic, ?by_name:Dynamic):Dynamic;
+	public function load_weights(filepath:Dynamic, ?by_name:Dynamic, ?skip_mismatch:Dynamic, ?reshape:Dynamic):Dynamic;
 	/**
-		Retrieve the model's losses.
+		Retrieves the model's losses.
 		
 		Will only include losses that are either
-		inconditional, or conditional on inputs to this model
+		unconditional, or conditional on inputs to this model
 		(e.g. will not include losses that depend on tensors
 		that aren't inputs to this model).
 		
@@ -897,10 +1008,13 @@ package keras.engine.training;
 		Computation is done in batches.
 		
 		# Arguments
-		    x: the input data, as a Numpy array
-		        (or list of Numpy arrays if the model has multiple outputs).
-		    batch_size: integer.
-		    verbose: verbosity mode, 0 or 1.
+		    x: The input data, as a Numpy array
+		        (or list of Numpy arrays if the model has multiple inputs).
+		    batch_size: Integer. If unspecified, it will default to 32.
+		    verbose: Verbosity mode, 0 or 1.
+		    steps: Total number of steps (batches of samples)
+		        before declaring the prediction round finished.
+		        Ignored with the default value of `None`.
 		
 		# Returns
 		    Numpy array(s) of predictions.
@@ -911,7 +1025,7 @@ package keras.engine.training;
 		        or in case a stateful model receives a number of samples
 		        that is not a multiple of the batch size.
 	**/
-	public function predict(x:Dynamic, ?batch_size:Dynamic, ?verbose:Dynamic):Dynamic;
+	public function predict(x:Dynamic, ?batch_size:Dynamic, ?verbose:Dynamic, ?steps:Dynamic):Dynamic;
 	/**
 		Generates predictions for the input samples from a data generator.
 		
@@ -920,14 +1034,18 @@ package keras.engine.training;
 		
 		# Arguments
 		    generator: Generator yielding batches of input samples
-		            or an instance of Sequence (keras.utils.Sequence)
-		            object in order to avoid duplicate data
-		            when using multiprocessing.
+		        or an instance of Sequence (keras.utils.Sequence)
+		        object in order to avoid duplicate data
+		        when using multiprocessing.
 		    steps: Total number of steps (batches of samples)
 		        to yield from `generator` before stopping.
+		        Optional for `Sequence`: if unspecified, will use
+		        the `len(generator)` as a number of steps.
 		    max_queue_size: Maximum size for the generator queue.
-		    workers: Maximum number of processes to spin up
-		        when using process based threading
+		    workers: Integer. Maximum number of processes to spin up
+		        when using process based threading.
+		        If unspecified, `workers` will default to 1. If 0, will
+		        execute the generator on the main thread.
 		    use_multiprocessing: If `True`, use process based threading.
 		        Note that because
 		        this implementation relies on multiprocessing,
@@ -944,7 +1062,7 @@ package keras.engine.training;
 		    ValueError: In case the generator yields
 		        data in an invalid format.
 	**/
-	public function predict_generator(generator:Dynamic, steps:Dynamic, ?max_queue_size:Dynamic, ?workers:Dynamic, ?use_multiprocessing:Dynamic, ?verbose:Dynamic):Dynamic;
+	public function predict_generator(generator:Dynamic, ?steps:Dynamic, ?max_queue_size:Dynamic, ?workers:Dynamic, ?use_multiprocessing:Dynamic, ?verbose:Dynamic):Dynamic;
 	/**
 		Returns predictions for a single batch of samples.
 		
@@ -972,7 +1090,7 @@ package keras.engine.training;
 	**/
 	public function run_internal_graph(inputs:Dynamic, ?masks:Dynamic):Dynamic;
 	/**
-		Save the model to a single HDF5 file.
+		Saves the model to a single HDF5 file.
 		
 		The savefile includes:
 		    - The model architecture, allowing to re-instantiate the model.
@@ -1064,6 +1182,7 @@ package keras.engine.training;
 		        It will be called on each line of the summary.
 		        You can set it to a custom function
 		        in order to capture the string summary.
+		        It defaults to `print` (prints to stdout).
 	**/
 	public function summary(?line_length:Dynamic, ?positions:Dynamic, ?print_fn:Dynamic):Dynamic;
 	/**
@@ -1080,7 +1199,7 @@ package keras.engine.training;
 		        If all outputs in the model are named,
 		        you can also pass a dictionary
 		        mapping output names to Numpy arrays.
-		    sample_weight: optional array of the same length as x, containing
+		    sample_weight: Optional array of the same length as x, containing
 		        weights to apply to the model's loss for each sample.
 		        In the case of temporal data, you can pass a 2D array
 		        with shape (samples, sequence_length),
@@ -1141,14 +1260,14 @@ package keras.engine.training;
 		        If all outputs in the model are named,
 		        you can also pass a dictionary
 		        mapping output names to Numpy arrays.
-		    sample_weight: optional array of the same length as x, containing
+		    sample_weight: Optional array of the same length as x, containing
 		        weights to apply to the model's loss for each sample.
 		        In the case of temporal data, you can pass a 2D array
 		        with shape (samples, sequence_length),
 		        to apply a different weight to every timestep of every sample.
 		        In this case you should make sure to specify
 		        sample_weight_mode="temporal" in compile().
-		    class_weight: optional dictionary mapping
+		    class_weight: Optional dictionary mapping
 		        class indices (integers) to
 		        a weight (float) to apply to the model's loss for the samples
 		        from this class during training.
@@ -1165,10 +1284,10 @@ package keras.engine.training;
 	public function train_on_batch(x:Dynamic, y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic):Dynamic;
 	public var trainable_weights : Dynamic;
 	/**
-		Retrieve the model's updates.
+		Retrieves the model's updates.
 		
 		Will only include updates that are either
-		inconditional, or conditional on inputs to this model
+		unconditional, or conditional on inputs to this model
 		(e.g. will not include updates that depend on tensors
 		that aren't inputs to this model).
 		

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.summary_io;
 @:pythonImport("tensorflow.python.training.summary_io", "SummaryWriter") extern class SummaryWriter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -14,9 +14,17 @@ package tensorflow.python.training.summary_io;
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
+		Make usable with "with" statement.
+	**/
+	public function __enter__():Dynamic;
+	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
+	/**
+		Make usable with "with" statement.
+	**/
+	public function __exit__(unused_type:Dynamic, unused_value:Dynamic, unused_traceback:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -136,7 +144,7 @@ package tensorflow.python.training.summary_io;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -187,13 +195,15 @@ package tensorflow.python.training.summary_io;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _add_event(event:Dynamic, step:Dynamic):Dynamic;
 	public function _add_graph_def(graph_def:Dynamic, ?global_step:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public function _write_plugin_assets(graph:Dynamic):Dynamic;
 	/**
 		Adds an event to the event file.
@@ -266,8 +276,8 @@ package tensorflow.python.training.summary_io;
 		and adds it to the event file.
 		
 		You can pass the result of evaluating any summary op, using
-		@{tf.Session.run} or
-		@{tf.Tensor.eval}, to this
+		`tf.Session.run` or
+		`tf.Tensor.eval`, to this
 		function. Alternatively, you can pass a `tf.Summary` protocol
 		buffer that you populate with your own data. The latter is
 		commonly done to report evaluation results in event files.

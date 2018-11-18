@@ -9,12 +9,13 @@ package tensorflow.contrib.slim.python.slim.data.prefetch_queue;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _which_queue(dynamic_pad:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Creates a queue to prefetech tensors from `tensors`.
+		Creates a queue to prefetch tensors from `tensors`.
 		
-		A queue runner for enqueing tensors into the prefetch_queue is automatically
+		A queue runner for enqueuing tensors into the prefetch_queue is automatically
 		added to the TF QueueRunners collection.
 		
 		Example:
@@ -32,6 +33,7 @@ package tensorflow.contrib.slim.python.slim.data.prefetch_queue;
 		  tensors: A list or dictionary of `Tensors` to enqueue in the buffer.
 		  capacity: An integer. The maximum number of elements in the queue.
 		  num_threads: An integer.  Number of threads running the enqueue op.
+		  dynamic_pad: Boolean.  Whether to allow variable dimensions in input shapes.
 		  shared_name: (optional). If set, this queue will be shared under the given
 		    name across multiple sessions.
 		  name: (Optional) A name for the operations.
@@ -40,6 +42,6 @@ package tensorflow.contrib.slim.python.slim.data.prefetch_queue;
 		  A queue from which you can dequeue tensors with the same type and shape
 		  as `tensors`.
 	**/
-	static public function prefetch_queue(tensors:Dynamic, ?capacity:Dynamic, ?num_threads:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	static public function prefetch_queue(tensors:Dynamic, ?capacity:Dynamic, ?num_threads:Dynamic, ?dynamic_pad:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

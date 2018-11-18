@@ -9,7 +9,6 @@ package theano.gpuarray.opt_util;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _one : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator to merge multiplication by a scalar on the output.
@@ -30,7 +29,7 @@ package theano.gpuarray.opt_util;
 		
 		    maker(node, *inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		The `*inputs` parameters contains the new inputs for your op.  You
@@ -110,7 +109,6 @@ package theano.gpuarray.opt_util;
 		    but I'm not sure where it is.
 	**/
 	static public function get_scalar_constant_value(orig_v:Dynamic, ?elemwise:Dynamic, ?only_process_constants:Dynamic, ?max_recur:Dynamic):Dynamic;
-	static public function gpu_alloc_empty(ctx:Dynamic, dtype:Dynamic):Dynamic;
 	/**
 		Get a scalar variable value from the tree at `v`.
 		
@@ -127,6 +125,17 @@ package theano.gpuarray.opt_util;
 	**/
 	static public function grab_cpu_scalar(v:Dynamic, nd:Dynamic):Dynamic;
 	/**
+		Contextmanager that copies the stack trace from one or more variable nodes to all
+		variable nodes constructed in the body. new_nodes is the list of all the newly created
+		variable nodes inside an optimization that is managed by graph.nodes_constructed().
+		
+		Parameters
+		----------
+		from_var
+		    Variable node or a list of variable nodes to copy stack traces from.
+	**/
+	static public function inherit_stack_trace(from_var:Dynamic):Dynamic;
+	/**
 		Wrapper to make an inplace optimization that deals with AllocEmpty
 		
 		This will duplicate the alloc input if it has more than one client
@@ -136,7 +145,7 @@ package theano.gpuarray.opt_util;
 		
 		    maker(node, inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		You should also switch the op to work inplace.  The `*inputs`
@@ -195,7 +204,7 @@ package theano.gpuarray.opt_util;
 		
 		    maker(node, *inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		The `*inputs` parameters contains the new inputs for your op.  You

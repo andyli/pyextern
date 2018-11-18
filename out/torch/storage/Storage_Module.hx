@@ -17,24 +17,29 @@ package torch.storage;
 		
 		Args:
 		    device (int): The destination GPU id. Defaults to the current device.
-		    async (bool): If True and the source is in pinned memory, the copy will
-		                  be asynchronous with respect to the host. Otherwise, the
-		                  argument has no effect.
+		    non_blocking (bool): If ``True`` and the source is in pinned memory,
+		        the copy will be asynchronous with respect to the host. Otherwise,
+		        the argument has no effect.
+		    **kwargs: For compatibility, may contain the key ``async`` in place of
+		        the ``non_blocking`` argument.
 	**/
-	static public function _cuda(self:Dynamic, ?device:Dynamic, ?async:Dynamic):Dynamic;
-	static public function _range(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _cuda(self:Dynamic, ?device:Dynamic, ?non_blocking:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _load_from_bytes(b:Dynamic):Dynamic;
 	/**
-		Casts this object to the specified type.
+		Returns the type if `dtype` is not provided, else casts this object to
+		the specified type.
 		
 		If this is already of the correct type, no copy is performed and the
 		original object is returned.
 		
 		Args:
-		    new_type (type or string): The desired type
-		    async (bool): If True, and the source is in pinned memory and
-		                  destination is on the GPU or vice versa, the copy is
-		                  performed asynchronously with respect to the host.
-		                  Otherwise, the argument has no effect.
+		    dtype (type or string): The desired type
+		    non_blocking (bool): If ``True``, and the source is in pinned memory
+		        and destination is on the GPU or vice versa, the copy is performed
+		        asynchronously with respect to the host. Otherwise, the argument
+		        has no effect.
+		    **kwargs: For compatibility, may contain the key ``async`` in place of
+		        the ``non_blocking`` argument. The ``async`` arg is deprecated.
 	**/
-	static public function _type(self:Dynamic, ?new_type:Dynamic, ?async:Dynamic):Dynamic;
+	static public function _type(self:Dynamic, ?dtype:Dynamic, ?non_blocking:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

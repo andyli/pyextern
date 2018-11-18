@@ -6,6 +6,8 @@ package tensorflow.python.training.saver;
 		
 		Args:
 		  op_list: A list, tuple, or set of Variables or SaveableObjects.
+		  convert_variable_to_tensor: Whether or not to convert single Variables
+		    with no slice info into Tensors.
 		
 		Returns:
 		  A dictionary of names to the operations that must be saved under
@@ -16,7 +18,7 @@ package tensorflow.python.training.saver;
 		  TypeError: If the type of op_list or its elements is not supported.
 		  ValueError: If at least two saveables share the same name.
 	**/
-	static public function OpListToDict(op_list:Dynamic):Dynamic;
+	static public function OpListToDict(op_list:Dynamic, ?convert_variable_to_tensor:Dynamic):Dynamic;
 	/**
 		SaveableObject implementation that handles ResourceVariables.
 	**/
@@ -24,11 +26,27 @@ package tensorflow.python.training.saver;
 	/**
 		Class used to describe tensor slices that need to be saved.
 	**/
-	static public function SaveSpec(tensor:Dynamic, slice_spec:Dynamic, name:Dynamic):Dynamic;
+	static public function SaveSpec(tensor:Dynamic, slice_spec:Dynamic, name:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Base class for saving and restoring saveable objects.
 	**/
 	static public function SaveableObject(op:Dynamic, specs:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Create `SaveableObject`s from an operation.
+		
+		Args:
+		  op: A variable, operation, or SaveableObject to coerce into a
+		    SaveableObject.
+		  name: A string name for the SaveableObject.
+		
+		Yields:
+		  `SaveableObject`s which together save/restore `op`.
+		
+		Raises:
+		  TypeError: If `name` is not a string.
+		  ValueError: For operations with no known conversion to SaveableObject.
+	**/
+	static public function SaveableObjectsForOp(op:Dynamic, name:Dynamic):Dynamic;
 	/**
 		SaveableObject implementation that handles Variables.
 	**/
@@ -156,7 +174,7 @@ package tensorflow.python.training.saver;
 		    (this also applies to slices of SlicedVariables).
 	**/
 	public function _ValidateAndSliceInputs(names_to_saveables:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -207,7 +225,7 @@ package tensorflow.python.training.saver;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -258,13 +276,17 @@ package tensorflow.python.training.saver;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Adds save/restore nodes to the graph and creates a SaverDef proto.
+		build() with option to only perform save and restore.
+	**/
+	public function _build_internal(names_to_saveables:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?filename:Dynamic, ?build_save:Dynamic, ?build_restore:Dynamic):Dynamic;
+	/**
+		Builds save/restore graph nodes or runs save/restore in eager mode.
 		
 		Args:
 		  names_to_saveables: A dictionary mapping name to a Variable or
@@ -288,7 +310,7 @@ package tensorflow.python.training.saver;
 		  restore_sequentially: A Bool, which if true, causes restore of different
 		    variables to happen sequentially within each device.
 		  filename: If known at graph construction time, filename used for variable
-		    loading/saving.
+		    loading/saving. If None, then the default name "model" will be used.
 		
 		Returns:
 		  A SaverDef proto.
@@ -300,6 +322,23 @@ package tensorflow.python.training.saver;
 		    unique.
 	**/
 	public function build(names_to_saveables:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?filename:Dynamic):Dynamic;
+	/**
+		Restore all tensors contained in saveables.
+		
+		By default, this issues separate calls to `restore_op` for each saveable.
+		Subclasses may override to load multiple saveables in a single call.
+		
+		Args:
+		  filename_tensor: String Tensor.
+		  saveables: List of BaseSaverBuilder.SaveableObject objects.
+		  preferred_shard: Int.  Shard to open first when loading a sharded file.
+		  restore_sequentially: Unused.  Bool.  If true, each restore is sequential.
+		
+		Returns:
+		  A list of Tensors resulting from reading 'saveable' from
+		    'filename'.
+	**/
+	public function bulk_restore(filename_tensor:Dynamic, saveables:Dynamic, preferred_shard:Dynamic, restore_sequentially:Dynamic):Dynamic;
 	/**
 		Create ops to restore 'saveable'.
 		

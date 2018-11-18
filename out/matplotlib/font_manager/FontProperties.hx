@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.font_manager;
 @:pythonImport("matplotlib.font_manager", "FontProperties") extern class FontProperties {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.font_manager;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -65,7 +65,7 @@ package matplotlib.font_manager;
 	/**
 		Return self!=value.
 	**/
-	public function __ne__(other:Dynamic):Dynamic;
+	public function __ne__(value:Dynamic):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.font_manager;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -134,8 +134,7 @@ package matplotlib.font_manager;
 	**/
 	public function get_fontconfig_pattern():Dynamic;
 	/**
-		Return the name of the font that best matches the font
-		properties.
+		Return the name of the font that best matches the font properties.
 	**/
 	public function get_name():Dynamic;
 	/**
@@ -144,8 +143,7 @@ package matplotlib.font_manager;
 	public function get_size():Dynamic;
 	public function get_size_in_points():Dynamic;
 	/**
-		Return the font style.  Values are: 'normal', 'italic' or
-		'oblique'.
+		Return the font style.  Values are: 'normal', 'italic' or 'oblique'.
 	**/
 	public function get_slant():Dynamic;
 	/**
@@ -155,13 +153,11 @@ package matplotlib.font_manager;
 	**/
 	public function get_stretch():Dynamic;
 	/**
-		Return the font style.  Values are: 'normal', 'italic' or
-		'oblique'.
+		Return the font style.  Values are: 'normal', 'italic' or 'oblique'.
 	**/
 	public function get_style():Dynamic;
 	/**
-		Return the font variant.  Values are: 'normal' or
-		'small-caps'.
+		Return the font variant.  Values are: 'normal' or 'small-caps'.
 	**/
 	public function get_variant():Dynamic;
 	/**
@@ -210,8 +206,7 @@ package matplotlib.font_manager;
 	**/
 	public function set_size(size:Dynamic):Dynamic;
 	/**
-		Set the font style.  Values are: 'normal', 'italic' or
-		'oblique'.
+		Set the font style.  Values are: 'normal', 'italic' or 'oblique'.
 	**/
 	public function set_slant(style:Dynamic):Dynamic;
 	/**
@@ -222,8 +217,7 @@ package matplotlib.font_manager;
 	**/
 	public function set_stretch(stretch:Dynamic):Dynamic;
 	/**
-		Set the font style.  Values are: 'normal', 'italic' or
-		'oblique'.
+		Set the font style.  Values are: 'normal', 'italic' or 'oblique'.
 	**/
 	public function set_style(style:Dynamic):Dynamic;
 	/**

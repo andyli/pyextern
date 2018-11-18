@@ -115,7 +115,7 @@ package tensorflow.contrib.training.python.training.sequence_queueing_state_save
 		
 		For `key, value` pairs in `input_context` with `SparseTensor` `value` removes
 		them from `input_context` and transforms the `value` into a sequence and
-		then adding `key`, transformed `value` into `input_seuqences`.
+		then adding `key`, transformed `value` into `input_sequences`.
 		The transformation is done by adding a new first dimension of `value_length`
 		equal to that of the other values in input_sequences` and tiling the `value`
 		every `num_unroll` steps.
@@ -200,7 +200,7 @@ package tensorflow.contrib.training.python.training.sequence_queueing_state_save
 		
 		The input `SparseTensor` objects' indices are assumed ordered in
 		standard lexicographic order.  If this is not the case, after this
-		step run `sparse_reorder` to restore index ordering.
+		step run `sparse.reorder` to restore index ordering.
 		
 		For example, if the serialized input is a `[2, 3]` matrix representing two
 		original `SparseTensor` objects:

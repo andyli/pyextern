@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.core.datetools;
 @:pythonImport("pandas.core.datetools") extern class Datetools_Module {
-	static public var DAYS : Dynamic;
-	static public var MONTHS : Dynamic;
 	static public var OLE_TIME_ZERO : Dynamic;
 	static public var RESO_DAY : Dynamic;
 	static public var RESO_HR : Dynamic;
@@ -19,6 +17,17 @@ package pandas.core.datetools;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Calculates the datetime structs represented by the passed array of strings
+		
+		Parameters
+		----------
+		values : ndarray of string-like objects
+		fmt : string-like regex
+		exact : matches must be exact if True, search if False
+		coerce : if invalid values found, coerce to NaT
+	**/
+	static public function array_strptime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bday(other:Dynamic):Dynamic;
 	static public function bmonthBegin(other:Dynamic):Dynamic;
 	static public function bmonthEnd(other:Dynamic):Dynamic;
@@ -33,46 +42,6 @@ package pandas.core.datetools;
 	static public function customBusinessMonthEnd(other:Dynamic):Dynamic;
 	static public function day(other:Dynamic):Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function
-		
-		Parameters
-		----------
-		old_arg_name : str
-		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of preferred argument in function
-		mapping : dict or callable
-		    If mapping is present, use it to translate old arguments to
-		    new arguments. A callable must do its own value checking;
-		    values not found in a dict will be forwarded unchanged.
-		
-		Examples
-		--------
-		The following deprecates 'cols', using 'columns' instead
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
-		... def f(columns=''):
-		...     print(columns)
-		...
-		>>> f(columns='should work ok')
-		should work ok
-		>>> f(cols='should raise warning')
-		FutureWarning: cols is deprecated, use columns instead
-		  warnings.warn(msg, FutureWarning)
-		should raise warning
-		>>> f(cols='should error', columns="can't pass do both")
-		TypeError: Can only specify 'cols' or 'columns', not both
-		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
-		... def f(new=False):
-		...     print('yes!' if new else 'no!')
-		...
-		>>> f(old='yes')
-		FutureWarning: old='yes' is deprecated, use new=True instead
-		  warnings.warn(msg, FutureWarning)
-		yes!
-	**/
-	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
-	/**
 		Returns date in YYYYMMDD format.
 	**/
 	static public function format(dt:Dynamic):Dynamic;
@@ -86,21 +55,29 @@ package pandas.core.datetools;
 	static public function getOffset(name:Dynamic):Dynamic;
 	/**
 		Returns the base frequency alias, e.g., '5D' -> 'D'
+		
+		Parameters
+		----------
+		freqstr : str
+		
+		Returns
+		-------
+		base_alias : str
 	**/
-	static public function get_base_alias(freqstr:Dynamic):Dynamic;
+	static public function get_base_alias(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return frequency code of given frequency str.
 		If input is not string, return input as it is.
 		
-		Example
-		-------
+		Examples
+		--------
 		>>> get_freq('A')
 		1000
 		
 		>>> get_freq('3A')
 		1000
 	**/
-	static public function get_freq(freq:Dynamic):Dynamic;
+	static public function get_freq(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return freq str or tuple to freq code and stride (mult)
 		
@@ -112,8 +89,8 @@ package pandas.core.datetools;
 		-------
 		return : tuple of base frequency code and stride (mult)
 		
-		Example
-		-------
+		Examples
+		--------
 		>>> get_freq_code('3D')
 		(6000, 3)
 		
@@ -123,19 +100,7 @@ package pandas.core.datetools;
 		>>> get_freq_code(('D', 3))
 		(6000, 3)
 	**/
-	static public function get_freq_code(freqstr:Dynamic):Dynamic;
-	/**
-		Return frequency code group of given frequency str or offset.
-		
-		Example
-		-------
-		>>> get_freq_group('W-MON')
-		4000
-		
-		>>> get_freq_group('W-FRI')
-		4000
-	**/
-	static public function get_freq_group(freq:Dynamic):Dynamic;
+	static public function get_freq_code(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return DateOffset object associated with rule name
 		
@@ -145,27 +110,23 @@ package pandas.core.datetools;
 	**/
 	static public function get_offset(name:Dynamic):Dynamic;
 	/**
-		Return rule name associated with a DateOffset object
-		
-		Examples
-		--------
-		get_offset_name(BMonthEnd(1)) --> 'EOM'
-	**/
-	static public function get_offset_name(offset:Dynamic):Dynamic;
-	/**
 		alias to closest period strings BQ->Q etc
 	**/
 	static public function get_period_alias(offset_str:Dynamic):Dynamic;
 	/**
-		Return the standardized frequency string
-	**/
-	static public function get_standard_freq(freq:Dynamic):Dynamic;
-	/**
 		Return frequency code group used for base of to_timestamp against
 		frequency code.
 		
-		Example
+		Parameters
+		----------
+		base : int (member of FreqGroup)
+		
+		Returns
 		-------
+		base : int
+		
+		Examples
+		--------
 		# Return day freq code against longer freq than day
 		>>> get_to_timestamp_base(get_freq_code('D')[0])
 		6000
@@ -180,7 +141,7 @@ package pandas.core.datetools;
 		>>> get_to_timestamp_base(get_freq_code('S')[0])
 		9000
 	**/
-	static public function get_to_timestamp_base(base:Dynamic):Dynamic;
+	static public function get_to_timestamp_base(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Infer the most likely frequency given the input index. If the frequency is
 		uncertain, a warning will be printed.
@@ -441,6 +402,7 @@ package pandas.core.datetools;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -449,16 +411,16 @@ package pandas.core.datetools;
 		
 		Parameters
 		----------
-		source : string
+		source : string or DateOffset
 		    Frequency converting from
-		target : string
+		target : string or DateOffset
 		    Frequency converting to
 		
 		Returns
 		-------
 		is_subperiod : boolean
 	**/
-	static public function is_subperiod(source:Dynamic, target:Dynamic):Dynamic;
+	static public function is_subperiod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns True if upsampling is possible between source and target
 		frequencies
@@ -474,7 +436,7 @@ package pandas.core.datetools;
 		-------
 		is_superperiod : boolean
 	**/
-	static public function is_superperiod(source:Dynamic, target:Dynamic):Dynamic;
+	static public function is_superperiod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the timedelta64 dtype.
 		
@@ -498,44 +460,89 @@ package pandas.core.datetools;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function monthEnd(other:Dynamic):Dynamic;
-	static public var need_suffix : Dynamic;
 	/**
-		Normalize datetime.datetime value to midnight. Returns datetime.date as a
-		datetime.datetime at midnight
+		Detect non-missing values for an array-like object.
 		
-		Returns
-		-------
-		normalized : datetime.datetime or Timestamp
-	**/
-	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : boolean inverse of pandas.notnull
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
 	**/
-	static public function notnull(obj:Dynamic):Dynamic;
+	static public function notna(obj:Dynamic):Dynamic;
 	/**
 		function for converting excel date to normal date format
 	**/
 	static public function ole2datetime(oledt:Dynamic):Dynamic;
-	static public var opattern : Dynamic;
 	/**
 		Try hard to parse datetime string, leveraging dateutil plus some extra
 		goodies like quarter recognition.
@@ -554,7 +561,7 @@ package pandas.core.datetools;
 		-------
 		datetime, datetime/dateutil.parser._result, str
 	**/
-	static public function parse_time_string(arg:Dynamic, ?freq:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic):Dynamic;
+	static public function parse_time_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var prefix_mapping : Dynamic;
 	static public function quarterEnd(other:Dynamic):Dynamic;
 	static public function thisBMonthEnd(other:Dynamic):Dynamic;
@@ -570,7 +577,7 @@ package pandas.core.datetools;
 		----------
 		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
-		    .. versionadded: 0.18.1
+		    .. versionadded:: 0.18.1
 		
 		       or DataFrame/dict-like
 		
@@ -596,7 +603,7 @@ package pandas.core.datetools;
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
-		    .. versionadded: 0.16.1
+		    .. versionadded:: 0.16.1
 		
 		utc : boolean, default None
 		    Return UTC DatetimeIndex if True (converting any tz-aware
@@ -634,7 +641,13 @@ package pandas.core.datetools;
 		    - If Timestamp convertible, origin is set to Timestamp identified by
 		      origin.
 		
-		    .. versionadded: 0.20.0
+		    .. versionadded:: 0.20.0
+		cache : boolean, default False
+		    If True, use a cache of unique, converted dates to apply the datetime
+		    conversion. May produce sigificant speed-up when parsing duplicate date
+		    strings, especially ones with timezone offsets.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
@@ -647,11 +660,11 @@ package pandas.core.datetools;
 		
 		    In case when it is not possible to return designated types (e.g. when
 		    any element of input is before Timestamp.min or after Timestamp.max)
-		    return will have datetime.datetime type (or correspoding array/Series).
+		    return will have datetime.datetime type (or corresponding
+		    array/Series).
 		
 		Examples
 		--------
-		
 		Assembling a datetime from multiple columns of a DataFrame. The keys can be
 		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
 		'ms', 'us', 'ns']) or plurals of the same
@@ -713,8 +726,13 @@ package pandas.core.datetools;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		Return DateOffset object from string or tuple representation
 		or datetime.timedelta object
@@ -785,79 +803,6 @@ package pandas.core.datetools;
 		datetime.time
 	**/
 	static public function to_time(arg:Dynamic, ?format:Dynamic, ?infer_time_format:Dynamic, ?errors:Dynamic):Dynamic;
-	/**
-		Hash table-based unique. Uniques are returned in order
-		of appearance. This does NOT sort.
-		
-		Significantly faster than numpy.unique. Includes NA values.
-		
-		Parameters
-		----------
-		values : 1d array-like
-		
-		Returns
-		-------
-		unique values.
-		  - If the input is an Index, the return is an Index
-		  - If the input is a Categorical dtype, the return is a Categorical
-		  - If the input is a Series/ndarray, the return will be an ndarray
-		
-		Examples
-		--------
-		>>> pd.unique(pd.Series([2, 1, 3, 3]))
-		array([2, 1, 3])
-		
-		>>> pd.unique(pd.Series([2] + [1] * 5))
-		array([2, 1])
-		
-		>>> pd.unique(Series([pd.Timestamp('20160101'),
-		...                   pd.Timestamp('20160101')]))
-		array(['2016-01-01T00:00:00.000000000'], dtype='datetime64[ns]')
-		
-		>>> pd.unique(pd.Series([pd.Timestamp('20160101', tz='US/Eastern'),
-		...                      pd.Timestamp('20160101', tz='US/Eastern')]))
-		array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
-		      dtype=object)
-		
-		>>> pd.unique(pd.Index([pd.Timestamp('20160101', tz='US/Eastern'),
-		...                     pd.Timestamp('20160101', tz='US/Eastern')]))
-		DatetimeIndex(['2016-01-01 00:00:00-05:00'],
-		...           dtype='datetime64[ns, US/Eastern]', freq=None)
-		
-		>>> pd.unique(list('baabc'))
-		array(['b', 'a', 'c'], dtype=object)
-		
-		An unordered Categorical will return categories in the
-		order of appearance.
-		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'))))
-		[b, a, c]
-		Categories (3, object): [b, a, c]
-		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'))))
-		[b, a, c]
-		Categories (3, object): [b, a, c]
-		
-		An ordered Categorical preserves the category ordering.
-		
-		>>> pd.unique(Series(pd.Categorical(list('baabc'),
-		...                                 categories=list('abc'),
-		...                                 ordered=True)))
-		[b, a, c]
-		Categories (3, object): [a < b < c]
-		
-		An array of tuples
-		
-		>>> pd.unique([('a', 'b'), ('b', 'a'), ('a', 'c'), ('b', 'a')])
-		array([('a', 'b'), ('b', 'a'), ('a', 'c')], dtype=object)
-		
-		See Also
-		--------
-		pandas.Index.unique
-		pandas.Series.unique
-	**/
-	static public function unique(values:Dynamic):Dynamic;
 	static public function week(other:Dynamic):Dynamic;
 	static public function yearBegin(other:Dynamic):Dynamic;
 	static public function yearEnd(other:Dynamic):Dynamic;

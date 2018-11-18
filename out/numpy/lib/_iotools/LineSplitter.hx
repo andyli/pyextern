@@ -5,7 +5,7 @@ package numpy.lib._iotools;
 		Call self as a function.
 	**/
 	public function __call__(line:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -45,18 +45,18 @@ package numpy.lib._iotools;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?delimiter:Dynamic, ?comments:Dynamic, ?autostrip:Dynamic):Dynamic;
+	public function ___init__(?delimiter:Dynamic, ?comments:Dynamic, ?autostrip:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?delimiter:Dynamic, ?comments:Dynamic, ?autostrip:Dynamic):Void;
+	public function new(?delimiter:Dynamic, ?comments:Dynamic, ?autostrip:Dynamic, ?encoding:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,11 +107,14 @@ package numpy.lib._iotools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Chop off comments, strip, and split at delimiter. 
+	**/
 	public function _delimited_splitter(line:Dynamic):Dynamic;
 	public function _fixedwidth_splitter(line:Dynamic):Dynamic;
 	public function _variablewidth_splitter(line:Dynamic):Dynamic;

@@ -39,6 +39,29 @@ package scipy.sparse.csc;
 		if it can be cast safely to a machine int.
 	**/
 	static public function isintlike(x:Dynamic):Dynamic;
+	/**
+		Is x of csc_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a csc matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a csc matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csc_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import csc_matrix, csr_matrix, isspmatrix_csc
+		>>> isspmatrix_csc(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_csc(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**

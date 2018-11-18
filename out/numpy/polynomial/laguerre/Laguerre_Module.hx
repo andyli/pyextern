@@ -106,7 +106,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function lagcompanion(c:Dynamic):numpy.Ndarray;
 	/**
@@ -401,7 +401,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 		
 		The results have only been tested up to degree 100 higher degrees may
 		be problematic. The weights are determined by using the fact that
@@ -459,7 +459,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function laggrid2d(x:Dynamic, y:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -511,7 +511,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function laggrid3d(x:Dynamic, y:Dynamic, z:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -562,8 +562,8 @@ package numpy.polynomial.laguerre;
 		Raises
 		------
 		ValueError
-		    If ``m < 0``, ``len(k) > m``, ``np.isscalar(lbnd) == False``, or
-		    ``np.isscalar(scl) == False``.
+		    If ``m < 0``, ``len(k) > m``, ``np.ndim(lbnd) != 0``, or
+		    ``np.ndim(scl) != 0``.
 		
 		See Also
 		--------
@@ -574,7 +574,7 @@ package numpy.polynomial.laguerre;
 		Note that the result of each integration is *multiplied* by `scl`.
 		Why is this important to note?  Say one is making a linear change of
 		variable :math:`u = ax + b` in an integral relative to `x`.  Then
-		.. math::`dx = du/a`, so one will need to set `scl` equal to
+		:math:`dx = du/a`, so one will need to set `scl` equal to
 		:math:`1/a` - perhaps not what one would have first thought.
 		
 		Also note that, in general, the result of integrating a C-series needs
@@ -846,13 +846,13 @@ package numpy.polynomial.laguerre;
 		
 		Examples
 		--------
-		>>> from numpy import polynomial as P
-		>>> P.trimcoef((0,0,3,0,5,0,0))
+		>>> from numpy.polynomial import polyutils as pu
+		>>> pu.trimcoef((0,0,3,0,5,0,0))
 		array([ 0.,  0.,  3.,  0.,  5.])
-		>>> P.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
+		>>> pu.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
 		array([ 0.])
 		>>> i = complex(0,1) # works for complex
-		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
+		>>> pu.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
 	static public function lagtrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
@@ -966,7 +966,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function lagval2d(x:Dynamic, y:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -1013,7 +1013,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function lagval3d(x:Dynamic, y:Dynamic, z:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -1107,7 +1107,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function lagvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
@@ -1158,7 +1158,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function lagvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
@@ -1181,7 +1181,7 @@ package numpy.polynomial.laguerre;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function lagweight(x:Dynamic):numpy.Ndarray;
 	static public var lagx : Dynamic;

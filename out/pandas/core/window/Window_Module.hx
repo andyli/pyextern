@@ -13,7 +13,7 @@ package pandas.core.window;
 	static public var _doc_template : Dynamic;
 	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _flex_binary_moment(arg1:Dynamic, arg2:Dynamic, f:Dynamic, ?pairwise:Dynamic):Dynamic;
-	static public function _get_center_of_mass(com:Dynamic, span:Dynamic, halflife:Dynamic, alpha:Dynamic):Dynamic;
+	static public function _get_center_of_mass(comass:Dynamic, span:Dynamic, halflife:Dynamic, alpha:Dynamic):Dynamic;
 	static public function _offset(window:Dynamic, center:Dynamic):Dynamic;
 	static public var _pairwise_template : Dynamic;
 	static public function _prep_binary(arg1:Dynamic, arg2:Dynamic):Dynamic;
@@ -61,8 +61,6 @@ package pandas.core.window;
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
-		freq : None or string alias / date offset object, default=None (DEPRECATED)
-		    Frequency to conform to before computing statistic
 		adjust : boolean, default True
 		    Divide by decaying adjustment factor in beginning periods to account
 		    for imbalance in relative weightings (viewing EWMA as a moving average)
@@ -100,10 +98,6 @@ package pandas.core.window;
 		parameter descriptions above; see the link at the end of this section for
 		a detailed explanation.
 		
-		The `freq` keyword is used to conform time series data to a specified
-		frequency by resampling the data. This is done with the default parameters
-		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
-		
 		When adjust is True (default), weighted averages are calculated using
 		weights (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
 		
@@ -123,6 +117,11 @@ package pandas.core.window;
 		
 		More details can be found at
 		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
+		
+		See Also
+		--------
+		rolling : Provides rolling window calculations
+		expanding : Provides expanding transformations.
 	**/
 	static public function ewm(obj:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -132,12 +131,9 @@ package pandas.core.window;
 		
 		Parameters
 		----------
-		min_periods : int, default None
+		min_periods : int, default 1
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
-		freq : string or DateOffset object, optional (default None) (DEPRECATED)
-		    Frequency to conform the data to before computing the statistic.
-		    Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Set the labels at the center of the window.
 		axis : int or string, default 0
@@ -170,9 +166,10 @@ package pandas.core.window;
 		By default, the result is set to the right edge of the window. This can be
 		changed to the center of the window by setting ``center=True``.
 		
-		The `freq` keyword is used to conform time series data to a specified
-		frequency by resampling the data. This is done with the default parameters
-		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		See Also
+		--------
+		rolling : Provides rolling window calculations
+		ewm : Provides exponential weighted functions
 	**/
 	static public function expanding(obj:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -288,6 +285,7 @@ package pandas.core.window;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -313,6 +311,8 @@ package pandas.core.window;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -349,7 +349,7 @@ package pandas.core.window;
 	**/
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Provides rolling window calculcations.
+		Provides rolling window calculations.
 		
 		.. versionadded:: 0.18.0
 		
@@ -367,13 +367,11 @@ package pandas.core.window;
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA). For a window that is specified by an offset,
 		    this will default to 1.
-		freq : string or DateOffset object, optional (default None) (DEPRECATED)
-		    Frequency to conform the data to before computing the statistic.
-		    Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Set the labels at the center of the window.
 		win_type : string, default None
-		    Provide a window type. See the notes below.
+		    Provide a window type. If ``None``, all points are evenly weighted.
+		    See the notes below for further information.
 		on : string, optional
 		    For a DataFrame, column on which to calculate
 		    the rolling window, rather than the index
@@ -426,7 +424,7 @@ package pandas.core.window;
 		3  NaN
 		4  NaN
 		
-		Same as above, but explicity set the min_periods
+		Same as above, but explicitly set the min_periods
 		
 		>>> df.rolling(2, min_periods=1).sum()
 		     B
@@ -439,11 +437,11 @@ package pandas.core.window;
 		A ragged (meaning not-a-regular frequency), time-indexed DataFrame
 		
 		>>> df = pd.DataFrame({'B': [0, 1, 2, np.nan, 4]},
-		....:                 index = [pd.Timestamp('20130101 09:00:00'),
-		....:                          pd.Timestamp('20130101 09:00:02'),
-		....:                          pd.Timestamp('20130101 09:00:03'),
-		....:                          pd.Timestamp('20130101 09:00:05'),
-		....:                          pd.Timestamp('20130101 09:00:06')])
+		...                   index = [pd.Timestamp('20130101 09:00:00'),
+		...                            pd.Timestamp('20130101 09:00:02'),
+		...                            pd.Timestamp('20130101 09:00:03'),
+		...                            pd.Timestamp('20130101 09:00:05'),
+		...                            pd.Timestamp('20130101 09:00:06')])
 		
 		>>> df
 		                       B
@@ -471,10 +469,6 @@ package pandas.core.window;
 		By default, the result is set to the right edge of the window. This can be
 		changed to the center of the window by setting ``center=True``.
 		
-		The `freq` keyword is used to conform time series data to a specified
-		frequency by resampling the data. This is done with the default parameters
-		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
-		
 		To learn more about the offsets & frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
@@ -494,6 +488,15 @@ package pandas.core.window;
 		* ``gaussian`` (needs std)
 		* ``general_gaussian`` (needs power, width)
 		* ``slepian`` (needs width).
+		
+		If ``win_type=None`` all points are evenly weighted. To learn more about
+		different window types see `scipy.signal window functions
+		<https://docs.scipy.org/doc/scipy/reference/signal.html#window-functions>`__.
+		
+		See Also
+		--------
+		expanding : Provides expanding transformations.
+		ewm : Provides exponential weighted functions
 	**/
 	static public function rolling(obj:Dynamic, ?win_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

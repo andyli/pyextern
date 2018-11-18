@@ -39,7 +39,7 @@ package pandas.plotting._misc;
 		    array of Axis objects are returned as numpy 1-d arrays.
 		    - for NxM subplots with N>1 and M>1 are returned as a 2d array.
 		
-		  If False, no squeezing at all is done: the returned axis object is always
+		  If False, no squeezing is done: the returned axis object is always
 		  a 2-d array containing Axis instances, even if it ends up being 1x1.
 		
 		subplot_kw : dict
@@ -100,8 +100,8 @@ package pandas.plotting._misc;
 		linearly spaced between -pi and +pi. Each row of frame then corresponds to
 		a single curve.
 		
-		Parameters:
-		-----------
+		Parameters
+		----------
 		frame : DataFrame
 		    Data to be plotted, preferably normalized to (0.0, 1.0)
 		class_column : Name of the column containing class names
@@ -115,8 +115,8 @@ package pandas.plotting._misc;
 		kwds: keywords
 		    Options to pass to matplotlib plotting method
 		
-		Returns:
-		--------
+		Returns
+		-------
 		ax: Matplotlib axis object
 	**/
 	static public function andrews_curves(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?samples:Dynamic, ?color:Dynamic, ?colormap:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
@@ -136,31 +136,61 @@ package pandas.plotting._misc;
 	**/
 	static public function autocorrelation_plot(series:Dynamic, ?ax:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Bootstrap plot.
+		Bootstrap plot on mean, median and mid-range statistics.
 		
-		Parameters:
-		-----------
-		series: Time series
-		fig: matplotlib figure object, optional
-		size: number of data points to consider during each sampling
-		samples: number of times the bootstrap procedure is performed
-		kwds: optional keyword arguments for plotting commands, must be accepted
-		    by both hist and plot
+		The bootstrap plot is used to estimate the uncertainty of a statistic
+		by relaying on random sampling with replacement [1]_. This function will
+		generate bootstrapping plots for mean, median and mid-range statistics
+		for the given number of samples of the given size.
 		
-		Returns:
+		.. [1] "Bootstrapping (statistics)" in     https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29
+		
+		Parameters
+		----------
+		series : pandas.Series
+		    Pandas Series from where to get the samplings for the bootstrapping.
+		fig : matplotlib.figure.Figure, default None
+		    If given, it will use the `fig` reference for plotting instead of
+		    creating a new one with default parameters.
+		size : int, default 50
+		    Number of data points to consider during each sampling. It must be
+		    greater or equal than the length of the `series`.
+		samples : int, default 500
+		    Number of times the bootstrap procedure is performed.
+		**kwds :
+		    Options to pass to matplotlib plotting method.
+		
+		Returns
+		-------
+		fig : matplotlib.figure.Figure
+		    Matplotlib figure
+		
+		See Also
 		--------
-		fig: matplotlib figure
+		pandas.DataFrame.plot : Basic plotting for DataFrame objects.
+		pandas.Series.plot : Basic plotting for Series objects.
+		
+		Examples
+		--------
+		
+		.. plot::
+		        :context: close-figs
+		
+		        >>> import numpy as np
+		        >>> s = pd.Series(np.random.uniform(size=100))
+		        >>> fig = pd.plotting.bootstrap_plot(s)
 	**/
 	static public function bootstrap_plot(series:Dynamic, ?fig:Dynamic, ?size:Dynamic, ?samples:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function
+		Decorator to deprecate a keyword argument of a function.
 		
 		Parameters
 		----------
 		old_arg_name : str
 		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of preferred argument in function
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -176,12 +206,15 @@ package pandas.plotting._misc;
 		...
 		>>> f(columns='should work ok')
 		should work ok
+		
 		>>> f(cols='should raise warning')
 		FutureWarning: cols is deprecated, use columns instead
 		  warnings.warn(msg, FutureWarning)
 		should raise warning
+		
 		>>> f(cols='should error', columns="can't pass do both")
 		TypeError: Can only specify 'cols' or 'columns', not both
+		
 		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
 		... def f(new=False):
 		...     print('yes!' if new else 'no!')
@@ -190,46 +223,119 @@ package pandas.plotting._misc;
 		FutureWarning: old='yes' is deprecated, use new=True instead
 		  warnings.warn(msg, FutureWarning)
 		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Lag plot for time series.
 		
-		Parameters:
-		-----------
+		Parameters
+		----------
 		series: Time series
 		lag: lag of the scatter plot, default 1
 		ax: Matplotlib axis object, optional
 		kwds: Matplotlib scatter method keyword arguments, optional
 		
-		Returns:
-		--------
+		Returns
+		-------
 		ax: Matplotlib axis object
 	**/
 	static public function lag_plot(series:Dynamic, ?lag:Dynamic, ?ax:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : boolean inverse of pandas.notnull
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
 	**/
-	static public function notnull(obj:Dynamic):Dynamic;
+	static public function notna(obj:Dynamic):Dynamic;
 	/**
 		Parallel coordinates plotting.
 		
@@ -255,7 +361,7 @@ package pandas.plotting._misc;
 		axvlines_kwds: keywords, optional
 		    Options to be passed to axvline method for vertical lines
 		sort_labels: bool, False
-		    Sort class_column labels, useful when assigning colours
+		    Sort class_column labels, useful when assigning colors
 		
 		    .. versionadded:: 0.20.0
 		
@@ -305,25 +411,65 @@ package pandas.plotting._misc;
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	/**
-		RadViz - a multivariate data visualization algorithm
+		Plot a multidimensional dataset in 2D.
 		
-		Parameters:
-		-----------
-		frame: DataFrame
-		class_column: str
-		    Column name containing class names
-		ax: Matplotlib axis object, optional
-		color: list or tuple, optional
-		    Colors to use for the different classes
-		colormap : str or matplotlib colormap object, default None
-		    Colormap to select colors from. If string, load colormap with that name
-		    from matplotlib.
-		kwds: keywords
-		    Options to pass to matplotlib scatter plotting method
+		Each Series in the DataFrame is represented as a evenly distributed
+		slice on a circle. Each data point is rendered in the circle according to
+		the value on each Series. Highly correlated `Series` in the `DataFrame`
+		are placed closer on the unit circle.
 		
-		Returns:
+		RadViz allow to project a N-dimensional data set into a 2D space where the
+		influence of each dimension can be interpreted as a balance between the
+		influence of all dimensions.
+		
+		More info available at the `original article
+		<http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.135.889>`_
+		describing RadViz.
+		
+		Parameters
+		----------
+		frame : `DataFrame`
+		    Pandas object holding the data.
+		class_column : str
+		    Column name containing the name of the data point category.
+		ax : :class:`matplotlib.axes.Axes`, optional
+		    A plot instance to which to add the information.
+		color : list[str] or tuple[str], optional
+		    Assign a color to each category. Example: ['blue', 'green'].
+		colormap : str or :class:`matplotlib.colors.Colormap`, default None
+		    Colormap to select colors from. If string, load colormap with that
+		    name from matplotlib.
+		kwds : optional
+		    Options to pass to matplotlib scatter plotting method.
+		
+		Returns
+		-------
+		axes : :class:`matplotlib.axes.Axes`
+		
+		See Also
 		--------
-		ax: Matplotlib axis object
+		pandas.plotting.andrews_curves : Plot clustering visualization
+		
+		Examples
+		--------
+		.. plot::
+		    :context: close-figs
+		
+		    >>> df = pd.DataFrame({
+		    ...         'SepalLength': [6.5, 7.7, 5.1, 5.8, 7.6, 5.0, 5.4, 4.6,
+		    ...                         6.7, 4.6],
+		    ...         'SepalWidth': [3.0, 3.8, 3.8, 2.7, 3.0, 2.3, 3.0, 3.2,
+		    ...                        3.3, 3.6],
+		    ...         'PetalLength': [5.5, 6.7, 1.9, 5.1, 6.6, 3.3, 4.5, 1.4,
+		    ...                         5.7, 1.0],
+		    ...         'PetalWidth': [1.8, 2.2, 0.4, 1.9, 2.1, 1.0, 1.5, 0.2,
+		    ...                        2.1, 0.2],
+		    ...         'Category': ['virginica', 'virginica', 'setosa',
+		    ...                      'virginica', 'virginica', 'versicolor',
+		    ...                      'versicolor', 'setosa', 'virginica',
+		    ...                      'setosa']
+		    ...     })
+		    >>> rad_viz = pd.plotting.radviz(df, 'Category')
 	**/
 	static public function radviz(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?colormap:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**

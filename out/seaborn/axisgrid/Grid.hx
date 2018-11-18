@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.axisgrid;
 @:pythonImport("seaborn.axisgrid", "Grid") extern class Grid {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package seaborn.axisgrid;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package seaborn.axisgrid;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -134,7 +134,7 @@ package seaborn.axisgrid;
 		    Title for the legend. The default reads from ``self._hue_var``.
 		label_order : list of labels, optional
 		    The order that the legend entries should appear in. The default
-		    reads from ``self.hue_names`` or sorts the keys in ``legend_data``.
+		    reads from ``self.hue_names``.
 		kwargs : key, value pairings
 		    Other keyword arguments are passed to the underlying legend methods
 		    on the Figure or Axes object.

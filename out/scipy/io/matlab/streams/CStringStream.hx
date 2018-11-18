@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.io.matlab.streams;
 @:pythonImport("scipy.io.matlab.streams", "cStringStream") extern class CStringStream {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -51,7 +51,7 @@ package scipy.io.matlab.streams;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -100,7 +100,7 @@ package scipy.io.matlab.streams;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function read(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function seek(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function tell(args:haxe.extern.Rest<Dynamic>):Dynamic;

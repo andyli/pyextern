@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.patches;
 @:pythonImport("matplotlib.patches", "Circle") extern class Circle {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,80 +41,80 @@ package matplotlib.patches;
 	/**
 		Create true circle at center *xy* = (*x*, *y*) with given
 		*radius*.  Unlike :class:`~matplotlib.patches.CirclePolygon`
-		which is a polygonal approximation, this uses Bézier splines
+		which is a polygonal approximation, this uses Bezier splines
 		and is much closer to a scale-free circle.
 		
 		Valid kwargs are:
-		  agg_filter: unknown
-		  alpha: float or None 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False]  or None for default 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  capstyle: ['butt' | 'round' | 'projecting'] 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: matplotlib color spec
-		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fill: [True | False] 
-		  gid: an id string 
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
-		  joinstyle: ['miter' | 'round' | 'bevel'] 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float or None for default 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  zorder: any number 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  alpha: float or None
+		  animated: bool
+		  antialiased: unknown
+		  capstyle: {'butt', 'round', 'projecting'}
+		  clip_box: `.Bbox`
+		  clip_on: bool
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  color: color
+		  contains: callable
+		  edgecolor: color or None or 'auto'
+		  facecolor: color or None
+		  figure: `.Figure`
+		  fill: bool
+		  gid: str
+		  hatch: {'/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'}
+		  in_layout: bool
+		  joinstyle: {'miter', 'round', 'bevel'}
+		  label: object
+		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth: float or None for default 
+		  path_effects: `.AbstractPathEffect`
+		  picker: None or bool or float or callable
+		  rasterized: bool or None
+		  sketch_params: (scale: float, length: float, randomness: float) 
+		  snap: bool or None
+		  transform: `.Transform`
+		  url: str
+		  visible: bool
+		  zorder: float
 	**/
 	@:native("__init__")
 	public function ___init__(xy:Dynamic, ?radius:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create true circle at center *xy* = (*x*, *y*) with given
 		*radius*.  Unlike :class:`~matplotlib.patches.CirclePolygon`
-		which is a polygonal approximation, this uses Bézier splines
+		which is a polygonal approximation, this uses Bezier splines
 		and is much closer to a scale-free circle.
 		
 		Valid kwargs are:
-		  agg_filter: unknown
-		  alpha: float or None 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False]  or None for default 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  capstyle: ['butt' | 'round' | 'projecting'] 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: matplotlib color spec
-		  contains: a callable function 
-		  edgecolor or ec: mpl color spec, None, 'none', or 'auto' 
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fill: [True | False] 
-		  gid: an id string 
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
-		  joinstyle: ['miter' | 'round' | 'bevel'] 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float or None for default 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  zorder: any number 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  alpha: float or None
+		  animated: bool
+		  antialiased: unknown
+		  capstyle: {'butt', 'round', 'projecting'}
+		  clip_box: `.Bbox`
+		  clip_on: bool
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  color: color
+		  contains: callable
+		  edgecolor: color or None or 'auto'
+		  facecolor: color or None
+		  figure: `.Figure`
+		  fill: bool
+		  gid: str
+		  hatch: {'/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'}
+		  in_layout: bool
+		  joinstyle: {'miter', 'round', 'bevel'}
+		  label: object
+		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth: float or None for default 
+		  path_effects: `.AbstractPathEffect`
+		  picker: None or bool or float or callable
+		  rasterized: bool or None
+		  sketch_params: (scale: float, length: float, randomness: float) 
+		  snap: bool or None
+		  transform: `.Transform`
+		  url: str
+		  visible: bool
+		  zorder: float
 	**/
 	public function new(xy:Dynamic, ?radius:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -123,7 +123,7 @@ package matplotlib.patches;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -174,18 +174,19 @@ package matplotlib.patches;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _alias_map : Dynamic;
 	static public var _edge_default : Dynamic;
 	public function _process_radius(radius:Dynamic):Dynamic;
 	static public var _prop_order : Dynamic;
 	/**
 		NOTE: This cannot be called until after this has been added
 		to an Axes, otherwise unit conversion will fail. This
-		maxes it very important to call the accessor method and
+		makes it very important to call the accessor method and
 		not directly access the transformation member variable.
 	**/
 	public function _recompute_transform():Dynamic;
@@ -210,16 +211,31 @@ package matplotlib.patches;
 	**/
 	public var axes : Dynamic;
 	/**
+		Return the center of the ellipse
+	**/
+	public var center : Dynamic;
+	/**
 		Test whether the mouse event occurred in the patch.
 		
 		Returns T/F, {}
 	**/
 	public function contains(mouseevent:Dynamic, ?radius:Dynamic):Dynamic;
 	/**
-		Returns *True* if the given point is inside the path
+		Returns ``True`` if the given *point* is inside the path
 		(transformed with its transform attribute).
+		
+		*radius* allows the path to be made slightly larger or smaller.
 	**/
 	public function contains_point(point:Dynamic, ?radius:Dynamic):Dynamic;
+	/**
+		Returns a bool array which is ``True`` if the (closed) path
+		contains the corresponding point.
+		(transformed with its transform attribute).
+		
+		*points* must be Nx2 array.
+		*radius* allows the path to be made slightly larger or smaller.
+	**/
+	public function contains_points(points:Dynamic, ?radius:Dynamic):Dynamic;
 	/**
 		For artists in an axes, if the xaxis has units support,
 		convert *x* using xaxis unit type
@@ -233,7 +249,7 @@ package matplotlib.patches;
 	/**
 		Draw the :class:`Patch` to the given *renderer*.
 	**/
-	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function draw(renderer:Dynamic):Dynamic;
 	/**
 		return whether fill is set
 	**/
@@ -262,11 +278,11 @@ package matplotlib.patches;
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		Returns True if the :class:`Patch` is to be drawn with antialiasing.
+		alias for `get_antialiased`
 	**/
-	public function get_aa():Dynamic;
+	public function get_aa(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return filter function to be used for agg filter
+		Return filter function to be used for agg filter.
 	**/
 	public function get_agg_filter():Dynamic;
 	/**
@@ -283,17 +299,13 @@ package matplotlib.patches;
 	**/
 	public function get_antialiased():Dynamic;
 	/**
-		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-	**/
-	public function get_axes():Dynamic;
-	/**
 		Return the current capstyle
 	**/
 	public function get_capstyle():Dynamic;
+	/**
+		Return the center of the ellipse
+	**/
+	public function get_center():Dynamic;
 	/**
 		Return a list of the child :class:`Artist`s this
 		:class:`Artist` contains.
@@ -325,9 +337,9 @@ package matplotlib.patches;
 	**/
 	public function get_data_transform():Dynamic;
 	/**
-		Return the edge color of the :class:`Patch`.
+		alias for `get_edgecolor`
 	**/
-	public function get_ec():Dynamic;
+	public function get_ec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the edge color of the :class:`Patch`.
 	**/
@@ -342,12 +354,11 @@ package matplotlib.patches;
 	**/
 	public function get_facecolor():Dynamic;
 	/**
-		Return the face color of the :class:`Patch`.
+		alias for `get_facecolor`
 	**/
-	public function get_fc():Dynamic;
+	public function get_fc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the :class:`~matplotlib.figure.Figure` instance the
-		artist belongs to.
+		Return the `.Figure` instance the artist belongs to.
 	**/
 	public function get_figure():Dynamic;
 	/**
@@ -355,13 +366,22 @@ package matplotlib.patches;
 	**/
 	public function get_fill():Dynamic;
 	/**
-		Returns the group id
+		Returns the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
 		Return the current hatching pattern
 	**/
 	public function get_hatch():Dynamic;
+	/**
+		Return boolean flag, ``True`` if artist is included in layout
+		calculations.
+		
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+	**/
+	public function get_in_layout():Dynamic;
 	/**
 		Return the current joinstyle
 	**/
@@ -371,8 +391,7 @@ package matplotlib.patches;
 	**/
 	public function get_label():Dynamic;
 	/**
-		Return the linestyle.  Will be one of ['solid' | 'dashed' |
-		'dashdot' | 'dotted']
+		Return the linestyle.
 	**/
 	public function get_linestyle():Dynamic;
 	/**
@@ -380,14 +399,13 @@ package matplotlib.patches;
 	**/
 	public function get_linewidth():Dynamic;
 	/**
-		Return the linestyle.  Will be one of ['solid' | 'dashed' |
-		'dashdot' | 'dotted']
+		alias for `get_linestyle`
 	**/
-	public function get_ls():Dynamic;
+	public function get_ls(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the line width in points.
+		alias for `get_linewidth`
 	**/
-	public function get_lw():Dynamic;
+	public function get_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the :class:`~matplotlib.transforms.Transform` instance which
 		takes patch coordinates to data coordinates.
@@ -403,15 +421,15 @@ package matplotlib.patches;
 	public function get_path():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist
+		Return the picker object used by this artist.
 	**/
 	public function get_picker():Dynamic;
 	/**
-		return the radius of the circle
+		Return the radius of the circle
 	**/
 	public function get_radius():Dynamic;
 	/**
-		return True if the artist is to be rasterized
+		Return whether the artist is to be rasterized.
 	**/
 	public function get_rasterized():Dynamic;
 	/**
@@ -421,17 +439,17 @@ package matplotlib.patches;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -448,6 +466,21 @@ package matplotlib.patches;
 	**/
 	public function get_snap():Dynamic;
 	/**
+		Like `Artist.get_window_extent`, but includes any clipping.
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` instance
+		    renderer that will be used to draw the figures (i.e.
+		    ``fig.canvas.get_renderer()``)
+		
+		Returns
+		-------
+		bbox : `.BboxBase`
+		    containing the bounding box (in figure pixel co-ordinates).
+	**/
+	public function get_tightbbox(renderer:Dynamic):Dynamic;
+	/**
 		Return the :class:`~matplotlib.transforms.Transform` applied
 		to the :class:`Patch`.
 	**/
@@ -459,7 +492,7 @@ package matplotlib.patches;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url
+		Returns the url.
 	**/
 	public function get_url():Dynamic;
 	/**
@@ -490,7 +523,7 @@ package matplotlib.patches;
 	**/
 	public function get_window_extent(?renderer:Dynamic):Dynamic;
 	/**
-		Return the :class:`Artist`'s zorder.
+		Return the artist's zorder.
 	**/
 	public function get_zorder():Dynamic;
 	/**
@@ -498,12 +531,17 @@ package matplotlib.patches;
 	**/
 	public function have_units():Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
-		Returns True if the artist is assigned to a
-		:class:`~matplotlib.figure.Figure`.
+		.. deprecated:: 2.2
+		    artist.figure is not None
+		
+		Returns whether the artist is assigned to a `.Figure`.
 	**/
 	public function is_figure_set():Dynamic;
 	/**
@@ -533,7 +571,7 @@ package matplotlib.patches;
 	**/
 	public function properties():Dynamic;
 	/**
-		return the radius of the circle
+		Return the radius of the circle
 	**/
 	public var radius : Dynamic;
 	/**
@@ -565,51 +603,68 @@ package matplotlib.patches;
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_antialiased
+		alias for `set_antialiased`
 	**/
-	public function set_aa(aa:Dynamic):Dynamic;
+	public function set_aa(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set agg_filter fuction.
+		Set the agg filter.
+		
+		Parameters
+		----------
+		filter_func : callable
+		    A filter function, which takes a (m, n, 3) float array and a dpi
+		    value, and returns a (m, n, 3) array.
+		
+		    .. ACCEPTS: a filter function, which takes a (m, n, 3) float array
+		        and a dpi value, and returns a (m, n, 3) array
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Set the alpha tranparency of the patch.
+		Set the alpha transparency of the patch.
 		
-		ACCEPTS: float or None
+		Parameters
+		----------
+		alpha : float or None
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
 		Set the artist's animation state.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
-		Set whether to use antialiased rendering
+		Set whether to use antialiased rendering.
 		
-		ACCEPTS: [True | False]  or None for default
+		Parameters
+		----------
+		b : bool or None
 	**/
 	public function set_antialiased(aa:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.axes.Axes` instance in which the
-		artist resides, if any.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-		
-		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
-	**/
-	public function set_axes(axes:Dynamic):Dynamic;
-	/**
 		Set the patch capstyle
 		
-		ACCEPTS: ['butt' | 'round' | 'projecting']
+		Parameters
+		----------
+		s : {'butt', 'round', 'projecting'}
 	**/
 	public function set_capstyle(s:Dynamic):Dynamic;
 	/**
-		Set the artist's clip :class:`~matplotlib.transforms.Bbox`.
+		Set the center of the ellipse.
 		
-		ACCEPTS: a :class:`matplotlib.transforms.Bbox` instance
+		Parameters
+		----------
+		xy : (float, float)
+	**/
+	public function set_center(xy:Dynamic):Dynamic;
+	/**
+		Set the artist's clip `.Bbox`.
+		
+		Parameters
+		----------
+		clipbox : `.Bbox`
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
@@ -618,39 +673,39 @@ package matplotlib.patches;
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_clip_on(b:Dynamic):Dynamic;
 	/**
 		Set the artist's clip path, which may be:
 		
-		  * a :class:`~matplotlib.patches.Patch` (or subclass) instance
+		- a :class:`~matplotlib.patches.Patch` (or subclass) instance; or
+		- a :class:`~matplotlib.path.Path` instance, in which case a
+		  :class:`~matplotlib.transforms.Transform` instance, which will be
+		  applied to the path before using it for clipping, must be provided;
+		  or
+		- ``None``, to remove a previously set clipping path.
 		
-		  * a :class:`~matplotlib.path.Path` instance, in which case
-		     an optional :class:`~matplotlib.transforms.Transform`
-		     instance may be provided, which will be applied to the
-		     path before using it for clipping.
+		For efficiency, if the path happens to be an axis-aligned rectangle,
+		this method will set the clipping box to the corresponding rectangle
+		and set the clipping path to ``None``.
 		
-		  * *None*, to remove the clipping path
-		
-		For efficiency, if the path happens to be an axis-aligned
-		rectangle, this method will set the clipping box to the
-		corresponding rectangle and set the clipping path to *None*.
-		
-		ACCEPTS: [ (:class:`~matplotlib.path.Path`,
-		:class:`~matplotlib.transforms.Transform`) |
-		:class:`~matplotlib.patches.Patch` | None ]
+		ACCEPTS: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		Set both the edgecolor and the facecolor.
 		
-		ACCEPTS: matplotlib color spec
-		
 		.. seealso::
 		
 		    :meth:`set_facecolor`, :meth:`set_edgecolor`
 		       For setting the edge or face color individually.
+		
+		Parameters
+		----------
+		c : color
 	**/
 	public function set_color(c:Dynamic):Dynamic;
 	/**
@@ -664,46 +719,57 @@ package matplotlib.patches;
 		and *props* is a dictionary of properties you want returned
 		with the contains test.
 		
-		ACCEPTS: a callable function
+		Parameters
+		----------
+		picker : callable
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		alias for set_edgecolor
+		alias for `set_edgecolor`
 	**/
-	public function set_ec(color:Dynamic):Dynamic;
+	public function set_ec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the patch edge color
+		Set the patch edge color.
 		
-		ACCEPTS: mpl color spec, None, 'none', or 'auto'
+		Parameters
+		----------
+		color : color or None or 'auto'
 	**/
 	public function set_edgecolor(color:Dynamic):Dynamic;
 	/**
-		Set the patch face color
+		Set the patch face color.
 		
-		ACCEPTS: mpl color spec, or None for default, or 'none' for no color
+		Parameters
+		----------
+		color : color or None
 	**/
 	public function set_facecolor(color:Dynamic):Dynamic;
 	/**
-		alias for set_facecolor
+		alias for `set_facecolor`
 	**/
-	public function set_fc(color:Dynamic):Dynamic;
+	public function set_fc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the :class:`~matplotlib.figure.Figure` instance the artist
-		belongs to.
+		Set the `.Figure` instance the artist belongs to.
 		
-		ACCEPTS: a :class:`matplotlib.figure.Figure` instance
+		Parameters
+		----------
+		fig : `.Figure`
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
-		Set whether to fill the patch
+		Set whether to fill the patch.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_fill(b:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist
+		Sets the (group) id for the artist.
 		
-		ACCEPTS: an id string
+		Parameters
+		----------
+		gid : str
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
 	/**
@@ -729,23 +795,41 @@ package matplotlib.patches;
 		Hatching is supported in the PostScript, PDF, SVG and Agg
 		backends only.
 		
-		ACCEPTS: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']
+		Parameters
+		----------
+		hatch : {'/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'}
 	**/
 	public function set_hatch(hatch:Dynamic):Dynamic;
 	/**
+		Set if artist is to be included in layout calculations,
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+		
+		Parameters
+		----------
+		in_layout : bool
+	**/
+	public function set_in_layout(in_layout:Dynamic):Dynamic;
+	/**
 		Set the patch joinstyle
 		
-		ACCEPTS: ['miter' | 'round' | 'bevel']
+		Parameters
+		----------
+		s : {'miter', 'round', 'bevel'}
 	**/
 	public function set_joinstyle(s:Dynamic):Dynamic;
 	/**
 		Set the label to *s* for auto legend.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : object
+		    *s* will be converted to a string by calling `str`.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		Set the patch linestyle
+		Set the patch linestyle.
 		
 		===========================   =================
 		linestyle                     description
@@ -760,17 +844,11 @@ package matplotlib.patches;
 		
 		    (offset, onoffseq),
 		
-		where ``onoffseq`` is an even length tuple of on and off ink
-		in points.
-		
-		ACCEPTS: ['solid' | 'dashed', 'dashdot', 'dotted' |
-		           (offset, on-off-dash-seq) |
-		           ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |
-		           ``' '`` | ``''``]
+		where ``onoffseq`` is an even length tuple of on and off ink in points.
 		
 		Parameters
 		----------
-		ls : { '-',  '--', '-.', ':'} and more see description
+		ls : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
 		    The line style.
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;
@@ -781,16 +859,19 @@ package matplotlib.patches;
 	**/
 	public function set_linewidth(w:Dynamic):Dynamic;
 	/**
-		alias for set_linestyle
+		alias for `set_linestyle`
 	**/
-	public function set_ls(ls:Dynamic):Dynamic;
+	public function set_ls(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_linewidth
+		alias for `set_linewidth`
 	**/
-	public function set_lw(lw:Dynamic):Dynamic;
+	public function set_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set path_effects, which should be a list of instances of
-		matplotlib.patheffect._Base class or its derivatives.
+		Set the path effects.
+		
+		Parameters
+		----------
+		path_effects : `.AbstractPathEffect`
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
@@ -822,21 +903,27 @@ package matplotlib.patches;
 		    artist, return *hit=True* and props is a dictionary of
 		    properties you want added to the PickEvent attributes.
 		
-		ACCEPTS: [None|float|boolean|callable]
+		Parameters
+		----------
+		picker : None or bool or float or callable
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
 		Set the radius of the circle
 		
-		ACCEPTS: float
+		Parameters
+		----------
+		radius : float
 	**/
 	public function set_radius(radius:Dynamic):Dynamic;
 	/**
 		Force rasterized (bitmap) drawing in vector backend output.
 		
-		Defaults to None, which implies the backend's default behavior
+		Defaults to None, which implies the backend's default behavior.
 		
-		ACCEPTS: [True | False | None]
+		Parameters
+		----------
+		rasterized : bool or None
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
@@ -857,6 +944,8 @@ package matplotlib.patches;
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
 		    expanded (default 16.0)
+		
+		    .. ACCEPTS: (scale: float, length: float, randomness: float)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
@@ -870,32 +959,43 @@ package matplotlib.patches;
 		    segments, round to the nearest pixel center
 		
 		Only supported by the Agg and MacOSX backends.
+		
+		Parameters
+		----------
+		snap : bool or None
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.transforms.Transform` instance
-		used by this artist.
+		Set the artist transform.
 		
-		ACCEPTS: :class:`~matplotlib.transforms.Transform` instance
+		Parameters
+		----------
+		t : `.Transform`
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist
+		Sets the url for the artist.
 		
-		ACCEPTS: a url string
+		Parameters
+		----------
+		url : str
 	**/
 	public function set_url(url:Dynamic):Dynamic;
 	/**
-		Set the artist's visiblity.
+		Set the artist's visibility.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_visible(b:Dynamic):Dynamic;
 	/**
 		Set the zorder for the artist.  Artists with lower zorder
 		values are drawn first.
 		
-		ACCEPTS: any number
+		Parameters
+		----------
+		level : float
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
@@ -923,8 +1023,7 @@ package matplotlib.patches;
 	**/
 	public var sticky_edges : Dynamic;
 	/**
-		Update the properties of this :class:`Artist` from the
-		dictionary *prop*.
+		Update this artist's properties from the dictionary *prop*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

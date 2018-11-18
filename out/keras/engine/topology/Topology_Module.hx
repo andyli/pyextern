@@ -5,7 +5,7 @@ package keras.engine.topology;
 		`Input()` is used to instantiate a Keras tensor.
 		
 		A Keras tensor is a tensor object from the underlying backend
-		(Theano or TensorFlow), which we augment with certain
+		(Theano, TensorFlow or CNTK), which we augment with certain
 		attributes that allow us to build a Keras model
 		just by knowing the inputs and outputs of the model.
 		
@@ -14,9 +14,9 @@ package keras.engine.topology;
 		`model = Model(input=[a, b], output=c)`
 		
 		The added Keras attributes are:
-		    ._keras_shape: Integer shape tuple propagated
+		    `_keras_shape`: Integer shape tuple propagated
 		        via Keras-side shape inference.
-		    ._keras_history: Last layer applied to the tensor.
+		    `_keras_history`: Last layer applied to the tensor.
 		        the entire layer graph is retrievable from that layer,
 		        recursively.
 		
@@ -44,12 +44,12 @@ package keras.engine.topology;
 		
 		# Example
 		
-		    ```python
-		    # this is a logistic regression in Keras
-		    x = Input(shape=(32,))
-		    y = Dense(16, activation='softmax')(x)
-		    model = Model(x, y)
-		    ```
+		```python
+		# this is a logistic regression in Keras
+		x = Input(shape=(32,))
+		y = Dense(16, activation='softmax')(x)
+		model = Model(x, y)
+		```
 	**/
 	static public function Input(?shape:Dynamic, ?batch_shape:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?sparse:Dynamic, ?tensor:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -60,54 +60,6 @@ package keras.engine.topology;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Collects the output shape(s) of a list of Keras tensors.
-		
-		# Arguments
-		    input_tensors: list of input tensors (or single input tensor).
-		
-		# Returns
-		    List of shape tuples (or single tuple), one tuple per input.
-	**/
-	static public function _collect_input_shape(input_tensors:Dynamic):Dynamic;
-	/**
-		Retrieves the output mask(s) of the previous node.
-		
-		# Arguments
-		    input_tensors: A tensor or list of tensors.
-		
-		# Returns
-		    A mask tensor or list of mask tensors.
-	**/
-	static public function _collect_previous_mask(input_tensors:Dynamic):Dynamic;
-	static public function _is_all_none(iterable_or_element:Dynamic):Dynamic;
-	static public function _object_list_uid(object_list:Dynamic):Dynamic;
-	/**
-		Normalizes a list/tensor into a list.
-		
-		If a tensor is passed, we return
-		a list of size 1 containing the tensor.
-		
-		# Arguments
-		    x: target object to be normalized.
-		
-		# Returns
-		    A list.
-	**/
-	static public function _to_list(x:Dynamic):Dynamic;
-	static public function _to_snake_case(name:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	/**
-		Produces a prompt asking about overwriting a file.
-		
-		# Arguments
-		    filepath: the path to the file to be overwritten.
-		
-		# Returns
-		    True if we can proceed with overwrite, False otherwise.
-	**/
-	static public function ask_to_proceed_with_overwrite(filepath:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Returns the list of input tensors necessary to compute `tensor`.
 		
@@ -124,83 +76,4 @@ package keras.engine.topology;
 		    List of input tensors.
 	**/
 	static public function get_source_inputs(tensor:Dynamic, ?layer:Dynamic, ?node_index:Dynamic):Dynamic;
-	/**
-		Checks if a callable accepts a given keyword argument.
-		
-		For Python 2, checks if there is an argument with the given name.
-		
-		For Python 3, checks if there is an argument with the given name, and
-		also whether this argument can be called with a keyword (i.e. if it is
-		not a positional-only argument).
-		
-		# Arguments
-		    fn: Callable to inspect.
-		    name: Check if `fn` can be called with `name` as a keyword argument.
-		    accept_all: What to return if there is no parameter called `name`
-		                but the function accepts a `**kwargs` argument.
-		
-		# Returns
-		    bool, whether `fn` accepts a `name` keyword argument.
-	**/
-	static public function has_arg(fn:Dynamic, name:Dynamic, ?accept_all:Dynamic):Dynamic;
-	/**
-		Implements topological (order-based) weight loading.
-		
-		# Arguments
-		    f: A pointer to a HDF5 group.
-		    layers: a list of target layers.
-		
-		# Raises
-		    ValueError: in case of mismatch between provided layers
-		        and weights file.
-	**/
-	static public function load_weights_from_hdf5_group(f:Dynamic, layers:Dynamic):Dynamic;
-	/**
-		Implements name-based weight loading.
-		
-		(instead of topological weight loading).
-		
-		Layers that have no matching name are skipped.
-		
-		# Arguments
-		    f: A pointer to a HDF5 group.
-		    layers: a list of target layers.
-		
-		# Raises
-		    ValueError: in case of mismatch between provided layers
-		        and weights file.
-	**/
-	static public function load_weights_from_hdf5_group_by_name(f:Dynamic, layers:Dynamic):Dynamic;
-	/**
-		Converts layers weights from Keras 1 format to Keras 2.
-		
-		# Arguments
-		    layer: Layer instance.
-		    weights: List of weights values (Numpy arrays).
-		    original_keras_version: Keras version for the weights, as a string.
-		    original_backend: Keras backend the weights were trained with,
-		        as a string.
-		
-		# Returns
-		    A list of weights values (Numpy arrays).
-	**/
-	static public function preprocess_weights_for_loading(layer:Dynamic, weights:Dynamic, ?original_keras_version:Dynamic, ?original_backend:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
-	/**
-		Prints a summary of a model.
-		
-		# Arguments
-		    model: Keras model instance.
-		    line_length: Total length of printed lines
-		        (e.g. set this to adapt the display to different
-		        terminal window sizes).
-		    positions: Relative or absolute positions of log elements in each line.
-		        If not provided, defaults to `[.33, .55, .67, 1.]`.
-		    print_fn: Print function to use.
-		        It will be called on each line of the summary.
-		        You can set it to a custom function
-		        in order to capture the string summary.
-	**/
-	static public function print_layer_summary(model:Dynamic, ?line_length:Dynamic, ?positions:Dynamic, ?print_fn:Dynamic):Dynamic;
-	static public function save_weights_to_hdf5_group(f:Dynamic, layers:Dynamic):Dynamic;
 }

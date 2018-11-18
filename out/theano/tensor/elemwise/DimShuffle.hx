@@ -25,6 +25,24 @@ package theano.tensor.elemwise;
 		                          eval_points=eval_points)
 	**/
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
+	static public var SECTIONS : Dynamic;
+	/**
+		Returns a list of (name, value) pairs that will be turned into
+		macros for use within the op code.
+		
+		The names must be strings that are not a C keyword and the
+		values must be strings of literal C representations.
+		
+		If op uses a :class:`theano.gof.params_type.ParamsType` as ``params_type``,
+		it returns:
+		 - a default macro ``PARAMS_TYPE`` which defines the class name of the
+		   corresponding C struct.
+		 - a macro ``DTYPE_PARAM_key`` for every ``key`` in the ParamsType for which associated
+		   type implements the method :func:`theano.gof.type.CLinkerType.c_element_type`.
+		   ``DTYPE_PARAM_key`` defines the primitive C type name of an item in a variable
+		   associated to ``key``.
+	**/
+	public function _COp__get_op_params():Dynamic;
 	/**
 		Optional: return some or all output[s] of `make_node`.
 		
@@ -86,12 +104,14 @@ package theano.tensor.elemwise;
 	public function __gt__(value:Dynamic):Dynamic;
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Sections are loaded from files in order with sections in later
+		files overriding sections in previous files.
 	**/
 	@:native("__init__")
 	public function ___init__(input_broadcastable:Dynamic, new_order:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Sections are loaded from files in order with sections in later
+		files overriding sections in previous files.
 	**/
 	public function new(input_broadcastable:Dynamic, new_order:Dynamic, ?inplace:Dynamic):Void;
 	/**
@@ -100,7 +120,7 @@ package theano.tensor.elemwise;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -135,6 +155,7 @@ package theano.tensor.elemwise;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -153,7 +174,7 @@ package theano.tensor.elemwise;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -168,6 +189,8 @@ package theano.tensor.elemwise;
 		For another Variable, it is the content of v.tag.test_value.
 	**/
 	static public function _get_test_value(v:Dynamic):Dynamic;
+	public function _lquote_macro(txt:Dynamic):Dynamic;
+	public var _new_order : Dynamic;
 	/**
 		Tuple of properties of all attributes
 	**/
@@ -194,25 +217,11 @@ package theano.tensor.elemwise;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
-	/**
-		Optional: return a code string specific to the apply to be
-		inserted in the struct cleanup code.
-		
-		Parameters
-		----------
-		node : an Apply instance in the graph being compiled
-		name : str
-		    A unique name to distinguish variables from those of other nodes.
-		
-		Raises
-		------
-		MethodNotDefined
-		    The subclass does not override this method.
-	**/
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
+	static public var backward_re : Dynamic;
 	public function c_cleanup_code_struct(node:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Required: return the C implementation of an Op.
@@ -288,38 +297,7 @@ package theano.tensor.elemwise;
 	**/
 	public function c_code_cache_version_apply(node:Dynamic):Dynamic;
 	/**
-		Optional: return C code to run after c_code, whether it failed or not.
-		
-		This is a convenient place to clean up things allocated by c_code().
-		
-		Parameters
-		----------
-		node : Apply instance
-		    WRITEME
-		name : str
-		    A name that is automatically assigned and guaranteed to be
-		    unique.
-		inputs : list of strings
-		    There is a string for each input of the function, and the
-		    string is the name of a C variable pointing to that input.
-		    The type of the variable depends on the declared type of
-		    the input. There is a corresponding python variable that
-		    can be accessed by prepending "py_" to the name in the
-		    list.
-		outputs : list of strings
-		    Each string is the name of a C variable correspoinding to
-		    one of the outputs of the Op. The type depends on the
-		    declared type of the output. There is a corresponding
-		    python variable that can be accessed by prepending "py_" to
-		    the name in the list.
-		sub : dict of strings
-		    extra symbols defined in `CLinker` sub symbols (such as 'fail').
-		    WRITEME
-		
-		Raises
-		------
-		MethodNotDefined
-		    The subclass does not override this method.
+		Stitches all the macros and "code_cleanup" together
 	**/
 	public function c_code_cleanup(node:Dynamic, name:Dynamic, inputs:Dynamic, outputs:Dynamic, sub:Dynamic):Dynamic;
 	/**
@@ -340,6 +318,8 @@ package theano.tensor.elemwise;
 		    Subclass does not implement this method.
 	**/
 	public function c_compile_args():Dynamic;
+	static public var c_func_file : Dynamic;
+	static public var c_func_name : Dynamic;
 	/**
 		Optional: Return a list of header search paths required by code
 		returned by this class.
@@ -381,57 +361,12 @@ package theano.tensor.elemwise;
 	**/
 	public function c_headers():Dynamic;
 	/**
-		Optional: return a list of code snippets to be inserted in module
-		initialization.
-		
-		Raises
-		------
-		MethodNotDefined
-		    The subclass does not override this method.
+		Get the code section for init_code
 	**/
 	public function c_init_code():Dynamic;
-	/**
-		Optional: return a code string specific to the apply
-		to be inserted in the module initialization code.
-		
-		Parameters
-		----------
-		node : an Apply instance in the graph being compiled
-		name : str
-		    A string or number that serves to uniquely identify this node.
-		    Symbol names defined by this support code should include the name,
-		    so that they can be called from the c_code, and so that they do not
-		    cause name collisions.
-		
-		Notes
-		-----
-		This function is called in addition to c_init_code and will supplement
-		whatever is returned from there.
-		
-		Raises
-		------
-		MethodNotDefined
-		    The subclass does not override this method.
-	**/
 	public function c_init_code_apply(node:Dynamic, name:Dynamic):Dynamic;
 	/**
-		Optional: return a code string specific to the apply
-		to be inserted in the struct initialization code.
-		
-		Parameters
-		----------
-		node : an Apply instance in the graph being compiled
-		name : str
-		    A unique name to distinguish variables from those of other nodes.
-		sub
-		    A dictionary of values to substitute in the code.
-		    Most notably it contains a 'fail' entry that you should place in
-		    your code after setting a python exception to indicate an error.
-		
-		Raises
-		------
-		MethodNotDefined
-		    The subclass does not override this method.
+		Stitches all the macros and "init_code" together
 	**/
 	public function c_init_code_struct(node:Dynamic, name:Dynamic, sub:Dynamic):Dynamic;
 	/**
@@ -492,61 +427,8 @@ package theano.tensor.elemwise;
 		    The subclass does not override this method.
 	**/
 	public function c_no_compile_args():Dynamic;
-	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
-		included at global scope prior to the rest of the code for this class.
-		
-		QUESTION: How many times will this support code be emitted for a graph
-		with many instances of the same type?
-		
-		Raises
-		------
-		MethodNotDefined
-		    Subclass does not implement this method.
-	**/
 	public function c_support_code():Dynamic;
-	/**
-		Optional: return utility code for use by an `Op` that will be
-		inserted at global scope, that can be specialized for the
-		support of a particular `Apply` node.
-		
-		Parameters
-		----------
-		node: an Apply instance in the graph being compiled
-		name: str
-		    A string or number that serves to uniquely identify this node.
-		    Symbol names defined by this support code should include the name,
-		    so that they can be called from the c_code, and so that they do not
-		    cause name collisions.
-		
-		Notes
-		-----
-		This function is called in addition to c_support_code and will
-		supplement whatever is returned from there.
-		
-		Raises
-		------
-		MethodNotDefined
-		    Subclass does not implement this method.
-	**/
 	public function c_support_code_apply(node:Dynamic, name:Dynamic):Dynamic;
-	/**
-		Optional: return utility code for use by an `Op` that will be
-		inserted at struct scope, that can be specialized for the
-		support of a particular `Apply` node.
-		
-		Parameters
-		----------
-		node : an Apply instance in the graph being compiled
-		name : str
-		    A unique name to distinguish you variables from those of other
-		    nodes.
-		
-		Raises
-		------
-		MethodNotDefined
-		    Subclass does not implement this method.
-	**/
 	public function c_support_code_struct(node:Dynamic, name:Dynamic):Dynamic;
 	static public var check_input : Dynamic;
 	static public var default_output : Dynamic;
@@ -558,8 +440,23 @@ package theano.tensor.elemwise;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function format_c_function_args(inp:Dynamic, out:Dynamic):Dynamic;
+	public function get_c_macros(node:Dynamic, name:Dynamic, ?check_input:Dynamic):Dynamic;
+	public function get_io_macros(inputs:Dynamic, outputs:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
+	/**
+		Convert a path relative to the location of the class file into
+		an aboslute path. Paths that are already absolute are passed
+		through unchanged.
+	**/
+	static public function get_path(f:Dynamic):Dynamic;
+	public function get_sub_macros(sub:Dynamic):Dynamic;
 	public function grad(inp:Dynamic, grads:Dynamic):Dynamic;
 	public function infer_shape(node:Dynamic, shapes:Dynamic):Dynamic;
+	/**
+		Loads the c code to perform the Op
+	**/
+	public function load_c_code(func_files:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
 		
@@ -610,6 +507,7 @@ package theano.tensor.elemwise;
 		fail and we try again 'py', prepare_node will be called twice.
 	**/
 	public function make_thunk(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, no_recycling:Dynamic, ?impl:Dynamic):Dynamic;
+	public var params_type : Dynamic;
 	/**
 		Required: Calculate the function on the inputs and put the variables in
 		the output storage. Return None.
@@ -640,7 +538,7 @@ package theano.tensor.elemwise;
 		MethodNotDefined
 		    The subclass does not override this method.
 	**/
-	public function perform(node:Dynamic, inp:Dynamic, out:Dynamic):Dynamic;
+	public function perform(node:Dynamic, inp:Dynamic, out:Dynamic, params:Dynamic):Dynamic;
 	/**
 		Make any special modifications that the Op needs before doing
 		make_thunk().
@@ -648,8 +546,10 @@ package theano.tensor.elemwise;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;
+	static public var section_re : Dynamic;
+	public var transposition : Dynamic;
 }

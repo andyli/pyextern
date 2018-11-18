@@ -11,6 +11,47 @@ package numpy.core.einsumfunc;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Checks if we can use BLAS (np.tensordot) call and its beneficial to do so.
+		
+		Parameters
+		----------
+		inputs : list of str
+		    Specifies the subscripts for summation.
+		result : str
+		    Resulting summation.
+		idx_removed : set
+		    Indices that are removed in the summation
+		
+		
+		Returns
+		-------
+		type : bool
+		    Returns true if BLAS should and can be used, else False
+		
+		Notes
+		-----
+		If the operations is BLAS level 1 or 2 and is not already aligned
+		we default back to einsum as the memory movement to copy is more
+		costly than the operation itself.
+		
+		
+		Examples
+		--------
+		
+		# Standard GEMM operation
+		>>> _can_dot(['ij', 'jk'], 'ik', set('j'))
+		True
+		
+		# Can use the standard BLAS, but requires odd data movement
+		>>> _can_dot(['ijj', 'jk'], 'ik', set('j'))
+		False
+		
+		# DDOT where the memory is not aligned
+		>>> _can_dot(['ijk', 'ikj'], '', set('ijk'))
+		False
+	**/
+	static public function _can_dot(inputs:Dynamic, result:Dynamic, idx_removed:Dynamic):Bool;
+	/**
 		Computes the product of the elements in indices based on the dictionary
 		idx_dict.
 		
@@ -74,6 +115,35 @@ package numpy.core.einsumfunc;
 		({'a', 'c'}, [{'a', 'c'}, {'a', 'c'}], {'b', 'd'}, {'a', 'b', 'c', 'd'})
 	**/
 	static public function _find_contraction(positions:Dynamic, input_sets:Dynamic, output_set:Dynamic):Dynamic;
+	/**
+		Computes the number of FLOPS in the contraction.
+		
+		Parameters
+		----------
+		idx_contraction : iterable
+		    The indices involved in the contraction
+		inner : bool
+		    Does this contraction require an inner product?
+		num_terms : int
+		    The number of terms in a contraction
+		size_dictionary : dict
+		    The size of each of the indices in idx_contraction
+		
+		Returns
+		-------
+		flop_count : int
+		    The total number of FLOPS required for the contraction.
+		
+		Examples
+		--------
+		
+		>>> _flop_count('abc', False, 1, {'a': 2, 'b':3, 'c':5})
+		90
+		
+		>>> _flop_count('abc', True, 2, {'a': 2, 'b':3, 'c':5})
+		270
+	**/
+	static public function _flop_count(idx_contraction:Dynamic, inner:Dynamic, num_terms:Dynamic, size_dictionary:Dynamic):Int;
 	/**
 		Finds the path by contracting the best pair until the input list is
 		exhausted. The best pair is found by minimizing the tuple
@@ -163,6 +233,55 @@ package numpy.core.einsumfunc;
 		('za,xza', 'xz', [a, b])
 	**/
 	static public function _parse_einsum_input(operands:Dynamic):String;
+	/**
+		Compute the cost (removed size + flops) and resultant indices for
+		performing the contraction specified by ``positions``.
+		
+		Parameters
+		----------
+		positions : tuple of int
+		    The locations of the proposed tensors to contract.
+		input_sets : list of sets
+		    The indices found on each tensors.
+		output_set : set
+		    The output indices of the expression.
+		idx_dict : dict
+		    Mapping of each index to its size.
+		memory_limit : int
+		    The total allowed size for an intermediary tensor.
+		path_cost : int
+		    The contraction cost so far.
+		naive_cost : int
+		    The cost of the unoptimized expression.
+		
+		Returns
+		-------
+		cost : (int, int)
+		    A tuple containing the size of any indices removed, and the flop cost.
+		positions : tuple of int
+		    The locations of the proposed tensors to contract.
+		new_input_sets : list of sets
+		    The resulting new list of indices if this proposed contraction is performed.
+	**/
+	static public function _parse_possible_contraction(positions:Dynamic, input_sets:Dynamic, output_set:Dynamic, idx_dict:Dynamic, memory_limit:Dynamic, path_cost:Dynamic, naive_cost:Dynamic):Dynamic;
+	/**
+		Update the positions and provisional input_sets of ``results`` based on
+		performing the contraction result ``best``. Remove any involving the tensors
+		contracted.
+		
+		Parameters
+		----------
+		results : list
+		    List of contraction results produced by ``_parse_possible_contraction``.
+		best : list
+		    The best contraction of ``results`` i.e. the one that will be performed.
+		
+		Returns
+		-------
+		mod_results : list
+		    The list of modifed results, updated with outcome of ``best`` contraction.
+	**/
+	static public function _update_other_results(results:Dynamic, best:Dynamic):Array<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
 		Convert the input to an ndarray, but pass ndarray subclasses through.
@@ -208,7 +327,7 @@ package numpy.core.einsumfunc;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -272,9 +391,9 @@ package numpy.core.einsumfunc;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -283,6 +402,89 @@ package numpy.core.einsumfunc;
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public function c_einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
+	/**
+		dot(a, b, out=None)
+		
+		Dot product of two arrays. Specifically,
+		
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
+		
+		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
+		
+		Parameters
+		----------
+		a : array_like
+		    First argument.
+		b : array_like
+		    Second argument.
+		out : ndarray, optional
+		    Output argument. This must have the exact kind that would be returned
+		    if it was not used. In particular, it must have the right type, must be
+		    C-contiguous, and its dtype must be the dtype that would be returned
+		    for `dot(a,b)`. This is a performance feature. Therefore, if these
+		    conditions are not met, an exception is raised, instead of attempting
+		    to be flexible.
+		
+		Returns
+		-------
+		output : ndarray
+		    Returns the dot product of `a` and `b`.  If `a` and `b` are both
+		    scalars or both 1-D arrays then a scalar is returned; otherwise
+		    an array is returned.
+		    If `out` is given, then it is returned.
+		
+		Raises
+		------
+		ValueError
+		    If the last dimension of `a` is not the same size as
+		    the second-to-last dimension of `b`.
+		
+		See Also
+		--------
+		vdot : Complex-conjugating dot product.
+		tensordot : Sum products over arbitrary axes.
+		einsum : Einstein summation convention.
+		matmul : '@' operator as method with out parameter.
+		
+		Examples
+		--------
+		>>> np.dot(3, 4)
+		12
+		
+		Neither argument is complex-conjugated:
+		
+		>>> np.dot([2j, 3j], [2j, 3j])
+		(-13+0j)
+		
+		For 2-D arrays it is the matrix product:
+		
+		>>> a = [[1, 0], [0, 1]]
+		>>> b = [[4, 1], [2, 2]]
+		>>> np.dot(a, b)
+		array([[4, 1],
+		       [2, 2]])
+		
+		>>> a = np.arange(3*4*5*6).reshape((3,4,5,6))
+		>>> b = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))
+		>>> np.dot(a, b)[2,3,2,1,2,2]
+		499128
+		>>> sum(a[2,3,2,:] * b[1,2,:,2])
+		499128
+	**/
+	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		einsum(subscripts, *operands, out=None, dtype=None, order='K',
 		       casting='safe', optimize=False)
@@ -330,7 +532,7 @@ package numpy.core.einsumfunc;
 		    Controls if intermediate optimization should occur. No optimization
 		    will occur if False and True will default to the 'greedy' algorithm.
 		    Also accepts an explicit contraction list from the ``np.einsum_path``
-		    function. See ``np.einsum_path`` for more details. Default is False.
+		    function. See ``np.einsum_path`` for more details. Defaults to False.
 		
 		Returns
 		-------
@@ -577,7 +779,7 @@ package numpy.core.einsumfunc;
 		--------
 		
 		We can begin with a chain dot example. In this case, it is optimal to
-		contract the ``b`` and ``c`` tensors first as reprsented by the first
+		contract the ``b`` and ``c`` tensors first as represented by the first
 		element of the path ``(1, 2)``. The resulting tensor is added to the end
 		of the contraction and the remaining contraction ``(0, 1)`` is then
 		completed.
@@ -699,4 +901,125 @@ package numpy.core.einsumfunc;
 		dtype('float64')
 	**/
 	static public function result_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Compute tensor dot product along specified axes for arrays >= 1-D.
+		
+		Given two tensors (arrays of dimension greater than or equal to one),
+		`a` and `b`, and an array_like object containing two array_like
+		objects, ``(a_axes, b_axes)``, sum the products of `a`'s and `b`'s
+		elements (components) over the axes specified by ``a_axes`` and
+		``b_axes``. The third argument can be a single non-negative
+		integer_like scalar, ``N``; if it is such, then the last ``N``
+		dimensions of `a` and the first ``N`` dimensions of `b` are summed
+		over.
+		
+		Parameters
+		----------
+		a, b : array_like, len(shape) >= 1
+		    Tensors to "dot".
+		
+		axes : int or (2,) array_like
+		    * integer_like
+		      If an int N, sum over the last N axes of `a` and the first N axes
+		      of `b` in order. The sizes of the corresponding axes must match.
+		    * (2,) array_like
+		      Or, a list of axes to be summed over, first sequence applying to `a`,
+		      second to `b`. Both elements array_like must be of the same length.
+		
+		See Also
+		--------
+		dot, einsum
+		
+		Notes
+		-----
+		Three common use cases are:
+		    * ``axes = 0`` : tensor product :math:`a\otimes b`
+		    * ``axes = 1`` : tensor dot product :math:`a\cdot b`
+		    * ``axes = 2`` : (default) tensor double contraction :math:`a:b`
+		
+		When `axes` is integer_like, the sequence for evaluation will be: first
+		the -Nth axis in `a` and 0th axis in `b`, and the -1th axis in `a` and
+		Nth axis in `b` last.
+		
+		When there is more than one axis to sum over - and they are not the last
+		(first) axes of `a` (`b`) - the argument `axes` should consist of
+		two sequences of the same length, with the first axis to sum over given
+		first in both sequences, the second axis second, and so forth.
+		
+		Examples
+		--------
+		A "traditional" example:
+		
+		>>> a = np.arange(60.).reshape(3,4,5)
+		>>> b = np.arange(24.).reshape(4,3,2)
+		>>> c = np.tensordot(a,b, axes=([1,0],[0,1]))
+		>>> c.shape
+		(5, 2)
+		>>> c
+		array([[ 4400.,  4730.],
+		       [ 4532.,  4874.],
+		       [ 4664.,  5018.],
+		       [ 4796.,  5162.],
+		       [ 4928.,  5306.]])
+		>>> # A slower but equivalent way of computing the same...
+		>>> d = np.zeros((5,2))
+		>>> for i in range(5):
+		...   for j in range(2):
+		...     for k in range(3):
+		...       for n in range(4):
+		...         d[i,j] += a[k,n,i] * b[n,k,j]
+		>>> c == d
+		array([[ True,  True],
+		       [ True,  True],
+		       [ True,  True],
+		       [ True,  True],
+		       [ True,  True]])
+		
+		An extended example taking advantage of the overloading of + and \*:
+		
+		>>> a = np.array(range(1, 9))
+		>>> a.shape = (2, 2, 2)
+		>>> A = np.array(('a', 'b', 'c', 'd'), dtype=object)
+		>>> A.shape = (2, 2)
+		>>> a; A
+		array([[[1, 2],
+		        [3, 4]],
+		       [[5, 6],
+		        [7, 8]]])
+		array([[a, b],
+		       [c, d]], dtype=object)
+		
+		>>> np.tensordot(a, A) # third argument default is 2 for double-contraction
+		array([abbcccdddd, aaaaabbbbbbcccccccdddddddd], dtype=object)
+		
+		>>> np.tensordot(a, A, 1)
+		array([[[acc, bdd],
+		        [aaacccc, bbbdddd]],
+		       [[aaaaacccccc, bbbbbdddddd],
+		        [aaaaaaacccccccc, bbbbbbbdddddddd]]], dtype=object)
+		
+		>>> np.tensordot(a, A, 0) # tensor product (result too long to incl.)
+		array([[[[[a, b],
+		          [c, d]],
+		          ...
+		
+		>>> np.tensordot(a, A, (0, 1))
+		array([[[abbbbb, cddddd],
+		        [aabbbbbb, ccdddddd]],
+		       [[aaabbbbbbb, cccddddddd],
+		        [aaaabbbbbbbb, ccccdddddddd]]], dtype=object)
+		
+		>>> np.tensordot(a, A, (2, 1))
+		array([[[abb, cdd],
+		        [aaabbbb, cccdddd]],
+		       [[aaaaabbbbbb, cccccdddddd],
+		        [aaaaaaabbbbbbbb, cccccccdddddddd]]], dtype=object)
+		
+		>>> np.tensordot(a, A, ((0, 1), (0, 1)))
+		array([abbbcccccddddddd, aabbbbccccccdddddddd], dtype=object)
+		
+		>>> np.tensordot(a, A, ((2, 1), (1, 0)))
+		array([acccbbdddd, aaaaacccccccbbbbbbdddddddd], dtype=object)
+	**/
+	static public function tensordot(a:Dynamic, b:Dynamic, ?axes:Dynamic):Dynamic;
 }

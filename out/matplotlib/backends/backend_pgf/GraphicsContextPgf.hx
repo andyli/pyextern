@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_pgf;
 @:pythonImport("matplotlib.backends.backend_pgf", "GraphicsContextPgf") extern class GraphicsContextPgf {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.backends.backend_pgf;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.backends.backend_pgf;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -179,11 +179,6 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function get_joinstyle():Dynamic;
 	/**
-		Return the linestyle: one of ('solid', 'dashed', 'dashdot',
-		'dotted').
-	**/
-	public function get_linestyle(style:Dynamic):Dynamic;
-	/**
 		Return the line width in points as a scalar
 	**/
 	public function get_linewidth():Dynamic;
@@ -198,17 +193,17 @@ package matplotlib.backends.backend_pgf;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -259,10 +254,12 @@ package matplotlib.backends.backend_pgf;
 	/**
 		Set the dash style for the gc.
 		
-		*dash_offset*
+		Parameters
+		----------
+		dash_offset : float
 		    is the offset (usually 0).
 		
-		*dash_list*
+		dash_list : array_like
 		    specifies the on-off sequence as points.
 		    ``(None, None)`` specifies a solid line
 	**/
@@ -280,10 +277,6 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function set_gid(id:Dynamic):Dynamic;
 	/**
-		Set the foreground color to be a gray level with *frac*
-	**/
-	public function set_graylevel(frac:Dynamic):Dynamic;
-	/**
 		Sets the hatch style for filling
 	**/
 	public function set_hatch(hatch:Dynamic):Dynamic;
@@ -295,14 +288,6 @@ package matplotlib.backends.backend_pgf;
 		Set the join style to be one of ('miter', 'round', 'bevel')
 	**/
 	public function set_joinstyle(js:Dynamic):Dynamic;
-	/**
-		Set the linestyle to be one of ('solid', 'dashed', 'dashdot',
-		'dotted'). These are defined in the rcParams
-		`lines.dashed_pattern`, `lines.dashdot_pattern` and
-		`lines.dotted_pattern`.  One may also specify customized dash
-		styles by providing a tuple of (offset, dash pairs).
-	**/
-	public function set_linestyle(style:Dynamic):Dynamic;
 	/**
 		Set the linewidth in points
 	**/
@@ -320,11 +305,11 @@ package matplotlib.backends.backend_pgf;
 		
 		length : float, optional
 		     The length of the wiggle along the line, in pixels
-		     (default 128.0)
+		     (default 128)
 		
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
-		    expanded (default 16.0)
+		    expanded (default 16)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**

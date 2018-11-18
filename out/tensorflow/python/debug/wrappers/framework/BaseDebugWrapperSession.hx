@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.wrappers.framework;
 @:pythonImport("tensorflow.python.debug.wrappers.framework", "BaseDebugWrapperSession") extern class BaseDebugWrapperSession {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __del__():Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -43,44 +44,50 @@ package tensorflow.python.debug.wrappers.framework;
 		Constructor of `BaseDebugWrapperSession`.
 		
 		Args:
-		  sess: An (unwrapped) TensorFlow session instance.
+		  sess: An (unwrapped) TensorFlow session instance. It should be a subtype
+		    of `BaseSession` or `tf.MonitoredSession`.
 		  thread_name_filter: Regular-expression filter (whitelist) for name(s) of
 		    thread(s) on which the wrapper session will be active. This regular
 		    expression is used in a start-anchored fashion on the thread name, i.e.,
 		    by applying the `match` method of the compiled pattern. The default
 		    `None` means that the wrapper session will be active on all threads.
 		    E.g., r"MainThread$", r"QueueRunnerThread.*".
+		  pass_through_operrors: If True, all captured OpErrors will be
+		    propagated.  By default this captures all OpErrors.
 		
 		Raises:
 		  ValueError: On invalid `OnSessionInitAction` value.
 		  NotImplementedError: If a non-DirectSession sess object is received.
 	**/
 	@:native("__init__")
-	public function ___init__(sess:Dynamic, ?thread_name_filter:Dynamic):Dynamic;
+	public function ___init__(sess:Dynamic, ?thread_name_filter:Dynamic, ?pass_through_operrors:Dynamic):Dynamic;
 	/**
 		Constructor of `BaseDebugWrapperSession`.
 		
 		Args:
-		  sess: An (unwrapped) TensorFlow session instance.
+		  sess: An (unwrapped) TensorFlow session instance. It should be a subtype
+		    of `BaseSession` or `tf.MonitoredSession`.
 		  thread_name_filter: Regular-expression filter (whitelist) for name(s) of
 		    thread(s) on which the wrapper session will be active. This regular
 		    expression is used in a start-anchored fashion on the thread name, i.e.,
 		    by applying the `match` method of the compiled pattern. The default
 		    `None` means that the wrapper session will be active on all threads.
 		    E.g., r"MainThread$", r"QueueRunnerThread.*".
+		  pass_through_operrors: If True, all captured OpErrors will be
+		    propagated.  By default this captures all OpErrors.
 		
 		Raises:
 		  ValueError: On invalid `OnSessionInitAction` value.
 		  NotImplementedError: If a non-DirectSession sess object is received.
 	**/
-	public function new(sess:Dynamic, ?thread_name_filter:Dynamic):Void;
+	public function new(sess:Dynamic, ?thread_name_filter:Dynamic, ?pass_through_operrors:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -131,7 +138,7 @@ package tensorflow.python.debug.wrappers.framework;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -164,6 +171,18 @@ package tensorflow.python.debug.wrappers.framework;
 	**/
 	public function _decorate_run_options_for_profile(run_options:Dynamic):Dynamic;
 	public function _is_disabled_thread():Dynamic;
+	/**
+		Indicates whether disk usage is reset after each Session.run.
+		
+		Subclasses that clean up the disk usage after every run should
+		override this protected method.
+		
+		Returns:
+		  (`bool`) Whether the disk usage amount is reset to zero after
+		    each Session.run.
+	**/
+	public function _is_disk_usage_reset_each_run():Dynamic;
+	public function _make_callable_from_options(callable_options:Dynamic):Dynamic;
 	public function as_default():Dynamic;
 	public function close():Dynamic;
 	/**
@@ -171,6 +190,7 @@ package tensorflow.python.debug.wrappers.framework;
 	**/
 	public var graph : Dynamic;
 	public var graph_def : Dynamic;
+	public function increment_run_call_count():Dynamic;
 	/**
 		Callback invoked when the client intends to step through graph nodes.
 		
@@ -186,6 +206,8 @@ package tensorflow.python.debug.wrappers.framework;
 		    the NodeStepper.
 	**/
 	public function invoke_node_stepper(node_stepper:Dynamic, ?restore_variable_values_on_exit:Dynamic):Dynamic;
+	public function list_devices(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function make_callable(fetches:Dynamic, ?feed_list:Dynamic, ?accept_options:Dynamic):Dynamic;
 	/**
 		Callback invoked on run() calls to the debug-wrapper session.
 		
@@ -243,6 +265,7 @@ package tensorflow.python.debug.wrappers.framework;
 		Sets up the feeds and fetches for partial runs in the session.
 	**/
 	public function partial_run_setup(fetches:Dynamic, ?feeds:Dynamic):Dynamic;
+	public function reset(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper around Session.run() that inserts tensor watch options.
 		
@@ -251,17 +274,29 @@ package tensorflow.python.debug.wrappers.framework;
 		  feed_dict: Same as the `feed_dict` arg to regular `Session.run()`.
 		  options: Same as the `options` arg to regular `Session.run()`.
 		  run_metadata: Same as the `run_metadata` arg to regular `Session.run()`.
+		  callable_runner: A `callable` returned by `Session.make_callable()`.
+		    If not `None`, `fetches` and `feed_dict` must both be `None`.
+		    Mutually exclusive with `callable_options`.
+		  callable_runner_args: An optional list of arguments to `callable_runner`
+		    or for `callable_options`.
+		  callable_options: An instance of `config_pb2.CallableOptions`, to be
+		    used with `Session._make_callable_from_options()`. Mutually exclusive
+		    with `callable_runner`.
 		
 		Returns:
 		  Simply forwards the output of the wrapped `Session.run()` call.
 		
 		Raises:
-		  ValueError: On invalid `OnRunStartAction` value.
+		  ValueError: On invalid `OnRunStartAction` value. Or if `callable_runner`
+		    is not `None` and either or both of `fetches` and `feed_dict` is `None`.
 	**/
-	public function run(fetches:Dynamic, ?feed_dict:Dynamic, ?options:Dynamic, ?run_metadata:Dynamic):Dynamic;
+	public function run(fetches:Dynamic, ?feed_dict:Dynamic, ?options:Dynamic, ?run_metadata:Dynamic, ?callable_runner:Dynamic, ?callable_runner_args:Dynamic, ?callable_options:Dynamic):Dynamic;
+	public var run_call_count : Dynamic;
+	public function run_step_fn(step_fn:Dynamic):Dynamic;
 	/**
 		The TensorFlow process to which this session will connect.
 	**/
 	public var sess_str : Dynamic;
 	public var session : Dynamic;
+	public function should_stop():Dynamic;
 }

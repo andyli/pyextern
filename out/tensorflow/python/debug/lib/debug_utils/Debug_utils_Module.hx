@@ -75,7 +75,7 @@ package tensorflow.python.debug.lib.debug_utils;
 		    are set, the two filtering operations will occur in a logical `AND`
 		    relation. In other words, a node will be included if and only if it
 		    hits both whitelists.
-		  tensor_dtype_regex_whitelist: Regular-experssion whitelist for Tensor
+		  tensor_dtype_regex_whitelist: Regular-expression whitelist for Tensor
 		    data type, e.g., `"^int.*"`.
 		    This whitelist operates in logical `AND` relations to the two whitelists
 		    above.
@@ -84,8 +84,10 @@ package tensorflow.python.debug.lib.debug_utils;
 		    throwing exceptions.
 		  global_step: (`int`) Optional global_step count for this debug tensor
 		    watch.
+		  reset_disk_byte_usage: (`bool`) whether to reset the tracked disk byte
+		    usage to zero (default: `False`).
 	**/
-	static public function watch_graph(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_whitelist:Dynamic, ?op_type_regex_whitelist:Dynamic, ?tensor_dtype_regex_whitelist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic):Dynamic;
+	static public function watch_graph(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_whitelist:Dynamic, ?op_type_regex_whitelist:Dynamic, ?tensor_dtype_regex_whitelist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic, ?reset_disk_byte_usage:Dynamic):Dynamic;
 	/**
 		Add debug tensor watches, blacklisting nodes and op types.
 		
@@ -116,7 +118,7 @@ package tensorflow.python.debug.lib.debug_utils;
 		    relation. In other words, a node will be excluded if it hits either of
 		    the two blacklists; a node will be included if and only if it hits
 		    neither of the blacklists.
-		  tensor_dtype_regex_blacklist: Regular-experssion blacklist for Tensor
+		  tensor_dtype_regex_blacklist: Regular-expression blacklist for Tensor
 		    data type, e.g., `"^int.*"`.
 		    This blacklist operates in logical `OR` relations to the two whitelists
 		    above.
@@ -125,6 +127,8 @@ package tensorflow.python.debug.lib.debug_utils;
 		    throwing exceptions.
 		  global_step: (`int`) Optional global_step count for this debug tensor
 		    watch.
+		  reset_disk_byte_usage: (`bool`) whether to reset the tracked disk byte
+		    usage to zero (default: `False`).
 	**/
-	static public function watch_graph_with_blacklists(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_blacklist:Dynamic, ?op_type_regex_blacklist:Dynamic, ?tensor_dtype_regex_blacklist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic):Dynamic;
+	static public function watch_graph_with_blacklists(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_blacklist:Dynamic, ?op_type_regex_blacklist:Dynamic, ?tensor_dtype_regex_blacklist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic, ?reset_disk_byte_usage:Dynamic):Dynamic;
 }

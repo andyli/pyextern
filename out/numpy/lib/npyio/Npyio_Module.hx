@@ -10,7 +10,23 @@ package numpy.lib.npyio;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _bytes_to_name(s:Dynamic):Dynamic;
+	/**
+		Decode bytes from binary input streams.
+		
+		Defaults to decoding from 'latin1'. That differs from the behavior of
+		np.compat.asunicode that decodes from 'ascii'.
+		
+		Parameters
+		----------
+		line : str or bytes
+		     Line to be decoded.
+		
+		Returns
+		-------
+		decoded_line : unicode
+		     Unicode in Python 2, a str (unicode) in Python 3.
+	**/
+	static public function _decode_line(line:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		Find the correct dtype converter. Adapted from matplotlib 
 	**/
@@ -19,11 +35,13 @@ package numpy.lib.npyio;
 		Check whether obj behaves like a string.
 	**/
 	static public function _is_string_like(obj:Dynamic):Dynamic;
+	static public var _loadtxt_chunksize : Dynamic;
 	static public function _savez(file:Dynamic, args:Dynamic, kwds:Dynamic, compress:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function asbytes(s:Dynamic):Dynamic;
 	static public function asbytes_nested(x:Dynamic):Dynamic;
 	static public function asstr(s:Dynamic):Dynamic;
+	static public function asunicode(s:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Convenience function to create a `np.dtype` object.
@@ -104,6 +122,10 @@ package numpy.lib.npyio;
 		    Groups in the regular expression correspond to fields in the dtype.
 		dtype : dtype or list of dtypes
 		    Dtype for the structured array.
+		encoding : str, optional
+		    Encoding used to decode the inputfile. Does not apply to input streams.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -141,7 +163,7 @@ package numpy.lib.npyio;
 		>>> output['num']
 		array([1312, 1534,  444], dtype=int64)
 	**/
-	static public function fromregex(file:Dynamic, regexp:Dynamic, dtype:Dynamic):numpy.Ndarray;
+	static public function fromregex(file:Dynamic, regexp:Dynamic, dtype:Dynamic, ?encoding:Dynamic):numpy.Ndarray;
 	/**
 		Load data from a text file, with missing values handled as specified.
 		
@@ -187,11 +209,12 @@ package numpy.lib.npyio;
 		    Which columns to read, with 0 being the first.  For example,
 		    ``usecols = (1, 4, 5)`` will extract the 2nd, 5th and 6th columns.
 		names : {None, True, str, sequence}, optional
-		    If `names` is True, the field names are read from the first valid line
-		    after the first `skip_header` lines.
-		    If `names` is a sequence or a single-string of comma-separated names,
-		    the names will be used to define the field names in a structured dtype.
-		    If `names` is None, the names of the dtype fields will be used, if any.
+		    If `names` is True, the field names are read from the first line after
+		    the first `skip_header` lines.  This line can optionally be proceeded
+		    by a comment delimiter. If `names` is a sequence or a single-string of
+		    comma-separated names, the names will be used to define the field names
+		    in a structured dtype. If `names` is None, the names of the dtype
+		    fields will be used, if any.
 		excludelist : sequence, optional
 		    A list of names to exclude. This list is appended to the default list
 		    ['return','file','print']. Excluded names are appended an underscore:
@@ -228,6 +251,15 @@ package numpy.lib.npyio;
 		    to read the entire file.
 		
 		    .. versionadded:: 1.10.0
+		encoding : str, optional
+		    Encoding used to decode the inputfile. Does not apply when `fname` is
+		    a file object.  The special value 'bytes' enables backward compatibility
+		    workarounds that ensure that you receive byte arrays when possible
+		    and passes latin1 encoded strings to converters. Override this value to
+		    receive unicode arrays and pass strings as input to converters.  If set
+		    to None the system default is used. The default value is 'bytes'.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -261,7 +293,7 @@ package numpy.lib.npyio;
 		
 		Comma delimited file with mixed dtype
 		
-		>>> s = StringIO("1,1.3,abcde")
+		>>> s = StringIO(u"1,1.3,abcde")
 		>>> data = np.genfromtxt(s, dtype=[('myint','i8'),('myfloat','f8'),
 		... ('mystring','S5')], delimiter=",")
 		>>> data
@@ -288,14 +320,14 @@ package numpy.lib.npyio;
 		
 		An example with fixed-width columns
 		
-		>>> s = StringIO("11.3abcde")
+		>>> s = StringIO(u"11.3abcde")
 		>>> data = np.genfromtxt(s, dtype=None, names=['intvar','fltvar','strvar'],
 		...     delimiter=[1,3,5])
 		>>> data
 		array((1, 1.3, 'abcde'),
 		      dtype=[('intvar', '<i8'), ('fltvar', '<f8'), ('strvar', '|S5')])
 	**/
-	static public function genfromtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?skip_header:Dynamic, ?skip_footer:Dynamic, ?converters:Dynamic, ?missing_values:Dynamic, ?filling_values:Dynamic, ?usecols:Dynamic, ?names:Dynamic, ?excludelist:Dynamic, ?deletechars:Dynamic, ?replace_space:Dynamic, ?autostrip:Dynamic, ?case_sensitive:Dynamic, ?defaultfmt:Dynamic, ?unpack:Dynamic, ?usemask:Dynamic, ?loose:Dynamic, ?invalid_raise:Dynamic, ?max_rows:Dynamic):numpy.Ndarray;
+	static public function genfromtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?skip_header:Dynamic, ?skip_footer:Dynamic, ?converters:Dynamic, ?missing_values:Dynamic, ?filling_values:Dynamic, ?usecols:Dynamic, ?names:Dynamic, ?excludelist:Dynamic, ?deletechars:Dynamic, ?replace_space:Dynamic, ?autostrip:Dynamic, ?case_sensitive:Dynamic, ?defaultfmt:Dynamic, ?unpack:Dynamic, ?usemask:Dynamic, ?loose:Dynamic, ?invalid_raise:Dynamic, ?max_rows:Dynamic, ?encoding:Dynamic):numpy.Ndarray;
 	/**
 		Returns whether one or several fields of a dtype are nested.
 		
@@ -349,7 +381,7 @@ package numpy.lib.npyio;
 		    used in Python 3.
 		encoding : str, optional
 		    What encoding to use when reading Python 2 strings. Only useful when
-		    loading Python 2 generated pickled files on Python 3, which includes
+		    loading Python 2 generated pickled files in Python 3, which includes
 		    npy/npz files containing object arrays. Values other than 'latin1',
 		    'ASCII', and 'bytes' are not allowed, as they can corrupt numerical
 		    data. Default: 'ASCII'
@@ -420,23 +452,7 @@ package numpy.lib.npyio;
 		memmap([4, 5, 6])
 	**/
 	static public function load(file:Dynamic, ?mmap_mode:Dynamic, ?allow_pickle:Dynamic, ?fix_imports:Dynamic, ?encoding:Dynamic):Dynamic;
-	/**
-		Read and return an object from the given pickle data.
-		
-		The protocol version of the pickle is detected automatically, so no
-		protocol argument is needed.  Bytes past the pickled object's
-		representation are ignored.
-		
-		Optional keyword arguments are *fix_imports*, *encoding* and *errors*,
-		which are used to control compatibility support for pickle stream
-		generated by Python 2.  If *fix_imports* is True, pickle will try to
-		map the old Python 2 names to the new names used in Python 3.  The
-		*encoding* and *errors* tell pickle how to decode 8-bit string
-		instances pickled by Python 2; these default to 'ASCII' and 'strict',
-		respectively.  The *encoding* can be 'bytes' to read these 8-bit
-		string instances as bytes objects.
-	**/
-	static public function loads(data:Dynamic, ?fix_imports:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
+	static public function loads(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load data from a text file.
 		
@@ -454,33 +470,31 @@ package numpy.lib.npyio;
 		    each row will be interpreted as an element of the array.  In this
 		    case, the number of columns used must match the number of fields in
 		    the data-type.
-		comments : str or sequence, optional
+		comments : str or sequence of str, optional
 		    The characters or list of characters used to indicate the start of a
-		    comment;
-		    default: '#'.
+		    comment. None implies no comments. For backwards compatibility, byte
+		    strings will be decoded as 'latin1'. The default is '#'.
 		delimiter : str, optional
-		    The string used to separate values.  By default, this is any
-		    whitespace.
+		    The string used to separate values. For backwards compatibility, byte
+		    strings will be decoded as 'latin1'. The default is whitespace.
 		converters : dict, optional
-		    A dictionary mapping column number to a function that will convert
-		    that column to a float.  E.g., if column 0 is a date string:
-		    ``converters = {0: datestr2num}``.  Converters can also be used to
-		    provide a default value for missing data (but see also `genfromtxt`):
-		    ``converters = {3: lambda s: float(s.strip() or 0)}``.  Default: None.
+		    A dictionary mapping column number to a function that will parse the
+		    column string into the desired value.  E.g., if column 0 is a date
+		    string: ``converters = {0: datestr2num}``.  Converters can also be
+		    used to provide a default value for missing data (but see also
+		    `genfromtxt`): ``converters = {3: lambda s: float(s.strip() or 0)}``.
+		    Default: None.
 		skiprows : int, optional
 		    Skip the first `skiprows` lines; default: 0.
-		
 		usecols : int or sequence, optional
 		    Which columns to read, with 0 being the first. For example,
-		    usecols = (1,4,5) will extract the 2nd, 5th and 6th columns.
+		    ``usecols = (1,4,5)`` will extract the 2nd, 5th and 6th columns.
 		    The default, None, results in all columns being read.
 		
-		    .. versionadded:: 1.11.0
-		
-		    Also when a single column has to be read it is possible to use
-		    an integer instead of a tuple. E.g ``usecols = 3`` reads the
-		    fourth column the same way as `usecols = (3,)`` would.
-		
+		    .. versionchanged:: 1.11.0
+		        When a single column has to be read it is possible to use
+		        an integer instead of a tuple. E.g ``usecols = 3`` reads the
+		        fourth column the same way as ``usecols = (3,)`` would.
 		unpack : bool, optional
 		    If True, the returned array is transposed, so that arguments may be
 		    unpacked using ``x, y, z = loadtxt(...)``.  When used with a structured
@@ -491,6 +505,15 @@ package numpy.lib.npyio;
 		    Legal values: 0 (default), 1 or 2.
 		
 		    .. versionadded:: 1.6.0
+		encoding : str, optional
+		    Encoding used to decode the inputfile. Does not apply to input streams.
+		    The special value 'bytes' enables backward compatibility workarounds
+		    that ensures you receive byte arrays as results if possible and passes
+		    'latin1' encoded strings to converters. Override this value to receive
+		    unicode arrays and pass strings as input to converters.  If set to None
+		    the system default is used. The default value is 'bytes'.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -517,25 +540,25 @@ package numpy.lib.npyio;
 		Examples
 		--------
 		>>> from io import StringIO   # StringIO behaves like a file object
-		>>> c = StringIO("0 1\n2 3")
+		>>> c = StringIO(u"0 1\n2 3")
 		>>> np.loadtxt(c)
 		array([[ 0.,  1.],
 		       [ 2.,  3.]])
 		
-		>>> d = StringIO("M 21 72\nF 35 58")
+		>>> d = StringIO(u"M 21 72\nF 35 58")
 		>>> np.loadtxt(d, dtype={'names': ('gender', 'age', 'weight'),
 		...                      'formats': ('S1', 'i4', 'f4')})
 		array([('M', 21, 72.0), ('F', 35, 58.0)],
 		      dtype=[('gender', '|S1'), ('age', '<i4'), ('weight', '<f4')])
 		
-		>>> c = StringIO("1,0,2\n3,0,4")
+		>>> c = StringIO(u"1,0,2\n3,0,4")
 		>>> x, y = np.loadtxt(c, delimiter=',', usecols=(0, 2), unpack=True)
 		>>> x
 		array([ 1.,  3.])
 		>>> y
 		array([ 2.,  4.])
 	**/
-	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic):numpy.Ndarray;
+	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic, ?encoding:Dynamic):numpy.Ndarray;
 	/**
 		Load ASCII data stored in a text file and return a masked array.
 		
@@ -659,6 +682,8 @@ package numpy.lib.npyio;
 		    then the filename is unchanged.  If file is a string or Path, a ``.npy``
 		    extension will be appended to the file name if it does not already
 		    have one.
+		arr : array_like
+		    Array data to be saved.
 		allow_pickle : bool, optional
 		    Allow saving object arrays using Python pickles. Reasons for disallowing
 		    pickles include security (loading pickled data can execute arbitrary
@@ -672,8 +697,6 @@ package numpy.lib.npyio;
 		    pickled in a Python 2 compatible way. If `fix_imports` is True, pickle
 		    will try to map the new Python 3 names to the old module names used in
 		    Python 2, so that the pickle data stream is readable with Python 2.
-		arr : array_like
-		    Array data to be saved.
 		
 		See Also
 		--------
@@ -682,9 +705,7 @@ package numpy.lib.npyio;
 		
 		Notes
 		-----
-		For a description of the ``.npy`` format, see the module docstring
-		of `numpy.lib.format` or the NumPy Enhancement Proposal
-		http://docs.scipy.org/doc/numpy/neps/npy-format.html
+		For a description of the ``.npy`` format, see :py:mod:`numpy.lib.format`.
 		
 		Examples
 		--------
@@ -708,20 +729,21 @@ package numpy.lib.npyio;
 		    If the filename ends in ``.gz``, the file is automatically saved in
 		    compressed gzip format.  `loadtxt` understands gzipped files
 		    transparently.
-		X : array_like
+		X : 1D or 2D array_like
 		    Data to be saved to a text file.
 		fmt : str or sequence of strs, optional
 		    A single format (%10.5f), a sequence of formats, or a
 		    multi-format string, e.g. 'Iteration %d -- %10.5f', in which
 		    case `delimiter` is ignored. For complex `X`, the legal options
 		    for `fmt` are:
-		        a) a single specifier, `fmt='%.4e'`, resulting in numbers formatted
-		            like `' (%s+%sj)' % (fmt, fmt)`
-		        b) a full string specifying every real and imaginary part, e.g.
-		            `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
-		        c) a list of specifiers, one per column - in this case, the real
-		            and imaginary part must have separate specifiers,
-		            e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
+		
+		    * a single specifier, `fmt='%.4e'`, resulting in numbers formatted
+		      like `' (%s+%sj)' % (fmt, fmt)`
+		    * a full string specifying every real and imaginary part, e.g.
+		      `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
+		    * a list of specifiers, one per column - in this case, the real
+		      and imaginary part must have separate specifiers,
+		      e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
 		delimiter : str, optional
 		    String or character separating columns.
 		newline : str, optional
@@ -742,6 +764,13 @@ package numpy.lib.npyio;
 		    ``numpy.loadtxt``.
 		
 		    .. versionadded:: 1.7.0
+		encoding : {None, str}, optional
+		    Encoding used to encode the outputfile. Does not apply to output
+		    streams. If the encoding is something other than 'bytes' or 'latin1'
+		    you will not be able to load the file in NumPy versions < 1.14. Default
+		    is 'latin1'.
+		
+		    .. versionadded:: 1.14.0
 		
 		
 		See Also
@@ -809,7 +838,7 @@ package numpy.lib.npyio;
 		>>> np.savetxt('test.out', (x,y,z))   # x,y,z equal sized 1D arrays
 		>>> np.savetxt('test.out', x, fmt='%1.4e')   # use exponential notation
 	**/
-	static public function savetxt(fname:Dynamic, X:Dynamic, ?fmt:Dynamic, ?delimiter:Dynamic, ?newline:Dynamic, ?header:Dynamic, ?footer:Dynamic, ?comments:Dynamic):Dynamic;
+	static public function savetxt(fname:Dynamic, X:Dynamic, ?fmt:Dynamic, ?delimiter:Dynamic, ?newline:Dynamic, ?header:Dynamic, ?footer:Dynamic, ?comments:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		Save several arrays into a single file in uncompressed ``.npz`` format.
 		
@@ -849,9 +878,7 @@ package numpy.lib.npyio;
 		The ``.npz`` file format is a zipped archive of files named after the
 		variables they contain.  The archive is not compressed and each file
 		in the archive contains one variable in ``.npy`` format. For a
-		description of the ``.npy`` format, see `numpy.lib.format` or the
-		NumPy Enhancement Proposal
-		http://docs.scipy.org/doc/numpy/neps/npy-format.html
+		description of the ``.npy`` format, see :py:mod:`numpy.lib.format`.
 		
 		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
 		returned. This is a dictionary-like object which can be queried for
@@ -926,9 +953,9 @@ package numpy.lib.npyio;
 		The ``.npz`` file format is a zipped archive of files named after the
 		variables they contain.  The archive is compressed with
 		``zipfile.ZIP_DEFLATED`` and each file in the archive contains one variable
-		in ``.npy`` format. For a description of the ``.npy`` format, see
-		`numpy.lib.format` or the NumPy Enhancement Proposal
-		http://docs.scipy.org/doc/numpy/neps/npy-format.html
+		in ``.npy`` format. For a description of the ``.npy`` format, see 
+		:py:mod:`numpy.lib.format`.
+		
 		
 		When opening the saved ``.npz`` file with `load` a `NpzFile` object is
 		returned. This is a dictionary-like object which can be queried for
@@ -962,7 +989,8 @@ package numpy.lib.npyio;
 		myarray : ndarray, uint8 type
 		   Input array.
 		axis : int, optional
-		   Unpacks along this axis.
+		    The dimension over which bit-unpacking is done.
+		    ``None`` implies unpacking the flattened array.
 		
 		Returns
 		-------

@@ -16,12 +16,12 @@ package tensorflow.contrib.keras.api.keras.datasets.boston_housing;
 		Arguments:
 		    path: path where to cache the dataset locally
 		        (relative to ~/.keras/datasets).
+		    test_split: fraction of the data to reserve as test set.
 		    seed: Random seed for shuffling the data
 		        before computing the test split.
-		    test_split: fraction of the data to reserve as test set.
 		
 		Returns:
 		    Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
 	**/
-	static public function load_data(?path:Dynamic, ?seed:Dynamic, ?test_split:Dynamic):Dynamic;
+	static public function load_data(?path:Dynamic, ?test_split:Dynamic, ?seed:Dynamic):Dynamic;
 }

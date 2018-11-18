@@ -46,7 +46,7 @@ package pandas.io.formats.css;
 		 ('font-weight', 'bold')]
 	**/
 	public function __call__(declarations_str:Dynamic, ?inherited:Dynamic):python.Dict<Dynamic, Dynamic>;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -97,7 +97,7 @@ package pandas.io.formats.css;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -148,12 +148,12 @@ package pandas.io.formats.css;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _side_expander():Dynamic;
+	static public function _side_expander(prop_fmt:Dynamic):Dynamic;
 	public function atomize(declarations:Dynamic):Dynamic;
 	public function expand_border_color(prop:Dynamic, value:Dynamic):Dynamic;
 	public function expand_border_style(prop:Dynamic, value:Dynamic):Dynamic;

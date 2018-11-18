@@ -18,7 +18,7 @@ package theano.tensor.nnet;
 		
 		Refer to :func:`nnet.conv2d <theano.tensor.nnet.conv2d>` for a more detailed documentation.
 	**/
-	static public function abstract_conv2d(input:Dynamic, filters:Dynamic, ?input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic):Dynamic;
+	static public function abstract_conv2d(input:Dynamic, filters:Dynamic, ?input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic, ?unshared:Dynamic):Dynamic;
 	/**
 		This function will build the symbolic graph for applying batch normalization
 		to a set of activations.
@@ -69,11 +69,6 @@ package theano.tensor.nnet;
 	**/
 	static public function binary_crossentropy(output:Dynamic, target:Dynamic):Dynamic;
 	/**
-		C header for the fortran blas interface
-	**/
-	static public function blas_header_text():Dynamic;
-	static public function blas_header_version():Dynamic;
-	/**
 		Return the cross-entropy between an approximating distribution and a true
 		distribution.
 		
@@ -114,8 +109,6 @@ package theano.tensor.nnet;
 		    (1 for row distributions, 0 for column distributions).
 	**/
 	static public function categorical_crossentropy(coding_dist:Dynamic, true_dist:Dynamic):Dynamic;
-	static public function computeH(V:Dynamic, W:Dynamic, b:Dynamic, d:Dynamic):Dynamic;
-	static public function computeR(W:Dynamic, b:Dynamic, d:Dynamic, H:Dynamic, ?Rshape:Dynamic):Dynamic;
 	/**
 		Computes the confusion matrix of given vectors containing
 		actual observations and predicted observations.
@@ -165,24 +158,28 @@ package theano.tensor.nnet;
 		    (batch size, input channels, input rows, input columns).
 		    See the optional parameter ``input_shape``.
 		
-		filters: symbolic 4D tensor
+		filters: symbolic 4D or 6D tensor
 		    Set of filters used in CNN layer of shape
-		    (output channels, input channels, filter rows, filter columns).
+		    (output channels, input channels, filter rows, filter columns)
+		    for normal convolution and
+		    (output channels, output rows, output columns, input channels,
+		    filter rows, filter columns)
+		    for unshared convolution.
 		    See the optional parameter ``filter_shape``.
 		
-		input_shape: None, tuple/list of len 4 of int or Constant variable
+		input_shape: None, tuple/list of len 4 or 6 of int or Constant variable
 		    The shape of the input parameter.
 		    Optional, possibly used to choose an optimal implementation.
 		    You can give ``None`` for any element of the list to specify that this
 		    element is not known at compile time.
 		
-		filter_shape: None, tuple/list of len 4 of int or Constant variable
+		filter_shape: None, tuple/list of len 4 or 6 of int or Constant variable
 		    The shape of the filters parameter.
 		    Optional, possibly used to choose an optimal implementation.
 		    You can give ``None`` for any element of the list to specify that this
 		    element is not known at compile time.
 		
-		border_mode: str, int or tuple of two int
+		border_mode: str, int or a tuple of two ints or pairs of ints
 		    Either of the following:
 		
 		    ``'valid'``: apply filter wherever it completely overlaps with the
@@ -195,8 +192,11 @@ package theano.tensor.nnet;
 		        leads to the output shape being equal to the input shape.
 		    ``int``: pad input with a symmetric border of zeros of the given
 		        width, then perform a valid convolution.
-		    ``(int1, int2)``: pad input with a symmetric border of ``int1`` rows
-		        and ``int2`` columns, then perform a valid convolution.
+		    ``(int1, int2)``: (for 2D) pad input with a symmetric border of ``int1``,
+		        ``int2``, then perform a valid convolution.
+		    ``(int1, (int2, int3))`` or ``((int1, int2), int3)``: (for 2D)
+		        pad input with one symmetric border of `int1`` or ``int3``, and
+		        one asymmetric border of ``(int2, int3)`` or ``(int1, int2)``.
 		
 		subsample: tuple of len 2
 		    Factor by which to subsample the output.
@@ -214,6 +214,15 @@ package theano.tensor.nnet;
 		filter_dilation: tuple of len 2
 		    Factor by which to subsample (stride) the input.
 		    Also called dilation elsewhere.
+		
+		num_groups : int
+		    Divides the image, kernel and output tensors into num_groups
+		    separate groups. Each which carry out convolutions separately
+		
+		unshared: bool
+		    If true, then unshared or 'locally connected' convolution will be
+		    performed. A different filter will be used for each region of the
+		    input.
 		
 		kwargs: Any other keyword arguments are accepted for backwards
 		        compatibility, but will be ignored.
@@ -236,7 +245,7 @@ package theano.tensor.nnet;
 		    The parameter filter_dilation is an implementation of `dilated
 		    convolution <https://arxiv.org/pdf/1511.07122v3.pdf>`_.
 	**/
-	static public function conv2d(input:Dynamic, filters:Dynamic, ?input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?image_shape:Dynamic, ?filter_dilation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function conv2d(input:Dynamic, filters:Dynamic, ?input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?image_shape:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic, ?unshared:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute conv output gradient w.r.t its inputs
 		
@@ -254,10 +263,14 @@ package theano.tensor.nnet;
 		    will be upsampled or the output gradient of the convolution
 		    whose gradient will be taken with respect to the input of the
 		    convolution.
-		filters : symbolic 4D tensor
-		    set of filters used in CNN layer of shape (output channels,
-		    input channels, filter rows, filter columns).  See the
-		    optional parameter ``filter_shape``.
+		filters: symbolic 4D or 6D tensor
+		    Set of filters used in CNN layer of shape
+		    (output channels, input channels, filter rows, filter columns)
+		    for normal convolution and
+		    (output channels, output rows, output columns, input channels,
+		    filter rows, filter columns)
+		    for unshared convolution.
+		    See the optional parameter ``filter_shape``.
 		input_shape : [None/int/Constant] * 2 + [Tensor/int/Constant] * 2
 		    The shape of the input (upsampled) parameter.
 		    A tuple/list of len 4, with the first two dimensions
@@ -266,12 +279,13 @@ package theano.tensor.nnet;
 		    Not Optional, since given the output_grad shape
 		    and the subsample values, multiple input_shape may be
 		    plausible.
-		filter_shape : None or [None/int/Constant] * 4
-		    The shape of the filters parameter. None or a tuple/list of len 4.
+		filter_shape : None or [None/int/Constant] * (4 or 6)
+		    The shape of the filters parameter. None or a tuple/list of len 4 or a
+		    tuple/list of len 6 (for unshared convolution)
 		    Optional, possibly used  to choose an optimal implementation.
 		    You can give ``None`` for any element of the list to specify that
 		    this element is not known at compile time.
-		border_mode : str, int or tuple of two int
+		border_mode: str, int or a tuple of two ints or pairs of ints
 		    Either of the following:
 		
 		      ``'valid'``
@@ -298,6 +312,14 @@ package theano.tensor.nnet;
 		        pad input with a symmetric border of ``int1`` rows and
 		        ``int2`` columns, then perform a valid convolution.
 		
+		      ``(int1, (int2, int3))`` or ``((int1, int2), int3)``
+		        pad input with one symmetric border of `int1`` or ``int3``, and
+		        one asymmetric border of ``(int2, int3)`` or ``(int1, int2)``.
+		
+		      ``((int1, int2), (int3, int4))``
+		        pad input with an asymmetric border of ``(int1, int2)`` along one dimension and ``(int3, int4)``
+		        along the second dimension.
+		
 		subsample : tuple of len 2
 		    The subsampling used in the forward pass.  Also called strides
 		    elsewhere.
@@ -310,6 +332,13 @@ package theano.tensor.nnet;
 		filter_dilation : tuple of len 2
 		    The filter dilation used in the forward pass.
 		    Also known as input striding.
+		num_groups : int
+		    Divides the image, kernel and output tensors into num_groups
+		    separate groups. Each which carry out convolutions separately
+		unshared: bool
+		    If true, then unshared or 'locally connected' convolution will be
+		    performed. A different filter will be used for each region of the
+		    input.
 		
 		Returns
 		-------
@@ -328,7 +357,7 @@ package theano.tensor.nnet;
 		:note: This is only supported in Theano 0.8 or the development
 		    version until it is released.
 	**/
-	static public function conv2d_grad_wrt_inputs(output_grad:Dynamic, filters:Dynamic, input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic):Dynamic;
+	static public function conv2d_grad_wrt_inputs(output_grad:Dynamic, filters:Dynamic, input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic, ?unshared:Dynamic):Dynamic;
 	/**
 		This function will build the symbolic graph for applying a transposed
 		convolution over a mini-batch of a stack of 2D inputs with a set of 2D
@@ -380,6 +409,16 @@ package theano.tensor.nnet;
 		    Factor by which to subsample (stride) the input.
 		    Also called dilation elsewhere.
 		
+		num_groups : int
+		    Divides the image, kernel and output tensors into num_groups
+		    separate groups. Each which carry out convolutions separately
+		
+		unshared: bool
+		    If true, then unshared or 'locally connected' convolution will be
+		    performed. A different filter will be used for each region of the
+		    input.
+		    Grouped unshared convolution is supported.
+		
 		Returns
 		-------
 		Symbolic 4D tensor
@@ -397,42 +436,7 @@ package theano.tensor.nnet;
 		    The parameter filter_dilation is an implementation of `dilated
 		    convolution <https://arxiv.org/pdf/1511.07122v3.pdf>`_.
 	**/
-	static public function conv2d_transpose(input:Dynamic, filters:Dynamic, output_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?input_dilation:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic):Dynamic;
-	/**
-		3D "convolution" of multiple filters on a minibatch.
-		
-		(does not flip the kernel, moves kernel with a user specified stride)
-		
-		Parameters
-		----------
-		V
-		    Visible unit, input.
-		    Dimensions: (batch, row, column, time, in channel).
-		W
-		    Weights, filter.
-		    Dimensions: (out channel, row, column, time ,in channel).
-		b
-		    Bias, shape == (W.shape[0],).
-		d
-		    Strides when moving the filter over the input(dx, dy, dt).
-		
-		Notes
-		-----
-		The order of dimensions does not correspond to the one in `conv2d`.
-		This is for optimization.
-		
-		The GPU implementation is very slow. You should use
-		:func:`conv3d2d <theano.tensor.nnet.conv3d2d.conv3d>` or
-		:func:`conv3d_fft <theano.sandbox.cuda.fftconv.conv3d_fft>` for a
-		GPU graph instead.
-		
-		See Also
-		--------
-		Someone made a script that shows how to swap the axes
-		between both 3d convolution implementations in Theano. See
-		the last `attachment <https://groups.google.com/d/msg/theano-users/1S9_bZgHxVw/0cQR9a4riFUJ>`_
-	**/
-	static public function conv3D(V:Dynamic, W:Dynamic, b:Dynamic, d:Dynamic):Dynamic;
+	static public function conv2d_transpose(input:Dynamic, filters:Dynamic, output_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?input_dilation:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic, ?unshared:Dynamic):Dynamic;
 	/**
 		This function will build the symbolic graph for convolving a mini-batch of a
 		stack of 3D inputs with a set of 3D filters. The implementation is modelled
@@ -495,6 +499,10 @@ package theano.tensor.nnet;
 		    Factor by which to subsample (stride) the input.
 		    Also called dilation elsewhere.
 		
+		num_groups : int
+		    Divides the image, kernel and output tensors into num_groups
+		    separate groups. Each which carry out convolutions separately
+		
 		Returns
 		-------
 		Symbolic 5D tensor
@@ -511,9 +519,7 @@ package theano.tensor.nnet;
 		    This is only supported in Theano 0.8 or the development
 		    version until it is released.
 	**/
-	static public function conv3d(input:Dynamic, filters:Dynamic, ?input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic):Dynamic;
-	static public function convGrad3D(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function convTransp3D(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function conv3d(input:Dynamic, filters:Dynamic, ?input_shape:Dynamic, ?filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic):Dynamic;
 	static public function crossentropy_categorical_1hot(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function crossentropy_categorical_1hot_grad(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function crossentropy_softmax_1hot(x:Dynamic, y_idx:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -540,7 +546,7 @@ package theano.tensor.nnet;
 	static public function crossentropy_to_crossentropy_with_softmax_with_bias(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Compute the element-wise exponential linear activation function.
+		Compute the element-wise exponential linear activation function [2]_.
 		
 		.. versionadded:: 0.8.0
 		
@@ -558,24 +564,11 @@ package theano.tensor.nnet;
 		
 		References
 		-----
-		.. [1] Djork-Arne Clevert,  Thomas Unterthiner, Sepp Hochreiter
+		.. [2] Djork-Arne Clevert,  Thomas Unterthiner, Sepp Hochreiter
 		    "Fast and Accurate Deep Network Learning by
 		    Exponential Linear Units (ELUs)" <http://arxiv.org/abs/1511.07289>`.
 	**/
 	static public function elu(x:Dynamic, ?alpha:Dynamic):Dynamic;
-	/**
-		Return an un-computable symbolic variable of type `x.type`.
-		
-		If any call to tensor.grad results in an expression containing this
-		un-computable variable, an exception (GradUndefinedError) will be
-		raised indicating that the gradient on the
-		`x_pos`'th input of `op` is mathematically undefined. Likewise if
-		any call to theano.function involves this variable.
-		
-		Optionally adds a comment to the exception explaining why this
-		gradient is not defined.
-	**/
-	static public function grad_undefined(op:Dynamic, x_pos:Dynamic, x:Dynamic, ?comment:Dynamic):Dynamic;
 	static public var graph_merge_softmax_with_crossentropy_softmax : Dynamic;
 	/**
 		Two-level hierarchical softmax.
@@ -721,30 +714,6 @@ package theano.tensor.nnet;
 		Removing the slope and shift does not make it faster.
 	**/
 	static public function hard_sigmoid(x:Dynamic):Dynamic;
-	/**
-		Extract a list of compilation flags from config.blas.ldflags.
-		
-		Depending on the options, different type of flags will be kept.
-		It returns a list of libraries against which an Op's object file
-		should be linked to benefit from a BLAS implementation.
-		
-		Parameters
-		----------
-		libs : bool, optional
-		    Extract flags starting with "-l" (the default is True).
-		libs_dir : bool, optional
-		    Extract flags starting with "-L" (the default is False).
-		include_dir : bool, optional
-		    Extract flags starting with "-I" (the default is False).
-		flags: bool, optional
-		    Extract all the other flags (the default is False).
-		
-		Returns
-		-------
-		list of strings
-		    Extracted flags.
-	**/
-	static public function ldflags(?libs:Dynamic, ?flags:Dynamic, ?libs_dir:Dynamic, ?include_dir:Dynamic):Dynamic;
 	static public function logsoftmax(c:Dynamic):Dynamic;
 	static public function logsoftmax_op(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function prepend_0_to_each_row(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -780,7 +749,128 @@ package theano.tensor.nnet;
 	**/
 	static public function relu(x:Dynamic, ?alpha:Dynamic):Dynamic;
 	static public function scalar_sigmoid(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Compute the element-wise Scaled Exponential Linear unit [3]_.
+		
+		.. versionadded:: 0.9.0
+		
+		Parameters
+		----------
+		x : symbolic tensor
+		    Tensor to compute the activation function for.
+		
+		Returns
+		-------
+		symbolic tensor
+		    Element-wise scaled exponential linear activation function applied to `x`.
+		
+		References
+		----------
+		.. [3] Klambauer G, Unterthiner T, Mayr A, Hochreiter S.
+		    "Self-Normalizing Neural Networks" <https://arxiv.org/abs/1706.02515>
+	**/
+	static public function selu(x:Dynamic):Dynamic;
+	/**
+		This function will build the symbolic graph for depthwise
+		convolutions which act separately on the input channels followed by
+		pointwise convolution which mixes channels.
+		
+		Parameters
+		----------
+		input: symbolic 4D tensor
+		    Mini-batch of feature map stacks, of shape
+		    (batch size, input channels, input rows, input columns).
+		    See the optional parameter ``input_shape``.
+		
+		depthwise_filters: symbolic 4D tensor
+		    Set of filters used depthwise convolution layer of shape
+		    (depthwise output channels, 1, filter rows, filter columns).
+		
+		pointwise_filters: symbolic 4D tensor
+		    Set of filters used pointwise convolution layer of shape
+		    (output channels, depthwise output channels, 1, 1).
+		
+		num_channels: int
+		    The number of channels of the input. Required for depthwise
+		    convolutions.
+		
+		input_shape: None, tuple/list of len 4 of int or Constant variable
+		    The shape of the input parameter.
+		    Optional, possibly used to choose an optimal implementation.
+		    You can give ``None`` for any element of the list to specify that this
+		    element is not known at compile time.
+		
+		depthwise_filter_shape: None, tuple/list of len 4 of int or Constant variable
+		    The shape of the depthwise filters parameter.
+		    Optional, possibly used to choose an optimal implementation.
+		    You can give ``None`` for any element of the list to specify that this
+		    element is not known at compile time.
+		
+		pointwise_filter_shape: None, tuple/list of len 4 of int or Constant variable
+		    The shape of the pointwise filters parameter.
+		    Optional, possibly used to choose an optimal implementation.
+		    You can give ``None`` for any element of the list to specify that this
+		    element is not known at compile time.
+		
+		border_mode: str, int or tuple of two int
+		    This applies only to depthwise convolutions
+		    Either of the following:
+		
+		    ``'valid'``: apply filter wherever it completely overlaps with the
+		        input. Generates output of shape: input shape - filter shape + 1
+		    ``'full'``: apply filter wherever it partly overlaps with the input.
+		        Generates output of shape: input shape + filter shape - 1
+		    ``'half'``: pad input with a symmetric border of ``filter rows // 2``
+		        rows and ``filter columns // 2`` columns, then perform a valid
+		        convolution. For filters with an odd number of rows and columns, this
+		        leads to the output shape being equal to the input shape.
+		    ``int``: pad input with a symmetric border of zeros of the given
+		        width, then perform a valid convolution.
+		    ``(int1, int2)``: pad input with a symmetric border of ``int1`` rows
+		        and ``int2`` columns, then perform a valid convolution.
+		    ``(int1, (int2, int3))`` or ``((int1, int2), int3)``:
+		        pad input with one symmetric border of `int1`` or ``int3``, and
+		        one asymmetric border of ``(int2, int3)`` or ``(int1, int2)``.
+		    ``((int1, int2), (int3, int4))``: pad input with an asymmetric
+		        border of ``(int1, int2)`` along one dimension and ``(int3, int4)``
+		        along the second dimension.
+		
+		subsample: tuple of len 2
+		    Factor by which to subsample the output.
+		    This applies only to depthwise convolutions
+		
+		filter_flip: bool
+		    If ``True``, will flip the filter rows and columns
+		    before sliding them over the input. This operation is normally referred
+		    to as a convolution, and this is the default. If ``False``, the filters
+		    are not flipped and the operation is referred to as a cross-correlation.
+		
+		filter_dilation: tuple of len 2
+		    Factor by which to subsample (stride) the input.
+		    This applies only to depthwise convolutions
+		
+		Returns
+		-------
+		Symbolic 4D tensor
+		    Set of feature maps generated by convolutional layer. Tensor is
+		    of shape (batch size, output channels, output rows, output columns)
+	**/
+	static public function separable_conv2d(input:Dynamic, depthwise_filters:Dynamic, pointwise_filters:Dynamic, num_channels:Dynamic, ?input_shape:Dynamic, ?depthwise_filter_shape:Dynamic, ?pointwise_filter_shape:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?filter_flip:Dynamic, ?filter_dilation:Dynamic):Dynamic;
 	static public function sigmoid(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Compute the cross-entropy of binary random variables.
+		
+		`output` should be real-valued (range (-inf, +inf)); `sigmoid` will be
+		applied to produce a (0, 1) valued input.
+		
+		`target` is assumed to be probabilities in [0, 1].
+		
+		Notes
+		-----
+		Mathematically equivalent to `binary_crossentropy(sigmoid(output), target)`,
+		but with more efficient and numerically stable computation.
+	**/
+	static public function sigmoid_binary_crossentropy(output:Dynamic, target:Dynamic):Dynamic;
 	static public function sigmoid_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function softmax(c:Dynamic):Dynamic;
 	static public function softmax_grad(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

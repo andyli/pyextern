@@ -24,6 +24,12 @@ package scipy.sparse.linalg._interface;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -40,9 +46,37 @@ package scipy.sparse.linalg._interface;
 	static public function isintlike(x:Dynamic):Dynamic;
 	/**
 		Is x a valid 2-tuple of dimensions?
-		    
+		
+		If nonneg, also checks that the dimensions are non-negative.
 	**/
-	static public function isshape(x:Dynamic):Dynamic;
+	static public function isshape(x:Dynamic, ?nonneg:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

@@ -6,7 +6,7 @@ package numpy.lib.user_array;
 	public function __and__(other:Dynamic):Dynamic;
 	public function __array__(?t:Dynamic):Dynamic;
 	public function __array_wrap__(?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __complex__():Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -67,7 +67,7 @@ package numpy.lib.user_array;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __int__():Dynamic;
 	public function __invert__():Dynamic;
 	public function __ior__(other:Dynamic):Dynamic;
@@ -150,7 +150,7 @@ package numpy.lib.user_array;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

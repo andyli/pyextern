@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.coordinator;
 @:pythonImport("tensorflow.python.training.coordinator", "LooperThread") extern class LooperThread {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -74,7 +74,7 @@ package tensorflow.python.training.coordinator;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -125,7 +125,7 @@ package tensorflow.python.training.coordinator;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -142,7 +142,7 @@ package tensorflow.python.training.coordinator;
 		Return information about the most recent exception caught by an except
 		clause in the current stack frame or in an older stack frame.
 	**/
-	static public function _exc_info(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _exc_info(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _initialized : Dynamic;
 	public function _reset_internal_locks(is_alive:Dynamic):Dynamic;
 	public function _set_ident():Dynamic;
@@ -152,6 +152,8 @@ package tensorflow.python.training.coordinator;
 	**/
 	public function _set_tstate_lock():Dynamic;
 	public function _stop():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public function _wait_for_tstate_lock(?block:Dynamic, ?timeout:Dynamic):Dynamic;
 	/**
 		A boolean value indicating whether this thread is a daemon thread.

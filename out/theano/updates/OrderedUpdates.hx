@@ -2,7 +2,7 @@
 package theano.updates;
 @:pythonImport("theano.updates", "OrderedUpdates") extern class OrderedUpdates {
 	public function __add__(other:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if D has a key k, else False.
 	**/
@@ -62,7 +62,7 @@ package theano.updates;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -88,7 +88,7 @@ package theano.updates;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function __radd__(self:Dynamic):Dynamic;
+	static public function __radd__(other:Dynamic, self:Dynamic):Dynamic;
 	/**
 		Return state information for pickling
 	**/
@@ -129,7 +129,7 @@ package theano.updates;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		od.clear() -> None.  Remove all items from od.
 	**/
@@ -142,7 +142,7 @@ package theano.updates;
 		OD.fromkeys(S[, v]) -> New ordered dictionary with keys from S.
 		If not specified, the value defaults to None.
 	**/
-	static public function fromkeys(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function fromkeys(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
 	**/

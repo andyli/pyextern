@@ -15,13 +15,14 @@ package tensorflow.python.layers.utils;
 		
 		Arguments:
 		  pred: A scalar, either a Python bool or a TensorFlow boolean variable
-		    or tensor.
+		    or tensor, or the Python integer 1 or 0.
 		
 		Returns:
 		  True or False if `pred` has a constant boolean value, None otherwise.
 		
 		Raises:
-		  TypeError is pred is not a Variable, Tensor or bool.
+		  TypeError: If `pred` is not a Variable, Tensor or bool, or Python
+		    interger 1 or 0.
 	**/
 	static public function constant_value(pred:Dynamic):Dynamic;
 	/**
@@ -66,6 +67,21 @@ package tensorflow.python.layers.utils;
 	**/
 	static public function deconv_output_length(input_length:Dynamic, filter_size:Dynamic, padding:Dynamic, stride:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Returns the set of tensors reachable from `inputs`.
+		
+		Stops if all targets have been found (target is optional).
+		
+		Only valid in Symbolic mode, not Eager mode.
+		
+		Args:
+		  inputs: List of tensors.
+		  targets: List of tensors.
+		
+		Returns:
+		  A set of tensors reachable from the inputs (includes the inputs themselves).
+	**/
+	static public function get_reachable_from_inputs(inputs:Dynamic, ?targets:Dynamic):Dynamic;
 	static public function normalize_data_format(value:Dynamic):Dynamic;
 	static public function normalize_padding(value:Dynamic):Dynamic;
 	/**
@@ -86,24 +102,33 @@ package tensorflow.python.layers.utils;
 		    passed.
 	**/
 	static public function normalize_tuple(value:Dynamic, n:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Creates a single string from object ids.
+	**/
+	static public function object_list_uid(object_list:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Return either `fn1()` or `fn2()` based on the boolean predicate `pred`.
+		Return either `true_fn()` if predicate `pred` is true else `false_fn()`.
 		
-		If `pred` is a bool or has a constant value, we return either `fn1()`
-		or `fn2()`, otherwise we use `tf.cond` to dynamically route to both.
+		If `pred` is a bool or has a constant value, we return either `true_fn()`
+		or `false_fn()`, otherwise we use `tf.cond` to dynamically route to both.
 		
 		Arguments:
-		  pred: A scalar determining whether to return the result of `fn1` or `fn2`.
-		  fn1: The callable to be performed if pred is true.
-		  fn2: The callable to be performed if pred is false.
+		  pred: A scalar determining whether to return the result of `true_fn` or
+		    `false_fn`.
+		  true_fn: The callable to be performed if pred is true.
+		  false_fn: The callable to be performed if pred is false.
 		  name: Optional name prefix when using `tf.cond`.
 		
 		Returns:
-		  Tensors returned by the call to either `fn1` or `fn2`.
+		  Tensors returned by the call to either `true_fn` or `false_fn`.
 		
 		Raises:
-		  TypeError is fn1 or fn2 is not callable.
+		  TypeError: If `true_fn` or `false_fn` is not callable.
 	**/
-	static public function smart_cond(pred:Dynamic, fn1:Dynamic, fn2:Dynamic, ?name:Dynamic):Dynamic;
+	static public function smart_cond(pred:Dynamic, ?true_fn:Dynamic, ?false_fn:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Get the static shape of a Tensor, or None if it is unavailable.
+	**/
+	static public function static_shape(x:Dynamic):Dynamic;
 }

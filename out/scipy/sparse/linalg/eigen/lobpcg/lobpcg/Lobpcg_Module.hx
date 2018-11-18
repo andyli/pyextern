@@ -45,6 +45,12 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -139,6 +145,19 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		--------
 		cho_solve : Solve a linear set equations using the Cholesky factorization
 		            of a matrix.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> c
+		array([[3.        , 1.        , 0.33333333, 1.66666667],
+		       [3.        , 2.44948974, 1.90515869, -0.27216553],
+		       [1.        , 5.        , 2.29330749, 0.8559528 ],
+		       [5.        , 1.        , 2.        , 1.55418563]])
+		>>> np.allclose(np.triu(c).T @ np. triu(c) - A, np.zeros((4, 4)))
+		True
 	**/
 	static public function cho_factor(a:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -165,6 +184,15 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		See also
 		--------
 		cho_factor : Cholesky factorization of a matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor, cho_solve
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> x = cho_solve((c, low), [1, 1, 1, 1])
+		>>> np.allclose(A @ x - [1, 1, 1, 1], np.zeros(4))
+		True
 	**/
 	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
@@ -198,13 +226,13 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		
 		Examples
 		--------
-		>>> from scipy import array, linalg, dot
-		>>> a = array([[1,-2j],[2j,5]])
-		>>> L = linalg.cholesky(a, lower=True)
+		>>> from scipy.linalg import cholesky
+		>>> a = np.array([[1,-2j],[2j,5]])
+		>>> L = cholesky(a, lower=True)
 		>>> L
 		array([[ 1.+0.j,  0.+0.j],
 		       [ 0.+2.j,  1.+0.j]])
-		>>> dot(L, L.T.conj())
+		>>> L @ L.T.conj()
 		array([[ 1.+0.j,  0.-2.j],
 		       [ 0.+2.j,  5.+0.j]])
 	**/
@@ -290,7 +318,25 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		
 		See Also
 		--------
+		eigvalsh : eigenvalues of symmetric or Hermitian arrays
 		eig : eigenvalues and right eigenvectors for non-symmetric arrays
+		eigh : eigenvalues and right eigenvectors for symmetric/Hermitian arrays
+		eigh_tridiagonal : eigenvalues and right eiegenvectors for
+		    symmetric/Hermitian tridiagonal matrices
+		
+		Notes
+		-----
+		This function does not check the input array for being hermitian/symmetric
+		in order to allow for representing arrays with only their upper/lower
+		triangular parts.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import eigh
+		>>> A = np.array([[6, 3, 1, 5], [3, 0, 5, 1], [1, 5, 6, 2], [5, 1, 2, 2]])
+		>>> w, v = eigh(A)
+		>>> np.allclose(A @ v - v @ np.diag(w), np.zeros((4, 4)))
+		True
 	**/
 	static public function eigh(a:Dynamic, ?b:Dynamic, ?lower:Dynamic, ?eigvals_only:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?turbo:Dynamic, ?eigvals:Dynamic, ?type:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -395,7 +441,7 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		array([[   1.,    0.,    0., ...,    0.,    0.,    0.],
 		       [   0.,    2.,    0., ...,    0.,    0.,    0.],
 		       [   0.,    0.,    3., ...,    0.,    0.,    0.],
-		       ..., 
+		       ...,
 		       [   0.,    0.,    0., ...,   98.,    0.,    0.],
 		       [   0.,    0.,    0., ...,    0.,   99.,    0.],
 		       [   0.,    0.,    0., ...,    0.,    0.,  100.]])
@@ -482,14 +528,10 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		       in hypre and PETSc.  http://arxiv.org/abs/0705.2626
 		
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
-		       http://www-math.cudenver.edu/~aknyazev/software/BLOPEX/
+		       https://bitbucket.org/joseroman/blopex
 	**/
 	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Array<Dynamic>;
 	static public function pause():Dynamic;
 	static public var print_function : Dynamic;
 	static public function save(ar:Dynamic, fileName:Dynamic):Dynamic;
-	/**
-		`symeig` is deprecated, use `eigh` instead!
-	**/
-	static public function symeig(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

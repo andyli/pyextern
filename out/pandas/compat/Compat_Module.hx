@@ -5,6 +5,8 @@ package pandas.compat;
 	static public var PY3 : Dynamic;
 	static public var PY35 : Dynamic;
 	static public var PY36 : Dynamic;
+	static public var PY37 : Dynamic;
+	static public var PYPY : Dynamic;
 	static public var _EAW_MAP : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -55,6 +57,10 @@ package pandas.compat;
 		Returns the east asian width assigned to the character chr as string.
 	**/
 	static public function east_asian_width(chr:Dynamic):Dynamic;
+	/**
+		Gets the start, stop, and step parameters from a range object
+	**/
+	static public function get_range_parameters(data:Dynamic):Dynamic;
 	/**
 		import lzma from the std library 
 	**/
@@ -139,29 +145,29 @@ package pandas.compat;
 		    :class:`datetime` object is returned.
 		
 		:param tzinfos:
-		        Additional time zone names / aliases which may be present in the
-		        string. This argument maps time zone names (and optionally offsets
-		        from those time zones) to time zones. This parameter can be a
-		        dictionary with timezone aliases mapping time zone names to time
-		        zones or a function taking two parameters (``tzname`` and
-		        ``tzoffset``) and returning a time zone.
+		    Additional time zone names / aliases which may be present in the
+		    string. This argument maps time zone names (and optionally offsets
+		    from those time zones) to time zones. This parameter can be a
+		    dictionary with timezone aliases mapping time zone names to time
+		    zones or a function taking two parameters (``tzname`` and
+		    ``tzoffset``) and returning a time zone.
 		
-		        The timezones to which the names are mapped can be an integer
-		        offset from UTC in minutes or a :class:`tzinfo` object.
+		    The timezones to which the names are mapped can be an integer
+		    offset from UTC in seconds or a :class:`tzinfo` object.
 		
-		        .. doctest::
-		           :options: +NORMALIZE_WHITESPACE
+		    .. doctest::
+		       :options: +NORMALIZE_WHITESPACE
 		
-		            >>> from dateutil.parser import parse
-		            >>> from dateutil.tz import gettz
-		            >>> tzinfos = {"BRST": -10800, "CST": gettz("America/Chicago")}
-		            >>> parse("2012-01-19 17:21:00 BRST", tzinfos=tzinfos)
-		            datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -10800))
-		            >>> parse("2012-01-19 17:21:00 CST", tzinfos=tzinfos)
-		            datetime.datetime(2012, 1, 19, 17, 21,
-		                              tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))
+		        >>> from dateutil.parser import parse
+		        >>> from dateutil.tz import gettz
+		        >>> tzinfos = {"BRST": -7200, "CST": gettz("America/Chicago")}
+		        >>> parse("2012-01-19 17:21:00 BRST", tzinfos=tzinfos)
+		        datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -7200))
+		        >>> parse("2012-01-19 17:21:00 CST", tzinfos=tzinfos)
+		        datetime.datetime(2012, 1, 19, 17, 21,
+		                          tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))
 		
-		        This parameter is ignored if ``ignoretz`` is set.
+		    This parameter is ignored if ``ignoretz`` is set.
 		
 		:param dayfirst:
 		    Whether to interpret the first value in an ambiguous 3-integer date
@@ -214,6 +220,7 @@ package pandas.compat;
 		If traceback is not passed, uses sys.exc_info() to get traceback.
 	**/
 	static public function raise_with_traceback(exc:Dynamic, ?traceback:Dynamic):Dynamic;
+	static public function re_type(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		
@@ -226,6 +233,12 @@ package pandas.compat;
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Reload the module and return it.
+		
+		The module must have been successfully imported before.
+	**/
+	static public function reload(module:Dynamic):Dynamic;
+	/**
 		Bind the name/qualname attributes of the function 
 	**/
 	static public function set_function_name(f:Dynamic, name:Dynamic, cls:Dynamic):Dynamic;
@@ -234,10 +247,24 @@ package pandas.compat;
 	static public var string_and_binary_types : Dynamic;
 	static public var string_types : Dynamic;
 	static public function strlen(data:Dynamic, ?encoding:Dynamic):Dynamic;
+	/**
+		Convert bytes and non-string into Python 3 str
+	**/
+	static public function to_str(s:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 	static public function u_safe(s:Dynamic):Dynamic;
 	/**
 		Return a Unicode string of one character with ordinal i; 0 <= i <= 0x10ffff.
 	**/
 	static public function unichr(i:Dynamic):Dynamic;
+	/**
+		Decorator factory to apply update_wrapper() to a wrapper function
+		
+		Returns a decorator that invokes update_wrapper() with the decorated
+		function as the wrapper argument and the arguments to wraps() as the
+		remaining arguments. Default arguments are as for update_wrapper().
+		This is a convenience function to simplify applying partial() to
+		update_wrapper().
+	**/
+	static public function wraps(wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
 }

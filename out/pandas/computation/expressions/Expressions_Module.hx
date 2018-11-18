@@ -9,5 +9,9 @@ package pandas.computation.expressions;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		.. deprecated:: 0.20.0
+		    Use ``pandas.set_option('compute.use_numexpr', v)`` instead.
+	**/
 	static public function set_use_numexpr(?v:Dynamic):Dynamic;
 }

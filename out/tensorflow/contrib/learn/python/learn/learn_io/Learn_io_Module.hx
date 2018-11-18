@@ -15,7 +15,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Extract data from dask.Series or dask.DataFrame for predictors.
+		Extract data from dask.Series or dask.DataFrame for predictors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please feed input to tf.data to support dask.
 		
 		Given a distributed dask.DataFrame or dask.Series containing columns or names
 		for one or more predictors, this operation returns a single dask.DataFrame or
@@ -31,7 +35,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function extract_dask_data(data:Dynamic):Dynamic;
 	/**
-		Extract data from dask.Series or dask.DataFrame for labels.
+		Extract data from dask.Series or dask.DataFrame for labels. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please feed input to tf.data to support dask.
 		
 		Given a distributed dask.DataFrame or dask.Series containing exactly one
 		column or name, this operation returns a single dask.DataFrame or dask.Series
@@ -53,7 +61,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function extract_dask_labels(labels:Dynamic):Dynamic;
 	/**
-		Extract data from pandas.DataFrame for predictors.
+		Extract data from pandas.DataFrame for predictors. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please access pandas data directly.
 		
 		Given a DataFrame, will extract the values and cast them to float. The
 		DataFrame is expected to contain values of type int, float or bool.
@@ -69,7 +81,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function extract_pandas_data(data:Dynamic):Dynamic;
 	/**
-		Extract data from pandas.DataFrame for labels.
+		Extract data from pandas.DataFrame for labels. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please access pandas data directly.
 		
 		Args:
 		  labels: `pandas.DataFrame` or `pandas.Series` containing one column of
@@ -84,7 +100,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function extract_pandas_labels(labels:Dynamic):Dynamic;
 	/**
-		Extracts numpy matrix from pandas DataFrame.
+		Extracts numpy matrix from pandas DataFrame. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please access pandas data directly.
 		
 		Args:
 		  data: `pandas.DataFrame` containing the data to be extracted.
@@ -94,11 +114,17 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function extract_pandas_matrix(data:Dynamic):Dynamic;
 	/**
-		Returns input function that would dicts of numpy arrays
-		     yielded from a generator.
+		Returns input function that returns dicts of numpy arrays (deprecated)
 		
-		It is assumed that every dict yielded from the dictionary represents
-		a single sample. The generator should consume a single epoch of the data.
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use tf.data.
+		
+		   yielded from a generator.
+		
+		It is assumed that every dict of numpy arrays yielded from the dictionary
+		represents a single sample. The generator should consume a single epoch of the
+		data.
 		
 		This returns a function outputting `features` and `target` based on the dict
 		of numpy arrays. The dict `features` has the same keys as an element yielded
@@ -130,6 +156,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		    time.
 		  queue_capacity: Integer, size of queue to accumulate.
 		  num_threads: Integer, number of threads used for reading and enqueueing.
+		  pad_value: default value for dynamic padding of data samples, if provided.
 		
 		Returns:
 		  Function, that returns a feature `dict` with `Tensors` and an optional
@@ -144,18 +171,30 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		  KeyError:  `target_key` not a key or `target_key[index]` not in next(`x()`).
 		  KeyError: `key` mismatch between dicts emitted from `x()`
 	**/
-	static public function generator_input_fn(x:Dynamic, ?target_key:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
+	static public function generator_input_fn(x:Dynamic, ?target_key:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?pad_value:Dynamic):Dynamic;
 	/**
-		This input_fn diffs from the core version with default `shuffle`.
+		This input_fn diffs from the core version with default `shuffle`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.estimator.inputs.numpy_input_fn.
 	**/
 	static public function numpy_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
 	/**
-		This input_fn diffs from the core version with default `shuffle`.
+		This input_fn diffs from the core version with default `shuffle`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please use tf.estimator.inputs.pandas_input_fn
 	**/
 	static public function pandas_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?target_column:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Speeds up parsing by using queues to do it asynchronously.
+		Speeds up parsing by using queues to do it asynchronously. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		This function adds the tensors in `parsed_features` to a queue, which allows
 		the parsing (or any other expensive op before this) to be asynchronous wrt the
@@ -175,7 +214,9 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		  num_enqueue_threads: Number of threads to enqueue the parsed example queue.
 		    Using multiple threads to enqueue the parsed example queue helps maintain
 		    a full queue when the subsequent computations overall are cheaper than
-		    parsing.
+		    parsing. In order to have predictable and repeatable order of reading and
+		    enqueueing, such as in prediction and evaluation mode,
+		    `num_enqueue_threads` should be 1.
 		  name: Name of resulting op.
 		
 		Returns:
@@ -188,7 +229,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function queue_parsed_features(parsed_features:Dynamic, ?keys:Dynamic, ?feature_queue_capacity:Dynamic, ?num_enqueue_threads:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch `Example` protos.
+		Adds operations to read, queue, batch `Example` protos. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		Given file pattern (or list of files), will setup a queue for file names,
 		read `Example` proto using provided `reader`, use batch queue to create
@@ -211,13 +256,13 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		  num_epochs: Integer specifying the number of times to read through the
 		    dataset. If `None`, cycles through the dataset forever.
 		    NOTE - If specified, creates a variable that must be initialized, so call
-		    `tf.global_variables_initializer()` and run the op in a session.
+		    `tf.local_variables_initializer()` and run the op in a session.
 		  queue_capacity: Capacity for input queue.
 		  num_threads: The number of threads enqueuing examples. In order to have
-		    predicted and repeatable order of reading and enqueueing, such as in
+		    predictable and repeatable order of reading and enqueueing, such as in
 		    prediction and evaluation mode, `num_threads` should be 1.
 		  read_batch_size: An int or scalar `Tensor` specifying the number of
-		    records to read at once
+		    records to read at once.
 		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
 		    representation. If `None`, no parsing is done.
 		  name: Name of resulting op.
@@ -231,7 +276,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function read_batch_examples(file_pattern:Dynamic, batch_size:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?read_batch_size:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch and parse `Example` protos.
+		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		Given file pattern (or list of files), will setup a queue for file names,
 		read `Example` proto using provided `reader`, use batch queue to create
@@ -260,11 +309,19 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		  feature_queue_capacity: Capacity of the parsed features queue. Set this
 		    value to a small number, for example 5 if the parsed features are large.
 		  reader_num_threads: The number of threads to read examples. In order to have
-		    predicted and repeatable order of reading and enqueueing, such as in
+		    predictable and repeatable order of reading and enqueueing, such as in
 		    prediction and evaluation mode, `reader_num_threads` should be 1.
+		  num_enqueue_threads: Number of threads to enqueue the parsed example queue.
+		    Using multiple threads to enqueue the parsed example queue helps maintain
+		    a full queue when the subsequent computations overall are cheaper than
+		    parsing. In order to have predictable and repeatable order of reading and
+		    enqueueing, such as in prediction and evaluation mode,
+		    `num_enqueue_threads` should be 1.
 		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
 		    representation. If `None`, no parsing is done.
 		  name: Name of resulting op.
+		  read_batch_size: An int or scalar `Tensor` specifying the number of
+		    records to read at once. If `None`, defaults to `batch_size`.
 		
 		Returns:
 		  A dict of `Tensor` or `SparseTensor` objects for each in `features`.
@@ -272,9 +329,13 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		Raises:
 		  ValueError: for invalid inputs.
 	**/
-	static public function read_batch_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?feature_queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic):Dynamic;
+	static public function read_batch_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?feature_queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?num_enqueue_threads:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic, ?read_batch_size:Dynamic):Dynamic;
 	/**
-		Reads TFRecord, queues, batches and parses `Example` proto.
+		Reads TFRecord, queues, batches and parses `Example` proto. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		See more detailed description in `read_examples`.
 		
@@ -291,7 +352,7 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		    tf.local_variables_initializer() and run the op in a session.
 		  queue_capacity: Capacity for input queue.
 		  reader_num_threads: The number of threads to read examples. In order to have
-		    predicted and repeatable order of reading and enqueueing, such as in
+		    predictable and repeatable order of reading and enqueueing, such as in
 		    prediction and evaluation mode, `reader_num_threads` should be 1.
 		  name: Name of resulting op.
 		
@@ -303,7 +364,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function read_batch_record_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch `Example` protos.
+		Adds operations to read, queue, batch `Example` protos. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		Given file pattern (or list of files), will setup a queue for file names,
 		read `Example` proto using provided `reader`, use batch queue to create
@@ -326,13 +391,13 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		  num_epochs: Integer specifying the number of times to read through the
 		    dataset. If `None`, cycles through the dataset forever.
 		    NOTE - If specified, creates a variable that must be initialized, so call
-		    `tf.global_variables_initializer()` and run the op in a session.
+		    `tf.local_variables_initializer()` and run the op in a session.
 		  queue_capacity: Capacity for input queue.
 		  num_threads: The number of threads enqueuing examples. In order to have
-		    predicted and repeatable order of reading and enqueueing, such as in
+		    predictable and repeatable order of reading and enqueueing, such as in
 		    prediction and evaluation mode, `num_threads` should be 1.
 		  read_batch_size: An int or scalar `Tensor` specifying the number of
-		    records to read at once
+		    records to read at once.
 		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
 		    representation. If `None`, no parsing is done.
 		  name: Name of resulting op.
@@ -348,7 +413,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function read_keyed_batch_examples(file_pattern:Dynamic, batch_size:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?read_batch_size:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch `Example` protos.
+		Adds operations to read, queue, batch `Example` protos. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		Given file pattern (or list of files), will setup a shared queue for file
 		names, setup a worker queue that pulls from the shared queue, read `Example`
@@ -376,11 +445,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		  num_epochs: Integer specifying the number of times to read through the
 		    dataset. If `None`, cycles through the dataset forever.
 		    NOTE - If specified, creates a variable that must be initialized, so call
-		    `tf.global_variables_initializer()` and run the op in a session.
+		    `tf.local_variables_initializer()` and run the op in a session.
 		  queue_capacity: Capacity for input queue.
 		  num_threads: The number of threads enqueuing examples.
 		  read_batch_size: An int or scalar `Tensor` specifying the number of
-		    records to read at once
+		    records to read at once.
 		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
 		    representation. If `None`, no parsing is done.
 		  name: Name of resulting op.
@@ -396,7 +465,11 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 	**/
 	static public function read_keyed_batch_examples_shared_queue(file_pattern:Dynamic, batch_size:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?read_batch_size:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch and parse `Example` protos.
+		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		Given file pattern (or list of files), will setup a queue for file names,
 		read `Example` proto using provided `reader`, use batch queue to create
@@ -423,16 +496,20 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		    tf.local_variables_initializer() and run the op in a session.
 		  queue_capacity: Capacity for input queue.
 		  reader_num_threads: The number of threads to read examples. In order to have
-		    predicted and repeatable order of reading and enqueueing, such as in
+		    predictable and repeatable order of reading and enqueueing, such as in
 		    prediction and evaluation mode, `reader_num_threads` should be 1.
 		  feature_queue_capacity: Capacity of the parsed features queue.
 		  num_enqueue_threads: Number of threads to enqueue the parsed example queue.
 		    Using multiple threads to enqueue the parsed example queue helps maintain
 		    a full queue when the subsequent computations overall are cheaper than
-		    parsing.
+		    parsing. In order to have predictable and repeatable order of reading and
+		    enqueueing, such as in prediction and evaluation mode,
+		    `num_enqueue_threads` should be 1.
 		  parse_fn: Parsing function, takes `Example` Tensor returns parsed
 		    representation. If `None`, no parsing is done.
 		  name: Name of resulting op.
+		  read_batch_size: An int or scalar `Tensor` specifying the number of
+		    records to read at once. If `None`, defaults to `batch_size`.
 		
 		Returns:
 		  Returns tuple of:
@@ -442,9 +519,13 @@ package tensorflow.contrib.learn.python.learn.learn_io;
 		Raises:
 		  ValueError: for invalid inputs.
 	**/
-	static public function read_keyed_batch_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?feature_queue_capacity:Dynamic, ?num_enqueue_threads:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic):Dynamic;
+	static public function read_keyed_batch_features(file_pattern:Dynamic, batch_size:Dynamic, features:Dynamic, reader:Dynamic, ?randomize_input:Dynamic, ?num_epochs:Dynamic, ?queue_capacity:Dynamic, ?reader_num_threads:Dynamic, ?feature_queue_capacity:Dynamic, ?num_enqueue_threads:Dynamic, ?parse_fn:Dynamic, ?name:Dynamic, ?read_batch_size:Dynamic):Dynamic;
 	/**
-		Adds operations to read, queue, batch and parse `Example` protos.
+		Adds operations to read, queue, batch and parse `Example` protos. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.data.
 		
 		Given file pattern (or list of files), will setup a shared queue for file
 		names, setup a worker queue that gets filenames from the shared queue,

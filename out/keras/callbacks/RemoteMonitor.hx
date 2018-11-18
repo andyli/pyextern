@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.callbacks;
 @:pythonImport("keras.callbacks", "RemoteMonitor") extern class RemoteMonitor {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package keras.callbacks;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?root:Dynamic, ?path:Dynamic, ?field:Dynamic, ?headers:Dynamic):Dynamic;
+	public function ___init__(?root:Dynamic, ?path:Dynamic, ?field:Dynamic, ?headers:Dynamic, ?send_as_json:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?root:Dynamic, ?path:Dynamic, ?field:Dynamic, ?headers:Dynamic):Void;
+	public function new(?root:Dynamic, ?path:Dynamic, ?field:Dynamic, ?headers:Dynamic, ?send_as_json:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package keras.callbacks;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

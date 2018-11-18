@@ -10,26 +10,12 @@ package matplotlib.scale;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var _scale_mapping : Dynamic;
-	static public var absolute_import : Dynamic;
-	/**
-		Remove excess indentation from docstring *s*.
-		
-		Discards any leading blank lines, then removes up to n whitespace
-		characters from each line, where n is the number of leading
-		whitespace characters in the first line. It differs from
-		textwrap.dedent in its deletion of leading blank lines and its use
-		of the first non-blank line to determine the indentation.
-		
-		It is also faster in most cases.
-	**/
-	static public function dedent(s:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Helper function for generating docstrings related to scales.
 	**/
 	static public function get_scale_docs():Dynamic;
 	static public function get_scale_names():Dynamic;
-	static public var print_function : Dynamic;
+	static public var rcParams : Dynamic;
 	/**
 		Register a new kind of scale.
 		
@@ -42,5 +28,4 @@ package matplotlib.scale;
 		ACCEPTS: [ linear | log | logit | symlog ]
 	**/
 	static public function scale_factory(scale:Dynamic, axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

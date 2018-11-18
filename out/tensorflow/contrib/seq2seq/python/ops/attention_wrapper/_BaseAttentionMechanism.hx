@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 @:pythonImport("tensorflow.contrib.seq2seq.python.ops.attention_wrapper", "_BaseAttentionMechanism") extern class _BaseAttentionMechanism {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -48,7 +48,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		    tensor should be shaped `[batch_size, max_time, ...]`.
 		  probability_fn: A `callable`.  Converts the score and previous alignments
 		    to probabilities. Its signature should be:
-		    `probabilities = probability_fn(score, previous_alignments)`.
+		    `probabilities = probability_fn(score, state)`.
 		  memory_sequence_length (optional): Sequence lengths for the batch entries
 		    in memory.  If provided, the memory tensor rows are masked with zeros
 		    for values past the respective sequence lengths.
@@ -77,7 +77,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		    tensor should be shaped `[batch_size, max_time, ...]`.
 		  probability_fn: A `callable`.  Converts the score and previous alignments
 		    to probabilities. Its signature should be:
-		    `probabilities = probability_fn(score, previous_alignments)`.
+		    `probabilities = probability_fn(score, state)`.
 		  memory_sequence_length (optional): Sequence lengths for the batch entries
 		    in memory.  If provided, the memory tensor rows are masked with zeros
 		    for values past the respective sequence lengths.
@@ -100,7 +100,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -151,7 +151,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -175,8 +175,25 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		  (`alignments_size` is the values' `max_time`).
 	**/
 	public function initial_alignments(batch_size:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		Creates the initial state values for the `AttentionWrapper` class.
+		
+		This is important for AttentionMechanisms that use the previous alignment
+		to calculate the alignment at the next time step (e.g. monotonic attention).
+		
+		The default behavior is to return the same output as initial_alignments.
+		
+		Args:
+		  batch_size: `int32` scalar, the batch_size.
+		  dtype: The `dtype`.
+		
+		Returns:
+		  A structure of all-zero tensors with shapes as described by `state_size`.
+	**/
+	public function initial_state(batch_size:Dynamic, dtype:Dynamic):Dynamic;
 	public var keys : Dynamic;
 	public var memory_layer : Dynamic;
 	public var query_layer : Dynamic;
+	public var state_size : Dynamic;
 	public var values : Dynamic;
 }

@@ -9,22 +9,9 @@ package keras.engine.training;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
-		Shuffles an array in a batch-wise fashion.
-		
-		Useful for shuffling HDF5 arrays
-		(where one cannot access arbitrary indices).
-		
-		# Arguments
-		    index_array: array of indices to be shuffled.
-		    batch_size: integer.
-		
-		# Returns
-		    The `index_array` array, shuffled in a batch-wise fashion.
-	**/
-	static public function _batch_shuffle(index_array:Dynamic, batch_size:Dynamic):Dynamic;
-	/**
-		Does user input validation for numpy arrays.
+		Checks if batch axes are the same for numpy arrays.
 		
 		# Arguments
 		    inputs: list of Numpy arrays of inputs.
@@ -34,7 +21,7 @@ package keras.engine.training;
 		# Raises
 		    ValueError: in case of incorrectly formatted data.
 	**/
-	static public function _check_array_lengths(inputs:Dynamic, targets:Dynamic, ?weights:Dynamic):Dynamic;
+	static public function check_array_length_consistency(inputs:Dynamic, targets:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
 		Does validation on the compatibility of targets and loss functions.
 		
@@ -49,7 +36,7 @@ package keras.engine.training;
 		    ValueError: if a loss function or target array
 		        is incompatible with an output.
 	**/
-	static public function _check_loss_and_target_compatibility(targets:Dynamic, loss_fns:Dynamic, output_shapes:Dynamic):Dynamic;
+	static public function check_loss_and_target_compatibility(targets:Dynamic, loss_fns:Dynamic, output_shapes:Dynamic):Dynamic;
 	/**
 		Maps metric functions to model outputs.
 		
@@ -68,35 +55,11 @@ package keras.engine.training;
 		# Raises
 		    TypeError: if an incorrect type is passed for the `metrics` argument.
 	**/
-	static public function _collect_metrics(metrics:Dynamic, output_names:Dynamic):Dynamic;
+	static public function collect_metrics(metrics:Dynamic, output_names:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
 	/**
-		Returns a list of batch indices (tuples of indices).
-		
-		# Arguments
-		    size: Integer, total size of the data to slice into batches.
-		    batch_size: Integer, batch size.
-		
-		# Returns
-		    A list of tuples of array indices.
-	**/
-	static public function _make_batches(size:Dynamic, batch_size:Dynamic):Dynamic;
-	/**
-		Adds support for masking to an objective function.
-		
-		It transforms an objective function `fn(y_true, y_pred)`
-		into a cost-masked objective function
-		`fn(y_true, y_pred, mask)`.
-		
-		# Arguments
-		    fn: The objective function to wrap,
-		        with signature `fn(y_true, y_pred)`.
-		
-		# Returns
-		    A function with signature `fn(y_true, y_pred, mask)`.
-	**/
-	static public function _masked_objective(fn:Dynamic):Dynamic;
-	/**
-		Slice an array or list of arrays.
+		Slices an array or list of arrays.
 		
 		This takes an array-like, or a list of
 		array-likes, and outputs:
@@ -115,8 +78,8 @@ package keras.engine.training;
 		# Returns
 		    A slice of the array(s).
 	**/
-	static public function _slice_arrays(arrays:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
-	static public function _standardize_class_weights(class_weight:Dynamic, output_names:Dynamic):Dynamic;
+	static public function slice_arrays(arrays:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
+	static public function standardize_class_weights(class_weight:Dynamic, output_names:Dynamic):Dynamic;
 	/**
 		Normalizes inputs and targets provided by users.
 		
@@ -140,24 +103,8 @@ package keras.engine.training;
 		# Raises
 		    ValueError: in case of improperly formatted user-provided data.
 	**/
-	static public function _standardize_input_data(data:Dynamic, names:Dynamic, ?shapes:Dynamic, ?check_batch_axis:Dynamic, ?exception_prefix:Dynamic):Dynamic;
-	/**
-		Maps `sample_weight` or `class_weight` to model outputs.
-		
-		# Arguments
-		    x_weight: User-provided `sample_weight` or `class_weight` argument.
-		    output_names: List of output names (strings) in the model.
-		    weight_type: A string used purely for exception printing.
-		
-		# Returns
-		    A list of `sample_weight` or `class_weight` where there are exactly
-		        one element per model output.
-		
-		# Raises
-		    ValueError: In case of invalid user-provided argument.
-	**/
-	static public function _standardize_sample_or_class_weights(x_weight:Dynamic, output_names:Dynamic, weight_type:Dynamic):Dynamic;
-	static public function _standardize_sample_weights(sample_weight:Dynamic, output_names:Dynamic):Dynamic;
+	static public function standardize_input_data(data:Dynamic, names:Dynamic, ?shapes:Dynamic, ?check_batch_axis:Dynamic, ?exception_prefix:Dynamic):Dynamic;
+	static public function standardize_sample_weights(sample_weight:Dynamic, output_names:Dynamic):Dynamic;
 	/**
 		Performs sample weight validation and standardization.
 		
@@ -179,7 +126,36 @@ package keras.engine.training;
 		# Raises
 		    ValueError: In case of invalid user-provided arguments.
 	**/
-	static public function _standardize_weights(y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?sample_weight_mode:Dynamic):Dynamic;
+	static public function standardize_weights(y:Dynamic, ?sample_weight:Dynamic, ?class_weight:Dynamic, ?sample_weight_mode:Dynamic):Dynamic;
+	/**
+		Normalizes a list/tensor into a list.
+		
+		If a tensor is passed, we return
+		a list of size 1 containing the tensor.
+		
+		# Arguments
+		    x: target object to be normalized.
+		    allow_tuple: If False and x is a tuple,
+		        it will be converted into a list
+		        with a single element (the tuple).
+		        Else converts the tuple to a list.
+		
+		# Returns
+		    A list.
+	**/
+	static public function to_list(x:Dynamic, ?allow_tuple:Dynamic):Dynamic;
+	/**
+		Gets the first element if the iterable has only one value.
+		
+		Otherwise return the iterable.
+		
+		# Argument:
+		    x: A list or tuple.
+		
+		# Returns:
+		    The same iterable or the first element.
+	**/
+	static public function unpack_singleton(x:Dynamic):Dynamic;
 	/**
 		Adds support for masking and sample-weighting to an objective function.
 		
@@ -194,7 +170,5 @@ package keras.engine.training;
 		# Returns
 		    A function with signature `fn(y_true, y_pred, weights, mask)`.
 	**/
-	static public function _weighted_masked_objective(fn:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var print_function : Dynamic;
+	static public function weighted_masked_objective(fn:Dynamic):Dynamic;
 }

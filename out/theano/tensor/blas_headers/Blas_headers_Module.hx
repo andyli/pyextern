@@ -51,10 +51,6 @@ package theano.tensor.blas_headers;
 	**/
 	static public function mkl_threads_text():Dynamic;
 	/**
-		Normalize path, eliminating double slashes, etc.
-	**/
-	static public function normpath(path:Dynamic):Dynamic;
-	/**
 		C header for OpenBLAS threads interface
 	**/
 	static public function openblas_threads_text():Dynamic;

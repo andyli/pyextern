@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.offsets;
 @:pythonImport("pandas.tseries.offsets", "BusinessMixin") extern class BusinessMixin {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package pandas.tseries.offsets;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -91,10 +91,6 @@ package pandas.tseries.offsets;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Reconstruct an instance from a pickled state
-	**/
-	public function __setstate__(state:Dynamic):Dynamic;
-	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
 	**/
@@ -111,10 +107,14 @@ package pandas.tseries.offsets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _repr_attrs():Dynamic;
+	/**
+		Alias for self._offset
+	**/
+	public var offset : Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.gridspec;
 @:pythonImport("matplotlib.gridspec", "SubplotSpec") extern class SubplotSpec {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -29,6 +29,7 @@ package matplotlib.gridspec;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -42,7 +43,7 @@ package matplotlib.gridspec;
 		gridspec.  If num2 is provided, the subplot will span between
 		num1-th cell and num2-th cell.
 		
-		The index stars from 0.
+		The index starts from 0.
 	**/
 	@:native("__init__")
 	public function ___init__(gridspec:Dynamic, num1:Dynamic, ?num2:Dynamic):Dynamic;
@@ -51,7 +52,7 @@ package matplotlib.gridspec;
 		gridspec.  If num2 is provided, the subplot will span between
 		num1-th cell and num2-th cell.
 		
-		The index stars from 0.
+		The index starts from 0.
 	**/
 	public function new(gridspec:Dynamic, num1:Dynamic, ?num2:Dynamic):Void;
 	/**
@@ -60,7 +61,7 @@ package matplotlib.gridspec;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -94,6 +95,7 @@ package matplotlib.gridspec;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -111,23 +113,69 @@ package matplotlib.gridspec;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		get the subplot geometry, e.g., 2,2,3. Unlike SuplorParams,
-		index is 0-based
+		Get the subplot geometry (``n_rows, n_cols, start, stop``).
+		
+		start and stop are the index of the start and stop of the
+		subplot.
 	**/
 	public function get_geometry():Dynamic;
 	public function get_gridspec():Dynamic;
 	/**
-		update the subplot position from fig.subplotpars
+		Update the subplot position from ``figure.subplotpars``.
+		        
 	**/
-	public function get_position(fig:Dynamic, ?return_all:Dynamic):Dynamic;
+	public function get_position(figure:Dynamic, ?return_all:Dynamic):Dynamic;
+	/**
+		Get the subplot row and column numbers:
+		(``n_rows, n_cols, row_start, row_stop, col_start, col_stop``)
+	**/
+	public function get_rows_columns():Dynamic;
 	/**
 		get the topmost SubplotSpec instance associated with the subplot
 	**/
 	public function get_topmost_subplotspec():Dynamic;
+	/**
+		Return a `.GridSpecFromSubplotSpec` that has this subplotspec as
+		a parent.
+		
+		Parameters
+		----------
+		nrows : int
+		    Number of rows in grid.
+		
+		ncols : int
+		    Number or columns in grid.
+		
+		Returns
+		-------
+		gridspec : `.GridSpec`
+		
+		Other Parameters
+		----------------
+		**kwargs
+		    All other parameters are passed to `.GridSpec`.
+		
+		See Also
+		--------
+		matplotlib.pyplot.subplots
+		
+		Examples
+		--------
+		Adding three subplots in the space occupied by a single subplot::
+		
+		    fig = plt.figure()
+		    gs0 = fig.add_gridspec(3, 1)
+		    ax1 = fig.add_subplot(gs0[0])
+		    ax2 = fig.add_subplot(gs0[1])
+		    gssub = gs0[2].subgridspec(1, 3)
+		    for i in range(3):
+		        fig.add_subplot(gssub[0, i])
+	**/
+	public function subgridspec(nrows:Dynamic, ncols:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -5,7 +5,7 @@ package matplotlib.ticker;
 		Return the format for tick value `x` at position `pos`.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package matplotlib.ticker;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +107,7 @@ package matplotlib.ticker;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -135,6 +135,7 @@ package matplotlib.ticker;
 	**/
 	public function get_offset():Dynamic;
 	public function get_useLocale():Dynamic;
+	public function get_useMathText():Dynamic;
 	public function get_useOffset():Dynamic;
 	static public var locs : Dynamic;
 	public function pprint_val(x:Dynamic):Dynamic;
@@ -148,14 +149,16 @@ package matplotlib.ticker;
 	/**
 		Sets size thresholds for scientific notation.
 		
-		``lims`` is a two-element sequence containing the powers of 10
-		that determine the switchover threshold. Numbers below
-		``10**lims[0]`` and above ``10**lims[1]`` will be displayed in
-		scientific notation.
+		Parameters
+		----------
+		lims : (min_exp, max_exp)
+		    A tuple containing the powers of 10 that determine the switchover
+		    threshold. Numbers below ``10**min_exp`` and above ``10**max_exp``
+		    will be displayed in scientific notation.
 		
-		For example, ``formatter.set_powerlimits((-3, 4))`` sets the
-		pre-2007 default in which scientific notation is used for
-		numbers less than 1e-3 or greater than 1e4.
+		    For example, ``formatter.set_powerlimits((-3, 4))`` sets the
+		    pre-2007 default in which scientific notation is used for
+		    numbers less than 1e-3 or greater than 1e4.
 		
 		.. seealso:: Method :meth:`set_scientific`
 	**/
@@ -167,8 +170,10 @@ package matplotlib.ticker;
 	**/
 	public function set_scientific(b:Dynamic):Dynamic;
 	public function set_useLocale(val:Dynamic):Dynamic;
+	public function set_useMathText(val:Dynamic):Dynamic;
 	public function set_useOffset(val:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public var useLocale : Dynamic;
+	public var useMathText : Dynamic;
 	public var useOffset : Dynamic;
 }

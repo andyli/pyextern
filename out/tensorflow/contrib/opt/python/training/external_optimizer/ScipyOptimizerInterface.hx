@@ -2,7 +2,7 @@
 package tensorflow.contrib.opt.python.training.external_optimizer;
 @:pythonImport("tensorflow.contrib.opt.python.training.external_optimizer", "ScipyOptimizerInterface") extern class ScipyOptimizerInterface {
 	static public var _DEFAULT_METHOD : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -43,39 +43,73 @@ package tensorflow.contrib.opt.python.training.external_optimizer;
 		
 		Args:
 		  loss: A scalar `Tensor` to be minimized.
-		  var_list: Optional list of `Variable` objects to update to minimize
+		  var_list: Optional `list` of `Variable` objects to update to minimize
 		    `loss`.  Defaults to the list of variables collected in the graph
 		    under the key `GraphKeys.TRAINABLE_VARIABLES`.
-		  equalities: Optional list of equality constraint scalar `Tensor`s to be
+		  equalities: Optional `list` of equality constraint scalar `Tensor`s to be
 		    held equal to zero.
-		  inequalities: Optional list of inequality constraint scalar `Tensor`s
-		    to be kept nonnegative.
+		  inequalities: Optional `list` of inequality constraint scalar `Tensor`s
+		    to be held nonnegative.
+		  var_to_bounds: Optional `dict` where each key is an optimization
+		    `Variable` and each corresponding value is a length-2 tuple of
+		    `(low, high)` bounds. Although enforcing this kind of simple constraint
+		    could be accomplished with the `inequalities` arg, not all optimization
+		    algorithms support general inequality constraints, e.g. L-BFGS-B. Both
+		    `low` and `high` can either be numbers or anything convertible to a
+		    NumPy array that can be broadcast to the shape of `var` (using
+		    `np.broadcast_to`). To indicate that there is no bound, use `None` (or
+		    `+/- np.infty`). For example, if `var` is a 2x3 matrix, then any of
+		    the following corresponding `bounds` could be supplied:
+		    * `(0, np.infty)`: Each element of `var` held positive.
+		    * `(-np.infty, [1, 2])`: First column less than 1, second column less
+		      than 2.
+		    * `(-np.infty, [[1], [2], [3]])`: First row less than 1, second row less
+		      than 2, etc.
+		    * `(-np.infty, [[1, 2, 3], [4, 5, 6]])`: Entry `var[0, 0]` less than 1,
+		      `var[0, 1]` less than 2, etc.
 		  **optimizer_kwargs: Other subclass-specific keyword arguments.
 	**/
 	@:native("__init__")
-	public function ___init__(loss:Dynamic, ?var_list:Dynamic, ?equalities:Dynamic, ?inequalities:Dynamic, ?optimizer_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(loss:Dynamic, ?var_list:Dynamic, ?equalities:Dynamic, ?inequalities:Dynamic, ?var_to_bounds:Dynamic, ?optimizer_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize a new interface instance.
 		
 		Args:
 		  loss: A scalar `Tensor` to be minimized.
-		  var_list: Optional list of `Variable` objects to update to minimize
+		  var_list: Optional `list` of `Variable` objects to update to minimize
 		    `loss`.  Defaults to the list of variables collected in the graph
 		    under the key `GraphKeys.TRAINABLE_VARIABLES`.
-		  equalities: Optional list of equality constraint scalar `Tensor`s to be
+		  equalities: Optional `list` of equality constraint scalar `Tensor`s to be
 		    held equal to zero.
-		  inequalities: Optional list of inequality constraint scalar `Tensor`s
-		    to be kept nonnegative.
+		  inequalities: Optional `list` of inequality constraint scalar `Tensor`s
+		    to be held nonnegative.
+		  var_to_bounds: Optional `dict` where each key is an optimization
+		    `Variable` and each corresponding value is a length-2 tuple of
+		    `(low, high)` bounds. Although enforcing this kind of simple constraint
+		    could be accomplished with the `inequalities` arg, not all optimization
+		    algorithms support general inequality constraints, e.g. L-BFGS-B. Both
+		    `low` and `high` can either be numbers or anything convertible to a
+		    NumPy array that can be broadcast to the shape of `var` (using
+		    `np.broadcast_to`). To indicate that there is no bound, use `None` (or
+		    `+/- np.infty`). For example, if `var` is a 2x3 matrix, then any of
+		    the following corresponding `bounds` could be supplied:
+		    * `(0, np.infty)`: Each element of `var` held positive.
+		    * `(-np.infty, [1, 2])`: First column less than 1, second column less
+		      than 2.
+		    * `(-np.infty, [[1], [2], [3]])`: First row less than 1, second row less
+		      than 2, etc.
+		    * `(-np.infty, [[1, 2, 3], [4, 5, 6]])`: Entry `var[0, 0]` less than 1,
+		      `var[0, 1]` less than 2, etc.
 		  **optimizer_kwargs: Other subclass-specific keyword arguments.
 	**/
-	public function new(loss:Dynamic, ?var_list:Dynamic, ?equalities:Dynamic, ?inequalities:Dynamic, ?optimizer_kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(loss:Dynamic, ?var_list:Dynamic, ?equalities:Dynamic, ?inequalities:Dynamic, ?var_to_bounds:Dynamic, ?optimizer_kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -126,7 +160,7 @@ package tensorflow.contrib.opt.python.training.external_optimizer;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -154,6 +188,7 @@ package tensorflow.contrib.opt.python.training.external_optimizer;
 		  inequality_funcs: A list of functions each of which specifies a scalar
 		    quantity that an optimizer should hold >= 0.
 		  inequality_grad_funcs: A list of gradients of inequality_funcs.
+		  packed_bounds: A list of bounds for each index, or `None`.
 		  step_callback: A callback function to execute at each optimization step,
 		    supplied with the current value of the packed variable vector.
 		  optimizer_kwargs: Other key-value arguments available to the optimizer.
@@ -161,7 +196,7 @@ package tensorflow.contrib.opt.python.training.external_optimizer;
 		Returns:
 		  The optimal variable vector as a NumPy vector.
 	**/
-	public function _minimize(initial_val:Dynamic, loss_grad_func:Dynamic, equality_funcs:Dynamic, equality_grad_funcs:Dynamic, inequality_funcs:Dynamic, inequality_grad_funcs:Dynamic, step_callback:Dynamic, optimizer_kwargs:Dynamic):Dynamic;
+	public function _minimize(initial_val:Dynamic, loss_grad_func:Dynamic, equality_funcs:Dynamic, equality_grad_funcs:Dynamic, inequality_funcs:Dynamic, inequality_grad_funcs:Dynamic, packed_bounds:Dynamic, step_callback:Dynamic, optimizer_kwargs:Dynamic):Dynamic;
 	/**
 		Pack a list of `Tensor`s into a single, flattened, rank-1 `Tensor`.
 	**/

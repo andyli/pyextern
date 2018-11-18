@@ -77,51 +77,10 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_utils;
 		    the convolution output.
 	**/
 	static public function conv2d_same(inputs:Dynamic, num_outputs:Dynamic, kernel_size:Dynamic, stride:Dynamic, ?rate:Dynamic, ?scope:Dynamic):Dynamic;
-	/**
-		Decorator for marking specific function arguments as deprecated.
-		
-		This decorator logs a deprecation warning whenever the decorated function is
-		called with the deprecated argument. It has the following format:
-		
-		  Calling <function> (from <module>) with <arg> is deprecated and will be
-		  removed after <date>. Instructions for updating:
-		    <instructions>
-		
-		If `date` is None, 'after <date>' is replaced with 'in a future version'.
-		<function> includes the class name if it is a method.
-		
-		It also edits the docstring of the function: ' (deprecated arguments)' is
-		appended to the first line of the docstring and a deprecation notice is
-		prepended to the rest of the docstring.
-		
-		Args:
-		  date: String or None. The date the function is scheduled to be removed.
-		    Must be ISO 8601 (YYYY-MM-DD), or None.
-		  instructions: String. Instructions on how to update code using the
-		    deprecated function.
-		  *deprecated_arg_names_or_tuples: String. or 2-Tuple(String,
-		    [ok_vals]).  The string is the deprecated argument name.
-		    Optionally, an ok-value may be provided.  If the user provided
-		    argument equals this value, the warning is suppressed.
-		
-		Returns:
-		  Decorated function or method.
-		
-		Raises:
-		  ValueError: If date is not None or in ISO 8601 format, instructions are
-		    empty, the deprecated arguments are not present in the function
-		    signature, or the second element of a deprecated_tuple is not a
-		    list.
-	**/
-	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Defines the default ResNet arg scope. (deprecated arguments)
-		
-		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2017-08-01.
-		Instructions for updating:
-		Pass is_training directly to the network instead of the arg_scope.
+		Defines the default ResNet arg scope.
 		
 		TODO(gpapan): The batch-normalization related default values above are
 		  appropriate for use in conjunction with the reference ResNet models
@@ -129,8 +88,6 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_utils;
 		  training ResNets from scratch, they might need to be tuned.
 		
 		Args:
-		  is_training: Whether or not we are training the parameters in the batch
-		    normalization layers of the model. (deprecated)
 		  weight_decay: The weight decay to use for regularizing the model.
 		  batch_norm_decay: The moving average decay when estimating layer activation
 		    statistics in batch normalization.
@@ -142,7 +99,7 @@ package tensorflow.contrib.slim.python.slim.nets.resnet_utils;
 		Returns:
 		  An `arg_scope` to use for the resnet models.
 	**/
-	static public function resnet_arg_scope(?is_training:Dynamic, ?weight_decay:Dynamic, ?batch_norm_decay:Dynamic, ?batch_norm_epsilon:Dynamic, ?batch_norm_scale:Dynamic):Dynamic;
+	static public function resnet_arg_scope(?weight_decay:Dynamic, ?batch_norm_decay:Dynamic, ?batch_norm_epsilon:Dynamic, ?batch_norm_scale:Dynamic):Dynamic;
 	/**
 		Stacks ResNet `Blocks` and controls output feature density.
 		

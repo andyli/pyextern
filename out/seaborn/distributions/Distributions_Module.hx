@@ -70,18 +70,21 @@ package seaborn.distributions;
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
-		    hls, husl, any named matplotlib palette, list of colors
+		    name of matplotlib cmap, 'ch:<cubehelix arguments>', 'hls', 'husl',
+		    or a list of colors in any format matplotlib accepts
 		
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
 		Matplotlib palettes can be specified as reversed palettes by appending
-		"_r" to the name or as dark palettes by appending "_d" to the name.
+		"_r" to the name or as "dark" palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
 		
 		This function can also be used in a ``with`` statement to temporarily
 		set the color cycle for a plot or set of plots.
+		
+		See the :ref:`tutorial <palette_tutorial>` for more information.
 		
 		Parameters
 		----------
@@ -113,39 +116,53 @@ package seaborn.distributions;
 		Examples
 		--------
 		
-		Show one of the "seaborn palettes", which have the same basic order of hues
-		as the default matplotlib color cycle but more attractive colors.
+		Calling with no arguments returns all colors from the current default
+		color cycle:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> import seaborn as sns; sns.set()
+		    >>> sns.palplot(sns.color_palette())
+		
+		Show one of the other "seaborn palettes", which have the same basic order
+		of hues as the default matplotlib color cycle but more attractive colors.
+		Calling with the name of a palette will return 6 colors by default:
+		
+		.. plot::
+		    :context: close-figs
+		
 		    >>> sns.palplot(sns.color_palette("muted"))
 		
-		Use discrete values from one of the built-in matplotlib colormaps.
+		Use discrete values from one of the built-in matplotlib colormaps:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> sns.palplot(sns.color_palette("RdBu", n_colors=7))
 		
-		Make a "dark" matplotlib sequential palette variant. (This can be good
-		when coloring multiple lines or points that correspond to an ordered
-		variable, where you don't want the lightest lines to be invisible).
+		Make a customized cubehelix color palette:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> sns.palplot(sns.color_palette("Blues_d"))
+		    >>> sns.palplot(sns.color_palette("ch:2.5,-.2,dark=.3"))
 		
-		Use a categorical matplotlib palette, add some desaturation. (This can be
-		good when making plots with large patches, which look best with dimmer
-		colors).
+		Use a categorical matplotlib palette and add some desaturation:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> sns.palplot(sns.color_palette("Set1", n_colors=8, desat=.5))
+		
+		Make a "dark" matplotlib sequential palette variant. (This can be good
+		when coloring multiple lines or points that correspond to an ordered
+		variable, where you don't want the lightest lines to be invisible):
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.color_palette("Blues_d"))
 		
 		Use as a context manager:
 		
@@ -157,6 +174,82 @@ package seaborn.distributions;
 		    ...    _ = plt.plot(np.c_[np.zeros(8), np.arange(8)].T)
 	**/
 	static public function color_palette(?palette:Dynamic, ?n_colors:Dynamic, ?desat:Dynamic):Dynamic;
+	/**
+		Make a sequential palette that blends from dark to ``color``.
+		
+		This kind of palette is good for data that range between relatively
+		uninteresting low values and interesting high values.
+		
+		The ``color`` parameter can be specified in a number of ways, including
+		all options for defining a color in matplotlib and several additional
+		color spaces that are handled by seaborn. You can also use the database
+		of named colors from the XKCD color survey.
+		
+		If you are using the IPython notebook, you can also choose this palette
+		interactively with the :func:`choose_dark_palette` function.
+		
+		Parameters
+		----------
+		color : base color for high values
+		    hex, rgb-tuple, or html color name
+		n_colors : int, optional
+		    number of colors in the palette
+		reverse : bool, optional
+		    if True, reverse the direction of the blend
+		as_cmap : bool, optional
+		    if True, return as a matplotlib colormap instead of list
+		input : {'rgb', 'hls', 'husl', xkcd'}
+		    Color space to interpret the input color. The first three options
+		    apply to tuple inputs and the latter applies to string inputs.
+		
+		Returns
+		-------
+		palette or cmap : seaborn color palette or matplotlib colormap
+		    List-like object of colors as RGB tuples, or colormap object that
+		    can map continuous values to colors, depending on the value of the
+		    ``as_cmap`` parameter.
+		
+		See Also
+		--------
+		light_palette : Create a sequential palette with bright low values.
+		diverging_palette : Create a diverging palette with two colors.
+		
+		Examples
+		--------
+		
+		Generate a palette from an HTML color:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> import seaborn as sns; sns.set()
+		    >>> sns.palplot(sns.dark_palette("purple"))
+		
+		Generate a palette that decreases in lightness:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.dark_palette("seagreen", reverse=True))
+		
+		Generate a palette from an HUSL-space seed:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.dark_palette((260, 75, 60), input="husl"))
+		
+		Generate a colormap object:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> from numpy import arange
+		    >>> x = arange(25).reshape(5, 5)
+		    >>> cmap = sns.dark_palette("#2ecc71", as_cmap=True)
+		    >>> ax = sns.heatmap(x, cmap=cmap)
+	**/
+	static public function dark_palette(color:Dynamic, ?n_colors:Dynamic, ?reverse:Dynamic, ?as_cmap:Dynamic, ?input:Dynamic):Dynamic;
 	/**
 		Flexibly plot a univariate distribution of observations.
 		
@@ -188,7 +281,7 @@ package seaborn.distributions;
 		color : matplotlib color, optional
 		    Color to plot everything but the fitted curve in.
 		vertical : bool, optional
-		    If True, oberved values are on y-axis.
+		    If True, observed values are on y-axis.
 		norm_hist : bool, optional
 		    If True, the histogram height shows a density rather than a count.
 		    This is implied if a KDE or fitted density is plotted.
@@ -235,7 +328,7 @@ package seaborn.distributions;
 		    >>> x = pd.Series(x, name="x variable")
 		    >>> ax = sns.distplot(x)
 		
-		Plot the distribution with a kenel density estimate and rug plot:
+		Plot the distribution with a kernel density estimate and rug plot:
 		
 		.. plot::
 		    :context: close-figs
@@ -301,7 +394,11 @@ package seaborn.distributions;
 		    gaussian kernel.
 		bw : {'scott' | 'silverman' | scalar | pair of scalars }, optional
 		    Name of reference method to determine kernel size, scalar factor,
-		    or scalar for each dimension of the bivariate plot.
+		    or scalar for each dimension of the bivariate plot. Note that the
+		    underlying computational libraries have different interperetations
+		    for this parameter: ``statsmodels`` uses it directly, but ``scipy``
+		    treats it as a scaling factor for the standard deviation of the
+		    data.
 		gridsize : int, optional
 		    Number of discrete points in the evaluation grid.
 		cut : scalar, optional
@@ -427,6 +524,82 @@ package seaborn.distributions;
 	**/
 	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?cbar:Dynamic, ?cbar_ax:Dynamic, ?cbar_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Make a sequential palette that blends from light to ``color``.
+		
+		This kind of palette is good for data that range between relatively
+		uninteresting low values and interesting high values.
+		
+		The ``color`` parameter can be specified in a number of ways, including
+		all options for defining a color in matplotlib and several additional
+		color spaces that are handled by seaborn. You can also use the database
+		of named colors from the XKCD color survey.
+		
+		If you are using the IPython notebook, you can also choose this palette
+		interactively with the :func:`choose_light_palette` function.
+		
+		Parameters
+		----------
+		color : base color for high values
+		    hex code, html color name, or tuple in ``input`` space.
+		n_colors : int, optional
+		    number of colors in the palette
+		reverse : bool, optional
+		    if True, reverse the direction of the blend
+		as_cmap : bool, optional
+		    if True, return as a matplotlib colormap instead of list
+		input : {'rgb', 'hls', 'husl', xkcd'}
+		    Color space to interpret the input color. The first three options
+		    apply to tuple inputs and the latter applies to string inputs.
+		
+		Returns
+		-------
+		palette or cmap : seaborn color palette or matplotlib colormap
+		    List-like object of colors as RGB tuples, or colormap object that
+		    can map continuous values to colors, depending on the value of the
+		    ``as_cmap`` parameter.
+		
+		See Also
+		--------
+		dark_palette : Create a sequential palette with dark low values.
+		diverging_palette : Create a diverging palette with two colors.
+		
+		Examples
+		--------
+		
+		Generate a palette from an HTML color:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> import seaborn as sns; sns.set()
+		    >>> sns.palplot(sns.light_palette("purple"))
+		
+		Generate a palette that increases in lightness:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.light_palette("seagreen", reverse=True))
+		
+		Generate a palette from an HUSL-space seed:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.light_palette((260, 75, 60), input="husl"))
+		
+		Generate a colormap object:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> from numpy import arange
+		    >>> x = arange(25).reshape(5, 5)
+		    >>> cmap = sns.light_palette("#2ecc71", as_cmap=True)
+		    >>> ax = sns.heatmap(x, cmap=cmap)
+	**/
+	static public function light_palette(color:Dynamic, ?n_colors:Dynamic, ?reverse:Dynamic, ?as_cmap:Dynamic, ?input:Dynamic):Dynamic;
+	/**
 		Plot datapoints in an array as sticks on an axis.
 		
 		Parameters
@@ -440,7 +613,7 @@ package seaborn.distributions;
 		ax : matplotlib axes, optional
 		    Axes to draw plot into; otherwise grabs current axes.
 		kwargs : key, value pairings
-		    Other keyword arguments are passed to ``axvline`` or ``axhline``.
+		    Other keyword arguments are passed to ``LineCollection``.
 		
 		Returns
 		-------

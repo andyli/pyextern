@@ -12,10 +12,12 @@ package keras.regularizers;
 	static public var absolute_import : Dynamic;
 	static public function deserialize(config:Dynamic, ?custom_objects:Dynamic):Dynamic;
 	static public function deserialize_keras_object(identifier:Dynamic, ?module_objects:Dynamic, ?custom_objects:Dynamic, ?printable_module_name:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public function get(identifier:Dynamic):Dynamic;
 	static public function l1(?l:Dynamic):Dynamic;
 	static public function l1_l2(?l1:Dynamic, ?l2:Dynamic):Dynamic;
 	static public function l2(?l:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function serialize(regularizer:Dynamic):Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
 }

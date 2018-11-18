@@ -251,12 +251,10 @@ package scipy.linalg._solvers;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -267,8 +265,37 @@ package scipy.linalg._solvers;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -404,6 +431,14 @@ package scipy.linalg._solvers;
 		Notes
 		-----
 		This is a LU factorization routine written for Scipy.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lu
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> p, l, u = lu(A)
+		>>> np.allclose(A - p @ l @ u, np.zeros((4, 4)))
+		True
 	**/
 	static public function lu(a:Dynamic, ?permute_l:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -483,13 +518,13 @@ package scipy.linalg._solvers;
 		>>> np.abs(x).sum(axis=0) / np.abs(x).sum(axis=1)
 		array([ 3.66666667,  0.4995005 ,  0.91312162])
 		
-		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1) # 1-norms approx. equal
-		array([ 1.10625   ,  0.90547703,  1.00011878])
+		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1)
+		array([ 1.2       ,  1.27041742,  0.92658316])  # may vary
 		
 		>>> permscale  # only powers of 2 (0.5 == 2^(-1))
-		array([[  0.5,   0. ,   0. ],
-		       [  0. ,   1. ,   0. ],
-		       [  0. ,   0. ,  16. ]])
+		array([[  0.5,   0. ,  0. ],  # may vary
+		       [  0. ,   1. ,  0. ],
+		       [  0. ,   0. ,  1. ]])
 		
 		References
 		----------
@@ -525,6 +560,9 @@ package scipy.linalg._solvers;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will
@@ -674,7 +712,6 @@ package scipy.linalg._solvers;
 		    considered to lie outside the unit circle. For the eigenvalue
 		    ``(alpha, beta) = (0, 0)`` the predefined sorting functions
 		    all return `False`.
-		
 		output : str {'real','complex'}, optional
 		    Construct the real or complex QZ decomposition for real matrices.
 		    Default is 'real'.
@@ -710,12 +747,24 @@ package scipy.linalg._solvers;
 		that would result if the 2-by-2 diagonal blocks of the real generalized
 		Schur form of (A,B) were further reduced to triangular form using complex
 		unitary transformations. If ALPHAI(j) is zero, then the j-th eigenvalue is
-		real; if positive, then the ``j``-th and ``(j+1)``-st eigenvalues are a complex
-		conjugate pair, with ``ALPHAI(j+1)`` negative.
+		real; if positive, then the ``j``-th and ``(j+1)``-st eigenvalues are a
+		complex conjugate pair, with ``ALPHAI(j+1)`` negative.
 		
 		See also
 		--------
 		qz
+		
+		Examples
+		--------
+		>>> from scipy.linalg import ordqz
+		>>> A = np.array([[2, 5, 8, 7], [5, 2, 2, 8], [7, 5, 6, 6], [5, 4, 4, 8]])
+		>>> B = np.array([[0, 6, 0, 0], [5, 0, 2, 1], [5, 2, 6, 6], [4, 7, 7, 7]])
+		>>> AA, BB, alpha, beta, Q, Z = ordqz(A, B, sort='lhp')
+		
+		Since we have sorted for left half plane eigenvalues, negatives come first
+		
+		>>> (alpha/beta).real < 0
+		array([ True,  True, False, False], dtype=bool)
 	**/
 	static public function ordqz(A:Dynamic, B:Dynamic, ?sort:Dynamic, ?output:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -873,6 +922,35 @@ package scipy.linalg._solvers;
 		See also
 		--------
 		rsf2csf : Convert real Schur form to complex Schur form
+		
+		Examples
+		--------
+		>>> from scipy.linalg import schur, eigvals
+		>>> A = np.array([[0, 2, 2], [0, 1, 2], [1, 0, 1]])
+		>>> T, Z = schur(A)
+		>>> T
+		array([[ 2.65896708,  1.42440458, -1.92933439],
+		       [ 0.        , -0.32948354, -0.49063704],
+		       [ 0.        ,  1.31178921, -0.32948354]])
+		>>> Z
+		array([[0.72711591, -0.60156188, 0.33079564],
+		       [0.52839428, 0.79801892, 0.28976765],
+		       [0.43829436, 0.03590414, -0.89811411]])
+		
+		>>> T2, Z2 = schur(A, output='complex')
+		>>> T2
+		array([[ 2.65896708, -1.22839825+1.32378589j,  0.42590089+1.51937378j],
+		       [ 0.        , -0.32948354+0.80225456j, -0.59877807+0.56192146j],
+		       [ 0.        ,  0.                    , -0.32948354-0.80225456j]])
+		>>> eigvals(T2)
+		array([2.65896708, -0.32948354+0.80225456j, -0.32948354-0.80225456j])
+		
+		An arbitrary custom eig-sorting condition, having positive imaginary part, 
+		which is satisfied by only one eigenvalue
+		
+		>>> T3, Z3, sdim = schur(A, output='complex', sort=lambda x: x.imag > 0)
+		>>> sdim
+		1
 	**/
 	static public function schur(a:Dynamic, ?output:Dynamic, ?lwork:Dynamic, ?overwrite_a:Dynamic, ?sort:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -923,8 +1001,8 @@ package scipy.linalg._solvers;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -937,8 +1015,10 @@ package scipy.linalg._solvers;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -961,7 +1041,7 @@ package scipy.linalg._solvers;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
@@ -1063,8 +1143,72 @@ package scipy.linalg._solvers;
 		
 		.. [3] P. Benner, "Symplectic Balancing of Hamiltonian Matrices", 2001,
 		   SIAM J. Sci. Comput., 2001, Vol.22(5), DOI: 10.1137/S1064827500367993
+		
+		Examples
+		--------
+		Given `a`, `b`, `q`, and `r` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[4, 3], [-4.5, -3.5]])
+		>>> b = np.array([[1], [-1]])
+		>>> q = np.array([[9, 6], [6, 4.]])
+		>>> r = 1
+		>>> x = linalg.solve_continuous_are(a, b, q, r)
+		>>> x
+		array([[ 21.72792206,  14.48528137],
+		       [ 14.48528137,   9.65685425]])
+		>>> np.allclose(a.T.dot(x) + x.dot(a)-x.dot(b).dot(b.T).dot(x), -q)
+		True
 	**/
 	static public function solve_continuous_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic, ?e:Dynamic, ?s:Dynamic, ?balanced:Dynamic):Dynamic;
+	/**
+		Solves the continuous Lyapunov equation :math:`AX + XA^H = Q`.
+		
+		Uses the Bartels-Stewart algorithm to find :math:`X`.
+		
+		Parameters
+		----------
+		a : array_like
+		    A square matrix
+		
+		q : array_like
+		    Right-hand side square matrix
+		
+		Returns
+		-------
+		x : ndarray
+		    Solution to the continuous Lyapunov equation
+		
+		See Also
+		--------
+		solve_discrete_lyapunov : computes the solution to the discrete-time
+		    Lyapunov equation
+		solve_sylvester : computes the solution to the Sylvester equation
+		
+		Notes
+		-----
+		The continuous Lyapunov equation is a special form of the Sylvester
+		equation, hence this solver relies on LAPACK routine ?TRSYL.
+		
+		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		Given `a` and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[-3, -2, 0], [-1, -1, 0], [0, -5, -1]])
+		>>> b = np.array([2, 4, -1])
+		>>> q = np.eye(3)
+		>>> x = linalg.solve_continuous_lyapunov(a, q)
+		>>> x
+		array([[ -0.75  ,   0.875 ,  -3.75  ],
+		       [  0.875 ,  -1.375 ,   5.3125],
+		       [ -3.75  ,   5.3125, -27.0625]])
+		>>> np.allclose(a.dot(x) + x.dot(a.T), q)
+		True
+	**/
+	static public function solve_continuous_lyapunov(a:Dynamic, q:Dynamic):Dynamic;
 	/**
 		Solves the discrete-time algebraic Riccati equation (DARE).
 		
@@ -1164,6 +1308,23 @@ package scipy.linalg._solvers;
 		
 		.. [3] P. Benner, "Symplectic Balancing of Hamiltonian Matrices", 2001,
 		   SIAM J. Sci. Comput., 2001, Vol.22(5), DOI: 10.1137/S1064827500367993
+		
+		Examples
+		--------
+		Given `a`, `b`, `q`, and `r` solve for `x`:
+		
+		>>> from scipy import linalg as la
+		>>> a = np.array([[0, 1], [0, -1]])
+		>>> b = np.array([[1, 0], [2, 1]])
+		>>> q = np.array([[-4, -4], [-4, 7]])
+		>>> r = np.array([[9, 3], [3, 1]])
+		>>> x = la.solve_discrete_are(a, b, q, r)
+		>>> x
+		array([[-4., -4.],
+		       [-4.,  7.]])
+		>>> R = la.solve(r + b.T.dot(x).dot(b), b.T.dot(x).dot(a))
+		>>> np.allclose(a.T.dot(x).dot(a) - x - a.T.dot(x).dot(b).dot(R), -q)
+		True
 	**/
 	static public function solve_discrete_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic, ?e:Dynamic, ?s:Dynamic, ?balanced:Dynamic):Dynamic;
 	/**
@@ -1188,7 +1349,8 @@ package scipy.linalg._solvers;
 		
 		See Also
 		--------
-		solve_lyapunov : computes the solution to the continuous Lyapunov equation
+		solve_continuous_lyapunov : computes the solution to the continuous-time
+		    Lyapunov equation
 		
 		Notes
 		-----
@@ -1214,10 +1376,24 @@ package scipy.linalg._solvers;
 		----------
 		.. [1] Hamilton, James D. Time Series Analysis, Princeton: Princeton
 		   University Press, 1994.  265.  Print.
-		   http://www.scribd.com/doc/20577138/Hamilton-1994-Time-Series-Analysis
+		   http://doc1.lbfl.li/aca/FLMF037168.pdf
 		.. [2] Gajic, Z., and M.T.J. Qureshi. 2008.
 		   Lyapunov Matrix Equation in System Stability and Control.
 		   Dover Books on Engineering Series. Dover Publications.
+		
+		Examples
+		--------
+		Given `a` and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[0.2, 0.5],[0.7, -0.9]])
+		>>> q = np.eye(2)
+		>>> x = linalg.solve_discrete_lyapunov(a, q)
+		>>> x
+		array([[ 0.70872893,  1.43518822],
+		       [ 1.43518822, -2.4266315 ]])
+		>>> np.allclose(a.dot(x).dot(a.T)-x, -q)
+		True
 	**/
 	static public function solve_discrete_lyapunov(a:Dynamic, q:Dynamic, ?method:Dynamic):Dynamic;
 	/**
@@ -1235,20 +1411,37 @@ package scipy.linalg._solvers;
 		
 		Returns
 		-------
-		x : array_like
+		x : ndarray
 		    Solution to the continuous Lyapunov equation
 		
 		See Also
 		--------
+		solve_discrete_lyapunov : computes the solution to the discrete-time
+		    Lyapunov equation
 		solve_sylvester : computes the solution to the Sylvester equation
 		
 		Notes
 		-----
-		Because the continuous Lyapunov equation is just a special form of the
-		Sylvester equation, this solver relies entirely on solve_sylvester for a
-		solution.
+		The continuous Lyapunov equation is a special form of the Sylvester
+		equation, hence this solver relies on LAPACK routine ?TRSYL.
 		
 		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		Given `a` and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[-3, -2, 0], [-1, -1, 0], [0, -5, -1]])
+		>>> b = np.array([2, 4, -1])
+		>>> q = np.eye(3)
+		>>> x = linalg.solve_continuous_lyapunov(a, q)
+		>>> x
+		array([[ -0.75  ,   0.875 ,  -3.75  ],
+		       [  0.875 ,  -1.375 ,   5.3125],
+		       [ -3.75  ,   5.3125, -27.0625]])
+		>>> np.allclose(a.dot(x) + x.dot(a.T), q)
+		True
 	**/
 	static public function solve_lyapunov(a:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -1284,6 +1477,22 @@ package scipy.linalg._solvers;
 		``*TRSYL`` from LAPACK directly.
 		
 		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		Given `a`, `b`, and `q` solve for `x`:
+		
+		>>> from scipy import linalg
+		>>> a = np.array([[-3, -2, 0], [-1, -1, 3], [3, -5, -1]])
+		>>> b = np.array([[1]])
+		>>> q = np.array([[1],[2],[3]])
+		>>> x = linalg.solve_sylvester(a, b, q)
+		>>> x
+		array([[ 0.0625],
+		       [-0.5625],
+		       [ 0.6875]])
+		>>> np.allclose(a.dot(x) + x.dot(b), q)
+		True
 	**/
 	static public function solve_sylvester(a:Dynamic, b:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -1331,36 +1540,63 @@ package scipy.linalg._solvers;
 		Notes
 		-----
 		.. versionadded:: 0.9.0
+		
+		Examples
+		--------
+		Solve the lower triangular system a x = b, where::
+		
+		         [3  0  0  0]       [4]
+		    a =  [2  1  0  0]   b = [2]
+		         [1  0  1  0]       [4]
+		         [1  1  1  1]       [2]
+		
+		>>> from scipy.linalg import solve_triangular
+		>>> a = np.array([[3, 0, 0, 0], [2, 1, 0, 0], [1, 0, 1, 0], [1, 1, 1, 1]])
+		>>> b = np.array([4, 2, 4, 2])
+		>>> x = solve_triangular(a, b, lower=True)
+		>>> x
+		array([ 1.33333333, -0.66666667,  2.66666667, -1.33333333])
+		>>> a.dot(x)  # Check the result
+		array([ 4.,  2.,  4.,  2.])
 	**/
 	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
 		Singular Value Decomposition.
 		
-		Factors the matrix `a` as ``u * np.diag(s) * v``, where `u` and `v`
-		are unitary and `s` is a 1-d array of `a`'s singular values.
+		When `a` is a 2D array, it is factorized as ``u @ np.diag(s) @ vh
+		= (u * s) @ vh``, where `u` and `vh` are 2D unitary arrays and `s` is a 1D
+		array of `a`'s singular values. When `a` is higher-dimensional, SVD is
+		applied in stacked mode as explained below.
 		
 		Parameters
 		----------
 		a : (..., M, N) array_like
-		    A real or complex matrix of shape (`M`, `N`) .
+		    A real or complex array with ``a.ndim >= 2``.
 		full_matrices : bool, optional
-		    If True (default), `u` and `v` have the shapes (`M`, `M`) and
-		    (`N`, `N`), respectively.  Otherwise, the shapes are (`M`, `K`)
-		    and (`K`, `N`), respectively, where `K` = min(`M`, `N`).
+		    If True (default), `u` and `vh` have the shapes ``(..., M, M)`` and
+		    ``(..., N, N)``, respectively.  Otherwise, the shapes are
+		    ``(..., M, K)`` and ``(..., K, N)``, respectively, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether or not to compute `u` and `v` in addition to `s`.  True
+		    Whether or not to compute `u` and `vh` in addition to `s`.  True
 		    by default.
 		
 		Returns
 		-------
 		u : { (..., M, M), (..., M, K) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		s : (..., K) array
-		    The singular values for every matrix, sorted in descending order.
-		v : { (..., N, N), (..., K, N) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Vector(s) with the singular values, within each vector sorted in
+		    descending order. The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`.
+		vh : { (..., N, N), (..., K, N) } array
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		
 		Raises
 		------
@@ -1370,48 +1606,79 @@ package scipy.linalg._solvers;
 		Notes
 		-----
 		
-		.. versionadded:: 1.8.0
+		.. versionchanged:: 1.8.0
+		   Broadcasting rules apply, see the `numpy.linalg` documentation for
+		   details.
 		
-		Broadcasting rules apply, see the `numpy.linalg` documentation for
-		details.
+		The decomposition is performed using LAPACK routine ``_gesdd``.
 		
-		The decomposition is performed using LAPACK routine _gesdd
+		SVD is usually described for the factorization of a 2D matrix :math:`A`.
+		The higher-dimensional case will be discussed below. In the 2D case, SVD is
+		written as :math:`A = U S V^H`, where :math:`A = a`, :math:`U= u`,
+		:math:`S= \mathtt{np.diag}(s)` and :math:`V^H = vh`. The 1D array `s`
+		contains the singular values of `a` and `u` and `vh` are unitary. The rows
+		of `vh` are the eigenvectors of :math:`A^H A` and the columns of `u` are
+		the eigenvectors of :math:`A A^H`. In both cases the corresponding
+		(possibly non-zero) eigenvalues are given by ``s**2``.
 		
-		The SVD is commonly written as ``a = U S V.H``.  The `v` returned
-		by this function is ``V.H`` and ``u = U``.
+		If `a` has more than two dimensions, then broadcasting rules apply, as
+		explained in :ref:`routines.linalg-broadcasting`. This means that SVD is
+		working in "stacked" mode: it iterates over all indices of the first
+		``a.ndim - 2`` dimensions and for each combination SVD is applied to the
+		last two indices. The matrix `a` can be reconstructed from the
+		decomposition with either ``(u * s[..., None, :]) @ vh`` or
+		``u @ (s[..., None] * vh)``. (The ``@`` operator can be replaced by the
+		function ``np.matmul`` for python versions below 3.5.)
 		
-		If ``U`` is a unitary matrix, it means that it
-		satisfies ``U.H = inv(U)``.
-		
-		The rows of `v` are the eigenvectors of ``a.H a``. The columns
-		of `u` are the eigenvectors of ``a a.H``.  For row ``i`` in
-		`v` and column ``i`` in `u`, the corresponding eigenvalue is
-		``s[i]**2``.
-		
-		If `a` is a `matrix` object (as opposed to an `ndarray`), then so
-		are all the return values.
+		If `a` is a ``matrix`` object (as opposed to an ``ndarray``), then so are
+		all the return values.
 		
 		Examples
 		--------
 		>>> a = np.random.randn(9, 6) + 1j*np.random.randn(9, 6)
+		>>> b = np.random.randn(2, 7, 8, 3) + 1j*np.random.randn(2, 7, 8, 3)
 		
-		Reconstruction based on full SVD:
+		Reconstruction based on full SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=True)
-		>>> U.shape, V.shape, s.shape
-		((9, 9), (6, 6), (6,))
-		>>> S = np.zeros((9, 6), dtype=complex)
-		>>> S[:6, :6] = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((9, 9), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u[:, :6] * s, vh))
+		True
+		>>> smat = np.zeros((9, 6), dtype=complex)
+		>>> smat[:6, :6] = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
 		True
 		
-		Reconstruction based on reduced SVD:
+		Reconstruction based on reduced SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=False)
-		>>> U.shape, V.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u * s, vh))
+		True
+		>>> smat = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
+		True
+		
+		Reconstruction based on full SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 8), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u[..., :3] * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u[..., :3], s[..., None] * vh))
+		True
+		
+		Reconstruction based on reduced SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 3), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u, s[..., None] * vh))
 		True
 	**/
 	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic):Dynamic;

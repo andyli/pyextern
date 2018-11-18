@@ -241,7 +241,7 @@ package theano.scan_module.scan_op;
 	**/
 	static public function iteritems(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
-	static public function profile_printer(fct_name:Dynamic, compile_time:Dynamic, fct_call_time:Dynamic, fct_call:Dynamic, apply_time:Dynamic, apply_cimpl:Dynamic, message:Dynamic, outputs_size:Dynamic, other_time:Dynamic):Dynamic;
+	static public function profile_printer(message:Dynamic, compile_time:Dynamic, fct_call_time:Dynamic, apply_time:Dynamic, apply_cimpl:Dynamic, outputs_size:Dynamic, file:Dynamic):Dynamic;
 	static public function raise_from(value:Dynamic, from_value:Dynamic):Dynamic;
 	/**
 		Internal function that constructs a new variable from x with the same

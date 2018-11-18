@@ -13,9 +13,7 @@ package tensorflow.contrib.framework.python.ops.arg_scope;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _add_op(op:Dynamic):Dynamic;
-	static public function _current_arg_scope():Dynamic;
 	static public function _get_arg_stack():Dynamic;
-	static public function _key_op(op:Dynamic):Dynamic;
 	static public function _kwarg_names(func:Dynamic):Dynamic;
 	static public function _name_op(op:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -49,6 +47,7 @@ package tensorflow.contrib.framework.python.ops.arg_scope;
 		  ValueError: if any op in list_ops has not be decorated with @add_arg_scope.
 	**/
 	static public function arg_scope(list_ops_or_scope:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function arg_scope_func_key(op:Dynamic):Dynamic;
 	/**
 		Returns the list kwargs that arg_scope can set for a func.
 		
@@ -59,6 +58,7 @@ package tensorflow.contrib.framework.python.ops.arg_scope;
 		  a list of kwargs names.
 	**/
 	static public function arg_scoped_arguments(func:Dynamic):Dynamic;
+	static public function current_arg_scope():Dynamic;
 	static public var division : Dynamic;
 	/**
 		Checks whether a func has been decorated with @add_arg_scope or not.

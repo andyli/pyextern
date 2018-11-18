@@ -5,7 +5,7 @@ package keras;
 		`Input()` is used to instantiate a Keras tensor.
 		
 		A Keras tensor is a tensor object from the underlying backend
-		(Theano or TensorFlow), which we augment with certain
+		(Theano, TensorFlow or CNTK), which we augment with certain
 		attributes that allow us to build a Keras model
 		just by knowing the inputs and outputs of the model.
 		
@@ -14,9 +14,9 @@ package keras;
 		`model = Model(input=[a, b], output=c)`
 		
 		The added Keras attributes are:
-		    ._keras_shape: Integer shape tuple propagated
+		    `_keras_shape`: Integer shape tuple propagated
 		        via Keras-side shape inference.
-		    ._keras_history: Last layer applied to the tensor.
+		    `_keras_history`: Last layer applied to the tensor.
 		        the entire layer graph is retrievable from that layer,
 		        recursively.
 		
@@ -44,12 +44,12 @@ package keras;
 		
 		# Example
 		
-		    ```python
-		    # this is a logistic regression in Keras
-		    x = Input(shape=(32,))
-		    y = Dense(16, activation='softmax')(x)
-		    model = Model(x, y)
-		    ```
+		```python
+		# this is a logistic regression in Keras
+		x = Input(shape=(32,))
+		y = Dense(16, activation='softmax')(x)
+		model = Model(x, y)
+		```
 	**/
 	static public function Input(?shape:Dynamic, ?batch_shape:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?sparse:Dynamic, ?tensor:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;

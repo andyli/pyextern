@@ -11,18 +11,16 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Transpose the batch and time dimensions of a Tensor.
+		Transposes the batch and time dimensions of a Tensor.
 		
-		Retains as much of the static shape information as possible.
+		If the input tensor has rank < 2 it returns the original tensor. Retains as
+		much of the static shape information as possible.
 		
 		Args:
-		  x: A tensor of rank 2 or higher.
+		  x: A Tensor.
 		
 		Returns:
 		  x transposed along the first two dimensions.
-		
-		Raises:
-		  ValueError: if `x` is rank 1 or lower.
 	**/
 	static public function _transpose_batch_time(x:Dynamic):Dynamic;
 	static public function _unstack_ta(inp:Dynamic):Dynamic;

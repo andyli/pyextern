@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.widgets;
 @:pythonImport("matplotlib.widgets", "Slider") extern class Slider {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,113 +38,111 @@ package matplotlib.widgets;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create a slider from *valmin* to *valmax* in axes *ax*.
-		
-		Additional kwargs are passed on to ``self.poly`` which is the
-		:class:`matplotlib.patches.Rectangle` that draws the slider
-		knob.  See the :class:`matplotlib.patches.Rectangle` documentation for
-		valid property names (e.g., *facecolor*, *edgecolor*, *alpha*, ...).
-		
 		Parameters
 		----------
 		ax : Axes
-		    The Axes to put the slider in
+		    The Axes to put the slider in.
 		
 		label : str
-		    Slider label
+		    Slider label.
 		
 		valmin : float
-		    The minimum value of the slider
+		    The minimum value of the slider.
 		
 		valmax : float
-		    The maximum value of the slider
+		    The maximum value of the slider.
 		
-		valinit : float
-		    The slider initial position
+		valinit : float, optional, default: 0.5
+		    The slider initial position.
 		
-		label : str
-		    The slider label
+		valfmt : str, optional, default: "%1.2f"
+		    Used to format the slider value, fprint format string.
 		
-		valfmt : str
-		    Used to format the slider value, fprint format string
+		closedmin : bool, optional, default: True
+		    Indicate whether the slider interval is closed on the bottom.
 		
-		closedmin : bool
-		    Indicate whether the slider interval is closed on the bottom
+		closedmax : bool, optional, default: True
+		    Indicate whether the slider interval is closed on the top.
 		
-		closedmax : bool
-		    Indicate whether the slider interval is closed on the top
-		
-		slidermin : Slider or None
+		slidermin : Slider, optional, default: None
 		    Do not allow the current slider to have a value less than
-		    `slidermin`
+		    the value of the Slider `slidermin`.
 		
-		slidermax : Slider or None
+		slidermax : Slider, optional, default: None
 		    Do not allow the current slider to have a value greater than
-		    `slidermax`
+		    the value of the Slider `slidermax`.
 		
+		dragging : bool, optional, default: True
+		    If True the slider can be dragged by the mouse.
 		
-		dragging : bool
-		    if the slider can be dragged by the mouse
+		valstep : float, optional, default: None
+		    If given, the slider will snap to multiples of `valstep`.
+		
+		Notes
+		-----
+		Additional kwargs are passed on to ``self.poly`` which is the
+		:class:`~matplotlib.patches.Rectangle` that draws the slider
+		knob.  See the :class:`~matplotlib.patches.Rectangle` documentation for
+		valid property names (e.g., `facecolor`, `edgecolor`, `alpha`).
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?valstep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Create a slider from *valmin* to *valmax* in axes *ax*.
-		
-		Additional kwargs are passed on to ``self.poly`` which is the
-		:class:`matplotlib.patches.Rectangle` that draws the slider
-		knob.  See the :class:`matplotlib.patches.Rectangle` documentation for
-		valid property names (e.g., *facecolor*, *edgecolor*, *alpha*, ...).
-		
 		Parameters
 		----------
 		ax : Axes
-		    The Axes to put the slider in
+		    The Axes to put the slider in.
 		
 		label : str
-		    Slider label
+		    Slider label.
 		
 		valmin : float
-		    The minimum value of the slider
+		    The minimum value of the slider.
 		
 		valmax : float
-		    The maximum value of the slider
+		    The maximum value of the slider.
 		
-		valinit : float
-		    The slider initial position
+		valinit : float, optional, default: 0.5
+		    The slider initial position.
 		
-		label : str
-		    The slider label
+		valfmt : str, optional, default: "%1.2f"
+		    Used to format the slider value, fprint format string.
 		
-		valfmt : str
-		    Used to format the slider value, fprint format string
+		closedmin : bool, optional, default: True
+		    Indicate whether the slider interval is closed on the bottom.
 		
-		closedmin : bool
-		    Indicate whether the slider interval is closed on the bottom
+		closedmax : bool, optional, default: True
+		    Indicate whether the slider interval is closed on the top.
 		
-		closedmax : bool
-		    Indicate whether the slider interval is closed on the top
-		
-		slidermin : Slider or None
+		slidermin : Slider, optional, default: None
 		    Do not allow the current slider to have a value less than
-		    `slidermin`
+		    the value of the Slider `slidermin`.
 		
-		slidermax : Slider or None
+		slidermax : Slider, optional, default: None
 		    Do not allow the current slider to have a value greater than
-		    `slidermax`
+		    the value of the Slider `slidermax`.
 		
+		dragging : bool, optional, default: True
+		    If True the slider can be dragged by the mouse.
 		
-		dragging : bool
-		    if the slider can be dragged by the mouse
+		valstep : float, optional, default: None
+		    If given, the slider will snap to multiples of `valstep`.
+		
+		Notes
+		-----
+		Additional kwargs are passed on to ``self.poly`` which is the
+		:class:`~matplotlib.patches.Rectangle` that draws the slider
+		knob.  See the :class:`~matplotlib.patches.Rectangle` documentation for
+		valid property names (e.g., `facecolor`, `edgecolor`, `alpha`).
 	**/
-	public function new(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?valstep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -195,7 +193,7 @@ package matplotlib.widgets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -205,6 +203,10 @@ package matplotlib.widgets;
 		update the slider position
 	**/
 	public function _update(event:Dynamic):Dynamic;
+	/**
+		Makes sure self.val is with given bounds.
+	**/
+	public function _value_in_bounds(val:Dynamic):Dynamic;
 	/**
 		Is the widget active?
 	**/
@@ -217,7 +219,12 @@ package matplotlib.widgets;
 	**/
 	public function connect_event(event:Dynamic, callback:Dynamic):Dynamic;
 	/**
-		remove the observer with connection id *cid*
+		Remove the observer with connection id *cid*
+		
+		Parameters
+		----------
+		cid : int
+		    Connection id of the observer to be removed
 	**/
 	public function disconnect(cid:Dynamic):Dynamic;
 	/**
@@ -239,14 +246,23 @@ package matplotlib.widgets;
 	**/
 	public function ignore(event:Dynamic):Dynamic;
 	/**
-		When the slider value is changed, call *func* with the new
-		slider position
+		When the slider value is changed call *func* with the new
+		slider value
 		
-		A connection id is returned which can be used to disconnect
+		Parameters
+		----------
+		func : callable
+		    Function to call when slider is changed.
+		    The function must accept a single float as its arguments.
+		
+		Returns
+		-------
+		cid : int
+		    Connection id (which can be used to disconnect *func*)
 	**/
-	public function on_changed(func:Dynamic):Dynamic;
+	public function on_changed(func:Dynamic):Int;
 	/**
-		reset the slider to the initial value if needed
+		Reset the slider to the initial value
 	**/
 	public function reset():Dynamic;
 	/**
@@ -254,5 +270,12 @@ package matplotlib.widgets;
 		        
 	**/
 	public function set_active(active:Dynamic):Dynamic;
+	/**
+		Set slider value to *val*
+		
+		Parameters
+		----------
+		val : float
+	**/
 	public function set_val(val:Dynamic):Dynamic;
 }

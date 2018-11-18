@@ -9,6 +9,10 @@ package tensorflow.python.ops.clip_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Returns grad of clip_by_value.
+	**/
+	static public function _clip_by_value_grad(op:Dynamic, grad:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Clips tensor values to a maximum average L2-norm.
@@ -78,6 +82,7 @@ package tensorflow.python.ops.clip_ops;
 		
 		Raises:
 		  TypeError: If `t_list` is not a sequence.
+		  InvalidArgumentError: If global norm is not finite.
 	**/
 	static public function clip_by_global_norm(t_list:Dynamic, clip_norm:Dynamic, ?use_norm:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -122,6 +127,9 @@ package tensorflow.python.ops.clip_ops;
 		Any values less than `clip_value_min` are set to `clip_value_min`. Any values
 		greater than `clip_value_max` are set to `clip_value_max`.
 		
+		Note: `clip_value_min` needs to be smaller or equal to `clip_value_max` for
+		correct results.
+		
 		Args:
 		  t: A `Tensor`.
 		  clip_value_min: A 0-D (scalar) `Tensor`, or a `Tensor` with the same shape
@@ -134,7 +142,7 @@ package tensorflow.python.ops.clip_ops;
 		  A clipped `Tensor`.
 		
 		Raises:
-		  ValueError: if the clip tensors would trigger array broadcasting
+		  ValueError: If the clip tensors would trigger array broadcasting
 		    that would make the returned tensor larger than the input.
 	**/
 	static public function clip_by_value(t:Dynamic, clip_value_min:Dynamic, clip_value_max:Dynamic, ?name:Dynamic):Dynamic;
@@ -162,4 +170,5 @@ package tensorflow.python.ops.clip_ops;
 	**/
 	static public function global_norm(t_list:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

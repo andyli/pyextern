@@ -27,9 +27,9 @@ package pandas.core.computation.api;
 		expr : str or unicode
 		    The expression to evaluate. This string cannot contain any Python
 		    `statements
-		    <http://docs.python.org/2/reference/simple_stmts.html#simple-statements>`__,
+		    <https://docs.python.org/3/reference/simple_stmts.html#simple-statements>`__,
 		    only Python `expressions
-		    <http://docs.python.org/2/reference/simple_stmts.html#expression-statements>`__.
+		    <https://docs.python.org/3/reference/simple_stmts.html#expression-statements>`__.
 		parser : string, default 'pandas', {'pandas', 'python'}
 		    The parser to use to construct the syntax tree from the expression. The
 		    default of ``'pandas'`` parses code slightly different than standard
@@ -61,25 +61,45 @@ package pandas.core.computation.api;
 		    you can use to inject an additional collection of namespaces to use for
 		    variable lookup. For example, this is used in the
 		    :meth:`~pandas.DataFrame.query` method to inject the
-		    :attr:`~pandas.DataFrame.index` and :attr:`~pandas.DataFrame.columns`
+		    ``DataFrame.index`` and ``DataFrame.columns``
 		    variables that refer to their respective :class:`~pandas.DataFrame`
 		    instance attributes.
 		level : int, optional
 		    The number of prior stack frames to traverse and add to the current
 		    scope. Most users will **not** need to change this parameter.
-		target : a target object for assignment, optional, default is None
-		    essentially this is a passed in resolver
-		inplace : bool, default True
-		    If expression mutates, whether to modify object inplace or return
-		    copy with mutation.
-		
-		    WARNING: inplace=None currently falls back to to True, but
-		    in a future version, will default to False.  Use inplace=True
-		    explicitly rather than relying on the default.
+		target : object, optional, default None
+		    This is the target object for assignment. It is used when there is
+		    variable assignment in the expression. If so, then `target` must
+		    support item assignment with string keys, and if a copy is being
+		    returned, it must also support `.copy()`.
+		inplace : bool, default False
+		    If `target` is provided, and the expression mutates `target`, whether
+		    to modify `target` inplace. Otherwise, return a copy of `target` with
+		    the mutation.
 		
 		Returns
 		-------
 		ndarray, numeric scalar, DataFrame, Series
+		
+		Raises
+		------
+		ValueError
+		    There are many instances where such an error can be raised:
+		
+		    - `target=None`, but the expression is multiline.
+		    - The expression is multiline, but not all them have item assignment.
+		      An example of such an arrangement is this:
+		
+		      a = b + 1
+		      a + 2
+		
+		      Here, there are expressions on different lines, making it multiline,
+		      but the last line has no variable assigned to the output of `a + 2`.
+		    - `inplace=True`, but the expression is missing item assignment.
+		    - Item assignment is provided, but the `target` does not support
+		      string item assignment.
+		    - Item assignment is provided and `inplace=False`, but the `target`
+		      does not support the `.copy()` method
 		
 		Notes
 		-----

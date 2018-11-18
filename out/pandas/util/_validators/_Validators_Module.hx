@@ -102,9 +102,63 @@ package pandas.util._validators;
 	**/
 	static public function validate_args_and_kwargs(fname:Dynamic, args:Dynamic, kwargs:Dynamic, max_fname_arg_count:Dynamic, compat_args:Dynamic):Dynamic;
 	/**
+		Argument handler for mixed index, columns / axis functions
+		
+		In an attempt to handle both `.method(index, columns)`, and
+		`.method(arg, axis=.)`, we have to do some bad things to argument
+		parsing. This translates all arguments to `{index=., columns=.}` style.
+		
+		Parameters
+		----------
+		data : DataFrame or Panel
+		arg : tuple
+		    All positional arguments from the user
+		kwargs : dict
+		    All keyword arguments from the user
+		arg_name, method_name : str
+		    Used for better error messages
+		
+		Returns
+		-------
+		kwargs : dict
+		    A dictionary of keyword arguments. Doesn't modify ``kwargs``
+		    inplace, so update them with the return value here.
+		
+		Examples
+		--------
+		>>> df._validate_axis_style_args((str.upper,), {'columns': id},
+		...                              'mapper', 'rename')
+		{'columns': <function id>, 'index': <method 'upper' of 'str' objects>}
+		
+		This emits a warning
+		>>> df._validate_axis_style_args((str.upper, id), {},
+		...                              'mapper', 'rename')
+		{'columns': <function id>, 'index': <method 'upper' of 'str' objects>}
+	**/
+	static public function validate_axis_style_args(data:Dynamic, args:Dynamic, kwargs:Dynamic, arg_name:Dynamic, method_name:Dynamic):python.Dict<Dynamic, Dynamic>;
+	/**
 		Ensures that argument passed in arg_name is of type bool. 
 	**/
 	static public function validate_bool_kwarg(value:Dynamic, arg_name:Dynamic):Dynamic;
+	/**
+		Validate the keyword arguments to 'fillna'.
+		
+		This checks that exactly one of 'value' and 'method' is specified.
+		If 'method' is specified, this validates that it's a valid method.
+		
+		Parameters
+		----------
+		value, method : object
+		    The 'value' and 'method' keyword arguments for 'fillna'.
+		validate_scalar_dict_value : bool, default True
+		    Whether to validate that 'value' is a scalar or dict. Specifically,
+		    validate that it is not a list or tuple.
+		
+		Returns
+		-------
+		value, method : object
+	**/
+	static public function validate_fillna_kwargs(value:Dynamic, method:Dynamic, ?validate_scalar_dict_value:Dynamic):Dynamic;
 	/**
 		Checks whether parameters passed to the **kwargs argument in a
 		function `fname` are valid parameters as specified in `*compat_args`

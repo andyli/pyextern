@@ -12,10 +12,21 @@ package tensorflow.python.ops.variables;
 	/**
 		Returns all variables and `SaveableObject`s that must be checkpointed.
 		
+		Args:
+		  scope: (Optional.) A string. If supplied, the resulting list is filtered
+		    to include only items whose `name` attribute matches `scope` using
+		    `re.match`. Items without a `name` attribute are never returned if a
+		    scope is supplied. The choice of `re.match` means that a `scope` without
+		    special tokens filters by prefix.
+		
 		Returns:
 		  A list of `Variable` and `SaveableObject` to be checkpointed
 	**/
-	static public function _all_saveable_objects():Dynamic;
+	static public function _all_saveable_objects(?scope:Dynamic):Dynamic;
+	/**
+		To avoid capturing loop variables.
+	**/
+	static public function _make_getter(captured_getter:Dynamic, captured_previous:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		See `tf.global_variables`. (deprecated)
@@ -50,6 +61,14 @@ package tensorflow.python.ops.variables;
 	**/
 	static public function assert_variables_initialized(?var_list:Dynamic):Dynamic;
 	/**
+		Default variable creator.
+	**/
+	static public function default_variable_creator(?next_creator:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Default variable creator.
+	**/
+	static public function default_variable_creator_v2(?next_creator:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Decorator for marking functions or methods deprecated.
 		
 		This decorator logs a deprecation warning whenever the decorated function is
@@ -71,6 +90,8 @@ package tensorflow.python.ops.variables;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -79,7 +100,7 @@ package tensorflow.python.ops.variables;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Returns global variables.
@@ -91,16 +112,23 @@ package tensorflow.python.ops.variables;
 		This convenience function returns the contents of that collection.
 		
 		An alternative to global variables are local variables. See
-		@{tf.local_variables}
+		`tf.local_variables`
+		
+		Args:
+		  scope: (Optional.) A string. If supplied, the resulting list is filtered
+		    to include only items whose `name` attribute matches `scope` using
+		    `re.match`. Items without a `name` attribute are never returned if a
+		    scope is supplied. The choice of `re.match` means that a `scope` without
+		    special tokens filters by prefix.
 		
 		Returns:
 		  A list of `Variable` objects.
 	**/
-	static public function global_variables():Dynamic;
+	static public function global_variables(?scope:Dynamic):Dynamic;
 	/**
 		Returns an Op that initializes global variables.
 		
-		This is just a shortcut for `variable_initializer(global_variables())`
+		This is just a shortcut for `variables_initializer(global_variables())`
 		
 		Returns:
 		  An Op that initializes global variables in the graph.
@@ -162,16 +190,23 @@ package tensorflow.python.ops.variables;
 		This convenience function returns the contents of that collection.
 		
 		An alternative to local variables are global variables. See
-		@{tf.global_variables}
+		`tf.global_variables`
+		
+		Args:
+		  scope: (Optional.) A string. If supplied, the resulting list is filtered
+		    to include only items whose `name` attribute matches `scope` using
+		    `re.match`. Items without a `name` attribute are never returned if a
+		    scope is supplied. The choice of `re.match` means that a `scope` without
+		    special tokens filters by prefix.
 		
 		Returns:
 		  A list of local `Variable` objects.
 	**/
-	static public function local_variables():Dynamic;
+	static public function local_variables(?scope:Dynamic):Dynamic;
 	/**
 		Returns an Op that initializes all local variables.
 		
-		This is just a shortcut for `variable_initializer(local_variables())`
+		This is just a shortcut for `variables_initializer(local_variables())`
 		
 		Returns:
 		  An Op that initializes all local variables in the graph.
@@ -180,10 +215,17 @@ package tensorflow.python.ops.variables;
 	/**
 		Returns all variables in the MODEL_VARIABLES collection.
 		
+		Args:
+		  scope: (Optional.) A string. If supplied, the resulting list is filtered
+		    to include only items whose `name` attribute matches `scope` using
+		    `re.match`. Items without a `name` attribute are never returned if a
+		    scope is supplied. The choice of `re.match` means that a `scope` without
+		    special tokens filters by prefix.
+		
 		Returns:
 		  A list of local Variable objects.
 	**/
-	static public function model_variables():Dynamic;
+	static public function model_variables(?scope:Dynamic):Dynamic;
 	/**
 		Returns all variables that maintain their moving averages.
 		
@@ -192,10 +234,17 @@ package tensorflow.python.ops.variables;
 		be added to the `GraphKeys.MOVING_AVERAGE_VARIABLES` collection.
 		This convenience function returns the contents of that collection.
 		
+		Args:
+		  scope: (Optional.) A string. If supplied, the resulting list is filtered
+		    to include only items whose `name` attribute matches `scope` using
+		    `re.match`. Items without a `name` attribute are never returned if a
+		    scope is supplied. The choice of `re.match` means that a `scope` without
+		    special tokens filters by prefix.
+		
 		Returns:
 		  A list of Variable objects.
 	**/
-	static public function moving_average_variables():Dynamic;
+	static public function moving_average_variables(?scope:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Adds ops to list the names of uninitialized variables.
@@ -216,6 +265,7 @@ package tensorflow.python.ops.variables;
 		**NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function report_uninitialized_variables(?var_list:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns all variables created with `trainable=True`.
 		
@@ -224,10 +274,17 @@ package tensorflow.python.ops.variables;
 		`GraphKeys.TRAINABLE_VARIABLES`. This convenience function returns the
 		contents of that collection.
 		
+		Args:
+		  scope: (Optional.) A string. If supplied, the resulting list is filtered
+		    to include only items whose `name` attribute matches `scope` using
+		    `re.match`. Items without a `name` attribute are never returned if a
+		    scope is supplied. The choice of `re.match` means that a `scope` without
+		    special tokens filters by prefix.
+		
 		Returns:
 		  A list of Variable objects.
 	**/
-	static public function trainable_variables():Dynamic;
+	static public function trainable_variables(?scope:Dynamic):Dynamic;
 	/**
 		Returns an Op that initializes a list of variables.
 		

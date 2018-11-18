@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_pdf;
 @:pythonImport("matplotlib.backends.backend_pdf", "PdfFile") extern class PdfFile {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package matplotlib.backends.backend_pdf;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(filename:Dynamic):Dynamic;
+	public function ___init__(filename:Dynamic, ?metadata:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(filename:Dynamic):Void;
+	public function new(filename:Dynamic, ?metadata:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,12 @@ package matplotlib.backends.backend_pdf;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _embedTeXFont(fontinfo:Dynamic):Dynamic;
 	public function _get_xobject_symbol_name(filename:Dynamic, symbol_name:Dynamic):Dynamic;
 	static public var _identityToUnicodeCMap : Dynamic;
 	/**
@@ -131,22 +132,34 @@ package matplotlib.backends.backend_pdf;
 	public function _write_afm_font(filename:Dynamic):Dynamic;
 	public function addGouraudTriangles(points:Dynamic, colors:Dynamic):Dynamic;
 	/**
-		Return name of an ExtGState that sets alpha to the given value
+		Return name of an ExtGState that sets alpha to the given value.
 	**/
 	public function alphaState(alpha:Dynamic):Dynamic;
 	public function beginStream(id:Dynamic, len:Dynamic, ?extra:Dynamic, ?png:Dynamic):Dynamic;
+	/**
+		Flush all buffers and free all resources.
+	**/
 	public function close():Dynamic;
 	public function createType1Descriptor(t1font:Dynamic, fontfile:Dynamic):Dynamic;
+	/**
+		Given a dvi font object, return a name suitable for Op.selectfont.
+		This registers the font information in self.dviFontInfo if not yet
+		registered.
+	**/
+	public function dviFontName(dvifont:Dynamic):Dynamic;
 	/**
 		Embed the TTF font from the named file into the document.
 	**/
 	public function embedTTF(filename:Dynamic, characters:Dynamic):Dynamic;
-	public function embedTeXFont(texname:Dynamic, fontinfo:Dynamic):Dynamic;
 	public function endStream():Dynamic;
+	/**
+		Write out the various deferred objects and the pdf end matter.
+	**/
+	public function finalize():Dynamic;
 	/**
 		Select a font based on fontprop and return a name suitable for
 		Op.selectfont. If fontprop is a string, it will be interpreted
-		as the filename (or dvi name) of the font.
+		as the filename of the font.
 	**/
 	public function fontName(fontprop:Dynamic):Dynamic;
 	public function hatchPattern(hatch_style:Dynamic):Dynamic;
@@ -170,6 +183,13 @@ package matplotlib.backends.backend_pdf;
 		the object with writeObject.
 	**/
 	public function reserveObject(?name:Dynamic):Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The texFontMap function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
+		\ 
+	**/
+	public var texFontMap : Dynamic;
 	public function write(data:Dynamic):Dynamic;
 	public function writeFonts():Dynamic;
 	public function writeGouraudTriangles():Dynamic;

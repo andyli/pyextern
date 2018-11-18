@@ -89,18 +89,18 @@ package theano.tensor.nnet.corr;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic, ?openmp:Dynamic):Dynamic;
+	public function ___init__(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic, ?unshared:Dynamic, ?openmp:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic, ?openmp:Dynamic):Void;
+	public function new(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic, ?unshared:Dynamic, ?openmp:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -154,11 +154,12 @@ package theano.tensor.nnet.corr;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _direction : Dynamic;
 	/**
 		Extract test value from variable v.
 		Raises AttributeError if there is none.
@@ -194,12 +195,12 @@ package theano.tensor.nnet.corr;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	/**
-		Upcast input variables if neccesary.
+		Upcast input variables if necessary.
 	**/
 	static public function as_common_dtype(in1:Dynamic, in2:Dynamic):Dynamic;
 	/**
@@ -339,12 +340,6 @@ package theano.tensor.nnet.corr;
 		    or the gradient of the filters in backprop wrt. weights
 		:param top: Variable name of the output images / feature maps in the
 		    forward pass, or the gradient of the outputs in the backprop passes
-		:param direction: "forward" to correlate bottom with weights and store
-		    results in top,
-		    "backprop weights" to do a valid convolution of bottom with top
-		    (swapping the first two dimensions) and store results in weights,
-		    and "backprop inputs" to do a full convolution of top with weights
-		    (swapping the first two dimensions) and store results in bottom.
 		:param sub: Dictionary of substitutions useable to help generating the
 		    C code.
 		:param height: If self.subsample[0] != 1, a variable giving the height
@@ -360,7 +355,7 @@ package theano.tensor.nnet.corr;
 		    If self.border_mode == 'half', a variable giving the width of the
 		    filters for direction="backprop weights".  Ignored otherwise.
 	**/
-	public function c_code_helper(bottom:Dynamic, weights:Dynamic, top:Dynamic, direction:Dynamic, sub:Dynamic, ?height:Dynamic, ?width:Dynamic):Dynamic;
+	public function c_code_helper(bottom:Dynamic, weights:Dynamic, top:Dynamic, sub:Dynamic, ?height:Dynamic, ?width:Dynamic):Dynamic;
 	/**
 		Return the compilation arg "fopenmp" if openMP is supported
 	**/
@@ -502,7 +497,7 @@ package theano.tensor.nnet.corr;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -559,7 +554,12 @@ package theano.tensor.nnet.corr;
 	public function c_support_code_struct(node:Dynamic, name:Dynamic):Dynamic;
 	static public var check_broadcast : Dynamic;
 	public function connection_pattern(node:Dynamic):Dynamic;
+	public var dH : Dynamic;
+	public var dW : Dynamic;
 	static public var default_output : Dynamic;
+	public var dilH : Dynamic;
+	public var dilW : Dynamic;
+	public var direction : Dynamic;
 	/**
 		This allows each op to determine if it wants to be constant
 		folded when all its inputs are constant. This allows it to
@@ -568,6 +568,7 @@ package theano.tensor.nnet.corr;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	public function grad(inp:Dynamic, grads:Dynamic):Dynamic;
 	static public var gxx_support_openmp : Dynamic;
 	public function infer_shape(node:Dynamic, input_shape:Dynamic):Dynamic;
@@ -622,6 +623,11 @@ package theano.tensor.nnet.corr;
 	**/
 	public function make_thunk(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, no_recycling:Dynamic, ?impl:Dynamic):Dynamic;
 	public var pad : Dynamic;
+	public var padH_l : Dynamic;
+	public var padH_r : Dynamic;
+	public var padW_l : Dynamic;
+	public var padW_r : Dynamic;
+	static public function params_type(?name:Dynamic):Dynamic;
 	/**
 		Required: Calculate the function on the inputs and put the variables in
 		the output storage. Return None.
@@ -660,7 +666,7 @@ package theano.tensor.nnet.corr;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.basic_ops;
 @:pythonImport("theano.gpuarray.basic_ops") extern class Basic_ops_Module {
+	static public var EQ_MAP : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -25,7 +26,27 @@ package theano.gpuarray.basic_ops;
 		    target context name for the result
 	**/
 	static public function as_gpuarray_variable(x:Dynamic, context_name:Dynamic):Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public var config : Dynamic;
+	/**
+		Copies the stack trace from one or more tensor variables to
+		one or more tensor variables and returns the destination variables.
+		
+		Parameters
+		----------
+		from_var
+		    Tensor variable or list of tensor variables to copy stack traces from.
+		to_var
+		    Tensor variable or list of tensor variables to copy stack traces to.
+		
+		Notes
+		-----
+		The stacktrace is assumed to be of the form of a list of lists
+		of tuples. Each tuple contains the filename, line number, function name
+		and so on. Each list of tuples contains the truples belonging to a
+		particular variable.
+	**/
+	static public function copy_stack_trace(from_var:Dynamic, to_var:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function empty_like(_var:Dynamic):Dynamic;
 	static public function forward_string_meth(name:Dynamic):Dynamic;
@@ -44,12 +65,10 @@ package theano.gpuarray.basic_ops;
 	static public function get_context(name:Dynamic):Dynamic;
 	static public function get_ctype(dtype:Dynamic):Dynamic;
 	static public function get_dtype(s:Dynamic):Dynamic;
-	static public function gpu_alloc(ctx:Dynamic, ?memset_0:Dynamic):Dynamic;
-	static public function gpu_alloc_empty(ctx:Dynamic, dtype:Dynamic):Dynamic;
 	static public function gpu_context_type(?name:Dynamic):Dynamic;
 	static public function gpu_contiguous(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function gpu_from_host(ctx:Dynamic):Dynamic;
 	static public function gpu_join(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	/**
 		Return an un-computable symbolic variable of type `x.type`.
 		
@@ -68,16 +87,20 @@ package theano.gpuarray.basic_ops;
 		Infer the context name to use from the inputs given
 	**/
 	static public function infer_context_name(?vars:python.VarArgs<Dynamic>):Dynamic;
+	static public function int32_t(?name:Dynamic):Dynamic;
 	/**
-		iter(iterable) -> iterator
-		iter(callable, sentinel) -> iterator
-		
-		Get an iterator from an object.  In the first form, the argument must
-		supply its own iterator, or be a sequence.
-		In the second form, the callable is called until it returns the sentinel.
+		Return an iterator over the (key, value) pairs of a dictionary.
 	**/
-	static public function iterbytes(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function iteritems(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
+	static public function profile_printer(message:Dynamic, compile_time:Dynamic, fct_call_time:Dynamic, apply_time:Dynamic, apply_cimpl:Dynamic, outputs_size:Dynamic, file:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
+	/**
+		Return the function name to write data.
+		
+		This should be used like this::
+		
+		    code = 'res = %s(oval)' % (write_w(output_type),)
+	**/
 	static public function write_w(dtype:Dynamic):Dynamic;
 }

@@ -1,18 +1,14 @@
 /* This file is generated, do not edit! */
 package docutils.utils.smartquotes;
 @:pythonImport("docutils.utils.smartquotes") extern class Smartquotes_Module {
-	static public var __author__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
-	static public var __description__ : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __url__ : Dynamic;
-	static public var __version__ : Dynamic;
 	static public var default_smartypants_attr : Dynamic;
 	/**
 		Parameter:  String (unicode or bytes).
@@ -81,6 +77,7 @@ package docutils.utils.smartquotes;
 		    
 	**/
 	static public function educate_tokens(text_tokens:Dynamic, ?attr:Dynamic, ?language:Dynamic):Dynamic;
+	static public var options : Dynamic;
 	/**
 		Parameter:  String (unicode or bytes).
 		Returns:    The `text`, with after processing the following backslash

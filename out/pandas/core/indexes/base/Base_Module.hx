@@ -10,8 +10,6 @@ package pandas.core.indexes.base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function _comp_method_OBJECT_ARRAY(op:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
 	/**
 		Ensure that an array-like object is a Categorical (if not already).
 		
@@ -30,13 +28,74 @@ package pandas.core.indexes.base;
 		If seq is an iterator, put its values into a list.
 	**/
 	static public function _ensure_has_len(seq:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           labels=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		_ensure_index_from_sequences
+	**/
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Construct an index from sequences of data.
+		
+		A single sequence returns an Index. Many sequences returns a
+		MultiIndex.
+		
+		Parameters
+		----------
+		sequences : sequence of sequences
+		names : sequence of str
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index_from_sequences([[1, 2, 3]], names=['name'])
+		Int64Index([1, 2, 3], dtype='int64', name='name')
+		
+		>>> _ensure_index_from_sequences([['a', 'a'], ['a', 'b']],
+		                                 names=['L1', 'L2'])
+		MultiIndex(levels=[['a'], ['a', 'b']],
+		           labels=[[0, 0], [0, 1]],
+		           names=['L1', 'L2'])
+		
+		See Also
+		--------
+		_ensure_index
+	**/
+	static public function _ensure_index_from_sequences(sequences:Dynamic, ?names:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _get_na_value(dtype:Dynamic):Dynamic;
 	static public var _index_doc_kwargs : Dynamic;
 	static public var _index_shared_docs : Dynamic;
+	static public function _make_arithmetic_op(op:Dynamic, cls:Dynamic):Dynamic;
+	static public function _make_comparison_op(op:Dynamic, cls:Dynamic):Dynamic;
 	/**
 		This is called upon unpickling, rather than the default which doesn't
 		have arguments and breaks __new__
@@ -50,10 +109,6 @@ package pandas.core.indexes.base;
 	static public function _try_get_item(x:Dynamic):Dynamic;
 	static public var _unsortable_types : Dynamic;
 	static public function _validate_join_method(method:Dynamic):Dynamic;
-	/**
-		return my values or the object if we are say an ndarray 
-	**/
-	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if two arrays, left and right, have equal non-NaN elements, and NaNs
 		in corresponding locations.  False otherwise. It is assumed that left and
@@ -84,17 +139,31 @@ package pandas.core.indexes.base;
 		False
 	**/
 	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
-	static public function default_pprint(x:Dynamic, ?max_seq_items:Dynamic):Dynamic;
-	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function
+		Remove any common leading whitespace from every line in `text`.
+		
+		This can be used to make triple-quoted strings line up with the left
+		edge of the display, while still presenting them in the source code
+		in indented form.
+		
+		Note that tabs and spaces are both treated as whitespace, but they
+		are not equal: the lines "  hello" and "\thello" are
+		considered to have no common leading whitespace.  (This behaviour is
+		new in Python 2.5; older versions of this module incorrectly
+		expanded tabs before searching for common leading whitespace.)
+	**/
+	static public function dedent(text:Dynamic):Dynamic;
+	static public function default_pprint(x:Dynamic, ?max_seq_items:Dynamic):Dynamic;
+	/**
+		Decorator to deprecate a keyword argument of a function.
 		
 		Parameters
 		----------
 		old_arg_name : str
 		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of preferred argument in function
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -110,12 +179,15 @@ package pandas.core.indexes.base;
 		...
 		>>> f(columns='should work ok')
 		should work ok
+		
 		>>> f(cols='should raise warning')
 		FutureWarning: cols is deprecated, use columns instead
 		  warnings.warn(msg, FutureWarning)
 		should raise warning
+		
 		>>> f(cols='should error', columns="can't pass do both")
 		TypeError: Can only specify 'cols' or 'columns', not both
+		
 		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
 		... def f(new=False):
 		...     print('yes!' if new else 'no!')
@@ -124,6 +196,25 @@ package pandas.core.indexes.base;
 		FutureWarning: old='yes' is deprecated, use new=True instead
 		  warnings.warn(msg, FutureWarning)
 		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	/**
@@ -135,15 +226,14 @@ package pandas.core.indexes.base;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -151,7 +241,9 @@ package pandas.core.indexes.base;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -224,16 +316,22 @@ package pandas.core.indexes.base;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -277,11 +375,6 @@ package pandas.core.indexes.base;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -298,7 +391,7 @@ package pandas.core.indexes.base;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -343,12 +436,6 @@ package pandas.core.indexes.base;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -399,21 +486,22 @@ package pandas.core.indexes.base;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -424,6 +512,11 @@ package pandas.core.indexes.base;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -433,13 +526,26 @@ package pandas.core.indexes.base;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a boolean dtype.
 		
@@ -470,7 +576,34 @@ package pandas.core.indexes.base;
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_bool_indexer(key:Dynamic):Dynamic;
+	/**
+		Check whether an array-like is a Categorical instance.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is of a Categorical instance.
+		
+		Examples
+		--------
+		>>> is_categorical([1, 2, 3])
+		False
+		
+		Categoricals, Series Categoricals, and CategoricalIndex will return True.
+		
+		>>> cat = pd.Categorical([1, 2, 3])
+		>>> is_categorical(cat)
+		True
+		>>> is_categorical(pd.Series(cat))
+		True
+		>>> is_categorical(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
+	static public function is_categorical(arr:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the Categorical dtype.
 		
@@ -531,6 +664,38 @@ package pandas.core.indexes.base;
 		True
 	**/
 	static public function is_datetime64_any_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of a DatetimeTZDtype dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of
+		          a DatetimeTZDtype dtype.
+		
+		Examples
+		--------
+		>>> is_datetime64tz_dtype(object)
+		False
+		>>> is_datetime64tz_dtype([1, 2, 3])
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3]))  # tz-naive
+		False
+		>>> is_datetime64tz_dtype(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
+		True
+		
+		>>> dtype = DatetimeTZDtype("ns", tz="US/Eastern")
+		>>> s = pd.Series([], dtype=dtype)
+		>>> is_datetime64tz_dtype(dtype)
+		True
+		>>> is_datetime64tz_dtype(s)
+		True
+	**/
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check if two dtypes are equal.
@@ -558,6 +723,32 @@ package pandas.core.indexes.base;
 		False
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		Check whether two arrays have compatible dtypes to do a union.
+		numpy types are checked with ``is_dtype_equal``. Extension types are
+		checked separately.
+		
+		Parameters
+		----------
+		source : The first dtype to compare
+		target : The second dtype to compare
+		
+		Returns
+		----------
+		boolean : Whether or not the two dtypes are equal.
+		
+		>>> is_dtype_equal("int", int)
+		True
+		
+		>>> is_dtype_equal(CategoricalDtype(['a', 'b'],
+		...                CategoricalDtype(['b', 'c']))
+		True
+		
+		>>> is_dtype_equal(CategoricalDtype(['a', 'b'],
+		...                CategoricalDtype(['b', 'c'], ordered=True))
+		False
+	**/
+	static public function is_dtype_union_equal(source:Dynamic, target:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of a float dtype.
@@ -587,6 +778,24 @@ package pandas.core.indexes.base;
 		True
 	**/
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if hash(obj) will succeed, False otherwise.
+		
+		Some types will pass a test against collections.Hashable but fail when they
+		are actually hashed with hash().
+		
+		Distinguish between these and other types by trying the call to hash() and
+		seeing if they raise TypeError.
+		
+		Examples
+		--------
+		>>> a = ([],)
+		>>> isinstance(a, collections.Hashable)
+		True
+		>>> is_hashable(a)
+		False
+	**/
+	static public function is_hashable(obj:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of an integer dtype.
@@ -741,6 +950,32 @@ package pandas.core.indexes.base;
 	**/
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether an array-like or dtype is of the Period dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the Period dtype.
+		
+		Examples
+		--------
+		>>> is_period_dtype(object)
+		False
+		>>> is_period_dtype(PeriodDtype(freq="D"))
+		True
+		>>> is_period_dtype([1, 2, 3])
+		False
+		>>> is_period_dtype(pd.Period("2017-01-01"))
+		False
+		>>> is_period_dtype(pd.PeriodIndex([], freq="A"))
+		True
+	**/
+	static public function is_period_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Return True if given value is scalar.
 		
 		This includes:
@@ -753,6 +988,7 @@ package pandas.core.indexes.base;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -819,6 +1055,8 @@ package pandas.core.indexes.base;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -855,24 +1093,91 @@ package pandas.core.indexes.base;
 	**/
 	static public function is_unsigned_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
+	/**
+		Return a binary method that always raises a TypeError.
+		
+		Parameters
+		----------
+		name : str
+		
+		Returns
+		-------
+		invalid_op : function
+	**/
+	static public function make_invalid_op(name:Dynamic):Dynamic;
 	/**
 		Check whether the array or dtype should be converted to int64.
 		
@@ -932,5 +1237,9 @@ package pandas.core.indexes.base;
 		result - unicode object on py2, str on py3. Always Unicode.
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
+	/**
+		Bind the name/qualname attributes of the function 
+	**/
+	static public function set_function_name(f:Dynamic, name:Dynamic, cls:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 }

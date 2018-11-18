@@ -6,7 +6,7 @@ package pandas.plotting._converter;
 		Return the locations of the ticks
 	**/
 	public function __call__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -143,7 +143,7 @@ package pandas.plotting._converter;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -194,7 +194,7 @@ package pandas.plotting._converter;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -262,9 +262,9 @@ package pandas.plotting._converter;
 		    automatically for the associated :attr:`axis` simply call
 		    the Locator instance::
 		
-		        >>> print((type(loc)))
+		        >>> print(type(loc))
 		        <type 'Locator'>
-		        >>> print((loc()))
+		        >>> print(loc())
 		        [1, 2, 3, 4]
 	**/
 	public function tick_values(vmin:Dynamic, vmax:Dynamic):Dynamic;

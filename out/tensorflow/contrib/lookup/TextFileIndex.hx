@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.lookup;
-typedef TextFileIndex = tensorflow.contrib.lookup.lookup_ops.TextFileIndex;
+typedef TextFileIndex = tensorflow.python.ops.lookup_ops.TextFileIndex;

@@ -12,10 +12,11 @@ package tensorflow.python.framework.graph_io;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Writes a graph proto to a file.
 		
-		The graph is written as a binary proto unless `as_text` is `True`.
+		The graph is written as a text proto unless `as_text` is `False`.
 		
 		```python
 		v = tf.Variable(0, name='my_variable')

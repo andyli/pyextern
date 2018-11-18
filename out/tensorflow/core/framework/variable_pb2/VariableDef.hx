@@ -37,7 +37,7 @@ package tensorflow.core.framework.variable_pb2;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -47,6 +47,7 @@ package tensorflow.core.framework.variable_pb2;
 	**/
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var INITIALIZER_NAME_FIELD_NUMBER : Dynamic;
+	static public var INITIAL_VALUE_NAME_FIELD_NUMBER : Dynamic;
 	static public var IS_RESOURCE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
@@ -71,7 +72,7 @@ package tensorflow.core.framework.variable_pb2;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var SAVE_SLICE_INFO_DEF_FIELD_NUMBER : Dynamic;
 	static public var SNAPSHOT_NAME_FIELD_NUMBER : Dynamic;
 	/**
@@ -86,6 +87,7 @@ package tensorflow.core.framework.variable_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var TRAINABLE_FIELD_NUMBER : Dynamic;
 	static public var VARIABLE_NAME_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
@@ -134,7 +136,7 @@ package tensorflow.core.framework.variable_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -189,7 +191,7 @@ package tensorflow.core.framework.variable_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -245,7 +247,7 @@ package tensorflow.core.framework.variable_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_tools;
 @:pythonImport("matplotlib.backend_tools", "ToolGrid") extern class ToolGrid {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package matplotlib.backend_tools;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(toolmanager:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(toolmanager:Dynamic, name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,12 +103,21 @@ package matplotlib.backend_tools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public var cursor : Dynamic;
+	static public var _cycle : Dynamic;
+	public function _get_next_grid_states(ax:Dynamic):Dynamic;
+	/**
+		Check whether all grid lines are in the same visibility state.
+		
+		Returns True/False if all grid lines are on or off, None if they are
+		not all in the same state.
+	**/
+	static public function _get_uniform_grid_state(ticks:Dynamic):Dynamic;
+	public var canvas : Dynamic;
 	static public var default_keymap : Dynamic;
 	static public var description : Dynamic;
 	/**
@@ -118,38 +127,35 @@ package matplotlib.backend_tools;
 		`matplotlib.backend_managers.ToolManager.remove_tool`
 	**/
 	public function destroy():Dynamic;
-	/**
-		Disable the toggle tool
-		
-		`trigger` call this method when `toggled` is True.
-		
-		This can happen in different circumstances
-		
-		* Click on the toolbar tool button
-		* Call to `matplotlib.backend_managers.ToolManager.trigger_tool`
-		* Another `ToolToggleBase` derived tool is triggered
-		  (from the same `ToolManager`)
-	**/
-	public function disable(event:Dynamic):Dynamic;
-	/**
-		Enable the toggle tool
-		
-		`trigger` calls this method when `toggled` is False
-	**/
-	public function enable(event:Dynamic):Dynamic;
 	public var figure : Dynamic;
 	static public var image : Dynamic;
 	/**
 		Tool Id
 	**/
 	public var name : Dynamic;
-	static public var radio_group : Dynamic;
 	/**
-		State of the toggled tool
+		Assign a figure to the tool
+		
+		Parameters
+		----------
+		figure: `Figure`
 	**/
-	public var toggled : Dynamic;
+	public function set_figure(figure:Dynamic):Dynamic;
+	public var toolmanager : Dynamic;
 	/**
-		Calls `enable` or `disable` based on `toggled` value
+		Called when this tool gets used
+		
+		This method is called by
+		`matplotlib.backend_managers.ToolManager.trigger_tool`
+		
+		Parameters
+		----------
+		event: `Event`
+		    The Canvas event that caused this tool to be called
+		sender: object
+		    Object that requested the tool to be triggered
+		data: object
+		    Extra data
 	**/
 	public function trigger(sender:Dynamic, event:Dynamic, ?data:Dynamic):Dynamic;
 }

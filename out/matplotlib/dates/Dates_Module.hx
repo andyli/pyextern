@@ -81,29 +81,29 @@ package matplotlib.dates;
 		    :class:`datetime` object is returned.
 		
 		:param tzinfos:
-		        Additional time zone names / aliases which may be present in the
-		        string. This argument maps time zone names (and optionally offsets
-		        from those time zones) to time zones. This parameter can be a
-		        dictionary with timezone aliases mapping time zone names to time
-		        zones or a function taking two parameters (``tzname`` and
-		        ``tzoffset``) and returning a time zone.
+		    Additional time zone names / aliases which may be present in the
+		    string. This argument maps time zone names (and optionally offsets
+		    from those time zones) to time zones. This parameter can be a
+		    dictionary with timezone aliases mapping time zone names to time
+		    zones or a function taking two parameters (``tzname`` and
+		    ``tzoffset``) and returning a time zone.
 		
-		        The timezones to which the names are mapped can be an integer
-		        offset from UTC in minutes or a :class:`tzinfo` object.
+		    The timezones to which the names are mapped can be an integer
+		    offset from UTC in seconds or a :class:`tzinfo` object.
 		
-		        .. doctest::
-		           :options: +NORMALIZE_WHITESPACE
+		    .. doctest::
+		       :options: +NORMALIZE_WHITESPACE
 		
-		            >>> from dateutil.parser import parse
-		            >>> from dateutil.tz import gettz
-		            >>> tzinfos = {"BRST": -10800, "CST": gettz("America/Chicago")}
-		            >>> parse("2012-01-19 17:21:00 BRST", tzinfos=tzinfos)
-		            datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -10800))
-		            >>> parse("2012-01-19 17:21:00 CST", tzinfos=tzinfos)
-		            datetime.datetime(2012, 1, 19, 17, 21,
-		                              tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))
+		        >>> from dateutil.parser import parse
+		        >>> from dateutil.tz import gettz
+		        >>> tzinfos = {"BRST": -7200, "CST": gettz("America/Chicago")}
+		        >>> parse("2012-01-19 17:21:00 BRST", tzinfos=tzinfos)
+		        datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -7200))
+		        >>> parse("2012-01-19 17:21:00 CST", tzinfos=tzinfos)
+		        datetime.datetime(2012, 1, 19, 17, 21,
+		                          tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))
 		
-		        This parameter is ignored if ``ignoretz`` is set.
+		    This parameter is ignored if ``ignoretz`` is set.
 		
 		:param dayfirst:
 		    Whether to interpret the first value in an ambiguous 3-integer date
@@ -152,29 +152,40 @@ package matplotlib.dates;
 	**/
 	static public function _dateutil_parser_parse_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Convert `numpy.datetime64` or an ndarray of those types to Gregorian
+		date as UTC float.  Roundoff is via float64 precision.  Practically:
+		microseconds for dates between 290301 BC, 294241 AD, milliseconds for
+		larger dates (see `numpy.datetime64`).  Nanoseconds aren't possible
+		because we do times compared to ``0001-01-01T00:00:00`` (plus one day).
+	**/
+	static public function _dt64_to_ordinalf(d:Dynamic):Dynamic;
+	/**
 		Convert Gregorian float of the date, preserving hours, minutes,
-		seconds and microseconds.  Return value is a :class:`datetime`.
+		seconds and microseconds.  Return value is a `.datetime`.
 		
-		The input date `x` is a float in ordinal days at UTC, and the output will
-		be the specified :class:`datetime` object corresponding to that time in
-		timezone `tz`, or if `tz` is `None`, in the timezone specified in
-		`rcParams['timezone']`.
+		The input date *x* is a float in ordinal days at UTC, and the output will
+		be the specified `.datetime` object corresponding to that time in
+		timezone *tz*, or if *tz* is ``None``, in the timezone specified in
+		:rc:`timezone`.
 	**/
 	static public function _from_ordinalf(x:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Convert Gregorian float of the date, preserving hours, minutes,
-		seconds and microseconds.  Return value is a :class:`datetime`.
+		seconds and microseconds.  Return value is a `.datetime`.
 		
-		The input date `x` is a float in ordinal days at UTC, and the output will
-		be the specified :class:`datetime` object corresponding to that time in
-		timezone `tz`, or if `tz` is `None`, in the timezone specified in
-		`rcParams['timezone']`.
+		The input date *x* is a float in ordinal days at UTC, and the output will
+		be the specified `.datetime` object corresponding to that time in
+		timezone *tz*, or if *tz* is ``None``, in the timezone specified in
+		:rc:`timezone`.
 	**/
 	static public function _from_ordinalf_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Retrieve the preferred timeszone from the rcParams dictionary.
 	**/
 	static public function _get_rc_timezone():Dynamic;
+	static public var _log : Dynamic;
+	static public function _ordinalf_to_timedelta(x:Dynamic):Dynamic;
+	static public function _ordinalf_to_timedelta_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert :mod:`datetime` or :mod:`date` to the Gregorian date as UTC float
 		days, preserving hours, minutes, seconds and microseconds.  Return value
@@ -187,16 +198,24 @@ package matplotlib.dates;
 		is a :func:`float`.
 	**/
 	static public function _to_ordinalf_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
-		*d* is either a :class:`datetime` instance or a sequence of datetimes.
+		Convert datetime objects to Matplotlib dates.
 		
-		Return value is a floating point number (or sequence of floats)
-		which gives the number of days (fraction part represents hours,
-		minutes, seconds) since 0001-01-01 00:00:00 UTC, *plus* *one*.
-		The addition of one here is a historical artifact.  Also, note
-		that the Gregorian calendar is assumed; this is not universal
-		practice.  For details, see the module docstring.
+		Parameters
+		----------
+		d : `datetime.datetime` or `numpy.datetime64` or sequences of these
+		
+		Returns
+		-------
+		float or sequence of floats
+		    Number of days (fraction part represents hours, minutes, seconds, ms)
+		    since 0001-01-01 00:00:00 UTC, plus one.
+		
+		Notes
+		-----
+		The addition of one here is a historical artifact. Also, note that the
+		Gregorian calendar is assumed; this is not universal practice.
+		For details see the module docstring.
 	**/
 	static public function date2num(d:Dynamic):Dynamic;
 	/**
@@ -213,15 +232,27 @@ package matplotlib.dates;
 		d : string or sequence of strings
 		    The dates to convert.
 		
-		default : datetime instance
-		    The default date to use when fields are missing in `d`.
+		default : datetime instance, optional
+		    The default date to use when fields are missing in *d*.
 	**/
 	static public function datestr2num(d:Dynamic, ?_default:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
-		Return a date range as float Gregorian ordinals.  *dstart* and
-		*dend* are :class:`datetime` instances.  *delta* is a
-		:class:`datetime.timedelta` instance.
+		Return a sequence of equally spaced Matplotlib dates.
+		
+		The dates start at *dstart* and reach up to, but not including *dend*.
+		They are spaced by *delta*.
+		
+		Parameters
+		----------
+		dstart, dend : `~datetime.datetime`
+		    The date limits.
+		delta : `datetime.timedelta`
+		    Spacing of the dates.
+		
+		Returns
+		-------
+		drange : `numpy.array`
+		    A list floats representing Matplotlib dates.
 	**/
 	static public function drange(dstart:Dynamic, dend:Dynamic, delta:Dynamic):Dynamic;
 	/**
@@ -234,7 +265,17 @@ package matplotlib.dates;
 	**/
 	static public function hours(h:Dynamic):Dynamic;
 	/**
-		Convert a Julian date (or sequence) to a matplotlib date (or sequence).
+		Convert a Julian date (or sequence) to a Matplotlib date (or sequence).
+		
+		Parameters
+		----------
+		j : float or sequence of floats
+		    Julian date(s)
+		
+		Returns
+		-------
+		float or sequence of floats
+		    Matplotlib date(s)
 	**/
 	static public function julian2num(j:Dynamic):Dynamic;
 	/**
@@ -247,18 +288,29 @@ package matplotlib.dates;
 	**/
 	static public function mx2num(mxdates:Dynamic):Dynamic;
 	/**
-		*x* is a float value which gives the number of days
-		(fraction part represents hours, minutes, seconds) since
-		0001-01-01 00:00:00 UTC *plus* *one*.
-		The addition of one here is a historical artifact.  Also, note
-		that the Gregorian calendar is assumed; this is not universal
-		practice.  For details, see the module docstring.
+		Convert Matplotlib dates to `~datetime.datetime` objects.
 		
-		Return value is a :class:`datetime` instance in timezone *tz* (default to
-		rcparams TZ value).
+		Parameters
+		----------
+		x : float or sequence of floats
+		    Number of days (fraction part represents hours, minutes, seconds)
+		    since 0001-01-01 00:00:00 UTC, plus one.
+		tz : string, optional
+		    Timezone of *x* (defaults to rcparams ``timezone``).
 		
-		If *x* is a sequence, a sequence of :class:`datetime` objects will
-		be returned.
+		Returns
+		-------
+		`~datetime.datetime` or sequence of `~datetime.datetime`
+		    Dates are returned in timezone *tz*.
+		
+		    If *x* is a sequence, a sequence of :class:`datetime` objects will
+		    be returned.
+		
+		Notes
+		-----
+		The addition of one here is a historical artifact. Also, note that the
+		Gregorian calendar is assumed; this is not universal practice.
+		For details, see the module docstring.
 	**/
 	static public function num2date(x:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
@@ -266,16 +318,40 @@ package matplotlib.dates;
 	**/
 	static public function num2epoch(d:Dynamic):Dynamic;
 	/**
-		Convert a matplotlib date (or sequence) to a Julian date (or sequence).
+		Convert a Matplotlib date (or sequence) to a Julian date (or sequence).
+		
+		Parameters
+		----------
+		n : float or sequence of floats
+		    Matplotlib date(s)
+		
+		Returns
+		-------
+		float or sequence of floats
+		    Julian date(s)
 	**/
 	static public function num2julian(n:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
+	/**
+		Convert number of days to a `~datetime.timedelta` object.
+		
+		If *x* is a sequence, a sequence of `~datetime.timedelta` objects will
+		be returned.
+		
+		Parameters
+		----------
+		x : float, sequence of floats
+		    Number of days. The fraction part represents hours, minutes, seconds.
+		
+		Returns
+		-------
+		`datetime.timedelta` or list[`datetime.timedelta`]
+	**/
+	static public function num2timedelta(x:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 	/**
 		Return seconds as days.
 	**/
 	static public function seconds(s:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 	/**
 		Return weeks as days.
 	**/

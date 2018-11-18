@@ -5,7 +5,7 @@ package keras.backend.tensorflow_backend;
 		Call self as a function.
 	**/
 	public function __call__(inputs:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package keras.backend.tensorflow_backend;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,9 +107,26 @@ package keras.backend.tensorflow_backend;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _call(inputs:Dynamic):Dynamic;
+	public function _legacy_call(inputs:Dynamic):Dynamic;
+	/**
+		Generates a callable that runs the graph.
+		
+		# Arguments
+		    feed_arrays: List of input tensors to be fed
+		        Numpy arrays at runtime.
+		    feed_symbols: List of input tensors to be fed
+		        symbolic tensors at runtime.
+		    symbol_vals: List of symbolic tensors to be fed to `feed_symbols`.
+		    session: Session to use to generate the callable.
+		
+		# Returns
+		    Function that runs the graph according to the above options.
+	**/
+	public function _make_callable(feed_arrays:Dynamic, feed_symbols:Dynamic, symbol_vals:Dynamic, session:Dynamic):Dynamic;
 }

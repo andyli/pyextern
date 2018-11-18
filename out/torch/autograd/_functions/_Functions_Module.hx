@@ -10,7 +10,6 @@ package torch.autograd._functions;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function maybe_view(tensor:Dynamic, size:Dynamic):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

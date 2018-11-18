@@ -119,18 +119,26 @@ package theano.tensor.nnet.conv;
 		    to: batch size, number of input channels, height and width (and
 		    possibly depth) of the image. None where undefined.
 		kernel_shape: tuple of int (symbolic or numeric) corresponding to the
-		    kernel shape. Its four (or five) elements must correspond respectively
-		    to: number of output channels, number of input channels, height and
-		    width (and possibly depth) of the kernel. None where undefined.
+		    kernel shape. For a normal convolution, its four (for 2D convolution)
+		    or five (for 3D convolution) elements must correspond respectively to :
+		    number of output channels, number of input channels, height and width
+		    (and possibly depth) of the kernel.
+		    For an unshared 2D convolution, its six channels must correspond to :
+		    number of output channels, height and width of the output, number of
+		    input channels, height and width of the kernel.
+		    None where undefined.
 		border_mode: string, int (symbolic or numeric) or tuple of int (symbolic
-		    or numeric). If it is a string, it must be 'valid', 'half' or 'full'.
-		    If it is a tuple, its two (or three) elements respectively correspond
-		    to the padding on height and width (and possibly depth) axis.
+		    or numeric) or pairs of ints. If it is a string, it must be 'valid',
+		    'half' or 'full'. If it is a tuple, its two (or three) elements respectively
+		    correspond to the padding on height and width (and possibly depth)
+		    axis. For asymmetric padding, provide a pair of ints for each dimension.
 		subsample: tuple of int (symbolic or numeric). Its two or three elements
 		    espectively correspond to the subsampling on height and width (and
 		    possibly depth) axis.
 		filter_dilation: tuple of int (symbolic or numeric). Its two or three
 		    elements correspond respectively to the dilation on height and width axis.
+		Note - The shape of the convolution output does not depend on the 'unshared'
+		    or the 'num_groups' parameters.
 		
 		Returns
 		-------
@@ -148,9 +156,11 @@ package theano.tensor.nnet.conv;
 		    given axis. None if undefined.
 		kernel_shape: int or None. Corresponds to the kernel shape on a given
 		    axis. None if undefined.
-		border_mode: string or int. If it is a string, it must be
+		border_mode: string, int or tuple of 2 ints. If it is a string, it must be
 		    'valid', 'half' or 'full'. If it is an integer, it must correspond to
-		    the padding on the considered axis.
+		    the padding on the considered axis. If it is a tuple, its two elements
+		    must correspond to the asymmetric padding (e.g., left and right) on
+		    the considered axis.
 		subsample: int. It must correspond to the subsampling on the
 		    considered axis.
 		dilation: int. It must correspond to the dilation on the

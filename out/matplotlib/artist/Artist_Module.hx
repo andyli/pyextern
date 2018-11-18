@@ -9,18 +9,15 @@ package matplotlib.artist;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _get_axes_msg : Dynamic;
 	static public function _stale_axes_callback(self:Dynamic, val:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
 		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependant renderer attributes or making
+		are useful for changing artist-dependent renderer attributes or making
 		other setup function calls, such as starting and flushing a mixed-mode
 		renderer.
 	**/
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Return the value of object's property.  *property* is an optional string
 		for the property you want to return
@@ -77,7 +74,26 @@ package matplotlib.artist;
 		  linewidth or lw = 2
 	**/
 	static public function getp(obj:Dynamic, ?property:Dynamic):Dynamic;
-	static public function kwdoc(a:Dynamic):Dynamic;
+	/**
+		Inspect an `~matplotlib.artist.Artist` class and return
+		information about its settable properties and their current values.
+		
+		It use the class `.ArtistInspector`.
+		
+		Parameters
+		----------
+		artist : `~matplotlib.artist.Artist` or an iterable of `Artist`\s
+		
+		Returns
+		-------
+		string
+		    Returns a string with a list or rst table with the settable properties
+		    of the *artist*. The formating depends on the value of
+		    :rc:`docstring.hardcopy`. False result in a list that is intended for
+		    easy reading as a docstring and True result in a rst table intended
+		    for rendering the documentation with sphinx.
+	**/
+	static public function kwdoc(artist:Dynamic):Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.
 		
@@ -101,7 +117,6 @@ package matplotlib.artist;
 		Point(x=100, y=22)
 	**/
 	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic, ?module:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	/**
 		Set a property on an artist object.
@@ -114,8 +129,8 @@ package matplotlib.artist;
 		  >>> line, = plot([1,2,3])
 		  >>> setp(line, linestyle='--')
 		
-		If you want to know the valid types of arguments, you can provide the
-		name of the property you want to set without a value::
+		If you want to know the valid types of arguments, you can provide
+		the name of the property you want to set without a value::
 		
 		  >>> setp(line, 'linestyle')
 		      linestyle: [ '-' | '--' | '-.' | ':' | 'steps' | 'None' ]
@@ -126,12 +141,18 @@ package matplotlib.artist;
 		  >>> setp(line)
 		      ... long output listing omitted
 		
-		:func:`setp` operates on a single instance or a list of instances.
-		If you are in query mode introspecting the possible values, only
-		the first instance in the sequence is used.  When actually setting
-		values, all the instances will be set.  e.g., suppose you have a
-		list of two lines, the following will make both lines thicker and
-		red::
+		You may specify another output file to `setp` if `sys.stdout` is not
+		acceptable for some reason using the `file` keyword-only argument::
+		
+		  >>> with fopen('output.log') as f:
+		  >>>     setp(line, file=f)
+		
+		:func:`setp` operates on a single instance or a iterable of
+		instances. If you are in query mode introspecting the possible
+		values, only the first instance in the sequence is used. When
+		actually setting values, all the instances will be set.  e.g.,
+		suppose you have a list of two lines, the following will make both
+		lines thicker and red::
 		
 		  >>> x = arange(0,1.0,0.01)
 		  >>> y1 = sin(2*pi*x)
@@ -146,5 +167,14 @@ package matplotlib.artist;
 		  >>> setp(lines, linewidth=2, color='r')        # python style
 	**/
 	static public function setp(obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var unicode_literals : Dynamic;
+	/**
+		Decorator factory to apply update_wrapper() to a wrapper function
+		
+		Returns a decorator that invokes update_wrapper() with the decorated
+		function as the wrapper argument and the arguments to wraps() as the
+		remaining arguments. Default arguments are as for update_wrapper().
+		This is a convenience function to simplify applying partial() to
+		update_wrapper().
+	**/
+	static public function wraps(wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
 }

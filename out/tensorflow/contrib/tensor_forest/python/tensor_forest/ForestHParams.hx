@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.tensor_forest.python.tensor_forest;
 @:pythonImport("tensorflow.contrib.tensor_forest.python.tensor_forest", "ForestHParams") extern class ForestHParams {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?min_split_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?dominate_method:Dynamic, ?dominate_fraction:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?dominate_method:Dynamic, ?dominate_fraction:Dynamic, ?model_name:Dynamic, ?split_finish_name:Dynamic, ?split_pruning_name:Dynamic, ?prune_every_samples:Dynamic, ?early_finish_check_every_samples:Dynamic, ?collate_examples:Dynamic, ?checkpoint_stats:Dynamic, ?use_running_stats_method:Dynamic, ?initialize_average_splits:Dynamic, ?inference_tree_paths:Dynamic, ?param_file:Dynamic, ?split_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?min_split_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?dominate_method:Dynamic, ?dominate_fraction:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(?num_trees:Dynamic, ?max_nodes:Dynamic, ?bagging_fraction:Dynamic, ?num_splits_to_consider:Dynamic, ?feature_bagging_fraction:Dynamic, ?max_fertile_nodes:Dynamic, ?split_after_samples:Dynamic, ?valid_leaf_threshold:Dynamic, ?dominate_method:Dynamic, ?dominate_fraction:Dynamic, ?model_name:Dynamic, ?split_finish_name:Dynamic, ?split_pruning_name:Dynamic, ?prune_every_samples:Dynamic, ?early_finish_check_every_samples:Dynamic, ?collate_examples:Dynamic, ?checkpoint_stats:Dynamic, ?use_running_stats_method:Dynamic, ?initialize_average_splits:Dynamic, ?inference_tree_paths:Dynamic, ?param_file:Dynamic, ?split_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package tensorflow.contrib.tensor_forest.python.tensor_forest;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

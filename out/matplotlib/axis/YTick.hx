@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.axis;
 @:pythonImport("matplotlib.axis", "YTick") extern class YTick {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -44,20 +44,20 @@ package matplotlib.axis;
 		size is the tick size in points
 	**/
 	@:native("__init__")
-	public function ___init__(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic):Dynamic;
+	public function ___init__(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic, ?labelrotation:Dynamic, ?grid_color:Dynamic, ?grid_linestyle:Dynamic, ?grid_linewidth:Dynamic, ?grid_alpha:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		bbox is the Bound2D bounding box in display coords of the Axes
 		loc is the tick location in data coords
 		size is the tick size in points
 	**/
-	public function new(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic):Void;
+	public function new(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic, ?labelrotation:Dynamic, ?grid_color:Dynamic, ?grid_linestyle:Dynamic, ?grid_linewidth:Dynamic, ?grid_alpha:Dynamic, ?kw:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,7 +109,7 @@ package matplotlib.axis;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -143,6 +143,7 @@ package matplotlib.axis;
 		Set the clip properly for the gc
 	**/
 	public function _set_gc_clip(gc:Dynamic):Dynamic;
+	public function _set_labelrotation(labelrotation:Dynamic):Dynamic;
 	/**
 		Adds a callback function that will be called whenever one of
 		the :class:`Artist`'s properties changes.
@@ -178,7 +179,10 @@ package matplotlib.axis;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Derived classes drawing method
+	**/
+	public function draw(renderer:Dynamic):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -203,7 +207,7 @@ package matplotlib.axis;
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		return filter function to be used for agg filter
+		Return filter function to be used for agg filter.
 	**/
 	public function get_agg_filter():Dynamic;
 	/**
@@ -215,14 +219,6 @@ package matplotlib.axis;
 		Return the artist's animated state
 	**/
 	public function get_animated():Dynamic;
-	/**
-		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-	**/
-	public function get_axes():Dynamic;
 	/**
 		Return a list of the child :class:`Artist`s this
 		:class:`Artist` contains.
@@ -249,14 +245,22 @@ package matplotlib.axis;
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
-		Return the :class:`~matplotlib.figure.Figure` instance the
-		artist belongs to.
+		Return the `.Figure` instance the artist belongs to.
 	**/
 	public function get_figure():Dynamic;
 	/**
-		Returns the group id
+		Returns the group id.
 	**/
 	public function get_gid():Dynamic;
+	/**
+		Return boolean flag, ``True`` if artist is included in layout
+		calculations.
+		
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+	**/
+	public function get_in_layout():Dynamic;
 	/**
 		Get the label used for this artist in the legend.
 	**/
@@ -272,11 +276,11 @@ package matplotlib.axis;
 	public function get_pad_pixels():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist
+		Return the picker object used by this artist.
 	**/
 	public function get_picker():Dynamic;
 	/**
-		return True if the artist is to be rasterized
+		Return whether the artist is to be rasterized.
 	**/
 	public function get_rasterized():Dynamic;
 	/**
@@ -286,17 +290,17 @@ package matplotlib.axis;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -318,6 +322,21 @@ package matplotlib.axis;
 	public function get_tick_padding():Dynamic;
 	public function get_tickdir():Dynamic;
 	/**
+		Like `Artist.get_window_extent`, but includes any clipping.
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` instance
+		    renderer that will be used to draw the figures (i.e.
+		    ``fig.canvas.get_renderer()``)
+		
+		Returns
+		-------
+		bbox : `.BboxBase`
+		    containing the bounding box (in figure pixel co-ordinates).
+	**/
+	public function get_tightbbox(renderer:Dynamic):Dynamic;
+	/**
 		Return the :class:`~matplotlib.transforms.Transform`
 		instance used by this artist.
 	**/
@@ -329,7 +348,7 @@ package matplotlib.axis;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url
+		Returns the url.
 	**/
 	public function get_url():Dynamic;
 	/**
@@ -356,7 +375,7 @@ package matplotlib.axis;
 	**/
 	public function get_window_extent(renderer:Dynamic):Dynamic;
 	/**
-		Return the :class:`Artist`'s zorder.
+		Return the artist's zorder.
 	**/
 	public function get_zorder():Dynamic;
 	/**
@@ -364,12 +383,17 @@ package matplotlib.axis;
 	**/
 	public function have_units():Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
-		Returns True if the artist is assigned to a
-		:class:`~matplotlib.figure.Figure`.
+		.. deprecated:: 2.2
+		    artist.figure is not None
+		
+		Returns whether the artist is assigned to a `.Figure`.
 	**/
 	public function is_figure_set():Dynamic;
 	/**
@@ -427,36 +451,40 @@ package matplotlib.axis;
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set agg_filter fuction.
+		Set the agg filter.
+		
+		Parameters
+		----------
+		filter_func : callable
+		    A filter function, which takes a (m, n, 3) float array and a dpi
+		    value, and returns a (m, n, 3) array.
+		
+		    .. ACCEPTS: a filter function, which takes a (m, n, 3) float array
+		        and a dpi value, and returns a (m, n, 3) array
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Set the alpha value used for blending - not supported on
-		all backends.
+		Set the alpha value used for blending - not supported on all backends.
 		
-		ACCEPTS: float (0.0 transparent through 1.0 opaque)
+		Parameters
+		----------
+		alpha : float
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
 		Set the artist's animation state.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.axes.Axes` instance in which the
-		artist resides, if any.
+		Set the artist's clip `.Bbox`.
 		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-		
-		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
-	**/
-	public function set_axes(axes:Dynamic):Dynamic;
-	/**
-		Set the artist's clip :class:`~matplotlib.transforms.Bbox`.
-		
-		ACCEPTS: a :class:`matplotlib.transforms.Bbox` instance
+		Parameters
+		----------
+		clipbox : `.Bbox`
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
@@ -465,28 +493,26 @@ package matplotlib.axis;
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_clip_on(b:Dynamic):Dynamic;
 	/**
 		Set the artist's clip path, which may be:
 		
-		  * a :class:`~matplotlib.patches.Patch` (or subclass) instance
+		- a :class:`~matplotlib.patches.Patch` (or subclass) instance; or
+		- a :class:`~matplotlib.path.Path` instance, in which case a
+		  :class:`~matplotlib.transforms.Transform` instance, which will be
+		  applied to the path before using it for clipping, must be provided;
+		  or
+		- ``None``, to remove a previously set clipping path.
 		
-		  * a :class:`~matplotlib.path.Path` instance, in which case
-		     an optional :class:`~matplotlib.transforms.Transform`
-		     instance may be provided, which will be applied to the
-		     path before using it for clipping.
+		For efficiency, if the path happens to be an axis-aligned rectangle,
+		this method will set the clipping box to the corresponding rectangle
+		and set the clipping path to ``None``.
 		
-		  * *None*, to remove the clipping path
-		
-		For efficiency, if the path happens to be an axis-aligned
-		rectangle, this method will set the clipping box to the
-		corresponding rectangle and set the clipping path to *None*.
-		
-		ACCEPTS: [ (:class:`~matplotlib.path.Path`,
-		:class:`~matplotlib.transforms.Transform`) |
-		:class:`~matplotlib.patches.Patch` | None ]
+		ACCEPTS: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 	**/
 	public function set_clip_path(clippath:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
@@ -500,49 +526,76 @@ package matplotlib.axis;
 		and *props* is a dictionary of properties you want returned
 		with the contains test.
 		
-		ACCEPTS: a callable function
+		Parameters
+		----------
+		picker : callable
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.figure.Figure` instance the artist
-		belongs to.
+		Set the `.Figure` instance the artist belongs to.
 		
-		ACCEPTS: a :class:`matplotlib.figure.Figure` instance
+		Parameters
+		----------
+		fig : `.Figure`
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist
+		Sets the (group) id for the artist.
 		
-		ACCEPTS: an id string
+		Parameters
+		----------
+		gid : str
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
 	/**
-		Set the text of ticklabel
+		Set if artist is to be included in layout calculations,
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
 		
-		ACCEPTS: str
+		Parameters
+		----------
+		in_layout : bool
+	**/
+	public function set_in_layout(in_layout:Dynamic):Dynamic;
+	/**
+		Set the label1 text.
+		
+		Parameters
+		----------
+		s : str
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		Set the text of ticklabel
+		Set the label1 text.
 		
-		ACCEPTS: str
+		Parameters
+		----------
+		s : str
 	**/
 	public function set_label1(s:Dynamic):Dynamic;
 	/**
-		Set the text of ticklabel2
+		Set the label2 text.
 		
-		ACCEPTS: str
+		Parameters
+		----------
+		s : str
 	**/
 	public function set_label2(s:Dynamic):Dynamic;
 	/**
 		Set the tick label pad in points
 		
-		ACCEPTS: float
+		Parameters
+		----------
+		val : float
 	**/
 	public function set_pad(val:Dynamic):Dynamic;
 	/**
-		set path_effects, which should be a list of instances of
-		matplotlib.patheffect._Base class or its derivatives.
+		Set the path effects.
+		
+		Parameters
+		----------
+		path_effects : `.AbstractPathEffect`
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
@@ -574,15 +627,19 @@ package matplotlib.axis;
 		    artist, return *hit=True* and props is a dictionary of
 		    properties you want added to the PickEvent attributes.
 		
-		ACCEPTS: [None|float|boolean|callable]
+		Parameters
+		----------
+		picker : None or bool or float or callable
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
 		Force rasterized (bitmap) drawing in vector backend output.
 		
-		Defaults to None, which implies the backend's default behavior
+		Defaults to None, which implies the backend's default behavior.
 		
-		ACCEPTS: [True | False | None]
+		Parameters
+		----------
+		rasterized : bool or None
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
@@ -603,6 +660,8 @@ package matplotlib.axis;
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
 		    expanded (default 16.0)
+		
+		    .. ACCEPTS: (scale: float, length: float, randomness: float)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
@@ -616,32 +675,43 @@ package matplotlib.axis;
 		    segments, round to the nearest pixel center
 		
 		Only supported by the Agg and MacOSX backends.
+		
+		Parameters
+		----------
+		snap : bool or None
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.transforms.Transform` instance
-		used by this artist.
+		Set the artist transform.
 		
-		ACCEPTS: :class:`~matplotlib.transforms.Transform` instance
+		Parameters
+		----------
+		t : `.Transform`
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist
+		Sets the url for the artist.
 		
-		ACCEPTS: a url string
+		Parameters
+		----------
+		url : str
 	**/
 	public function set_url(url:Dynamic):Dynamic;
 	/**
-		Set the artist's visiblity.
+		Set the artist's visibility.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_visible(b:Dynamic):Dynamic;
 	/**
 		Set the zorder for the artist.  Artists with lower zorder
 		values are drawn first.
 		
-		ACCEPTS: any number
+		Parameters
+		----------
+		level : float
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
@@ -669,8 +739,7 @@ package matplotlib.axis;
 	**/
 	public var sticky_edges : Dynamic;
 	/**
-		Update the properties of this :class:`Artist` from the
-		dictionary *prop*.
+		Update this artist's properties from the dictionary *prop*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**
@@ -678,7 +747,7 @@ package matplotlib.axis;
 	**/
 	public function update_from(other:Dynamic):Dynamic;
 	/**
-		Set the location of tick in data coords with scalar loc
+		Set the location of tick in data coords with scalar *loc*
 	**/
 	public function update_position(loc:Dynamic):Dynamic;
 	static public var zorder : Dynamic;

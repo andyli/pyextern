@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.tensor.signal.pool;
 @:pythonImport("theano.tensor.signal.pool") extern class Pool_Module {
+	static public function PoolingMode_t(?name:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,6 +11,7 @@ package theano.tensor.signal.pool;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Takes as input a 4-D tensor. It sets all non maximum values
@@ -46,7 +48,8 @@ package theano.tensor.signal.pool;
 		stride : tuple of two ints or theano vector of ints of size 2.
 		    Stride size, which is the number of shifts over rows/cols to get the
 		    next pool region. If stride is None, it is considered equal to ws
-		    (no overlap on pooling regions).
+		    (no overlap on pooling regions), eg: stride=(1,1) will shifts over
+		    one row and one col for every iteration.
 		pad : tuple of two ints or theano vector of ints of size 2.
 		    (pad_h, pad_w), pad zeros to extend beyond four borders of the
 		    images, pad_h is the size of the top and bottom margins, and

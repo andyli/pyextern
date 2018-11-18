@@ -2,7 +2,7 @@
 package matplotlib.markers;
 @:pythonImport("matplotlib.markers", "MarkerStyle") extern class MarkerStyle {
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -30,7 +30,6 @@ package matplotlib.markers;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
-	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -44,7 +43,7 @@ package matplotlib.markers;
 		
 		Attributes
 		----------
-		markers : list of known markes
+		markers : list of known marks
 		
 		fillstyles : list of known fillstyles
 		
@@ -65,7 +64,7 @@ package matplotlib.markers;
 		
 		Attributes
 		----------
-		markers : list of known markes
+		markers : list of known marks
 		
 		fillstyles : list of known fillstyles
 		
@@ -86,7 +85,7 @@ package matplotlib.markers;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,7 +119,6 @@ package matplotlib.markers;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
-	public function __setstate__(statedict:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -138,7 +136,7 @@ package matplotlib.markers;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

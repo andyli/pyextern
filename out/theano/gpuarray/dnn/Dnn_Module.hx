@@ -1,7 +1,11 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.dnn;
 @:pythonImport("theano.gpuarray.dnn") extern class Dnn_Module {
-	static public var SUPPORTED_DNN_CONV_ALGO_BWD_FILTER : Dynamic;
+	static public function CUDNNDataType(name:Dynamic, ?freefunc:Dynamic):Dynamic;
+	static public var DNN_CONV_ALGO_CHOOSE_ONCE : Dynamic;
+	static public var DNN_CONV_ALGO_CHOOSE_TIME : Dynamic;
+	static public var SUPPORTED_DNN_CONV_ALGO_RUNTIME : Dynamic;
+	static public var WIN32_CUDNN_NAMES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -12,8 +16,12 @@ package theano.gpuarray.dnn;
 	static public var __spec__ : Dynamic;
 	static public function _dnn_check_compile():Dynamic;
 	static public function _dnn_check_version():Dynamic;
+	static public function _dnn_conv(img:Dynamic, kerns:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?out:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?algo:Dynamic, ?precision:Dynamic, ?num_groups:Dynamic):Dynamic;
+	static public function _dnn_gradinput(kerns:Dynamic, topgrad:Dynamic, img_shp:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?out:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?algo:Dynamic, ?precision:Dynamic, ?num_groups:Dynamic):Dynamic;
+	static public function _dnn_gradweight(img:Dynamic, topgrad:Dynamic, kerns_shp:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?out:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?algo:Dynamic, ?precision:Dynamic, ?num_groups:Dynamic):Dynamic;
 	static public function _dnn_lib():Dynamic;
 	static public function _get_param_size(desc:Dynamic, input_size:Dynamic, dtype:Dynamic, context_name:Dynamic):Dynamic;
+	static public function _load_lib(name:Dynamic):Dynamic;
 	static public function _make_dropout_desc(dropout:Dynamic, seed:Dynamic, context_name:Dynamic):Dynamic;
 	static public function _make_handle(ctx:Dynamic):Dynamic;
 	static public function _make_rnn_desc(hidden_size:Dynamic, num_layers:Dynamic, ddesc:Dynamic, rnn_mode:Dynamic, input_mode:Dynamic, direction_mode:Dynamic, dtype:Dynamic, context_name:Dynamic):Dynamic;
@@ -40,7 +48,7 @@ package theano.gpuarray.dnn;
 		
 		    maker(node, *inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		The `*inputs` parameters contains the new inputs for your op.  You
@@ -138,8 +146,11 @@ package theano.gpuarray.dnn;
 		dimension at run time.
 	**/
 	static public function assert_conv_shape(shape:Dynamic):Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public var config : Dynamic;
 	static public function constant(x:Dynamic, ?name:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function cpu_contiguous(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var cudnn : Dynamic;
 	static public var division : Dynamic;
 	static public function dnn_available(context_name:Dynamic):Dynamic;
 	/**
@@ -281,16 +292,20 @@ package theano.gpuarray.dnn;
 		    could be directly specified by an integer or a pair of integers.
 		subsample
 		    Perform subsampling of the output (default: (1, 1)).
+		dilation
+		    Filter dilation factor. A dilation factor of d is equivalent to a
+		    convolution with d - 1 zeros inserted between neighboring filter
+		    values.
 		conv_mode
 		    Perform convolution (kernels flipped) or cross-correlation.
 		    One of 'conv', 'cross' (default: 'conv').
 		direction_hint
 		    Used by graph optimizers to change algorithm choice.
 		    By default, GpuDnnConv will be used to carry out the convolution.
-		    If border_mode is 'valid', subsample is (1, 1) and direction_hint is
-		    'bprop weights', it will use GpuDnnConvGradW.
-		    If border_mode is 'full', subsample is (1, 1) and direction_hint is
-		    *not* 'forward!', it will use GpuDnnConvGradI.
+		    If border_mode is 'valid', subsample is (1, 1), dilation is (1, 1), and
+		    direction_hint is 'bprop weights', it will use GpuDnnConvGradW.
+		    If border_mode is 'full', subsample is (1, 1), dilation is (1, 1), and
+		    direction_hint is *not* 'forward!', it will use GpuDnnConvGradI.
 		    This parameter is used internally by graph optimizers and may be
 		    removed at any time without a deprecation period. You have been warned.
 		algo : {'none', 'small', 'large', 'fft', 'guess_once', 'guess_on_shape_change', 'time_once', 'time_on_shape_change'}
@@ -302,13 +317,16 @@ package theano.gpuarray.dnn;
 		    should be done. Possible values are 'as_input', 'float16', 'float32'
 		    and 'float64'. Default is the value of
 		    :attr:`config.dnn.conv.precision`.
+		num_groups :
+		    Divides the image, kernel and output tensors into num_groups
+		    separate groups. Each which carry out convolutions separately
 		
 		
 		.. warning:: The cuDNN library only works with GPUs that have a compute
-		    capability of 3.0 or higer. This means that older GPUs will not
+		    capability of 3.0 or higher. This means that older GPUs will not
 		    work with this Op.
 	**/
-	static public function dnn_conv(img:Dynamic, kerns:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?conv_mode:Dynamic, ?direction_hint:Dynamic, ?workmem:Dynamic, ?algo:Dynamic, ?precision:Dynamic):Dynamic;
+	static public function dnn_conv(img:Dynamic, kerns:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?direction_hint:Dynamic, ?workmem:Dynamic, ?algo:Dynamic, ?precision:Dynamic, ?num_groups:Dynamic):Dynamic;
 	/**
 		GPU convolution using cuDNN from NVIDIA.
 		
@@ -325,17 +343,23 @@ package theano.gpuarray.dnn;
 		    One of 'valid', 'full', 'half'; additionally, the padding size
 		    could be directly specified by an integer or a pair of integers.
 		subsample
-		    Perform subsampling of the output (default: (1, 1)).
+		    Perform subsampling of the output (default: (1, 1, 1)).
+		dilation
+		    Filter dilation factor. A dilation factor of d is equivalent to a
+		    convolution with d - 1 zeros inserted between neighboring filter
+		    values.
 		conv_mode
 		    Perform convolution (kernels flipped) or cross-correlation.
 		    One of 'conv', 'cross' (default: 'conv').
 		direction_hint
 		    Used by graph optimizers to change algorithm choice.
 		    By default, GpuDnnConv will be used to carry out the convolution.
-		    If border_mode is 'valid', subsample is (1, 1) and direction_hint is
-		    'bprop weights', it will use GpuDnnConvGradW.
-		    If border_mode is 'full', subsample is (1, 1) and direction_hint is
-		    *not* 'forward!', it will use GpuDnnConvGradI.
+		    If border_mode is 'valid', subsample is (1, 1, 1), dilation is
+		    (1, 1, 1), and direction_hint is 'bprop weights', it will use
+		    GpuDnnConvGradW.
+		    If border_mode is 'full', subsample is (1, 1, 1), dilation is
+		    (1, 1, 1), and direction_hint is *not* 'forward!', it will use
+		    GpuDnnConvGradI.
 		    This parameter is used internally by graph optimizers and may be
 		    removed at any time without a deprecation period. You have been warned.
 		algo : convolution implementation to use. Only 'none' is implemented
@@ -345,29 +369,32 @@ package theano.gpuarray.dnn;
 		    should be done. Possible values are 'as_input', 'float16', 'float32'
 		    and 'float64'. Default is the value of
 		    :attr:`config.dnn.conv.precision`.
+		num_groups :
+		    Divides the image, kernel and output tensors into num_groups
+		    separate groups. Each which carry out convolutions separately
 		
 		
 		.. warning:: The cuDNN library only works with GPUs that have a compute
-		    capability of 3.0 or higer. This means that older GPUs will not
+		    capability of 3.0 or higher. This means that older GPUs will not
 		    work with this Op.
 	**/
-	static public function dnn_conv3d(img:Dynamic, kerns:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?conv_mode:Dynamic, ?direction_hint:Dynamic, ?algo:Dynamic, ?precision:Dynamic):Dynamic;
+	static public function dnn_conv3d(img:Dynamic, kerns:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?direction_hint:Dynamic, ?algo:Dynamic, ?precision:Dynamic, ?num_groups:Dynamic):Dynamic;
 	/**
 		TODO: document this
 	**/
-	static public function dnn_gradinput(kerns:Dynamic, topgrad:Dynamic, img_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic):Dynamic;
+	static public function dnn_gradinput(kerns:Dynamic, topgrad:Dynamic, img_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic, ?algo:Dynamic, ?num_groups:Dynamic):Dynamic;
 	/**
 		3d version of `dnn_gradinput`.
 	**/
-	static public function dnn_gradinput3d(kerns:Dynamic, topgrad:Dynamic, img_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic):Dynamic;
+	static public function dnn_gradinput3d(kerns:Dynamic, topgrad:Dynamic, img_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic, ?algo:Dynamic, ?num_groups:Dynamic):Dynamic;
 	/**
 		TODO: document this
 	**/
-	static public function dnn_gradweight(img:Dynamic, topgrad:Dynamic, kerns_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic):Dynamic;
+	static public function dnn_gradweight(img:Dynamic, topgrad:Dynamic, kerns_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic, ?algo:Dynamic, ?num_groups:Dynamic):Dynamic;
 	/**
 		3d version of dnn_gradweight
 	**/
-	static public function dnn_gradweight3d(img:Dynamic, topgrad:Dynamic, kerns_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic):Dynamic;
+	static public function dnn_gradweight3d(img:Dynamic, topgrad:Dynamic, kerns_shp:Dynamic, ?border_mode:Dynamic, ?subsample:Dynamic, ?dilation:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic, ?algo:Dynamic, ?num_groups:Dynamic):Dynamic;
 	/**
 		GPU pooling using cuDNN from NVIDIA.
 		
@@ -384,14 +411,15 @@ package theano.gpuarray.dnn;
 		    Subsampling window size.  Should have 2 or 3 elements.
 		stride : tuple
 		    Subsampling stride (default: (1, 1) or (1, 1, 1)).
-		mode : {'max', 'average_inc_pad', 'average_exc_pad', 'sum'}
+		mode : {'max', 'average_inc_pad', 'average_exc_pad', 'sum', 'max_deterministic'}
+		    **NB**: 'max_deterministic' is supported since cuDNN v6.
 		pad : tuple
 		    (padX, padY) or (padX, padY, padZ)
 		    default: (0, 0) or (0, 0, 0)
 		
 		
 		.. warning:: The cuDNN library only works with GPU that have a compute
-		    capability of 3.0 or higer.  This means that older GPU will not
+		    capability of 3.0 or higher.  This means that older GPU will not
 		    work with this Op.
 		
 		Notes
@@ -400,6 +428,44 @@ package theano.gpuarray.dnn;
 	**/
 	static public function dnn_pool(img:Dynamic, ws:Dynamic, ?stride:Dynamic, ?mode:Dynamic, ?pad:Dynamic):Dynamic;
 	static public function dnn_present():Dynamic;
+	/**
+		GPU spatial transformer using cuDNN from NVIDIA.
+		
+		Parameters
+		----------
+		img : tensor
+		    Images to which the transformations will be applied. The implementation
+		    assumes the tensor is in NCHW format, where N is the number of images,
+		    C is the number of color channels, H is the height of the inputs, and
+		    W is width of the inputs.
+		theta : tensor
+		    Affine transformation tensor containing one affine transformation
+		    matrix per image. ``theta`` is usually generated by the localization
+		    network.
+		scale_height: float
+		    A float specifying the scaling factor for the height of the output
+		    image. A value of 1 will keep the original height of the input. Values
+		    larger than 1 will upsample the input. Values below 1 will downsample
+		    the input.
+		scale_width: float
+		    A float specifying the scaling factor for the width of the output
+		    image. A value of 1 will keep the original width of the input. Values
+		    larger than 1 will upsample the input. Values below 1 will downsample
+		    the input.
+		
+		Returns
+		-------
+		out : tensor
+		    Transformed images with width and height properly scaled.
+		
+		Notes
+		-----
+		Currently, cuDNN only supports 2D transformations with 2x3 affine
+		transformation matrices.
+		
+		Bilinear interpolation is the only grid sampler method available.
+	**/
+	static public function dnn_spatialtf(img:Dynamic, theta:Dynamic, ?scale_width:Dynamic, ?scale_height:Dynamic):Dynamic;
 	static public function dropout(x:Dynamic, ?dropout:Dynamic, ?seed:Dynamic):Dynamic;
 	static public function dropoutdesc_type(?name:Dynamic):Dynamic;
 	static public function empty_like(_var:Dynamic):Dynamic;
@@ -427,18 +493,26 @@ package theano.gpuarray.dnn;
 		    to: batch size, number of input channels, height and width (and
 		    possibly depth) of the image. None where undefined.
 		kernel_shape: tuple of int (symbolic or numeric) corresponding to the
-		    kernel shape. Its four (or five) elements must correspond respectively
-		    to: number of output channels, number of input channels, height and
-		    width (and possibly depth) of the kernel. None where undefined.
+		    kernel shape. For a normal convolution, its four (for 2D convolution)
+		    or five (for 3D convolution) elements must correspond respectively to :
+		    number of output channels, number of input channels, height and width
+		    (and possibly depth) of the kernel.
+		    For an unshared 2D convolution, its six channels must correspond to :
+		    number of output channels, height and width of the output, number of
+		    input channels, height and width of the kernel.
+		    None where undefined.
 		border_mode: string, int (symbolic or numeric) or tuple of int (symbolic
-		    or numeric). If it is a string, it must be 'valid', 'half' or 'full'.
-		    If it is a tuple, its two (or three) elements respectively correspond
-		    to the padding on height and width (and possibly depth) axis.
+		    or numeric) or pairs of ints. If it is a string, it must be 'valid',
+		    'half' or 'full'. If it is a tuple, its two (or three) elements respectively
+		    correspond to the padding on height and width (and possibly depth)
+		    axis. For asymmetric padding, provide a pair of ints for each dimension.
 		subsample: tuple of int (symbolic or numeric). Its two or three elements
 		    espectively correspond to the subsampling on height and width (and
 		    possibly depth) axis.
 		filter_dilation: tuple of int (symbolic or numeric). Its two or three
 		    elements correspond respectively to the dilation on height and width axis.
+		Note - The shape of the convolution output does not depend on the 'unshared'
+		    or the 'num_groups' parameters.
 		
 		Returns
 		-------
@@ -447,21 +521,17 @@ package theano.gpuarray.dnn;
 		    output channels, height and width of the image. None where undefined.
 	**/
 	static public function get_conv_output_shape(image_shape:Dynamic, kernel_shape:Dynamic, border_mode:Dynamic, subsample:Dynamic, ?filter_dilation:Dynamic):Dynamic;
-	static public function get_precision(precision:Dynamic, inputs:Dynamic):Dynamic;
+	static public function get_precision(precision:Dynamic, inputs:Dynamic, ?for_grad:Dynamic):Dynamic;
 	/**
 		Return a Scalar(dtype) object.
 		
 		This caches objects to save allocation and run time.
 	**/
 	static public function get_scalar_type(dtype:Dynamic):Dynamic;
-	static public function gpu_alloc_empty(ctx:Dynamic, dtype:Dynamic):Dynamic;
 	static public function gpu_context_type(?name:Dynamic):Dynamic;
 	static public function gpu_contiguous(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function gpu_dnn_conv(?algo:Dynamic, ?inplace:Dynamic):Dynamic;
-	static public function gpu_dnn_conv_desc(border_mode:Dynamic, ?subsample:Dynamic, ?conv_mode:Dynamic, ?precision:Dynamic):Dynamic;
-	static public function gpu_dnn_conv_gradI(?algo:Dynamic, ?inplace:Dynamic):Dynamic;
-	static public function gpu_dnn_conv_gradW(?algo:Dynamic, ?inplace:Dynamic):Dynamic;
 	static public var gpu_seqopt : Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	static public function gpudata_type(?name:Dynamic):Dynamic;
 	/**
 		Return an un-computable symbolic variable of type `x.type`.
@@ -482,6 +552,17 @@ package theano.gpuarray.dnn;
 	**/
 	static public function infer_context_name(?vars:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		Contextmanager that copies the stack trace from one or more variable nodes to all
+		variable nodes constructed in the body. new_nodes is the list of all the newly created
+		variable nodes inside an optimization that is managed by graph.nodes_constructed().
+		
+		Parameters
+		----------
+		from_var
+		    Variable node or a list of variable nodes to copy stack traces from.
+	**/
+	static public function inherit_stack_trace(from_var:Dynamic):Dynamic;
+	/**
 		Wrapper to make an inplace optimization that deals with AllocEmpty
 		
 		This will duplicate the alloc input if it has more than one client
@@ -491,7 +572,7 @@ package theano.gpuarray.dnn;
 		
 		    maker(node, inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		You should also switch the op to work inplace.  The `*inputs`
@@ -516,6 +597,7 @@ package theano.gpuarray.dnn;
 		    as the decorated function.
 	**/
 	static public function inplace_allocempty(op:Dynamic, idx:Dynamic):Dynamic;
+	static public function int_t(?name:Dynamic):Dynamic;
 	static public var integer_types : Dynamic;
 	/**
 		Return an iterable of all the registered context names.
@@ -524,8 +606,10 @@ package theano.gpuarray.dnn;
 	static public function local_abstract_batch_norm_inference_cudnn(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public function local_abstract_batch_norm_train_cudnn(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public function local_abstract_batch_norm_train_grad_cudnn(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public var local_abstractconv3d_cudnn_alt : Dynamic;
 	static public function local_abstractconv3d_cudnn_graph(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public var local_abstractconv_cudnn : Dynamic;
+	static public var local_abstractconv_cudnn_alt : Dynamic;
 	static public function local_abstractconv_cudnn_graph(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public var local_abstractconv_gi_cudnn : Dynamic;
 	static public var local_abstractconv_gw_cudnn : Dynamic;
@@ -533,6 +617,8 @@ package theano.gpuarray.dnn;
 	static public var local_batch_norm_inplace_output : Dynamic;
 	static public var local_batch_norm_inplace_running_mean : Dynamic;
 	static public var local_batch_norm_inplace_running_var : Dynamic;
+	static public var local_cudnn_maxandargmax : Dynamic;
+	static public var local_dnn_argmax : Dynamic;
 	static public var local_dnn_conv_alpha_merge : Dynamic;
 	static public var local_dnn_conv_inplace : Dynamic;
 	static public var local_dnn_conv_output_merge : Dynamic;
@@ -542,6 +628,7 @@ package theano.gpuarray.dnn;
 	static public var local_dnn_convi_output_merge : Dynamic;
 	static public var local_dnn_convw_alpha_merge : Dynamic;
 	static public var local_dnn_convw_output_merge : Dynamic;
+	static public var local_dnn_reduction : Dynamic;
 	static public function local_gpua_avg_pool_dnn_grad_stride(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public var local_gpua_logsoftmax_to_dnn : Dynamic;
 	static public function local_gpua_pool_dnn_alternative(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
@@ -576,7 +663,7 @@ package theano.gpuarray.dnn;
 		
 		    maker(node, *inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		The `*inputs` parameters contains the new inputs for your op.  You
@@ -646,6 +733,17 @@ package theano.gpuarray.dnn;
 	static public var pool_db : Dynamic;
 	static public var pool_db2 : Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		reduce(function, sequence[, initial]) -> value
+		
+		Apply a function of two arguments cumulatively to the items of a sequence,
+		from left to right, so as to reduce the sequence to a single value.
+		For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
+		((((1+2)+3)+4)+5).  If initial is present, it is placed before the items
+		of the sequence in the calculation, and serves as a default when the
+		sequence is empty.
+	**/
+	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function register_inplace(?tags:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function register_opt(?tags:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -683,6 +781,7 @@ package theano.gpuarray.dnn;
 	**/
 	static public function shape_i(_var:Dynamic, i:Dynamic, ?fgraph:Dynamic):Dynamic;
 	static public function shape_i_op(i:Dynamic):Dynamic;
+	static public function uint32_t(?name:Dynamic):Dynamic;
 	/**
 		Reshapes the output after pad_dims.
 		
@@ -694,8 +793,11 @@ package theano.gpuarray.dnn;
 		
 		This also does a check that the header version matches the runtime version.
 		
-		:raises: If True, raise an exception if cuDNN is not present or badly installed.
+		:raises: If True, raise an exception if cuDNN is not present.
 		    Otherwise, return -1.
+		
+		It always raise an RuntimeError if the header and library version
+		are not the same.
 	**/
 	static public function version(?raises:Dynamic):Dynamic;
 }

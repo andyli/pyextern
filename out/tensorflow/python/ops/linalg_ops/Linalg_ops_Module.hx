@@ -1,6 +1,30 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.linalg_ops;
 @:pythonImport("tensorflow.python.ops.linalg_ops") extern class Linalg_ops_Module {
+	/**
+		Computes Cholesky factorization of regularized gramian matrix.
+		
+		Below we will use the following notation for each pair of matrix and
+		right-hand sides in the batch:
+		
+		`matrix`=\\(A \in \Re^{m \times n}\\),
+		`output`=\\(C  \in \Re^{\min(m, n) \times \min(m,n)}\\),
+		`l2_regularizer`=\\(\lambda\\).
+		
+		If `first_kind` is True, returns the Cholesky factorization \\(L\\) such that
+		\\(L L^H =  A^H A + \lambda I\\).
+		If `first_kind` is False, returns the Cholesky factorization \\(L\\) such that
+		\\(L L^H =  A A^H + \lambda I\\).
+		
+		Args:
+		  matrix: `Tensor` of shape `[..., M, N]`.
+		  l2_regularizer: 0-D `double` `Tensor`. Ignored if `fast=False`.
+		  first_kind: bool. Controls what gramian matrix to factor.
+		Returns:
+		  output: `Tensor` of shape `[..., min(M,N), min(M,N)]` whose inner-most 2
+		    dimensions contain the Cholesky factors \\(L\\) described above.
+	**/
+	static public function _RegularizedGramianCholesky(matrix:Dynamic, l2_regularizer:Dynamic, first_kind:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -11,22 +35,216 @@ package tensorflow.python.ops.linalg_ops;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Computes the Cholesky decomposition of one or more square matrices.
-		
-		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
-		form square matrices, with the same constraints as the single matrix Cholesky
-		decomposition above. The output is a tensor of the same shape as the input
-		containing the Cholesky decompositions for all input submatrices `[..., :, :]`.
+		TODO: add doc.
 		
 		Args:
 		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_cholesky(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_cholesky
+	**/
+	static public function batch_cholesky_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  l: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  grad: A `Tensor`. Must have the same type as `l`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `l`.
+	**/
+	static public function batch_cholesky_grad(l:Dynamic, grad:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_cholesky_grad
+	**/
+	static public function batch_cholesky_grad_eager_fallback(l:Dynamic, grad:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `complex64`, `complex128`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_matrix_determinant(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_matrix_determinant
+	**/
+	static public function batch_matrix_determinant_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  adjoint: An optional `bool`. Defaults to `False`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_matrix_inverse(input:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_matrix_inverse
+	**/
+	static public function batch_matrix_inverse_eager_fallback(input:Dynamic, ?adjoint:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  rhs: A `Tensor`. Must have the same type as `matrix`.
+		  adjoint: An optional `bool`. Defaults to `False`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `matrix`.
+	**/
+	static public function batch_matrix_solve(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_matrix_solve
+	**/
+	static public function batch_matrix_solve_eager_fallback(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  rhs: A `Tensor`. Must have the same type as `matrix`.
+		  l2_regularizer: A `Tensor` of type `float64`.
+		  fast: An optional `bool`. Defaults to `True`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `matrix`.
+	**/
+	static public function batch_matrix_solve_ls(matrix:Dynamic, rhs:Dynamic, l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_matrix_solve_ls
+	**/
+	static public function batch_matrix_solve_ls_eager_fallback(matrix:Dynamic, rhs:Dynamic, l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  rhs: A `Tensor`. Must have the same type as `matrix`.
+		  lower: An optional `bool`. Defaults to `True`.
+		  adjoint: An optional `bool`. Defaults to `False`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `matrix`.
+	**/
+	static public function batch_matrix_triangular_solve(matrix:Dynamic, rhs:Dynamic, ?lower:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_matrix_triangular_solve
+	**/
+	static public function batch_matrix_triangular_solve_eager_fallback(matrix:Dynamic, rhs:Dynamic, ?lower:Dynamic, ?adjoint:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_self_adjoint_eig(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_self_adjoint_eig
+	**/
+	static public function batch_self_adjoint_eig_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  compute_v: An optional `bool`. Defaults to `True`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (e, v).
+		
+		  e: A `Tensor`. Has the same type as `input`.
+		  v: A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_self_adjoint_eig_v2(input:Dynamic, ?compute_v:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_self_adjoint_eig_v2
+	**/
+	static public function batch_self_adjoint_eig_v2_eager_fallback(input:Dynamic, ?compute_v:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		TODO: add doc.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		  compute_uv: An optional `bool`. Defaults to `True`.
+		  full_matrices: An optional `bool`. Defaults to `False`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (s, u, v).
+		
+		  s: A `Tensor`. Has the same type as `input`.
+		  u: A `Tensor`. Has the same type as `input`.
+		  v: A `Tensor`. Has the same type as `input`.
+	**/
+	static public function batch_svd(input:Dynamic, ?compute_uv:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_svd
+	**/
+	static public function batch_svd_eager_fallback(input:Dynamic, ?compute_uv:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the Cholesky decomposition of one or more square matrices.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices.
+		
+		The input has to be symmetric and positive definite. Only the lower-triangular
+		part of the input will be used for this operation. The upper-triangular part
+		will not be read.
+		
+		The output is a tensor of the same shape as the input
+		containing the Cholesky decompositions for all input submatrices `[..., :, :]`.
+		
+		**Note**: The gradient computation on GPU is faster for large matrices but
+		not for large batch dimensions when the submatrices are small. In this
+		case it might be faster to use the CPU.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
 		    Shape is `[..., M, M]`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`. Shape is `[..., M, M]`.
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function cholesky(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function cholesky
+	**/
+	static public function cholesky_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the reverse mode backpropagated gradient of the Cholesky algorithm.
 		
@@ -46,9 +264,13 @@ package tensorflow.python.ops.linalg_ops;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `l`.
-		  Symmetrized version of df/dA . Shape is `[..., M, M]`
 	**/
 	static public function cholesky_grad(l:Dynamic, grad:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function cholesky_grad
+	**/
+	static public function cholesky_grad_eager_fallback(l:Dynamic, grad:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Solves systems of linear eqns `A X = RHS`, given Cholesky factorizations.
 		
@@ -81,6 +303,23 @@ package tensorflow.python.ops.linalg_ops;
 		  Solution to `A x = rhs`, shape `[..., M, K]`.
 	**/
 	static public function cholesky_solve(chol:Dynamic, rhs:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Construct an identity matrix, or a batch of matrices.
@@ -106,8 +345,9 @@ package tensorflow.python.ops.linalg_ops;
 		    in each batch matrix.
 		  num_columns: Optional non-negative `int32` scalar `Tensor` giving the number
 		    of columns in each batch matrix.  Defaults to `num_rows`.
-		  batch_shape:  `int32` `Tensor`.  If provided, returned `Tensor` will have
-		    leading batch dimensions of this shape.
+		  batch_shape:  A list or tuple of Python integers or a 1-D `int32` `Tensor`.
+		    If provided, the returned `Tensor` will have leading batch dimensions of
+		    this shape.
 		  dtype:  The type of an element in the resulting `Tensor`
 		  name:  A name for this `Op`.  Defaults to "eye".
 		
@@ -116,21 +356,72 @@ package tensorflow.python.ops.linalg_ops;
 	**/
 	static public function eye(num_rows:Dynamic, ?num_columns:Dynamic, ?batch_shape:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the determinant of one ore more square matrices.
+		Computes the sign and the log of the absolute value of the determinant of
+		
+		one or more square matrices.
+		
+		The input is a tensor of shape `[N, M, M]` whose inner-most 2 dimensions
+		form square matrices. The outputs are two tensors containing the signs and
+		absolute values of the log determinants for all N input submatrices
+		`[..., :, :]` such that the determinant = sign*exp(log_abs_determinant).
+		The log_abs_determinant is computed as det(P)*sum(log(diag(LU))) where LU
+		is the LU decomposition of the input and P is the corresponding
+		permutation matrix.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `complex64`, `complex128`.
+		    Shape is `[N, M, M]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (sign, log_abs_determinant).
+		
+		  sign: A `Tensor`. Has the same type as `input`.
+		  log_abs_determinant: A `Tensor`. Has the same type as `input`.
+	**/
+	static public function log_matrix_determinant(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function log_matrix_determinant
+	**/
+	static public function log_matrix_determinant_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the determinant of one or more square matrices.
 		
 		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
 		form square matrices. The output is a tensor containing the determinants
 		for all input submatrices `[..., :, :]`.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `complex64`, `complex128`.
 		    Shape is `[..., M, M]`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`. Shape is `[...]`.
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function matrix_determinant(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_determinant
+	**/
+	static public function matrix_determinant_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Deprecated, use python implementation tf.linalg.matrix_exponential.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function matrix_exponential(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_exponential
+	**/
+	static public function matrix_exponential_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the inverse of one or more square invertible matrices or their
 		
@@ -147,19 +438,53 @@ package tensorflow.python.ops.linalg_ops;
 		garbage result.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
 		    Shape is `[..., M, M]`.
 		  adjoint: An optional `bool`. Defaults to `False`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`. Shape is `[..., M, M]`.
-		
-		  @compatibility(numpy)
-		  Equivalent to np.linalg.inv
-		  @end_compatibility
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function matrix_inverse(input:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_inverse
+	**/
+	static public function matrix_inverse_eager_fallback(input:Dynamic, ?adjoint:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the matrix logarithm of one or more square matrices:
+		
+		
+		\\(log(exp(A)) = A\\)
+		
+		This op is only defined for complex matrices. If A is positive-definite and
+		real, then casting to a complex matrix, taking the logarithm and casting back
+		to a real matrix will give the correct result.
+		
+		This function computes the matrix logarithm using the Schur-Parlett algorithm.
+		Details of the algorithm can be found in Section 11.6.2 of:
+		Nicholas J. Higham, Functions of Matrices: Theory and Computation, SIAM 2008.
+		ISBN 978-0-898716-46-7.
+		
+		The input is a tensor of shape `[..., M, M]` whose inner-most 2 dimensions
+		form square matrices. The output is a tensor of the same shape as the input
+		containing the exponential for all input submatrices `[..., :, :]`.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `complex64`, `complex128`.
+		    Shape is `[..., M, M]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function matrix_logarithm(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_logarithm
+	**/
+	static public function matrix_logarithm_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Solves systems of linear equations.
 		
@@ -181,15 +506,20 @@ package tensorflow.python.ops.linalg_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `matrix`. Shape is `[..., M, K]`.
+		  A `Tensor`. Has the same type as `matrix`.
 	**/
 	static public function matrix_solve(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_solve
+	**/
+	static public function matrix_solve_eager_fallback(matrix:Dynamic, rhs:Dynamic, ?adjoint:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Solves one or more linear least-squares problems.
 		
 		`matrix` is a tensor of shape `[..., M, N]` whose inner-most 2 dimensions
 		form `M`-by-`N` matrices. Rhs is a tensor of shape `[..., M, K]` whose
-		inner-most 2 dimensions form `M`-by-`K` matrices.   The computed output is a
+		inner-most 2 dimensions form `M`-by-`K` matrices.  The computed output is a
 		`Tensor` of shape `[..., N, K]` whose inner-most 2 dimensions form `M`-by-`K`
 		matrices that solve the equations
 		`matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]` in the least squares
@@ -234,8 +564,17 @@ package tensorflow.python.ops.linalg_ops;
 		    `M`-by-`K` matrices that solve the equations
 		    `matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]` in the least
 		    squares sense.
+		
+		Raises:
+		  NotImplementedError: linalg.lstsq is currently disabled for complex128
+		  and l2_regularizer != 0 due to poor accuracy.
 	**/
 	static public function matrix_solve_ls(matrix:Dynamic, rhs:Dynamic, ?l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function matrix_solve_ls
+	**/
+	static public function matrix_solve_ls_eager_fallback(matrix:Dynamic, rhs:Dynamic, l2_regularizer:Dynamic, ?fast:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Solves systems of linear equations with upper or lower triangular matrices by
 		
@@ -249,14 +588,14 @@ package tensorflow.python.ops.linalg_ops;
 		`rhs` is a tensor of shape `[..., M, K]`.
 		
 		The output is a tensor of shape `[..., M, K]`. If `adjoint` is
-		`True` then the innermost matrices in output` satisfy matrix equations
+		`True` then the innermost matrices in `output` satisfy matrix equations
 		`matrix[..., :, :] * output[..., :, :] = rhs[..., :, :]`.
 		If `adjoint` is `False` then the strictly then the  innermost matrices in
 		`output` satisfy matrix equations
 		`adjoint(matrix[..., i, k]) * output[..., k, j] = rhs[..., i, j]`.
 		
 		Args:
-		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`.
+		  matrix: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
 		    Shape is `[..., M, M]`.
 		  rhs: A `Tensor`. Must have the same type as `matrix`.
 		    Shape is `[..., M, K]`.
@@ -268,31 +607,40 @@ package tensorflow.python.ops.linalg_ops;
 		             adjoint.
 		
 		    @compatibility(numpy)
-		    Equivalent to np.linalg.triangular_solve
+		    Equivalent to scipy.linalg.solve_triangular
 		    @end_compatibility
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `matrix`. Shape is `[..., M, K]`.
+		  A `Tensor`. Has the same type as `matrix`.
 	**/
 	static public function matrix_triangular_solve(matrix:Dynamic, rhs:Dynamic, ?lower:Dynamic, ?adjoint:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes the norm of vectors, matrices, and tensors.
+		This is the slowpath function for Eager mode.
+		This is for function matrix_triangular_solve
+	**/
+	static public function matrix_triangular_solve_eager_fallback(matrix:Dynamic, rhs:Dynamic, ?lower:Dynamic, ?adjoint:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the norm of vectors, matrices, and tensors. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		keep_dims is deprecated, use keepdims instead
 		
 		This function can compute several different vector norms (the 1-norm, the
 		Euclidean or 2-norm, the inf-norm, and in general the p-norm for p > 0) and
-		matrix norms (Frobenius, 1-norm, and inf-norm).
+		matrix norms (Frobenius, 1-norm, 2-norm and inf-norm).
 		
 		Args:
 		  tensor: `Tensor` of types `float32`, `float64`, `complex64`, `complex128`
-		  ord: Order of the norm. Supported values are 'fro', 'euclidean', `0`,
+		  ord: Order of the norm. Supported values are 'fro', 'euclidean',
 		    `1`, `2`, `np.inf` and any positive real number yielding the corresponding
 		    p-norm. Default is 'euclidean' which is equivalent to Frobenius norm if
 		    `tensor` is a matrix and equivalent to 2-norm for vectors.
 		    Some restrictions apply:
 		      a) The Frobenius norm `fro` is not defined for vectors,
 		      b) If axis is a 2-tuple (matrix norm), only 'euclidean', 'fro', `1`,
-		         `np.inf` are supported.
+		         `2`, `np.inf` are supported.
 		    See the description of `axis` on how to compute norms for a batch of
 		    vectors or matrices stored in a tensor.
 		  axis: If `axis` is `None` (the default), the input is considered a vector
@@ -309,13 +657,14 @@ package tensorflow.python.ops.linalg_ops;
 		    can be either a matrix or a batch of matrices at runtime, pass
 		    `axis=[-2,-1]` instead of `axis=None` to make sure that matrix norms are
 		    computed.
-		  keep_dims: If True, the axis indicated in `axis` are kept with size 1.
+		  keepdims: If True, the axis indicated in `axis` are kept with size 1.
 		    Otherwise, the dimensions in `axis` are removed from the output shape.
 		  name: The name of the op.
+		  keep_dims: Deprecated alias for `keepdims`.
 		
 		Returns:
 		  output: A `Tensor` of the same type as tensor, containing the vector or
-		    matrix norms. If `keep_dims` is True then the rank of output is equal to
+		    matrix norms. If `keepdims` is True then the rank of output is equal to
 		    the rank of `tensor`. Otherwise, if `axis` is none the output is a scalar,
 		    if `axis` is an integer, the rank of `output` is one less than the rank
 		    of `tensor`, if `axis` is a 2-tuple the rank of `output` is two less
@@ -334,7 +683,7 @@ package tensorflow.python.ops.linalg_ops;
 		   higher order tensors.
 		@end_compatibility
 	**/
-	static public function norm(tensor:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function norm(tensor:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic, ?name:Dynamic, ?keep_dims:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Computes the QR decompositions of one or more matrices.
@@ -342,7 +691,7 @@ package tensorflow.python.ops.linalg_ops;
 		Computes the QR decomposition of each inner matrix in `tensor` such that
 		`tensor[..., :, :] = q[..., :, :] * r[..., :,:])`
 		
-		```prettyprint
+		```python
 		# a is a tensor.
 		# q is a tensor of orthonormal matrices.
 		# r is a tensor of upper triangular matrices.
@@ -362,13 +711,15 @@ package tensorflow.python.ops.linalg_ops;
 		Returns:
 		  A tuple of `Tensor` objects (q, r).
 		
-		  q: A `Tensor`. Has the same type as `input`. Orthonormal basis for range of `a`. If `full_matrices` is `False` then
-		    shape is `[..., M, P]`; if `full_matrices` is `True` then shape is
-		    `[..., M, M]`.
-		  r: A `Tensor`. Has the same type as `input`. Triangular factor. If `full_matrices` is `False` then shape is
-		    `[..., P, N]`. If `full_matrices` is `True` then shape is `[..., M, N]`.
+		  q: A `Tensor`. Has the same type as `input`.
+		  r: A `Tensor`. Has the same type as `input`.
 	**/
 	static public function qr(input:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function qr
+	**/
+	static public function qr_eager_fallback(input:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the eigen decomposition of a batch of self-adjoint matrices.
 		
@@ -382,13 +733,59 @@ package tensorflow.python.ops.linalg_ops;
 		  name: string, optional name of the operation.
 		
 		Returns:
-		  e: Eigenvalues. Shape is `[..., N]`.
+		  e: Eigenvalues. Shape is `[..., N]`. Sorted in non-decreasing order.
 		  v: Eigenvectors. Shape is `[..., N, N]`. The columns of the inner most
 		    matrices contain eigenvectors of the corresponding matrices in `tensor`
 	**/
 	static public function self_adjoint_eig(tensor:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function self_adjoint_eig
+	**/
+	static public function self_adjoint_eig_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the eigen decomposition of one or more square self-adjoint matrices.
+		
+		Computes the eigenvalues and (optionally) eigenvectors of each inner matrix in
+		`input` such that `input[..., :, :] = v[..., :, :] * diag(e[..., :])`. The eigenvalues
+		are sorted in non-decreasing order.
+		
+		```python
+		# a is a tensor.
+		# e is a tensor of eigenvalues.
+		# v is a tensor of eigenvectors.
+		e, v = self_adjoint_eig(a)
+		e = self_adjoint_eig(a, compute_v=False)
+		```
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float64`, `float32`, `complex64`, `complex128`.
+		    `Tensor` input of shape `[N, N]`.
+		  compute_v: An optional `bool`. Defaults to `True`.
+		    If `True` then eigenvectors will be computed and returned in `v`.
+		    Otherwise, only the eigenvalues will be computed.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (e, v).
+		
+		  e: A `Tensor`. Has the same type as `input`.
+		  v: A `Tensor`. Has the same type as `input`.
+	**/
+	static public function self_adjoint_eig_v2(input:Dynamic, ?compute_v:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function self_adjoint_eig_v2
+	**/
+	static public function self_adjoint_eig_v2_eager_fallback(input:Dynamic, ?compute_v:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes the eigenvalues of one or more self-adjoint matrices.
+		
+		Note: If your program backpropagates through this function, you should replace
+		it with a call to tf.linalg.eigvalsh (possibly ignoring the second output) to
+		avoid computing the eigen decomposition twice. This is because the
+		eigenvectors are used to compute the gradient w.r.t. the eigenvalues. See
+		_SelfAdjointEigV2Grad in linalg_grad.py.
 		
 		Args:
 		  tensor: `Tensor` of shape `[..., N, N]`.
@@ -403,10 +800,10 @@ package tensorflow.python.ops.linalg_ops;
 		Computes the singular value decompositions of one or more matrices.
 		
 		Computes the SVD of each inner matrix in `tensor` such that
-		`tensor[..., :, :] = u[..., :, :] * diag(s[..., :, :]) * transpose(v[..., :,
-		:])`
+		`tensor[..., :, :] = u[..., :, :] * diag(s[..., :, :]) *
+		 transpose(conj(v[..., :, :]))`
 		
-		```prettyprint
+		```python
 		# a is a tensor.
 		# s is a tensor of singular values.
 		# u is a tensor of left singular vectors.
@@ -438,10 +835,32 @@ package tensorflow.python.ops.linalg_ops;
 		    `[..., N, N]`. Not returned if `compute_uv` is `False`.
 		
 		@compatibility(numpy)
-		Mostly equivalent to numpy.linalg.svd, except that the order of output
-		arguments here is `s`, `u`, `v` when `compute_uv` is `True`, as opposed to
-		`u`, `s`, `v` for numpy.linalg.svd.
+		Mostly equivalent to numpy.linalg.svd, except that
+		  * The order of output  arguments here is `s`, `u`, `v` when `compute_uv` is
+		    `True`, as opposed to `u`, `s`, `v` for numpy.linalg.svd.
+		  * full_matrices is `False` by default as opposed to `True` for
+		     numpy.linalg.svd.
+		  * tf.linalg.svd uses the standard definition of the SVD
+		    \\(A = U \Sigma V^H\\), such that the left singular vectors of `a` are
+		    the columns of `u`, while the right singular vectors of `a` are the
+		    columns of `v`. On the other hand, numpy.linalg.svd returns the adjoint
+		    \\(V^H\\) as the third output argument.
+		```python
+		import tensorflow as tf
+		import numpy as np
+		s, u, v = tf.linalg.svd(a)
+		tf_a_approx = tf.matmul(u, tf.matmul(tf.linalg.diag(s), v, adjoint_b=True))
+		u, s, v_adj = np.linalg.svd(a, full_matrices=False)
+		np_a_approx = np.dot(u, np.dot(np.diag(s), v_adj))
+		# tf_a_approx and np_a_approx should be numerically close.
+		```
 		@end_compatibility
 	**/
 	static public function svd(tensor:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function svd
+	**/
+	static public function svd_eager_fallback(input:Dynamic, ?compute_uv:Dynamic, ?full_matrices:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

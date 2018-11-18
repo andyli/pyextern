@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy;
 @:pythonImport("numpy", "nditer") extern class Nditer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -17,10 +17,12 @@ package numpy;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
+	public function __enter__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
+	public function __exit__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -60,7 +62,7 @@ package numpy;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -126,7 +128,18 @@ package numpy;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		close()
+		
+		Resolve all writeback semantics in writeable operands.
+		
+		See Also
+		--------
+		
+		:ref:`nditer-context-manager`
+	**/
+	public function close(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		copy()
 		
@@ -185,6 +198,11 @@ package numpy;
 	public var multi_index : Dynamic;
 	public var ndim : Dynamic;
 	public var nop : Dynamic;
+	/**
+		operands[`Slice`]
+		
+		The array(s) to be iterated over. Valid only before the iterator is closed.
+	**/
 	public var operands : Dynamic;
 	/**
 		remove_axis(i)

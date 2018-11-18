@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework.dtypes;
 @:pythonImport("tensorflow.python.framework.dtypes", "DType") extern class DType {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -72,7 +72,7 @@ package tensorflow.python.framework.dtypes;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __int__():Dynamic;
 	/**
 		Return self<=value.
@@ -94,7 +94,7 @@ package tensorflow.python.framework.dtypes;
 	/**
 		helper for pickle
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -124,7 +124,7 @@ package tensorflow.python.framework.dtypes;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -137,6 +137,8 @@ package tensorflow.python.framework.dtypes;
 		Returns `True` if this `DType` represents a reference type.
 	**/
 	public var _is_ref_dtype : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Returns a `types_pb2.DataType` enum value based on this `DType`.
 	**/

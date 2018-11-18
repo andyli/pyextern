@@ -42,18 +42,21 @@ package seaborn.axisgrid;
 		    deep, muted, bright, pastel, dark, colorblind
 		
 		Other options:
-		    hls, husl, any named matplotlib palette, list of colors
+		    name of matplotlib cmap, 'ch:<cubehelix arguments>', 'hls', 'husl',
+		    or a list of colors in any format matplotlib accepts
 		
 		Calling this function with ``palette=None`` will return the current
 		matplotlib color cycle.
 		
 		Matplotlib palettes can be specified as reversed palettes by appending
-		"_r" to the name or as dark palettes by appending "_d" to the name.
+		"_r" to the name or as "dark" palettes by appending "_d" to the name.
 		(These options are mutually exclusive, but the resulting list of colors
 		can also be reversed).
 		
 		This function can also be used in a ``with`` statement to temporarily
 		set the color cycle for a plot or set of plots.
+		
+		See the :ref:`tutorial <palette_tutorial>` for more information.
 		
 		Parameters
 		----------
@@ -85,39 +88,53 @@ package seaborn.axisgrid;
 		Examples
 		--------
 		
-		Show one of the "seaborn palettes", which have the same basic order of hues
-		as the default matplotlib color cycle but more attractive colors.
+		Calling with no arguments returns all colors from the current default
+		color cycle:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> import seaborn as sns; sns.set()
+		    >>> sns.palplot(sns.color_palette())
+		
+		Show one of the other "seaborn palettes", which have the same basic order
+		of hues as the default matplotlib color cycle but more attractive colors.
+		Calling with the name of a palette will return 6 colors by default:
+		
+		.. plot::
+		    :context: close-figs
+		
 		    >>> sns.palplot(sns.color_palette("muted"))
 		
-		Use discrete values from one of the built-in matplotlib colormaps.
+		Use discrete values from one of the built-in matplotlib colormaps:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> sns.palplot(sns.color_palette("RdBu", n_colors=7))
 		
-		Make a "dark" matplotlib sequential palette variant. (This can be good
-		when coloring multiple lines or points that correspond to an ordered
-		variable, where you don't want the lightest lines to be invisible).
+		Make a customized cubehelix color palette:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> sns.palplot(sns.color_palette("Blues_d"))
+		    >>> sns.palplot(sns.color_palette("ch:2.5,-.2,dark=.3"))
 		
-		Use a categorical matplotlib palette, add some desaturation. (This can be
-		good when making plots with large patches, which look best with dimmer
-		colors).
+		Use a categorical matplotlib palette and add some desaturation:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> sns.palplot(sns.color_palette("Set1", n_colors=8, desat=.5))
+		
+		Make a "dark" matplotlib sequential palette variant. (This can be good
+		when coloring multiple lines or points that correspond to an ordered
+		variable, where you don't want the lightest lines to be invisible):
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> sns.palplot(sns.color_palette("Blues_d"))
 		
 		Use as a context manager:
 		
@@ -174,7 +191,7 @@ package seaborn.axisgrid;
 		color : matplotlib color, optional
 		    Color to plot everything but the fitted curve in.
 		vertical : bool, optional
-		    If True, oberved values are on y-axis.
+		    If True, observed values are on y-axis.
 		norm_hist : bool, optional
 		    If True, the histogram height shows a density rather than a count.
 		    This is implied if a KDE or fitted density is plotted.
@@ -221,7 +238,7 @@ package seaborn.axisgrid;
 		    >>> x = pd.Series(x, name="x variable")
 		    >>> ax = sns.distplot(x)
 		
-		Plot the distribution with a kenel density estimate and rug plot:
+		Plot the distribution with a kernel density estimate and rug plot:
 		
 		.. plot::
 		    :context: close-figs
@@ -281,16 +298,13 @@ package seaborn.axisgrid;
 		kind : { "scatter" | "reg" | "resid" | "kde" | "hex" }, optional
 		    Kind of plot to draw.
 		stat_func : callable or None, optional
-		    Function used to calculate a statistic about the relationship and
-		    annotate the plot. Should map `x` and `y` either to a single value
-		    or to a (value, p) tuple. Set to ``None`` if you don't want to
-		    annotate the plot.
+		    *Deprecated*
 		color : matplotlib color, optional
 		    Color used for the plot elements.
-		size : numeric, optional
+		height : numeric, optional
 		    Size of the figure (it will be square).
 		ratio : numeric, optional
-		    Ratio of joint axes size to marginal axes height.
+		    Ratio of joint axes height to marginal axes height.
 		space : numeric, optional
 		    Space between the joint and marginal axes
 		dropna : bool, optional
@@ -351,15 +365,6 @@ package seaborn.axisgrid;
 		    >>> g = sns.jointplot("sepal_width", "petal_length", data=iris,
 		    ...                   kind="kde", space=0, color="g")
 		
-		Use a different statistic for the annotation:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> from scipy.stats import spearmanr
-		    >>> g = sns.jointplot("size", "total_bill", data=tips,
-		    ...                   stat_func=spearmanr, color="m")
-		
 		Draw a scatterplot, then add a joint density estimate:
 		
 		.. plot::
@@ -375,7 +380,7 @@ package seaborn.axisgrid;
 		    :context: close-figs
 		
 		    >>> x, y = np.random.randn(2, 300)
-		    >>> g = (sns.jointplot(x, y, kind="hex", stat_func=None)
+		    >>> g = (sns.jointplot(x, y, kind="hex")
 		    ...         .set_axis_labels("x", "y"))
 		
 		Draw a smaller figure with more space devoted to the marginal plots:
@@ -384,7 +389,7 @@ package seaborn.axisgrid;
 		    :context: close-figs
 		
 		    >>> g = sns.jointplot("total_bill", "tip", data=tips,
-		    ...                   size=5, ratio=3, color="g")
+		    ...                   height=5, ratio=3, color="g")
 		
 		Pass keyword arguments down to the underlying plots:
 		
@@ -396,7 +401,7 @@ package seaborn.axisgrid;
 		    ...                   annot_kws=dict(stat="r"),
 		    ...                   s=40, edgecolor="w", linewidth=1)
 	**/
-	static public function jointplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?kind:Dynamic, ?stat_func:Dynamic, ?color:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?joint_kws:Dynamic, ?marginal_kws:Dynamic, ?annot_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function jointplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?kind:Dynamic, ?stat_func:Dynamic, ?color:Dynamic, ?height:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?joint_kws:Dynamic, ?marginal_kws:Dynamic, ?annot_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fit and plot a univariate or bivariate kernel density estimate.
 		
@@ -416,7 +421,11 @@ package seaborn.axisgrid;
 		    gaussian kernel.
 		bw : {'scott' | 'silverman' | scalar | pair of scalars }, optional
 		    Name of reference method to determine kernel size, scalar factor,
-		    or scalar for each dimension of the bivariate plot.
+		    or scalar for each dimension of the bivariate plot. Note that the
+		    underlying computational libraries have different interperetations
+		    for this parameter: ``statsmodels`` uses it directly, but ``scipy``
+		    treats it as a scaling factor for the standard deviation of the
+		    data.
 		gridsize : int, optional
 		    Number of discrete points in the evaluation grid.
 		cut : scalar, optional
@@ -554,7 +563,7 @@ package seaborn.axisgrid;
 		variables on the rows and columns.
 		
 		This is a high-level interface for :class:`PairGrid` that is intended to
-		make it easy to draw a few common styles. You should use :class`PairGrid`
+		make it easy to draw a few common styles. You should use :class:`PairGrid`
 		directly if you need more flexibility.
 		
 		Parameters
@@ -577,17 +586,18 @@ package seaborn.axisgrid;
 		    columns of the figure; i.e. to make a non-square plot.
 		kind : {'scatter', 'reg'}, optional
 		    Kind of plot for the non-identity relationships.
-		diag_kind : {'hist', 'kde'}, optional
-		    Kind of plot for the diagonal subplots.
+		diag_kind : {'auto', 'hist', 'kde'}, optional
+		    Kind of plot for the diagonal subplots. The default depends on whether
+		    ``"hue"`` is used or not.
 		markers : single matplotlib marker code or list, optional
 		    Either the marker to use for all datapoints or a list of markers with
 		    a length the same as the number of levels in the hue variable so that
 		    differently colored points will also have different scatterplot
 		    markers.
-		size : scalar, optional
+		height : scalar, optional
 		    Height (in inches) of each facet.
 		aspect : scalar, optional
-		    Aspect * size gives the width (in inches) of each facet.
+		    Aspect * height gives the width (in inches) of each facet.
 		dropna : boolean, optional
 		    Drop missing values from the data before plotting.
 		{plot, diag, grid}_kws : dicts, optional
@@ -650,7 +660,7 @@ package seaborn.axisgrid;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.pairplot(iris, size=3,
+		    >>> g = sns.pairplot(iris, height=3,
 		    ...                  vars=["sepal_width", "sepal_length"])
 		
 		Plot different variables in the rows and columns:
@@ -686,6 +696,6 @@ package seaborn.axisgrid;
 		    ...                  plot_kws=dict(s=50, edgecolor="b", linewidth=1),
 		    ...                  diag_kws=dict(shade=True))
 	**/
-	static public function pairplot(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?kind:Dynamic, ?diag_kind:Dynamic, ?markers:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?dropna:Dynamic, ?plot_kws:Dynamic, ?diag_kws:Dynamic, ?grid_kws:Dynamic):Dynamic;
+	static public function pairplot(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?kind:Dynamic, ?diag_kind:Dynamic, ?markers:Dynamic, ?height:Dynamic, ?aspect:Dynamic, ?dropna:Dynamic, ?plot_kws:Dynamic, ?diag_kws:Dynamic, ?grid_kws:Dynamic, ?size:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 }

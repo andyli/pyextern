@@ -35,6 +35,7 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		    dtype in mind when converting to a tensor, so preferred_dtype
 		    can be used as a soft preference.  If the conversion to
 		    `preferred_dtype` is not possible, this argument has no effect.
+		  ctx: Optional: The value of context.context().
 		
 		Returns:
 		  A `Tensor` based on `value`.
@@ -43,41 +44,46 @@ package tensorflow.contrib.linear_optimizer.python.ops.sdca_ops;
 		  TypeError: If no conversion function is registered for `value`.
 		  RuntimeError: If a registered conversion function returns an invalid value.
 	**/
-	static public function internal_convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic, ?preferred_dtype:Dynamic):Dynamic;
+	static public function internal_convert_to_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic, ?preferred_dtype:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
-		Returns a context manager for use when defining a Python op.
+		Computes log Poisson loss given `log_input`.
 		
-		This context manager validates that the given `values` are from the
-		same graph, makes that graph the default graph, and pushes a
-		name scope in that graph (see
-		@{tf.Graph.name_scope}
-		for more details on that).
+		Gives the log-likelihood loss between the prediction and the target under the
+		assumption that the target has a Poisson distribution.
+		Caveat: By default, this is not the exact loss, but the loss minus a
+		  constant term [log(z!)]. That has no effect for optimization, but
+		  does not play well with relative loss comparisons. To compute an
+		  approximation of the log factorial term, specify
+		  compute_full_loss=True to enable Stirling's Approximation.
 		
-		For example, to define a new Python op called `my_op`:
+		For brevity, let `c = log(x) = log_input`, `z = targets`.  The log Poisson
+		loss is
 		
-		```python
-		def my_op(a, b, c, name=None):
-		  with tf.name_scope(name, "MyOp", [a, b, c]) as scope:
-		    a = tf.convert_to_tensor(a, name="a")
-		    b = tf.convert_to_tensor(b, name="b")
-		    c = tf.convert_to_tensor(c, name="c")
-		    # Define some computation that uses `a`, `b`, and `c`.
-		    return foo_op(..., name=scope)
-		```
+		      -log(exp(-x) * (x^z) / z!)
+		    = -log(exp(-x) * (x^z)) + log(z!)
+		    ~ -log(exp(-x)) - log(x^z) [+ z * log(z) - z + 0.5 * log(2 * pi * z)]
+		        [ Note the second term is the Stirling's Approximation for log(z!).
+		          It is invariant to x and does not affect optimization, though
+		          important for correct relative loss comparisons. It is only
+		          computed when compute_full_loss == True. ]
+		    = x - z * log(x) [+ z * log(z) - z + 0.5 * log(2 * pi * z)]
+		    = exp(c) - z * c [+ z * log(z) - z + 0.5 * log(2 * pi * z)]
 		
 		Args:
-		  name: The name argument that is passed to the op function.
-		  default_name: The default name to use if the `name` argument is `None`.
-		  values: The list of `Tensor` arguments that are passed to the op function.
+		  targets: A `Tensor` of the same type and shape as `log_input`.
+		  log_input: A `Tensor` of type `float32` or `float64`.
+		  compute_full_loss: whether to compute the full loss. If false, a constant
+		    term is dropped in favor of more efficient optimization.
+		  name: A name for the operation (optional).
 		
 		Returns:
-		  A context manager for use in defining Python ops. Yields the name scope.
+		  A `Tensor` of the same shape as `log_input` with the componentwise
+		  logistic losses.
 		
 		Raises:
-		  ValueError: if neither `name` nor `default_name` is provided
-		    but `values` are.
+		  ValueError: If `log_input` and `targets` do not have the same shape.
 	**/
-	static public function name_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
+	static public function log_poisson_loss(targets:Dynamic, log_input:Dynamic, ?compute_full_loss:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Computes sigmoid cross entropy given `logits`.

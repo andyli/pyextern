@@ -2,50 +2,77 @@
 package theano;
 @:pythonImport("theano") extern class Theano_Module {
 	/**
-		Computes the L operation on `f` wrt to `wrt` evaluated at points given
-		in `eval_points`. Mathematically this stands for the jacobian of `f` wrt
+		Computes the L operation on `f` wrt to `wrt` at `eval_points`.
+		
+		Mathematically this stands for the jacobian of `f` wrt
 		to `wrt` left muliplied by the eval points.
 		
-		:type f: Variable or list of Variables
+		Parameters
+		----------
+		f : :class:`~theano.gof.graph.Variable` or list of Variables
 		    `f` stands for the output of the computational graph to which you
 		    want to apply the L operator
-		:type wrt: Variable or list of `Variables`s
+		wrt : :class:`~theano.gof.graph.Variable` or list of Variables
 		    variables for which you compute the L operator of the expression
 		    described by `f`
-		:type eval_points: Variable or list of Variables
-		                    evalutation points for each of the variables in `f`
+		eval_points : :class:`~theano.gof.graph.Variable` or list of Variables
+		    evalutation points for each of the variables in `f`
 		
-		:rtype: :class:`~theano.gof.Variable` or list/tuple of Variables depending on type of f
-		:return: symbolic expression such that
-		    L_op[i] = sum_i ( d f[i] / d wrt[j]) eval_point[i]
+		Returns
+		-------
+		:class:`~theano.gof.Variable` or list/tuple of Variables depending on type of f
+		    Symbolic expression such that
+		    L_op[i] = sum_i (d f[i] / d wrt[j]) eval_point[i]
 		    where the indices in that expression are magic multidimensional
 		    indices that specify both the position within a list and all
 		    coordinates of the tensor element in the last
 		    If `f` is a list/tuple, then return a list/tuple with the results.
 	**/
 	static public function Lop(f:Dynamic, wrt:Dynamic, eval_points:Dynamic, ?consider_constant:Dynamic, ?disconnected_inputs:Dynamic):Dynamic;
+	static public var PY3 : Dynamic;
 	/**
-		Computes the R operation on `f` wrt to `wrt` evaluated at points given
-		in `eval_points`. Mathematically this stands for the jacobian of `f` wrt
+		Computes the R operation on `f` wrt to `wrt` at `eval_points`.
+		
+		Mathematically this stands for the jacobian of `f` wrt
 		to `wrt` right muliplied by the eval points.
 		
-		:type f: Variable or list of Variables
-		         `f` stands for the output of the computational graph to which you
-		         want to apply the R operator
-		:type wrt: Variable or list of `Variables`s
-		           variables for which you compute the R operator of the expression
-		           described by `f`
-		:type eval_points: Variable or list of Variables
-		                   evalutation points for each of the variables in `wrt`
-		:rtype: :class:`~theano.gof.Variable` or list/tuple of Variables depending on type of f
-		:return: symbolic expression such that
-		    R_op[i] = sum_j ( d f[i] / d wrt[j]) eval_point[j]
+		Parameters
+		----------
+		f : :class:`~theano.gof.graph.Variable` or list of Variables
+		    `f` stands for the output of the computational graph to which you
+		    want to apply the R operator
+		wrt : :class:`~theano.gof.graph.Variable` or list of Variables
+		    variables for which you compute the R operator of the expression
+		    described by `f`
+		eval_points : :class:`~theano.gof.graph.Variable` or list of Variables
+		    evalutation points for each of the variables in `wrt`
+		disconnected_outputs : str
+		    Defines the behaviour if some of the variables in `f`
+		    have no dependency on any of the variable in `wrt` (or if
+		    all links are non-differentiable). The possible values are:
+		
+		    - 'ignore': considers that the gradient on these parameters is zero.
+		    - 'warn': consider the gradient zero, and print a warning.
+		    - 'raise': raise DisconnectedInputError.
+		
+		return_disconnected : {'zero', 'None', 'Disconnected'}
+		    - 'zero' : If wrt[i] is disconnected, return value i will be
+		      wrt[i].zeros_like()
+		    - 'None' : If wrt[i] is disconnected, return value i will be
+		      None
+		    - 'Disconnected' : returns variables of type DisconnectedType
+		
+		Returns
+		-------
+		:class:`~theano.gof.graph.Variable` or list/tuple of Variables depending on type of f
+		    Symbolic expression such that
+		    R_op[i] = sum_j (d f[i] / d wrt[j]) eval_point[j]
 		    where the indices in that expression are magic multidimensional
 		    indices that specify both the position within a list and all
 		    coordinates of the tensor element in the last.
 		    If `wrt` is a list/tuple, then return a list/tuple with the results.
 	**/
-	static public function Rop(f:Dynamic, wrt:Dynamic, eval_points:Dynamic):Dynamic;
+	static public function Rop(f:Dynamic, wrt:Dynamic, eval_points:Dynamic, ?disconnected_outputs:Dynamic, ?return_disconnected:Dynamic):Dynamic;
 	static public var __api_version__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -125,6 +152,7 @@ package theano;
 	**/
 	static public function clone(output:Dynamic, ?replace:Dynamic, ?strict:Dynamic, ?share_inputs:Dynamic, ?copy_inputs:Dynamic):Dynamic;
 	static public var config : Dynamic;
+	static public function disable_log_handler(?logger:Dynamic, ?handler:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return a symbolic matrix/dot product between l and r 
@@ -371,8 +399,7 @@ package theano;
 	**/
 	static public function get_scalar_constant_value(v:Dynamic):Dynamic;
 	/**
-		Return symbolic gradients for one or more variables with respect to some
-		cost.
+		Return symbolic gradients of one cost with respect to one or more variables.
 		
 		For more information about how automatic differentiation works in Theano,
 		see :mod:`gradient`. For information on how to implement the gradient of
@@ -380,13 +407,13 @@ package theano;
 		
 		Parameters
 		----------
-		cost : :class:`~theano.gof.Variable` scalar (0-dimensional) tensor variable or None
-		    Value with respect to which we are differentiating.  May be
-		    `None` if known_grads is provided.
-		wrt : :class:`~theano.gof.Variable` or list of Variables
-		    term[s] for which we want gradients
+		cost : :class:`~theano.gof.graph.Variable` scalar (0-dimensional) tensor variable or ``None``
+		    Value that we are differentiating (that we want the gradient of).
+		    May be `None` if `known_grads` is provided.
+		wrt : :class:`~theano.gof.graph.Variable` or list of Variables
+		    Term[s] with respect to which we want gradients
 		consider_constant : list of variables
-		    expressions not to backpropagate through
+		    Expressions not to backpropagate through
 		disconnected_inputs : {'ignore', 'warn', 'raise'}
 		    Defines the behaviour if some of the variables in `wrt` are
 		    not part of the computational graph computing `cost` (or if
@@ -405,9 +432,9 @@ package theano;
 		    variables but do not know the original cost.
 		return_disconnected : {'zero', 'None', 'Disconnected'}
 		    - 'zero' : If wrt[i] is disconnected, return value i will be
-		               wrt[i].zeros_like()
+		      wrt[i].zeros_like()
 		    - 'None' : If wrt[i] is disconnected, return value i will be
-		               None
+		      None
 		    - 'Disconnected' : returns variables of type DisconnectedType
 		null_gradients : {'raise', 'return'}
 		    Defines the behaviour if some of the variables in `wrt` have a
@@ -419,12 +446,13 @@ package theano;
 		Returns
 		-------
 		variable or list/tuple of variables (matches `wrt`)
-		    symbolic expression of gradient of `cost` with respect to each
+		    Symbolic expression of gradient of `cost` with respect to each
 		    of the `wrt` terms.  If an element of `wrt` is not
 		    differentiable with respect to the output, then a zero
 		    variable is returned.
 	**/
 	static public function grad(cost:Dynamic, wrt:Dynamic, ?consider_constant:Dynamic, ?disconnected_inputs:Dynamic, ?add_names:Dynamic, ?known_grads:Dynamic, ?return_disconnected:Dynamic, ?null_gradients:Dynamic):Dynamic;
+	static public function has_handlers(logger:Dynamic):Dynamic;
 	static public var logging_default_formatter : Dynamic;
 	static public var logging_default_handler : Dynamic;
 	/**
@@ -445,13 +473,14 @@ package theano;
 		    See ``scan``.
 		go_backwards : bool
 		    Decides the direction of iteration. True means that sequences are parsed
-		    from the end towards the begining, while False is the other way around.
+		    from the end towards the beginning, while False is the other way around.
 		mode
 		    See ``scan``.
 		name
 		    See ``scan``.
 	**/
 	static public function map(fn:Dynamic, sequences:Dynamic, ?non_sequences:Dynamic, ?truncate_gradient:Dynamic, ?go_backwards:Dynamic, ?mode:Dynamic, ?name:Dynamic):Dynamic;
+	static public var p : Dynamic;
 	static public function pp(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function pprint(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var predefined_linkers : Dynamic;
@@ -478,13 +507,14 @@ package theano;
 		                      more info).
 		go_backwards : bool 
 		    Decides the direction of iteration. True means that sequences are parsed
-		    from the end towards the begining, while False is the other way around.
+		    from the end towards the beginning, while False is the other way around.
 		mode
 		    See ``scan``.
 		name
 		    See ``scan``.
 	**/
 	static public function reduce(fn:Dynamic, sequences:Dynamic, outputs_info:Dynamic, ?non_sequences:Dynamic, ?go_backwards:Dynamic, ?mode:Dynamic, ?name:Dynamic):Dynamic;
+	static public var rpath : Dynamic;
 	/**
 		This function constructs and applies a Scan op to the provided
 		arguments.
@@ -505,7 +535,7 @@ package theano;
 		    * ...
 		    * all time slices of the last sequence
 		    * all past slices of the first output
-		    * all past slices of the second otuput
+		    * all past slices of the second output
 		    * ...
 		    * all past slices of the last output
 		    * all other arguments (the list given as `non_sequences` to
@@ -727,10 +757,10 @@ package theano;
 		    iteration. But we free all those temp allocation at the end of
 		    all iterations (this is what the Theano flag allow_gc mean).
 		
-		    If you use cnmem and this scan is on GPU, the speed up from
-		    the scan allow_gc is small. If you are missing memory, disable
-		    the scan allow_gc could help you run graph that request much
-		    memory.
+		    If you use preallocate and this scan is on GPU, the speed up
+		    from the scan allow_gc is small. If you are missing memory,
+		    disable the scan allow_gc could help you run graph that
+		    request much memory.
 		
 		strict
 		    If true, all the shared variables used in ``fn`` must be provided as a
@@ -926,50 +956,46 @@ package theano;
 		        next_grad = dict(zip(grad_ends[i], next_grad))
 		        param_grads.extend(param_grad)
 		
-		:type wrt: list of variables
-		:param wrt:
-		  Gradients are computed with respect to `wrt`.
+		Parameters
+		----------
 		
-		:type end: list of variables
-		:param end:
-		  Theano variables at which to end gradient descent (they are
-		  considered constant in theano.grad).  For convenience, the
-		  gradients with respect to these variables are also returned.
+		wrt : list of variables
+		    Gradients are computed with respect to `wrt`.
 		
-		:type start: dictionary of variables
-		:param start:
-		  If not None, a dictionary mapping variables to their
-		  gradients. This is useful when the gradient on some variables
-		  are known. These are used to compute the gradients backwards up
-		  to the variables in `end` (they are used as known_grad in
-		  theano.grad).
+		end : list of variables
+		    Theano variables at which to end gradient descent (they are
+		    considered constant in theano.grad).  For convenience, the
+		    gradients with respect to these variables are also returned.
 		
-		:type cost: :class:`~theano.gof.Variable` scalar (0-dimensional) variable
-		:param cost:
-		  Additional costs for which to compute the gradients.  For
-		  example, these could be weight decay, an l1 constraint, MSE,
-		  NLL, etc. May optionally be None if start is provided.  Warning
-		  : If the gradients of `cost` with respect to any of the `start`
-		  variables is already part of the `start` dictionary, then it may
-		  be counted twice with respect to `wrt` and `end`.
+		start : dictionary of variables
+		    If not None, a dictionary mapping variables to their
+		    gradients. This is useful when the gradient on some variables
+		    are known. These are used to compute the gradients backwards up
+		    to the variables in `end` (they are used as known_grad in
+		    theano.grad).
 		
-		  .. warning::
+		cost : :class:`~theano.gof.Variable` scalar (0-dimensional) variable
+		    Additional costs for which to compute the gradients.  For
+		    example, these could be weight decay, an l1 constraint, MSE,
+		    NLL, etc. May optionally be None if start is provided.
 		
-		    If the gradients of `cost` with respect to any of the `start`
-		    variables is already part of the `start` dictionary, then it
-		    may be counted twice with respect to `wrt` and `end`.
+		    .. warning::
 		
+		        If the gradients of `cost` with respect to any of the `start`
+		        variables is already part of the `start` dictionary, then it
+		        may be counted twice with respect to `wrt` and `end`.
 		
-		:type details: bool
-		:param details:
-		  When True, additionally returns the list of gradients from
-		  `start` and of `cost`, respectively, with respect to `wrt` (not
-		  `end`).
+		details : bool
+		    When True, additionally returns the list of gradients from
+		    `start` and of `cost`, respectively, with respect to `wrt` (not
+		    `end`).
 		
-		:rtype: Tuple of 2 or 4 Lists of Variables
+		Returns
+		-------
+		Tuple of 2 or 4 Lists of Variables
+		    Returns lists of gradients with respect to `wrt` and `end`,
+		    respectively.
 		
-		:return: Returns lists of gradients with respect to `wrt` and `end`,
-		        respectively.
 		
 		.. versionadded:: 0.7
 	**/

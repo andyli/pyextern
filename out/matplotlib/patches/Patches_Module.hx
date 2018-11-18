@@ -9,7 +9,6 @@ package matplotlib.patches;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _patch_alias_map : Dynamic;
 	/**
 		find a point along a line connecting (x0, y0) -- (x1, y1) whose
 		distance from (x0, y0) is d.
@@ -17,29 +16,24 @@ package matplotlib.patches;
 	static public function _point_along_a_line(x0:Dynamic, y0:Dynamic, x1:Dynamic, y1:Dynamic, d:Dynamic):Dynamic;
 	/**
 		A helper function for the _Style class.  Given the dictionary of
-		(stylename : styleclass), return a formatted string listing all the
+		{stylename: styleclass}, return a formatted string listing all the
 		styles. Used to update the documentation.
 	**/
 	static public function _pprint_styles(_styles:Dynamic):Dynamic;
 	/**
 		Given the list of list of strings, return a string of REST table format.
 	**/
-	static public function _pprint_table(_table:Dynamic, ?leadingspace:Dynamic):Dynamic;
+	static public function _pprint_table(table:Dynamic, ?leadingspace:Dynamic):Dynamic;
+	/**
+		Class decorator that stashes a class in a (style) dictionary.
+	**/
+	static public function _register_style(style_list:Dynamic, ?cls:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		A helper function for the _Style class.  Given the dictionary of
-		(stylename : styleclass), return a string rep of the list of keys.
+		{stylename: styleclass}, return a string rep of the list of keys.
 		Used to update the documentation.
 	**/
 	static public function _simpleprint_styles(_styles:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	/**
-		Decorator for Artist.draw method. Provides routines
-		that run before and after the draw call. The before and after functions
-		are useful for changing artist-dependant renderer attributes or making
-		other setup function calls, such as starting and flushing a mixed-mode
-		renderer.
-	**/
-	static public function allow_rasterization(draw:Dynamic):Dynamic;
 	/**
 		This is a debug function to draw a rectangle around the bounding
 		box returned by
@@ -54,7 +48,6 @@ package matplotlib.patches;
 		concatenate list of paths into a single path.
 	**/
 	static public function concatenate_paths(paths:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		This is a debug function to draw a rectangle around the bounding
 		box returned by
@@ -82,12 +75,11 @@ package matplotlib.patches;
 	static public function make_path_regular(p:Dynamic):Dynamic;
 	/**
 		Being similar to get_parallels, returns control points of two quadrativ
-		bezier lines having a width roughly parralel to given one separated by
+		bezier lines having a width roughly parallel to given one separated by
 		*width*.
 	**/
 	static public function make_wedged_bezier2(bezier2:Dynamic, width:Dynamic, ?w1:Dynamic, ?wm:Dynamic, ?w2:Dynamic):Dynamic;
 	static public var patchdoc : Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		bezier : control points of the bezier segment
 		inside_closedpath : a function which returns true if the point is inside
@@ -99,5 +91,4 @@ package matplotlib.patches;
 		becomes False.
 	**/
 	static public function split_path_inout(path:Dynamic, inside:Dynamic, ?tolerence:Dynamic, ?reorder_inout:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

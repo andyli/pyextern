@@ -15,7 +15,7 @@ package tensorflow.contrib.session_bundle.exporter;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		Args:
 		  input_tensor: Tensor specifying the input to a graph.
@@ -48,6 +48,8 @@ package tensorflow.contrib.session_bundle.exporter;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -56,14 +58,14 @@ package tensorflow.contrib.session_bundle.exporter;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Creates a generic signature of name to Tensor name. (deprecated)
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		Args:
 		  name_tensor_map: Map from logical name to Tensor.
@@ -77,7 +79,7 @@ package tensorflow.contrib.session_bundle.exporter;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		This method is used as the default `assets_callback` in `Exporter.init` to
 		copy assets from the `assets_collection`. It can also be invoked directly to
@@ -96,7 +98,7 @@ package tensorflow.contrib.session_bundle.exporter;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2017-06-30.
 		Instructions for updating:
-		Please use SavedModel instead.
+		No longer supported. Switch to SavedModel immediately.
 		
 		Args:
 		  input_tensor: Tensor specifying the input to a graph.

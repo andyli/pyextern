@@ -14,7 +14,7 @@ package tensorflow.contrib.solvers.python.ops.least_squares;
 		Conjugate gradient least squares solver.
 		
 		Solves a linear least squares problem \\(||A x - rhs||_2\\) for a single
-		righ-hand side, using an iterative, matrix-free algorithm where the action of
+		right-hand side, using an iterative, matrix-free algorithm where the action of
 		the matrix A is represented by `operator`. The CGLS algorithm implicitly
 		applies the symmetric conjugate gradient algorithm to the normal equations
 		\\(A^* A x = A^* rhs\\). The iteration terminates when either
@@ -54,7 +54,7 @@ package tensorflow.contrib.solvers.python.ops.least_squares;
 		    - p: A rank-1 `Tensor` of shape `[N]`. The next descent direction.
 		    - gamma: \\(||A^* r||_2^2\\)
 	**/
-	static public function cgls(operator:Dynamic, rhs:Dynamic, ?tol:Dynamic, ?max_iter:Dynamic, ?name:Dynamic):Dynamic;
+	static public function cgls(_operator:Dynamic, rhs:Dynamic, ?tol:Dynamic, ?max_iter:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

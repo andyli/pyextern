@@ -11,7 +11,6 @@ package scipy.sparse.linalg.matfuncs;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _count_nonzero(A:Dynamic):Dynamic;
 	/**
 		A helper function for expm_2009.
 		
@@ -231,6 +230,24 @@ package scipy.sparse.linalg.matfuncs;
 		       "A New Scaling and Squaring Algorithm for the Matrix Exponential."
 		       SIAM Journal on Matrix Analysis and Applications.
 		       31 (3). pp. 970-989. ISSN 1095-7162
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import expm
+		>>> A = csc_matrix([[1, 0, 0], [0, 2, 0], [0, 0, 3]])
+		>>> A.todense()
+		matrix([[1, 0, 0],
+		        [0, 2, 0],
+		        [0, 0, 3]], dtype=int64)
+		>>> Aexp = expm(A)
+		>>> Aexp
+		<3x3 sparse matrix of type '<class 'numpy.float64'>'
+		    with 3 stored elements in Compressed Sparse Column format>
+		>>> Aexp.todense()
+		matrix([[  2.71828183,   0.        ,   0.        ],
+		        [  0.        ,   7.3890561 ,   0.        ],
+		        [  0.        ,   0.        ,  20.08553692]])
 	**/
 	static public function expm(A:Dynamic):Dynamic;
 	/**
@@ -252,9 +269,52 @@ package scipy.sparse.linalg.matfuncs;
 		to be non-sparse, it will likely be faster to convert `A` to dense and use
 		scipy.linalg.inv.
 		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import inv
+		>>> A = csc_matrix([[1., 0.], [1., 2.]])
+		>>> Ainv = inv(A)
+		>>> Ainv
+		<2x2 sparse matrix of type '<class 'numpy.float64'>'
+		    with 3 stored elements in Compressed Sparse Column format>
+		>>> A.dot(Ainv)
+		<2x2 sparse matrix of type '<class 'numpy.float64'>'
+		    with 2 stored elements in Compressed Sparse Column format>
+		>>> A.dot(Ainv).todense()
+		matrix([[ 1.,  0.],
+		        [ 0.,  1.]])
+		
 		.. versionadded:: 0.12.0
 	**/
 	static public function inv(A:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
@@ -305,8 +365,8 @@ package scipy.sparse.linalg.matfuncs;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -319,8 +379,10 @@ package scipy.sparse.linalg.matfuncs;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -343,7 +405,7 @@ package scipy.sparse.linalg.matfuncs;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
@@ -392,6 +454,24 @@ package scipy.sparse.linalg.matfuncs;
 		Notes
 		-----
 		.. versionadded:: 0.9.0
+		
+		Examples
+		--------
+		Solve the lower triangular system a x = b, where::
+		
+		         [3  0  0  0]       [4]
+		    a =  [2  1  0  0]   b = [2]
+		         [1  0  1  0]       [4]
+		         [1  1  1  1]       [2]
+		
+		>>> from scipy.linalg import solve_triangular
+		>>> a = np.array([[3, 0, 0, 0], [2, 1, 0, 0], [1, 0, 1, 0], [1, 1, 1, 1]])
+		>>> b = np.array([4, 2, 4, 2])
+		>>> x = solve_triangular(a, b, lower=True)
+		>>> x
+		array([ 1.33333333, -0.66666667,  2.66666667, -1.33333333])
+		>>> a.dot(x)  # Check the result
+		array([ 4.,  2.,  4.,  2.])
 	**/
 	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -421,7 +501,7 @@ package scipy.sparse.linalg.matfuncs;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 		>>> sparse.eye(3, dtype=np.int8)
-		<3x3 sparse matrix of type '<type 'numpy.int8'>'
+		<3x3 sparse matrix of type '<class 'numpy.int8'>'
 		    with 3 stored elements (1 diagonals) in DIAgonal format>
 	**/
 	static public function speye(m:Dynamic, ?n:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?format:Dynamic):Dynamic;
@@ -461,6 +541,16 @@ package scipy.sparse.linalg.matfuncs;
 		resulting X is dense, the construction of this sparse result will be
 		relatively expensive.  In that case, consider converting A to a dense
 		matrix and using scipy.linalg.solve or its variants.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import spsolve
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> B = csc_matrix([[2, 0], [-1, 0], [2, 0]], dtype=float)
+		>>> x = spsolve(A, B)
+		>>> np.allclose(A.dot(x).todense(), B.todense())
+		True
 	**/
 	static public function spsolve(A:Dynamic, b:Dynamic, ?permc_spec:Dynamic, ?use_umfpack:Dynamic):Dynamic;
 }

@@ -19,6 +19,8 @@ package numpy.lib.twodim_base;
 		
 		Calculate the absolute value element-wise.
 		
+		``np.abs`` is a shorthand for this function.
+		
 		Parameters
 		----------
 		x : array_like
@@ -41,6 +43,7 @@ package numpy.lib.twodim_base;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -92,7 +95,8 @@ package numpy.lib.twodim_base;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -169,7 +173,7 @@ package numpy.lib.twodim_base;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -233,9 +237,9 @@ package numpy.lib.twodim_base;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -383,13 +387,14 @@ package numpy.lib.twodim_base;
 		Returns
 		-------
 		array_of_diagonals : ndarray
-		    If `a` is 2-D and not a matrix, a 1-D array of the same type as `a`
-		    containing the diagonal is returned. If `a` is a matrix, a 1-D
-		    array containing the diagonal is returned in order to maintain
-		    backward compatibility.  If the dimension of `a` is greater than
-		    two, then an array of diagonals is returned, "packed" from
-		    left-most dimension to right-most (e.g., if `a` is 3-D, then the
-		    diagonals are "packed" along rows).
+		    If `a` is 2-D, then a 1-D array containing the diagonal and of the
+		    same type as `a` is returned unless `a` is a `matrix`, in which case
+		    a 1-D array rather than a (2-D) `matrix` is returned in order to
+		    maintain backward compatibility.
+		    
+		    If ``a.ndim > 2``, then the dimensions specified by `axis1` and `axis2`
+		    are removed, and a new axis inserted at the end corresponding to the
+		    diagonal.
 		
 		Raises
 		------
@@ -447,10 +452,11 @@ package numpy.lib.twodim_base;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -463,7 +469,11 @@ package numpy.lib.twodim_base;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -498,6 +508,11 @@ package numpy.lib.twodim_base;
 		  to a lower diagonal.
 		dtype : data-type, optional
 		  Data-type of the returned array.
+		order : {'C', 'F'}, optional
+		    Whether the output should be stored in row-major (C-style) or
+		    column-major (Fortran-style) order in memory.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -520,7 +535,7 @@ package numpy.lib.twodim_base;
 		       [ 0.,  0.,  1.],
 		       [ 0.,  0.,  0.]])
 	**/
-	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Flip array in the left/right direction.
 		
@@ -637,7 +652,9 @@ package numpy.lib.twodim_base;
 		Returns
 		-------
 		out : bool or ndarray of bool
-		    Array of bools, or a single bool if `x1` and `x2` are scalars.
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -646,7 +663,7 @@ package numpy.lib.twodim_base;
 		Examples
 		--------
 		>>> np.greater_equal([4, 2, 1], [2, 2, 2])
-		array([ True, True, False], dtype=bool)
+		array([ True, True, False])
 	**/
 	static public function greater_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -678,9 +695,14 @@ package numpy.lib.twodim_base;
 		    (if not specified explicitly in the `bins` parameters):
 		    ``[[xmin, xmax], [ymin, ymax]]``. All values outside of this range
 		    will be considered outliers and not tallied in the histogram.
+		density : bool, optional
+		    If False, the default, returns the number of samples in each bin.
+		    If True, returns the probability *density* function at the bin,
+		    ``bin_count / sample_count / bin_area``.
 		normed : bool, optional
-		    If False, returns the number of samples in each bin. If True,
-		    returns the bin density ``bin_count / sample_count / bin_area``.
+		    An alias for the density argument that behaves identically. To avoid
+		    confusion with the broken normed argument to `histogram`, `density`
+		    should be preferred.
 		weights : array_like, shape(N,), optional
 		    An array of values ``w_i`` weighing each sample ``(x_i, y_i)``.
 		    Weights are normalized to 1 if `normed` is True. If `normed` is
@@ -759,7 +781,7 @@ package numpy.lib.twodim_base;
 		>>> ax.images.append(im)
 		>>> plt.show()
 	**/
-	static public function histogram2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic):Dynamic;
+	static public function histogram2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Dynamic;
 	static public var i1 : Dynamic;
 	static public var i2 : Dynamic;
 	static public var i4 : Dynamic;
@@ -852,7 +874,8 @@ package numpy.lib.twodim_base;
 		-------
 		y : ndarray
 		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    both `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -872,6 +895,81 @@ package numpy.lib.twodim_base;
 	**/
 	static public function multiply(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Return the indices of the elements that are non-zero.
+		
+		Returns a tuple of arrays, one for each dimension of `a`,
+		containing the indices of the non-zero elements in that
+		dimension. The values in `a` are always tested and returned in
+		row-major, C-style order. The corresponding non-zero
+		values can be obtained with::
+		
+		    a[nonzero(a)]
+		
+		To group the indices by element, rather than dimension, use::
+		
+		    transpose(nonzero(a))
+		
+		The result of this is always a 2-D array, with a row for
+		each non-zero element.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		
+		Returns
+		-------
+		tuple_of_arrays : tuple
+		    Indices of elements that are non-zero.
+		
+		See Also
+		--------
+		flatnonzero :
+		    Return indices that are non-zero in the flattened version of the input
+		    array.
+		ndarray.nonzero :
+		    Equivalent ndarray method.
+		count_nonzero :
+		    Counts the number of non-zero elements in the input array.
+		
+		Examples
+		--------
+		>>> x = np.array([[1,0,0], [0,2,0], [1,1,0]])
+		>>> x
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [1, 1, 0]])
+		>>> np.nonzero(x)
+		(array([0, 1, 2, 2]), array([0, 1, 0, 1]))
+		
+		>>> x[np.nonzero(x)]
+		array([1, 2, 1, 1])
+		>>> np.transpose(np.nonzero(x))
+		array([[0, 0],
+		       [1, 1],
+		       [2, 0],
+		       [2, 1])
+		
+		A common use for ``nonzero`` is to find the indices of an array, where
+		a condition is True.  Given an array `a`, the condition `a` > 3 is a
+		boolean array and since False is interpreted as 0, np.nonzero(a > 3)
+		yields the indices of the `a` where the condition is true.
+		
+		>>> a = np.array([[1,2,3],[4,5,6],[7,8,9]])
+		>>> a > 3
+		array([[False, False, False],
+		       [ True,  True,  True],
+		       [ True,  True,  True]])
+		>>> np.nonzero(a > 3)
+		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
+		
+		The ``nonzero`` method of the boolean array can also be called.
+		
+		>>> (a > 3).nonzero()
+		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
+	**/
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
+	/**
 		Return a new array of given shape and type, filled with ones.
 		
 		Parameters
@@ -881,9 +979,10 @@ package numpy.lib.twodim_base;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -892,14 +991,18 @@ package numpy.lib.twodim_base;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -920,7 +1023,7 @@ package numpy.lib.twodim_base;
 		kind to which both ``type1`` and ``type2`` may be safely cast.
 		The returned data type is always in native byte order.
 		
-		This function is symmetric and associative.
+		This function is symmetric, but rarely associative.
 		
 		Parameters
 		----------
@@ -961,6 +1064,14 @@ package numpy.lib.twodim_base;
 		
 		>>> np.promote_types('i4', 'S8')
 		dtype('S11')
+		
+		An example of a non-associative case:
+		
+		>>> p = np.promote_types
+		>>> p('S', p('i1', 'u1'))
+		dtype('S6')
+		>>> p(p('S', 'i1'), 'u1')
+		dtype('S4')
 	**/
 	static public function promote_types(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1433,7 +1544,7 @@ package numpy.lib.twodim_base;
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
-		       [False,  True, False]], dtype=bool)
+		       [False,  True, False]])
 		>>> np.where(ix)
 		(array([1, 1, 2]), array([0, 1, 1]))
 	**/
@@ -1445,14 +1556,15 @@ package numpy.lib.twodim_base;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1462,17 +1574,16 @@ package numpy.lib.twodim_base;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

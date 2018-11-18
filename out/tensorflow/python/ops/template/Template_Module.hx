@@ -37,6 +37,8 @@ package tensorflow.python.ops.template;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -45,7 +47,7 @@ package tensorflow.python.ops.template;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Given an arbitrary function, wrap it so that it does variable sharing.
@@ -136,22 +138,65 @@ package tensorflow.python.ops.template;
 		    template of the same scope/unique_name already exists and reuse is false,
 		    an error is raised. Defaults to None.
 		  custom_getter_: Optional custom getter for variables used in `func_`. See
-		    the @{tf.get_variable} `custom_getter` documentation for
+		    the `tf.get_variable` `custom_getter` documentation for
 		    more information.
 		  **kwargs: Keyword arguments to apply to `func_`.
 		
 		Returns:
 		  A function to encapsulate a set of variables which should be created once
-		  and reused. An enclosing scope will created, either where `make_template`
-		  is called, or wherever the result is called, depending on the value of
+		  and reused. An enclosing scope will be created either when `make_template`
+		  is called or when the result is called, depending on the value of
 		  `create_scope_now_`. Regardless of the value, the first time the template
 		  is called it will enter the scope with no reuse, and call `func_` to create
 		  variables, which are guaranteed to be unique. All subsequent calls will
 		  re-enter the scope and reuse those variables.
 		
 		Raises:
-		  ValueError: if the name is None.
+		  ValueError: if `name_` is None.
 	**/
 	static public function make_template(name_:Dynamic, func_:Dynamic, ?create_scope_now_:Dynamic, ?unique_name_:Dynamic, ?custom_getter_:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Make a template, optionally compiling func_ into a graph function.
+		
+		See `make_template` for full documentation.
+		
+		Args:
+		  name_: A name for the scope created by this template. If necessary, the name
+		    will be made unique by appending `_N` to the name.
+		  func_: The function to wrap.
+		  create_scope_now_: Boolean controlling whether the scope should be created
+		    when the template is constructed or when the template is called. Default
+		    is False, meaning the scope is created when the template is called.
+		  unique_name_: When used, it overrides name_ and is not made unique. If a
+		    template of the same scope/unique_name already exists and reuse is false,
+		    an error is raised. Defaults to None. If executing eagerly, must be None.
+		  custom_getter_: Optional custom getter for variables used in `func_`. See
+		    the `tf.get_variable` `custom_getter` documentation for
+		    more information.
+		  create_graph_function_: When True, `func_` will be executed as a graph
+		    function. This implies that `func_` must satisfy the properties that
+		    `function.defun` requires of functions: See the documentation of
+		    `function.defun` for details. When executing eagerly, setting this flag to
+		    True can improve performance. Regardless of whether eager execution is
+		    enabled, enabling this flag gives the caller access to graph-function
+		    semantics, i.e., accesses to variables are totally ordered and
+		    side-effecting ops are not pruned.
+		  **kwargs: Keyword arguments to apply to `func_`.
+		
+		Returns:
+		  A function to encapsulate a set of variables which should be created once
+		  and reused. An enclosing scope will be created either when `make_template`
+		  is called or when the result is called, depending on the value of
+		  `create_scope_now_`. Regardless of the value, the first time the template
+		  is called it will enter the scope with no reuse, and call `func_` to create
+		  variables, which are guaranteed to be unique. All subsequent calls will
+		  re-enter the scope and reuse those variables.
+		
+		Raises:
+		  ValueError: if `name_` is None.
+		  ValueError: if `unique_name_` is not None and eager execution is enabled.
+	**/
+	static public function make_template_internal(name_:Dynamic, func_:Dynamic, ?create_scope_now_:Dynamic, ?unique_name_:Dynamic, ?custom_getter_:Dynamic, ?create_graph_function_:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

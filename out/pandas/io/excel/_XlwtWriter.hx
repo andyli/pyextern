@@ -15,7 +15,7 @@ package pandas.io.excel;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -37,6 +37,7 @@ package pandas.io.excel;
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __fspath__():Dynamic;
 	/**
 		Return self>=value.
 	**/
@@ -68,7 +69,7 @@ package pandas.io.excel;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +120,7 @@ package pandas.io.excel;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -151,6 +152,20 @@ package pandas.io.excel;
 		    font: bold on;                     border: top thin, right thin, bottom thin, left thin;                     align: horiz center;
 	**/
 	static public function _style_to_xlwt(item:Dynamic, ?firstlevel:Dynamic, ?field_sep:Dynamic, ?line_sep:Dynamic):Dynamic;
+	/**
+		Convert numpy types to Python types for the Excel writers.
+		
+		Parameters
+		----------
+		val : object
+		    Value to be written into cells
+		
+		Returns
+		-------
+		Tuple with the first element being the converted value and the second
+		    being an optional format
+	**/
+	public function _value_with_fmt(val:Dynamic):Dynamic;
 	static public var book : Dynamic;
 	/**
 		checks that path's extension against the Writer's supported
@@ -170,12 +185,12 @@ package pandas.io.excel;
 	public function save():Dynamic;
 	static public var supported_extensions : Dynamic;
 	/**
-		Write given formated cells into Excel an excel sheet
+		Write given formatted cells into Excel an excel sheet
 		
 		Parameters
 		----------
 		cells : generator
-		    cell of formated data to save to Excel sheet
+		    cell of formatted data to save to Excel sheet
 		sheet_name : string, default None
 		    Name of Excel sheet, if None, then use self.cur_sheet
 		startrow: upper left cell row to dump data frame

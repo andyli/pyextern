@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.sparse.linalg._expm_multiply;
 @:pythonImport("scipy.sparse.linalg._expm_multiply", "LazyOperatorNormInfo") extern class LazyOperatorNormInfo {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -48,9 +48,11 @@ package scipy.sparse.linalg._expm_multiply;
 		    The exact 1-norm of A.
 		ell : int, optional
 		    A technical parameter controlling norm estimation quality.
+		scale : int, optional
+		    If specified, return the norms of scale*A instead of A.
 	**/
 	@:native("__init__")
-	public function ___init__(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic):Dynamic;
+	public function ___init__(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic, ?scale:Dynamic):Dynamic;
 	/**
 		Provide the operator and some norm-related information.
 		
@@ -62,15 +64,17 @@ package scipy.sparse.linalg._expm_multiply;
 		    The exact 1-norm of A.
 		ell : int, optional
 		    A technical parameter controlling norm estimation quality.
+		scale : int, optional
+		    If specified, return the norms of scale*A instead of A.
 	**/
-	public function new(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic):Void;
+	public function new(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic, ?scale:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +125,7 @@ package scipy.sparse.linalg._expm_multiply;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -138,4 +142,8 @@ package scipy.sparse.linalg._expm_multiply;
 		Compute the exact 1-norm.
 	**/
 	public function onenorm():Dynamic;
+	/**
+		Set the scale parameter.
+	**/
+	public function set_scale(scale:Dynamic):Dynamic;
 }

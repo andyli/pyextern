@@ -5,7 +5,9 @@ package tensorflow.python.ops.losses.losses_impl;
 	static public var NONE : Dynamic;
 	static public var SUM : Dynamic;
 	static public var SUM_BY_NONZERO_WEIGHTS : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var SUM_OVER_BATCH_SIZE : Dynamic;
+	static public var SUM_OVER_NONZERO_WEIGHTS : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +58,7 @@ package tensorflow.python.ops.losses.losses_impl;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,11 +109,13 @@ package tensorflow.python.ops.losses.losses_impl;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	static public function all():Dynamic;
 	static public function validate(key:Dynamic):Dynamic;
 }

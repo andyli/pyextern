@@ -39,10 +39,16 @@ package theano.sandbox.neighbours;
 		    By default it is equal to `neib_shape` in other words, the patches are
 		    disjoint. When the step is greater than `neib_shape`, some elements are
 		    omitted. When None, this is the same as neib_shape (patch are disjoint).
-		mode : {'valid', 'ignore_borders', 'wrap_centered'}
+		mode : {'valid', 'ignore_borders', 'wrap_centered', 'half'}
 		    ``valid``
 		        Requires an input that is a multiple of the
 		        pooling factor (in each direction).
+		    ``half``
+		        Equivalent to 'valid' if we pre-pad with zeros the input on
+		        each side by (neib_shape[0]//2, neib_shape[1]//2)
+		    ``full``
+		        Equivalent to 'valid' if we pre-pad with zeros the input on
+		        each side by (neib_shape[0] - 1, neib_shape[1] - 1)
 		    ``ignore_borders``
 		        Same as valid, but will ignore the borders if the shape(s) of
 		        the input is not a multiple of the pooling factor(s).

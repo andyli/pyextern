@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.util._doctools;
 @:pythonImport("pandas.util._doctools", "TablePlotter") extern class TablePlotter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package pandas.util._doctools;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package pandas.util._doctools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -113,13 +113,13 @@ package pandas.util._doctools;
 	**/
 	public function _conv(data:Dynamic):Dynamic;
 	/**
-		Calcurate appropriate figure size based on left and right data
+		Calculate appropriate figure size based on left and right data.
 	**/
 	public function _get_cells(left:Dynamic, right:Dynamic, vertical:Dynamic):Dynamic;
 	public function _insert_index(data:Dynamic):Dynamic;
 	public function _make_table(ax:Dynamic, df:Dynamic, title:Dynamic, ?height:Dynamic):Dynamic;
 	/**
-		Calcurate table chape considering index levels
+		Calculate table chape considering index levels.
 	**/
 	public function _shape(df:Dynamic):Dynamic;
 	/**

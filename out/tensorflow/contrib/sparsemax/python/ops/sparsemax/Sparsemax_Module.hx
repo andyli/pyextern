@@ -17,7 +17,7 @@ package tensorflow.contrib.sparsemax.python.ops.sparsemax;
 		Computes sparsemax activations [1].
 		
 		For each batch `i` and class `j` we have
-		  sparsemax[i, j] = max(logits[i, j] - tau(logits[i, :]), 0)
+		  $$sparsemax[i, j] = max(logits[i, j] - tau(logits[i, :]), 0)$$
 		
 		[1]: https://arxiv.org/abs/1602.02068
 		

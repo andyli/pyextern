@@ -21,16 +21,16 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		log1p(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		tanh(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the natural logarithm of one plus the input array, element-wise.
+		Compute hyperbolic tangent element-wise.
 		
-		Calculates ``log(1 + x)``.
+		Equivalent to ``np.sinh(x)/np.cosh(x)`` or ``-1j * np.tan(1j*x)``.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input values.
+		    Input array.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -46,42 +46,39 @@ package scipy.sparse.data;
 		Returns
 		-------
 		y : ndarray
-		    Natural logarithm of `1 + x`, element-wise.
-		
-		See Also
-		--------
-		expm1 : ``exp(x) - 1``, the inverse of `log1p`.
+		    The corresponding hyperbolic tangent values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
-		For real-valued input, `log1p` is accurate also for `x` so small
-		that `1 + x == 1` in floating-point accuracy.
-		
-		Logarithm is a multivalued function: for each `x` there is an infinite
-		number of `z` such that `exp(z) = 1 + x`. The convention is to return
-		the `z` whose imaginary part lies in `[-pi, pi]`.
-		
-		For real-valued input data types, `log1p` always returns real output.
-		For each value that cannot be expressed as a real number or infinity,
-		it yields ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `log1p` is a complex analytical function that
-		has a branch cut `[-inf, -1]` and is continuous from above on it.
-		`log1p` handles the floating-point negative zero as an infinitesimal
-		negative number, conforming to the C99 standard.
+		If `out` is provided, the function writes the result into it,
+		and returns a reference to `out`.  (See Examples)
 		
 		References
 		----------
-		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+		.. [1] M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
+		       New York, NY: Dover, 1972, pg. 83.
+		       http://www.math.sfu.ca/~cbm/aands/
+		
+		.. [2] Wikipedia, "Hyperbolic function",
+		       http://en.wikipedia.org/wiki/Hyperbolic_function
 		
 		Examples
 		--------
-		>>> np.log1p(1e-99)
-		1e-99
-		>>> np.log(1 + 1e-99)
-		0.0
+		>>> np.tanh((0, np.pi*1j, np.pi*1j/2))
+		array([ 0. +0.00000000e+00j,  0. -1.22460635e-16j,  0. +1.63317787e+16j])
+		
+		>>> # Example of providing the optional output parameter illustrating
+		>>> # that what is returned is a reference to said parameter
+		>>> out2 = np.tanh([0.1], out1)
+		>>> out2 is out1
+		True
+		
+		>>> # Example of ValueError due to provision of shape mis-matched `out`
+		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
+		Traceback (most recent call last):
+		  File "<stdin>", line 1, in <module>
+		ValueError: invalid return array shape
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

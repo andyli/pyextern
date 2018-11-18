@@ -16,6 +16,10 @@ package tensorflow.contrib.solvers.python.ops.util;
 	static public function create_operator(matrix:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function dot(x:Dynamic, y:Dynamic):Dynamic;
+	/**
+		Creates a linear operator from a rank-2 identity tensor.
+	**/
+	static public function identity_operator(matrix:Dynamic):Dynamic;
 	static public function l2norm(v:Dynamic):Dynamic;
 	static public function l2norm_squared(v:Dynamic):Dynamic;
 	static public function l2normalize(v:Dynamic):Dynamic;

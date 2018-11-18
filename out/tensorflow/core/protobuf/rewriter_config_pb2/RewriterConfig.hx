@@ -1,12 +1,15 @@
 /* This file is generated, do not edit! */
 package tensorflow.core.protobuf.rewriter_config_pb2;
 @:pythonImport("tensorflow.core.protobuf.rewriter_config_pb2", "RewriterConfig") extern class RewriterConfig {
+	static public var AGGRESSIVE : Dynamic;
+	static public var ARITHMETIC_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	static public var AUTO_PARALLEL_FIELD_NUMBER : Dynamic;
 	/**
 		Returns the size of the message in bytes.
 	**/
 	public function ByteSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var CONSTANT_FOLDING_FIELD_NUMBER : Dynamic;
+	static public var CUSTOM_OPTIMIZERS_FIELD_NUMBER : Dynamic;
 	/**
 		Clears the message.
 	**/
@@ -23,7 +26,17 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		Copies a protocol message into the current message.
 	**/
 	public function CopyFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		A ProtocolMessage
+	**/
+	public function CustomGraphOptimizer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var DEBUG_STRIPPER_FIELD_NUMBER : Dynamic;
+	static public var DEFAULT : Dynamic;
+	static public var DEFAULT_MEM_OPT : Dynamic;
+	static public var DEFAULT_NUM_ITERS : Dynamic;
+	static public var DEPENDENCY_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	static public var DESCRIPTOR : Dynamic;
+	static public var DISABLE_META_OPTIMIZER_FIELD_NUMBER : Dynamic;
 	static public var DISABLE_MODEL_PRUNING_FIELD_NUMBER : Dynamic;
 	/**
 		Discards the unknown fields.
@@ -33,6 +46,7 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		Extension dict
 	**/
 	public var Extensions : Dynamic;
+	static public var FUNCTION_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	/**
 		Finds unset required fields.
 	**/
@@ -40,7 +54,8 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var HEURISTICS : Dynamic;
 	/**
 		Checks if a message field is set.
 	**/
@@ -53,12 +68,17 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		Checks if all required fields of a protocol message are set.
 	**/
 	public function IsInitialized(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var LAYOUT_OPTIMIZER_FIELD_NUMBER : Dynamic;
+	static public var LOOP_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	/**
 		Lists all set fields of a message.
 	**/
 	public function ListFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var MANUAL : Dynamic;
 	static public var MEMORY_OPTIMIZATION_FIELD_NUMBER : Dynamic;
+	static public var MEMORY_OPTIMIZER_TARGET_NODE_NAME_SCOPE_FIELD_NUMBER : Dynamic;
+	static public var META_OPTIMIZER_ITERATIONS_FIELD_NUMBER : Dynamic;
+	static public var MIN_GRAPH_NODES_FIELD_NUMBER : Dynamic;
 	static public var MemOptType : Dynamic;
 	/**
 		Merges a protocol message into the current message.
@@ -69,16 +89,27 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 	**/
 	public function MergeFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var NO_MEM_OPT : Dynamic;
+	static public var NumIterationsType : Dynamic;
+	static public var OFF : Dynamic;
+	static public var ON : Dynamic;
+	static public var ONE : Dynamic;
 	static public var OPTIMIZERS_FIELD_NUMBER : Dynamic;
-	static public var OPTIMIZE_TENSOR_LAYOUT_FIELD_NUMBER : Dynamic;
+	static public var PIN_TO_HOST_OPTIMIZATION_FIELD_NUMBER : Dynamic;
 	/**
 		Parses a serialized message into the current message.
 	**/
 	public function ParseFromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var RECOMPUTATION_HEURISTICS : Dynamic;
+	static public var REMAPPING_FIELD_NUMBER : Dynamic;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var SCHEDULING_HEURISTICS : Dynamic;
+	static public var SCOPED_ALLOCATOR_OPTIMIZATION_FIELD_NUMBER : Dynamic;
+	static public var SCOPED_ALLOCATOR_OPTS_FIELD_NUMBER : Dynamic;
+	static public var SHAPE_OPTIMIZATION_FIELD_NUMBER : Dynamic;
+	static public var SWAPPING_HEURISTICS : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
 	**/
@@ -91,6 +122,8 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		Sets the has bit of the given field in its parent message.
 	**/
 	public function SetInParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var TWO : Dynamic;
+	static public var Toggle : Dynamic;
 	/**
 		Returns the name of the field set inside a oneof, or None if no field is set.
 	**/
@@ -138,7 +171,7 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -193,7 +226,7 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -249,7 +282,7 @@ package tensorflow.core.protobuf.rewriter_config_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/

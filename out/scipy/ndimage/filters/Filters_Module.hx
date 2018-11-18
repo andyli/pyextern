@@ -10,19 +10,13 @@ package scipy.ndimage.filters;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _axis_doc : Dynamic;
 	static public function _correlate_or_convolve(input:Dynamic, weights:Dynamic, output:Dynamic, mode:Dynamic, cval:Dynamic, origin:Dynamic, convolution:Dynamic):Dynamic;
-	static public var _cval_doc : Dynamic;
-	static public var _extra_arguments_doc : Dynamic;
-	static public var _extra_keywords_doc : Dynamic;
-	static public var _input_doc : Dynamic;
+	/**
+		Computes a 1D Gaussian convolution kernel.
+	**/
+	static public function _gaussian_kernel1d(sigma:Dynamic, order:Dynamic, radius:Dynamic):Dynamic;
 	static public function _min_or_max_filter(input:Dynamic, size:Dynamic, footprint:Dynamic, structure:Dynamic, output:Dynamic, mode:Dynamic, cval:Dynamic, origin:Dynamic, minimum:Dynamic):Dynamic;
-	static public var _mode_doc : Dynamic;
-	static public var _mode_multiple_doc : Dynamic;
-	static public var _origin_doc : Dynamic;
-	static public var _output_doc : Dynamic;
 	static public function _rank_filter(input:Dynamic, rank:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic, ?operation:Dynamic):Dynamic;
-	static public var _size_foot_doc : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Multidimensional convolution.
@@ -32,24 +26,47 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		weights : array_like
 		    Array of weights, same number of dimensions as input
-		output : ndarray, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as
-		    compared to input array to avoid aliasing errors.  
-		mode : {'reflect','constant','nearest','mirror', 'wrap'}, optional
-		    the `mode` parameter determines how the array borders are
-		    handled. For 'constant' mode, values beyond borders are set to be
-		    `cval`. Default is 'reflect'.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
+		mode : str or sequence, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
-		origin : array_like, optional
-		    The `origin` parameter controls the placement of the filter, 
-		    relative to the centre of the current element of the input.  
-		    Default of 0 is equivalent to ``(0,)*input.ndim``.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		Returns
 		-------
@@ -142,30 +159,56 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		weights : ndarray
 		    One-dimensional sequence of numbers.
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right.
 		
 		Returns
 		-------
 		convolve1d : ndarray
 		    Convolved array with same shape as input
+		
+		Examples
+		--------
+		>>> from scipy.ndimage import convolve1d
+		>>> convolve1d([2, 8, 0, 4, 1, 9, 9, 0], weights=[1, 3])
+		array([14, 24,  4, 13, 12, 36, 27,  0])
 	**/
 	static public function convolve1d(input:Dynamic, weights:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
@@ -175,24 +218,48 @@ package scipy.ndimage.filters;
 		
 		Parameters
 		----------
-		input : array-like
-		    input array to filter
+		input : array_like
+		    The input array.
 		weights : ndarray
 		    array of weights, same number of dimensions as input
-		output : array, optional
-		    The ``output`` parameter passes an array in which to store the
-		    filter output. Output array should have different name as
-		    compared to input array to avoid aliasing errors.
-		mode : {'reflect','constant','nearest','mirror', 'wrap'}, optional
-		    The ``mode`` parameter determines how the array borders are
-		    handled, where ``cval`` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
+		mode : str or sequence, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
-		    Value to fill past edges of input if ``mode`` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The ``origin`` parameter controls the placement of the filter.
-		    Default 0
+		    Value to fill past edges of input if `mode` is 'constant'. Default
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		See Also
 		--------
@@ -208,63 +275,102 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		weights : array
 		    One-dimensional sequence of numbers.
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right.
+		
+		Examples
+		--------
+		>>> from scipy.ndimage import correlate1d
+		>>> correlate1d([2, 8, 0, 4, 1, 9, 9, 0], weights=[1, 3])
+		array([ 8, 26,  8, 12,  7, 28, 36,  9])
 	**/
 	static public function correlate1d(input:Dynamic, weights:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	static public var docdict : Dynamic;
-	static public function docfiller(f:Dynamic):Dynamic;
 	/**
 		Multidimensional Gaussian filter.
 		
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		sigma : scalar or sequence of scalars
 		    Standard deviation for Gaussian kernel. The standard
 		    deviations of the Gaussian filter are given for each axis as a
 		    sequence, or as a single number, in which case it is equal for
 		    all axes.
-		order : {0, 1, 2, 3} or sequence from same set, optional
+		order : int or sequence of ints, optional
 		    The order of the filter along each axis is given as a sequence
 		    of integers, or as a single number.  An order of 0 corresponds
-		    to convolution with a Gaussian kernel. An order of 1, 2, or 3
-		    corresponds to convolution with the first, second or third
-		    derivatives of a Gaussian. Higher order derivatives are not
-		    implemented
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		    to convolution with a Gaussian kernel. A positive order
+		    corresponds to convolution with that derivative of a Gaussian.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		truncate : float
 		    Truncate the filter at this many standard deviations.
 		    Default is 4.0.
@@ -319,27 +425,44 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		sigma : scalar
 		    standard deviation for Gaussian kernel
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		order : {0, 1, 2, 3}, optional
+		order : int, optional
 		    An order of 0 corresponds to convolution with a Gaussian
-		    kernel. An order of 1, 2, or 3 corresponds to convolution with
-		    the first, second or third derivatives of a Gaussian. Higher
-		    order derivatives are not implemented
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		    kernel. A positive order corresponds to convolution with
+		    that derivative of a Gaussian.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		truncate : float, optional
 		    Truncate the filter at this many standard deviations.
 		    Default is 4.0.
@@ -347,6 +470,25 @@ package scipy.ndimage.filters;
 		Returns
 		-------
 		gaussian_filter1d : ndarray
+		
+		Examples
+		--------
+		>>> from scipy.ndimage import gaussian_filter1d
+		>>> gaussian_filter1d([1.0, 2.0, 3.0, 4.0, 5.0], 1)
+		array([ 1.42704095,  2.06782203,  3.        ,  3.93217797,  4.57295905])
+		>>> gaussian_filter1d([1.0, 2.0, 3.0, 4.0, 5.0], 4)
+		array([ 2.91948343,  2.95023502,  3.        ,  3.04976498,  3.08051657])
+		>>> import matplotlib.pyplot as plt
+		>>> np.random.seed(280490)
+		>>> x = np.random.randn(101).cumsum()
+		>>> y3 = gaussian_filter1d(x, 3)
+		>>> y6 = gaussian_filter1d(x, 6)
+		>>> plt.plot(x, 'k', label='original data')
+		>>> plt.plot(y3, '--', label='filtered, sigma=3')
+		>>> plt.plot(y6, ':', label='filtered, sigma=6')
+		>>> plt.legend()
+		>>> plt.grid()
+		>>> plt.show()
 	**/
 	static public function gaussian_filter1d(input:Dynamic, sigma:Dynamic, ?axis:Dynamic, ?order:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?truncate:Dynamic):Dynamic;
 	/**
@@ -355,25 +497,42 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		sigma : scalar or sequence of scalars
 		    The standard deviations of the Gaussian filter are given for
 		    each axis as a sequence, or as a single number, in which case
 		    it is equal for all axes..
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		Extra keyword arguments will be passed to gaussian_filter().
 		
 		Returns
@@ -402,25 +561,42 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		sigma : scalar or sequence of scalars
 		    The standard deviations of the Gaussian filter are given for
 		    each axis as a sequence, or as a single number, in which case
 		    it is equal for all axes.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		Extra keyword arguments will be passed to gaussian_filter().
 		
 		Examples
@@ -443,7 +619,7 @@ package scipy.ndimage.filters;
 	**/
 	static public function gaussian_laplace(input:Dynamic, sigma:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Calculates a multi-dimensional filter using the given function.
+		Calculate a multi-dimensional filter using the given function.
 		
 		At each element the provided function is called. The input values
 		within the filter footprint at that element are passed to the function
@@ -452,11 +628,11 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		function : {callable, scipy.LowLevelCallable}
 		    Function to apply at each element.
 		size : scalar or tuple, optional
-		    See footprint, below
+		    See footprint, below. Ignored if footprint is given.
 		footprint : array, optional
 		    Either `size` or `footprint` must be defined.  `size` gives
 		    the shape that is taken from the input array, at every element
@@ -467,25 +643,49 @@ package scipy.ndimage.filters;
 		    to ``footprint=np.ones((n,m))``.  We adjust `size` to the number
 		    of dimensions of the input array, so that, if the input array is
 		    shape (10,10,10), and `size` is 2, then the actual size used is
-		    (2,2,2).
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    (2,2,2). When `footprint` is given, `size` is ignored.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
+		mode : str or sequence, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		extra_arguments : sequence, optional
-		    Sequence of extra positional arguments to pass to passed function
+		    Sequence of extra positional arguments to pass to passed function.
 		extra_keywords : dict, optional
-		    dict of extra keyword arguments to pass to passed function
+		    dict of extra keyword arguments to pass to passed function.
 		
 		Notes
 		-----
@@ -494,9 +694,9 @@ package scipy.ndimage.filters;
 		
 		.. code:: c
 		
-		   int callback(double *buffer, npy_intp filter_size, 
+		   int callback(double *buffer, npy_intp filter_size,
 		                double *return_value, void *user_data)
-		   int callback(double *buffer, intptr_t filter_size, 
+		   int callback(double *buffer, intptr_t filter_size,
 		                double *return_value, void *user_data)
 		
 		The calling function iterates over the elements of the input and
@@ -504,16 +704,16 @@ package scipy.ndimage.filters;
 		elements within the footprint of the filter at the current element are
 		passed through the ``buffer`` parameter, and the number of elements
 		within the footprint through ``filter_size``. The calculated value is
-		returned in ``return_value``. ``user_data`` is the data pointer provided 
+		returned in ``return_value``. ``user_data`` is the data pointer provided
 		to `scipy.LowLevelCallable` as-is.
 		
-		The callback function must return an integer error status that is zero 
+		The callback function must return an integer error status that is zero
 		if something went wrong and one otherwise. If an error occurs, you should
 		normally set the python error status with an informative message
 		before returning, otherwise a default error message is set by the
 		calling function.
 		
-		In addition, some other low-level function pointer specifications 
+		In addition, some other low-level function pointer specifications
 		are accepted, but these are for backward compatibility only and should
 		not be used in new code.
 	**/
@@ -531,31 +731,51 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		function : {callable, scipy.LowLevelCallable}
 		    Function to apply along given axis.
 		filter_size : scalar
 		    Length of the filter.
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right.
 		extra_arguments : sequence, optional
-		    Sequence of extra positional arguments to pass to passed function
+		    Sequence of extra positional arguments to pass to passed function.
 		extra_keywords : dict, optional
-		    dict of extra keyword arguments to pass to passed function
+		    dict of extra keyword arguments to pass to passed function.
 		
 		Notes
 		-----
@@ -564,11 +784,11 @@ package scipy.ndimage.filters;
 		
 		.. code:: c
 		
-		   int function(double *input_line, npy_intp input_length, 
-		                double *output_line, npy_intp output_length, 
+		   int function(double *input_line, npy_intp input_length,
+		                double *output_line, npy_intp output_length,
 		                void *user_data)
-		   int function(double *input_line, intptr_t input_length, 
-		                double *output_line, intptr_t output_length, 
+		   int function(double *input_line, intptr_t input_length,
+		                double *output_line, intptr_t output_length,
 		                void *user_data)
 		
 		The calling function iterates over the lines of the input and output
@@ -579,16 +799,16 @@ package scipy.ndimage.filters;
 		is passed through ``input_length``. The callback function should apply
 		the filter and store the result in the array passed through
 		``output_line``. The length of the output line is passed through
-		``output_length``. ``user_data`` is the data pointer provided 
+		``output_length``. ``user_data`` is the data pointer provided
 		to `scipy.LowLevelCallable` as-is.
 		
-		The callback function must return an integer error status that is zero 
+		The callback function must return an integer error status that is zero
 		if something went wrong and one otherwise. If an error occurs, you should
 		normally set the python error status with an informative message
 		before returning, otherwise a default error message is set by the
 		calling function.
 		
-		In addition, some other low-level function pointer specifications 
+		In addition, some other low-level function pointer specifications
 		are accepted, but these are for backward compatibility only and should
 		not be used in new code.
 	**/
@@ -599,7 +819,7 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		derivative : callable
 		    Callable with the following signature::
 		
@@ -610,33 +830,50 @@ package scipy.ndimage.filters;
 		    `derivative` can assume that `input` and `output` are ndarrays.
 		    Note that the output from `derivative` is modified inplace;
 		    be careful to copy important inputs before returning them.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		extra_keywords : dict, optional
-		    dict of extra keyword arguments to pass to passed function
+		    dict of extra keyword arguments to pass to passed function.
 		extra_arguments : sequence, optional
-		    Sequence of extra positional arguments to pass to passed function
+		    Sequence of extra positional arguments to pass to passed function.
 	**/
 	static public function generic_gradient_magnitude(input:Dynamic, derivative:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?extra_arguments:Dynamic, ?extra_keywords:Dynamic):Dynamic;
 	/**
-		N-dimensional Laplace filter using a provided second derivative function
+		N-dimensional Laplace filter using a provided second derivative function.
 		
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		derivative2 : callable
 		    Callable with the following signature::
 		
@@ -644,24 +881,41 @@ package scipy.ndimage.filters;
 		                    *extra_arguments, **extra_keywords)
 		
 		    See `extra_arguments`, `extra_keywords` below.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		extra_keywords : dict, optional
-		    dict of extra keyword arguments to pass to passed function
+		    dict of extra keyword arguments to pass to passed function.
 		extra_arguments : sequence, optional
-		    Sequence of extra positional arguments to pass to passed function
+		    Sequence of extra positional arguments to pass to passed function.
 	**/
 	static public function generic_laplace(input:Dynamic, derivative2:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?extra_arguments:Dynamic, ?extra_keywords:Dynamic):Dynamic;
 	/**
@@ -670,21 +924,38 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		    The input array.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		
 		Examples
 		--------
@@ -702,14 +973,14 @@ package scipy.ndimage.filters;
 	**/
 	static public function laplace(input:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic):Dynamic;
 	/**
-		Calculates a multi-dimensional maximum filter.
+		Calculate a multi-dimensional maximum filter.
 		
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		size : scalar or tuple, optional
-		    See footprint, below
+		    See footprint, below. Ignored if footprint is given.
 		footprint : array, optional
 		    Either `size` or `footprint` must be defined.  `size` gives
 		    the shape that is taken from the input array, at every element
@@ -720,24 +991,45 @@ package scipy.ndimage.filters;
 		    to ``footprint=np.ones((n,m))``.  We adjust `size` to the number
 		    of dimensions of the input array, so that, if the input array is
 		    shape (10,10,10), and `size` is 2, then the actual size used is
-		    (2,2,2).
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		    (2,2,2). When `footprint` is given, `size` is ignored.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		Returns
 		-------
@@ -768,25 +1060,45 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		size : int
 		    Length along which to calculate the 1-D maximum.
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right.
 		
 		Returns
 		-------
@@ -804,17 +1116,23 @@ package scipy.ndimage.filters;
 		----------
 		.. [1] http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.2777
 		.. [2] http://www.richardhartersworld.com/cri/2001/slidingmin.html
+		
+		Examples
+		--------
+		>>> from scipy.ndimage import maximum_filter1d
+		>>> maximum_filter1d([2, 8, 0, 4, 1, 9, 9, 0], size=3)
+		array([8, 8, 8, 4, 9, 9, 9, 9])
 	**/
 	static public function maximum_filter1d(input:Dynamic, size:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
-		Calculates a multidimensional median filter.
+		Calculate a multidimensional median filter.
 		
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		size : scalar or tuple, optional
-		    See footprint, below
+		    See footprint, below. Ignored if footprint is given.
 		footprint : array, optional
 		    Either `size` or `footprint` must be defined.  `size` gives
 		    the shape that is taken from the input array, at every element
@@ -825,21 +1143,45 @@ package scipy.ndimage.filters;
 		    to ``footprint=np.ones((n,m))``.  We adjust `size` to the number
 		    of dimensions of the input array, so that, if the input array is
 		    shape (10,10,10), and `size` is 2, then the actual size used is
-		    (2,2,2).
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    (2,2,2). When `footprint` is given, `size` is ignored.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
+		mode : str or sequence, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		Returns
 		-------
@@ -862,14 +1204,14 @@ package scipy.ndimage.filters;
 	**/
 	static public function median_filter(input:Dynamic, ?size:Dynamic, ?footprint:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
-		Calculates a multi-dimensional minimum filter.
+		Calculate a multi-dimensional minimum filter.
 		
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		size : scalar or tuple, optional
-		    See footprint, below
+		    See footprint, below. Ignored if footprint is given.
 		footprint : array, optional
 		    Either `size` or `footprint` must be defined.  `size` gives
 		    the shape that is taken from the input array, at every element
@@ -880,24 +1222,45 @@ package scipy.ndimage.filters;
 		    to ``footprint=np.ones((n,m))``.  We adjust `size` to the number
 		    of dimensions of the input array, so that, if the input array is
 		    shape (10,10,10), and `size` is 2, then the actual size used is
-		    (2,2,2).
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		    (2,2,2). When `footprint` is given, `size` is ignored.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		Returns
 		-------
@@ -928,25 +1291,45 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		size : int
 		    length along which to calculate 1D minimum
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right.
 		
 		Notes
 		-----
@@ -958,20 +1341,27 @@ package scipy.ndimage.filters;
 		----------
 		.. [1] http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.42.2777
 		.. [2] http://www.richardhartersworld.com/cri/2001/slidingmin.html
+		
+		
+		Examples
+		--------
+		>>> from scipy.ndimage import minimum_filter1d
+		>>> minimum_filter1d([2, 8, 0, 4, 1, 9, 9, 0], size=3)
+		array([2, 0, 0, 0, 1, 1, 0, 0])
 	**/
 	static public function minimum_filter1d(input:Dynamic, size:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 	/**
-		Calculates a multi-dimensional percentile filter.
+		Calculate a multi-dimensional percentile filter.
 		
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		percentile : scalar
 		    The percentile parameter may be less then zero, i.e.,
 		    percentile = -20 equals percentile = 80
 		size : scalar or tuple, optional
-		    See footprint, below
+		    See footprint, below. Ignored if footprint is given.
 		footprint : array, optional
 		    Either `size` or `footprint` must be defined.  `size` gives
 		    the shape that is taken from the input array, at every element
@@ -982,21 +1372,45 @@ package scipy.ndimage.filters;
 		    to ``footprint=np.ones((n,m))``.  We adjust `size` to the number
 		    of dimensions of the input array, so that, if the input array is
 		    shape (10,10,10), and `size` is 2, then the actual size used is
-		    (2,2,2).
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    (2,2,2). When `footprint` is given, `size` is ignored.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
+		mode : str or sequence, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		Returns
 		-------
@@ -1024,23 +1438,40 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		
 		Examples
 		--------
@@ -1059,17 +1490,17 @@ package scipy.ndimage.filters;
 	static public function prewitt(input:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Calculates a multi-dimensional rank filter.
+		Calculate a multi-dimensional rank filter.
 		
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		rank : int
 		    The rank parameter may be less then zero, i.e., rank = -1
 		    indicates the largest element.
 		size : scalar or tuple, optional
-		    See footprint, below
+		    See footprint, below. Ignored if footprint is given.
 		footprint : array, optional
 		    Either `size` or `footprint` must be defined.  `size` gives
 		    the shape that is taken from the input array, at every element
@@ -1080,21 +1511,45 @@ package scipy.ndimage.filters;
 		    to ``footprint=np.ones((n,m))``.  We adjust `size` to the number
 		    of dimensions of the input array, so that, if the input array is
 		    shape (10,10,10), and `size` is 2, then the actual size used is
-		    (2,2,2).
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
-		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    (2,2,2). When `footprint` is given, `size` is ignored.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
+		mode : str or sequence, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		Returns
 		-------
@@ -1122,23 +1577,40 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
+		    is 0.0.
 		
 		Examples
 		--------
@@ -1161,28 +1633,49 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		size : int or sequence of ints, optional
 		    The sizes of the uniform filter are given for each axis as a
 		    sequence, or as a single number, in which case the size is
 		    equal for all axes.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : str or sequence, optional
-		    The `mode` parameter determines how the array borders are
-		    handled. Valid modes are {'reflect', 'constant', 'nearest',
-		    'mirror', 'wrap'}. `cval` is the value used when mode is equal to
-		    'constant'. A list of modes with length equal to the number of
-		    axes can be provided to specify different modes for different
-		    axes. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. By passing a sequence of modes
+		    with length equal to the number of dimensions of the input array,
+		    different modes can be specified along each axis. Default value is
+		    'reflect'. The valid values and their behavior is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int or sequence, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right. By passing a sequence of origins with length equal to
+		    the number of dimensions of the input array, different shifts can
+		    be specified along each axis.
 		
 		Returns
 		-------
@@ -1221,25 +1714,51 @@ package scipy.ndimage.filters;
 		Parameters
 		----------
 		input : array_like
-		    Input array to filter.
+		    The input array.
 		size : int
 		    length of uniform filter
 		axis : int, optional
 		    The axis of `input` along which to calculate. Default is -1.
-		output : array, optional
-		    The `output` parameter passes an array in which to store the
-		    filter output. Output array should have different name as compared
-		    to input array to avoid aliasing errors.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
-		    The `mode` parameter determines how the array borders are
-		    handled, where `cval` is the value when mode is equal to
-		    'constant'. Default is 'reflect'
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
 		    Value to fill past edges of input if `mode` is 'constant'. Default
-		    is 0.0
-		origin : scalar, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default 0.0.
+		    is 0.0.
+		origin : int, optional
+		    Controls the placement of the filter on the input array's pixels.
+		    A value of 0 (the default) centers the filter over the pixel, with
+		    positive values shifting the filter to the left, and negative ones
+		    to the right.
+		
+		Examples
+		--------
+		>>> from scipy.ndimage import uniform_filter1d
+		>>> uniform_filter1d([2, 8, 0, 4, 1, 9, 9, 0], size=3)
+		array([4, 3, 4, 1, 4, 6, 6, 3])
 	**/
 	static public function uniform_filter1d(input:Dynamic, size:Dynamic, ?axis:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?origin:Dynamic):Dynamic;
 }

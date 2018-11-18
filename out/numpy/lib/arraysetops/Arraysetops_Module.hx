@@ -14,6 +14,10 @@ package numpy.lib.arraysetops;
 		Find the unique elements of an array, ignoring shape.
 	**/
 	static public function _unique1d(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	/**
+		Unpacks one-element tuples for use as return values 
+	**/
+	static public function _unpack_tuple(x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -113,12 +117,12 @@ package numpy.lib.arraysetops;
 		>>> states = [0, 2]
 		>>> mask = np.in1d(test, states)
 		>>> mask
-		array([ True, False,  True, False,  True], dtype=bool)
+		array([ True, False,  True, False,  True])
 		>>> test[mask]
 		array([0, 2, 0])
 		>>> mask = np.in1d(test, states, invert=True)
 		>>> mask
-		array([False,  True, False,  True, False], dtype=bool)
+		array([False,  True, False,  True, False])
 		>>> test[mask]
 		array([1, 5])
 	**/
@@ -131,15 +135,28 @@ package numpy.lib.arraysetops;
 		Parameters
 		----------
 		ar1, ar2 : array_like
-		    Input arrays.
+		    Input arrays. Will be flattened if not already 1D.
 		assume_unique : bool
 		    If True, the input arrays are both assumed to be unique, which
 		    can speed up the calculation.  Default is False.
+		return_indices : bool
+		    If True, the indices which correspond to the intersection of the two
+		    arrays are returned. The first instance of a value is used if there are
+		    multiple. Default is False.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
 		intersect1d : ndarray
 		    Sorted 1D array of common and unique elements.
+		comm1 : ndarray
+		    The indices of the first occurrences of the common values in `ar1`.
+		    Only provided if `return_indices` is True.
+		comm2 : ndarray
+		    The indices of the first occurrences of the common values in `ar2`.
+		    Only provided if `return_indices` is True.
+		
 		
 		See Also
 		--------
@@ -156,8 +173,18 @@ package numpy.lib.arraysetops;
 		>>> from functools import reduce
 		>>> reduce(np.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))
 		array([3])
+		
+		To return the indices of the values common to the input arrays
+		along with the intersected values:
+		>>> x = np.array([1, 1, 2, 3, 4])
+		>>> y = np.array([2, 1, 4, 6])
+		>>> xy, x_ind, y_ind = np.intersect1d(x, y, return_indices=True)
+		>>> x_ind, y_ind
+		(array([0, 2, 4]), array([1, 0, 2]))
+		>>> xy, x[x_ind], y[y_ind]
+		(array([1, 2, 4]), array([1, 2, 4]), array([1, 2, 4]))
 	**/
-	static public function intersect1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):numpy.Ndarray;
+	static public function intersect1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic, ?return_indices:Dynamic):numpy.Ndarray;
 	/**
 		Calculates `element in test_elements`, broadcasting over `element` only.
 		Returns a boolean array of the same shape as `element` that is True
@@ -218,13 +245,13 @@ package numpy.lib.arraysetops;
 		>>> mask = np.isin(element, test_elements)
 		>>> mask
 		array([[ False,  True],
-		       [ True,  False]], dtype=bool)
+		       [ True,  False]])
 		>>> element[mask]
 		array([2, 4])
 		>>> mask = np.isin(element, test_elements, invert=True)
 		>>> mask
 		array([[ True, False],
-		       [ False, True]], dtype=bool)
+		       [ False, True]])
 		>>> element[mask]
 		array([0, 6])
 		
@@ -234,13 +261,13 @@ package numpy.lib.arraysetops;
 		>>> test_set = {1, 2, 4, 8}
 		>>> np.isin(element, test_set)
 		array([[ False, False],
-		       [ False, False]], dtype=bool)
+		       [ False, False]])
 		
 		Casting the set to a list gives the expected result:
 		
 		>>> np.isin(element, list(test_set))
 		array([[ False,  True],
-		       [ True,  False]], dtype=bool)
+		       [ True,  False]])
 	**/
 	static public function isin(element:Dynamic, test_elements:Dynamic, ?assume_unique:Dynamic, ?invert:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -342,10 +369,11 @@ package numpy.lib.arraysetops;
 		Find the unique elements of an array.
 		
 		Returns the sorted unique elements of an array. There are three optional
-		outputs in addition to the unique elements: the indices of the input array
-		that give the unique values, the indices of the unique array that
-		reconstruct the input array, and the number of times each unique value
-		comes up in the input array.
+		outputs in addition to the unique elements:
+		
+		* the indices of the input array that give the unique values
+		* the indices of the unique array that reconstruct the input array
+		* the number of times each unique value comes up in the input array
 		
 		Parameters
 		----------
@@ -361,16 +389,18 @@ package numpy.lib.arraysetops;
 		return_counts : bool, optional
 		    If True, also return the number of times each unique item appears
 		    in `ar`.
+		
 		    .. versionadded:: 1.9.0
+		
 		axis : int or None, optional
-		    The axis to operate on. If None, `ar` will be flattened beforehand.
-		    Otherwise, duplicate items will be removed along the provided axis,
-		    with all the other axes belonging to the each of the unique elements.
-		    Object arrays or structured arrays that contain objects are not
-		    supported if the `axis` kwarg is used.
+		    The axis to operate on. If None, `ar` will be flattened. If an integer,
+		    the subarrays indexed by the given axis will be flattened and treated
+		    as the elements of a 1-D array with the dimension of the given axis,
+		    see the notes for more details.  Object arrays or structured arrays
+		    that contain objects are not supported if the `axis` kwarg is used. The
+		    default is None.
+		
 		    .. versionadded:: 1.13.0
-		
-		
 		
 		Returns
 		-------
@@ -385,12 +415,24 @@ package numpy.lib.arraysetops;
 		unique_counts : ndarray, optional
 		    The number of times each of the unique values comes up in the
 		    original array. Only provided if `return_counts` is True.
+		
 		    .. versionadded:: 1.9.0
 		
 		See Also
 		--------
 		numpy.lib.arraysetops : Module with a number of other functions for
 		                        performing set operations on arrays.
+		
+		Notes
+		-----
+		When an axis is specified the subarrays indexed by the axis are sorted.
+		This is done by making the specified axis the first dimension of the array
+		and then flattening the subarrays in C order. The flattened subarrays are
+		then viewed as a structured type with each element given a label, with the
+		effect that we end up with a 1-D array of structured types that can be
+		treated in the same way as any other 1-D array. The result is that the
+		flattened subarrays are sorted in lexicographic order starting with the
+		first element.
 		
 		Examples
 		--------

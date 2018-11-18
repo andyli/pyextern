@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.widgets;
 @:pythonImport("matplotlib.widgets", "Cursor") extern class Cursor {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,20 +38,16 @@ package matplotlib.widgets;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Add a cursor to *ax*.  If ``useblit=True``, use the backend-
-		dependent blitting features for faster updates (GTKAgg
-		only for now).  *lineprops* is a dictionary of line properties.
-		
-		.. plot :: mpl_examples/widgets/cursor.py
+		Add a cursor to *ax*.  If ``useblit=True``, use the backend-dependent
+		blitting features for faster updates.  *lineprops* is a dictionary of
+		line properties.
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Add a cursor to *ax*.  If ``useblit=True``, use the backend-
-		dependent blitting features for faster updates (GTKAgg
-		only for now).  *lineprops* is a dictionary of line properties.
-		
-		.. plot :: mpl_examples/widgets/cursor.py
+		Add a cursor to *ax*.  If ``useblit=True``, use the backend-dependent
+		blitting features for faster updates.  *lineprops* is a dictionary of
+		line properties.
 	**/
 	public function new(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Void;
 	/**
@@ -60,7 +56,7 @@ package matplotlib.widgets;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -111,7 +107,7 @@ package matplotlib.widgets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

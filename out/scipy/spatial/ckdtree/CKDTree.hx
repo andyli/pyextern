@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.spatial.ckdtree;
 @:pythonImport("scipy.spatial.ckdtree", "cKDTree") extern class CKDTree {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package scipy.spatial.ckdtree;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,7 +104,7 @@ package scipy.spatial.ckdtree;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		_build_weights(weights)
 		
@@ -308,27 +308,48 @@ package scipy.spatial.ckdtree;
 		Examples
 		--------
 		
-		>>> tree = cKDTree(data)
+		>>> import numpy as np
+		>>> from scipy.spatial import cKDTree
+		>>> x, y = np.mgrid[0:5, 2:8]
+		>>> tree = cKDTree(np.c_[x.ravel(), y.ravel()])
 		
 		To query the nearest neighbours and return squeezed result, use
 		
-		>>> dd, ii = tree.query(x, k=1)
+		>>> dd, ii = tree.query([[0, 0], [2.1, 2.9]], k=1)
+		>>> print(dd, ii)
+		[2.         0.14142136] [ 0 13]
 		
 		To query the nearest neighbours and return unsqueezed result, use
 		
-		>>> dd, ii = tree.query(x, k=[1])
+		>>> dd, ii = tree.query([[0, 0], [2.1, 2.9]], k=[1])
+		>>> print(dd, ii)
+		[[2.        ]
+		 [0.14142136]] [[ 0]
+		 [13]]
 		
 		To query the second nearest neighbours and return unsqueezed result, use
 		
-		>>> dd, ii = tree.query(x, k=[2])
+		>>> dd, ii = tree.query([[0, 0], [2.1, 2.9]], k=[2])
+		>>> print(dd, ii)
+		[[2.23606798]
+		 [0.90553851]] [[ 6]
+		 [12]]
 		
 		To query the first and second nearest neighbours, use
 		
-		>>> dd, ii = tree.query(x, k=2)
+		>>> dd, ii = tree.query([[0, 0], [2.1, 2.9]], k=2)
+		>>> print(dd, ii)
+		[[2.         2.23606798]
+		 [0.14142136 0.90553851]] [[ 0  6]
+		 [13 12]]
 		
 		or, be more specific
 		
-		>>> dd, ii = tree.query(x, k=[1, 2])
+		>>> dd, ii = tree.query([[0, 0], [2.1, 2.9]], k=[1, 2])
+		>>> print(dd, ii)
+		[[2.         2.23606798]
+		 [0.14142136 0.90553851]] [[ 0  6]
+		 [13 12]]
 	**/
 	public function query(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -370,7 +391,7 @@ package scipy.spatial.ckdtree;
 		--------
 		>>> from scipy import spatial
 		>>> x, y = np.mgrid[0:4, 0:4]
-		>>> points = zip(x.ravel(), y.ravel())
+		>>> points = np.c_[x.ravel(), y.ravel()]
 		>>> tree = spatial.cKDTree(points)
 		>>> tree.query_ball_point([2, 0], 1)
 		[4, 8, 9, 12]

@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.wrappers.hooks;
 @:pythonImport("tensorflow.python.debug.wrappers.hooks") extern class Hooks_Module {
-	static public var _GRPC_ENDPOINT_PREFIX : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

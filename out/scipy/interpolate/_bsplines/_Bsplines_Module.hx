@@ -20,6 +20,7 @@ package scipy.interpolate._bsplines;
 		Construct a knot vector appropriate for the order-k interpolation.
 	**/
 	static public function _augknt(x:Dynamic, k:Dynamic):Dynamic;
+	static public function _convert_string_aliases(deriv:Dynamic, target_shape:Dynamic):Dynamic;
 	/**
 		Return np.complex128 for complex dtypes, np.float64 otherwise.
 	**/
@@ -31,14 +32,15 @@ package scipy.interpolate._bsplines;
 	static public function _not_a_knot(x:Dynamic, k:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Solve the linear equations A x = b, given the Cholesky factorization of A.
+		Solve the linear equations ``A x = b``, given the Cholesky factorization of
+		the banded hermitian ``A``.
 		
 		Parameters
 		----------
-		(cb, lower) : tuple, (array, bool)
+		(cb, lower) : tuple, (ndarray, bool)
 		    `cb` is the Cholesky factorization of A, as given by cholesky_banded.
 		    `lower` must be the same value that was given to cholesky_banded.
-		b : array
+		b : array_like
 		    Right-hand side
 		overwrite_b : bool, optional
 		    If True, the function will overwrite the values in `b`.
@@ -60,6 +62,17 @@ package scipy.interpolate._bsplines;
 		-----
 		
 		.. versionadded:: 0.8.0
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cholesky_banded, cho_solve_banded
+		>>> Ab = np.array([[0, 0, 1j, 2, 3j], [0, -1, -2, 3, 4], [9, 8, 7, 6, 9]])
+		>>> A = np.diag(Ab[0,2:], k=2) + np.diag(Ab[1,1:], k=1)
+		>>> A = A + A.conj().T + np.diag(Ab[2, :])
+		>>> c = cholesky_banded(Ab)
+		>>> x = cho_solve_banded((c, False), np.ones(5))
+		>>> np.allclose(A @ x - np.ones(5), np.zeros(5))
+		True
 	**/
 	static public function cho_solve_banded(cb_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
@@ -100,6 +113,18 @@ package scipy.interpolate._bsplines;
 		-------
 		c : (u + 1, M) ndarray
 		    Cholesky factorization of a, in the same banded format as ab
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cholesky_banded
+		>>> from numpy import allclose, zeros, diag
+		>>> Ab = np.array([[0, 0, 1j, 2, 3j], [0, -1, -2, 3, 4], [9, 8, 7, 6, 9]])
+		>>> A = np.diag(Ab[0,2:], k=2) + np.diag(Ab[1,1:], k=1)
+		>>> A = A + A.conj().T + np.diag(Ab[2, :])
+		>>> c = cholesky_banded(Ab)
+		>>> C = np.diag(c[0, 2:], k=2) + np.diag(c[1, 1:], k=1) + np.diag(c[2, :])
+		>>> np.allclose(C.conj().T @ C - A, np.zeros((5, 5)))
+		True
 	**/
 	static public function cholesky_banded(ab:Dynamic, ?overwrite_ab:Dynamic, ?lower:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -121,12 +146,10 @@ package scipy.interpolate._bsplines;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -137,8 +160,37 @@ package scipy.interpolate._bsplines;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -166,6 +218,15 @@ package scipy.interpolate._bsplines;
 		    be an iterable of pairs ``(order, value)`` which gives the values of
 		    derivatives of specified orders at the given edge of the interpolation
 		    interval.
+		    Alternatively, the following string aliases are recognized:
+		
+		    * ``"clamped"``: The first derivatives at the ends are zero. This is
+		       equivalent to ``bc_type=((1, 0.0), (1, 0.0))``.
+		    * ``"natural"``: The second derivatives at ends are zero. This is
+		      equivalent to ``bc_type=((2, 0.0), (2, 0.0))``.
+		    * ``"not-a-knot"`` (default): The first and second segments are the same
+		      polynomial. This is equivalent to having ``bc_type=None``.
+		
 		axis : int, optional
 		    Interpolation axis. Default is 0.
 		check_finite : bool, optional
@@ -203,8 +264,8 @@ package scipy.interpolate._bsplines;
 		
 		Here we use a 'natural' spline, with zero 2nd derivatives at edges:
 		
-		>>> l, r = [(2, 0)], [(2, 0)]
-		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))
+		>>> l, r = [(2, 0.0)], [(2, 0.0)]
+		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))  # or, bc_type="natural"
 		>>> np.allclose(b_n(x), y)
 		True
 		>>> x0, x1 = x[0], x[-1]
@@ -355,4 +416,5 @@ package scipy.interpolate._bsplines;
 		Product of a list of numbers; ~40x faster vs np.prod for Python tuples
 	**/
 	static public function prod(x:Dynamic):Dynamic;
+	static public var string_types : Dynamic;
 }

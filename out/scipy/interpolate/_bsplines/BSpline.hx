@@ -10,9 +10,10 @@ package scipy.interpolate._bsplines;
 		    points to evaluate the spline at.
 		nu: int, optional
 		    derivative to evaluate (default is 0).
-		extrapolate : bool, optional
+		extrapolate : bool or 'periodic', optional
 		    whether to extrapolate based on the first and last intervals
-		    or return nans. Default is `self.extrapolate`.
+		    or return nans. If 'periodic', periodic extrapolation is used.
+		    Default is `self.extrapolate`.
 		
 		Returns
 		-------
@@ -21,7 +22,7 @@ package scipy.interpolate._bsplines;
 		    in the coefficient array with the shape of `x`.
 	**/
 	public function __call__(x:Dynamic, ?nu:Dynamic, ?extrapolate:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -72,7 +73,7 @@ package scipy.interpolate._bsplines;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,7 +124,7 @@ package scipy.interpolate._bsplines;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -147,6 +148,13 @@ package scipy.interpolate._bsplines;
 		b : BSpline object
 		    A new instance representing the antiderivative.
 		
+		Notes
+		-----
+		If antiderivative is computed and ``self.extrapolate='periodic'``,
+		it will be set to False for the returned instance. This is done because
+		the antiderivative is no longer periodic and its correct evaluation
+		outside of the initially given x interval is difficult.
+		
 		See Also
 		--------
 		splder, splantider
@@ -159,9 +167,11 @@ package scipy.interpolate._bsplines;
 		----------
 		t : ndarray, shape (k+1,)
 		    internal knots
-		extrapolate : bool, optional
+		extrapolate : bool or 'periodic', optional
 		    whether to extrapolate beyond the base interval, ``t[0] .. t[k+1]``,
-		    or to return nans. Default is True.
+		    or to return nans.
+		    If 'periodic', periodic extrapolation is used.
+		    Default is True.
 		
 		Returns
 		-------
@@ -240,10 +250,11 @@ package scipy.interpolate._bsplines;
 		    Lower limit of integration.
 		b : float
 		    Upper limit of integration.
-		extrapolate : bool, optional
-		    whether to extrapolate beyond the base interval, ``t[k] .. t[-k-1]``,
-		    or take the spline to be zero outside of the base interval.
-		    Default is True.
+		extrapolate : bool or 'periodic', optional
+		    whether to extrapolate beyond the base interval,
+		    ``t[k] .. t[-k-1]``, or take the spline to be zero outside of the
+		    base interval. If 'periodic', periodic extrapolation is used.
+		    If None (default), use `self.extrapolate`.
 		
 		Returns
 		-------
@@ -279,7 +290,7 @@ package scipy.interpolate._bsplines;
 	**/
 	public function integrate(a:Dynamic, b:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	/**
-		Equvalent to ``(self.t, self.c, self.k)`` (read-only).
+		Equivalent to ``(self.t, self.c, self.k)`` (read-only).
 		        
 	**/
 	public var tck : Dynamic;

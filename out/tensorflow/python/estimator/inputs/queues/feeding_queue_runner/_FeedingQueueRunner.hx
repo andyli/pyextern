@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.estimator.inputs.queues.feeding_queue_runner;
 @:pythonImport("tensorflow.python.estimator.inputs.queues.feeding_queue_runner", "_FeedingQueueRunner") extern class _FeedingQueueRunner {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -92,7 +92,7 @@ package tensorflow.python.estimator.inputs.queues.feeding_queue_runner;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -143,7 +143,7 @@ package tensorflow.python.estimator.inputs.queues.feeding_queue_runner;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -194,6 +194,8 @@ package tensorflow.python.estimator.inputs.queues.feeding_queue_runner;
 		    for stop conditions.
 	**/
 	public function _run(sess:Dynamic, enqueue_op:Dynamic, feed_fn:Dynamic, ?coord:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public var cancel_op : Dynamic;
 	public var close_op : Dynamic;
 	/**

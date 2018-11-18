@@ -65,17 +65,6 @@ package scipy.stats.mstats_basic;
 	**/
 	static public function argstoarray(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		`betai` is deprecated!
-		mstats.betai is deprecated in scipy 0.17.0; use special.betainc instead.
-		
-		
-		    betai() is deprecated in scipy 0.17.0.
-		
-		    For details about this function, see `stats.betai`.
-		    
-	**/
-	static public function betai(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Counts the number of tied values.
 		
 		Parameters
@@ -149,16 +138,13 @@ package scipy.stats.mstats_basic;
 		>>> from scipy.stats.mstats import describe
 		>>> ma = np.ma.array(range(6), mask=[0, 0, 0, 1, 1, 1])
 		>>> describe(ma)
-		DescribeResult(nobs=array(3), minmax=(masked_array(data = 0,
-		             mask = False,
-		       fill_value = 999999)
-		, masked_array(data = 2,
-		             mask = False,
-		       fill_value = 999999)
-		), mean=1.0, variance=0.66666666666666663, skewness=masked_array(data = 0.0,
-		             mask = False,
-		       fill_value = 1e+20)
-		, kurtosis=-1.5)
+		DescribeResult(nobs=3, minmax=(masked_array(data=0,
+		             mask=False,
+		       fill_value=999999), masked_array(data=2,
+		             mask=False,
+		       fill_value=999999)), mean=1.0, variance=0.6666666666666666,
+		       skewness=masked_array(data=0., mask=False, fill_value=1e+20),
+		        kurtosis=-1.5)
 	**/
 	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?bias:Dynamic):Int;
 	static public var division : Dynamic;
@@ -177,15 +163,6 @@ package scipy.stats.mstats_basic;
 		    The associated p-value from the F-distribution.
 	**/
 	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
-	/**
-		`f_value_wilks_lambda` is deprecated!
-		mstats.f_value_wilks_lambda deprecated in scipy 0.17.0
-		
-		Calculation of Wilks lambda F-statistic for multivariate data, per
-		    Maxwell & Delaney p.657.
-		    
-	**/
-	static public function f_value_wilks_lambda(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find repeats in arr and return a tuple (repeats, repeat_count).
 		
@@ -432,7 +409,8 @@ package scipy.stats.mstats_basic;
 		    correlation coefficient
 		pvalue : float
 		    two-sided p-value for a hypothesis test whose null hypothesis is
-		    that the slope is zero.
+		    that the slope is zero, using Wald Test with t-distribution of
+		    the test statistic.
 		stderr : float
 		    Standard error of the estimated gradient.
 		
@@ -455,7 +433,7 @@ package scipy.stats.mstats_basic;
 		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
-		('r-squared:', 0.080402268539028335)
+		r-squared: 0.08040226853902833
 		
 		Plot the data along with the fitted line
 		
@@ -670,9 +648,9 @@ package scipy.stats.mstats_basic;
 		...                  [  40., -999., -999.],
 		...                  [  36., -999., -999.]])
 		>>> print(mquantiles(data, axis=0, limit=(0, 50)))
-		[[ 19.2   14.6    1.45]
-		 [ 40.    37.5    2.5 ]
-		 [ 42.8   40.05   3.55]]
+		[[19.2  14.6   1.45]
+		 [40.   37.5   2.5 ]
+		 [42.8  40.05  3.55]]
 		
 		>>> data[:, 2] = -999.
 		>>> print(mquantiles(data, axis=0, limit=(0, 50)))
@@ -919,23 +897,6 @@ package scipy.stats.mstats_basic;
 	static public function sem(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	static public function sen_seasonal_slopes(x:Dynamic):Dynamic;
 	/**
-		`signaltonoise` is deprecated!
-		mstats.signaltonoise is deprecated in scipy 0.16.0
-		
-		Calculates the signal-to-noise ratio, as the ratio of the mean over
-		    standard deviation along the given axis.
-		
-		    Parameters
-		    ----------
-		    data : sequence
-		        Input data
-		    axis : {0, int}, optional
-		        Axis along which to compute. If None, the computation is performed
-		        on a flat version of the array.
-		    
-	**/
-	static public function signaltonoise(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Computes the skewness of a data set.
 		
 		Parameters
@@ -991,7 +952,7 @@ package scipy.stats.mstats_basic;
 		Spearman correlation does not assume that both datasets are normally
 		distributed. Like other correlation coefficients, this one varies
 		between -1 and +1 with 0 implying no correlation. Correlations of -1 or
-		+1 imply an exact linear relationship. Positive correlations imply that
+		+1 imply a monotonic relationship. Positive correlations imply that
 		as `x` increases, so does `y`. Negative correlations imply that as `x`
 		increases, `y` decreases.
 		
@@ -1045,7 +1006,8 @@ package scipy.stats.mstats_basic;
 		    correlation coefficient
 		pvalue : float
 		    two-sided p-value for a hypothesis test whose null hypothesis is
-		    that the slope is zero.
+		    that the slope is zero, using Wald Test with t-distribution of
+		    the test statistic.
 		stderr : float
 		    Standard error of the estimated gradient.
 		
@@ -1068,7 +1030,7 @@ package scipy.stats.mstats_basic;
 		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
-		('r-squared:', 0.080402268539028335)
+		r-squared: 0.08040226853902833
 		
 		Plot the data along with the fitted line
 		
@@ -1203,37 +1165,6 @@ package scipy.stats.mstats_basic;
 		For more details on `theilslopes`, see `stats.theilslopes`.
 	**/
 	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
-	/**
-		`threshold` is deprecated!
-		mstats.threshold is deprecated in scipy 0.17.0
-		
-		
-		    Clip array to a given value.
-		
-		    Similar to numpy.clip(), except that values less than `threshmin` or
-		    greater than `threshmax` are replaced by `newval`, instead of by
-		    `threshmin` and `threshmax` respectively.
-		
-		    Parameters
-		    ----------
-		    a : ndarray
-		        Input data
-		    threshmin : {None, float}, optional
-		        Lower threshold. If None, set to the minimum value.
-		    threshmax : {None, float}, optional
-		        Upper threshold. If None, set to the maximum value.
-		    newval : {0, float}, optional
-		        Value outside the thresholds.
-		
-		    Returns
-		    -------
-		    threshold : ndarray
-		        Returns `a`, with values less then `threshmin` and values greater
-		        `threshmax` replaced with `newval`.
-		
-		    
-	**/
-	static public function threshold(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the trimmed maximum
 		
@@ -1744,7 +1675,7 @@ package scipy.stats.mstats_basic;
 		    indicate an open interval.
 		inclusive : {(True, True) tuple}, optional
 		    Tuple indicating whether the number of data being masked on each side
-		    should be rounded (True) or truncated (False).
+		    should be truncated (True) or rounded (False).
 		inplace : {False, True}, optional
 		    Whether to winsorize in place (True) or to use a copy (False)
 		axis : {None, int}, optional

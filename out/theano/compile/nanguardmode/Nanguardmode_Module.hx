@@ -26,11 +26,6 @@ package theano.compile.nanguardmode;
 	static public function _is_numeric_value(arr:Dynamic, _var:Dynamic):Bool;
 	static public function _name_for_ctx(ctx:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		compile utility function used by contains_nan and contains_inf
-		    
-	**/
-	static public function compile_gpu_func(nan_is_error:Dynamic, inf_is_error:Dynamic, big_is_error:Dynamic):Dynamic;
 	static public var config : Dynamic;
 	/**
 		Test whether a numpy.ndarray contains any `np.inf` values.
@@ -84,9 +79,6 @@ package theano.compile.nanguardmode;
 	static public function f_gpua_absmax(inp:Dynamic):Dynamic;
 	static public function f_gpua_max(inp:Dynamic):Dynamic;
 	static public function f_gpua_min(inp:Dynamic):Dynamic;
-	static public var f_gpuabsmax : Dynamic;
-	static public var f_gpumax : Dynamic;
-	static public var f_gpumin : Dynamic;
 	/**
 		Turns a nested graph of lists/tuples/other objects into a list of objects.
 		

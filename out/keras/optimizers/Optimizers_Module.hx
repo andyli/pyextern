@@ -10,6 +10,18 @@ package keras.optimizers;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Clip the gradient `g` if the L2 norm `n` exceeds `c`.
+		
+		# Arguments
+		    g: Tensor, the gradient tensor
+		    c: float >= 0. Gradients will be clipped
+		        when their L2 norm exceeds this value.
+		    n: Tensor, actual norm of `g`.
+		
+		# Returns
+		    Tensor, the gradient clipped if required.
+	**/
 	static public function clip_norm(g:Dynamic, c:Dynamic, n:Dynamic):Dynamic;
 	/**
 		Inverse of the `serialize` function.
@@ -26,6 +38,7 @@ package keras.optimizers;
 	**/
 	static public function deserialize(config:Dynamic, ?custom_objects:Dynamic):Dynamic;
 	static public function deserialize_keras_object(identifier:Dynamic, ?module_objects:Dynamic, ?custom_objects:Dynamic, ?printable_module_name:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Retrieves a Keras Optimizer instance.
 		
@@ -44,6 +57,7 @@ package keras.optimizers;
 		    ValueError: If `identifier` cannot be interpreted.
 	**/
 	static public function get(identifier:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function serialize(optimizer:Dynamic):Dynamic;
 	static public function serialize_keras_object(instance:Dynamic):Dynamic;
 }

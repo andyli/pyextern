@@ -18,6 +18,26 @@ package scipy.sparse.linalg.isolve.iterative;
 		not necessarily create arrays aligned up to it.
 	**/
 	static public function _aligned_zeros(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?align:Dynamic):Dynamic;
+	/**
+		Parse arguments for absolute tolerance in termination condition.
+		
+		Parameters
+		----------
+		tol, atol : object
+		    The arguments passed into the solver routine by user.
+		bnrm2 : float
+		    2-norm of the rhs vector.
+		get_residual : callable
+		    Callable ``get_residual()`` that returns the initial value of
+		    the residual.
+		routine_name : str
+		    Name of the routine.
+	**/
+	static public function _get_atol(tol:Dynamic, atol:Dynamic, bnrm2:Dynamic, get_residual:Dynamic, routine_name:Dynamic):Dynamic;
+	/**
+		Successful termination condition for the solvers.
+	**/
+	static public function _stoptest(residual:Dynamic, atol:Dynamic):Dynamic;
 	static public var _type_conv : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -46,9 +66,15 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -60,17 +86,8 @@ package scipy.sparse.linalg.isolve.iterative;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function bicg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function bicg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Use BIConjugate Gradient STABilized iteration to solve ``Ax = b``.
 		
@@ -95,9 +112,15 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -109,17 +132,8 @@ package scipy.sparse.linalg.isolve.iterative;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function bicgstab(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function bicgstab(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Use Conjugate Gradient iteration to solve ``Ax = b``.
 		
@@ -145,9 +159,15 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -159,17 +179,8 @@ package scipy.sparse.linalg.isolve.iterative;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function cg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function cg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Use Conjugate Gradient Squared iteration to solve ``Ax = b``.
 		
@@ -194,9 +205,15 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -208,17 +225,8 @@ package scipy.sparse.linalg.isolve.iterative;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function cgs(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function cgs(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	static public var common_doc1 : Dynamic;
 	static public var common_doc2 : Dynamic;
 	/**
@@ -250,9 +258,15 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------------
 		x0 : {array, matrix}
 		    Starting guess for the solution (a vector of zeros by default).
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		restart : int, optional
 		    Number of iterations between restarts. Larger values increase
 		    iteration cost, but may be necessary for convergence.
@@ -261,15 +275,6 @@ package scipy.sparse.linalg.isolve.iterative;
 		    Maximum number of iterations (restart cycles).  Iteration will stop
 		    after maxiter steps even if the specified tolerance has not been
 		    achieved.
-		xtype : {'f','d','F','D'}
-		    This parameter is DEPRECATED --- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 		M : {sparse matrix, dense matrix, LinearOperator}
 		    Inverse of the preconditioner of A.  M should approximate the
 		    inverse of A and be easy to solve for (see Notes).  Effective
@@ -297,8 +302,20 @@ package scipy.sparse.linalg.isolve.iterative;
 		  import scipy.sparse.linalg as spla
 		  M_x = lambda x: spla.spsolve(P, x)
 		  M = spla.LinearOperator((n, n), M_x)
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import gmres
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> b = np.array([2, 4, -1], dtype=float)
+		>>> x, exitCode = gmres(A, b)
+		>>> print(exitCode)            # 0 indicates successful convergence
+		0
+		>>> np.allclose(A.dot(x), b)
+		True
 	**/
-	static public function gmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?restart:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?restrt:Dynamic):Dynamic;
+	static public function gmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?restart:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?restrt:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Make a linear system Ax=b
 		
@@ -313,8 +330,6 @@ package scipy.sparse.linalg.isolve.iterative;
 		    initial guess to iterative method
 		b : array_like
 		    right hand side
-		xtype : {'f', 'd', 'F', 'D', None}, optional
-		    dtype of the x vector
 		
 		Returns
 		-------
@@ -331,7 +346,7 @@ package scipy.sparse.linalg.isolve.iterative;
 		        converts the solution vector to the appropriate
 		        type and dimensions (e.g. (N,1) matrix)
 	**/
-	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic, ?xtype:Dynamic):Dynamic;
+	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic):Dynamic;
 	/**
 		Decorate a function with a threading lock and prevent reentrant calls.
 	**/
@@ -363,9 +378,15 @@ package scipy.sparse.linalg.isolve.iterative;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -378,20 +399,23 @@ package scipy.sparse.linalg.isolve.iterative;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is DEPRECATED -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 		
 		See Also
 		--------
 		LinearOperator
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import qmr
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> b = np.array([2, 4, -1], dtype=float)
+		>>> x, exitCode = qmr(A, b)
+		>>> print(exitCode)            # 0 indicates successful convergence
+		0
+		>>> np.allclose(A.dot(x), b)
+		True
 	**/
-	static public function qmr(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M1:Dynamic, ?M2:Dynamic, ?callback:Dynamic):Dynamic;
-	static public function set_docstring(header:Dynamic, Ainfo:Dynamic, ?footer:Dynamic):Dynamic;
+	static public function qmr(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M1:Dynamic, ?M2:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
+	static public function set_docstring(header:Dynamic, Ainfo:Dynamic, ?footer:Dynamic, ?atol_default:Dynamic):Dynamic;
 }

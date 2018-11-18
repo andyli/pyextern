@@ -16,7 +16,7 @@ package scipy.stats._continuous_distns;
 		    The frozen distribution.
 	**/
 	public function __call__(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -68,7 +68,7 @@ package scipy.stats._continuous_distns;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,7 +120,7 @@ package scipy.stats._continuous_distns;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -302,102 +302,77 @@ package scipy.stats._continuous_distns;
 	**/
 	public function expect(?func:Dynamic, ?args:Dynamic, ?loc:Dynamic, ?scale:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
-		Return MLEs for shape (if applicable), location, and scale
-		parameters from data.
+		Maximum likelihood estimate for the location and scale parameters.
 		
-		MLE stands for Maximum Likelihood Estimate.  Starting estimates for
-		the fit are given by input arguments; for any arguments not provided
-		with starting estimates, ``self._fitstart(data)`` is called to generate
-		such.
-		
-		One can hold some parameters fixed to specific values by passing in
-		keyword arguments ``f0``, ``f1``, ..., ``fn`` (for shape parameters)
-		and ``floc`` and ``fscale`` (for location and scale parameters,
-		respectively).
+		`uniform.fit` uses only the following parameters.  Because exact
+		formulas are used, the parameters related to optimization that are
+		available in the `fit` method of other distributions are ignored
+		here.  The only positional argument accepted is `data`.
 		
 		Parameters
 		----------
 		data : array_like
-		    Data to use in calculating the MLEs.
-		args : floats, optional
-		    Starting value(s) for any shape-characterizing arguments (those not
-		    provided will be determined by a call to ``_fitstart(data)``).
-		    No default value.
-		kwds : floats, optional
-		    Starting values for the location and scale parameters; no default.
-		    Special keyword arguments are recognized as holding certain
-		    parameters fixed:
-		
-		    - f0...fn : hold respective shape parameters fixed.
-		      Alternatively, shape parameters to fix can be specified by name.
-		      For example, if ``self.shapes == "a, b"``, ``fa``and ``fix_a``
-		      are equivalent to ``f0``, and ``fb`` and ``fix_b`` are
-		      equivalent to ``f1``.
-		
-		    - floc : hold location parameter fixed to specified value.
-		
-		    - fscale : hold scale parameter fixed to specified value.
-		
-		    - optimizer : The optimizer to use.  The optimizer must take ``func``,
-		      and starting position as the first two arguments,
-		      plus ``args`` (for extra arguments to pass to the
-		      function to be optimized) and ``disp=0`` to suppress
-		      output as keyword arguments.
+		    Data to use in calculating the maximum likelihood estimate.
+		floc : float, optional
+		    Hold the location parameter fixed to the specified value.
+		fscale : float, optional
+		    Hold the scale parameter fixed to the specified value.
 		
 		Returns
 		-------
-		mle_tuple : tuple of floats
-		    MLEs for any shape parameters (if applicable), followed by those
-		    for location and scale. For most random variables, shape statistics
-		    will be returned, but there are exceptions (e.g. ``norm``).
+		loc, scale : float
+		    Maximum likelihood estimates for the location and scale.
 		
 		Notes
 		-----
-		This fit is computed by maximizing a log-likelihood function, with
-		penalty applied for samples outside of range of the distribution. The
-		returned answer is not guaranteed to be the globally optimal MLE, it
-		may only be locally optimal, or the optimization may fail altogether.
-		
+		An error is raised if `floc` is given and any values in `data` are
+		less than `floc`, or if `fscale` is given and `fscale` is less
+		than ``data.max() - data.min()``.  An error is also raised if both
+		`floc` and `fscale` are given.
 		
 		Examples
 		--------
+		>>> from scipy.stats import uniform
 		
-		Generate some data to fit: draw random variates from the `beta`
-		distribution
+		We'll fit the uniform distribution to `x`:
 		
-		>>> from scipy.stats import beta
-		>>> a, b = 1., 2.
-		>>> x = beta.rvs(a, b, size=1000)
+		>>> x = np.array([2, 2.5, 3.1, 9.5, 13.0])
 		
-		Now we can fit all four parameters (``a``, ``b``, ``loc`` and ``scale``):
+		For a uniform distribution MLE, the location is the minimum of the
+		data, and the scale is the maximum minus the minimum.
 		
-		>>> a1, b1, loc1, scale1 = beta.fit(x)
+		>>> loc, scale = uniform.fit(x)
+		>>> loc
+		2.0
+		>>> scale
+		11.0
 		
-		We can also use some prior knowledge about the dataset: let's keep
-		``loc`` and ``scale`` fixed:
+		If we know the data comes from a uniform distribution where the support
+		starts at 0, we can use `floc=0`:
 		
-		>>> a1, b1, loc1, scale1 = beta.fit(x, floc=0, fscale=1)
-		>>> loc1, scale1
-		(0, 1)
+		>>> loc, scale = uniform.fit(x, floc=0)
+		>>> loc
+		0.0
+		>>> scale
+		13.0
 		
-		We can also keep shape parameters fixed by using ``f``-keywords. To
-		keep the zero-th shape parameter ``a`` equal 1, use ``f0=1`` or,
-		equivalently, ``fa=1``:
+		Alternatively, if we know the length of the support is 12, we can use
+		`fscale=12`:
 		
-		>>> a1, b1, loc1, scale1 = beta.fit(x, fa=1, floc=0, fscale=1)
-		>>> a1
-		1
+		>>> loc, scale = uniform.fit(x, fscale=12)
+		>>> loc
+		1.5
+		>>> scale
+		12.0
 		
-		Not all distributions return estimates for the shape parameters.
-		``norm`` for example just returns estimates for location and scale:
-		
-		>>> from scipy.stats import norm
-		>>> x = norm.rvs(a, b, size=1000, random_state=123)
-		>>> loc1, scale1 = norm.fit(x)
-		>>> loc1, scale1
-		(0.92087172783841631, 2.0015750750324668)
+		In that last example, the support interval is [1.5, 13.5].  This
+		solution is not unique.  For example, the distribution with ``loc=2``
+		and ``scale=12`` has the same likelihood as the one above.  When
+		`fscale` is given and it is larger than ``data.max() - data.min()``,
+		the parameters returned by the `fit` method center the support over
+		the interval ``[data.min(), data.max()]``.
 	**/
-	public function fit(data:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function fit(data:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		Estimate loc and scale parameters from data using 1st and 2nd moments.
 		

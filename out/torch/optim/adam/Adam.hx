@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.optim.adam;
 @:pythonImport("torch.optim.adam", "Adam") extern class Adam {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,18 +42,18 @@ package torch.optim.adam;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(params:Dynamic, ?lr:Dynamic, ?betas:Dynamic, ?eps:Dynamic, ?weight_decay:Dynamic):Dynamic;
+	public function ___init__(params:Dynamic, ?lr:Dynamic, ?betas:Dynamic, ?eps:Dynamic, ?weight_decay:Dynamic, ?amsgrad:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(params:Dynamic, ?lr:Dynamic, ?betas:Dynamic, ?eps:Dynamic, ?weight_decay:Dynamic):Void;
+	public function new(params:Dynamic, ?lr:Dynamic, ?betas:Dynamic, ?eps:Dynamic, ?weight_decay:Dynamic, ?amsgrad:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,11 +105,22 @@ package torch.optim.adam;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Add a param group to the :class:`Optimizer` s `param_groups`.
+		
+		This can be useful when fine tuning a pre-trained network as frozen layers can be made
+		trainable and added to the :class:`Optimizer` as training progresses.
+		
+		Arguments:
+		    param_group (dict): Specifies what Tensors should be optimized along with group
+		    specific optimization options.
+	**/
+	public function add_param_group(param_group:Dynamic):Dynamic;
 	/**
 		Loads the optimizer state.
 		
@@ -125,7 +136,7 @@ package torch.optim.adam;
 		
 		* state - a dict holding current optimization state. Its content
 		    differs between optimizer classes.
-		* param_groups - a dict containig all parameter groups
+		* param_groups - a dict containing all parameter groups
 	**/
 	public function state_dict():Dynamic;
 	/**
@@ -137,7 +148,7 @@ package torch.optim.adam;
 	**/
 	public function step(?closure:Dynamic):Dynamic;
 	/**
-		Clears the gradients of all optimized :class:`Variable` s.
+		Clears the gradients of all optimized :class:`torch.Tensor` s.
 	**/
 	public function zero_grad():Dynamic;
 }

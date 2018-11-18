@@ -107,7 +107,7 @@ package theano.gof.cmodule;
 	**/
 	static public function get_module_cache(dirname:Dynamic, ?init_args:Dynamic):Dynamic;
 	/**
-		Return an MD5 hash that uniquely identifies a module.
+		Return a SHA256 hash that uniquely identifies a module.
 		
 		This hash takes into account:
 		    1. The C source code of the module (`src_code`).
@@ -122,7 +122,7 @@ package theano.gof.cmodule;
 		
 		This tuple should only contain objects whose __eq__ and __hash__ methods
 		can be trusted (currently: the version part of the key, as well as the
-		md5 hash of the config options).
+		SHA256 hash of the config options).
 		It is used to reduce the amount of key comparisons one has to go through
 		in order to find broken keys (i.e. keys with bad implementations of __eq__
 		or __hash__).

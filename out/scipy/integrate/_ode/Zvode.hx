@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.integrate._ode;
 @:pythonImport("scipy.integrate._ode", "zvode") extern class Zvode {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package scipy.integrate._ode;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package scipy.integrate._ode;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -140,6 +140,7 @@ package scipy.integrate._ode;
 	static public var active_global_handle : Dynamic;
 	public function check_handle():Dynamic;
 	static public var integrator_classes : Dynamic;
+	static public var istate : Dynamic;
 	static public var messages : Dynamic;
 	/**
 		Prepare integrator for call: allocate memory, set flags, etc.
@@ -210,14 +211,14 @@ package scipy.integrate._ode;
 		  Return objects:
 		    jac : rank-2 array('D') with bounds (nrowpd,n)
 	**/
-	static public function runner(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function runner(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		complex(real[, imag]) -> complex number
 		
 		Create a complex number from a real part and an optional imaginary part.
 		This is equivalent to (real + imag*1j) where imag defaults to 0.
 	**/
-	static public function scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Make one integration step and return (y1,t1).
 	**/

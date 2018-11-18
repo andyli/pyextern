@@ -54,6 +54,12 @@ package scipy.optimize._lsq.common;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -141,6 +147,19 @@ package scipy.optimize._lsq.common;
 		--------
 		cho_solve : Solve a linear set equations using the Cholesky factorization
 		            of a matrix.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> c
+		array([[3.        , 1.        , 0.33333333, 1.66666667],
+		       [3.        , 2.44948974, 1.90515869, -0.27216553],
+		       [1.        , 5.        , 2.29330749, 0.8559528 ],
+		       [5.        , 1.        , 2.        , 1.55418563]])
+		>>> np.allclose(np.triu(c).T @ np. triu(c) - A, np.zeros((4, 4)))
+		True
 	**/
 	static public function cho_factor(a:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -167,6 +186,15 @@ package scipy.optimize._lsq.common;
 		See also
 		--------
 		cho_factor : Cholesky factorization of a matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import cho_factor, cho_solve
+		>>> A = np.array([[9, 3, 1, 5], [3, 7, 5, 1], [1, 5, 9, 2], [5, 1, 2, 6]])
+		>>> c, low = cho_factor(A)
+		>>> x = cho_solve((c, low), [1, 1, 1, 1])
+		>>> np.allclose(A @ x - [1, 1, 1, 1], np.zeros(4))
+		True
 	**/
 	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
@@ -247,6 +275,33 @@ package scipy.optimize._lsq.common;
 		    If `s` is zero or `x` is not within the trust region.
 	**/
 	static public function intersect_trust_region(x:Dynamic, s:Dynamic, Delta:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function issparse(x:Dynamic):Dynamic;
 	/**
 		Return diag(d) J as LinearOperator.
@@ -298,6 +353,9 @@ package scipy.optimize._lsq.common;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will

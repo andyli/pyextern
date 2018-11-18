@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.widgets;
 @:pythonImport("matplotlib.widgets", "SpanSelector") extern class SpanSelector {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.widgets;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.widgets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -146,6 +146,10 @@ package matplotlib.widgets;
 		on button release event
 	**/
 	public function _release(event:Dynamic):Dynamic;
+	/**
+		Setting the span coordinates
+	**/
+	public function _set_span_xy(event:Dynamic):Dynamic;
 	/**
 		Is the widget active?
 	**/

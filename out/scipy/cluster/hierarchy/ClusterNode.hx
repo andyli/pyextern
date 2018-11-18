@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.cluster.hierarchy;
 @:pythonImport("scipy.cluster.hierarchy", "ClusterNode") extern class ClusterNode {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -49,7 +49,7 @@ package scipy.cluster.hierarchy;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -100,7 +100,7 @@ package scipy.cluster.hierarchy;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -140,7 +140,7 @@ package scipy.cluster.hierarchy;
 	**/
 	public function get_left():Dynamic;
 	/**
-		Returns a reference to the right child tree object.
+		Return a reference to the right child tree object.
 		
 		Returns
 		-------
@@ -150,7 +150,7 @@ package scipy.cluster.hierarchy;
 	**/
 	public function get_right():Dynamic;
 	/**
-		Returns True if the target node is a leaf.
+		Return True if the target node is a leaf.
 		
 		Returns
 		-------
@@ -159,7 +159,7 @@ package scipy.cluster.hierarchy;
 	**/
 	public function is_leaf():Bool;
 	/**
-		Performs pre-order traversal without recursive function calls.
+		Perform pre-order traversal without recursive function calls.
 		
 		When a leaf node is first encountered, ``func`` is called with
 		the leaf node as its argument, and its result is appended to
@@ -176,9 +176,9 @@ package scipy.cluster.hierarchy;
 		----------
 		func : function
 		    Applied to each leaf ClusterNode object in the pre-order traversal.
-		    Given the ``i``-th leaf node in the pre-order traversal ``n[i]``, the
-		    result of ``func(n[i])`` is stored in ``L[i]``. If not provided,
-		    the index of the original observation to which the node
+		    Given the ``i``-th leaf node in the pre-order traversal ``n[i]``,
+		    the result of ``func(n[i])`` is stored in ``L[i]``. If not
+		    provided, the index of the original observation to which the node
 		    corresponds is used.
 		
 		Returns

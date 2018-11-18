@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.image.ops.gen_single_image_random_dot_stereograms_ops;
 @:pythonImport("tensorflow.contrib.image.ops.gen_single_image_random_dot_stereograms_ops") extern class Gen_single_image_random_dot_stereograms_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -12,12 +12,29 @@ package tensorflow.contrib.image.ops.gen_single_image_random_dot_stereograms_ops
 	static public var __spec__ : Dynamic;
 	static public var _op_def_lib : Dynamic;
 	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
 		Outputs a single image random dot stereogram for export via encode_PNG/JPG OP.
 		
 		Given the 2-D tensor 'depth_values' with encoded Z values, this operation will
 		encode 3-D data into a 2-D image.  The output of this Op is suitable for the
 		encode_PNG/JPG ops.  Be careful with image compression as this may corrupt the
-		encode 3-D data witin the image.
+		encode 3-D data within the image.
 		
 		This Op is based upon:
 		'http://www.learningace.com/doc/4331582/b6ab058d1e206d68ab60e4e1ead2fe6e/sirds-paper'
@@ -75,7 +92,13 @@ package tensorflow.contrib.image.ops.gen_single_image_random_dot_stereograms_ops
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A tensor of size 'output_image_shape' with the encloded 'depth_values'
+		  A tensor of size 'output_image_shape' with the encoded 'depth_values'
 	**/
 	static public function single_image_random_dot_stereograms(depth_values:Dynamic, ?hidden_surface_removal:Dynamic, ?convergence_dots_size:Dynamic, ?dots_per_inch:Dynamic, ?eye_separation:Dynamic, ?mu:Dynamic, ?normalize:Dynamic, ?normalize_max:Dynamic, ?normalize_min:Dynamic, ?border_level:Dynamic, ?number_colors:Dynamic, ?output_image_shape:Dynamic, ?output_data_window:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function single_image_random_dot_stereograms
+	**/
+	static public function single_image_random_dot_stereograms_eager_fallback(depth_values:Dynamic, ?hidden_surface_removal:Dynamic, ?convergence_dots_size:Dynamic, ?dots_per_inch:Dynamic, ?eye_separation:Dynamic, ?mu:Dynamic, ?normalize:Dynamic, ?normalize_max:Dynamic, ?normalize_min:Dynamic, ?border_level:Dynamic, ?number_colors:Dynamic, ?output_image_shape:Dynamic, ?output_data_window:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

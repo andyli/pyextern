@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.dnn;
 @:pythonImport("theano.gpuarray.dnn", "RNNBlock") extern class RNNBlock {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package theano.gpuarray.dnn;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,12 +103,51 @@ package theano.gpuarray.dnn;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Apply the RNN to some data
+		
+		Parameters
+		----------
+		w:
+		    opaque parameter block
+		x:
+		    input
+		hx:
+		    initial hidden state
+		cx:
+		    initial cell state (for LSTM)
+	**/
 	public function apply(w:Dynamic, x:Dynamic, hx:Dynamic, ?cx:Dynamic):Dynamic;
+	/**
+		Get the size of the shared variable for the parameters of the RNN.
+		
+		This will return a size (in items) necessary to store all the
+		parameters for the RNN.  You should allocate a variable of
+		that size to store those parameters.  The order and layout of
+		the parameters is opaque.
+		
+		Parameters
+		----------
+		input_size: (int, int)
+		    Size of the input blocks
+	**/
 	public function get_param_size(input_size:Dynamic):Dynamic;
+	/**
+		Split the opaque parameter block into components.
+		
+		Parameters
+		----------
+		w: GpuArraySharedVariable
+		    opaque parameter block
+		layer: int
+		    ID of the layer
+		input_size: (int, int)
+		    Size of the input blocks
+	**/
 	public function split_params(w:Dynamic, layer:Dynamic, input_size:Dynamic):Dynamic;
 }

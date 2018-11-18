@@ -8,7 +8,7 @@ package pandas.io.sql;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package pandas.io.sql;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -96,7 +96,7 @@ package pandas.io.sql;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -115,7 +115,7 @@ package pandas.io.sql;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -127,13 +127,15 @@ package pandas.io.sql;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
 	public function _create_sql_schema(frame:Dynamic, table_name:Dynamic, ?keys:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -161,12 +163,12 @@ package pandas.io.sql;
 		Parameters
 		----------
 		sql : string
-		    SQL query to be executed
+		    SQL query to be executed.
 		index_col : string, optional, default: None
 		    Column name to use as index for the returned DataFrame object.
 		coerce_float : boolean, default True
 		    Attempt to convert values of non-string, non-numeric objects (like
-		    decimal.Decimal) to floating point, useful for SQL result sets
+		    decimal.Decimal) to floating point, useful for SQL result sets.
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
 		    to pass parameters is database driver dependent. Check your
@@ -174,14 +176,14 @@ package pandas.io.sql;
 		    described in PEP 249's paramstyle, is supported.
 		    Eg. for psycopg2, uses %(name)s so use params={'name' : 'value'}
 		parse_dates : list or dict, default: None
-		    - List of column names to parse as dates
+		    - List of column names to parse as dates.
 		    - Dict of ``{column_name: format string}`` where format string is
-		      strftime compatible in case of parsing string times or is one of
-		      (D, s, ns, ms, us) in case of parsing integer timestamps
+		      strftime compatible in case of parsing string times, or is one of
+		      (D, s, ns, ms, us) in case of parsing integer timestamps.
 		    - Dict of ``{column_name: arg dict}``, where the arg dict
 		      corresponds to the keyword arguments of
 		      :func:`pandas.to_datetime` Especially useful with databases
-		      without native Datetime support, such as SQLite
+		      without native Datetime support, such as SQLite.
 		chunksize : int, default None
 		    If specified, return an iterator where `chunksize` is the number
 		    of rows to include in each chunk.
@@ -202,12 +204,12 @@ package pandas.io.sql;
 		Parameters
 		----------
 		sql : string
-		    SQL query to be executed
+		    SQL query to be executed.
 		index_col : string, optional, default: None
 		    Column name to use as index for the returned DataFrame object.
 		coerce_float : boolean, default True
 		    Attempt to convert values of non-string, non-numeric objects (like
-		    decimal.Decimal) to floating point, useful for SQL result sets
+		    decimal.Decimal) to floating point, useful for SQL result sets.
 		params : list, tuple or dict, optional, default: None
 		    List of parameters to pass to execute method.  The syntax used
 		    to pass parameters is database driver dependent. Check your
@@ -215,14 +217,14 @@ package pandas.io.sql;
 		    described in PEP 249's paramstyle, is supported.
 		    Eg. for psycopg2, uses %(name)s so use params={'name' : 'value'}
 		parse_dates : list or dict, default: None
-		    - List of column names to parse as dates
+		    - List of column names to parse as dates.
 		    - Dict of ``{column_name: format string}`` where format string is
-		      strftime compatible in case of parsing string times or is one of
-		      (D, s, ns, ms, us) in case of parsing integer timestamps
+		      strftime compatible in case of parsing string times, or is one of
+		      (D, s, ns, ms, us) in case of parsing integer timestamps.
 		    - Dict of ``{column_name: arg dict}``, where the arg dict
 		      corresponds to the keyword arguments of
 		      :func:`pandas.to_datetime` Especially useful with databases
-		      without native Datetime support, such as SQLite
+		      without native Datetime support, such as SQLite.
 		chunksize : int, default None
 		    If specified, return an iterator where `chunksize` is the number
 		    of rows to include in each chunk.
@@ -243,28 +245,28 @@ package pandas.io.sql;
 		Parameters
 		----------
 		table_name : string
-		    Name of SQL table in database
+		    Name of SQL table in database.
 		index_col : string, optional, default: None
-		    Column to set as index
+		    Column to set as index.
 		coerce_float : boolean, default True
-		    Attempt to convert values of non-string, non-numeric objects
+		    Attempts to convert values of non-string, non-numeric objects
 		    (like decimal.Decimal) to floating point. This can result in
 		    loss of precision.
 		parse_dates : list or dict, default: None
-		    - List of column names to parse as dates
+		    - List of column names to parse as dates.
 		    - Dict of ``{column_name: format string}`` where format string is
-		      strftime compatible in case of parsing string times or is one of
-		      (D, s, ns, ms, us) in case of parsing integer timestamps
+		      strftime compatible in case of parsing string times, or is one of
+		      (D, s, ns, ms, us) in case of parsing integer timestamps.
 		    - Dict of ``{column_name: arg}``, where the arg corresponds
 		      to the keyword arguments of :func:`pandas.to_datetime`.
 		      Especially useful with databases without native Datetime support,
-		      such as SQLite
+		      such as SQLite.
 		columns : list, default: None
-		    List of column names to select from sql table
+		    List of column names to select from SQL table.
 		schema : string, default None
 		    Name of SQL schema in database to query (if database flavor
 		    supports this).  If specified, this overwrites the default
-		    schema of the SQLDatabase object.
+		    schema of the SQL database object.
 		chunksize : int, default None
 		    If specified, return an iterator where `chunksize` is the number
 		    of rows to include in each chunk.
@@ -288,13 +290,13 @@ package pandas.io.sql;
 		----------
 		frame : DataFrame
 		name : string
-		    Name of SQL table
+		    Name of SQL table.
 		if_exists : {'fail', 'replace', 'append'}, default 'fail'
 		    - fail: If table exists, do nothing.
 		    - replace: If table exists, drop it, recreate it, and insert data.
 		    - append: If table exists, insert data. Create if does not exist.
 		index : boolean, default True
-		    Write DataFrame index as a column
+		    Write DataFrame index as a column.
 		index_label : string or sequence, default None
 		    Column label for index column(s). If None is given (default) and
 		    `index` is True, then the index names are used.

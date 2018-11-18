@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.holiday;
 @:pythonImport("pandas.tseries.holiday", "Holiday") extern class Holiday {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -44,7 +44,7 @@ package pandas.tseries.holiday;
 		    Name of the holiday , defaults to class name
 		offset : array of pandas.tseries.offsets or
 		        class from pandas.tseries.offsets
-		    computes offset from  date
+		    computes offset from date
 		observance: function
 		    computes when holiday is given a pandas Timestamp
 		days_of_week:
@@ -75,7 +75,7 @@ package pandas.tseries.holiday;
 		    Name of the holiday , defaults to class name
 		offset : array of pandas.tseries.offsets or
 		        class from pandas.tseries.offsets
-		    computes offset from  date
+		    computes offset from date
 		observance: function
 		    computes when holiday is given a pandas Timestamp
 		days_of_week:
@@ -104,7 +104,7 @@ package pandas.tseries.holiday;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -155,7 +155,7 @@ package pandas.tseries.holiday;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

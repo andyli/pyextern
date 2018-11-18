@@ -29,7 +29,7 @@ package theano.compile.function_module;
 		    if ``output_subset`` is not passed.
 	**/
 	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __contains__(item:Dynamic):Dynamic;
 	/**
 		Copy a function. Copied function have separate intermediate
@@ -76,18 +76,18 @@ package theano.compile.function_module;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(fn:Dynamic, input_storage:Dynamic, output_storage:Dynamic, indices:Dynamic, outputs:Dynamic, defaults:Dynamic, unpack_single:Dynamic, return_none:Dynamic, output_keys:Dynamic, maker:Dynamic):Dynamic;
+	public function ___init__(fn:Dynamic, input_storage:Dynamic, output_storage:Dynamic, indices:Dynamic, outputs:Dynamic, defaults:Dynamic, unpack_single:Dynamic, return_none:Dynamic, output_keys:Dynamic, maker:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(fn:Dynamic, input_storage:Dynamic, output_storage:Dynamic, indices:Dynamic, outputs:Dynamic, defaults:Dynamic, unpack_single:Dynamic, return_none:Dynamic, output_keys:Dynamic, maker:Dynamic):Void;
+	public function new(fn:Dynamic, input_storage:Dynamic, output_storage:Dynamic, indices:Dynamic, outputs:Dynamic, defaults:Dynamic, unpack_single:Dynamic, return_none:Dynamic, output_keys:Dynamic, maker:Dynamic, ?name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -139,7 +139,7 @@ package theano.compile.function_module;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -200,6 +200,7 @@ package theano.compile.function_module;
 	static public var output_storage : Dynamic;
 	static public var pickle_aliased_memory_strategy : Dynamic;
 	static public var return_none : Dynamic;
+	public function sync_shared():Dynamic;
 	static public var unpack_single : Dynamic;
 	/**
 		dictionary-like access to the values associated with Variables

@@ -7,7 +7,7 @@ package numpy.polynomial.chebyshev;
 		Call self as a function.
 	**/
 	public function __call__(arg:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package numpy.polynomial.chebyshev;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -83,7 +83,7 @@ package numpy.polynomial.chebyshev;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
@@ -141,7 +141,7 @@ package numpy.polynomial.chebyshev;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -312,7 +312,7 @@ package numpy.polynomial.chebyshev;
 		    points sharing the same x-coordinates can be fitted at once by
 		    passing in a 2D-array that contains one dataset per column.
 		deg : int or 1-D array_like
-		    Degree(s) of the fitting polynomials. If `deg` is a single integer
+		    Degree(s) of the fitting polynomials. If `deg` is a single integer,
 		    all terms up to and including the `deg`'th term are included in the
 		    fit. For NumPy versions >= 1.11.0 a list of integers specifying the
 		    degrees of the terms to include may be used instead.
@@ -528,8 +528,8 @@ package numpy.polynomial.chebyshev;
 		Raises
 		------
 		ValueError
-		    If ``m < 1``, ``len(k) > m``, ``np.isscalar(lbnd) == False``, or
-		    ``np.isscalar(scl) == False``.
+		    If ``m < 1``, ``len(k) > m``, ``np.ndim(lbnd) != 0``, or
+		    ``np.ndim(scl) != 0``.
 		
 		See Also
 		--------
@@ -540,7 +540,7 @@ package numpy.polynomial.chebyshev;
 		Note that the result of each integration is *multiplied* by `scl`.
 		Why is this important to note?  Say one is making a linear change of
 		variable :math:`u = ax + b` in an integral relative to `x`.  Then
-		.. math::`dx = du/a`, so one will need to set `scl` equal to
+		:math:`dx = du/a`, so one will need to set `scl` equal to
 		:math:`1/a`- perhaps not what one would have first thought.
 		
 		Also note that, in general, the result of integrating a C-series needs
@@ -1172,6 +1172,41 @@ package numpy.polynomial.chebyshev;
 		    as the domain of the integrated series.
 	**/
 	public function integ(?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic):Dynamic;
+	/**
+		Interpolate a function at the Chebyshev points of the first kind.
+		
+		Returns the series that interpolates `func` at the Chebyshev points of
+		the first kind scaled and shifted to the `domain`. The resulting series
+		tends to a minmax approximation of `func` when the function is
+		continuous in the domain.
+		
+		.. versionadded:: 1.14.0
+		
+		Parameters
+		----------
+		func : function
+		    The function to be interpolated. It must be a function of a single
+		    variable of the form ``f(x, a, b, c...)``, where ``a, b, c...`` are
+		    extra arguments passed in the `args` parameter.
+		deg : int
+		    Degree of the interpolating polynomial.
+		domain : {None, [beg, end]}, optional
+		    Domain over which `func` is interpolated. The default is None, in
+		    which case the domain is [-1, 1].
+		args : tuple, optional
+		    Extra arguments to be used in the function call. Default is no
+		    extra arguments.
+		
+		Returns
+		-------
+		polynomial : Chebyshev instance
+		    Interpolating Chebyshev instance.
+		
+		Notes
+		-----
+		See `numpy.polynomial.chebfromfunction` for more details.
+	**/
+	static public function interpolate(func:Dynamic, deg:Dynamic, ?domain:Dynamic, ?args:Dynamic):Dynamic;
 	/**
 		Return x, y values at equally spaced points in domain.
 		

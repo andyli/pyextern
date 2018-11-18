@@ -42,13 +42,22 @@ package numpy.polynomial.polyutils;
 		
 		Examples
 		--------
-		>>> from numpy import polynomial as P
+		>>> from numpy.polynomial import polyutils as pu
 		>>> a = np.arange(4)
-		>>> P.as_series(a)
+		>>> pu.as_series(a)
 		[array([ 0.]), array([ 1.]), array([ 2.]), array([ 3.])]
 		>>> b = np.arange(6).reshape((2,3))
-		>>> P.as_series(b)
+		>>> pu.as_series(b)
 		[array([ 0.,  1.,  2.]), array([ 3.,  4.,  5.])]
+		
+		>>> pu.as_series((1, np.arange(3), np.arange(2, dtype=np.float16)))
+		[array([ 1.]), array([ 0.,  1.,  2.]), array([ 0.,  1.])]
+		
+		>>> pu.as_series([2, [1.1, 0.]])
+		[array([ 2.]), array([ 1.1])]
+		
+		>>> pu.as_series([2, [1.1, 0.]], trim=False)
+		[array([ 2.]), array([ 1.1,  0. ])]
 	**/
 	static public function as_series(alist:Dynamic, ?trim:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -128,15 +137,15 @@ package numpy.polynomial.polyutils;
 		
 		Examples
 		--------
-		>>> from numpy import polynomial as P
+		>>> from numpy.polynomial import polyutils as pu
 		>>> old_domain = (-1,1)
 		>>> new_domain = (0,2*np.pi)
 		>>> x = np.linspace(-1,1,6); x
 		array([-1. , -0.6, -0.2,  0.2,  0.6,  1. ])
-		>>> x_out = P.mapdomain(x, old_domain, new_domain); x_out
+		>>> x_out = pu.mapdomain(x, old_domain, new_domain); x_out
 		array([ 0.        ,  1.25663706,  2.51327412,  3.76991118,  5.02654825,
 		        6.28318531])
-		>>> x - P.mapdomain(x_out, new_domain, old_domain)
+		>>> x - pu.mapdomain(x_out, new_domain, old_domain)
 		array([ 0.,  0.,  0.,  0.,  0.,  0.])
 		
 		Also works for complex numbers (and thus can be used to map any line in
@@ -181,13 +190,13 @@ package numpy.polynomial.polyutils;
 		
 		Examples
 		--------
-		>>> from numpy import polynomial as P
-		>>> P.mapparms((-1,1),(-1,1))
+		>>> from numpy.polynomial import polyutils as pu
+		>>> pu.mapparms((-1,1),(-1,1))
 		(0.0, 1.0)
-		>>> P.mapparms((1,-1),(-1,1))
+		>>> pu.mapparms((1,-1),(-1,1))
 		(0.0, -1.0)
 		>>> i = complex(0,1)
-		>>> P.mapparms((-i,-1),(1,i))
+		>>> pu.mapparms((-i,-1),(1,i))
 		((1+1j), (1+0j))
 	**/
 	static public function mapparms(old:Dynamic, _new:Dynamic):Dynamic;
@@ -225,13 +234,13 @@ package numpy.polynomial.polyutils;
 		
 		Examples
 		--------
-		>>> from numpy import polynomial as P
-		>>> P.trimcoef((0,0,3,0,5,0,0))
+		>>> from numpy.polynomial import polyutils as pu
+		>>> pu.trimcoef((0,0,3,0,5,0,0))
 		array([ 0.,  0.,  3.,  0.,  5.])
-		>>> P.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
+		>>> pu.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
 		array([ 0.])
 		>>> i = complex(0,1) # works for complex
-		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
+		>>> pu.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
 	static public function trimcoef(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;

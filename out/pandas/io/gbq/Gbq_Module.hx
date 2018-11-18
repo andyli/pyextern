@@ -13,12 +13,8 @@ package pandas.io.gbq;
 	/**
 		Load data from Google BigQuery.
 		
-		The main method a user calls to execute a Query in Google BigQuery
-		and read results into a pandas DataFrame.
-		
-		Google BigQuery API Client Library v2 for Python is used.
-		Documentation is available `here
-		<https://developers.google.com/api-client-library/python/apis/bigquery/v2>`__
+		This function requires the `pandas-gbq package
+		<https://pandas-gbq.readthedocs.io>`__.
 		
 		Authentication to the Google BigQuery service is via OAuth 2.0.
 		
@@ -37,32 +33,39 @@ package pandas.io.gbq;
 		Parameters
 		----------
 		query : str
-		    SQL-Like Query to return data values
+		    SQL-Like Query to return data values.
 		project_id : str
 		    Google BigQuery Account project ID.
-		index_col : str (optional)
-		    Name of result column to use for index in results DataFrame
-		col_order : list(str) (optional)
+		index_col : str, optional
+		    Name of result column to use for index in results DataFrame.
+		col_order : list(str), optional
 		    List of BigQuery column names in the desired order for results
-		    DataFrame
-		reauth : boolean (default False)
+		    DataFrame.
+		reauth : boolean, default False
 		    Force Google BigQuery to reauthenticate the user. This is useful
 		    if multiple accounts are used.
-		verbose : boolean (default True)
-		    Verbose output
-		private_key : str (optional)
+		private_key : str, optional
 		    Service account private key in JSON format. Can be file path
 		    or string contents. This is useful for remote server
-		    authentication (eg. jupyter iPython notebook on remote host)
+		    authentication (eg. Jupyter/IPython notebook on remote host).
+		dialect : str, default 'legacy'
+		    SQL syntax dialect to use. Value can be one of:
 		
-		dialect : {'legacy', 'standard'}, default 'legacy'
-		    'legacy' : Use BigQuery's legacy SQL dialect.
-		    'standard' : Use BigQuery's standard SQL (beta), which is
-		    compliant with the SQL 2011 standard. For more information
-		    see `BigQuery SQL Reference
-		    <https://cloud.google.com/bigquery/sql-reference/>`__
-		
-		**kwargs : Arbitrary keyword arguments
+		    ``'legacy'``
+		        Use BigQuery's legacy SQL dialect. For more information see
+		        `BigQuery Legacy SQL Reference
+		        <https://cloud.google.com/bigquery/docs/reference/legacy-sql>`__.
+		    ``'standard'``
+		        Use BigQuery's standard SQL, which is
+		        compliant with the SQL 2011 standard. For more information
+		        see `BigQuery Standard SQL Reference
+		        <https://cloud.google.com/bigquery/docs/reference/standard-sql/>`__.
+		verbose : boolean, deprecated
+		    *Deprecated in Pandas-GBQ 0.4.0.* Use the `logging module
+		    to adjust verbosity instead
+		    <https://pandas-gbq.readthedocs.io/en/latest/intro.html#logging>`__.
+		kwargs : dict
+		    Arbitrary keyword arguments.
 		    configuration (dict): query config parameters for job processing.
 		    For example:
 		
@@ -74,8 +77,13 @@ package pandas.io.gbq;
 		Returns
 		-------
 		df: DataFrame
-		    DataFrame representing results of query
+		    DataFrame representing results of query.
+		
+		See Also
+		--------
+		pandas_gbq.read_gbq : This function in the pandas-gbq library.
+		pandas.DataFrame.to_gbq : Write a DataFrame to Google BigQuery.
 	**/
 	static public function read_gbq(query:Dynamic, ?project_id:Dynamic, ?index_col:Dynamic, ?col_order:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic, ?dialect:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function to_gbq(dataframe:Dynamic, destination_table:Dynamic, project_id:Dynamic, ?chunksize:Dynamic, ?verbose:Dynamic, ?reauth:Dynamic, ?if_exists:Dynamic, ?private_key:Dynamic):Dynamic;
+	static public function to_gbq(dataframe:Dynamic, destination_table:Dynamic, project_id:Dynamic, ?chunksize:Dynamic, ?verbose:Dynamic, ?reauth:Dynamic, ?if_exists:Dynamic, ?private_key:Dynamic, ?auth_local_webserver:Dynamic, ?table_schema:Dynamic):Dynamic;
 }

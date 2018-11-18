@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers._html_base;
 @:pythonImport("docutils.writers._html_base", "HTMLTranslator") extern class HTMLTranslator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.writers._html_base;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.writers._html_base;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -243,6 +243,7 @@ package docutils.writers._html_base;
 	public function encode(text:Dynamic):Dynamic;
 	static public var generator : Dynamic;
 	static public var head_prefix_template : Dynamic;
+	static public var in_word_wrap_point : Dynamic;
 	public function is_compactable(node:Dynamic):Dynamic;
 	static public var lang_attribute : Dynamic;
 	static public var math_tags : Dynamic;
@@ -255,7 +256,6 @@ package docutils.writers._html_base;
 		Do nothing if node has fewer children than `index`.
 	**/
 	public function set_class_on_child(node:Dynamic, class_:Dynamic, ?index:Dynamic):Dynamic;
-	static public var sollbruchstelle : Dynamic;
 	static public var special_characters : Dynamic;
 	/**
 		Construct and return a start tag given a node (id & class attributes

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib;
 @:pythonImport("matplotlib", "rc_context") extern class Rc_context {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -18,7 +18,7 @@ package matplotlib;
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
-	public function __exit__(type:Dynamic, value:Dynamic, tb:Dynamic):Dynamic;
+	public function __exit__(exc_type:Dynamic, exc_value:Dynamic, exc_tb:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -54,7 +54,7 @@ package matplotlib;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,9 +105,10 @@ package matplotlib;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _rc_context__fallback():Dynamic;
 }

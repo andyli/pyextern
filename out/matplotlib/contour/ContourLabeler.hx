@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.contour;
 @:pythonImport("matplotlib.contour", "ContourLabeler") extern class ContourLabeler {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.contour;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.contour;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -126,15 +126,18 @@ package matplotlib.contour;
 		specified transform will be used to translate (x, y) into
 		display coordinates.
 		
-		*inline*:
-		  controls whether the underlying contour is removed or
-		  not. Default is *True*.
+		Parameters
+		----------
+		x, y : float
+		    The approximate location of the label.
 		
-		*inline_spacing*:
-		  space in pixels to leave on each side of label when
-		  placing inline.  Defaults to 5.  This spacing will be
-		  exact for labels at locations where the contour is
-		  straight, less so for labels on curved contours.
+		inline : bool, optional, default: True
+		    If *True* remove the segment of the contour beneath the label.
+		
+		inline_spacing : int, optional, default: 5
+		    Space in pixels to leave on each side of label when placing
+		    inline. This spacing will be exact for labels at locations where
+		    the contour is straight, less so for labels on curved contours.
 	**/
 	public function add_label_near(x:Dynamic, y:Dynamic, ?_inline:Dynamic, ?inline_spacing:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
@@ -146,7 +149,7 @@ package matplotlib.contour;
 		not empty (lc defaults to the empty list if None).  *spacing*
 		is the space around the label in pixels to leave empty.
 		
-		Do both of these tasks at once to avoid calling mlab.path_length
+		Do both of these tasks at once to avoid calculating path lengths
 		multiple times, which is relatively costly.
 		
 		The method used here involves calculating the path length
@@ -156,83 +159,114 @@ package matplotlib.contour;
 	**/
 	public function calc_label_rot_and_inline(slc:Dynamic, ind:Dynamic, lw:Dynamic, ?lc:Dynamic, ?spacing:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelTexts instead.
+		
+		\ 
+	**/
+	public var cl : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelCValues instead.
+		
+		\ 
+	**/
+	public var cl_cvalues : Dynamic;
+	/**
+		.. deprecated:: 3.0
+		    The <lambda> function was deprecated in Matplotlib 3.0 and will be removed in 3.2. Use labelXYs instead.
+		
+		\ 
+	**/
+	public var cl_xy : Dynamic;
+	/**
 		Label a contour plot.
 		
 		Call signature::
 		
-		  clabel(cs, **kwargs)
+		  clabel(cs, [levels,] **kwargs)
 		
 		Adds labels to line contours in *cs*, where *cs* is a
 		:class:`~matplotlib.contour.ContourSet` object returned by
-		contour.
+		``contour()``.
 		
-		::
+		Parameters
+		----------
+		cs : `.ContourSet`
+		    The ContourSet to label.
 		
-		  clabel(cs, v, **kwargs)
+		levels : array-like, optional
+		    A list of level values, that should be labeled. The list must be
+		    a subset of ``cs.levels``. If not given, all levels are labeled.
 		
-		only labels contours listed in *v*.
+		fontsize : string or float, optional
+		    Size in points or relative size e.g., 'smaller', 'x-large'.
+		    See `.Text.set_size` for accepted string values.
 		
-		Optional keyword arguments:
+		colors : color-spec, optional
+		    The label colors:
 		
-		  *fontsize*:
-		    size in points or relative size e.g., 'smaller', 'x-large'
+		    - If *None*, the color of each label matches the color of
+		      the corresponding contour.
 		
-		  *colors*:
-		    - if *None*, the color of each label matches the color of
-		      the corresponding contour
+		    - If one string color, e.g., *colors* = 'r' or *colors* =
+		      'red', all labels will be plotted in this color.
 		
-		    - if one string color, e.g., *colors* = 'r' or *colors* =
-		      'red', all labels will be plotted in this color
-		
-		    - if a tuple of matplotlib color args (string, float, rgb, etc),
+		    - If a tuple of matplotlib color args (string, float, rgb, etc),
 		      different labels will be plotted in different colors in the order
-		      specified
+		      specified.
 		
-		  *inline*:
-		    controls whether the underlying contour is removed or
-		    not. Default is *True*.
+		inline : bool, optional
+		    If ``True`` the underlying contour is removed where the label is
+		    placed. Default is ``True``.
 		
-		  *inline_spacing*:
-		    space in pixels to leave on each side of label when
-		    placing inline.  Defaults to 5.  This spacing will be
-		    exact for labels at locations where the contour is
-		    straight, less so for labels on curved contours.
+		inline_spacing : float, optional
+		    Space in pixels to leave on each side of label when
+		    placing inline. Defaults to 5.
 		
-		  *fmt*:
-		    a format string for the label. Default is '%1.3f'
+		    This spacing will be exact for labels at locations where the
+		    contour is straight, less so for labels on curved contours.
+		
+		fmt : string or dict, optional
+		    A format string for the label. Default is '%1.3f'
+		
 		    Alternatively, this can be a dictionary matching contour
 		    levels with arbitrary strings to use for each contour level
 		    (i.e., fmt[level]=string), or it can be any callable, such
 		    as a :class:`~matplotlib.ticker.Formatter` instance, that
 		    returns a string when called with a numeric contour level.
 		
-		  *manual*:
-		    if *True*, contour labels will be placed manually using
-		    mouse clicks.  Click the first button near a contour to
+		manual : bool or iterable, optional
+		    If ``True``, contour labels will be placed manually using
+		    mouse clicks. Click the first button near a contour to
 		    add a label, click the second button (or potentially both
-		    mouse buttons at once) to finish adding labels.  The third
+		    mouse buttons at once) to finish adding labels. The third
 		    button can be used to remove the last label added, but
-		    only if labels are not inline.  Alternatively, the keyboard
+		    only if labels are not inline. Alternatively, the keyboard
 		    can be used to select label locations (enter to end label
 		    placement, delete or backspace act like the third mouse button,
 		    and any other key will select a label location).
 		
-		    *manual* can be an iterable object of x,y tuples. Contour labels
-		    will be created as if mouse is clicked at each x,y positions.
+		    *manual* can also be an iterable object of x,y tuples.
+		    Contour labels will be created as if mouse is clicked at each
+		    x,y positions.
 		
-		  *rightside_up*:
-		    if *True* (default), label rotations will always be plus
-		    or minus 90 degrees from level.
+		rightside_up : bool, optional
+		    If ``True``, label rotations will always be plus
+		    or minus 90 degrees from level. Default is ``True``.
 		
-		  *use_clabeltext*:
-		    if *True* (default is False), ClabelText class (instead of
-		    matplotlib.Text) is used to create labels. ClabelText
-		    recalculates rotation angles of texts during the drawing time,
-		    therefore this can be used if aspect of the axes changes.
+		use_clabeltext : bool, optional
+		    If ``True``, `.ClabelText` class (instead of `.Text`) is used to
+		    create labels. `ClabelText` recalculates rotation angles
+		    of texts during the drawing time, therefore this can be used if
+		    aspect of the axes changes. Default is ``False``.
 		
-		.. plot:: mpl_examples/pylab_examples/contour_demo.py
+		Returns
+		-------
+		labels
+		    A list of `.Text` instances for the labels.
 	**/
-	public function clabel(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function clabel(?args:python.VarArgs<Dynamic>, ?fontsize:Dynamic, ?_inline:Dynamic, ?inline_spacing:Dynamic, ?fmt:Dynamic, ?colors:Dynamic, ?use_clabeltext:Dynamic, ?manual:Dynamic, ?rightside_up:Dynamic):Dynamic;
 	/**
 		Return x, y, and the index of a label location.
 		
@@ -249,6 +283,9 @@ package matplotlib.contour;
 	**/
 	public function get_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The get_real_label_width function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		This computes actual onscreen label width.
 		This uses some black magic to determine onscreen extent of non-drawn
 		label.  This magic may not be very robust.
@@ -257,13 +294,12 @@ package matplotlib.contour;
 	**/
 	public function get_real_label_width(lev:Dynamic, fmt:Dynamic, fsize:Dynamic):Dynamic;
 	/**
-		get the text of the label
+		Get the text of the label.
 	**/
 	public function get_text(lev:Dynamic, fmt:Dynamic):Dynamic;
 	public function labels(_inline:Dynamic, inline_spacing:Dynamic):Dynamic;
 	/**
-		Find a good place to plot a label (relatively flat
-		part of the contour).
+		Find good place to draw a label (relatively flat part of the contour).
 	**/
 	public function locate_label(linecontour:Dynamic, labelwidth:Dynamic):Dynamic;
 	/**
@@ -275,7 +311,7 @@ package matplotlib.contour;
 	**/
 	public function print_label(linecontour:Dynamic, labelwidth:Dynamic):Dynamic;
 	/**
-		set the label properties - color, fontsize, text
+		Set the label properties - color, fontsize, text.
 	**/
 	public function set_label_props(label:Dynamic, text:Dynamic, color:Dynamic):Dynamic;
 	/**

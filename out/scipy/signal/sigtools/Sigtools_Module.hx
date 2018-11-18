@@ -31,12 +31,12 @@ package scipy.signal.sigtools;
 	**/
 	static public function _order_filterND(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		h = _remez(numtaps, bands, des, weight, type, Hz, maxiter, grid_density) 
-		returns the optimal (in the Chebyshev/minimax sense) FIR filter impulse 
+		h = _remez(numtaps, bands, des, weight, type, fs, maxiter, grid_density)
+		returns the optimal (in the Chebyshev/minimax sense) FIR filter impulse
 		response given a set of band edges, the desired response on those bands,
 		and the weight given to the error in those bands.  Bands is a monotonic
-		 vector with band edges given in frequency domain where Hz is the sampling
-		 frequency.
+		vector with band edges given in frequency domain where fs is the sampling
+		frequency.
 	**/
 	static public function _remez(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

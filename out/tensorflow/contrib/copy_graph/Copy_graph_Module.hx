@@ -11,7 +11,9 @@ package tensorflow.contrib.copy_graph;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Given an `Operation` 'org_instance` from one `Graph`,
+		Returns a copy of an operation from another Graph under a specified scope.
+		
+		Given an `Operation` `org_instance` from one `Graph`,
 		initializes and returns a copy of it from another `Graph`,
 		under the specified scope (default `""`).
 		

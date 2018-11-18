@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.estimator.export.export_output;
 @:pythonImport("tensorflow.python.estimator.export.export_output", "RegressionOutput") extern class RegressionOutput {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _SEPARATOR_CHAR : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -64,7 +65,7 @@ package tensorflow.python.estimator.export.export_output;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -86,7 +87,7 @@ package tensorflow.python.estimator.export.export_output;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -129,11 +130,35 @@ package tensorflow.python.estimator.export.export_output;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _check_output_key(key:Dynamic, error_label:Dynamic):Dynamic;
+	static public var _estimator_api_names : Dynamic;
+	static public var _estimator_api_names_v1 : Dynamic;
+	/**
+		Wraps raw tensors as dicts and checks type.
+		
+		Note that we create a new dict here so that we can overwrite the keys
+		if necessary.
+		
+		Args:
+		  outputs: A `Tensor` or a dict of string to `Tensor`.
+		  single_output_default_name: A string key for use in the output dict
+		    if the provided `outputs` is a raw tensor.
+		  error_label: descriptive string for use in error messages. If none,
+		    single_output_default_name will be used.
+		
+		Returns:
+		  A dict of tensors
+		
+		Raises:
+		  ValueError: if the outputs dict keys are not strings or tuples of strings
+		    or the values are not Tensors.
+	**/
+	public function _wrap_and_check_outputs(outputs:Dynamic, single_output_default_name:Dynamic, ?error_label:Dynamic):Dynamic;
 	/**
 		Generate a SignatureDef proto for inclusion in a MetaGraphDef.
 		

@@ -15,21 +15,20 @@ package matplotlib.colors;
 	static public var __spec__ : Dynamic;
 	static public var _colors_full_map : Dynamic;
 	/**
-		Return whether `c` can be interpreted as an item in the color cycle.
-		    
+		Return whether *c* can be interpreted as an item in the color cycle.
 	**/
 	static public function _is_nth_color(c:Dynamic):Dynamic;
+	static public function _sanitize_extrema(ex:Dynamic):Dynamic;
 	/**
-		Convert `c` to an RGBA color, with no support for color-cycle syntax.
+		Convert *c* to an RGBA color, with no support for color-cycle syntax.
 		
-		If `alpha` is not `None`, it forces the alpha value, except if `c` is
-		"none" (case-insensitive), which always maps to `(0, 0, 0, 0)`.
+		If *alpha* is not ``None``, it forces the alpha value, except if *c* is
+		``"none"`` (case-insensitive), which always maps to ``(0, 0, 0, 0)``.
 	**/
 	static public function _to_rgba_no_colorcycle(c:Dynamic, ?alpha:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
+	static public function _vector_magnitude(arr:Dynamic):Dynamic;
 	static public var cnames : Dynamic;
 	static public var colorConverter : Dynamic;
-	static public var division : Dynamic;
 	/**
 		A helper routine to generate a cmap and a norm instance which
 		behave similar to contourf's levels and colors arguments.
@@ -55,12 +54,10 @@ package matplotlib.colors;
 	static public function from_levels_and_colors(levels:Dynamic, colors:Dynamic, ?extend:Dynamic):Dynamic;
 	/**
 		Return the global mapping of names to named colors.
-		    
 	**/
 	static public function get_named_colors_mapping():Dynamic;
 	/**
-		Take a hex string *s* and return the corresponding rgb 3-tuple
-		Example: #efefef -> (0.93725, 0.93725, 0.93725)
+		Convert *c* to an RGB color, silently dropping the alpha channel.
 	**/
 	static public function hex2color(c:Dynamic):Dynamic;
 	static public var hexColorPattern : Dynamic;
@@ -80,8 +77,7 @@ package matplotlib.colors;
 	**/
 	static public function hsv_to_rgb(hsv:Dynamic):Dynamic;
 	/**
-		Return whether `c` can be interpreted as an RGB(A) color.
-		    
+		Return whether *c* can be interpreted as an RGB(A) color.
 	**/
 	static public function is_color_like(c:Dynamic):Dynamic;
 	/**
@@ -105,11 +101,13 @@ package matplotlib.colors;
 		gives the closest value for values of x between 0 and 1.
 	**/
 	static public function makeMappingArray(N:Dynamic, data:Dynamic, ?gamma:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
-		Given an rgb or rgba sequence of 0-1 floats, return the hex string
+		Convert *c* to a hex color.
+		
+		Uses the ``#rrggbb`` format if *keep_alpha* is False (the default),
+		``#rrggbbaa`` otherwise.
 	**/
-	static public function rgb2hex(c:Dynamic):Dynamic;
+	static public function rgb2hex(c:Dynamic, ?keep_alpha:Dynamic):Dynamic;
 	/**
 		convert float rgb values (in the range [0, 1]), in a numpy array to hsv
 		values.
@@ -126,30 +124,51 @@ package matplotlib.colors;
 	**/
 	static public function rgb_to_hsv(arr:Dynamic):Dynamic;
 	/**
-		Convert `c` to a hex color.
+		Compare two colors to see if they are the same.
 		
-		Uses the #rrggbb format if `keep_alpha` is False (the default), `#rrggbbaa`
-		otherwise.
+		Parameters
+		----------
+		c1, c2 : Matplotlib colors
+		
+		Returns
+		-------
+		bool
+		    ``True`` if *c1* and *c2* are the same color, otherwise ``False``.
+	**/
+	static public function same_color(c1:Dynamic, c2:Dynamic):Dynamic;
+	/**
+		Convert *c* to a hex color.
+		
+		Uses the ``#rrggbb`` format if *keep_alpha* is False (the default),
+		``#rrggbbaa`` otherwise.
 	**/
 	static public function to_hex(c:Dynamic, ?keep_alpha:Dynamic):Dynamic;
 	/**
-		Convert `c` to an RGB color, silently dropping the alpha channel.
-		    
+		Convert *c* to an RGB color, silently dropping the alpha channel.
 	**/
 	static public function to_rgb(c:Dynamic):Dynamic;
 	/**
-		Convert `c` to an RGBA color.
+		Convert *c* to an RGBA color.
 		
-		If `alpha` is not `None`, it forces the alpha value, except if `c` is
-		"none" (case-insensitive), which always maps to `(0, 0, 0, 0)`.
+		Parameters
+		----------
+		c : Matplotlib color
+		
+		alpha : scalar, optional
+		    If *alpha* is not ``None``, it forces the alpha value, except if *c* is
+		    ``"none"`` (case-insensitive), which always maps to ``(0, 0, 0, 0)``.
+		
+		Returns
+		-------
+		tuple
+		    Tuple of ``(r, g, b, a)`` scalars.
 	**/
 	static public function to_rgba(c:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
-		Convert `c` to a (n, 4) array of RGBA colors.
+		Convert *c* to a (n, 4) array of RGBA colors.
 		
-		If `alpha` is not `None`, it forces the alpha value.  If `c` is "none"
-		(case-insensitive) or an empty list, an empty array is returned.
+		If *alpha* is not ``None``, it forces the alpha value.  If *c* is
+		``"none"`` (case-insensitive) or an empty list, an empty array is returned.
 	**/
 	static public function to_rgba_array(c:Dynamic, ?alpha:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.colorbar;
 @:pythonImport("matplotlib.colorbar", "Colorbar") extern class Colorbar {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -68,7 +68,7 @@ package matplotlib.colorbar;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +119,7 @@ package matplotlib.colorbar;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -166,6 +166,13 @@ package matplotlib.colorbar;
 	**/
 	public function _get_extension_lengths(frac:Dynamic, automin:Dynamic, automax:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
+		This code looks at the norm being used by the colorbar
+		and decides what locator and formatter to use.  If ``locator`` has
+		already been set by hand, it just returns
+		``self.locator, self.formatter``.
+	**/
+	public function _get_ticker_locator_formatter():Dynamic;
+	/**
 		Given a set of color data values, return their
 		corresponding colorbar data coordinates.
 	**/
@@ -200,12 +207,17 @@ package matplotlib.colorbar;
 		Return the sequence of ticks (colorbar data locations),
 		ticklabels (strings), and the corresponding offset string.
 	**/
-	public function _ticker():Dynamic;
+	public function _ticker(locator:Dynamic, formatter:Dynamic):Dynamic;
 	/**
 		Return colorbar data coordinates for *N* uniformly
 		spaced boundaries, plus ends if required.
 	**/
 	public function _uniform_y(N:Dynamic):Dynamic;
+	/**
+		Return if we should use an adjustable tick locator or a fixed
+		one.  (check is used twice so factored out here...)
+	**/
+	public function _use_auto_colorbar_locator():Dynamic;
 	/**
 		Add an entry to a dictionary of boolean flags
 		that are set to True when the mappable is changed.
@@ -257,6 +269,19 @@ package matplotlib.colorbar;
 		return the colormap
 	**/
 	public function get_cmap():Dynamic;
+	/**
+		Return the x ticks as a list of locations
+	**/
+	public function get_ticks(?minor:Dynamic):Dynamic;
+	/**
+		Turns off the minor ticks on the colorbar.
+	**/
+	public function minorticks_off():Dynamic;
+	/**
+		Turns on the minor ticks on the colorbar without extruding
+		into the "extend regions".
+	**/
+	public function minorticks_on():Dynamic;
 	static public var n_rasterize : Dynamic;
 	/**
 		Updates this colorbar to match the mappable's properties.
@@ -272,7 +297,11 @@ package matplotlib.colorbar;
 	public function remove():Dynamic;
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
-		Set the image array from numpy array *A*
+		Set the image array from numpy array *A*.
+		
+		Parameters
+		----------
+		A : ndarray
 	**/
 	public function set_array(A:Dynamic):Dynamic;
 	/**
@@ -280,13 +309,16 @@ package matplotlib.colorbar;
 		sequence, interpret it as ``(vmin, vmax)`` which is used to
 		support setp
 		
-		ACCEPTS: a length 2 sequence of floats
+		ACCEPTS: a length 2 sequence of floats; may be overridden in methods
+		that have ``vmin`` and ``vmax`` kwargs.
 	**/
 	public function set_clim(?vmin:Dynamic, ?vmax:Dynamic):Dynamic;
 	/**
 		set the colormap for luminance data
 		
-		ACCEPTS: a colormap or registered colormap name
+		Parameters
+		----------
+		cmap : colormap or registered colormap name
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
@@ -294,7 +326,11 @@ package matplotlib.colorbar;
 	**/
 	public function set_label(label:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set the normalization instance
+		Set the normalization instance.
+		
+		Parameters
+		----------
+		norm : `.Normalize`
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**
@@ -304,9 +340,16 @@ package matplotlib.colorbar;
 	**/
 	public function set_ticklabels(ticklabels:Dynamic, ?update_ticks:Dynamic):Dynamic;
 	/**
-		set tick locations. Tick locations are updated immediately unless
-		update_ticks is *False*. To manually update the ticks, call
-		*update_ticks* method explicitly.
+		Set tick locations.
+		
+		Parameters
+		----------
+		ticks : {None, sequence, :class:`~matplotlib.ticker.Locator` instance}
+		    If None, a default Locator will be used.
+		
+		update_ticks : {True, False}, optional
+		    If True, tick locations are updated immediately.  If False,
+		    use :meth:`update_ticks` to manually update the ticks.
 	**/
 	public function set_ticks(ticks:Dynamic, ?update_ticks:Dynamic):Dynamic;
 	/**
@@ -321,6 +364,9 @@ package matplotlib.colorbar;
 		If *x* is an ndarray with 3 dimensions,
 		and the last dimension is either 3 or 4, then it will be
 		treated as an rgb or rgba array, and no mapping will be done.
+		The array can be uint8, or it can be floating point with
+		values in the 0-1 range; otherwise a ValueError will be raised.
+		If it is a masked array, the mask will be ignored.
 		If the last dimension is 3, the *alpha* kwarg (defaulting to 1)
 		will be used to fill in the transparency.  If the last dimension
 		is 4, the *alpha* kwarg is ignored; it does not
@@ -332,12 +378,7 @@ package matplotlib.colorbar;
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
 		If norm is False, no normalization of the input data is
-		performed, and it is assumed to already be in the range (0-1).
-		
-		Note: this method assumes the input is well-behaved; it does
-		not check for anomalies such as *x* being a masked rgba
-		array, or being an integer type other than uint8, or being
-		a floating point rgba array with values outside the 0-1 range.
+		performed, and it is assumed to be in the range (0-1).
 	**/
 	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**

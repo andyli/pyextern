@@ -51,4 +51,5 @@ package tensorflow.python.summary.summary_iterator;
 		  `Event` protocol buffers.
 	**/
 	static public function summary_iterator(path:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

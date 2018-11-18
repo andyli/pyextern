@@ -10,5 +10,6 @@ package torch.nn.modules.padding;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _ntuple(n:Dynamic):Dynamic;
+	static public function _pair(x:Dynamic):Dynamic;
 	static public function _quadruple(x:Dynamic):Dynamic;
 }

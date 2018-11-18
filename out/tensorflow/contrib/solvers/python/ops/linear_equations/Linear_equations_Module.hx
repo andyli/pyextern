@@ -14,7 +14,7 @@ package tensorflow.contrib.solvers.python.ops.linear_equations;
 		Conjugate gradient solver.
 		
 		Solves a linear system of equations `A*x = rhs` for selfadjoint, positive
-		definite matrix `A` and righ-hand side vector `rhs`, using an iterative,
+		definite matrix `A` and right-hand side vector `rhs`, using an iterative,
 		matrix-free algorithm where the action of the matrix A is represented by
 		`operator`. The iteration terminates when either the number of iterations
 		exceeds `max_iter` or when the residual norm has been reduced to `tol`
@@ -32,6 +32,15 @@ package tensorflow.contrib.solvers.python.ops.linear_equations;
 		      vector with the result of applying the operator to `x`, i.e. if
 		     `operator` represents matrix `A`, `apply` should return `A * x`.
 		  rhs: A rank-1 `Tensor` of shape `[N]` containing the right-hand size vector.
+		  preconditioner: An object representing a linear operator, see `operator`
+		    for detail. The preconditioner should approximate the inverse of `A`.
+		    An efficient preconditioner could dramatically improve the rate of
+		    convergence. If `preconditioner` represents matrix `M`(`M` approximates
+		    `A^{-1}`), the algorithm uses `preconditioner.apply(x)` to estimate
+		    `A^{-1}x`. For this to be useful, the cost of applying `M` should be
+		    much lower than computing `A^{-1}` directly.
+		  x: A rank-1 `Tensor` of shape `[N]` containing the initial guess for the
+		    solution.
 		  tol: A float scalar convergence tolerance.
 		  max_iter: An integer giving the maximum number of iterations.
 		  name: A name scope for the operation.
@@ -42,9 +51,10 @@ package tensorflow.contrib.solvers.python.ops.linear_equations;
 		    - x: A rank-1 `Tensor` of shape `[N]` containing the computed solution.
 		    - r: A rank-1 `Tensor` of shape `[M]` containing the residual vector.
 		    - p: A rank-1 `Tensor` of shape `[N]`. `A`-conjugate basis vector.
-		    - gamma: \\(||r||_2^2\\)
+		    - gamma: \\(r \dot M \dot r\\), equivalent to  \\(||r||_2^2\\) when
+		      `preconditioner=None`.
 	**/
-	static public function conjugate_gradient(operator:Dynamic, rhs:Dynamic, ?tol:Dynamic, ?max_iter:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conjugate_gradient(_operator:Dynamic, rhs:Dynamic, ?preconditioner:Dynamic, ?x:Dynamic, ?tol:Dynamic, ?max_iter:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

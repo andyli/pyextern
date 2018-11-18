@@ -23,21 +23,17 @@ package pandas.core.computation.expressions;
 	/**
 		standard evaluation 
 	**/
-	static public function _evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function _evaluate_numexpr(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?truediv:Dynamic, ?reversed:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _evaluate_numexpr(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?truediv:Dynamic, ?reversed:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		standard evaluation 
 	**/
-	static public function _evaluate_standard(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _evaluate_standard(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _has_bool_dtype(x:Dynamic):Dynamic;
 	static public function _store_test_result(used_numexpr:Dynamic):Dynamic;
-	/**
-		return my values or the object if we are say an ndarray 
-	**/
-	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _where(cond:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic):Dynamic;
-	static public function _where_numexpr(cond:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic):Dynamic;
-	static public function _where_standard(cond:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic):Dynamic;
+	static public function _where(cond:Dynamic, a:Dynamic, b:Dynamic):Dynamic;
+	static public function _where_numexpr(cond:Dynamic, a:Dynamic, b:Dynamic):Dynamic;
+	static public function _where_standard(cond:Dynamic, a:Dynamic, b:Dynamic):Dynamic;
 	/**
 		evaluate and return the expression of the op on a and b
 		
@@ -48,12 +44,9 @@ package pandas.core.computation.expressions;
 		op_str: the string version of the op
 		a :     left operand
 		b :     right operand
-		raise_on_error : pass the error to the higher level if indicated
-		                 (default is False), otherwise evaluate the op with and
-		                 return the results
 		use_numexpr : whether to try to use numexpr (default True)
 	**/
-	static public function evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?use_numexpr:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?use_numexpr:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -63,15 +56,14 @@ package pandas.core.computation.expressions;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -79,7 +71,9 @@ package pandas.core.computation.expressions;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -152,16 +146,22 @@ package pandas.core.computation.expressions;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -205,11 +205,6 @@ package pandas.core.computation.expressions;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -226,7 +221,7 @@ package pandas.core.computation.expressions;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -271,12 +266,6 @@ package pandas.core.computation.expressions;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -327,21 +316,22 @@ package pandas.core.computation.expressions;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -352,6 +342,11 @@ package pandas.core.computation.expressions;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -361,11 +356,23 @@ package pandas.core.computation.expressions;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -374,7 +381,7 @@ package pandas.core.computation.expressions;
 	static public function get_test_result():Dynamic;
 	static public function set_numexpr_threads(?n:Dynamic):Dynamic;
 	/**
-		Keeps track of whether numexpr  was used.  Stores an additional ``True``
+		Keeps track of whether numexpr was used.  Stores an additional ``True``
 		for every successful use of evaluate with numexpr since the last
 		``get_test_result``
 	**/
@@ -389,10 +396,7 @@ package pandas.core.computation.expressions;
 		cond : a boolean array
 		a :    return if cond is True
 		b :    return if cond is False
-		raise_on_error : pass the error to the higher level if indicated
-		                 (default is False), otherwise evaluate the op with and
-		                 return the results
 		use_numexpr : whether to try to use numexpr (default True)
 	**/
-	static public function where(cond:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?use_numexpr:Dynamic):Dynamic;
+	static public function where(cond:Dynamic, a:Dynamic, b:Dynamic, ?use_numexpr:Dynamic):Dynamic;
 }

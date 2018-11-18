@@ -49,7 +49,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		
 		The function arguments use the same convention as
 		Theano's arange: if only one argument is provided,
-		it is in fact the "stop" argument.
+		it is in fact the "stop" argument and "start" is 0.
 		
 		The default type of the returned tensor is `'int32'` to
 		match TensorFlow's default.
@@ -89,7 +89,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 	/**
 		Publicly accessible method for determining the current backend.
 		
-		Only exists for API compatibily with multi-backend Keras.
+		Only exists for API compatibility with multi-backend Keras.
 		
 		Returns:
 		    The string "tensorflow".
@@ -201,22 +201,25 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Arguments:
 		    x: Tensor or variable.
 		    bias: Bias tensor to add.
-		    data_format: Data format for 3D, 4D or 5D tensors:
-		        one of "channels_first", "channels_last".
+		    data_format: string, `"channels_last"` or `"channels_first"`.
 		
 		Returns:
 		    Output tensor.
 		
 		Raises:
-		    ValueError: In case of invalid `data_format` argument.
+		    ValueError: In one of the two cases below:
+		                1. invalid `data_format` argument.
+		                2. invalid bias shape.
+		                   the bias should be either a vector or
+		                   a tensor with ndim(x) - 1 dimension
 	**/
 	static public function bias_add(x:Dynamic, bias:Dynamic, ?data_format:Dynamic):Dynamic;
 	/**
 		Binary crossentropy between an output tensor and a target tensor.
 		
 		Arguments:
-		    output: A tensor.
 		    target: A tensor with the same shape as `output`.
+		    output: A tensor.
 		    from_logits: Whether `output` is expected to be a logits tensor.
 		        By default, we consider that `output`
 		        encodes a probability distribution.
@@ -224,7 +227,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Returns:
 		    A tensor.
 	**/
-	static public function binary_crossentropy(output:Dynamic, target:Dynamic, ?from_logits:Dynamic):Dynamic;
+	static public function binary_crossentropy(target:Dynamic, output:Dynamic, ?from_logits:Dynamic):Dynamic;
 	/**
 		Casts a tensor to a different dtype and returns it.
 		
@@ -285,17 +288,23 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Categorical crossentropy between an output tensor and a target tensor.
 		
 		Arguments:
+		    target: A tensor of the same shape as `output`.
 		    output: A tensor resulting from a softmax
 		        (unless `from_logits` is True, in which
 		        case `output` is expected to be the logits).
-		    target: A tensor of the same shape as `output`.
 		    from_logits: Boolean, whether `output` is the
 		        result of a softmax, or is a tensor of logits.
+		    axis: Int specifying the channels axis. `axis=-1` corresponds to data
+		        format `channels_last', and `axis=1` corresponds to data format
+		        `channels_first`.
 		
 		Returns:
 		    Output tensor.
+		
+		Raises:
+		    ValueError: if `axis` is neither -1 nor one of the axes of `output`.
 	**/
-	static public function categorical_crossentropy(output:Dynamic, target:Dynamic, ?from_logits:Dynamic):Dynamic;
+	static public function categorical_crossentropy(target:Dynamic, output:Dynamic, ?from_logits:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Destroys the current TF graph and creates a new one.
 		
@@ -325,6 +334,18 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    A tensor.
 	**/
 	static public function concatenate(tensors:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Creates a constant tensor.
+		
+		Arguments:
+		    value: A constant value (or list)
+		    dtype: The type of the elements of the resulting tensor.
+		    shape: Optional dimensions of resulting tensor.
+		    name: Optional name for the tensor.
+		
+		Returns:
+		    A Constant Tensor.
+	**/
 	static public function constant(value:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		1D convolution.
@@ -339,6 +360,10 @@ package tensorflow.contrib.keras.api.keras.backend;
 		
 		Returns:
 		    A tensor, result of 1D convolution.
+		
+		Raises:
+		    ValueError: if `data_format` is neither `channels_last` or
+		    `channels_first`.
 	**/
 	static public function conv1d(x:Dynamic, kernel:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?dilation_rate:Dynamic):Dynamic;
 	/**
@@ -351,7 +376,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    padding: string, `"same"` or `"valid"`.
 		    data_format: `"channels_last"` or `"channels_first"`.
 		        Whether to use Theano or TensorFlow data format
-		        for inputs/kernels/ouputs.
+		        for inputs/kernels/outputs.
 		    dilation_rate: tuple of 2 integers.
 		
 		Returns:
@@ -373,9 +398,9 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    output_shape: 1D int tensor for the output shape.
 		    strides: strides tuple.
 		    padding: string, `"same"` or `"valid"`.
-		    data_format: `"channels_last"` or `"channels_first"`.
-		        Whether to use Theano or TensorFlow data format
-		        for inputs/kernels/ouputs.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
+		        Whether to use Theano or TensorFlow/CNTK data format
+		        for inputs/kernels/outputs.
 		
 		Returns:
 		    A tensor, result of transposed 2D convolution.
@@ -393,9 +418,9 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    kernel: kernel tensor.
 		    strides: strides tuple.
 		    padding: string, `"same"` or `"valid"`.
-		    data_format: `"channels_last"` or `"channels_first"`.
-		        Whether to use Theano or TensorFlow data format
-		        for inputs/kernels/ouputs.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
+		        Whether to use Theano or TensorFlow/CNTK data format
+		        for inputs/kernels/outputs.
 		    dilation_rate: tuple of 3 integers.
 		
 		Returns:
@@ -417,10 +442,10 @@ package tensorflow.contrib.keras.api.keras.backend;
 	**/
 	static public function cos(x:Dynamic):Dynamic;
 	/**
-		Returns the number of scalars in a Keras variable.
+		Returns the static number of elements in a variable or tensor.
 		
 		Arguments:
-		    x: Keras variable.
+		    x: Variable or tensor.
 		
 		Returns:
 		    Integer, the number of scalars in `x`.
@@ -491,7 +516,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    label_lengths: length of the labels.
 		
 		Returns:
-		    A sparse tensor representation of the lablels.
+		    A sparse tensor representation of the labels.
 	**/
 	static public function ctc_label_dense_to_sparse(labels:Dynamic, label_lengths:Dynamic):Dynamic;
 	/**
@@ -584,8 +609,8 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Exponential linear unit.
 		
 		Arguments:
-		    x: A tenor or variable to compute the activation function for.
-		    alpha: A scalar, slope of positive section.
+		    x: A tensor or variable to compute the activation function for.
+		    alpha: A scalar, slope of negative section.
 		
 		Returns:
 		    A tensor.
@@ -600,7 +625,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Example:
 		```python
 		    >>> keras.backend.epsilon()
-		    1e-08
+		    1e-07
 		```
 	**/
 	static public function epsilon():Dynamic;
@@ -645,14 +670,14 @@ package tensorflow.contrib.keras.api.keras.backend;
 	**/
 	static public function exp(x:Dynamic):Dynamic;
 	/**
-		Adds a 1-sized dimension at index "dim".
+		Adds a 1-sized dimension at index "axis".
 		
 		Arguments:
 		    x: A tensor or variable.
 		    axis: Position where to add a new axis.
 		
 		Returns:
-		    A tensor with expended dimensions.
+		    A tensor with expanded dimensions.
 	**/
 	static public function expand_dims(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -737,10 +762,13 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    inputs: List of placeholder tensors.
 		    outputs: List of output tensors.
 		    updates: List of update ops.
-		    **kwargs: Not used with TensorFlow.
+		    **kwargs: Passed to `tf.Session.run`.
 		
 		Returns:
 		    Output values as Numpy arrays.
+		
+		Raises:
+		    ValueError: if invalid kwargs are passed in.
 	**/
 	@:native("function")
 	static public function _function(inputs:Dynamic, outputs:Dynamic, ?updates:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -802,7 +830,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 	**/
 	static public function get_value(x:Dynamic):Dynamic;
 	/**
-		Returns the gradients of `variables` w.r.t. `loss`.
+		Returns the gradients of `loss` w.r.t. `variables`.
 		
 		Arguments:
 		    loss: Scalar tensor to minimize.
@@ -873,7 +901,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		        (tensor or callable that returns a tensor).
 		    training: Optional scalar tensor
 		        (or Python boolean, or Python integer)
-		        specifing the learning phase.
+		        specifying the learning phase.
 		
 		Returns:
 		    Either `x` or `alt` based on `K.learning_phase`.
@@ -905,7 +933,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		        (tensor or callable that returns a tensor).
 		    training: Optional scalar tensor
 		        (or Python boolean, or Python integer)
-		        specifing the learning phase.
+		        specifying the learning phase.
 		
 		Returns:
 		    Either `x` or `alt` based on the `training` flag.
@@ -913,7 +941,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 	**/
 	static public function in_train_phase(x:Dynamic, alt:Dynamic, ?training:Dynamic):Dynamic;
 	/**
-		Returns the shape tensor or variable as a tuple of int or None entries.
+		Returns the shape of tensor or variable as a tuple of int or None entries.
 		
 		Arguments:
 		    x: Tensor or variable.
@@ -965,7 +993,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Returns:
 		    A tensor.
 	**/
-	static public function l2_normalize(x:Dynamic, axis:Dynamic):Dynamic;
+	static public function l2_normalize(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Returns the learning phase flag.
 		
@@ -1069,7 +1097,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    axis: A list of integer. Axes to compute the mean.
 		    keepdims: A boolean, whether to keep the dimensions or not.
 		        If `keepdims` is `False`, the rank of the tensor is reduced
-		        by 1 for each entry in `axis`. If `keep_dims` is `True`,
+		        by 1 for each entry in `axis`. If `keepdims` is `True`,
 		        the reduced dimensions are retained with length 1.
 		
 		Returns:
@@ -1102,41 +1130,18 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    A tensor.
 	**/
 	static public function minimum(x:Dynamic, y:Dynamic):Dynamic;
-	static public function moving_average_update(x:Dynamic, value:Dynamic, momentum:Dynamic):Dynamic;
 	/**
-		Returns a context manager for use when defining a Python op.
+		Compute the moving average of a variable.
 		
-		This context manager validates that the given `values` are from the
-		same graph, makes that graph the default graph, and pushes a
-		name scope in that graph (see
-		@{tf.Graph.name_scope}
-		for more details on that).
-		
-		For example, to define a new Python op called `my_op`:
-		
-		```python
-		def my_op(a, b, c, name=None):
-		  with tf.name_scope(name, "MyOp", [a, b, c]) as scope:
-		    a = tf.convert_to_tensor(a, name="a")
-		    b = tf.convert_to_tensor(b, name="b")
-		    c = tf.convert_to_tensor(c, name="c")
-		    # Define some computation that uses `a`, `b`, and `c`.
-		    return foo_op(..., name=scope)
-		```
-		
-		Args:
-		  name: The name argument that is passed to the op function.
-		  default_name: The default name to use if the `name` argument is `None`.
-		  values: The list of `Tensor` arguments that are passed to the op function.
+		Arguments:
+		    x: A Variable.
+		    value: A tensor with the same shape as `variable`.
+		    momentum: The moving average momentum.
 		
 		Returns:
-		  A context manager for use in defining Python ops. Yields the name scope.
-		
-		Raises:
-		  ValueError: if neither `name` nor `default_name` is provided
-		    but `values` are.
+		    An Operation to update the variable.
 	**/
-	static public function name_scope(name:Dynamic, ?default_name:Dynamic, ?values:Dynamic):Dynamic;
+	static public function moving_average_update(x:Dynamic, value:Dynamic, momentum:Dynamic):Dynamic;
 	/**
 		Returns the number of axes in a tensor, as an integer.
 		
@@ -1202,7 +1207,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 	**/
 	static public function one_hot(indices:Dynamic, num_classes:Dynamic):Dynamic;
 	/**
-		Instantiates an all-ones tensor variable and returns it.
+		Instantiates an all-ones variable and returns it.
 		
 		Arguments:
 		    shape: Tuple of integers, shape of returned Keras variable.
@@ -1211,6 +1216,8 @@ package tensorflow.contrib.keras.api.keras.backend;
 		
 		Returns:
 		    A Keras variable, filled with `1.0`.
+		    Note that if `shape` was symbolic, we cannot return a variable,
+		    and will return a dynamically-shaped tensor instead.
 		
 		Example:
 		```python
@@ -1290,17 +1297,17 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    x: Tensor or variable.
 		    pool_size: tuple of 2 integers.
 		    strides: tuple of 2 integers.
-		    padding: one of `"valid"`, `"same"`.
-		    data_format: one of `"channels_first"`, `"channels_last"`.
-		    pool_mode: one of `"max"`, `"avg"`.
+		    padding: string, `"same"` or `"valid"`.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
+		    pool_mode: string, `"max"` or `"avg"`.
 		
 		Returns:
 		    A tensor, result of 2D pooling.
 		
 		Raises:
-		    ValueError: if `data_format` is neither `channels_last` or
-		    `channels_first`.
-		    ValueError: if `pool_mode` is neither `max` or `avg`.
+		    ValueError: if `data_format` is neither `"channels_last"` or
+		    `"channels_first"`.
+		    ValueError: if `pool_mode` is neither `"max"` or `"avg"`.
 	**/
 	static public function pool2d(x:Dynamic, pool_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?pool_mode:Dynamic):Dynamic;
 	/**
@@ -1310,17 +1317,17 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    x: Tensor or variable.
 		    pool_size: tuple of 3 integers.
 		    strides: tuple of 3 integers.
-		    padding: one of `"valid"`, `"same"`.
-		    data_format: one of `"channels_first"`, `"channels_last"`.
-		    pool_mode: one of `"max"`, `"avg"`.
+		    padding: string, `"same"` or `"valid"`.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
+		    pool_mode: string, `"max"` or `"avg"`.
 		
 		Returns:
 		    A tensor, result of 3D pooling.
 		
 		Raises:
-		    ValueError: if `data_format` is neither
-		        `channels_last` or `channels_first`.
-		    ValueError: if `pool_mode` is neither `max` or `avg`.
+		    ValueError: if `data_format` is neither `"channels_last"` or
+		    `"channels_first"`.
+		    ValueError: if `pool_mode` is neither `"max"` or `"avg"`.
 	**/
 	static public function pool3d(x:Dynamic, pool_size:Dynamic, ?strides:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?pool_mode:Dynamic):Dynamic;
 	/**
@@ -1336,6 +1343,16 @@ package tensorflow.contrib.keras.api.keras.backend;
 	static public function pow(x:Dynamic, a:Dynamic):Dynamic;
 	/**
 		Prints `message` and the tensor value when evaluated.
+		
+		Note that `print_tensor` returns a new tensor identical to `x`
+		which should be used in the following code. Otherwise the
+		print operation is not taken into account during evaluation.
+		
+		Example:
+		
+		```python
+		   >>> x = K.print_tensor(x, message="x is: ")
+		```
 		
 		Arguments:
 		    x: Tensor to print.
@@ -1461,15 +1478,21 @@ package tensorflow.contrib.keras.api.keras.backend;
 		
 		With default values, it returns element-wise `max(x, 0)`.
 		
+		Otherwise, it follows:
+		`f(x) = max_value` for `x >= max_value`,
+		`f(x) = x` for `threshold <= x < max_value`,
+		`f(x) = alpha * (x - threshold)` otherwise.
+		
 		Arguments:
 		    x: A tensor or variable.
 		    alpha: A scalar, slope of negative section (default=`0.`).
-		    max_value: Saturation threshold.
+		    max_value: float. Saturation threshold.
+		    threshold: float. Threshold value for thresholded activation.
 		
 		Returns:
 		    A tensor.
 	**/
-	static public function relu(x:Dynamic, ?alpha:Dynamic, ?max_value:Dynamic):Dynamic;
+	static public function relu(x:Dynamic, ?alpha:Dynamic, ?max_value:Dynamic, ?threshold:Dynamic):Dynamic;
 	/**
 		Repeats a 2D tensor.
 		
@@ -1495,13 +1518,14 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    rep: Python integer, number of times to repeat.
 		    axis: Axis along which to repeat.
 		
-		Raises:
-		    ValueError: In case `x.shape[axis]` is undefined.
-		
 		Returns:
 		    A tensor.
 	**/
 	static public function repeat_elements(x:Dynamic, rep:Dynamic, axis:Dynamic):Dynamic;
+	/**
+		Resets graph identifiers.
+		  
+	**/
 	static public function reset_uids():Dynamic;
 	/**
 		Reshapes a tensor to the specified shape.
@@ -1566,30 +1590,30 @@ package tensorflow.contrib.keras.api.keras.backend;
 		
 		Arguments:
 		    step_function: RNN step function.
-		        Parameters;
-		            input; tensor with shape `(samples, ...)` (no time dimension),
+		        Args;
+		            input; Tensor with shape `(samples, ...)` (no time dimension),
 		                representing input for the batch of samples at a certain
 		                time step.
-		            states; list of tensors.
+		            states; List of tensors.
 		        Returns;
-		            output; tensor with shape `(samples, output_dim)`
+		            output; Tensor with shape `(samples, output_dim)`
 		                (no time dimension).
-		            new_states; list of tensors, same length and shapes
+		            new_states; List of tensors, same length and shapes
 		                as 'states'. The first state in the list must be the
 		                output tensor at the previous timestep.
-		    inputs: tensor of temporal data of shape `(samples, time, ...)`
+		    inputs: Tensor of temporal data of shape `(samples, time, ...)`
 		        (at least 3D).
-		    initial_states: tensor with shape (samples, output_dim)
+		    initial_states: Tensor with shape `(samples, output_dim)`
 		        (no time dimension),
 		        containing the initial values for the states used in
 		        the step function.
-		    go_backwards: boolean. If True, do the iteration over the time
+		    go_backwards: Boolean. If True, do the iteration over the time
 		        dimension in reverse order and return the reversed sequence.
-		    mask: binary tensor with shape `(samples, time, 1)`,
+		    mask: Binary tensor with shape `(samples, time, 1)`,
 		        with a zero for every element that is masked.
-		    constants: a list of constant values passed at each step.
-		    unroll: whether to unroll the RNN or to use a symbolic loop
-		        (`while_loop` or `scan` depending on backend).
+		    constants: List of constant values passed at each step.
+		    unroll: Whether to unroll the RNN or to use a symbolic `while_loop`.
+		    input_length: If specified, assume time dimension is of this length.
 		
 		Returns:
 		    A tuple, `(last_output, outputs, new_states)`.
@@ -1607,7 +1631,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    ValueError: if `mask` is provided (not `None`) but states is not provided
 		        (`len(states)` == 0).
 	**/
-	static public function rnn(step_function:Dynamic, inputs:Dynamic, initial_states:Dynamic, ?go_backwards:Dynamic, ?mask:Dynamic, ?constants:Dynamic, ?unroll:Dynamic):Dynamic;
+	static public function rnn(step_function:Dynamic, inputs:Dynamic, initial_states:Dynamic, ?go_backwards:Dynamic, ?mask:Dynamic, ?constants:Dynamic, ?unroll:Dynamic, ?input_length:Dynamic):Dynamic;
 	/**
 		Element-wise rounding to the closest integer.
 		
@@ -1628,8 +1652,8 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    depthwise_kernel: convolution kernel for the depthwise convolution.
 		    pointwise_kernel: kernel for the 1x1 convolution.
 		    strides: strides tuple (length 2).
-		    padding: padding mode, "valid" or "same".
-		    data_format: data format, "channels_first" or "channels_last".
+		    padding: string, `"same"` or `"valid"`.
+		    data_format: string, `"channels_last"` or `"channels_first"`.
 		    dilation_rate: tuple of integers,
 		        dilation rates for the separable convolution.
 		
@@ -1651,7 +1675,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		```python
 		    >>> from keras import backend as K
 		    >>> K.epsilon()
-		    1e-08
+		    1e-07
 		    >>> K.set_epsilon(1e-05)
 		    >>> K.epsilon()
 		    1e-05
@@ -1734,7 +1758,8 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    A symbolic shape (which is itself a tensor).
 		
 		Examples:
-		```
+		
+		```python
 		    # TensorFlow example
 		    >>> from keras import backend as K
 		    >>> tf_session = K.get_session()
@@ -1788,11 +1813,13 @@ package tensorflow.contrib.keras.api.keras.backend;
 		
 		Arguments:
 		    x: A tensor or variable.
+		    axis: The dimension softmax would be performed on.
+		        The default is -1 which indicates the last dimension.
 		
 		Returns:
 		    A tensor.
 	**/
-	static public function softmax(x:Dynamic):Dynamic;
+	static public function softmax(x:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Softplus of a tensor.
 		
@@ -1817,17 +1844,23 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Categorical crossentropy with integer targets.
 		
 		Arguments:
+		    target: An integer tensor.
 		    output: A tensor resulting from a softmax
 		        (unless `from_logits` is True, in which
 		        case `output` is expected to be the logits).
-		    target: An integer tensor.
 		    from_logits: Boolean, whether `output` is the
 		        result of a softmax, or is a tensor of logits.
+		    axis: Int specifying the channels axis. `axis=-1` corresponds to data
+		        format `channels_last', and `axis=1` corresponds to data format
+		        `channels_first`.
 		
 		Returns:
 		    Output tensor.
+		
+		Raises:
+		    ValueError: if `axis` is neither -1 nor one of the axes of `output`.
 	**/
-	static public function sparse_categorical_crossentropy(output:Dynamic, target:Dynamic, ?from_logits:Dynamic):Dynamic;
+	static public function sparse_categorical_crossentropy(target:Dynamic, output:Dynamic, ?from_logits:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Pads the 2nd and 3rd dimensions of a 4D tensor.
 		
@@ -1929,10 +1962,13 @@ package tensorflow.contrib.keras.api.keras.backend;
 		Returns `variables` but with zero gradient w.r.t. every other variable.
 		
 		Arguments:
-		    variables: List of variables.
+		    variables: Tensor or list of tensors to consider constant with respect
+		      to any other variable.
+		
 		
 		Returns:
-		    The same list of variables.
+		    A single tensor or a list of tensors (depending on the passed argument)
+		    that has no gradient with respect to any other variable.
 	**/
 	static public function stop_gradient(variables:Dynamic):Dynamic;
 	/**
@@ -1957,12 +1993,15 @@ package tensorflow.contrib.keras.api.keras.backend;
 		should be symbolic tensors of the *same shape*.
 		
 		Arguments:
-		    condition: scalar tensor (`int` or `bool`).
+		    condition: tensor (`int` or `bool`).
 		    then_expression: either a tensor, or a callable that returns a tensor.
 		    else_expression: either a tensor, or a callable that returns a tensor.
 		
 		Returns:
 		    The selected tensor.
+		
+		Raises:
+		    ValueError: If rank of `condition` is greater than rank of expressions.
 	**/
 	@:native("switch")
 	static public function _switch(condition:Dynamic, then_expression:Dynamic, else_expression:Dynamic):Dynamic;
@@ -2062,7 +2101,27 @@ package tensorflow.contrib.keras.api.keras.backend;
 	**/
 	static public function truncated_normal(shape:Dynamic, ?mean:Dynamic, ?stddev:Dynamic, ?dtype:Dynamic, ?seed:Dynamic):Dynamic;
 	static public function update(x:Dynamic, new_x:Dynamic):Dynamic;
+	/**
+		Update the value of `x` by adding `increment`.
+		
+		Arguments:
+		    x: A Variable.
+		    increment: A tensor of same shape as `x`.
+		
+		Returns:
+		    The variable `x` updated.
+	**/
 	static public function update_add(x:Dynamic, increment:Dynamic):Dynamic;
+	/**
+		Update the value of `x` by subtracting `decrement`.
+		
+		Arguments:
+		    x: A Variable.
+		    decrement: A tensor of same shape as `x`.
+		
+		Returns:
+		    The variable `x` updated.
+	**/
 	static public function update_sub(x:Dynamic, decrement:Dynamic):Dynamic;
 	/**
 		Variance of a tensor, alongside the specified axis.
@@ -2087,6 +2146,8 @@ package tensorflow.contrib.keras.api.keras.backend;
 		    value: Numpy array, initial value of the tensor.
 		    dtype: Tensor type.
 		    name: Optional name string for the tensor.
+		    constraint: Optional projection function to be
+		        applied to the variable after an optimizer update.
 		
 		Returns:
 		    A variable instance (with Keras metadata included).
@@ -2105,7 +2166,7 @@ package tensorflow.contrib.keras.api.keras.backend;
 		           [ 3.,  4.]])
 		```
 	**/
-	static public function variable(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	static public function variable(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?constraint:Dynamic):Dynamic;
 	/**
 		Instantiates an all-zeros variable and returns it.
 		
@@ -2116,6 +2177,8 @@ package tensorflow.contrib.keras.api.keras.backend;
 		
 		Returns:
 		    A variable (including Keras metadata), filled with `0.0`.
+		    Note that if `shape` was symbolic, we cannot return a variable,
+		    and will return a dynamically-shaped tensor instead.
 		
 		Example:
 		```python

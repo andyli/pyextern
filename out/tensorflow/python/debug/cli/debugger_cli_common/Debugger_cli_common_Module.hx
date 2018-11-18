@@ -3,6 +3,7 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 @:pythonImport("tensorflow.python.debug.cli.debugger_cli_common") extern class Debugger_cli_common_Module {
 	static public var EXPLICIT_USER_EXIT : Dynamic;
 	static public var HELP_INDENT : Dynamic;
+	static public var INIT_SCROLL_POS_KEY : Dynamic;
 	static public var MAIN_MENU_KEY : Dynamic;
 	static public var REGEX_MATCH_LINES_KEY : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -15,6 +16,17 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	/**
+		Generate RichTextLines with TensorFlow version info.
+		
+		Args:
+		  include_dependency_versions: Include the version of TensorFlow's key
+		    dependencies, such as numpy.
+		
+		Returns:
+		  A formatted, multi-line `RichTextLines` object.
+	**/
+	static public function get_tensorflow_version_lines(?include_dependency_versions:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Perform regex match in rich text lines.
@@ -44,11 +56,12 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 		
 		Args:
 		  rich_text_list: a list of RichLine objects or strings
+		  annotations: annotatoins for the resultant RichTextLines object.
 		
 		Returns:
 		  A corresponding RichTextLines object.
 	**/
-	static public function rich_text_lines_from_rich_line_list(rich_text_list:Dynamic):Dynamic;
+	static public function rich_text_lines_from_rich_line_list(rich_text_list:Dynamic, ?annotations:Dynamic):Dynamic;
 	/**
 		Wrap RichTextLines according to maximum number of columns.
 		

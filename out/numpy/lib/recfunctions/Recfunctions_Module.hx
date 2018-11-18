@@ -13,12 +13,11 @@ package numpy.lib.recfunctions;
 	/**
 		Private function validating the given `fill_value` for the given dtype.
 		
-		If fill_value is None, it is set to the default corresponding to the dtype
-		if this latter is standard (no fields). If the datatype is flexible (named
-		fields), fill_value is set to a tuple whose elements are the default fill
-		values corresponding to each field.
+		If fill_value is None, it is set to the default corresponding to the dtype.
 		
 		If fill_value is not None, its value is forced to the given dtype.
+		
+		The result is always a 0d array.
 	**/
 	static public function _check_fill_value(fill_value:Dynamic, ndtype:Dynamic):Dynamic;
 	/**
@@ -164,6 +163,24 @@ package numpy.lib.recfunctions;
 		(('a', dtype('int32')), ('ba', dtype('float64')), ('bb', dtype('int32')))
 	**/
 	static public function flatten_descr(ndtype:Dynamic):Dynamic;
+	/**
+		Produce a list of name/dtype pairs corresponding to the dtype fields
+		
+		Similar to dtype.descr, but the second item of each tuple is a dtype, not a
+		string. As a result, this handles subarray dtypes
+		
+		Can be passed to the dtype constructor to reconstruct the dtype, noting that
+		this (deliberately) discards field offsets.
+		
+		Examples
+		--------
+		>>> dt = np.dtype([(('a', 'A'), int), ('b', float, 3)])
+		>>> dt.descr
+		[(('a', 'A'), '<i4'), ('b', '<f8', (3,))]
+		>>> get_fieldspec(dt)
+		[(('a', 'A'), dtype('int32')), ('b', dtype(('<f8', (3,))))]
+	**/
+	static public function get_fieldspec(dtype:Dynamic):Dynamic;
 	/**
 		Returns a dictionary with fields indexing lists of their parent fields.
 		
@@ -329,12 +346,13 @@ package numpy.lib.recfunctions;
 		Notes
 		-----
 		* Without a mask, the missing value will be filled with something,
-		* depending on what its corresponding type:
-		        -1      for integers
-		        -1.0    for floating point numbers
-		        '-'     for characters
-		        '-1'    for strings
-		        True    for boolean values
+		  depending on what its corresponding type:
+		
+		  * ``-1``      for integers
+		  * ``-1.0``    for floating point numbers
+		  * ``'-'``     for characters
+		  * ``'-1'``    for strings
+		  * ``True``    for boolean values
 		* XXX: I just obtained these values empirically
 	**/
 	static public function merge_arrays(seqarrays:Dynamic, ?fill_value:Dynamic, ?flatten:Dynamic, ?usemask:Dynamic, ?asrecarray:Dynamic):Dynamic;
@@ -430,6 +448,61 @@ package numpy.lib.recfunctions;
 	**/
 	static public function rename_fields(base:Dynamic, namemapper:Dynamic):Dynamic;
 	/**
+		Re-pack the fields of a structured array or dtype in memory.
+		
+		The memory layout of structured datatypes allows fields at arbitrary
+		byte offsets. This means the fields can be separated by padding bytes,
+		their offsets can be non-monotonically increasing, and they can overlap.
+		
+		This method removes any overlaps and reorders the fields in memory so they
+		have increasing byte offsets, and adds or removes padding bytes depending
+		on the `align` option, which behaves like the `align` option to `np.dtype`.
+		
+		If `align=False`, this method produces a "packed" memory layout in which
+		each field starts at the byte the previous field ended, and any padding
+		bytes are removed.
+		
+		If `align=True`, this methods produces an "aligned" memory layout in which
+		each field's offset is a multiple of its alignment, and the total itemsize
+		is a multiple of the largest alignment, by adding padding bytes as needed.
+		
+		Parameters
+		----------
+		a : ndarray or dtype
+		   array or dtype for which to repack the fields.
+		align : boolean
+		   If true, use an "aligned" memory layout, otherwise use a "packed" layout.
+		recurse : boolean
+		   If True, also repack nested structures.
+		
+		Returns
+		-------
+		repacked : ndarray or dtype
+		   Copy of `a` with fields repacked, or `a` itself if no repacking was
+		   needed.
+		
+		Examples
+		--------
+		
+		>>> def print_offsets(d):
+		...     print("offsets:", [d.fields[name][1] for name in d.names])
+		...     print("itemsize:", d.itemsize)
+		...
+		>>> dt = np.dtype('u1,i4,f4', align=True)
+		>>> dt
+		dtype({'names':['f0','f1','f2'], 'formats':['u1','<i4','<f8'], 'offsets':[0,4,8], 'itemsize':16}, align=True)
+		>>> print_offsets(dt)
+		offsets: [0, 4, 8]
+		itemsize: 16
+		>>> packed_dt = repack_fields(dt)
+		>>> packed_dt
+		dtype([('f0', 'u1'), ('f1', '<i4'), ('f2', '<f8')])
+		>>> print_offsets(packed_dt)
+		offsets: [0, 1, 5]
+		itemsize: 13
+	**/
+	static public function repack_fields(a:Dynamic, ?align:Dynamic, ?recurse:Dynamic):Dynamic;
+	/**
 		Superposes arrays fields by fields
 		
 		Parameters
@@ -477,4 +550,5 @@ package numpy.lib.recfunctions;
 		    Whether to collapse nested descriptions.
 	**/
 	static public function zip_descr(seqarrays:Dynamic, ?flatten:Dynamic):Dynamic;
+	static public function zip_dtype(seqarrays:Dynamic, ?flatten:Dynamic):Dynamic;
 }

@@ -25,7 +25,7 @@ package tensorflow.python.training.evaluation;
 		
 		One may also consider using a `tf.contrib.training.SummaryAtEndHook` to record
 		summaries after the `eval_ops` have run. If `eval_ops` is `None`, the
-		summaries run immedietly after the model checkpoint has been restored.
+		summaries run immediately after the model checkpoint has been restored.
 		
 		Note that `evaluate_once` creates a local variable used to track the number of
 		evaluations run via `tf.contrib.training.get_or_create_eval_step`.
@@ -55,6 +55,17 @@ package tensorflow.python.training.evaluation;
 		  The fetched values of `final_ops` or `None` if `final_ops` is `None`.
 	**/
 	static public function _evaluate_once(checkpoint_path:Dynamic, ?master:Dynamic, ?scaffold:Dynamic, ?eval_ops:Dynamic, ?feed_dict:Dynamic, ?final_ops:Dynamic, ?final_ops_feed_dict:Dynamic, ?hooks:Dynamic, ?config:Dynamic):Dynamic;
+	/**
+		Gets the eval step `Tensor` value after running `update_ops`.
+		
+		Args:
+		  update_ops: A list of `Tensors` or a dictionary of names to `Tensors`,
+		      which are run before reading the eval step value.
+		
+		Returns:
+		  A `Tensor` representing the value for the evaluation step.
+	**/
+	static public function _get_latest_eval_step_value(update_ops:Dynamic):Dynamic;
 	/**
 		Gets or creates the eval step `Tensor`.
 		

@@ -79,6 +79,20 @@ package scipy.sparse.linalg.dsolve;
 		increase `fill_factor` AND decrease `drop_tol`.
 		
 		This function uses the SuperLU library.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import spilu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = spilu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
 	static public function spilu(A:Dynamic, ?drop_tol:Dynamic, ?fill_factor:Dynamic, ?drop_rule:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
@@ -100,8 +114,6 @@ package scipy.sparse.linalg.dsolve;
 		diag_pivot_thresh : float, optional
 		    Threshold used for a diagonal entry to be an acceptable pivot.
 		    See SuperLU user's guide for details [1]_
-		drop_tol : float, optional
-		    (deprecated) No effect.
 		relax : int, optional
 		    Expert option for customizing the degree of relaxing supernodes.
 		    See SuperLU user's guide for details [1]_
@@ -131,8 +143,22 @@ package scipy.sparse.linalg.dsolve;
 		References
 		----------
 		.. [1] SuperLU http://crd.lbl.gov/~xiaoye/SuperLU/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import splu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = splu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
-	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?drop_tol:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
+	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
 		Solve the sparse linear system Ax=b, where b may be a vector or a matrix.
 		
@@ -169,6 +195,16 @@ package scipy.sparse.linalg.dsolve;
 		resulting X is dense, the construction of this sparse result will be
 		relatively expensive.  In that case, consider converting A to a dense
 		matrix and using scipy.linalg.solve or its variants.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import spsolve
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> B = csc_matrix([[2, 0], [-1, 0], [2, 0]], dtype=float)
+		>>> x = spsolve(A, B)
+		>>> np.allclose(A.dot(x).todense(), B.todense())
+		True
 	**/
 	static public function spsolve(A:Dynamic, b:Dynamic, ?permc_spec:Dynamic, ?use_umfpack:Dynamic):Dynamic;
 	/**
@@ -190,6 +226,8 @@ package scipy.sparse.linalg.dsolve;
 		overwrite_b : bool, optional
 		    Allow overwriting data in `b`.
 		    Enabling gives a performance gain. Default is False.
+		    If `overwrite_b` is True, it should be ensured that
+		    `b` has an appropriate dtype to be able to store the result.
 		
 		Returns
 		-------
@@ -206,70 +244,19 @@ package scipy.sparse.linalg.dsolve;
 		Notes
 		-----
 		.. versionadded:: 0.19.0
-	**/
-	static public function spsolve_triangular(A:Dynamic, b:Dynamic, ?lower:Dynamic, ?overwrite_A:Dynamic, ?overwrite_b:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
 		
 		Examples
 		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.linalg import spsolve_triangular
+		>>> A = csr_matrix([[3, 0, 0], [1, -1, 0], [2, 0, 1]], dtype=float)
+		>>> B = np.array([[2, 0], [-1, 0], [2, 0]], dtype=float)
+		>>> x = spsolve_triangular(A, B)
+		>>> np.allclose(A.dot(x), B)
+		True
 	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function spsolve_triangular(A:Dynamic, b:Dynamic, ?lower:Dynamic, ?overwrite_A:Dynamic, ?overwrite_b:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		Select default sparse direct solver to be used.
 		
@@ -278,6 +265,10 @@ package scipy.sparse.linalg.dsolve;
 		useUmfpack : bool, optional
 		    Use UMFPACK over SuperLU. Has effect only if scikits.umfpack is
 		    installed. Default: True
+		assumeSortedIndices : bool, optional
+		    Allow UMFPACK to skip the step of sorting indices for a CSR/CSC matrix.
+		    Has effect only if useUmfpack is True and scikits.umfpack is installed.
+		    Default: False
 		
 		Notes
 		-----

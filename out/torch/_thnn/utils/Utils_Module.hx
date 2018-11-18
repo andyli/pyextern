@@ -12,6 +12,7 @@ package torch._thnn.utils;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _unpickle_backend(backend_name:Dynamic):Dynamic;
+	static public function get_file_path(?path_components:python.VarArgs<Dynamic>):Dynamic;
 	static public function load_backend(t:Dynamic, lib:Dynamic, generic_functions:Dynamic, ?mixins:Dynamic):Dynamic;
 	static public function parse_header(path:Dynamic):Dynamic;
 }

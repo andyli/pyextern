@@ -25,7 +25,7 @@ package pandas.core.indexes.timedeltas;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return a boolean if this key is IN the index
 		
@@ -52,12 +52,18 @@ package pandas.core.indexes.timedeltas;
 	public function __dir__():Dynamic;
 	public function __divmod__(other:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	public function __floordiv__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self>=value.
+	**/
 	public function __ge__(other:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
@@ -68,8 +74,14 @@ package pandas.core.indexes.timedeltas;
 		only handle list-likes, slices, and integer scalars
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
 	public function __gt__(other:Dynamic):Dynamic;
-	static public var __hash__ : Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
 	public function __iadd__(other:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
@@ -86,25 +98,34 @@ package pandas.core.indexes.timedeltas;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __inv__():Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
+	/**
+		Return self<=value.
+	**/
 	public function __le__(other:Dynamic):Dynamic;
 	/**
 		return the length of the Index
 	**/
 	public function __len__():Dynamic;
+	/**
+		Return self<value.
+	**/
 	public function __lt__(other:Dynamic):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
+	/**
+		Return self!=value.
+	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	public function __neg__():Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?unit:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?verify_integrity:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?unit:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?closed:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?verify_integrity:Dynamic):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__():Dynamic;
@@ -139,7 +160,7 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -159,7 +180,7 @@ package pandas.core.indexes.timedeltas;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		Return a string representation for this object.
@@ -173,6 +194,7 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		add in comparison methods 
 	**/
@@ -183,8 +205,33 @@ package pandas.core.indexes.timedeltas;
 		superclass)
 	**/
 	static public function _add_datetimelike_methods():Dynamic;
-	public function _add_delta(delta:Dynamic):Dynamic;
+	/**
+		Add a timedelta-like, Tick, or TimedeltaIndex-like object
+		to self.
+		
+		Parameters
+		----------
+		delta : {timedelta, np.timedelta64, Tick, TimedeltaIndex}
+		
+		Returns
+		-------
+		result : TimedeltaIndex
+		
+		Notes
+		-----
+		The result's name is set outside of _add_delta by the calling
+		method (__add__ or __sub__)
+	**/
+	public function _add_delta(delta:Dynamic):pandas.TimedeltaIndex;
+	/**
+		Add a delta of a timedeltalike
+		return the i8 result view
+	**/
 	public function _add_delta_td(other:Dynamic):Dynamic;
+	/**
+		Add a delta of a TimedeltaIndex
+		return the i8 result view
+	**/
 	public function _add_delta_tdi(other:Dynamic):Dynamic;
 	/**
 		add in logical methods 
@@ -194,6 +241,10 @@ package pandas.core.indexes.timedeltas;
 		add in logical methods to disable 
 	**/
 	static public function _add_logical_methods_disabled():Dynamic;
+	/**
+		Add pd.NaT to self
+	**/
+	public function _add_nat():Dynamic;
 	static public function _add_numeric_methods():Dynamic;
 	/**
 		add in the numeric add/sub methods to disable 
@@ -211,14 +262,21 @@ package pandas.core.indexes.timedeltas;
 		add in numeric unary methods 
 	**/
 	static public function _add_numeric_methods_unary():Dynamic;
-	static public var _allow_datetime_index_ops : Dynamic;
-	static public var _allow_index_ops : Dynamic;
-	static public var _allow_period_index_ops : Dynamic;
+	public function _add_offset(other:Dynamic):Dynamic;
 	/**
-		Concatenate to_concat which has the same class
+		Add or subtract array-like of DateOffset objects
+		
+		Parameters
+		----------
+		other : Index, np.ndarray
+		    object-dtype containing pd.DateOffset objects
+		op : {operator.add, operator.sub}
+		
+		Returns
+		-------
+		result : same class as self
 	**/
-	public function _append_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
-	static public var _arrmap : Dynamic;
+	public function _addsub_offset_array(other:Dynamic, op:Dynamic):Dynamic;
 	/**
 		Check value is valid for scalar op 
 	**/
@@ -238,12 +296,24 @@ package pandas.core.indexes.timedeltas;
 		box function to get object from internal representation
 	**/
 	public var _box_func : Dynamic;
-	static public var _box_scalars : Dynamic;
 	/**
 		apply box func to passed values
 	**/
 	public function _box_values(values:Dynamic):Dynamic;
+	/**
+		return object Index which contains boxed values
+	**/
+	public function _box_values_as_index():Dynamic;
 	public function _can_fast_union(other:Dynamic):Dynamic;
+	/**
+		Faster check for ``name in self`` when we know `name` is a Python
+		identifier (e.g. in NDFrame.__getattr__, which hits this to support
+		. key lookup). For indexes that can't hold identifiers (everything
+		but object & categorical) we just return False.
+		
+		https://github.com/pandas-dev/pandas/issues/19764
+	**/
+	public function _can_hold_identifiers_and_holds_name(name:Dynamic):Dynamic;
 	static public var _can_hold_na : Dynamic;
 	/**
 		*this is an internal non-public method*
@@ -259,6 +329,7 @@ package pandas.core.indexes.timedeltas;
 		ValueError if its a duplicate axis
 	**/
 	public function _can_reindex(indexer:Dynamic):Dynamic;
+	static public var _ceil_example : Dynamic;
 	public function _cleanup():Dynamic;
 	/**
 		we need to coerce a scalar to a compat for our index type
@@ -274,7 +345,12 @@ package pandas.core.indexes.timedeltas;
 	**/
 	static public function _coerce_to_ndarray(data:Dynamic):Dynamic;
 	static public var _comparables : Dynamic;
-	static public var _constructor : Dynamic;
+	public function _concat(to_concat:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Concatenate to_concat which has the same class
+	**/
+	public function _concat_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		Convert an array-like indexer to the appropriate dtype.
 		
@@ -355,7 +431,7 @@ package pandas.core.indexes.timedeltas;
 		kind : {'ix', 'loc', 'getitem', 'iloc'} or None
 	**/
 	public function _convert_slice_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
-	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
+	public function _convert_tolerance(tolerance:Dynamic, target:Dynamic):Dynamic;
 	static public var _data : Dynamic;
 	static public var _datetimelike_methods : Dynamic;
 	static public var _datetimelike_ops : Dynamic;
@@ -380,12 +456,19 @@ package pandas.core.indexes.timedeltas;
 	/**
 		64-bit integer. Character code 'l'. Python int compatible.
 	**/
-	static public function _default_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _default_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _defer_to_indexing : Dynamic;
+	static public var _deprecations : Dynamic;
+	/**
+		add additional __dir__ for this object 
+	**/
 	public function _dir_additions():Dynamic;
+	/**
+		delete unwanted __dir__ for this object 
+	**/
 	public function _dir_deletions():Dynamic;
-	static public var _engine : Dynamic;
-	static public function _engine_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _engine : Dynamic;
+	public function _engine_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ensure that we are re-localized
 		
@@ -407,12 +490,12 @@ package pandas.core.indexes.timedeltas;
 		now warn about NaT comparisons
 	**/
 	public function _evaluate_compare(other:Dynamic, op:Dynamic):Dynamic;
-	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
-	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
-	public function _evalute_compare(op:Dynamic):Dynamic;
+	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic):Dynamic;
+	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic):Dynamic;
 	public function _fast_union(other:Dynamic):Dynamic;
 	static public var _field_ops : Dynamic;
 	public function _filter_indexer_tolerance(target:Dynamic, indexer:Dynamic, tolerance:Dynamic):Dynamic;
+	static public var _floor_example : Dynamic;
 	/**
 		Return a list of tuples of the (attr,formatted_value)
 	**/
@@ -420,7 +503,7 @@ package pandas.core.indexes.timedeltas;
 	/**
 		Return the formatted data as a unicode string
 	**/
-	public function _format_data():Dynamic;
+	public function _format_data(?name:Dynamic):Dynamic;
 	/**
 		actually format my specific types 
 	**/
@@ -431,7 +514,8 @@ package pandas.core.indexes.timedeltas;
 		Return the formatted data as a unicode string
 	**/
 	public var _formatter_func : Dynamic;
-	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, offset:Dynamic, ?closed:Dynamic):Dynamic;
+	static public var _freq : Dynamic;
+	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, freq:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
 		return an attributes dict for my class 
 	**/
@@ -442,8 +526,6 @@ package pandas.core.indexes.timedeltas;
 		Return a new object if we are resetting the name
 	**/
 	public function _get_consensus_name(other:Dynamic):Dynamic;
-	public function _get_duplicates():Dynamic;
-	public function _get_field(m:Dynamic):Dynamic;
 	public function _get_fill_indexer(target:Dynamic, method:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):Dynamic;
 	/**
 		Fallback pad/backfill get_indexer that works for monotonic decreasing
@@ -473,19 +555,27 @@ package pandas.core.indexes.timedeltas;
 	public function _get_level_number(level:Dynamic):Dynamic;
 	/**
 		Return an Index of values for requested level, equal to the length
-		of the index
+		of the index.
 		
 		Parameters
 		----------
-		level : int
+		level : int or str
+		    ``level`` is either the integer position of the level in the
+		    MultiIndex, or the name of the level.
 		
 		Returns
 		-------
 		values : Index
+		    ``self``, as there is only one level in the Index.
+		
+		See also
+		---------
+		pandas.MultiIndex.get_level_values : get values for a level of a
+		                                     MultiIndex
 	**/
 	public function _get_level_values(level:Dynamic):pandas.Index;
 	/**
-		This is overriden on subclasses (namely, IntervalIndex) to control
+		This is overridden on subclasses (namely, IntervalIndex) to control
 		get_slice_bound.
 	**/
 	public function _get_loc_only_exact_matches(key:Dynamic):Dynamic;
@@ -551,11 +641,14 @@ package pandas.core.indexes.timedeltas;
 		False
 	**/
 	public var _is_strictly_monotonic_increasing : Dynamic;
-	static public var _isnan : Dynamic;
+	/**
+		return if each value is nan
+	**/
+	public var _isnan : Dynamic;
 	/**
 		create the join wrapper methods 
 	**/
-	public function _join_i8_wrapper(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _join_i8_wrapper(joinf:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The join method *only* affects the level of the resulting
 		MultiIndex. Otherwise it just exactly aligns the Index data to the
@@ -570,7 +663,26 @@ package pandas.core.indexes.timedeltas;
 	static public var _join_precedence : Dynamic;
 	static public function _left_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	static public function _left_indexer_unique(left:Dynamic, right:Dynamic):Dynamic;
-	public function _make_str_accessor():Dynamic;
+	/**
+		An internal function that maps values using the input
+		correspondence (which can be a dict, Series, or function).
+		
+		Parameters
+		----------
+		mapper : function, dict, or Series
+		    The input correspondence object
+		na_action : {None, 'ignore'}
+		    If 'ignore', propagate NA values, without passing them to the
+		    mapping function
+		
+		Returns
+		-------
+		applied : Union[Index, MultiIndex], inferred
+		    The output of the mapping function applied to the index.
+		    If the function returns a tuple with more than one element
+		    a MultiIndex will be returned.
+	**/
+	public function _map_values(mapper:Dynamic, ?na_action:Dynamic):Dynamic;
 	/**
 		If we have a float key and are not a floating index
 		then try to cast to an int if equivalent
@@ -614,7 +726,7 @@ package pandas.core.indexes.timedeltas;
 	public function _maybe_update_attributes(attrs:Dynamic):Dynamic;
 	public function _mpl_repr():Dynamic;
 	static public var _na_value : Dynamic;
-	static public var _nan_idxs : Dynamic;
+	public var _nan_idxs : Dynamic;
 	/**
 		Return Index or ndarray filled with NaT which has the same
 		length as the caller.
@@ -626,6 +738,15 @@ package pandas.core.indexes.timedeltas;
 		    - If False returns ndarray of np.int64.
 	**/
 	public function _nat_new(?box:Dynamic):Dynamic;
+	/**
+		The data as an ndarray, possibly losing information.
+		
+		The expectation is that this is cheap to compute, and is primarily
+		used for interacting with our indexers.
+		
+		- categorical -> codes
+	**/
+	public var _ndarray_values : Dynamic;
 	static public var _object_ops : Dynamic;
 	static public var _other_ops : Dynamic;
 	static public function _outer_indexer(left:Dynamic, right:Dynamic):Dynamic;
@@ -660,11 +781,27 @@ package pandas.core.indexes.timedeltas;
 		Initializes or resets ``_id`` attribute with new object
 	**/
 	public function _reset_identity():Dynamic;
-	static public var _resolution : Dynamic;
+	public var _resolution : Dynamic;
 	public function _round(freq:Dynamic, rounder:Dynamic):Dynamic;
 	static public var _round_doc : Dynamic;
+	static public var _round_example : Dynamic;
 	static public function _scalar_data_error(data:Dynamic):Dynamic;
 	public function _searchsorted_monotonic(label:Dynamic, ?side:Dynamic):Dynamic;
+	/**
+		Set new names on index. Each name has to be a hashable type.
+		
+		Parameters
+		----------
+		values : str or sequence
+		    name(s) to set
+		level : int, level name, or sequence of int/level names (default None)
+		    If the index is a MultiIndex (hierarchical), level(s) to set (None
+		    for all levels).  Otherwise level must be None
+		
+		Raises
+		------
+		TypeError if each name is not hashable.
+	**/
 	public function _set_names(values:Dynamic, ?level:Dynamic):Dynamic;
 	/**
 		create a new Index with the same class as the caller, don't copy the
@@ -705,13 +842,30 @@ package pandas.core.indexes.timedeltas;
 	public function _sort_levels_monotonic():Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
+	/**
+		Subtract pd.NaT from self
+	**/
+	public function _sub_nat():Dynamic;
 	public function _sub_period(other:Dynamic):Dynamic;
+	/**
+		Return a summarized representation
+		
+		Parameters
+		----------
+		name : str
+		    name to use in the summary representation
+		
+		Returns
+		-------
+		String with a summarized representation of the index
+	**/
+	public function _summary(?name:Dynamic):Dynamic;
 	/**
 		*this is an internal non-public method*
 		
 		return an array repr of this object, potentially casting to object
 	**/
-	public function _to_embed(?keep_tz:Dynamic):Dynamic;
+	public function _to_embed(?keep_tz:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		convert to object if we are a categorical 
 	**/
@@ -734,7 +888,7 @@ package pandas.core.indexes.timedeltas;
 		------
 		ValueError if the conversion was not successful.
 	**/
-	static public function _try_convert_to_int_index(data:Dynamic, copy:Dynamic, name:Dynamic):Dynamic;
+	static public function _try_convert_to_int_index(data:Dynamic, copy:Dynamic, name:Dynamic, dtype:Dynamic):Dynamic;
 	static public var _typ : Dynamic;
 	/**
 		Necessary for making this object picklable
@@ -747,11 +901,23 @@ package pandas.core.indexes.timedeltas;
 		
 		internal method called by ops
 	**/
-	public function _validate_for_numeric_binop(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
+	public function _validate_for_numeric_binop(other:Dynamic, op:Dynamic):Dynamic;
 	/**
 		validate if we can perform a numeric unary operation 
 	**/
 	public function _validate_for_numeric_unaryop(op:Dynamic, opstr:Dynamic):Dynamic;
+	/**
+		Validate that a frequency is compatible with the values of a given
+		DatetimeIndex or TimedeltaIndex
+		
+		Parameters
+		----------
+		index : DatetimeIndex or TimedeltaIndex
+		    The index on which to determine if the given frequency is valid
+		freq : DateOffset
+		    The frequency to validate
+	**/
+	static public function _validate_frequency(index:Dynamic, freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Validate index level.
 		
@@ -771,7 +937,33 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function _validate_names(?name:Dynamic, ?names:Dynamic, ?deep:Dynamic):Dynamic;
 	/**
-		the internal implementation 
+		The best array representation.
+		
+		This is an ndarray, ExtensionArray, or Index subclass. This differs
+		from ``_ndarray_values``, which always returns an ndarray.
+		
+		Both ``_values`` and ``_ndarray_values`` are consistent between
+		``Series`` and ``Index``.
+		
+		It may differ from the public '.values' method.
+		
+		index             | values          | _values     | _ndarray_values |
+		----------------- | -------------- -| ----------- | --------------- |
+		CategoricalIndex  | Categorical     | Categorical | codes           |
+		DatetimeIndex[tz] | ndarray[M8ns]   | DTI[tz]     | ndarray[M8ns]   |
+		
+		For the following, the ``._values`` is currently ``ndarray[object]``,
+		but will soon be an ``ExtensionArray``
+		
+		index             | values          | _values      | _ndarray_values |
+		----------------- | --------------- | ------------ | --------------- |
+		PeriodIndex       | ndarray[object] | ndarray[obj] | ndarray[int]    |
+		IntervalIndex     | ndarray[object] | ndarray[obj] | ndarray[object] |
+		
+		See Also
+		--------
+		values
+		_ndarray_values
 	**/
 	public var _values : Dynamic;
 	public function _wrap_joined_index(joined:Dynamic, other:Dynamic):Dynamic;
@@ -811,21 +1003,46 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function argmin(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Returns the indices that would sort the index and its
-		underlying data.
+		Return the integer indicies that would sort the index.
+		
+		Parameters
+		----------
+		*args
+		    Passed to `numpy.ndarray.argsort`.
+		**kwargs
+		    Passed to `numpy.ndarray.argsort`.
 		
 		Returns
 		-------
-		argsorted : numpy array
+		numpy.ndarray
+		    Integer indicies that would sort the index if used as
+		    an indexer.
 		
 		See also
 		--------
-		numpy.ndarray.argsort
+		numpy.argsort : Similar method for NumPy arrays.
+		Index.sort_values : Return sorted copy of Index.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(['b', 'a', 'd', 'c'])
+		>>> idx
+		Index(['b', 'a', 'd', 'c'], dtype='object')
+		
+		>>> order = idx.argsort()
+		>>> order
+		array([1, 0, 3, 2])
+		
+		>>> idx[order]
+		Index(['a', 'b', 'c', 'd'], dtype='object')
 	**/
 	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var asi8 : Dynamic;
 	/**
-		return object Index which contains boxed values
+		Return object Index which contains boxed values.
+		
+		.. deprecated:: 0.23.0
+		    Use ``astype(object)`` instead.
 		
 		*this is an internal non-public method*
 	**/
@@ -867,19 +1084,47 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public var base : Dynamic;
 	/**
-		ceil the index to the specified freq
+		ceil the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to ceil the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.ceil('H')
+		DatetimeIndex(['2018-01-01 12:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 13:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.ceil("H")
+		0   2018-01-01 12:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 13:00:00
+		dtype: datetime64[ns]
 	**/
 	public function ceil(freq:Dynamic):Dynamic;
 	/**
@@ -932,7 +1177,7 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public var days : Dynamic;
 	/**
-		Make a new DatetimeIndex with passed location(s) deleted.
+		Make a new TimedeltaIndex with passed location(s) deleted.
 		
 		Parameters
 		----------
@@ -980,23 +1225,57 @@ package pandas.core.indexes.timedeltas;
 		Returns
 		-------
 		dropped : Index
+		
+		Raises
+		------
+		KeyError
+		    If not all of the labels are found in the selected axis
 	**/
 	public function drop(labels:Dynamic, ?errors:Dynamic):pandas.Index;
 	/**
-		Return Index with duplicate values removed
+		Return Index with duplicate values removed.
 		
 		Parameters
 		----------
-		
-		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Drop duplicates except for the first occurrence.
-		    - ``last`` : Drop duplicates except for the last occurrence.
-		    - False : Drop all duplicates.
-		
+		keep : {'first', 'last', ``False``}, default 'first'
+		    - 'first' : Drop duplicates except for the first occurrence.
+		    - 'last' : Drop duplicates except for the last occurrence.
+		    - ``False`` : Drop all duplicates.
 		
 		Returns
 		-------
 		deduplicated : Index
+		
+		See Also
+		--------
+		Series.drop_duplicates : equivalent method on Series
+		DataFrame.drop_duplicates : equivalent method on DataFrame
+		Index.duplicated : related method on Index, indicating duplicate
+		    Index values.
+		
+		Examples
+		--------
+		Generate an pandas.Index with duplicate values.
+		
+		>>> idx = pd.Index(['lama', 'cow', 'lama', 'beetle', 'lama', 'hippo'])
+		
+		The `keep` parameter controls  which duplicate values are removed.
+		The value 'first' keeps the first occurrence for each
+		set of duplicated entries. The default value of keep is 'first'.
+		
+		>>> idx.drop_duplicates(keep='first')
+		Index(['lama', 'cow', 'beetle', 'hippo'], dtype='object')
+		
+		The value 'last' keeps the last occurrence for each set of duplicated
+		entries.
+		
+		>>> idx.drop_duplicates(keep='last')
+		Index(['cow', 'beetle', 'lama', 'hippo'], dtype='object')
+		
+		The value ``False`` discards all sets of duplicated entries.
+		
+		>>> idx.drop_duplicates(keep=False)
+		Index(['cow', 'beetle', 'hippo'], dtype='object')
 	**/
 	public function drop_duplicates(?keep:Dynamic):pandas.Index;
 	/**
@@ -1013,23 +1292,66 @@ package pandas.core.indexes.timedeltas;
 		valid : Index
 	**/
 	public function dropna(?how:Dynamic):pandas.Index;
-	public var dtype : Dynamic;
-	static public var dtype_str : Dynamic;
 	/**
-		Return boolean np.ndarray denoting duplicate values
+		return the dtype object of the underlying data 
+	**/
+	public var dtype : Dynamic;
+	/**
+		return the dtype str of the underlying data 
+	**/
+	public var dtype_str : Dynamic;
+	/**
+		Indicate duplicate index values.
+		
+		Duplicated values are indicated as ``True`` values in the resulting
+		array. Either all duplicates, all except the first, or all except the
+		last occurrence of duplicates can be indicated.
 		
 		Parameters
 		----------
 		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Mark duplicates as ``True`` except for the first
+		    The value or values in a set of duplicates to mark as missing.
+		
+		    - 'first' : Mark duplicates as ``True`` except for the first
 		      occurrence.
-		    - ``last`` : Mark duplicates as ``True`` except for the last
+		    - 'last' : Mark duplicates as ``True`` except for the last
 		      occurrence.
-		    - False : Mark all duplicates as ``True``.
+		    - ``False`` : Mark all duplicates as ``True``.
+		
+		Examples
+		--------
+		By default, for each set of duplicated values, the first occurrence is
+		set to False and all others to True:
+		
+		>>> idx = pd.Index(['lama', 'cow', 'lama', 'beetle', 'lama'])
+		>>> idx.duplicated()
+		array([False, False,  True, False,  True])
+		
+		which is equivalent to
+		
+		>>> idx.duplicated(keep='first')
+		array([False, False,  True, False,  True])
+		
+		By using 'last', the last occurrence of each set of duplicated values
+		is set on False and all others on True:
+		
+		>>> idx.duplicated(keep='last')
+		array([ True, False,  True, False, False])
+		
+		By setting keep on ``False``, all duplicates are True:
+		
+		>>> idx.duplicated(keep=False)
+		array([ True, False,  True, False,  True])
 		
 		Returns
 		-------
-		duplicated : np.ndarray
+		numpy.ndarray
+		
+		See Also
+		--------
+		pandas.Series.duplicated : Equivalent method on pandas.Series
+		pandas.DataFrame.duplicated : Equivalent method on pandas.DataFrame
+		pandas.Index.drop_duplicates : Remove duplicate values from Index
 	**/
 	public function duplicated(?keep:Dynamic):Dynamic;
 	public var empty : Dynamic;
@@ -1038,21 +1360,99 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function equals(other:Dynamic):Dynamic;
 	/**
-		Encode the object as an enumerated type or categorical variable
+		Encode the object as an enumerated type or categorical variable.
+		
+		This method is useful for obtaining a numeric representation of an
+		array when all that matters is identifying distinct values. `factorize`
+		is available as both a top-level function :func:`pandas.factorize`,
+		and as a method :meth:`Series.factorize` and :meth:`Index.factorize`.
 		
 		Parameters
 		----------
 		sort : boolean, default False
-		    Sort by values
-		na_sentinel: int, default -1
-		    Value to mark "not found"
+		    Sort `uniques` and shuffle `labels` to maintain the
+		    relationship.
+		
+		na_sentinel : int, default -1
+		    Value to mark "not found".
 		
 		Returns
 		-------
-		labels : the indexer to the original array
-		uniques : the unique Index
+		labels : ndarray
+		    An integer ndarray that's an indexer into `uniques`.
+		    ``uniques.take(labels)`` will have the same values as `values`.
+		uniques : ndarray, Index, or Categorical
+		    The unique valid values. When `values` is Categorical, `uniques`
+		    is a Categorical. When `values` is some other pandas object, an
+		    `Index` is returned. Otherwise, a 1-D ndarray is returned.
+		
+		    .. note ::
+		
+		       Even if there's a missing value in `values`, `uniques` will
+		       *not* contain an entry for it.
+		
+		See Also
+		--------
+		pandas.cut : Discretize continuous-valued array.
+		pandas.unique : Find the unique valuse in an array.
+		
+		Examples
+		--------
+		These examples all show factorize as a top-level method like
+		``pd.factorize(values)``. The results are identical for methods like
+		:meth:`Series.factorize`.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'])
+		>>> labels
+		array([0, 0, 1, 2, 0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		With ``sort=True``, the `uniques` will be sorted, and `labels` will be
+		shuffled so that the relationship is the maintained.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'], sort=True)
+		>>> labels
+		array([1, 1, 0, 2, 1])
+		>>> uniques
+		array(['a', 'b', 'c'], dtype=object)
+		
+		Missing values are indicated in `labels` with `na_sentinel`
+		(``-1`` by default). Note that missing values are never
+		included in `uniques`.
+		
+		>>> labels, uniques = pd.factorize(['b', None, 'a', 'c', 'b'])
+		>>> labels
+		array([ 0, -1,  1,  2,  0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		Thus far, we've only factorized lists (which are internally coerced to
+		NumPy arrays). When factorizing pandas objects, the type of `uniques`
+		will differ. For Categoricals, a `Categorical` is returned.
+		
+		>>> cat = pd.Categorical(['a', 'a', 'c'], categories=['a', 'b', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		[a, c]
+		Categories (3, object): [a, b, c]
+		
+		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		present in ``cat.values``.
+		
+		For all other pandas objects, an Index of the appropriate type is
+		returned.
+		
+		>>> cat = pd.Series(['a', 'a', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		Index(['a', 'c'], dtype='object')
 	**/
-	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):Dynamic;
+	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):numpy.Ndarray;
 	/**
 		Fill NA/NaN values with the specified value
 		
@@ -1076,30 +1476,116 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public var flags : Dynamic;
 	/**
-		floor the index to the specified freq
+		floor the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to floor the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.floor('H')
+		DatetimeIndex(['2018-01-01 11:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.floor("H")
+		0   2018-01-01 11:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 12:00:00
+		dtype: datetime64[ns]
 	**/
 	public function floor(freq:Dynamic):Dynamic;
 	/**
 		Render a string representation of the Index
 	**/
 	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var freq : Dynamic;
 	/**
-		Return the frequency object as a string if its set, otherwise None
+		Return the frequency object if it is set, otherwise None
+	**/
+	public var freq : Dynamic;
+	/**
+		Return the frequency object as a string if it is set, otherwise None
 	**/
 	public var freqstr : Dynamic;
+	/**
+		Extract duplicated index elements.
+		
+		Returns a sorted list of index elements which appear more than once in
+		the index.
+		
+		.. deprecated:: 0.23.0
+		    Use idx[idx.duplicated()].unique() instead
+		
+		Returns
+		-------
+		array-like
+		    List of duplicated indexes.
+		
+		See Also
+		--------
+		Index.duplicated : Return boolean array denoting duplicates.
+		Index.drop_duplicates : Return Index with duplicates removed.
+		
+		Examples
+		--------
+		
+		Works on different Index of types.
+		
+		>>> pd.Index([1, 2, 2, 3, 3, 3, 4]).get_duplicates()
+		[2, 3]
+		>>> pd.Index([1., 2., 2., 3., 3., 3., 4.]).get_duplicates()
+		[2.0, 3.0]
+		>>> pd.Index(['a', 'b', 'b', 'c', 'c', 'c', 'd']).get_duplicates()
+		['b', 'c']
+		
+		Note that for a DatetimeIndex, it does not return a list but a new
+		DatetimeIndex:
+		
+		>>> dates = pd.to_datetime(['2018-01-01', '2018-01-02', '2018-01-03',
+		...                         '2018-01-03', '2018-01-04', '2018-01-04'],
+		...                        format='%Y-%m-%d')
+		>>> pd.Index(dates).get_duplicates()
+		DatetimeIndex(['2018-01-03', '2018-01-04'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		Sorts duplicated elements even when indexes are unordered.
+		
+		>>> pd.Index([1, 2, 3, 2, 3, 4, 3]).get_duplicates()
+		[2, 3]
+		
+		Return empty array-like structure when all elements are unique.
+		
+		>>> pd.Index([1, 2, 3, 4]).get_duplicates()
+		[]
+		>>> dates = pd.to_datetime(['2018-01-01', '2018-01-02', '2018-01-03'],
+		...                        format='%Y-%m-%d')
+		>>> pd.Index(dates).get_duplicates()
+		DatetimeIndex([], dtype='datetime64[ns]', freq=None)
+	**/
 	public function get_duplicates():Dynamic;
 	/**
 		Compute indexer and mask for new index given the current index. The
@@ -1123,7 +1609,13 @@ package pandas.core.indexes.timedeltas;
 		    matches. The values of the index at the matching locations most
 		    satisfy the equation ``abs(index[indexer] - target) <= tolerance``.
 		
-		    .. versionadded:: 0.17.0
+		    Tolerance may be a scalar value, which applies the same tolerance
+		    to all values, or list-like, which applies variable tolerance per
+		    element. List-like includes list, tuple, array, Series, and must be
+		    the same size as the index and its dtype must exactly match the
+		    index's type.
+		
+		    .. versionadded:: 0.21.0 (list-like tolerance)
 		
 		Examples
 		--------
@@ -1165,15 +1657,23 @@ package pandas.core.indexes.timedeltas;
 	public function get_indexer_non_unique(target:Dynamic):Dynamic;
 	/**
 		Return an Index of values for requested level, equal to the length
-		of the index
+		of the index.
 		
 		Parameters
 		----------
-		level : int
+		level : int or str
+		    ``level`` is either the integer position of the level in the
+		    MultiIndex, or the name of the level.
 		
 		Returns
 		-------
 		values : Index
+		    ``self``, as there is only one level in the Index.
+		
+		See also
+		---------
+		pandas.MultiIndex.get_level_values : get values for a level of a
+		                                     MultiIndex
 	**/
 	public function get_level_values(level:Dynamic):pandas.Index;
 	/**
@@ -1204,7 +1704,45 @@ package pandas.core.indexes.timedeltas;
 	public function get_value(series:Dynamic, key:Dynamic):Dynamic;
 	public function get_value_maybe_box(series:Dynamic, key:Dynamic):Dynamic;
 	/**
-		return the underlying data as an ndarray 
+		Return `Index` data as an `numpy.ndarray`.
+		
+		Returns
+		-------
+		numpy.ndarray
+		    A one-dimensional numpy array of the `Index` values.
+		
+		See Also
+		--------
+		Index.values : The attribute that get_values wraps.
+		
+		Examples
+		--------
+		Getting the `Index` values of a `DataFrame`:
+		
+		>>> df = pd.DataFrame([[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+		...                    index=['a', 'b', 'c'], columns=['A', 'B', 'C'])
+		>>> df
+		   A  B  C
+		a  1  2  3
+		b  4  5  6
+		c  7  8  9
+		>>> df.index.get_values()
+		array(['a', 'b', 'c'], dtype=object)
+		
+		Standalone `Index` values:
+		
+		>>> idx = pd.Index(['1', '2', '3'])
+		>>> idx.get_values()
+		array(['1', '2', '3'], dtype=object)
+		
+		`MultiIndex` arrays also have only one dimension:
+		
+		>>> midx = pd.MultiIndex.from_arrays([[1, 2, 3], ['a', 'b', 'c']],
+		...                                  names=('number', 'letter'))
+		>>> midx.get_values()
+		array([(1, 'a'), (2, 'b'), (3, 'c')], dtype=object)
+		>>> midx.get_values().ndim
+		1
 	**/
 	public function get_values():Dynamic;
 	/**
@@ -1222,14 +1760,25 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function groupby(values:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public var has_duplicates : Dynamic;
-	static public var hasnans : Dynamic;
+	/**
+		return if I have any nans; enables various perf speedups 
+	**/
+	public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
 	/**
 		Similar to equals, but check that other comparable attributes are
 		also equal
 	**/
 	public function identical(other:Dynamic):Dynamic;
-	static public var inferred_freq : Dynamic;
+	/**
+		Tries to return a string representing a frequency guess,
+		generated by infer_freq.  Returns None if it can't autodetect the
+		frequency.
+	**/
+	public var inferred_freq : Dynamic;
+	/**
+		Always 'integer' for ``Int64Index``
+	**/
 	public var inferred_type : Dynamic;
 	/**
 		Make new Index inserting new item at location
@@ -1280,6 +1829,39 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public var is_all_dates : Dynamic;
 	public function is_boolean():Dynamic;
+	/**
+		Check if the Index holds categorical data.
+		
+		Returns
+		-------
+		boolean
+		    True if the Index is categorical.
+		
+		See Also
+		--------
+		CategoricalIndex : Index for categorical data.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(["Watermelon", "Orange", "Apple",
+		...                 "Watermelon"]).astype("category")
+		>>> idx.is_categorical()
+		True
+		
+		>>> idx = pd.Index([1, 3, 5, 7])
+		>>> idx.is_categorical()
+		False
+		
+		>>> s = pd.Series(["Peter", "Victor", "Elisabeth", "Mar"])
+		>>> s
+		0        Peter
+		1       Victor
+		2    Elisabeth
+		3          Mar
+		dtype: object
+		>>> s.index.is_categorical()
+		False
+	**/
 	public function is_categorical():Dynamic;
 	public function is_floating():Dynamic;
 	public function is_integer():Dynamic;
@@ -1321,7 +1903,10 @@ package pandas.core.indexes.timedeltas;
 	public function is_numeric():Dynamic;
 	public function is_object():Dynamic;
 	public function is_type_compatible(typ:Dynamic):Dynamic;
-	static public var is_unique : Dynamic;
+	/**
+		return if the index has unique values 
+	**/
+	public var is_unique : Dynamic;
 	/**
 		Compute boolean array of whether each index value is found in the
 		passed set of values
@@ -1336,17 +1921,113 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function isin(values:Dynamic):Dynamic;
 	/**
-		Detect missing values
+		Detect missing values.
+		
+		Return a boolean same-sized object indicating if the values are NA.
+		NA values, such as ``None``, :attr:`numpy.NaN` or :attr:`pd.NaT`, get
+		mapped to ``True`` values.
+		Everything else get mapped to ``False`` values. Characters such as
+		empty strings `''` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
 		
 		.. versionadded:: 0.20.0
 		
 		Returns
 		-------
-		a boolean array of whether my values are null
+		numpy.ndarray
+		    A boolean array of whether my values are NA
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : pandas version
+		pandas.Index.notna : boolean inverse of isna.
+		pandas.Index.dropna : omit entries with missing values.
+		pandas.isna : top-level isna.
+		Series.isna : detect missing values in Series object.
+		
+		Examples
+		--------
+		Show which entries in a pandas.Index are NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.isna()
+		array([False, False,  True], dtype=bool)
+		
+		Empty strings are not considered NA values. None is considered an NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.isna()
+		array([False, False, False,  True], dtype=bool)
+		
+		For datetimes, `NaT` (Not a Time) is considered as an NA value.
+		
+		>>> idx = pd.DatetimeIndex([pd.Timestamp('1940-04-25'),
+		...                         pd.Timestamp(''), None, pd.NaT])
+		>>> idx
+		DatetimeIndex(['1940-04-25', 'NaT', 'NaT', 'NaT'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> idx.isna()
+		array([False,  True,  True,  True], dtype=bool)
+	**/
+	public function isna():Dynamic;
+	/**
+		Detect missing values.
+		
+		Return a boolean same-sized object indicating if the values are NA.
+		NA values, such as ``None``, :attr:`numpy.NaN` or :attr:`pd.NaT`, get
+		mapped to ``True`` values.
+		Everything else get mapped to ``False`` values. Characters such as
+		empty strings `''` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
+		
+		.. versionadded:: 0.20.0
+		
+		Returns
+		-------
+		numpy.ndarray
+		    A boolean array of whether my values are NA
+		
+		See Also
+		--------
+		pandas.Index.notna : boolean inverse of isna.
+		pandas.Index.dropna : omit entries with missing values.
+		pandas.isna : top-level isna.
+		Series.isna : detect missing values in Series object.
+		
+		Examples
+		--------
+		Show which entries in a pandas.Index are NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.isna()
+		array([False, False,  True], dtype=bool)
+		
+		Empty strings are not considered NA values. None is considered an NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.isna()
+		array([False, False, False,  True], dtype=bool)
+		
+		For datetimes, `NaT` (Not a Time) is considered as an NA value.
+		
+		>>> idx = pd.DatetimeIndex([pd.Timestamp('1940-04-25'),
+		...                         pd.Timestamp(''), None, pd.NaT])
+		>>> idx
+		DatetimeIndex(['1940-04-25', 'NaT', 'NaT', 'NaT'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> idx.isna()
+		array([False,  True,  True,  True], dtype=bool)
 	**/
 	public function isnull():Dynamic;
 	/**
@@ -1373,7 +2054,7 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function max(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Memory usage of my values
+		Memory usage of the values
 		
 		Parameters
 		----------
@@ -1388,7 +2069,7 @@ package pandas.core.indexes.timedeltas;
 		Notes
 		-----
 		Memory usage does not include memory consumed by elements that
-		are not components of the array if deep=False
+		are not components of the array if deep=False or if used on PyPy
 		
 		See Also
 		--------
@@ -1427,17 +2108,91 @@ package pandas.core.indexes.timedeltas;
 	public var ndim : Dynamic;
 	public var nlevels : Dynamic;
 	/**
-		Reverse of isnull
+		Detect existing (non-missing) values.
+		
+		Return a boolean same-sized object indicating if the values are not NA.
+		Non-missing values get mapped to ``True``. Characters such as empty
+		strings ``''`` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
+		NA values, such as None or :attr:`numpy.NaN`, get mapped to ``False``
+		values.
 		
 		.. versionadded:: 0.20.0
 		
 		Returns
 		-------
-		a boolean array of whether my values are not null
+		numpy.ndarray
+		    Boolean array to indicate which entries are not NA.
 		
 		See also
 		--------
-		pandas.notnull : pandas version
+		Index.notnull : alias of notna
+		Index.isna: inverse of notna
+		pandas.notna : top-level notna
+		
+		Examples
+		--------
+		Show which entries in an Index are not NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.notna()
+		array([ True,  True, False])
+		
+		Empty strings are not considered NA values. None is considered a NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.notna()
+		array([ True,  True,  True, False])
+	**/
+	public function notna():Dynamic;
+	/**
+		Detect existing (non-missing) values.
+		
+		Return a boolean same-sized object indicating if the values are not NA.
+		Non-missing values get mapped to ``True``. Characters such as empty
+		strings ``''`` or :attr:`numpy.inf` are not considered NA values
+		(unless you set ``pandas.options.mode.use_inf_as_na = True``).
+		NA values, such as None or :attr:`numpy.NaN`, get mapped to ``False``
+		values.
+		
+		.. versionadded:: 0.20.0
+		
+		Returns
+		-------
+		numpy.ndarray
+		    Boolean array to indicate which entries are not NA.
+		
+		See also
+		--------
+		Index.notnull : alias of notna
+		Index.isna: inverse of notna
+		pandas.notna : top-level notna
+		
+		Examples
+		--------
+		Show which entries in an Index are not NA. The result is an
+		array.
+		
+		>>> idx = pd.Index([5.2, 6.0, np.NaN])
+		>>> idx
+		Float64Index([5.2, 6.0, nan], dtype='float64')
+		>>> idx.notna()
+		array([ True,  True, False])
+		
+		Empty strings are not considered NA values. None is considered a NA
+		value.
+		
+		>>> idx = pd.Index(['black', '', 'red', None])
+		>>> idx
+		Index(['black', '', 'red', None], dtype='object')
+		>>> idx.notna()
+		array([ True,  True,  True, False])
 	**/
 	public function notnull():Dynamic;
 	/**
@@ -1506,27 +2261,51 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		NOT IMPLEMENTED: do not call this method, as reshaping is not
-		supported for Index objects and will raise an error.
-		
-		Reshape an Index.
+		Returns day, hour, minute, second, millisecond or microsecond
 	**/
-	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var resolution : Dynamic;
+	public var resolution : Dynamic;
 	/**
-		round the index to the specified freq
+		round the data to the specified `freq`.
 		
 		Parameters
 		----------
-		freq : freq string/object
+		freq : str or Offset
+		    The frequency level to round the index to. Must be a fixed
+		    frequency like 'S' (second) not 'ME' (month end). See
+		    :ref:`frequency aliases <timeseries.offset_aliases>` for
+		    a list of possible `freq` values.
 		
 		Returns
 		-------
-		index of same type
+		DatetimeIndex, TimedeltaIndex, or Series
+		    Index of the same type for a DatetimeIndex or TimedeltaIndex,
+		    or a Series with the same index for a Series.
 		
 		Raises
 		------
-		ValueError if the freq cannot be converted
+		ValueError if the `freq` cannot be converted.
+		
+		Examples
+		--------
+		**DatetimeIndex**
+		
+		>>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+		>>> rng
+		DatetimeIndex(['2018-01-01 11:59:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:01:00'],
+		              dtype='datetime64[ns]', freq='T')
+		>>> rng.round('H')
+		DatetimeIndex(['2018-01-01 12:00:00', '2018-01-01 12:00:00',
+		               '2018-01-01 12:00:00'],
+		              dtype='datetime64[ns]', freq=None)
+		
+		**Series**
+		
+		>>> pd.Series(rng).dt.round("H")
+		0   2018-01-01 12:00:00
+		1   2018-01-01 12:00:00
+		2   2018-01-01 12:00:00
+		dtype: datetime64[ns]
 	**/
 	public function round(freq:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1583,21 +2362,16 @@ package pandas.core.indexes.timedeltas;
 		>>> x.searchsorted([1, 3], side='right')
 		array([1, 3])
 		
-		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
+		>>> x = pd.Categorical(['apple', 'bread', 'bread',
+		                        'cheese', 'milk'], ordered=True)
 		[apple, bread, bread, cheese, milk]
 		Categories (4, object): [apple < bread < cheese < milk]
 		
 		>>> x.searchsorted('bread')
 		array([1])     # Note: an array, not a scalar
 		
-		>>> x.searchsorted(['bread'])
-		array([1])
-		
-		>>> x.searchsorted(['bread', 'eggs'])
-		array([1, 4])
-		
-		>>> x.searchsorted(['bread', 'eggs'], side='right')
-		array([3, 4])    # eggs before milk
+		>>> x.searchsorted(['bread'], side='right')
+		array([3])
 	**/
 	public function searchsorted(value:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
@@ -1624,9 +2398,9 @@ package pandas.core.indexes.timedeltas;
 		Examples
 		--------
 		>>> Index([1, 2, 3, 4]).set_names('foo')
-		Int64Index([1, 2, 3, 4], dtype='int64')
+		Int64Index([1, 2, 3, 4], dtype='int64', name='foo')
 		>>> Index([1, 2, 3, 4]).set_names(['foo'])
-		Int64Index([1, 2, 3, 4], dtype='int64')
+		Int64Index([1, 2, 3, 4], dtype='int64', name='foo')
 		>>> idx = MultiIndex.from_tuples([(1, u'one'), (1, u'two'),
 		                                  (2, u'one'), (2, u'two')],
 		                                  names=['foo', 'bar'])
@@ -1668,8 +2442,8 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public var size : Dynamic;
 	/**
-		For an ordered Index, compute the slice indexer for input labels and
-		step
+		For an ordered or unique index, compute the slice indexer for input
+		labels and step.
 		
 		Parameters
 		----------
@@ -1682,11 +2456,28 @@ package pandas.core.indexes.timedeltas;
 		
 		Returns
 		-------
-		indexer : ndarray or slice
+		indexer : slice
+		
+		Raises
+		------
+		KeyError : If key does not exist, or key is not unique and index is
+		    not ordered.
 		
 		Notes
 		-----
 		This function assumes that the data is sorted, so use at your own peril
+		
+		Examples
+		---------
+		This is a method on all index types. For example you can do:
+		
+		>>> idx = pd.Index(list('abcd'))
+		>>> idx.slice_indexer(start='b', end='c')
+		slice(1, 3)
+		
+		>>> idx = pd.MultiIndex.from_arrays([list('abcd'), list('efgh')])
+		>>> idx.slice_indexer(start='b', end=('c', 'g'))
+		slice(1, 3)
 	**/
 	public function slice_indexer(?start:Dynamic, ?end:Dynamic, ?step:Dynamic, ?kind:Dynamic):Dynamic;
 	/**
@@ -1705,6 +2496,20 @@ package pandas.core.indexes.timedeltas;
 		Returns
 		-------
 		start, end : int
+		
+		Notes
+		-----
+		This method only works if the index is monotonic or unique.
+		
+		Examples
+		---------
+		>>> idx = pd.Index(list('abcd'))
+		>>> idx.slice_locs(start='b', end='c')
+		(1, 3)
+		
+		See Also
+		--------
+		Index.get_loc : Get location for a single label
 	**/
 	public function slice_locs(?start:Dynamic, ?end:Dynamic, ?step:Dynamic, ?kind:Dynamic):Dynamic;
 	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -1745,10 +2550,10 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public var strides : Dynamic;
 	/**
-		return a summarized representation
+		Return a summarized representation
+		.. deprecated:: 0.23.0
 	**/
 	public function summary(?name:Dynamic):Dynamic;
-	public function sym_diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the symmetric difference of two Index objects.
 		It's sorted if sorting is possible.
@@ -1804,12 +2609,44 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		DEPRECATED: use :meth:`pandas.to_datetime` instead.
+		Create a DataFrame with a column containing the Index.
 		
-		For an Index containing strings or datetime.datetime objects, attempt
-		conversion to DatetimeIndex
+		.. versionadded:: 0.21.0
+		
+		Parameters
+		----------
+		index : boolean, default True
+		    Set the index of the returned DataFrame as the original Index.
+		
+		Returns
+		-------
+		DataFrame
+		    DataFrame containing the original Index data.
+		
+		See Also
+		--------
+		Index.to_series : Convert an Index to a Series.
+		Series.to_frame : Convert Series to DataFrame.
+		
+		Examples
+		--------
+		>>> idx = pd.Index(['Ant', 'Bear', 'Cow'], name='animal')
+		>>> idx.to_frame()
+		       animal
+		animal
+		Ant       Ant
+		Bear     Bear
+		Cow       Cow
+		
+		By default, the original Index is reused. To enforce a new Index:
+		
+		>>> idx.to_frame(index=False)
+		    animal
+		0   Ant
+		1  Bear
+		2   Cow
 	**/
-	public function to_datetime(?dayfirst:Dynamic):Dynamic;
+	public function to_frame(?index:Dynamic):Dynamic;
 	/**
 		Format specified values of `self` and return them.
 		
@@ -1842,19 +2679,75 @@ package pandas.core.indexes.timedeltas;
 		Create a Series with both index and values equal to the index keys
 		useful with map for returning an indexer based on an index
 		
+		Parameters
+		----------
+		index : Index, optional
+		    index of resulting Series. If None, defaults to original index
+		name : string, optional
+		    name of resulting Series. If None, defaults to name of original
+		    index
+		
 		Returns
 		-------
 		Series : dtype will be based on the type of the Index values.
 	**/
-	public function to_series(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function to_series(?index:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		return a list of the underlying data
 	**/
 	public function tolist():Dynamic;
 	/**
-		Total duration of each element expressed in seconds.
+		Return total duration of each element expressed in seconds.
 		
-		.. versionadded:: 0.17.0
+		This method is available directly on TimedeltaIndex and on Series
+		containing timedelta values under the ``.dt`` namespace.
+		
+		Returns
+		-------
+		seconds : Float64Index or Series
+		    When the calling object is a TimedeltaIndex, the return type is a
+		    Float64Index. When the calling object is a Series, the return type
+		    is Series of type `float64` whose index is the same as the
+		    original.
+		
+		See Also
+		--------
+		datetime.timedelta.total_seconds : Standard library version
+		    of this method.
+		TimedeltaIndex.components : Return a DataFrame with components of
+		    each Timedelta.
+		
+		Examples
+		--------
+		**Series**
+		
+		>>> s = pd.Series(pd.to_timedelta(np.arange(5), unit='d'))
+		>>> s
+		0   0 days
+		1   1 days
+		2   2 days
+		3   3 days
+		4   4 days
+		dtype: timedelta64[ns]
+		
+		>>> s.dt.total_seconds()
+		0         0.0
+		1     86400.0
+		2    172800.0
+		3    259200.0
+		4    345600.0
+		dtype: float64
+		
+		**TimedeltaIndex**
+		
+		>>> idx = pd.to_timedelta(np.arange(5), unit='d')
+		>>> idx
+		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq=None)
+		
+		>>> idx.total_seconds()
+		Float64Index([0.0, 86400.0, 172800.0, 259200.00000000003, 345600.0],
+		             dtype='float64')
 	**/
 	public function total_seconds():Dynamic;
 	/**
@@ -1876,27 +2769,26 @@ package pandas.core.indexes.timedeltas;
 	**/
 	public function union(other:Dynamic):Dynamic;
 	/**
-		Return unique values in the object. Uniques are returned in order
-		of appearance, this does NOT sort. Hash table-based unique.
+		Return unique values in the index. Uniques are returned in order
+		of appearance, this does NOT sort.
 		
 		Parameters
 		----------
-		values : 1d array-like
+		level : int or str, optional, default None
+		    Only return values from specified level (for MultiIndex)
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
-		unique values.
-		  - If the input is an Index, the return is an Index
-		  - If the input is a Categorical dtype, the return is a Categorical
-		  - If the input is a Series/ndarray, the return will be an ndarray
+		Index without duplicates
 		
 		See Also
 		--------
 		unique
-		Index.unique
 		Series.unique
 	**/
-	public function unique():Dynamic;
+	public function unique(?level:Dynamic):Dynamic;
 	/**
 		Returns object containing counts of unique values.
 		

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.gridspec;
 @:pythonImport("matplotlib.gridspec", "GridSpecFromSubplotSpec") extern class GridSpecFromSubplotSpec {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -30,7 +30,8 @@ package matplotlib.gridspec;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		create and return a SuplotSpec instance.
+		Create and return a SuplotSpec instance.
+		        
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	/**
@@ -64,7 +65,7 @@ package matplotlib.gridspec;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,7 +116,7 @@ package matplotlib.gridspec;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -127,15 +128,19 @@ package matplotlib.gridspec;
 	/**
 		return lists of bottom and top position of rows, left and
 		right positions of columns.
+		
+		If raw=True, then these are all in units relative to the container
+		with no margins.  (used for constrained_layout).
 	**/
-	public function get_grid_positions(fig:Dynamic):Dynamic;
+	public function get_grid_positions(fig:Dynamic, ?raw:Dynamic):Dynamic;
 	public function get_height_ratios():Dynamic;
 	/**
-		return a dictionary of subplot layout parameters.
+		Return a dictionary of subplot layout parameters.
+		        
 	**/
-	public function get_subplot_params(?fig:Dynamic):Dynamic;
+	public function get_subplot_params(?figure:Dynamic, ?fig:Dynamic):Dynamic;
 	/**
-		get the topmost SubplotSpec instance associated with the subplot
+		Get the topmost SubplotSpec instance associated with the subplot.
 	**/
 	public function get_topmost_subplotspec():Dynamic;
 	public function get_width_ratios():Dynamic;

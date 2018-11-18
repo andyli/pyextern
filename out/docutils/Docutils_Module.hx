@@ -13,4 +13,5 @@ package docutils;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	static public var __version_details__ : Dynamic;
+	static public var __version_info__ : Dynamic;
 }

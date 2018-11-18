@@ -90,6 +90,8 @@ package pandas.io.sas.sas_constants;
 	static public var row_count_offset_multiplier : Dynamic;
 	static public var row_count_on_mix_page_offset_multiplier : Dynamic;
 	static public var row_length_offset_multiplier : Dynamic;
+	static public var sas_date_formats : Dynamic;
+	static public var sas_datetime_formats : Dynamic;
 	static public var sas_release_length : Dynamic;
 	static public var sas_release_offset : Dynamic;
 	static public var sas_server_type_length : Dynamic;

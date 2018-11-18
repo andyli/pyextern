@@ -27,6 +27,23 @@ package theano.gpuarray.blas;
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
 	static public var SECTIONS : Dynamic;
 	/**
+		Returns a list of (name, value) pairs that will be turned into
+		macros for use within the op code.
+		
+		The names must be strings that are not a C keyword and the
+		values must be strings of literal C representations.
+		
+		If op uses a :class:`theano.gof.params_type.ParamsType` as ``params_type``,
+		it returns:
+		 - a default macro ``PARAMS_TYPE`` which defines the class name of the
+		   corresponding C struct.
+		 - a macro ``DTYPE_PARAM_key`` for every ``key`` in the ParamsType for which associated
+		   type implements the method :func:`theano.gof.type.CLinkerType.c_element_type`.
+		   ``DTYPE_PARAM_key`` defines the primitive C type name of an item in a variable
+		   associated to ``key``.
+	**/
+	public function _COp__get_op_params():Dynamic;
+	/**
 		Optional: return some or all output[s] of `make_node`.
 		
 		It is called by code such as:
@@ -91,19 +108,19 @@ package theano.gpuarray.blas;
 		files overriding sections in previous files.
 	**/
 	@:native("__init__")
-	public function ___init__(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic):Dynamic;
+	public function ___init__(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic):Dynamic;
 	/**
 		Sections are loaded from files in order with sections in later
 		files overriding sections in previous files.
 	**/
-	public function new(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic):Void;
+	public function new(?border_mode:Dynamic, ?subsample:Dynamic, ?filter_dilation:Dynamic, ?num_groups:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -138,6 +155,7 @@ package theano.gpuarray.blas;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(d:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -156,13 +174,12 @@ package theano.gpuarray.blas;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	static public var _f16_ok : Dynamic;
-	public function _generate_kernel_bin(k:Dynamic, ctx:Dynamic):Dynamic;
 	public function _generate_kernel_cleanup(k:Dynamic):Dynamic;
 	public function _generate_kernel_code(k:Dynamic):Dynamic;
 	public function _generate_kernel_init(k:Dynamic, fail:Dynamic, ctx:Dynamic):Dynamic;
@@ -206,12 +223,12 @@ package theano.gpuarray.blas;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	static public var backward_re : Dynamic;
-	public function c_cleanup_code_struct():Dynamic;
+	static public function c_cleanup_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Required: return the C implementation of an Op.
 		
@@ -401,7 +418,7 @@ package theano.gpuarray.blas;
 	**/
 	public function c_init_code():Dynamic;
 	public function c_init_code_apply(node:Dynamic, name:Dynamic):Dynamic;
-	public function c_init_code_struct():Dynamic;
+	static public function c_init_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: Return a list of library search paths required by code
 		returned by this class.
@@ -461,8 +478,8 @@ package theano.gpuarray.blas;
 	**/
 	public function c_no_compile_args():Dynamic;
 	public function c_support_code():Dynamic;
-	public function c_support_code_apply():Dynamic;
-	public function c_support_code_struct():Dynamic;
+	static public function c_support_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var check_broadcast : Dynamic;
 	public function connection_pattern(node:Dynamic):Dynamic;
 	static public var default_output : Dynamic;
@@ -480,16 +497,9 @@ package theano.gpuarray.blas;
 	public function flops(inp:Dynamic, outp:Dynamic):Dynamic;
 	public function format_c_function_args(inp:Dynamic, out:Dynamic):Dynamic;
 	public function get_c_macros(node:Dynamic, name:Dynamic, ?check_input:Dynamic):Dynamic;
+	public function get_gpu_context(node:Dynamic):Dynamic;
+	public function get_gpu_context_c_name(params_c_name:Dynamic):Dynamic;
 	public function get_io_macros(inputs:Dynamic, outputs:Dynamic):Dynamic;
-	/**
-		Returns a list of (name, value) pairs that will be turned into
-		macros for use within the op code. This is intended to allow
-		an op's properties to influence the generated C code.
-		
-		The names must be strings that are not a C keyword and the
-		values must be strings of literal C representations.
-	**/
-	public function get_op_params():Dynamic;
 	public function get_params(node:Dynamic):Dynamic;
 	/**
 		Convert a path relative to the location of the class file into
@@ -507,8 +517,7 @@ package theano.gpuarray.blas;
 	static public var kernel_re : Dynamic;
 	/**
 		If you override :meth:`c_code_cache_version_apply`, call this
-		method to have the version of the kernel support code and
-		device.
+		method to have the version of the kernel support code.
 		
 		Parameters
 		----------
@@ -610,7 +619,7 @@ package theano.gpuarray.blas;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

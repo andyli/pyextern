@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.data_flow_ops;
 @:pythonImport("tensorflow.python.ops.data_flow_ops", "PriorityQueue") extern class PriorityQueue {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -118,7 +118,7 @@ package tensorflow.python.ops.data_flow_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -169,7 +169,7 @@ package tensorflow.python.ops.data_flow_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -220,6 +220,9 @@ package tensorflow.python.ops.data_flow_ops;
 		  The values in vals as a list.
 	**/
 	public function _scope_vals(vals:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	/**
 		Closes this queue.
 		
@@ -227,11 +230,12 @@ package tensorflow.python.ops.data_flow_ops;
 		the given queue. Subsequent `enqueue` and `enqueue_many`
 		operations will fail. Subsequent `dequeue` and `dequeue_many`
 		operations will continue to succeed if sufficient elements remain
-		in the queue. Subsequent `dequeue` and `dequeue_many` operations
-		that would block will fail immediately.
+		in the queue. Subsequently dequeue and dequeue_many operations
+		that would otherwise block waiting for more elements (if close
+		hadn't been called) will now fail immediately.
 		
 		If `cancel_pending_enqueues` is `True`, all pending requests will also
-		be cancelled.
+		be canceled.
 		
 		Args:
 		  cancel_pending_enqueues: (Optional.) A boolean, defaulting to
@@ -249,11 +253,11 @@ package tensorflow.python.ops.data_flow_ops;
 		until there is an element to dequeue.
 		
 		At runtime, this operation may raise an error if the queue is
-		@{tf.QueueBase.close} before or during its execution. If the
+		`tf.QueueBase.close` before or during its execution. If the
 		queue is closed, the queue is empty, and there are no pending
 		enqueue operations that can fulfill this request,
 		`tf.errors.OutOfRangeError` will be raised. If the session is
-		@{tf.Session.close},
+		`tf.Session.close`,
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -274,11 +278,11 @@ package tensorflow.python.ops.data_flow_ops;
 		`OutOfRange` exception is raised.
 		
 		At runtime, this operation may raise an error if the queue is
-		@{tf.QueueBase.close} before or during its execution. If the
+		`tf.QueueBase.close` before or during its execution. If the
 		queue is closed, the queue contains fewer than `n` elements, and
 		there are no pending enqueue operations that can fulfill this
 		request, `tf.errors.OutOfRangeError` will be raised. If the
-		session is @{tf.Session.close},
+		session is `tf.Session.close`,
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -286,7 +290,7 @@ package tensorflow.python.ops.data_flow_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  The tuple of concatenated tensors that was dequeued.
+		  The list of concatenated tensors that was dequeued.
 	**/
 	public function dequeue_many(n:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -302,7 +306,7 @@ package tensorflow.python.ops.data_flow_ops;
 		
 		If the queue is closed and there are more than `0` but fewer than
 		`n` elements remaining, then instead of raising a
-		`tf.errors.OutOfRangeError` like @{tf.QueueBase.dequeue_many},
+		`tf.errors.OutOfRangeError` like `tf.QueueBase.dequeue_many`,
 		less than `n` elements are returned immediately.  If the queue is
 		closed and there are `0` elements left in the queue, then a
 		`tf.errors.OutOfRangeError` is raised just like in `dequeue_many`.
@@ -327,12 +331,12 @@ package tensorflow.python.ops.data_flow_ops;
 		until the element has been enqueued.
 		
 		At runtime, this operation may raise an error if the queue is
-		@{tf.QueueBase.close} before or during its execution. If the
+		`tf.QueueBase.close` before or during its execution. If the
 		queue is closed before this operation runs,
 		`tf.errors.CancelledError` will be raised. If this operation is
 		blocked, and either (i) the queue is closed by a close operation
 		with `cancel_pending_enqueues=True`, or (ii) the session is
-		@{tf.Session.close},
+		`tf.Session.close`,
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -355,12 +359,12 @@ package tensorflow.python.ops.data_flow_ops;
 		until all of the elements have been enqueued.
 		
 		At runtime, this operation may raise an error if the queue is
-		@{tf.QueueBase.close} before or during its execution. If the
+		`tf.QueueBase.close` before or during its execution. If the
 		queue is closed before this operation runs,
 		`tf.errors.CancelledError` will be raised. If this operation is
 		blocked, and either (i) the queue is closed by a close operation
 		with `cancel_pending_enqueues=True`, or (ii) the session is
-		@{tf.Session.close},
+		`tf.Session.close`,
 		`tf.errors.CancelledError` will be raised.
 		
 		Args:
@@ -388,6 +392,19 @@ package tensorflow.python.ops.data_flow_ops;
 		    or when the data types of `queues` are not all the same.
 	**/
 	static public function from_list(index:Dynamic, queues:Dynamic):Dynamic;
+	/**
+		Returns true if queue is closed.
+		
+		This operation returns true if the queue is closed and false if the queue
+		is open.
+		
+		Args:
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  True if the queue is closed and false if the queue is open.
+	**/
+	public function is_closed(?name:Dynamic):Dynamic;
 	/**
 		The name of the underlying queue.
 	**/

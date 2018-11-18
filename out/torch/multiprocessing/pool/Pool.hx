@@ -2,7 +2,7 @@
 package torch.multiprocessing.pool;
 @:pythonImport("torch.multiprocessing.pool", "Pool") extern class Pool {
 	public function Process(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -55,7 +55,7 @@ package torch.multiprocessing.pool;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -106,18 +106,12 @@ package torch.multiprocessing.pool;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	static public function _get_tasks(func:Dynamic, it:Dynamic, size:Dynamic):Dynamic;
-	/**
-		Provides a generator of tasks for imap and imap_unordered with
-		appropriate handling for iterables which throw exceptions during
-		iteration.
-	**/
-	public function _guarded_task_generation(result_job:Dynamic, func:Dynamic, iterable:Dynamic):Dynamic;
 	static public function _handle_results(outqueue:Dynamic, get:Dynamic, cache:Dynamic):Dynamic;
 	static public function _handle_tasks(taskqueue:Dynamic, put:Dynamic, outqueue:Dynamic, pool:Dynamic, cache:Dynamic):Dynamic;
 	static public function _handle_workers(pool:Dynamic):Dynamic;

@@ -11,6 +11,9 @@ package tensorflow.contrib.integrate.python.ops.odes;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _abs_square(x:Dynamic):Dynamic;
+	static public function _assert_increasing(t:Dynamic):Dynamic;
+	static public function _check_input_sizes(t:Dynamic, dt:Dynamic):Dynamic;
+	static public function _check_input_types(y0:Dynamic, t:Dynamic, ?dt:Dynamic):Dynamic;
 	/**
 		Solve an ODE for `odeint` using method='dopri5'.
 	**/
@@ -92,7 +95,7 @@ package tensorflow.contrib.integrate.python.ops.odes;
 	/**
 		Integrate a system of ordinary differential equations.
 		
-		Solves the initial value problem for a non-stiff system of first order ode-s:
+		Solves the initial value problem for a non-stiff system of first order ODEs:
 		
 		  ```
 		  dy/dt = func(y, t), y(t[0]) = y0
@@ -173,5 +176,41 @@ package tensorflow.contrib.integrate.python.ops.odes;
 		    an invalid dtype.
 	**/
 	static public function odeint(func:Dynamic, y0:Dynamic, t:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?method:Dynamic, ?options:Dynamic, ?full_output:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		ODE integration on a fixed grid (with no step size control).
+		
+		Useful in certain scenarios to avoid the overhead of adaptive step size
+		control, e.g. when differentiation of the integration result is desired and/or
+		the time grid is known a priori to be sufficient.
+		
+		Args:
+		  func: Function that maps a Tensor holding the state `y` and a scalar Tensor
+		    `t` into a Tensor of state derivatives with respect to time.
+		  y0: N-D Tensor giving starting value of `y` at time point `t[0]`.
+		  t: 1-D Tensor holding a sequence of time points for which to solve for
+		    `y`. The initial time point should be the first element of this sequence,
+		    and each time must be larger than the previous time. May have any floating
+		    point dtype.
+		  dt: 0-D or 1-D Tensor providing time step suggestion to be used on time
+		    integration intervals in `t`. 1-D Tensor should provide values
+		    for all intervals, must have 1 less element than that of `t`.
+		    If given a 0-D Tensor, the value is interpreted as time step suggestion
+		    same for all intervals. If passed None, then time step is set to be the
+		    t[1:] - t[:-1]. Defaults to None. The actual step size is obtained by
+		    insuring an integer number of steps per interval, potentially reducing the
+		    time step.
+		  method: One of 'midpoint' or 'rk4'.
+		  name: Optional name for the resulting operation.
+		
+		Returns:
+		  y: (N+1)-D tensor, where the first dimension corresponds to different
+		    time points. Contains the solved value of y for each desired time point in
+		    `t`, with the initial value `y0` being the first element along the first
+		    dimension.
+		
+		Raises:
+		  ValueError: Upon caller errors.
+	**/
+	static public function odeint_fixed(func:Dynamic, y0:Dynamic, t:Dynamic, ?dt:Dynamic, ?method:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

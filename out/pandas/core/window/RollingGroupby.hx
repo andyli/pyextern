@@ -8,7 +8,7 @@ package pandas.core.window;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -61,7 +61,8 @@ package pandas.core.window;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -98,7 +99,7 @@ package pandas.core.window;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -117,7 +118,7 @@ package pandas.core.window;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		provide a nice str repr of our rolling object 
 	**/
@@ -126,6 +127,7 @@ package pandas.core.window;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	static public var _agg_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
@@ -151,7 +153,7 @@ package pandas.core.window;
 		dispatch to apply; we are stripping all of the _apply kwargs and
 		performing the original function call on the grouped object
 	**/
-	public function _apply(func:Dynamic, name:Dynamic, ?window:Dynamic, ?center:Dynamic, ?check_minp:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _apply(func:Dynamic, name:Dynamic, ?window:Dynamic, ?center:Dynamic, ?check_minp:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _builtin_table : Dynamic;
 	/**
@@ -165,14 +167,15 @@ package pandas.core.window;
 	/**
 		resample according to the how, return a new object 
 	**/
-	public function _convert_freq(?how:Dynamic):Dynamic;
+	public function _convert_freq():Dynamic;
 	/**
 		split data into blocks & return conformed data 
 	**/
-	public function _create_blocks(how:Dynamic):Dynamic;
+	public function _create_blocks():Dynamic;
 	static public var _cython_table : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -216,14 +219,14 @@ package pandas.core.window;
 		if we define an internal function for this argument, return it 
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
-	static public var _obj_with_exclusions : Dynamic;
-	static public var _on : Dynamic;
-	public function _prep_values(?values:Dynamic, ?kill_inf:Dynamic, ?how:Dynamic):Dynamic;
+	public var _obj_with_exclusions : Dynamic;
+	public var _on : Dynamic;
+	public function _prep_values(?values:Dynamic, ?kill_inf:Dynamic):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
-	static public var _selected_obj : Dynamic;
+	public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	/**
@@ -244,7 +247,7 @@ package pandas.core.window;
 	**/
 	public function _try_aggregate_string_function(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		validate & return our freq 
+		validate & return window frequency 
 	**/
 	public function _validate_freq():Dynamic;
 	/**
@@ -262,44 +265,47 @@ package pandas.core.window;
 	/**
 		wrap the results
 		
-		Paramters
-		---------
+		Parameters
+		----------
 		results : list of ndarrays
 		blocks : list of blocks
 		obj : conformed data (may be resampled)
 	**/
 	public function _wrap_results(results:Dynamic, blocks:Dynamic, obj:Dynamic):Dynamic;
 	/**
-		Aggregate using callable, string, dict, or list of string/callables
+		Aggregate using one or more operations over the specified axis.
 		
 		
 		
 		Parameters
 		----------
-		func : callable, string, dictionary, or list of string/callables
+		func : function, string, dictionary, or list of string/functions
 		    Function to use for aggregating the data. If a function, must either
 		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
 		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
 		
-		    Accepted Combinations are:
+		    Accepted combinations are:
 		
-		    - string function name
-		    - function
-		    - list of functions
-		    - dict of column names -> functions (or list of functions)
+		    - string function name.
+		    - function.
+		    - list of functions.
+		    - dict of column names -> functions (or list of functions).
 		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
 		
-		agg is an alias for aggregate. Use it.
+		*args
+		    Positional arguments to pass to `func`.
+		**kwargs
+		    Keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		aggregated : Series/DataFrame
+		
+		Notes
+		-----
+		`agg` is an alias for `aggregate`. Use the alias.
+		
+		A passed user-defined-function will be passed a Series for evaluation.
 		
 		Examples
 		--------
@@ -352,36 +358,39 @@ package pandas.core.window;
 	**/
 	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Aggregate using callable, string, dict, or list of string/callables
+		Aggregate using one or more operations over the specified axis.
 		
 		
 		
 		Parameters
 		----------
-		func : callable, string, dictionary, or list of string/callables
+		func : function, string, dictionary, or list of string/functions
 		    Function to use for aggregating the data. If a function, must either
 		    work when passed a Series/DataFrame or when passed to Series/DataFrame.apply. For
 		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
 		
-		    Accepted Combinations are:
+		    Accepted combinations are:
 		
-		    - string function name
-		    - function
-		    - list of functions
-		    - dict of column names -> functions (or list of functions)
+		    - string function name.
+		    - function.
+		    - list of functions.
+		    - dict of column names -> functions (or list of functions).
 		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
 		
-		agg is an alias for aggregate. Use it.
+		*args
+		    Positional arguments to pass to `func`.
+		**kwargs
+		    Keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		aggregated : Series/DataFrame
+		
+		Notes
+		-----
+		`agg` is an alias for `aggregate`. Use the alias.
+		
+		A passed user-defined-function will be passed a Series for evaluation.
 		
 		Examples
 		--------
@@ -439,8 +448,22 @@ package pandas.core.window;
 		Parameters
 		----------
 		func : function
-		    Must produce a single value from an ndarray input
-		    \*args and \*\*kwargs are passed to the function
+		    Must produce a single value from an ndarray input if ``raw=True``
+		    or a Series if ``raw=False``
+		raw : bool, default None
+		    * ``False`` : passes each row or column as a Series to the
+		      function.
+		    * ``True`` or ``None`` : the passed function will receive ndarray
+		      objects instead.
+		      If you are just applying a NumPy reduction function this will
+		      achieve much better performance.
+		
+		    The `raw` parameter is required and will show a FutureWarning if
+		    not passed. In the future `raw` will default to False.
+		
+		    .. versionadded:: 0.23.0
+		
+		\*args and \*\*kwargs are passed to the function
 		
 		Returns
 		-------
@@ -451,33 +474,68 @@ package pandas.core.window;
 		pandas.Series.rolling
 		pandas.DataFrame.rolling
 	**/
-	public function apply(func:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
+	public function apply(func:Dynamic, ?raw:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
 	public function corr(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function count(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function cov(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var exclusions : Dynamic;
-	static public var is_datetimelike : Dynamic;
+	public var is_datetimelike : Dynamic;
 	public var is_freq_type : Dynamic;
 	/**
-		Unbiased rolling kurtosis
+		Calculate unbiased rolling kurtosis.
+		
+		This function uses Fisher's definition of kurtosis without bias.
+		
+		Parameters
+		----------
+		**kwargs
+		    Under Review.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Returned object type is determined by the caller of the rolling
+		    calculation
 		
-		See also
+		See Also
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		Series.rolling : Calling object with Series data
+		DataFrame.rolling : Calling object with DataFrames
+		Series.kurt : Equivalent method for Series
+		DataFrame.kurt : Equivalent method for DataFrame
+		scipy.stats.skew : Third moment of a probability density
+		scipy.stats.kurtosis : Reference SciPy method
+		
+		Notes
+		-----
+		A minimum of 4 periods is required for the rolling calculation.
+		
+		Examples
+		--------
+		
+		The example below will show a rolling calculation with a window size of
+		four matching the equivalent function call using `scipy.stats`.
+		
+		>>> arr = [1, 2, 3, 4, 999]
+		>>> fmt = "{0:.6f}"  # limit the printed precision to 6 digits
+		>>> import scipy.stats
+		>>> print(fmt.format(scipy.stats.kurtosis(arr[:-1], bias=False)))
+		-1.200000
+		>>> print(fmt.format(scipy.stats.kurtosis(arr[1:], bias=False)))
+		3.999946
+		>>> s = pd.Series(arr)
+		>>> s.rolling(4).kurt()
+		0         NaN
+		1         NaN
+		2         NaN
+		3   -1.200000
+		4    3.999946
+		dtype: float64
 	**/
 	public function kurt(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		rolling maximum
 		
-		Parameters
-		----------
-		how : string, default 'max' (DEPRECATED)
-		    Method for down- or re-sampling
 		
 		Returns
 		-------
@@ -490,78 +548,174 @@ package pandas.core.window;
 	**/
 	public function max(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		rolling mean
+		Calculate the rolling mean of the values.
 		
 		Parameters
 		----------
-		how : string, default None (DEPRECATED)
-		    Method for down- or re-sampling
+		*args
+		    Under Review.
+		**kwargs
+		    Under Review.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Returned object type is determined by the caller of the rolling
+		    calculation.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		Series.rolling : Calling object with Series data
+		DataFrame.rolling : Calling object with DataFrames
+		Series.mean : Equivalent method for Series
+		DataFrame.mean : Equivalent method for DataFrame
+		
+		Examples
+		--------
+		The below examples will show rolling mean calculations with window sizes of
+		two and three, respectively.
+		
+		>>> s = pd.Series([1, 2, 3, 4])
+		>>> s.rolling(2).mean()
+		0    NaN
+		1    1.5
+		2    2.5
+		3    3.5
+		dtype: float64
+		
+		>>> s.rolling(3).mean()
+		0    NaN
+		1    NaN
+		2    2.0
+		3    3.0
+		dtype: float64
 	**/
 	public function mean(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		rolling median
+		Calculate the rolling median.
 		
 		Parameters
 		----------
-		how : string, default 'median' (DEPRECATED)
-		    Method for down- or re-sampling
+		**kwargs
+		    For compatibility with other rolling methods. Has no effect
+		    on the computed median.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Returned type is the same as the original object.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		Series.rolling : Calling object with Series data
+		DataFrame.rolling : Calling object with DataFrames
+		Series.median : Equivalent method for Series
+		DataFrame.median : Equivalent method for DataFrame
+		
+		Examples
+		--------
+		Compute the rolling median of a series with a window size of 3.
+		
+		>>> s = pd.Series([0, 1, 2, 3, 4])
+		>>> s.rolling(3).median()
+		0    NaN
+		1    NaN
+		2    1.0
+		3    2.0
+		4    3.0
+		dtype: float64
 	**/
 	public function median(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		rolling minimum
+		Calculate the rolling minimum.
 		
 		Parameters
 		----------
-		how : string, default 'min' (DEPRECATED)
-		    Method for down- or re-sampling
+		**kwargs
+		    Under Review.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Returned object type is determined by the caller of the rolling
+		    calculation.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		Series.rolling : Calling object with a Series
+		DataFrame.rolling : Calling object with a DataFrame
+		Series.min : Similar method for Series
+		DataFrame.min : Similar method for DataFrame
+		
+		Examples
+		--------
+		Performing a rolling minimum with a window size of 3.
+		
+		>>> s = pd.Series([4, 3, 5, 2, 6])
+		>>> s.rolling(3).min()
+		0    NaN
+		1    NaN
+		2    3.0
+		3    2.0
+		4    2.0
+		dtype: float64
 	**/
 	public function min(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
-		rolling quantile
+		rolling quantile.
 		
 		Parameters
 		----------
 		quantile : float
-		    0 <= quantile <= 1
+		    Quantile to compute. 0 <= quantile <= 1.
+		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+		    .. versionadded:: 0.23.0
+		
+		    This optional parameter specifies the interpolation method to use,
+		    when the desired quantile lies between two data points `i` and `j`:
+		
+		        * linear: `i + (j - i) * fraction`, where `fraction` is the
+		          fractional part of the index surrounded by `i` and `j`.
+		        * lower: `i`.
+		        * higher: `j`.
+		        * nearest: `i` or `j` whichever is nearest.
+		        * midpoint: (`i` + `j`) / 2.
+		**kwargs:
+		    For compatibility with other rolling methods. Has no effect on
+		    the result.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Returned object type is determined by the caller of the rolling
+		    calculation.
 		
-		See also
+		Examples
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		>>> s = pd.Series([1, 2, 3, 4])
+		>>> s.rolling(2).quantile(.4, interpolation='lower')
+		0    NaN
+		1    1.0
+		2    2.0
+		3    3.0
+		dtype: float64
+		
+		>>> s.rolling(2).quantile(.4, interpolation='midpoint')
+		0    NaN
+		1    1.5
+		2    2.5
+		3    3.5
+		dtype: float64
+		
+		See Also
+		--------
+		pandas.Series.quantile : Computes value at the given quantile over all data
+		    in Series.
+		pandas.DataFrame.quantile : Computes values at the given quantile over
+		    requested axis in DataFrame.
 	**/
-	public function quantile(quantile:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function quantile(quantile:Dynamic, ?interpolation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unbiased rolling skewness
 		
@@ -576,60 +730,195 @@ package pandas.core.window;
 	**/
 	public function skew(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		rolling standard deviation
+		Calculate rolling standard deviation.
+		
+		Normalized by N-1 by default. This can be changed using the `ddof`
+		argument.
 		
 		Parameters
 		----------
 		ddof : int, default 1
 		    Delta Degrees of Freedom.  The divisor used in calculations
 		    is ``N - ddof``, where ``N`` represents the number of elements.
+		*args, **kwargs
+		    For NumPy compatibility. No additional arguments are used.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Returns the same object type as the caller of the rolling calculation.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		Series.rolling : Calling object with Series data
+		DataFrame.rolling : Calling object with DataFrames
+		Series.std : Equivalent method for Series
+		DataFrame.std : Equivalent method for DataFrame
+		numpy.std : Equivalent method for Numpy array
+		
+		Notes
+		-----
+		The default `ddof` of 1 used in Series.std is different than the default
+		`ddof` of 0 in numpy.std.
+		
+		A minimum of one period is required for the rolling calculation.
+		
+		Examples
+		--------
+		>>> s = pd.Series([5, 5, 6, 7, 5, 5, 5])
+		>>> s.rolling(3).std()
+		0         NaN
+		1         NaN
+		2    0.577350
+		3    1.000000
+		4    1.000000
+		5    1.154701
+		6    0.000000
+		dtype: float64
+		
+		>>> s.expanding(3).std()
+		0         NaN
+		1         NaN
+		2    0.577350
+		3    0.957427
+		4    0.894427
+		5    0.836660
+		6    0.786796
+		dtype: float64
 	**/
 	public function std(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		rolling sum
+		Calculate rolling sum of given DataFrame or Series.
 		
 		Parameters
 		----------
-		how : string, default None (DEPRECATED)
-		    Method for down- or re-sampling
+		*args, **kwargs
+		    For compatibility with other rolling methods. Has no effect
+		    on the computed value.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Same type as the input, with the same index, containing the
+		    rolling sum.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		Series.sum : Reducing sum for Series.
+		DataFrame.sum : Reducing sum for DataFrame.
+		
+		Examples
+		--------
+		>>> s = pd.Series([1, 2, 3, 4, 5])
+		>>> s
+		0    1
+		1    2
+		2    3
+		3    4
+		4    5
+		dtype: int64
+		
+		>>> s.rolling(3).sum()
+		0     NaN
+		1     NaN
+		2     6.0
+		3     9.0
+		4    12.0
+		dtype: float64
+		
+		>>> s.expanding(3).sum()
+		0     NaN
+		1     NaN
+		2     6.0
+		3    10.0
+		4    15.0
+		dtype: float64
+		
+		>>> s.rolling(3, center=True).sum()
+		0     NaN
+		1     6.0
+		2     9.0
+		3    12.0
+		4     NaN
+		dtype: float64
+		
+		For DataFrame, each rolling sum is computed column-wise.
+		
+		>>> df = pd.DataFrame({"A": s, "B": s ** 2})
+		>>> df
+		   A   B
+		0  1   1
+		1  2   4
+		2  3   9
+		3  4  16
+		4  5  25
+		
+		>>> df.rolling(3).sum()
+		      A     B
+		0   NaN   NaN
+		1   NaN   NaN
+		2   6.0  14.0
+		3   9.0  29.0
+		4  12.0  50.0
 	**/
 	public function sum(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function validate():Dynamic;
 	/**
-		rolling variance
+		Calculate unbiased rolling variance.
+		
+		Normalized by N-1 by default. This can be changed using the `ddof`
+		argument.
 		
 		Parameters
 		----------
 		ddof : int, default 1
 		    Delta Degrees of Freedom.  The divisor used in calculations
 		    is ``N - ddof``, where ``N`` represents the number of elements.
+		*args, **kwargs
+		    For NumPy compatibility. No additional arguments are used.
 		
 		Returns
 		-------
-		same type as input
+		Series or DataFrame
+		    Returns the same object type as the caller of the rolling calculation.
 		
-		See also
+		See Also
 		--------
-		pandas.Series.rolling
-		pandas.DataFrame.rolling
+		Series.rolling : Calling object with Series data
+		DataFrame.rolling : Calling object with DataFrames
+		Series.var : Equivalent method for Series
+		DataFrame.var : Equivalent method for DataFrame
+		numpy.var : Equivalent method for Numpy array
+		
+		Notes
+		-----
+		The default `ddof` of 1 used in :meth:`Series.var` is different than the
+		default `ddof` of 0 in :func:`numpy.var`.
+		
+		A minimum of 1 period is required for the rolling calculation.
+		
+		Examples
+		--------
+		>>> s = pd.Series([5, 5, 6, 7, 5, 5, 5])
+		>>> s.rolling(3).var()
+		0         NaN
+		1         NaN
+		2    0.333333
+		3    1.000000
+		4    1.000000
+		5    1.333333
+		6    0.000000
+		dtype: float64
+		
+		>>> s.expanding(3).var()
+		0         NaN
+		1         NaN
+		2    0.333333
+		3    0.916667
+		4    0.800000
+		5    0.700000
+		6    0.619048
+		dtype: float64
 	**/
 	@:native("var")
 	public function _var(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.html;
 @:pythonImport("pandas.io.html", "_LxmlFrameParser") extern class _LxmlFrameParser {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package pandas.io.html;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package pandas.io.html;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -125,6 +125,22 @@ package pandas.io.html;
 	**/
 	public function _build_doc():Dynamic;
 	public function _build_table(table:Dynamic):Dynamic;
+	/**
+		Returns list of tables, potentially removing hidden elements
+		
+		Parameters
+		----------
+		tbl_list : list of Tag or list of Element
+		    Type of list elements will vary depending upon parser used
+		attr_name : str
+		    Name of the accessor for retrieving HTML attributes
+		
+		Returns
+		-------
+		list of Tag or list of Element
+		    Return type matches `tbl_list`
+	**/
+	public function _handle_hidden_tables(tbl_list:Dynamic, attr_name:Dynamic):Dynamic;
 	/**
 		Parse the raw data into a list of lists.
 		
@@ -162,7 +178,7 @@ package pandas.io.html;
 		
 		attrs : dict
 		    A dictionary of table attributes that can be used to disambiguate
-		    mutliple tables on a page.
+		    multiple tables on a page.
 		
 		Raises
 		------
@@ -176,7 +192,7 @@ package pandas.io.html;
 	**/
 	public function _parse_tables(doc:Dynamic, match:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		Return the body of the table.
+		Return the list of tbody elements from the parsed table element.
 		
 		Parameters
 		----------
@@ -185,8 +201,8 @@ package pandas.io.html;
 		
 		Returns
 		-------
-		tbody : node-like
-		    A <tbody>...</tbody> element.
+		tbodys : list of node-like
+		    A list of <tbody>...</tbody> elements
 	**/
 	public function _parse_tbody(table:Dynamic):Dynamic;
 	/**

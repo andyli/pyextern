@@ -24,6 +24,16 @@ package theano.gpuarray.subtensor;
 		    target context name for the result
 	**/
 	static public function as_gpuarray_variable(x:Dynamic, context_name:Dynamic):Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
+	/**
+		This function checks if the boolean mask arrays in the index have
+		the right shape and converts them to index arrays by calling nonzero.
+		For each boolean mask, we check if the mask has the
+		same shape as the input. This is enforced in NumPy 0.13.0 and
+		newer, but not by earlier versions. If the size is not the same,
+		this method raises an IndexError.
+	**/
+	static public function check_and_convert_boolean_masks(input:Dynamic, idx_list:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function get_iadd(a:Dynamic, b:Dynamic):Dynamic;
 	/**
@@ -36,6 +46,7 @@ package theano.gpuarray.subtensor;
 	static public function get_idx_list(inputs:Dynamic, idx_list:Dynamic, ?get_count:Dynamic):Dynamic;
 	static public function gpu_context_type(?name:Dynamic):Dynamic;
 	static public function gpu_contiguous(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	/**
 		Return an un-computable symbolic variable of type `x.type`.
 		
@@ -54,6 +65,8 @@ package theano.gpuarray.subtensor;
 		Infer the context name to use from the inputs given
 	**/
 	static public function infer_context_name(?vars:python.VarArgs<Dynamic>):Dynamic;
+	static public function int_t(?name:Dynamic):Dynamic;
 	static public var integer_types : Dynamic;
 	static public var print_function : Dynamic;
+	static public function size_t(?name:Dynamic):Dynamic;
 }

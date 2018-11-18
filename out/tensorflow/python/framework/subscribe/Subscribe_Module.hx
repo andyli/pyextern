@@ -22,6 +22,24 @@ package tensorflow.python.framework.subscribe;
 	**/
 	static public function _is_subscribed_identity(tensor:Dynamic):Dynamic;
 	/**
+		Preserve the control flow context for the given tensor.
+		
+		Sets the graph context to the tensor's context so that side effect ops are
+		added under the same context.
+		
+		This is needed when subscribing to tensors defined within a conditional
+		block or a while loop. In these cases we need that the side-effect ops
+		are created within the same control flow context as that of the tensor
+		they are attached to.
+		
+		Args:
+		  tensor: tensor whose context should be preserved.
+		
+		Yields:
+		  None
+	**/
+	static public function _preserve_control_flow_context(tensor:Dynamic):Dynamic;
+	/**
 		Helper method to recursively apply a function to structure of tensors.
 		
 		The structure of the tensors should take the form similar to fetches in
@@ -38,6 +56,22 @@ package tensorflow.python.framework.subscribe;
 		  `TypeError` if undefined type in the tensors structure.
 	**/
 	static public function _recursive_apply(tensors:Dynamic, apply_fn:Dynamic):Dynamic;
+	/**
+		Helper method that subscribes a single tensor to a list of side_effects.
+		
+		This is a thin wrapper around `_subscribe` and ensures that the side effect
+		ops are added within the same device and control flow context of the
+		subscribed tensor.
+		
+		Args:
+		  tensor: The `tf.Tensor` to be subscribed.
+		  side_effects: List of side_effect functions, see subscribe for details.
+		  control_cache: `_ControlOutputCache` helper to get control_outputs faster.
+		Returns:
+		  The modified replacement to the passed in tensor which triggers the side
+		  effects or the given tensor, if it was already been subscribed.
+	**/
+	static public function _scoped_subscribe(tensor:Dynamic, side_effects:Dynamic, control_cache:Dynamic):Dynamic;
 	/**
 		Helper method that subscribes a single tensor to a list of side_effects.
 		

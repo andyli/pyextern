@@ -35,12 +35,10 @@ package scipy.linalg.decomp_qr;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -51,8 +49,37 @@ package scipy.linalg.decomp_qr;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
@@ -152,13 +179,13 @@ package scipy.linalg.decomp_qr;
 		
 		Parameters
 		----------
-		a : array_like, shape (M, N)
-		    Matrix to be decomposed
-		c : array_like, one- or two-dimensional
-		    calculate the product of c and q, depending on the mode:
+		a : (M, N), array_like
+		    Input array
+		c : array_like
+		    Input array to be multiplied by ``q``.
 		mode : {'left', 'right'}, optional
-		    ``dot(Q, c)`` is returned if mode is 'left',
-		    ``dot(c, Q)`` is returned if mode is 'right'.
+		    ``Q @ c`` is returned if mode is 'left', ``c @ Q`` is returned if
+		    mode is 'right'.
 		    The shape of c must be appropriate for the matrix multiplications,
 		    if mode is 'left', ``min(a.shape) == c.shape[0]``,
 		    if mode is 'right', ``a.shape[0] == c.shape[1]``.
@@ -173,30 +200,48 @@ package scipy.linalg.decomp_qr;
 		overwrite_c : bool, optional
 		    Whether data in c is overwritten (may improve performance).
 		    If this is used, c must be big enough to keep the result,
-		    i.e. c.shape[0] = a.shape[0] if mode is 'left'.
-		
+		    i.e. ``c.shape[0]`` = ``a.shape[0]`` if mode is 'left'.
 		
 		Returns
 		-------
-		CQ : float or complex ndarray
-		    the product of Q and c, as defined in mode
-		R : float or complex ndarray
-		    Of shape (K, N), ``K = min(M, N)``.
-		P : ndarray of ints
-		    Of shape (N,) for ``pivoting=True``.
-		    Not returned if ``pivoting=False``.
+		CQ : ndarray
+		    The product of ``Q`` and ``c``.
+		R : (K, N), ndarray
+		    R array of the resulting QR factorization where ``K = min(M, N)``.
+		P : (N,) ndarray
+		    Integer pivot array. Only returned when ``pivoting=True``.
 		
 		Raises
 		------
 		LinAlgError
-		    Raised if decomposition fails
+		    Raised if QR decomposition fails.
 		
 		Notes
 		-----
-		This is an interface to the LAPACK routines dgeqrf, zgeqrf,
-		dormqr, zunmqr, dgeqp3, and zgeqp3.
+		This is an interface to the LAPACK routines ``?GEQRF``, ``?ORMQR``,
+		``?UNMQR``, and ``?GEQP3``.
 		
 		.. versionadded:: 0.11.0
+		
+		Examples
+		--------
+		>>> from scipy.linalg import qr_multiply, qr
+		>>> A = np.array([[1, 3, 3], [2, 3, 2], [2, 3, 3], [1, 3, 2]])
+		>>> qc, r1, piv1 = qr_multiply(A, 2*np.eye(4), pivoting=1)
+		>>> qc
+		array([[-1.,  1., -1.],
+		       [-1., -1.,  1.],
+		       [-1., -1., -1.],
+		       [-1.,  1.,  1.]])
+		>>> r1
+		array([[-6., -3., -5.            ],
+		       [ 0., -1., -1.11022302e-16],
+		       [ 0.,  0., -1.            ]])
+		>>> piv1
+		array([1, 0, 2], dtype=int32)
+		>>> q2, r2, piv2 = qr(A, mode='economic', pivoting=1)
+		>>> np.allclose(2*q2 - qc, np.zeros((4, 3)))
+		True
 	**/
 	static public function qr_multiply(a:Dynamic, c:Dynamic, ?mode:Dynamic, ?pivoting:Dynamic, ?conjugate:Dynamic, ?overwrite_a:Dynamic, ?overwrite_c:Dynamic):Dynamic;
 	/**
@@ -247,15 +292,14 @@ package scipy.linalg.decomp_qr;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> from numpy import random, dot, allclose
-		>>> a = random.randn(6, 9)
+		>>> a = np.random.randn(6, 9)
 		>>> r, q = linalg.rq(a)
-		>>> allclose(a, dot(r, q))
+		>>> np.allclose(a, r @ q)
 		True
 		>>> r.shape, q.shape
 		((6, 9), (9, 9))
 		>>> r2 = linalg.rq(a, mode='r')
-		>>> allclose(r, r2)
+		>>> np.allclose(r, r2)
 		True
 		>>> r3, q3 = linalg.rq(a, mode='economic')
 		>>> r3.shape, q3.shape

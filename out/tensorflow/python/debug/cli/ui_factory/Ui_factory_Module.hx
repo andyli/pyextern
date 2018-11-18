@@ -25,6 +25,8 @@ package tensorflow.python.debug.cli.ui_factory;
 		  on_ui_exit: (`Callable`) the callback to be called when the UI exits.
 		  available_ui_types: (`None` or `list` of `str`) Manually-set available
 		    ui_types.
+		  config: An instance of `cli_config.CLIConfig()` carrying user-facing
+		    configurations.
 		
 		Returns:
 		  A `base_ui.BaseUI` subtype object.
@@ -32,6 +34,6 @@ package tensorflow.python.debug.cli.ui_factory;
 		Raises:
 		  ValueError: on invalid ui_type or on exhausting or fallback ui_types.
 	**/
-	static public function get_ui(ui_type:Dynamic, ?on_ui_exit:Dynamic, ?available_ui_types:Dynamic):Dynamic;
+	static public function get_ui(ui_type:Dynamic, ?on_ui_exit:Dynamic, ?available_ui_types:Dynamic, ?config:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

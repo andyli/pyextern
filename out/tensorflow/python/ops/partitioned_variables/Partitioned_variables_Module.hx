@@ -89,6 +89,7 @@ package tensorflow.python.ops.partitioned_variables;
 	**/
 	static public function min_max_variable_partitioner(?max_partitions:Dynamic, ?axis:Dynamic, ?min_slice_size:Dynamic, ?bytes_per_string_element:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a partitioner for VariableScope to keep shards below `max_shard_bytes`.
 		

@@ -66,7 +66,6 @@ package pandas.io.excel;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _conv_value(val:Dynamic):Dynamic;
 	/**
 		Forward fills blank entries in row, but only inside the same parent index
 		
@@ -85,6 +84,7 @@ package pandas.io.excel;
 		Returns changed row and control_row
 	**/
 	static public function _fill_mi_header(row:Dynamic, control_row:Dynamic):Dynamic;
+	static public function _get_default_writer(ext:Dynamic):Dynamic;
 	/**
 		Check to see if a URL has a valid protocol.
 		
@@ -103,6 +103,29 @@ package pandas.io.excel;
 	**/
 	static public function _pop_header_name(row:Dynamic, index_col:Dynamic):Dynamic;
 	static public var _read_excel_doc : Dynamic;
+	/**
+		Attempt to convert a path-like object to a string.
+		
+		Parameters
+		----------
+		filepath_or_buffer : object to be converted
+		
+		Returns
+		-------
+		str_filepath_or_buffer : maybe a string version of the object
+		
+		Notes
+		-----
+		Objects supporting the fspath protocol (python 3.6+) are coerced
+		according to its __fspath__ method.
+		
+		For backwards compatibility with older pythons, pathlib.Path and
+		py.path objects are specially coerced.
+		
+		Any other object is passed through unchanged, which includes bytes,
+		strings, buffers, or anything else that's not even path-like.
+	**/
+	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	static public function _trim_excel_header(row:Dynamic):Dynamic;
 	/**
 		Open the URL url, which can be either a string or a Request object.
@@ -171,6 +194,69 @@ package pandas.io.excel;
 	**/
 	static public function add_metaclass(metaclass:Dynamic):Dynamic;
 	/**
+		Decorator to deprecate a keyword argument of a function.
+		
+		Parameters
+		----------
+		old_arg_name : str
+		    Name of argument in function to deprecate
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
+		mapping : dict or callable
+		    If mapping is present, use it to translate old arguments to
+		    new arguments. A callable must do its own value checking;
+		    values not found in a dict will be forwarded unchanged.
+		
+		Examples
+		--------
+		The following deprecates 'cols', using 'columns' instead
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
+		... def f(columns=''):
+		...     print(columns)
+		...
+		>>> f(columns='should work ok')
+		should work ok
+		
+		>>> f(cols='should raise warning')
+		FutureWarning: cols is deprecated, use columns instead
+		  warnings.warn(msg, FutureWarning)
+		should raise warning
+		
+		>>> f(cols='should error', columns="can't pass do both")
+		TypeError: Can only specify 'cols' or 'columns', not both
+		
+		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
+		... def f(new=False):
+		...     print('yes!' if new else 'no!')
+		...
+		>>> f(old='yes')
+		FutureWarning: old='yes' is deprecated, use new=True instead
+		  warnings.warn(msg, FutureWarning)
+		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+	**/
+	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	/**
 		Fill a single paragraph of text, returning a new string.
 		
 		Reformat the single paragraph in 'text' to fit in lines of no more
@@ -189,12 +275,16 @@ package pandas.io.excel;
 		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
 		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
+		mode : str, optional
 		
 		Returns
 		-------
-		a filepath_or_buffer, the encoding, the compression
+		tuple of ({a filepath_ or buffer or S3File instance},
+		          encoding, str,
+		          compression, str,
+		          should_close, bool)
 	**/
-	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?mode:Dynamic):Dynamic;
 	static public function get_writer(engine_name:Dynamic):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -267,7 +357,7 @@ package pandas.io.excel;
 		    The string could be a URL. Valid URL schemes include http, ftp, s3,
 		    and file. For file URLs, a host is expected. For instance, a local
 		    file could be file://localhost/path/to/workbook.xlsx
-		sheetname : string, int, mixed list of strings/ints, or None, default 0
+		sheet_name : string, int, mixed list of strings/ints, or None, default 0
 		
 		    Strings are used for sheet names, Integers are used in zero-indexed
 		    sheet positions.
@@ -288,28 +378,38 @@ package pandas.io.excel;
 		    * [0,1,"Sheet5"] -> 1st, 2nd & 5th sheet as a dictionary of DataFrames
 		    * None -> All sheets as a dictionary of DataFrames
 		
+		sheetname : string, int, mixed list of strings/ints, or None, default 0
+		
+		    .. deprecated:: 0.21.0
+		       Use `sheet_name` instead
+		
 		header : int, list of ints, default 0
 		    Row (0-indexed) to use for the column labels of the parsed
 		    DataFrame. If a list of integers is passed those row positions will
-		    be combined into a ``MultiIndex``
-		skiprows : list-like
-		    Rows to skip at the beginning (0-indexed)
-		skip_footer : int, default 0
-		    Rows at the end to skip (0-indexed)
+		    be combined into a ``MultiIndex``. Use None if there is no header.
+		names : array-like, default None
+		    List of column names to use. If file contains no header row,
+		    then you should explicitly pass header=None
 		index_col : int, list of ints, default None
 		    Column (0-indexed) to use as the row labels of the DataFrame.
 		    Pass None if there is no such column.  If a list is passed,
 		    those columns will be combined into a ``MultiIndex``.  If a
-		    subset of data is selected with ``parse_cols``, index_col
+		    subset of data is selected with ``usecols``, index_col
 		    is based on the subset.
-		names : array-like, default None
-		    List of column names to use. If file contains no header row,
-		    then you should explicitly pass header=None
-		converters : dict, default None
-		    Dict of functions for converting values in certain columns. Keys can
-		    either be integers or column labels, values are functions that take one
-		    input argument, the Excel cell content, and return the transformed
-		    content.
+		parse_cols : int or list, default None
+		
+		    .. deprecated:: 0.21.0
+		       Pass in `usecols` instead.
+		
+		usecols : int or list, default None
+		    * If None then parse all columns,
+		    * If int then indicates last column to be parsed
+		    * If list of ints then indicates list of column numbers to be parsed
+		    * If string then indicates comma separated list of Excel column letters and
+		      column ranges (e.g. "A:E" or "A,C,E:F").  Ranges are inclusive of
+		      both sides.
+		squeeze : boolean, default False
+		    If the parsed data only contains one column then return a Series
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
 		    Use `object` to preserve data as stored in Excel and not interpret dtype.
@@ -318,6 +418,14 @@ package pandas.io.excel;
 		
 		    .. versionadded:: 0.20.0
 		
+		engine: string, default None
+		    If io is not a buffer or path, this must be set to identify io.
+		    Acceptable values are None or xlrd
+		converters : dict, default None
+		    Dict of functions for converting values in certain columns. Keys can
+		    either be integers or column labels, values are functions that take one
+		    input argument, the Excel cell content, and return the transformed
+		    content.
 		true_values : list, default None
 		    Values to consider as True
 		
@@ -328,49 +436,122 @@ package pandas.io.excel;
 		
 		    .. versionadded:: 0.19.0
 		
-		parse_cols : int or list, default None
-		    * If None then parse all columns,
-		    * If int then indicates last column to be parsed
-		    * If list of ints then indicates list of column numbers to be parsed
-		    * If string then indicates comma separated list of Excel column letters and
-		      column ranges (e.g. "A:E" or "A,C,E:F").  Ranges are inclusive of
-		      both sides.
-		squeeze : boolean, default False
-		    If the parsed data only contains one column then return a Series
+		skiprows : list-like
+		    Rows to skip at the beginning (0-indexed)
+		nrows : int, default None
+		    Number of rows to parse
+		
+		    .. versionadded:: 0.23.0
+		
 		na_values : scalar, str, list-like, or dict, default None
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values. By default the following values are interpreted
 		    as NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
-		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'.
-		thousands : str, default None
-		    Thousands separator for parsing string columns to numeric.  Note that
-		    this parameter is only necessary for columns stored as TEXT in Excel,
-		    any numeric columns will automatically be parsed, regardless of display
-		    format.
+		    '1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'n/a', 'nan',
+		    'null'.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
 		verbose : boolean, default False
 		    Indicate number of NA values placed in non-numeric columns
-		engine: string, default None
-		    If io is not a buffer or path, this must be set to identify io.
-		    Acceptable values are None or xlrd
+		thousands : str, default None
+		    Thousands separator for parsing string columns to numeric.  Note that
+		    this parameter is only necessary for columns stored as TEXT in Excel,
+		    any numeric columns will automatically be parsed, regardless of display
+		    format.
+		comment : str, default None
+		    Comments out remainder of line. Pass a character or characters to this
+		    argument to indicate comments in the input file. Any data between the
+		    comment string and the end of the current line is ignored.
+		skip_footer : int, default 0
+		
+		    .. deprecated:: 0.23.0
+		       Pass in `skipfooter` instead.
+		skipfooter : int, default 0
+		    Rows at the end to skip (0-indexed)
 		convert_float : boolean, default True
 		    convert integral floats to int (i.e., 1.0 --> 1). If False, all numeric
 		    data will be read in as floats: Excel stores all numbers as floats
 		    internally
-		has_index_names : boolean, default None
-		    DEPRECATED: for version 0.17+ index names will be automatically
-		    inferred based on index_col.  To read Excel output from 0.16.2 and
-		    prior that had saved index names, use True.
 		
 		Returns
 		-------
 		parsed : DataFrame or Dict of DataFrames
-		    DataFrame from the passed in Excel file.  See notes in sheetname
+		    DataFrame from the passed in Excel file.  See notes in sheet_name
 		    argument for more information on when a Dict of Dataframes is returned.
+		
+		Examples
+		--------
+		
+		An example DataFrame written to a local file
+		
+		>>> df_out = pd.DataFrame([('string1', 1),
+		...                        ('string2', 2),
+		...                        ('string3', 3)],
+		...                       columns=['Name', 'Value'])
+		>>> df_out
+		      Name  Value
+		0  string1      1
+		1  string2      2
+		2  string3      3
+		>>> df_out.to_excel('tmp.xlsx')
+		
+		The file can be read using the file name as string or an open file object:
+		
+		>>> pd.read_excel('tmp.xlsx')
+		      Name  Value
+		0  string1      1
+		1  string2      2
+		2  string3      3
+		
+		>>> pd.read_excel(open('tmp.xlsx','rb'))
+		      Name  Value
+		0  string1      1
+		1  string2      2
+		2  string3      3
+		
+		Index and header can be specified via the `index_col` and `header` arguments
+		
+		>>> pd.read_excel('tmp.xlsx', index_col=None, header=None)
+		     0        1      2
+		0  NaN     Name  Value
+		1  0.0  string1      1
+		2  1.0  string2      2
+		3  2.0  string3      3
+		
+		Column types are inferred but can be explicitly specified
+		
+		>>> pd.read_excel('tmp.xlsx', dtype={'Name':str, 'Value':float})
+		      Name  Value
+		0  string1    1.0
+		1  string2    2.0
+		2  string3    3.0
+		
+		True, False, and NA values, and thousands separators have defaults,
+		but can be explicitly specified, too. Supply the values you would like
+		as strings or lists of strings!
+		
+		>>> pd.read_excel('tmp.xlsx',
+		...               na_values=['string1', 'string2'])
+		      Name  Value
+		0      NaN      1
+		1      NaN      2
+		2  string3      3
+		
+		Comment lines in the excel input file can be skipped using the `comment` kwarg
+		
+		>>> df = pd.DataFrame({'a': ['1', '#2'], 'b': ['2', '3']})
+		>>> df.to_excel('tmp.xlsx', index=False)
+		>>> pd.read_excel('tmp.xlsx')
+		    a  b
+		0   1  2
+		1  #2  3
+		
+		>>> pd.read_excel('tmp.xlsx', comment='#')
+		   a  b
+		0  1  2
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?dtype:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheet_name:Dynamic, ?header:Dynamic, ?names:Dynamic, ?index_col:Dynamic, ?usecols:Dynamic, ?squeeze:Dynamic, ?dtype:Dynamic, ?engine:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?skiprows:Dynamic, ?nrows:Dynamic, ?na_values:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?thousands:Dynamic, ?comment:Dynamic, ?skipfooter:Dynamic, ?convert_float:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

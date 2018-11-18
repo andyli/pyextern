@@ -8,7 +8,7 @@ package pandas.io.sql;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package pandas.io.sql;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -96,7 +96,7 @@ package pandas.io.sql;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -115,7 +115,7 @@ package pandas.io.sql;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -127,18 +127,20 @@ package pandas.io.sql;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
 	/**
-		Return a list of SQL statement that create a table reflecting the
+		Return a list of SQL statements that creates a table reflecting the
 		structure of a DataFrame.  The first entry will be a CREATE TABLE
-		statement while the rest will be CREATE INDEX statements
+		statement while the rest will be CREATE INDEX statements.
 	**/
 	public function _create_table_setup():Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -154,7 +156,7 @@ package pandas.io.sql;
 		and it contains NA values, this infers the datatype of the not-NA
 		values.  Needed for inserting typed data containing NULLs, GH8778.
 	**/
-	public function _get_notnull_col_dtype(col:Dynamic):Dynamic;
+	public function _get_notna_col_dtype(col:Dynamic):Dynamic;
 	/**
 		Make the DataFrame's column types align with the SQL table
 		column types.
@@ -164,12 +166,12 @@ package pandas.io.sql;
 		all Nones with false. Therefore only convert bool if there are no
 		NA values.
 		Datetimes should already be converted to np.datetime64 if supported,
-		but here we also force conversion if required
+		but here we also force conversion if required.
 	**/
 	public function _harmonize_columns(?parse_dates:Dynamic):Dynamic;
 	public function _index_name(index:Dynamic, index_label:Dynamic):Dynamic;
 	/**
-		Return generator through chunked result set
+		Return generator through chunked result set.
 	**/
 	public function _query_iterator(result:Dynamic, chunksize:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?parse_dates:Dynamic):Dynamic;
 	/**

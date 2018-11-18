@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.monitored_session;
 @:pythonImport("tensorflow.python.training.monitored_session", "Scaffold") extern class Scaffold {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -98,7 +98,7 @@ package tensorflow.python.training.monitored_session;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -149,12 +149,25 @@ package tensorflow.python.training.monitored_session;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public function _default_local_init_op():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	/**
+		Returns an op that groups the default local init ops.
+		
+		This op is used during session initialization when a Scaffold is
+		initialized without specifying the local_init_op arg. It includes
+		`tf.local_variables_initializer`, `tf.tables_initializer`, and also
+		initializes local session resources.
+		
+		Returns:
+		  The default Scaffold local init op.
+	**/
+	static public function default_local_init_op():Dynamic;
 	/**
 		Creates operations if needed and finalizes the graph.
 	**/

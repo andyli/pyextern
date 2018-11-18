@@ -5,7 +5,7 @@ package matplotlib.cbook;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -74,7 +74,7 @@ package matplotlib.cbook;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -138,7 +138,7 @@ package matplotlib.cbook;
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return str(self).
+		Return repr(self).
 	**/
 	public function __str__():Dynamic;
 	/**
@@ -149,7 +149,7 @@ package matplotlib.cbook;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

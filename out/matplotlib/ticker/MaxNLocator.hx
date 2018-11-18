@@ -6,7 +6,7 @@ package matplotlib.ticker;
 		Return the locations of the ticks
 	**/
 	public function __call__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,11 @@ package matplotlib.ticker;
 		
 		*steps*
 		    Sequence of nice numbers starting with 1 and ending with 10;
-		    e.g., [1, 2, 4, 5, 10]
+		    e.g., [1, 2, 4, 5, 10], where the values are acceptable
+		    tick multiples.  i.e. for the example, 20, 40, 60 would be
+		    an acceptable set of ticks, as would 0.4, 0.6, 0.8, because
+		    they are multiples of 2.  However, 30, 60, 90 would not
+		    be allowed because 3 does not appear in the list of steps.
 		
 		*integer*
 		    If True, ticks will take only integer values, provided
@@ -65,14 +69,13 @@ package matplotlib.ticker;
 		
 		*prune*
 		    ['lower' | 'upper' | 'both' | None]
-		    Remove edge ticks -- useful for stacked or ganged plots
-		    where the upper tick of one axes overlaps with the lower
-		    tick of the axes above it, primarily when
-		    `rcParams['axes.autolimit_mode']` is `'round_numbers'`.
-		    If `prune=='lower'`, the smallest tick will
-		    be removed.  If `prune=='upper'`, the largest tick will be
-		    removed.  If `prune=='both'`, the largest and smallest ticks
-		    will be removed.  If `prune==None`, no ticks will be removed.
+		    Remove edge ticks -- useful for stacked or ganged plots where
+		    the upper tick of one axes overlaps with the lower tick of the
+		    axes above it, primarily when :rc:`axes.autolimit_mode` is
+		    ``'round_numbers'``.  If ``prune=='lower'``, the smallest tick will
+		    be removed.  If ``prune == 'upper'``, the largest tick will be
+		    removed.  If ``prune == 'both'``, the largest and smallest ticks
+		    will be removed.  If ``prune == None``, no ticks will be removed.
 		
 		*min_n_ticks*
 		    Relax `nbins` and `integer` constraints if necessary to
@@ -90,7 +93,11 @@ package matplotlib.ticker;
 		
 		*steps*
 		    Sequence of nice numbers starting with 1 and ending with 10;
-		    e.g., [1, 2, 4, 5, 10]
+		    e.g., [1, 2, 4, 5, 10], where the values are acceptable
+		    tick multiples.  i.e. for the example, 20, 40, 60 would be
+		    an acceptable set of ticks, as would 0.4, 0.6, 0.8, because
+		    they are multiples of 2.  However, 30, 60, 90 would not
+		    be allowed because 3 does not appear in the list of steps.
 		
 		*integer*
 		    If True, ticks will take only integer values, provided
@@ -103,14 +110,13 @@ package matplotlib.ticker;
 		
 		*prune*
 		    ['lower' | 'upper' | 'both' | None]
-		    Remove edge ticks -- useful for stacked or ganged plots
-		    where the upper tick of one axes overlaps with the lower
-		    tick of the axes above it, primarily when
-		    `rcParams['axes.autolimit_mode']` is `'round_numbers'`.
-		    If `prune=='lower'`, the smallest tick will
-		    be removed.  If `prune=='upper'`, the largest tick will be
-		    removed.  If `prune=='both'`, the largest and smallest ticks
-		    will be removed.  If `prune==None`, no ticks will be removed.
+		    Remove edge ticks -- useful for stacked or ganged plots where
+		    the upper tick of one axes overlaps with the lower tick of the
+		    axes above it, primarily when :rc:`axes.autolimit_mode` is
+		    ``'round_numbers'``.  If ``prune=='lower'``, the smallest tick will
+		    be removed.  If ``prune == 'upper'``, the largest tick will be
+		    removed.  If ``prune == 'both'``, the largest and smallest ticks
+		    will be removed.  If ``prune == None``, no ticks will be removed.
 		
 		*min_n_ticks*
 		    Relax `nbins` and `integer` constraints if necessary to
@@ -123,7 +129,7 @@ package matplotlib.ticker;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -174,11 +180,17 @@ package matplotlib.ticker;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Generate a list of tick locations including the range *vmin* to
+		*vmax*.  In some applications, one or both of the end locations
+		will not be needed, in which case they are trimmed off
+		elsewhere.
+	**/
 	public function _raw_ticks(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	static public function _staircase(steps:Dynamic):Dynamic;
 	static public function _validate_steps(steps:Dynamic):Dynamic;
@@ -187,13 +199,6 @@ package matplotlib.ticker;
 	**/
 	public function autoscale():Dynamic;
 	static public var axis : Dynamic;
-	/**
-		.. deprecated:: 2.0
-		    The bin_boundaries function was deprecated in version 2.0.
-		
-		\ 
-	**/
-	public function bin_boundaries(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var default_params : Dynamic;
 	/**
@@ -225,9 +230,9 @@ package matplotlib.ticker;
 		    automatically for the associated :attr:`axis` simply call
 		    the Locator instance::
 		
-		        >>> print((type(loc)))
+		        >>> print(type(loc))
 		        <type 'Locator'>
-		        >>> print((loc()))
+		        >>> print(loc())
 		        [1, 2, 3, 4]
 	**/
 	public function tick_values(vmin:Dynamic, vmax:Dynamic):Dynamic;

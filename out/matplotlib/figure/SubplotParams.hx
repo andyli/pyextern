@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.figure;
 @:pythonImport("matplotlib.figure", "SubplotParams") extern class SubplotParams {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,58 +38,58 @@ package matplotlib.figure;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		All dimensions are fraction of the figure width or height.
-		All values default to their rc params
+		All dimensions are fractions of the figure width or height.
+		Defaults are given by :rc:`figure.subplot.[name]`.
 		
-		The following attributes are available
+		Parameters
+		----------
+		left : float
+		    The left side of the subplots of the figure.
 		
-		left  : 0.125
-		    The left side of the subplots of the figure
+		right : float
+		    The right side of the subplots of the figure.
 		
-		right : 0.9
-		    The right side of the subplots of the figure
+		bottom : float
+		    The bottom of the subplots of the figure.
 		
-		bottom : 0.1
-		    The bottom of the subplots of the figure
+		top : float
+		    The top of the subplots of the figure.
 		
-		top : 0.9
-		    The top of the subplots of the figure
+		wspace : float
+		    The amount of width reserved for space between subplots,
+		    expressed as a fraction of the average axis width.
 		
-		wspace : 0.2
-		    The amount of width reserved for blank space between subplots,
-		    expressed as a fraction of the average axis width
-		
-		hspace : 0.2
-		    The amount of height reserved for white space between subplots,
-		    expressed as a fraction of the average axis height
+		hspace : float
+		    The amount of height reserved for space between subplots,
+		    expressed as a fraction of the average axis height.
 	**/
 	@:native("__init__")
 	public function ___init__(?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic):Dynamic;
 	/**
-		All dimensions are fraction of the figure width or height.
-		All values default to their rc params
+		All dimensions are fractions of the figure width or height.
+		Defaults are given by :rc:`figure.subplot.[name]`.
 		
-		The following attributes are available
+		Parameters
+		----------
+		left : float
+		    The left side of the subplots of the figure.
 		
-		left  : 0.125
-		    The left side of the subplots of the figure
+		right : float
+		    The right side of the subplots of the figure.
 		
-		right : 0.9
-		    The right side of the subplots of the figure
+		bottom : float
+		    The bottom of the subplots of the figure.
 		
-		bottom : 0.1
-		    The bottom of the subplots of the figure
+		top : float
+		    The top of the subplots of the figure.
 		
-		top : 0.9
-		    The top of the subplots of the figure
+		wspace : float
+		    The amount of width reserved for space between subplots,
+		    expressed as a fraction of the average axis width.
 		
-		wspace : 0.2
-		    The amount of width reserved for blank space between subplots,
-		    expressed as a fraction of the average axis width
-		
-		hspace : 0.2
-		    The amount of height reserved for white space between subplots,
-		    expressed as a fraction of the average axis height
+		hspace : float
+		    The amount of height reserved for space between subplots,
+		    expressed as a fraction of the average axis height.
 	**/
 	public function new(?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic):Void;
 	/**
@@ -98,7 +98,7 @@ package matplotlib.figure;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -149,15 +149,14 @@ package matplotlib.figure;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _update_this(s:Dynamic, val:Dynamic):Dynamic;
 	/**
-		Update the current values.  If any kwarg is None, default to
-		the current value, if set, otherwise to rc
+		Update the dimensions of the passed parameters. *None* means unchanged.
 	**/
 	public function update(?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic):Dynamic;
 }

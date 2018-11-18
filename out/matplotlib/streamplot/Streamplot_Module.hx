@@ -45,17 +45,14 @@ package matplotlib.streamplot;
 		solvers in most setups on my machine. I would recommend removing the
 		other two to keep things simple.
 	**/
-	static public function _integrate_rk12(x0:Dynamic, y0:Dynamic, dmap:Dynamic, f:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	static public function get_integrator(u:Dynamic, v:Dynamic, dmap:Dynamic, minlength:Dynamic):Dynamic;
+	static public function _integrate_rk12(x0:Dynamic, y0:Dynamic, dmap:Dynamic, f:Dynamic, maxlength:Dynamic):Dynamic;
+	static public function get_integrator(u:Dynamic, v:Dynamic, dmap:Dynamic, minlength:Dynamic, maxlength:Dynamic, integration_direction:Dynamic):Dynamic;
 	/**
 		Fast 2D, linear interpolation on an integer grid
 	**/
 	static public function interpgrid(a:Dynamic, xi:Dynamic, yi:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
-		Draws streamlines of a vector flow.
+		Draw streamlines of a vector flow.
 		
 		*x*, *y* : 1d arrays
 		    an *evenly spaced* grid.
@@ -90,6 +87,10 @@ package matplotlib.streamplot;
 		    In data coordinates, the same as the ``x`` and ``y`` arrays.
 		*zorder* : int
 		    any number
+		*maxlength* : float
+		    Maximum length of streamline in axes coordinates.
+		*integration_direction* : ['forward', 'backward', 'both']
+		    Integrate the streamline in forward, backward or both directions.
 		
 		Returns:
 		
@@ -106,6 +107,5 @@ package matplotlib.streamplot;
 		        to the colormap, alpha, etc. for both lines and arrows, but these
 		        changes should be backward compatible.
 	**/
-	static public function streamplot(axes:Dynamic, x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic, ?start_points:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
+	static public function streamplot(axes:Dynamic, x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic, ?start_points:Dynamic, ?maxlength:Dynamic, ?integration_direction:Dynamic):Dynamic;
 }

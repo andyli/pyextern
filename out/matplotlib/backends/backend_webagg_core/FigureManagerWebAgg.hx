@@ -31,9 +31,6 @@ package matplotlib.backends.backend_webagg_core;
 		     whenever a mouse button is released, you'll be notified with
 		     the event
 		
-		  :meth:`dynamic_update` (optional)
-		     dynamically update the window while navigating
-		
 		  :meth:`set_message` (optional)
 		     display message
 		
@@ -44,7 +41,7 @@ package matplotlib.backends.backend_webagg_core;
 		That's it, we'll do the rest!
 	**/
 	static public function ToolbarCls(canvas:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -95,7 +92,7 @@ package matplotlib.backends.backend_webagg_core;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -146,7 +143,7 @@ package matplotlib.backends.backend_webagg_core;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -160,7 +157,8 @@ package matplotlib.backends.backend_webagg_core;
 	static public function get_static_file_path():Dynamic;
 	/**
 		Get the title text of the window containing the figure.
-		Return None for non-GUI backends (e.g., a PS backend).
+		
+		Return None for non-GUI (e.g., PS) backends.
 	**/
 	public function get_window_title():Dynamic;
 	public function handle_json(content:Dynamic):Dynamic;
@@ -172,12 +170,13 @@ package matplotlib.backends.backend_webagg_core;
 	public function refresh_all():Dynamic;
 	public function remove_web_socket(web_socket:Dynamic):Dynamic;
 	/**
-		"For gui backends, resize the window (in pixels).
+		"For GUI backends, resize the window (in pixels).
 	**/
 	public function resize(w:Dynamic, h:Dynamic):Dynamic;
 	/**
-		Set the title text of the window containing the figure.  Note that
-		this has no effect for non-GUI backends (e.g., a PS backend).
+		Set the title text of the window containing the figure.
+		
+		This has no effect for non-GUI (e.g., PS) backends.
 	**/
 	public function set_window_title(title:Dynamic):Dynamic;
 	/**
@@ -188,7 +187,10 @@ package matplotlib.backends.backend_webagg_core;
 	**/
 	public function show():Dynamic;
 	/**
-		Display message in a popup -- GUI only
+		.. deprecated:: 2.2
+		    The show_popup function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
+		Display message in a popup -- GUI only.
 	**/
 	public function show_popup(msg:Dynamic):Dynamic;
 }

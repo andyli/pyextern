@@ -15,7 +15,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -61,9 +61,13 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		    and emits tensor `sample_ids`.
 		  next_inputs_fn: callable that takes `(time, outputs, state, sample_ids)`
 		    and emits `(finished, next_inputs, next_state)`.
+		  sample_ids_shape: Either a list of integers, or a 1-D Tensor of type
+		    `int32`, the shape of each value in the `sample_ids` batch. Defaults to
+		    a scalar.
+		  sample_ids_dtype: The dtype of the `sample_ids` tensor. Defaults to int32.
 	**/
 	@:native("__init__")
-	public function ___init__(initialize_fn:Dynamic, sample_fn:Dynamic, next_inputs_fn:Dynamic):Dynamic;
+	public function ___init__(initialize_fn:Dynamic, sample_fn:Dynamic, next_inputs_fn:Dynamic, ?sample_ids_shape:Dynamic, ?sample_ids_dtype:Dynamic):Dynamic;
 	/**
 		Initializer.
 		
@@ -74,15 +78,19 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		    and emits tensor `sample_ids`.
 		  next_inputs_fn: callable that takes `(time, outputs, state, sample_ids)`
 		    and emits `(finished, next_inputs, next_state)`.
+		  sample_ids_shape: Either a list of integers, or a 1-D Tensor of type
+		    `int32`, the shape of each value in the `sample_ids` batch. Defaults to
+		    a scalar.
+		  sample_ids_dtype: The dtype of the `sample_ids` tensor. Defaults to int32.
 	**/
-	public function new(initialize_fn:Dynamic, sample_fn:Dynamic, next_inputs_fn:Dynamic):Void;
+	public function new(initialize_fn:Dynamic, sample_fn:Dynamic, next_inputs_fn:Dynamic, ?sample_ids_shape:Dynamic, ?sample_ids_dtype:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -133,7 +141,7 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -160,4 +168,16 @@ package tensorflow.contrib.seq2seq.python.ops.helper;
 		Returns `sample_ids`.
 	**/
 	public function sample(time:Dynamic, outputs:Dynamic, state:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		DType of tensor returned by `sample`.
+		
+		Returns a DType.
+	**/
+	public var sample_ids_dtype : Dynamic;
+	/**
+		Shape of tensor returned by `sample`, excluding the batch dimension.
+		
+		Returns a `TensorShape`.
+	**/
+	public var sample_ids_shape : Dynamic;
 }

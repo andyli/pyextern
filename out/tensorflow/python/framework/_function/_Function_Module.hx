@@ -11,10 +11,6 @@ package tensorflow.python.framework._function;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Converts an op to a function def node and add it to `func`.
-	**/
-	static public function _add_op_node(op:Dynamic, func:Dynamic, input_dict:Dynamic):Dynamic;
-	/**
 		Adds a node calling a function.
 		
 		This adds a `call` op to the default graph that calls the function
@@ -46,10 +42,6 @@ package tensorflow.python.framework._function;
 	**/
 	static public function _call(sig:Dynamic, ?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Create a mapping from graph tensor names to function tensor names.
-	**/
-	static public function _create_input_dict(function_graph:Dynamic, func_arg_placeholders:Dynamic):Dynamic;
-	/**
 		Creates a _DefinedFunction initialized from a FunctionDef proto.
 		
 		Args:
@@ -76,49 +68,61 @@ package tensorflow.python.framework._function;
 		  ValueError: `lib` is invalid
 	**/
 	static public function _from_library(lib:Dynamic):Dynamic;
-	static public function _get_func_name(func:Dynamic):Dynamic;
-	static public function _get_node_def(op:Dynamic):Dynamic;
-	static public function _get_op_def(op:Dynamic):Dynamic;
 	/**
-		Returns `graph` as a `FunctionDef` protocol buffer.
+		Creates an AttrValue for a python object.
+	**/
+	static public function _get_experimental_kwarg_as_attr(attr_name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Determines whether `tensor` is guaranteed to be a constant.
 		
-		This method creates a [`FunctionDef`](
-		https://www.tensorflow.org/code/tensorflow/core/framework/function.proto)
-		protocol buffer that contains all the ops in `operations`.  The
-		operations become the body of the function.
-		
-		The arguments `inputs` and `outputs` will be listed as the inputs
-		and outputs tensors of the function.  They must be lists of
-		tensors present in the graph.  The lists can optionally be empty.
+		A tensor is guaranteed to be a constant if either it was produced by
+		a `GuaranteeConst` op or if all of its children are guaranteed to be
+		constants.
 		
 		Args:
-		  graph: Graph.
-		  operations: the operations to put in the function. Must be a subset of
-		   the operations in the graph.
-		  inputs: List of tensors. Inputs to the function.
-		  outputs: List of tensors. Outputs of the function.
-		  out_names: Optional list of string names for the outputs.
+		  tensor: The tensor for which to determine const-ness.
 		
 		Returns:
-		  A FunctionDef protocol buffer.
-		
-		Raises:
-		  ValueError: if out_names is specified and the wrong length.
+		  True if `tensor` is guaranteed to be a constant, False otherwise.
 	**/
-	static public function _graph_to_function_def(graph:Dynamic, operations:Dynamic, inputs:Dynamic, outputs:Dynamic, ?out_names:Dynamic):Dynamic;
-	static public function _is_in_placeholders(op:Dynamic, func_arg_placeholders:Dynamic):Dynamic;
-	static public function _make_argname_from_tensor_name(name:Dynamic):Dynamic;
+	static public function _is_guaranteed_const(tensor:Dynamic):Dynamic;
 	/**
 		Parses **kwargs into a node's attributes.
 	**/
 	static public function _parse_kwargs_as_attrs(func_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Convert tensor t to an argdef, with a specified name or a unique name.
-	**/
-	static public function _tensor_to_argdef(t:Dynamic, ?name:Dynamic, ?used_names:Dynamic):Dynamic;
 	static public function _type_list_to_str(types:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	/**
+		Returns a _FuncGraph generated from `func`.
+		
+		Args:
+		  func: A Python callable which constructs a TF function body. The arguments
+		    must correspond to `arg_types`. Returns a value or list/tuple of values.
+		    No returned value can be None.
+		  arg_names: A sequence of strings for the function argument names.
+		  arg_types: A sequence of the function's argument types.
+		  name: The function name. If None, the name is derived from `func`.
+		  capture_by_value: boolean. If True, captured values will be copied into the
+		    function body.
+		  device: device name or function.
+		  colocation_stack: A colocation stack (list) the _FuncGraph should use.
+		  container: A container name the _FuncGraph should start with.
+		  collections_ref: A reference to a collections dict the _FuncGraph should
+		    use internally.
+		  arg_shapes: A sequence of the function's argument shapes.
+		
+		Returns:
+		  A _FuncGraph.
+		
+		Raises:
+		  ValueError: if func returns None.
+	**/
+	static public function func_graph_from_py_func(func:Dynamic, arg_names:Dynamic, arg_types:Dynamic, ?name:Dynamic, ?capture_by_value:Dynamic, ?device:Dynamic, ?colocation_stack:Dynamic, ?container:Dynamic, ?collections_ref:Dynamic, ?arg_shapes:Dynamic):Dynamic;
+	/**
+		Converts a SWIG-wrapped TF_Function* to a FunctionDef proto.
+	**/
+	static public function function_def_from_tf_function(c_func:Dynamic):Dynamic;
 	/**
 		Returns the corresponding function arguments for the captured inputs.
 		

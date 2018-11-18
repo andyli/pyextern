@@ -9,7 +9,7 @@ package matplotlib.colors;
 		*autoscale_None(value)*.
 	**/
 	public function __call__(value:Dynamic, ?clip:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -88,7 +88,7 @@ package matplotlib.colors;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -139,7 +139,7 @@ package matplotlib.colors;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -149,7 +149,7 @@ package matplotlib.colors;
 	**/
 	public function autoscale(A:Dynamic):Dynamic;
 	/**
-		autoscale only None-valued vmin or vmax
+		autoscale only None-valued vmin or vmax.
 	**/
 	public function autoscale_None(A:Dynamic):Dynamic;
 	public function inverse(value:Dynamic):Dynamic;
@@ -161,7 +161,7 @@ package matplotlib.colors;
 		Returns *result*, *is_scalar*, where *result* is a
 		masked array matching *value*.  Float dtypes are preserved;
 		integer types with two bytes or smaller are converted to
-		np.float32, and larger types are converted to np.float.
+		np.float32, and larger types are converted to np.float64.
 		Preserving float32 when possible, and using in-place operations,
 		can greatly improve speed for large arrays.
 		

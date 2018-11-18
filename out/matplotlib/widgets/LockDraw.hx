@@ -2,10 +2,10 @@
 package matplotlib.widgets;
 @:pythonImport("matplotlib.widgets", "LockDraw") extern class LockDraw {
 	/**
-		reserve the lock for *o*
+		Reserve the lock for *o*.
 	**/
 	public function __call__(o:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package matplotlib.widgets;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,25 +107,25 @@ package matplotlib.widgets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		drawing is available to *o*
+		Return whether drawing is available to *o*.
 	**/
 	public function available(o:Dynamic):Dynamic;
 	/**
-		Return True if *o* owns this lock
+		Return whether *o* owns this lock.
 	**/
 	public function isowner(o:Dynamic):Dynamic;
 	/**
-		Return True if the lock is currently held by an owner
+		Return whether the lock is currently held by an owner.
 	**/
 	public function locked():Dynamic;
 	/**
-		release the lock
+		Release the lock from *o*.
 	**/
 	public function release(o:Dynamic):Dynamic;
 }

@@ -34,6 +34,32 @@ package scipy.sparse.lil;
 	**/
 	static public function _prepare_index_for_memoryview(i:Dynamic, j:Dynamic, ?x:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		bisect_left(a, x[, lo[, hi]]) -> index
+		
+		Return the index where to insert item x in list a, assuming a is sorted.
+		
+		The return value i is such that all e in a[:i] have e < x, and all e in
+		a[i:] have e >= x.  So if x already appears in the list, i points just
+		before the leftmost x already there.
+		
+		Optional args lo (default 0) and hi (default len(a)) bound the
+		slice of a to be searched.
+	**/
+	static public function bisect_left(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Unpack keyword arguments for reshape function.
+		
+		This is useful because keyword arguments after star arguments are not
+		allowed in Python 2, but star keyword arguments are. This function unpacks
+		'order' and 'copy' from the star keyword arguments (with defaults) and
+		throws an error for any remaining.
+	**/
+	static public function check_reshape_kwargs(kwargs:Dynamic):Dynamic;
+	/**
+		Imitate numpy.matrix handling of shape arguments
+	**/
+	static public function check_shape(args:Dynamic, ?current_shape:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Based on input (integer) arrays `a`, determine a suitable index data
@@ -74,10 +100,61 @@ package scipy.sparse.lil;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	/**
 		Is x a valid 2-tuple of dimensions?
-		    
+		
+		If nonneg, also checks that the dimensions are non-negative.
 	**/
-	static public function isshape(x:Dynamic):Dynamic;
+	static public function isshape(x:Dynamic, ?nonneg:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
+	/**
+		Is x of lil_matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a lil matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a lil matrix, False otherwise
+		
+		Examples
+		--------
+		>>> from scipy.sparse import lil_matrix, isspmatrix_lil
+		>>> isspmatrix_lil(lil_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import lil_matrix, csr_matrix, isspmatrix_lil
+		>>> isspmatrix_lil(csr_matrix([[5]]))
+		False
+	**/
 	static public function isspmatrix_lil(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**

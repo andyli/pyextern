@@ -83,6 +83,8 @@ package tensorflow.contrib.framework.python.framework;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -91,7 +93,7 @@ package tensorflow.contrib.framework.python.framework;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	/**
 		Decorator for marking specific function argument values as deprecated.
 		
@@ -114,6 +116,9 @@ package tensorflow.contrib.framework.python.framework;
 		    Must be ISO 8601 (YYYY-MM-DD), or None
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: If `True`, warn only the first time this function is called with
+		    deprecated argument values. Otherwise, every call (with a deprecated
+		    argument value) will log a warning.
 		  **deprecated_kwargs: The deprecated argument values.
 		
 		Returns:
@@ -123,7 +128,7 @@ package tensorflow.contrib.framework.python.framework;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated_arg_values(date:Dynamic, instructions:Dynamic, ?deprecated_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecated_arg_values(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic, ?deprecated_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Decorator for marking specific function arguments as deprecated.
 		
@@ -146,10 +151,14 @@ package tensorflow.contrib.framework.python.framework;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
-		  *deprecated_arg_names_or_tuples: String. or 2-Tuple(String,
+		  *deprecated_arg_names_or_tuples: String or 2-Tuple(String,
 		    [ok_vals]).  The string is the deprecated argument name.
 		    Optionally, an ok-value may be provided.  If the user provided
 		    argument equals this value, the warning is suppressed.
+		  **kwargs: If `warn_once=False` is passed, every call with a deprecated
+		    argument will log a warning. The default behavior is to only warn the
+		    first time the function is called with any given deprecated argument.
+		    All other kwargs raise `ValueError`.
 		
 		Returns:
 		  Decorated function or method.
@@ -157,10 +166,10 @@ package tensorflow.contrib.framework.python.framework;
 		Raises:
 		  ValueError: If date is not None or in ISO 8601 format, instructions are
 		    empty, the deprecated arguments are not present in the function
-		    signature, or the second element of a deprecated_tuple is not a
-		    list.
+		    signature, the second element of a deprecated_tuple is not a
+		    list, or if a kwarg other than `warn_once` is passed.
 	**/
-	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>):Dynamic;
+	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Decorator for marking functions or methods experimental.
@@ -184,6 +193,48 @@ package tensorflow.contrib.framework.python.framework;
 		  Decorated function or method.
 	**/
 	static public function experimental(func:Dynamic):Dynamic;
+	/**
+		Fuse subgraph between input_nodes and output_nodes into a single custom op.
+		
+		Args:
+		  graph_def: A graph_pb2.GraphDef proto.
+		  input_nodes: input nodes to the subgraph to be fused.
+		  output_nodes: output nodes to the subgraph to be fused.
+		  output_dtypes: A list of output datatypes for the custom op
+		  output_quantized: A boolean flag that indicates if output is quantized
+		  op_name: fused op name.
+		  op_type: fused op type.
+		Returns:
+		  The GraphDef of the new graph.
+		
+		Raises:
+		  TypeError: If 'graph_def' is not a graph_pb2.GraphDef proto.
+	**/
+	static public function fuse_op(graph_def:Dynamic, input_nodes:Dynamic, output_nodes:Dynamic, output_dtypes:Dynamic, output_quantized:Dynamic, op_name:Dynamic, op_type:Dynamic):Dynamic;
+	/**
+		Get placeholders of a graph.
+		
+		For example:
+		
+		```python
+		a = tf.placeholder(dtype=tf.float32, shape=[2, 2], name='a')
+		a = tf.placeholder(dtype=tf.int32, shape=[3, 2], name='b')
+		
+		tf.contrib.framework.get_placeholders(tf.get_default_graph())
+		# Returns:
+		#  [<tf.Tensor 'a:0' shape=(2, 2) dtype=float32>,
+		#   <tf.Tensor 'b:0' shape=(3, 2) dtype=int32>]
+		```
+		
+		Args:
+		  graph: A tf.Graph.
+		Returns:
+		  A list contains all placeholders of given graph.
+		
+		Raises:
+		  TypeError: If `graph` is not a tensorflow graph.
+	**/
+	static public function get_placeholders(graph:Dynamic):Dynamic;
 	/**
 		Using assignment map initializes current variables with loaded tensors.
 		
@@ -219,7 +270,7 @@ package tensorflow.contrib.framework.python.framework;
 		  var3 = tf.get_variable(name="my1", shape=[100, 100],
 		                         partitioner=lambda shape, dtype: [5, 1])
 		  ...
-		  # Specify which variables to intialize from checkpoint.
+		  # Specify which variables to initialize from checkpoint.
 		  init_from_checkpoint(checkpoint_dir, {
 		    'some_var': 'test/my_var',
 		    'some_scope/': 'test2/'})
@@ -255,11 +306,13 @@ package tensorflow.contrib.framework.python.framework;
 	/**
 		Check whether `x` is of tensor type.
 		
-		Check whether an object is a tensor. Equivalent to
-		`isinstance(x, [tf.Tensor, tf.SparseTensor, tf.Variable])`.
+		Check whether an object is a tensor. This check is equivalent to calling
+		`isinstance(x, (tf.Tensor, tf.SparseTensor, tf.Variable))` and also checks
+		if all the component variables of a MirroredVariable or a TowerLocalVariable
+		are tensors.
 		
 		Args:
-		  x: An python object to check.
+		  x: A python object to check.
 		
 		Returns:
 		  `True` if `x` is a tensor, `False` if not.
@@ -318,7 +371,11 @@ package tensorflow.contrib.framework.python.framework;
 	**/
 	static public function reduce_sum_n(tensors:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Squeeze last dim if ranks of `predictions` and `labels` differ by 1.
+		Squeeze last dim if ranks of `predictions` and `labels` differ by 1. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to remove_squeezable_dimensions from tf.confusion_matrix. Note that the order of the inputs and outputs of labels and predictions have also been switched.
 		
 		This will use static shape if available. Otherwise, it will add graph
 		operations, which could result in a performance hit.
@@ -339,7 +396,7 @@ package tensorflow.contrib.framework.python.framework;
 		  expected_tensor: Tensor with expected shape.
 		  tensor: Tensor of actual values.
 		Returns:
-		  Tuple of (actual_tensor, label_tensor), possibly with assert ops added.
+		  The original tensor argument, possibly with assert ops added.
 	**/
 	static public function with_same_shape(expected_tensor:Dynamic, tensor:Dynamic):Dynamic;
 	/**

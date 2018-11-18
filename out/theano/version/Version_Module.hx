@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.version;
 @:pythonImport("theano.version") extern class Version_Module {
+	static public var FALLBACK_VERSION : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

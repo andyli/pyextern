@@ -11,5 +11,6 @@ package tensorflow.python.estimator.export.export_output;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	static public function estimator_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 }

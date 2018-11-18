@@ -67,7 +67,7 @@ package scipy.optimize.tnc;
 		minfev : float
 		    Minimum function value estimate.  Defaults to 0.
 		ftol : float
-		    Precision goal for the value of f in the stoping criterion.
+		    Precision goal for the value of f in the stopping criterion.
 		    If ftol < 0.0, ftol is set to 0.0 defaults to -1.
 		xtol : float
 		    Precision goal for the value of x in the stopping
@@ -194,7 +194,15 @@ package scipy.optimize.tnc;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -344,7 +352,7 @@ package scipy.optimize.tnc;
 		fmin : float, optional
 		    Minimum function value estimate.  Defaults to 0.
 		ftol : float, optional
-		    Precision goal for the value of f in the stoping criterion.
+		    Precision goal for the value of f in the stopping criterion.
 		    If ftol < 0.0, ftol is set to 0.0 defaults to -1.
 		xtol : float, optional
 		    Precision goal for the value of x in the stopping
@@ -387,7 +395,7 @@ package scipy.optimize.tnc;
 		1. It wraps a C implementation of the algorithm
 		2. It allows each variable to be given an upper and lower bound.
 		
-		The algorithm incoporates the bound constraints by determining
+		The algorithm incorporates the bound constraints by determining
 		the descent direction as in an unconstrained truncated Newton,
 		but never taking a step-size large enough to leave the space
 		of feasible x's. The algorithm keeps track of a set of
@@ -432,14 +440,15 @@ package scipy.optimize.tnc;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -449,17 +458,16 @@ package scipy.optimize.tnc;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

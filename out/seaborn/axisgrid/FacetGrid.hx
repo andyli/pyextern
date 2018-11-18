@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.axisgrid;
 @:pythonImport("seaborn.axisgrid", "FacetGrid") extern class FacetGrid {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -40,20 +40,23 @@ package seaborn.axisgrid;
 	/**
 		Initialize the matplotlib figure and FacetGrid object.
 		
-		The :class:`FacetGrid` is an object that links a Pandas DataFrame to
-		a matplotlib figure with a particular structure.
+		This class maps a dataset onto multiple axes arrayed in a grid of rows
+		and columns that correspond to *levels* of variables in the dataset.
+		The plots it produces are often called "lattice", "trellis", or
+		"small-multiple" graphics.
 		
-		In particular, :class:`FacetGrid` is used to draw plots with multiple
-		Axes where each Axes shows the same relationship conditioned on
-		different levels of some variable. It's possible to condition on up to
-		three variables by assigning variables to the rows and columns of the
-		grid and using different colors for the plot elements.
+		It can also represent levels of a third varaible with the ``hue``
+		parameter, which plots different subets of data in different colors.
+		This uses color to resolve elements on a third dimension, but only
+		draws subsets on top of each other and will not tailor the ``hue``
+		parameter for the specific visualization the way that axes-level
+		functions that accept ``hue`` will.
 		
-		The general approach to plotting here is called "small multiples",
-		where the same kind of plot is repeated multiple times, and the
-		specific use of small multiples to display the same relationship
-		conditioned on one ore more other variables is often called a "trellis
-		plot".
+		When using seaborn functions that infer semantic mappings from a
+		dataset, care must be taken to synchronize those mappings across
+		facets. In most cases, it will be better to use a figure-level function
+		(e.g. :func:`relplot` or :func:`catplot`) than to use
+		:class:`FacetGrid` directly.
 		
 		The basic workflow is to initialize the :class:`FacetGrid` object with
 		the dataset and the variables that are used to structure the grid. Then
@@ -62,6 +65,8 @@ package seaborn.axisgrid;
 		plot can be tweaked with other methods to do things like change the
 		axis labels, use different ticks, or add a legend. See the detailed
 		code examples below for more information.
+		
+		See the :ref:`tutorial <grid_tutorial>` for more information.
 		
 		Parameters
 		----------
@@ -75,15 +80,15 @@ package seaborn.axisgrid;
 		col_wrap : int, optional
 		    "Wrap" the column variable at this width, so that the column facets
 		    span multiple rows. Incompatible with a ``row`` facet.    
-		share{x,y} : bool, optional
+		share{x,y} : bool, 'col', or 'row' optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
-		size : scalar, optional
+		height : scalar, optional
 		    Height (in inches) of each facet. See also: ``aspect``.    
 		aspect : scalar, optional
-		    Aspect ratio of each facet, so that ``aspect * size`` gives the width
+		    Aspect ratio of each facet, so that ``aspect * height`` gives the width
 		    of each facet in inches.    
-		palette : seaborn color palette or dict, optional
+		palette : palette name, list, or dict, optional
 		    Colors to use for the different levels of the ``hue`` variable. Should
 		    be something that can be interpreted by :func:`color_palette`, or a
 		    dictionary mapping hue levels to matplotlib colors.    
@@ -118,8 +123,9 @@ package seaborn.axisgrid;
 		See Also
 		--------
 		PairGrid : Subplot grid for plotting pairwise relationships.
+		relplot : Combine a relational plot and a :class:`FacetGrid`.
+		catplot : Combine a categorical plot and a :class:`FacetGrid`.
 		lmplot : Combine a regression plot and a :class:`FacetGrid`.
-		factorplot : Combine a categorical plot and a :class:`FacetGrid`.
 		
 		Examples
 		--------
@@ -173,13 +179,13 @@ package seaborn.axisgrid;
 		    >>> g = (g.map(plt.scatter, "total_bill", "tip", edgecolor="w")
 		    ...       .add_legend())
 		
-		Change the size and aspect ratio of each facet:
+		Change the height and aspect ratio of each facet:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="day", size=4, aspect=.5)
-		    >>> g = g.map(sns.boxplot, "time", "total_bill")
+		    >>> g = sns.FacetGrid(tips, col="day", height=4, aspect=.5)
+		    >>> g = g.map(plt.hist, "total_bill", bins=bins)
 		
 		Specify the order for plot elements:
 		
@@ -227,10 +233,9 @@ package seaborn.axisgrid;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> attend = sns.load_dataset("attention")
-		    >>> g = sns.FacetGrid(attend, col="subject", col_wrap=5,
-		    ...                   size=1.5, ylim=(0, 10))
-		    >>> g = g.map(sns.pointplot, "solutions", "score", scale=.7)
+		    >>> att = sns.load_dataset("attention")
+		    >>> g = sns.FacetGrid(att, col="subject", col_wrap=5, height=1.5)
+		    >>> g = g.map(plt.plot, "solutions", "score", marker=".")
 		
 		Define a custom bivariate function to map onto the grid:
 		
@@ -263,7 +268,7 @@ package seaborn.axisgrid;
 		    ...     ax = plt.gca()
 		    ...     data = kwargs.pop("data")
 		    ...     data.plot(x=x, y=y, ax=ax, grid=False, **kwargs)
-		    >>> g = sns.FacetGrid(df, col="walk", col_wrap=2, size=3.5)
+		    >>> g = sns.FacetGrid(df, col="walk", col_wrap=2, height=3.5)
 		    >>> g = g.map_dataframe(dateplot, "date", "val")
 		
 		Use different axes labels after plotting:
@@ -307,24 +312,27 @@ package seaborn.axisgrid;
 		    ...       .fig.subplots_adjust(wspace=.05, hspace=.05))
 	**/
 	@:native("__init__")
-	public function ___init__(data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?hue:Dynamic, ?col_wrap:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?palette:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?hue_order:Dynamic, ?hue_kws:Dynamic, ?dropna:Dynamic, ?legend_out:Dynamic, ?despine:Dynamic, ?margin_titles:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?subplot_kws:Dynamic, ?gridspec_kws:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?hue:Dynamic, ?col_wrap:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?height:Dynamic, ?aspect:Dynamic, ?palette:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?hue_order:Dynamic, ?hue_kws:Dynamic, ?dropna:Dynamic, ?legend_out:Dynamic, ?despine:Dynamic, ?margin_titles:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?subplot_kws:Dynamic, ?gridspec_kws:Dynamic, ?size:Dynamic):Dynamic;
 	/**
 		Initialize the matplotlib figure and FacetGrid object.
 		
-		The :class:`FacetGrid` is an object that links a Pandas DataFrame to
-		a matplotlib figure with a particular structure.
+		This class maps a dataset onto multiple axes arrayed in a grid of rows
+		and columns that correspond to *levels* of variables in the dataset.
+		The plots it produces are often called "lattice", "trellis", or
+		"small-multiple" graphics.
 		
-		In particular, :class:`FacetGrid` is used to draw plots with multiple
-		Axes where each Axes shows the same relationship conditioned on
-		different levels of some variable. It's possible to condition on up to
-		three variables by assigning variables to the rows and columns of the
-		grid and using different colors for the plot elements.
+		It can also represent levels of a third varaible with the ``hue``
+		parameter, which plots different subets of data in different colors.
+		This uses color to resolve elements on a third dimension, but only
+		draws subsets on top of each other and will not tailor the ``hue``
+		parameter for the specific visualization the way that axes-level
+		functions that accept ``hue`` will.
 		
-		The general approach to plotting here is called "small multiples",
-		where the same kind of plot is repeated multiple times, and the
-		specific use of small multiples to display the same relationship
-		conditioned on one ore more other variables is often called a "trellis
-		plot".
+		When using seaborn functions that infer semantic mappings from a
+		dataset, care must be taken to synchronize those mappings across
+		facets. In most cases, it will be better to use a figure-level function
+		(e.g. :func:`relplot` or :func:`catplot`) than to use
+		:class:`FacetGrid` directly.
 		
 		The basic workflow is to initialize the :class:`FacetGrid` object with
 		the dataset and the variables that are used to structure the grid. Then
@@ -333,6 +341,8 @@ package seaborn.axisgrid;
 		plot can be tweaked with other methods to do things like change the
 		axis labels, use different ticks, or add a legend. See the detailed
 		code examples below for more information.
+		
+		See the :ref:`tutorial <grid_tutorial>` for more information.
 		
 		Parameters
 		----------
@@ -346,15 +356,15 @@ package seaborn.axisgrid;
 		col_wrap : int, optional
 		    "Wrap" the column variable at this width, so that the column facets
 		    span multiple rows. Incompatible with a ``row`` facet.    
-		share{x,y} : bool, optional
+		share{x,y} : bool, 'col', or 'row' optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
-		size : scalar, optional
+		height : scalar, optional
 		    Height (in inches) of each facet. See also: ``aspect``.    
 		aspect : scalar, optional
-		    Aspect ratio of each facet, so that ``aspect * size`` gives the width
+		    Aspect ratio of each facet, so that ``aspect * height`` gives the width
 		    of each facet in inches.    
-		palette : seaborn color palette or dict, optional
+		palette : palette name, list, or dict, optional
 		    Colors to use for the different levels of the ``hue`` variable. Should
 		    be something that can be interpreted by :func:`color_palette`, or a
 		    dictionary mapping hue levels to matplotlib colors.    
@@ -389,8 +399,9 @@ package seaborn.axisgrid;
 		See Also
 		--------
 		PairGrid : Subplot grid for plotting pairwise relationships.
+		relplot : Combine a relational plot and a :class:`FacetGrid`.
+		catplot : Combine a categorical plot and a :class:`FacetGrid`.
 		lmplot : Combine a regression plot and a :class:`FacetGrid`.
-		factorplot : Combine a categorical plot and a :class:`FacetGrid`.
 		
 		Examples
 		--------
@@ -444,13 +455,13 @@ package seaborn.axisgrid;
 		    >>> g = (g.map(plt.scatter, "total_bill", "tip", edgecolor="w")
 		    ...       .add_legend())
 		
-		Change the size and aspect ratio of each facet:
+		Change the height and aspect ratio of each facet:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips, col="day", size=4, aspect=.5)
-		    >>> g = g.map(sns.boxplot, "time", "total_bill")
+		    >>> g = sns.FacetGrid(tips, col="day", height=4, aspect=.5)
+		    >>> g = g.map(plt.hist, "total_bill", bins=bins)
 		
 		Specify the order for plot elements:
 		
@@ -498,10 +509,9 @@ package seaborn.axisgrid;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> attend = sns.load_dataset("attention")
-		    >>> g = sns.FacetGrid(attend, col="subject", col_wrap=5,
-		    ...                   size=1.5, ylim=(0, 10))
-		    >>> g = g.map(sns.pointplot, "solutions", "score", scale=.7)
+		    >>> att = sns.load_dataset("attention")
+		    >>> g = sns.FacetGrid(att, col="subject", col_wrap=5, height=1.5)
+		    >>> g = g.map(plt.plot, "solutions", "score", marker=".")
 		
 		Define a custom bivariate function to map onto the grid:
 		
@@ -534,7 +544,7 @@ package seaborn.axisgrid;
 		    ...     ax = plt.gca()
 		    ...     data = kwargs.pop("data")
 		    ...     data.plot(x=x, y=y, ax=ax, grid=False, **kwargs)
-		    >>> g = sns.FacetGrid(df, col="walk", col_wrap=2, size=3.5)
+		    >>> g = sns.FacetGrid(df, col="walk", col_wrap=2, height=3.5)
 		    >>> g = g.map_dataframe(dateplot, "date", "val")
 		
 		Use different axes labels after plotting:
@@ -577,14 +587,14 @@ package seaborn.axisgrid;
 		    ...            xticks=[10, 30, 50], yticks=[2, 6, 10])
 		    ...       .fig.subplots_adjust(wspace=.05, hspace=.05))
 	**/
-	public function new(data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?hue:Dynamic, ?col_wrap:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?palette:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?hue_order:Dynamic, ?hue_kws:Dynamic, ?dropna:Dynamic, ?legend_out:Dynamic, ?despine:Dynamic, ?margin_titles:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?subplot_kws:Dynamic, ?gridspec_kws:Dynamic):Void;
+	public function new(data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?hue:Dynamic, ?col_wrap:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?height:Dynamic, ?aspect:Dynamic, ?palette:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?hue_order:Dynamic, ?hue_kws:Dynamic, ?dropna:Dynamic, ?legend_out:Dynamic, ?despine:Dynamic, ?margin_titles:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?subplot_kws:Dynamic, ?gridspec_kws:Dynamic, ?size:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -635,7 +645,7 @@ package seaborn.axisgrid;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -692,7 +702,7 @@ package seaborn.axisgrid;
 		    Title for the legend. The default reads from ``self._hue_var``.
 		label_order : list of labels, optional
 		    The order that the legend entries should appear in. The default
-		    reads from ``self.hue_names`` or sorts the keys in ``legend_data``.
+		    reads from ``self.hue_names``.
 		kwargs : key, value pairings
 		    Other keyword arguments are passed to the underlying legend methods
 		    on the Figure or Axes object.
@@ -752,7 +762,7 @@ package seaborn.axisgrid;
 	**/
 	public function map(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Like `map` but passes args as strings and inserts data in kwargs.
+		Like ``.map`` but passes args as strings and inserts data in kwargs.
 		
 		This method is suitable for plotting with functions that accept a
 		long-form DataFrame as a `data` keyword argument and access the

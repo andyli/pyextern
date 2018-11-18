@@ -15,31 +15,21 @@ package tensorflow.python.saved_model.loader_impl;
 		Args:
 		  export_dir: Directory where the SavedModel is located.
 		  meta_graph_def_to_load: The meta graph def from the SavedModel to be loaded.
+		  import_scope: Optional `string` -- if specified, prepend this followed by
+		      '/' to all returned asset tensor names.
 		
 		Returns:
 		  A dictionary of asset tensors, keyed by the name of the asset tensor. The
 		  value in the map corresponds to the absolute path of the asset file.
 	**/
-	static public function _get_asset_tensors(export_dir:Dynamic, meta_graph_def_to_load:Dynamic):Dynamic;
-	/**
-		Gets the legacy init op tensor, if one exists.
-		
-		Args:
-		  meta_graph_def_to_load: The meta graph def from the SavedModel to be loaded.
-		
-		Returns:
-		  The legacy init op tensor, if it exists and `None` otherwise.
-		
-		Raises:
-		  RuntimeError: If the collection def corresponding to the legacy init op key
-		      has other than exactly one tensor.
-	**/
-	static public function _get_legacy_init_op_tensor(meta_graph_def_to_load:Dynamic):Dynamic;
+	static public function _get_asset_tensors(export_dir:Dynamic, meta_graph_def_to_load:Dynamic, ?import_scope:Dynamic):Dynamic;
 	/**
 		Gets the main op tensor, if one exists.
 		
 		Args:
 		  meta_graph_def_to_load: The meta graph def from the SavedModel to be loaded.
+		  init_op_key: name of collection to check; should be one of MAIN_OP_KEY
+		    or the deprecated LEGACY_INIT_OP_KEY
 		
 		Returns:
 		  The main op tensor, if it exists and `None` otherwise.
@@ -48,7 +38,7 @@ package tensorflow.python.saved_model.loader_impl;
 		  RuntimeError: If the collection def corresponding to the main op key has
 		      other than exactly one tensor.
 	**/
-	static public function _get_main_op_tensor(meta_graph_def_to_load:Dynamic):Dynamic;
+	static public function _get_main_op_tensor(meta_graph_def_to_load:Dynamic, ?init_op_key:Dynamic):Dynamic;
 	/**
 		Reads the savedmodel.pb or savedmodel.pbtxt file containing `SavedModel`.
 		
@@ -74,6 +64,10 @@ package tensorflow.python.saved_model.loader_impl;
 		      SavedModel `save()` API.
 		  export_dir: Directory in which the SavedModel protocol buffer and variables
 		      to be loaded are located.
+		  import_scope: Optional `string` -- if specified, prepend this string
+		      followed by '/' to all loaded tensor names. This scope is applied to
+		      tensor instances loaded into the passed session, but it is *not* written
+		      through to the static `MetaGraphDef` protocol buffer that is returned.
 		  **saver_kwargs: Optional keyword arguments passed through to Saver.
 		
 		Returns:
@@ -83,7 +77,7 @@ package tensorflow.python.saved_model.loader_impl;
 		Raises:
 		  RuntimeError: MetaGraphDef associated with the tags cannot be found.
 	**/
-	static public function load(sess:Dynamic, tags:Dynamic, export_dir:Dynamic, ?saver_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function load(sess:Dynamic, tags:Dynamic, export_dir:Dynamic, ?import_scope:Dynamic, ?saver_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Checks whether the provided export directory could contain a SavedModel.
 		
@@ -101,4 +95,5 @@ package tensorflow.python.saved_model.loader_impl;
 	**/
 	static public function maybe_saved_model_directory(export_dir:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

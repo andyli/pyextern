@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.widgets;
 @:pythonImport("matplotlib.widgets", "CheckButtons") extern class CheckButtons {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -40,33 +40,43 @@ package matplotlib.widgets;
 	/**
 		Add check buttons to :class:`matplotlib.axes.Axes` instance *ax*
 		
-		*labels*
-		    A len(buttons) list of labels as strings
+		Parameters
+		----------
+		ax : `~matplotlib.axes.Axes`
+		    The parent axes for the widget.
 		
-		*actives*
-		    A len(buttons) list of booleans indicating whether
-		     the button is active
+		labels : List[str]
+		    The labels of the check buttons.
+		
+		actives : List[bool], optional
+		    The initial check states of the buttons. The list must have the
+		    same length as *labels*. If not given, all buttons are unchecked.
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, labels:Dynamic, actives:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, labels:Dynamic, ?actives:Dynamic):Dynamic;
 	/**
 		Add check buttons to :class:`matplotlib.axes.Axes` instance *ax*
 		
-		*labels*
-		    A len(buttons) list of labels as strings
+		Parameters
+		----------
+		ax : `~matplotlib.axes.Axes`
+		    The parent axes for the widget.
 		
-		*actives*
-		    A len(buttons) list of booleans indicating whether
-		     the button is active
+		labels : List[str]
+		    The labels of the check buttons.
+		
+		actives : List[bool], optional
+		    The initial check states of the buttons. The list must have the
+		    same length as *labels*. If not given, all buttons are unchecked.
 	**/
-	public function new(ax:Dynamic, labels:Dynamic, actives:Dynamic):Void;
+	public function new(ax:Dynamic, labels:Dynamic, ?actives:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -117,7 +127,7 @@ package matplotlib.widgets;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -150,6 +160,10 @@ package matplotlib.widgets;
 		        
 	**/
 	public function get_active():Dynamic;
+	/**
+		returns a tuple of the status (True/False) of all of the check buttons
+	**/
+	public function get_status():Dynamic;
 	/**
 		Return True if event should be ignored.
 		

@@ -15,4 +15,5 @@ package scipy.special._precompute.expn_asy;
 	static public function generate_A(K:Dynamic):Dynamic;
 	static public function main():Dynamic;
 	static public var print_function : Dynamic;
+	static public function sup(func:Dynamic):Dynamic;
 }

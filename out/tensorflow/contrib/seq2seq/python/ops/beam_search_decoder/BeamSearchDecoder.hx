@@ -15,7 +15,7 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize BeamSearchDecoder.
+		Initialize the BeamSearchDecoder.
 		
 		Args:
 		  cell: An `RNNCell` instance.
@@ -66,6 +66,14 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		    `tf.layers.Dense`.  Optional layer to apply to the RNN output prior
 		    to storing the result or sampling.
 		  length_penalty_weight: Float weight to penalize length. Disabled with 0.0.
+		  coverage_penalty_weight: Float weight to penalize the coverage of source
+		    sentence. Disabled with 0.0.
+		  reorder_tensor_arrays: If `True`, `TensorArray`s' elements within the cell
+		    state will be reordered according to the beam search path. If the
+		    `TensorArray` can be reordered, the stacked form will be returned.
+		    Otherwise, the `TensorArray` will be returned as is. Set this flag to
+		    `False` if the cell state contains `TensorArray`s that are not amenable
+		    to reordering.
 		
 		Raises:
 		  TypeError: if `cell` is not an instance of `RNNCell`,
@@ -74,9 +82,9 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		    `end_token` is not a scalar.
 	**/
 	@:native("__init__")
-	public function ___init__(cell:Dynamic, embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, initial_state:Dynamic, beam_width:Dynamic, ?output_layer:Dynamic, ?length_penalty_weight:Dynamic):Dynamic;
+	public function ___init__(cell:Dynamic, embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, initial_state:Dynamic, beam_width:Dynamic, ?output_layer:Dynamic, ?length_penalty_weight:Dynamic, ?coverage_penalty_weight:Dynamic, ?reorder_tensor_arrays:Dynamic):Dynamic;
 	/**
-		Initialize BeamSearchDecoder.
+		Initialize the BeamSearchDecoder.
 		
 		Args:
 		  cell: An `RNNCell` instance.
@@ -90,6 +98,14 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		    `tf.layers.Dense`.  Optional layer to apply to the RNN output prior
 		    to storing the result or sampling.
 		  length_penalty_weight: Float weight to penalize length. Disabled with 0.0.
+		  coverage_penalty_weight: Float weight to penalize the coverage of source
+		    sentence. Disabled with 0.0.
+		  reorder_tensor_arrays: If `True`, `TensorArray`s' elements within the cell
+		    state will be reordered according to the beam search path. If the
+		    `TensorArray` can be reordered, the stacked form will be returned.
+		    Otherwise, the `TensorArray` will be returned as is. Set this flag to
+		    `False` if the cell state contains `TensorArray`s that are not amenable
+		    to reordering.
 		
 		Raises:
 		  TypeError: if `cell` is not an instance of `RNNCell`,
@@ -97,14 +113,14 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		  ValueError: If `start_tokens` is not a vector or
 		    `end_token` is not a scalar.
 	**/
-	public function new(cell:Dynamic, embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, initial_state:Dynamic, beam_width:Dynamic, ?output_layer:Dynamic, ?length_penalty_weight:Dynamic):Void;
+	public function new(cell:Dynamic, embedding:Dynamic, start_tokens:Dynamic, end_token:Dynamic, initial_state:Dynamic, beam_width:Dynamic, ?output_layer:Dynamic, ?length_penalty_weight:Dynamic, ?coverage_penalty_weight:Dynamic, ?reorder_tensor_arrays:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -155,7 +171,7 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -167,38 +183,51 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 	/**
 		Splits the tensor from a batch by beams into a batch of beams.
 		
-		More exactly, t is a tensor of dimension [batch_size*beam_width, s]. We
-		reshape this into [batch_size, beam_width, s]
+		More exactly, `t` is a tensor of dimension `[batch_size * beam_width] + s`,
+		then we reshape it to `[batch_size, beam_width] + s`.
 		
 		Args:
-		  t: Tensor of dimension [batch_size*beam_width, s]
-		  s: Tensor, Python int, or TensorShape.
+		  t: `Tensor` of dimension `[batch_size * beam_width] + s`.
+		  s: `Tensor`, Python int, or `TensorShape`.
 		
 		Returns:
-		  A reshaped version of t with dimension [batch_size, beam_width, s].
+		  A reshaped version of t with shape `[batch_size, beam_width] + s`.
 		
 		Raises:
-		  TypeError: If t is an instance of TensorArray.
-		  ValueError:  If the rank of t is not statically known.
+		  ValueError:  If the rank of `t` is not statically known.
 	**/
 	public function _maybe_merge_batch_beams(t:Dynamic, s:Dynamic):Dynamic;
+	/**
+		Maybe sorts beams within a `TensorArray`.
+		
+		Args:
+		  t: A `TensorArray` of size `max_time` that contains `Tensor`s of shape
+		    `[batch_size, beam_width, s]` or `[batch_size * beam_width, s]` where
+		    `s` is the depth shape.
+		  parent_ids: The parent ids of shape `[max_time, batch_size, beam_width]`.
+		  sequence_length: The sequence length of shape `[batch_size, beam_width]`.
+		
+		Returns:
+		  A `TensorArray` where beams are sorted in each `Tensor` or `t` itself if
+		  it is not a `TensorArray` or does not meet shape requirements.
+	**/
+	public function _maybe_sort_array_beams(t:Dynamic, parent_ids:Dynamic, sequence_length:Dynamic):Dynamic;
 	/**
 		Maybe splits the tensor from a batch by beams into a batch of beams.
 		
 		We do this so that we can use nest and not run into problems with shapes.
 		
 		Args:
-		  t: Tensor of dimension [batch_size*beam_width, s]
-		  s: Tensor, Python int, or TensorShape.
+		  t: `Tensor`, either scalar or shaped `[batch_size * beam_width] + s`.
+		  s: `Tensor`, Python int, or `TensorShape`.
 		
 		Returns:
-		  Either a reshaped version of t with dimension
-		  [batch_size, beam_width, s] if t's first dimension is of size
-		  batch_size*beam_width or t if not.
+		  If `t` is a matrix or higher order tensor, then the return value is
+		  `t` reshaped to `[batch_size, beam_width] + s`.  Otherwise `t` is
+		  returned unchanged.
 		
 		Raises:
-		  TypeError: If t is an instance of TensorArray.
-		  ValueError: If the rank of t is not statically known.
+		  ValueError: If the rank of `t` is not statically known.
 	**/
 	public function _maybe_split_batch_beams(t:Dynamic, s:Dynamic):Dynamic;
 	/**
@@ -246,13 +275,15 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		  outputs: An instance of BeamSearchDecoderOutput.
 		  final_state: An instance of BeamSearchDecoderState. Passed through to the
 		    output.
-		  sequence_lengths: An `int32` tensor shaped `[batch_size, beam_width]`.
+		  sequence_lengths: An `int64` tensor shaped `[batch_size, beam_width]`.
 		    The sequence lengths determined for each beam during decode.
+		    **NOTE** These are ignored; the updated sequence lengths are stored in
+		    `final_state.lengths`.
 		
 		Returns:
-		  outputs: An instance of FinalBeamSearchDecoderOutput where the
+		  outputs: An instance of `FinalBeamSearchDecoderOutput` where the
 		    predicted_ids are the result of calling _gather_tree.
-		  final_state: The same input instance of BeamSearchDecoderState.
+		  final_state: The same input instance of `BeamSearchDecoderState`.
 	**/
 	public function finalize(outputs:Dynamic, final_state:Dynamic, sequence_lengths:Dynamic):Dynamic;
 	/**
@@ -286,4 +317,16 @@ package tensorflow.contrib.seq2seq.python.ops.beam_search_decoder;
 		  `(outputs, next_state, next_inputs, finished)`.
 	**/
 	public function step(time:Dynamic, inputs:Dynamic, state:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		The BeamSearchDecoder shuffles its beams and their finished state.
+		
+		For this reason, it conflicts with the `dynamic_decode` function's
+		tracking of finished states.  Setting this property to true avoids
+		early stopping of decoding due to mismanagement of the finished state
+		in `dynamic_decode`.
+		
+		Returns:
+		  `True`.
+	**/
+	public var tracks_own_finished : Dynamic;
 }

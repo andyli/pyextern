@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.dates;
 @:pythonImport("matplotlib.dates", "rrulewrapper") extern class Rrulewrapper {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,18 +42,18 @@ package matplotlib.dates;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(freq:Dynamic, ?tzinfo:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(freq:Dynamic, ?tzinfo:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -105,10 +105,16 @@ package matplotlib.dates;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _attach_tzinfo(dt:Dynamic, tzinfo:Dynamic):Dynamic;
+	/**
+		Decorator function that allows rrule methods to handle tzinfo.
+	**/
+	public function _aware_return_wrapper(f:Dynamic, ?returns_list:Dynamic):Dynamic;
+	public function _update_rrule(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

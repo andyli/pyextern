@@ -4,6 +4,10 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	/**
 		Builds a logistic regression Estimator for binary classification.
 		
+		THIS CLASS IS DEPRECATED. See
+		[contrib/learn/README.md](https://www.tensorflow.org/code/tensorflow/contrib/learn/README.md)
+		for general migration instructions.
+		
 		This method provides a basic Estimator with some additional metrics for custom
 		binary classification models, including AUC, precision/recall and accuracy.
 		
@@ -40,7 +44,7 @@ package tensorflow.contrib.learn.python.learn.estimators;
 		                    into the model.
 		
 		Returns:
-		  A `tf.contrib.learn.Estimator` instance.
+		  An `Estimator` instance.
 	**/
 	static public function LogisticRegressor(model_fn:Dynamic, ?thresholds:Dynamic, ?model_dir:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -54,7 +58,11 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Creates a `Head` for binary classification with SVMs.
+		Creates a `Head` for binary classification with SVMs. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.contrib.estimator.*_head.
 		
 		The head uses binary hinge loss.
 		
@@ -78,7 +86,11 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	static public function binary_svm_head(?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic, ?thresholds:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Creates `FeatureColumn` objects for inputs defined by input `x`.
+		Creates `FeatureColumn` objects for inputs defined by input `x`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please specify feature columns explicitly.
 		
 		This interprets all inputs as dense, fixed-length float values.
 		
@@ -91,7 +103,11 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	**/
 	static public function infer_real_valued_columns_from_input(x:Dynamic):Dynamic;
 	/**
-		Creates `FeatureColumn` objects for inputs defined by `input_fn`.
+		Creates `FeatureColumn` objects for inputs defined by `input_fn`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please specify feature columns explicitly.
 		
 		This interprets all inputs as dense, fixed-length float values. This creates
 		a local graph in which it calls `input_fn` to build the tensors, then discards
@@ -107,7 +123,30 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	**/
 	static public function infer_real_valued_columns_from_input_fn(input_fn:Dynamic):Dynamic;
 	/**
-		Creates a `Head` for multi class single label classification.
+		Creates a Head that contains only loss terms. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.contrib.estimator.*_head.
+		
+		Loss only head holds additional loss terms to be added to other heads and
+		usually represents additional regularization terms in the objective function.
+		
+		Args:
+		  loss_fn: a function that takes no argument and returns a list of
+		      scalar tensors.
+		  head_name: a name for the head.
+		
+		Returns:
+		  An instance of `Head` to hold the additional losses.
+	**/
+	static public function loss_only_head(loss_fn:Dynamic, ?head_name:Dynamic):Dynamic;
+	/**
+		Creates a `Head` for multi class single label classification. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.contrib.estimator.*_head.
 		
 		The Head uses softmax cross entropy loss.
 		
@@ -149,7 +188,11 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	**/
 	static public function multi_class_head(n_classes:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic, ?thresholds:Dynamic, ?metric_class_ids:Dynamic, ?loss_fn:Dynamic, ?label_keys:Dynamic):Dynamic;
 	/**
-		Creates a MultiHead stemming from same logits/hidden layer.
+		Creates a MultiHead stemming from same logits/hidden layer. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.contrib.estimator.*_head.
 		
 		Args:
 		  heads: list of Head objects.
@@ -164,7 +207,11 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	**/
 	static public function multi_head(heads:Dynamic, ?loss_weights:Dynamic):Dynamic;
 	/**
-		Creates a Head for multi label classification.
+		Creates a Head for multi label classification. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.contrib.estimator.*_head.
 		
 		Multi-label classification handles the case where each example may have zero
 		or more associated labels, from a discrete set.  This is distinct from
@@ -201,9 +248,20 @@ package tensorflow.contrib.learn.python.learn.estimators;
 		  ValueError: If loss_fn does not have expected signature.
 	**/
 	static public function multi_label_head(n_classes:Dynamic, ?label_name:Dynamic, ?weight_column_name:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic, ?thresholds:Dynamic, ?metric_class_ids:Dynamic, ?loss_fn:Dynamic):Dynamic;
+	/**
+		DEPRECATED FUNCTION
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use 'lambda _: tf.no_op()'.
+	**/
 	static public function no_op_train_fn(loss:Dynamic):Dynamic;
 	/**
-		Creates a `Head` for poisson regression.
+		Creates a `Head` for poisson regression. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.contrib.estimator.*_head.
 		
 		Args:
 		  label_name: String, name of the key in label dict. Can be null if label
@@ -227,7 +285,11 @@ package tensorflow.contrib.learn.python.learn.estimators;
 	static public function poisson_regression_head(?label_name:Dynamic, ?weight_column_name:Dynamic, ?label_dimension:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Creates a `Head` for linear regression.
+		Creates a `Head` for linear regression. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Please switch to tf.contrib.estimator.*_head.
 		
 		Args:
 		  label_name: String, name of the key in label dict. Can be null if label
@@ -244,9 +306,11 @@ package tensorflow.contrib.learn.python.learn.estimators;
 		  head_name: name of the head. If provided, predictions, summary and metrics
 		    keys will be suffixed by `"/" + head_name` and the default variable scope
 		    will be `head_name`.
+		  link_fn: link function to convert logits to predictions. If provided,
+		    this link function will be used instead of identity.
 		
 		Returns:
 		  An instance of `Head` for linear regression.
 	**/
-	static public function regression_head(?label_name:Dynamic, ?weight_column_name:Dynamic, ?label_dimension:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic):Dynamic;
+	static public function regression_head(?label_name:Dynamic, ?weight_column_name:Dynamic, ?label_dimension:Dynamic, ?enable_centered_bias:Dynamic, ?head_name:Dynamic, ?link_fn:Dynamic):Dynamic;
 }

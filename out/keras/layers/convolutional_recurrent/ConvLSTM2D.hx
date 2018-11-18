@@ -26,8 +26,8 @@ package keras.layers.convolutional_recurrent;
 		    ValueError: in case the layer is missing shape information
 		        for its `build` call.
 	**/
-	public function __call__(inputs:Dynamic, ?initial_state:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __call__(inputs:Dynamic, ?initial_state:Dynamic, ?constants:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -78,7 +78,7 @@ package keras.layers.convolutional_recurrent;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -129,7 +129,7 @@ package keras.layers.convolutional_recurrent;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -141,7 +141,8 @@ package keras.layers.convolutional_recurrent;
 		    input_tensors: list of input tensors.
 		    output_tensors: list of output tensors.
 		    input_masks: list of input masks (a mask can be a tensor, or None).
-		    output_masks: list of output masks (a mask can be a tensor, or None).
+		    output_masks: list of output masks
+		        (a mask can be a tensor, or None).
 		    input_shapes: list of input shape tuples.
 		    output_shapes: list of output shape tuples.
 		    arguments: dictionary of keyword arguments that were passed to the
@@ -172,7 +173,22 @@ package keras.layers.convolutional_recurrent;
 	**/
 	public function _get_node_attribute_at_index(node_index:Dynamic, attr:Dynamic, attr_name:Dynamic):Dynamic;
 	/**
-		Add losses to the layer.
+		Converts a layer and its index to a unique (immutable type) name.
+		
+		This function is used internally with `self._network_nodes`.
+		
+		# Arguments
+		    layer: The layer.
+		    node_index: The layer's position (e.g. via enumerate) in a list of
+		        nodes.
+		
+		# Returns
+		    The unique name.
+	**/
+	static public function _node_key(layer:Dynamic, node_index:Dynamic):Dynamic;
+	public var activation : Dynamic;
+	/**
+		Adds losses to the layer.
 		
 		The loss may potentially be conditional on some inputs tensors,
 		for instance activity losses are conditional on the layer's inputs.
@@ -188,7 +204,7 @@ package keras.layers.convolutional_recurrent;
 	**/
 	public function add_loss(losses:Dynamic, ?inputs:Dynamic):Dynamic;
 	/**
-		Add updates to the layer.
+		Adds updates to the layer.
 		
 		The updates may potentially be conditional on some inputs tensors,
 		for instance batch norm updates are conditional on the layer's inputs.
@@ -234,6 +250,9 @@ package keras.layers.convolutional_recurrent;
 		        the provided inputs and the expectations of the layer.
 	**/
 	public function assert_input_compatibility(inputs:Dynamic):Dynamic;
+	public var bias_constraint : Dynamic;
+	public var bias_initializer : Dynamic;
+	public var bias_regularizer : Dynamic;
 	/**
 		Creates the layer weights.
 		
@@ -285,9 +304,8 @@ package keras.layers.convolutional_recurrent;
 		    An input shape tuple.
 	**/
 	public function compute_output_shape(input_shape:Dynamic):Dynamic;
-	public var constraints : Dynamic;
 	/**
-		Count the total number of scalars composing the weights.
+		Counts the total number of scalars composing the weights.
 		
 		# Returns
 		    An integer count.
@@ -297,13 +315,17 @@ package keras.layers.convolutional_recurrent;
 		        (in which case its weights aren't yet defined).
 	**/
 	public function count_params():Dynamic;
+	public var data_format : Dynamic;
+	public var dilation_rate : Dynamic;
+	public var dropout : Dynamic;
+	public var filters : Dynamic;
 	/**
 		Creates a layer from its config.
 		
 		This method is the reverse of `get_config`,
 		capable of instantiating the same layer from the config
 		dictionary. It does not handle layer connectivity
-		(handled by Container), nor weights (handled by `set_weights`).
+		(handled by Network), nor weights (handled by `set_weights`).
 		
 		# Arguments
 		    config: A Python dictionary, typically the
@@ -323,13 +345,12 @@ package keras.layers.convolutional_recurrent;
 		
 		The config of a layer does not include connectivity
 		information, nor the layer class name. These are handled
-		by `Container` (one layer of abstraction above).
+		by `Network` (one layer of abstraction above).
 		
 		# Returns
 		    Python dictionary.
 	**/
 	public function get_config():Dynamic;
-	public function get_constants(inputs:Dynamic, ?training:Dynamic):Dynamic;
 	public function get_initial_state(inputs:Dynamic):Dynamic;
 	/**
 		Retrieves the input tensor(s) of a layer at a given node.
@@ -372,7 +393,7 @@ package keras.layers.convolutional_recurrent;
 		    (or list of shape tuples if the layer has multiple inputs).
 	**/
 	public function get_input_shape_at(node_index:Dynamic):Dynamic;
-	public function get_losses_for(inputs:Dynamic):Dynamic;
+	public function get_losses_for(?inputs:Dynamic):Dynamic;
 	/**
 		Retrieves the output tensor(s) of a layer at a given node.
 		
@@ -436,7 +457,6 @@ package keras.layers.convolutional_recurrent;
 		    more than one incoming layers.
 	**/
 	public var input : Dynamic;
-	public function input_conv(x:Dynamic, w:Dynamic, ?b:Dynamic, ?padding:Dynamic):Dynamic;
 	/**
 		Retrieves the input mask tensor(s) of a layer.
 		
@@ -467,6 +487,10 @@ package keras.layers.convolutional_recurrent;
 		    more than one incoming layers.
 	**/
 	public var input_shape : Dynamic;
+	public var kernel_constraint : Dynamic;
+	public var kernel_initializer : Dynamic;
+	public var kernel_regularizer : Dynamic;
+	public var kernel_size : Dynamic;
 	public var losses : Dynamic;
 	public var non_trainable_weights : Dynamic;
 	/**
@@ -513,9 +537,13 @@ package keras.layers.convolutional_recurrent;
 		    more than one incoming layers.
 	**/
 	public var output_shape : Dynamic;
-	public function preprocess_input(inputs:Dynamic, ?training:Dynamic):Dynamic;
-	public function reccurent_conv(x:Dynamic, w:Dynamic):Dynamic;
-	public function reset_states():Dynamic;
+	public var padding : Dynamic;
+	public var recurrent_activation : Dynamic;
+	public var recurrent_constraint : Dynamic;
+	public var recurrent_dropout : Dynamic;
+	public var recurrent_initializer : Dynamic;
+	public var recurrent_regularizer : Dynamic;
+	public function reset_states(?states:Dynamic):Dynamic;
 	/**
 		Sets the weights of the layer, from Numpy arrays.
 		
@@ -531,8 +559,11 @@ package keras.layers.convolutional_recurrent;
 		        layer's specifications.
 	**/
 	public function set_weights(weights:Dynamic):Dynamic;
-	public function step(inputs:Dynamic, states:Dynamic):Dynamic;
+	public var states : Dynamic;
+	public var strides : Dynamic;
 	public var trainable_weights : Dynamic;
+	public var unit_forget_bias : Dynamic;
 	public var updates : Dynamic;
+	public var use_bias : Dynamic;
 	public var weights : Dynamic;
 }

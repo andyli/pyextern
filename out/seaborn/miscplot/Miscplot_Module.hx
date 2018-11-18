@@ -12,6 +12,10 @@ package seaborn.miscplot;
 	static public var __spec__ : Dynamic;
 	static public var division : Dynamic;
 	/**
+		Who's a good boy?
+	**/
+	static public function dogplot():Dynamic;
+	/**
 		Plot the values in a color palette as a horizontal array.
 		
 		Parameters

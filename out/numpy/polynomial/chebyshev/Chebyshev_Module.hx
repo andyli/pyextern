@@ -259,7 +259,7 @@ package numpy.polynomial.chebyshev;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function chebcompanion(c:Dynamic):numpy.Ndarray;
 	/**
@@ -390,7 +390,7 @@ package numpy.polynomial.chebyshev;
 		    points sharing the same x-coordinates can be fitted at once by
 		    passing in a 2D-array that contains one dataset per column.
 		deg : int or 1-D array_like
-		    Degree(s) of the fitting polynomials. If `deg` is a single integer
+		    Degree(s) of the fitting polynomials. If `deg` is a single integer,
 		    all terms up to and including the `deg`'th term are included in the
 		    fit. For NumPy versions >= 1.11.0 a list of integers specifying the
 		    degrees of the terms to include may be used instead.
@@ -613,7 +613,7 @@ package numpy.polynomial.chebyshev;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function chebgrid2d(x:Dynamic, y:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -665,7 +665,7 @@ package numpy.polynomial.chebyshev;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function chebgrid3d(x:Dynamic, y:Dynamic, z:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -715,8 +715,8 @@ package numpy.polynomial.chebyshev;
 		Raises
 		------
 		ValueError
-		    If ``m < 1``, ``len(k) > m``, ``np.isscalar(lbnd) == False``, or
-		    ``np.isscalar(scl) == False``.
+		    If ``m < 1``, ``len(k) > m``, ``np.ndim(lbnd) != 0``, or
+		    ``np.ndim(scl) != 0``.
 		
 		See Also
 		--------
@@ -727,7 +727,7 @@ package numpy.polynomial.chebyshev;
 		Note that the result of each integration is *multiplied* by `scl`.
 		Why is this important to note?  Say one is making a linear change of
 		variable :math:`u = ax + b` in an integral relative to `x`.  Then
-		.. math::`dx = du/a`, so one will need to set `scl` equal to
+		:math:`dx = du/a`, so one will need to set `scl` equal to
 		:math:`1/a`- perhaps not what one would have first thought.
 		
 		Also note that, in general, the result of integrating a C-series needs
@@ -752,6 +752,54 @@ package numpy.polynomial.chebyshev;
 		array([-1.,  1., -1., -1.])
 	**/
 	static public function chebint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	/**
+		Interpolate a function at the Chebyshev points of the first kind.
+		
+		Returns the Chebyshev series that interpolates `func` at the Chebyshev
+		points of the first kind in the interval [-1, 1]. The interpolating
+		series tends to a minmax approximation to `func` with increasing `deg`
+		if the function is continuous in the interval.
+		
+		.. versionadded:: 1.14.0
+		
+		Parameters
+		----------
+		func : function
+		    The function to be approximated. It must be a function of a single
+		    variable of the form ``f(x, a, b, c...)``, where ``a, b, c...`` are
+		    extra arguments passed in the `args` parameter.
+		deg : int
+		    Degree of the interpolating polynomial
+		args : tuple, optional
+		    Extra arguments to be used in the function call. Default is no extra
+		    arguments.
+		
+		Returns
+		-------
+		coef : ndarray, shape (deg + 1,)
+		    Chebyshev coefficients of the interpolating series ordered from low to
+		    high.
+		
+		Examples
+		--------
+		>>> import numpy.polynomial.chebyshev as C
+		>>> C.chebfromfunction(lambda x: np.tanh(x) + 0.5, 8)
+		array([  5.00000000e-01,   8.11675684e-01,  -9.86864911e-17,
+		        -5.42457905e-02,  -2.71387850e-16,   4.51658839e-03,
+		         2.46716228e-17,  -3.79694221e-04,  -3.26899002e-16])
+		
+		Notes
+		-----
+		
+		The Chebyshev polynomials used in the interpolation are orthogonal when
+		sampled at the Chebyshev points of the first kind. If it is desired to
+		constrain some of the coefficients they can simply be set to the desired
+		value after the interpolation, no new interpolation or fit is needed. This
+		is especially useful if it is known apriori that some of coefficients are
+		zero. For instance, if the function is even then the coefficients of the
+		terms of odd degree in the result can be set to zero.
+	**/
+	static public function chebinterpolate(func:Dynamic, deg:Dynamic, ?args:Dynamic):Dynamic;
 	/**
 		Chebyshev series whose graph is a straight line.
 		
@@ -1039,13 +1087,13 @@ package numpy.polynomial.chebyshev;
 		
 		Examples
 		--------
-		>>> from numpy import polynomial as P
-		>>> P.trimcoef((0,0,3,0,5,0,0))
+		>>> from numpy.polynomial import polyutils as pu
+		>>> pu.trimcoef((0,0,3,0,5,0,0))
 		array([ 0.,  0.,  3.,  0.,  5.])
-		>>> P.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
+		>>> pu.trimcoef((0,0,1e-3,0,1e-5,0,0),1e-3) # item == tol is trimmed
 		array([ 0.])
 		>>> i = complex(0,1) # works for complex
-		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
+		>>> pu.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
 	static public function chebtrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
@@ -1152,7 +1200,7 @@ package numpy.polynomial.chebyshev;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function chebval2d(x:Dynamic, y:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -1199,7 +1247,7 @@ package numpy.polynomial.chebyshev;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function chebval3d(x:Dynamic, y:Dynamic, z:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -1284,7 +1332,7 @@ package numpy.polynomial.chebyshev;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function chebvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
@@ -1335,7 +1383,7 @@ package numpy.polynomial.chebyshev;
 		Notes
 		-----
 		
-		.. versionadded::1.7.0
+		.. versionadded:: 1.7.0
 	**/
 	static public function chebvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
@@ -1447,10 +1495,10 @@ package numpy.polynomial.chebyshev;
 		>>> from numpy import polynomial as P
 		>>> p = P.Polynomial(range(4))
 		>>> p
-		Polynomial([ 0.,  1.,  2.,  3.], [-1.,  1.])
+		Polynomial([ 0.,  1.,  2.,  3.], domain=[-1,  1], window=[-1,  1])
 		>>> c = p.convert(kind=P.Chebyshev)
 		>>> c
-		Chebyshev([ 1.  ,  3.25,  1.  ,  0.75], [-1.,  1.])
+		Chebyshev([ 1.  ,  3.25,  1.  ,  0.75], domain=[-1,  1], window=[-1,  1])
 		>>> P.poly2cheb(range(4))
 		array([ 1.  ,  3.25,  1.  ,  0.75])
 	**/

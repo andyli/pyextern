@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.cli.debugger_cli_common;
 @:pythonImport("tensorflow.python.debug.cli.debugger_cli_common", "TabCompletionRegistry") extern class TabCompletionRegistry {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -179,7 +179,7 @@ package tensorflow.python.debug.cli.debugger_cli_common;
 		
 		Args:
 		  context_words: A list of context words belonging to the context being
-		    registerd. It is a list of str, instead of a single string, to support
+		    registered. It is a list of str, instead of a single string, to support
 		    synonym words triggering the same tab-completion context, e.g.,
 		    both "drink" and the short-hand "dr" can trigger the same context.
 		  comp_items: A list of completion items, as a list of str.

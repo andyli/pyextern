@@ -10,33 +10,106 @@ package torch.autograd.gradcheck;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _as_tuple(x:Dynamic):Dynamic;
-	static public function contiguous(input:Dynamic):Dynamic;
+	static public function _differentiable_outputs(x:Dynamic):Dynamic;
 	static public function get_analytical_jacobian(input:Dynamic, output:Dynamic):Dynamic;
-	static public function get_numerical_jacobian(fn:Dynamic, input:Dynamic, target:Dynamic, ?eps:Dynamic):Dynamic;
+	static public function get_numerical_jacobian(fn:Dynamic, input:Dynamic, ?target:Dynamic, ?eps:Dynamic):Dynamic;
 	/**
-		Check gradients computed via small finite differences
-		   against analytical gradients
+		Check gradients computed via small finite differences against analytical
+		gradients w.r.t. tensors in :attr:`inputs` that are of floating point type
+		and with ``requires_grad=True``.
 		
-		The check between numerical and analytical has the same behaviour as
-		numpy.allclose https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
-		meaning it check that
-		    absolute(a - n) <= (atol + rtol * absolute(n))
-		is true for all elements of analytical jacobian a and numerical jacobian n.
+		The check between numerical and analytical gradients has the same behaviour as
+		`numpy.allclose <https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html>`_,
+		i.e., it checks that
+		
+		.. math::
+		
+		    \lvert a - n \rvert \leq \texttt{atol} + \texttt{rtol} \times \lvert n \rvert
+		
+		holds for all elements of analytical gradient :math:`a` and numerical
+		gradient :math:`n`.
+		
+		.. note::
+		    The default values are designed for :attr:`input` of double precision.
+		    This check will likely fail if :attr:`input` is of less precision, e.g.,
+		    ``FloatTensor``.
+		
+		.. warning::
+		   If any checked tensor in :attr:`input` has overlapping memory, i.e.,
+		   different indices pointing to the same memory address (e.g., from
+		   :func:`torch.expand`), this check will likely fail because the numerical
+		   gradients computed by point perturbation at such indices will change
+		   values at all other indices that share the same memory address.
 		
 		Args:
-		    func: Python function that takes Variable inputs and returns
-		        a tuple of Variables
-		    inputs: tuple of Variables
-		    eps: perturbation for finite differences
-		    atol: absolute tolerance
-		    rtol: relative tolerance
+		    func (function): a Python function that takes Tensor inputs and returns
+		        a Tensor or a tuple of Tensors
+		    inputs (tuple of Tensor): inputs to the function
+		    eps (float, optional): perturbation for finite differences
+		    atol (float, optional): absolute tolerance
+		    rtol (float, optional): relative tolerance
+		    raise_exception (bool, optional): indicating whether to raise an exception if
+		        the check fails. The exception gives more information about the
+		        exact nature of the failure. This is helpful when debugging gradchecks.
 		
 		Returns:
 		    True if all differences satisfy allclose condition
 	**/
-	static public function gradcheck(func:Dynamic, inputs:Dynamic, ?eps:Dynamic, ?atol:Dynamic, ?rtol:Dynamic):Dynamic;
-	static public function iter_gradients(x:Dynamic):Dynamic;
+	static public function gradcheck(func:Dynamic, inputs:Dynamic, ?eps:Dynamic, ?atol:Dynamic, ?rtol:Dynamic, ?raise_exception:Dynamic):Dynamic;
+	/**
+		Check gradients of gradients computed via small finite differences
+		against analytical gradients w.r.t. tensors in :attr:`inputs` and
+		:attr:`grad_outputs` that are of floating point type and with
+		``requires_grad=True``.
+		
+		This function checks that backpropagating through the gradients computed
+		to the given :attr:`grad_outputs` are correct.
+		
+		The check between numerical and analytical gradients has the same behaviour as
+		`numpy.allclose <https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html>`_,
+		i.e., it checks that
+		
+		.. math::
+		
+		    \lvert a - n \rvert \leq \texttt{atol} + \texttt{rtol} \times \lvert n \rvert
+		
+		holds for all elements of analytical gradient :math:`a` and numerical
+		gradient :math:`n`.
+		
+		.. note::
+		    The default values are designed for :attr:`input` and
+		    :attr:`grad_outputs` of double precision. This check will likely fail if
+		    they are of less precision, e.g., ``FloatTensor``.
+		
+		.. warning::
+		   If any checked tensor in :attr:`input` and :attr:`grad_outputs` has
+		   overlapping memory, i.e., different indices pointing to the same memory
+		   address (e.g., from :func:`torch.expand`), this check will likely fail
+		   because the numerical gradients computed by point perturbation at such
+		   indices will change values at all other indices that share the same
+		   memory address.
+		
+		Args:
+		    func (function): a Python function that takes Tensor inputs and returns
+		        a Tensor or a tuple of Tensors
+		    inputs (tuple of Tensor): inputs to the function
+		    grad_outputs (tuple of Tensor, optional): The gradients with respect to
+		        the function's outputs.
+		    eps (float, optional): perturbation for finite differences
+		    atol (float, optional): absolute tolerance
+		    rtol (float, optional): relative tolerance
+		    gen_non_contig_grad_outputs (bool, optional): if :attr:`grad_outputs` is
+		        ``None`` and :attr:`gen_non_contig_grad_outputs` is ``True``, the
+		        randomly generated gradient outputs are made to be noncontiguous
+		    raise_exception (bool, optional): indicating whether to raise an exception if
+		        the check fails. The exception gives more information about the
+		        exact nature of the failure. This is helpful when debugging gradchecks.
+		
+		Returns:
+		    True if all differences satisfy allclose condition
+	**/
+	static public function gradgradcheck(func:Dynamic, inputs:Dynamic, ?grad_outputs:Dynamic, ?eps:Dynamic, ?atol:Dynamic, ?rtol:Dynamic, ?gen_non_contig_grad_outputs:Dynamic, ?raise_exception:Dynamic):Dynamic;
 	static public function iter_tensors(x:Dynamic, ?only_requiring_grad:Dynamic):Dynamic;
 	static public function make_jacobian(input:Dynamic, num_out:Dynamic):Dynamic;
-	static public function zero_gradients(i:Dynamic):Dynamic;
+	static public function zero_gradients(x:Dynamic):Dynamic;
 }

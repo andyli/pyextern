@@ -10,32 +10,24 @@ package matplotlib.projections;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
 	/**
 		Get a projection class from its name.
 		
-		If *projection* is None, a standard rectilinear projection is
-		returned.
+		If *projection* is None, a standard rectilinear projection is returned.
 	**/
 	static public function get_projection_class(?projection:Dynamic):Dynamic;
 	/**
 		Get a list of acceptable projection names.
 	**/
 	static public function get_projection_names():Dynamic;
-	static public var print_function : Dynamic;
 	/**
-		Handle the args/kwargs to for add_axes/add_subplot/gca,
-		returning::
+		Handle the args/kwargs to add_axes/add_subplot/gca, returning::
 		
 		    (axes_proj_class, proj_class_kwargs, proj_stack_key)
 		
-		Which can be used for new axes initialization/identification.
-		
-		.. note:: **kwargs** is modified in place.
+		which can be used for new axes initialization/identification.
 	**/
-	static public function process_projection_requirements(figure:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function process_projection_requirements(figure:Dynamic, ?args:python.VarArgs<Dynamic>, ?polar:Dynamic, ?projection:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var projection_registry : Dynamic;
 	static public function register_projection(cls:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

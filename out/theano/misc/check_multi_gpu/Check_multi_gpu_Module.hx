@@ -12,7 +12,7 @@ package theano.misc.check_multi_gpu;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public function gpu_dot22(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function init_dev(dev:Dynamic, ?name:Dynamic):Dynamic;
+	static public function init_dev(dev:Dynamic, ?name:Dynamic, ?preallocate:Dynamic):Dynamic;
 	static public function main(dev1:Dynamic, dev2:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

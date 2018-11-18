@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.io.netcdf;
 @:pythonImport("scipy.io.netcdf", "netcdf_file") extern class Netcdf_file {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Closes the NetCDF file.
 	**/
@@ -58,7 +58,7 @@ package scipy.io.netcdf;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,7 +109,7 @@ package scipy.io.netcdf;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -121,10 +121,10 @@ package scipy.io.netcdf;
 	public function _pack_string(s:Dynamic):Dynamic;
 	public function _read():Dynamic;
 	public function _read_att_array():Dynamic;
+	public function _read_att_values():Dynamic;
 	public function _read_dim_array():Dynamic;
 	public function _read_gatt_array():Dynamic;
 	public function _read_numrecs():Dynamic;
-	public function _read_values():Dynamic;
 	public function _read_var():Dynamic;
 	public function _read_var_array():Dynamic;
 	public function _unpack_int():Dynamic;
@@ -133,13 +133,14 @@ package scipy.io.netcdf;
 	public function _unpack_string():Dynamic;
 	public function _write():Dynamic;
 	public function _write_att_array(attributes:Dynamic):Dynamic;
+	public function _write_att_values(values:Dynamic):Dynamic;
 	public function _write_dim_array():Dynamic;
 	public function _write_gatt_array():Dynamic;
 	public function _write_numrecs():Dynamic;
-	public function _write_values(values:Dynamic):Dynamic;
 	public function _write_var_array():Dynamic;
 	public function _write_var_data(name:Dynamic):Dynamic;
 	public function _write_var_metadata(name:Dynamic):Dynamic;
+	public function _write_var_padding(_var:Dynamic, size:Dynamic):Dynamic;
 	/**
 		Closes the NetCDF file.
 	**/

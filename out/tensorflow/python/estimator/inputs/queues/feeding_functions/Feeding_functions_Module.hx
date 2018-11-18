@@ -20,7 +20,7 @@ package tensorflow.python.estimator.inputs.queues.feeding_functions;
 		
 		Args:
 		  data: a numpy `ndarray`, `OrderedDict` of numpy arrays, or a generator
-		     yielding `dict`s of numpy arrays  or pandas `DataFrame` that will be read
+		     yielding `dict`s of numpy arrays or pandas `DataFrame` that will be read
 		     into the queue.
 		  capacity: the capacity of the queue.
 		  shuffle: whether or not to shuffle the rows of the array.
@@ -32,6 +32,7 @@ package tensorflow.python.estimator.inputs.queues.feeding_functions;
 		  name: a scope name identifying the data.
 		  enqueue_size: the number of rows to enqueue per step.
 		  num_epochs: limit enqueuing to a specified number of epochs, if provided.
+		  pad_value: default value for dynamic padding of data samples, if provided.
 		
 		Returns:
 		  A queue filled with the rows of the given (`OrderedDict` of) array or
@@ -40,8 +41,21 @@ package tensorflow.python.estimator.inputs.queues.feeding_functions;
 		Raises:
 		  TypeError: `data` is not a Pandas `DataFrame`, an `OrderedDict` of numpy
 		    arrays, a numpy `ndarray`, or a generator producing these.
+		  NotImplementedError: padding and shuffling data at the same time.
+		  NotImplementedError: padding usage with non generator data type.
 	**/
-	static public function _enqueue_data(data:Dynamic, capacity:Dynamic, ?shuffle:Dynamic, ?min_after_dequeue:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?name:Dynamic, ?enqueue_size:Dynamic, ?num_epochs:Dynamic):Dynamic;
+	static public function _enqueue_data(data:Dynamic, capacity:Dynamic, ?shuffle:Dynamic, ?min_after_dequeue:Dynamic, ?num_threads:Dynamic, ?seed:Dynamic, ?name:Dynamic, ?enqueue_size:Dynamic, ?num_epochs:Dynamic, ?pad_value:Dynamic):Dynamic;
+	/**
+		Recursively fills padded arr with elements from seq.
+		
+		If length of seq is less than arr padded length, fillvalue used.
+		Args:
+		  arr: Padded tensor of shape [batch_size, ..., max_padded_dim_len].
+		  seq: Non-padded list of data samples of shape
+		    [batch_size, ..., padded_dim(None)]
+		  fillvalue: Default fillvalue to use.
+	**/
+	static public function _fill_array(arr:Dynamic, seq:Dynamic, ?fillvalue:Dynamic):Dynamic;
 	/**
 		Returns the integer indices for next batch.
 		
@@ -67,6 +81,22 @@ package tensorflow.python.estimator.inputs.queues.feeding_functions;
 		  OutOfRangeError if `current_epoch` is not less than `total_epochs`.
 	**/
 	static public function _get_integer_indices_for_next_batch(batch_indices_start:Dynamic, batch_size:Dynamic, epoch_end:Dynamic, array_length:Dynamic, current_epoch:Dynamic, total_epochs:Dynamic):Dynamic;
+	/**
+		Returns padded batch.
+		
+		Args:
+		  batch_key_item: List of data samples of any type with shape
+		    [batch_size, ..., padded_dim(None)].
+		  fillvalue: Default fillvalue to use.
+		
+		Returns:
+		  Padded with zeros tensor of same type and shape
+		    [batch_size, ..., max_padded_dim_len].
+		
+		Raises:
+		  ValueError if data samples have different shapes (except last padded dim).
+	**/
+	static public function _pad_if_needed(batch_key_item:Dynamic, ?fillvalue:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

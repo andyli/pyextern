@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.basic_session_run_hooks;
 @:pythonImport("tensorflow.python.training.basic_session_run_hooks", "LoggingTensorHook") extern class LoggingTensorHook {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -48,6 +48,8 @@ package tensorflow.python.training.basic_session_run_hooks;
 		  every_n_secs: `int` or `float`, print the values of `tensors` once every N
 		      seconds. Exactly one of `every_n_iter` and `every_n_secs` should be
 		      provided.
+		  at_end: `bool` specifying whether to print the values of `tensors` at the
+		      end of the run.
 		  formatter: function, takes dict of `tag`->`Tensor` and returns a string.
 		      If `None` uses default printing all tensors.
 		
@@ -55,7 +57,7 @@ package tensorflow.python.training.basic_session_run_hooks;
 		  ValueError: if `every_n_iter` is non-positive.
 	**/
 	@:native("__init__")
-	public function ___init__(tensors:Dynamic, ?every_n_iter:Dynamic, ?every_n_secs:Dynamic, ?formatter:Dynamic):Dynamic;
+	public function ___init__(tensors:Dynamic, ?every_n_iter:Dynamic, ?every_n_secs:Dynamic, ?at_end:Dynamic, ?formatter:Dynamic):Dynamic;
 	/**
 		Initializes a `LoggingTensorHook`.
 		
@@ -67,20 +69,22 @@ package tensorflow.python.training.basic_session_run_hooks;
 		  every_n_secs: `int` or `float`, print the values of `tensors` once every N
 		      seconds. Exactly one of `every_n_iter` and `every_n_secs` should be
 		      provided.
+		  at_end: `bool` specifying whether to print the values of `tensors` at the
+		      end of the run.
 		  formatter: function, takes dict of `tag`->`Tensor` and returns a string.
 		      If `None` uses default printing all tensors.
 		
 		Raises:
 		  ValueError: if `every_n_iter` is non-positive.
 	**/
-	public function new(tensors:Dynamic, ?every_n_iter:Dynamic, ?every_n_secs:Dynamic, ?formatter:Dynamic):Void;
+	public function new(tensors:Dynamic, ?every_n_iter:Dynamic, ?every_n_secs:Dynamic, ?at_end:Dynamic, ?formatter:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -131,11 +135,14 @@ package tensorflow.python.training.basic_session_run_hooks;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _log_tensors(tensor_values:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Called when new TensorFlow session is created.
 		

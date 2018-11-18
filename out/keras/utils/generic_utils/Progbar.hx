@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.utils.generic_utils;
 @:pythonImport("keras.utils.generic_utils", "Progbar") extern class Progbar {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package keras.utils.generic_utils;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic):Dynamic;
+	public function ___init__(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic, ?stateful_metrics:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic):Void;
+	public function new(target:Dynamic, ?width:Dynamic, ?verbose:Dynamic, ?interval:Dynamic, ?stateful_metrics:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package keras.utils.generic_utils;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -114,9 +114,11 @@ package keras.utils.generic_utils;
 		
 		# Arguments
 		    current: Index of current step.
-		    values: List of tuples (name, value_for_last_step).
-		        The progress bar will display averages for these values.
-		    force: Whether to force visual progress update.
+		    values: List of tuples:
+		        `(name, value_for_last_step)`.
+		        If `name` is in `stateful_metrics`,
+		        `value_for_last_step` will be displayed as-is.
+		        Else, an average of the metric over time will be displayed.
 	**/
-	public function update(current:Dynamic, ?values:Dynamic, ?force:Dynamic):Dynamic;
+	public function update(current:Dynamic, ?values:Dynamic):Dynamic;
 }

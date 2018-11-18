@@ -9,5 +9,6 @@ package torch.legacy.nn.selectTable;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function clear(self:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function recursiveCopy(t1:Dynamic, t2:Dynamic):Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.msgpack._packer;
 @:pythonImport("pandas.io.msgpack._packer", "Packer") extern class Packer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -51,7 +51,7 @@ package pandas.io.msgpack._packer;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -70,7 +70,7 @@ package pandas.io.msgpack._packer;
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
 	/**
-		helper for pickle
+		Packer.__reduce_cython__(self)
 	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -85,6 +85,10 @@ package pandas.io.msgpack._packer;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Packer.__setstate_cython__(self, __pyx_state)
+	**/
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -102,7 +106,7 @@ package pandas.io.msgpack._packer;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Packer.bytes(self)
 		Return buffer content.

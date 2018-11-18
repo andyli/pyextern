@@ -1,23 +1,22 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.factorization.python.ops.wals;
 @:pythonImport("tensorflow.contrib.factorization.python.ops.wals", "WALSMatrixFactorization") extern class WALSMatrixFactorization {
+	static public var COMPLETED_SWEEPS : Dynamic;
 	static public var INPUT_COLS : Dynamic;
 	static public var INPUT_ROWS : Dynamic;
+	static public var LOSS : Dynamic;
 	static public var PROJECTION_RESULT : Dynamic;
 	static public var PROJECTION_WEIGHTS : Dynamic;
 	static public var PROJECT_ROW : Dynamic;
+	static public var RWSE : Dynamic;
 	/**
 		This class specifies the configurations for an `Estimator` run.
 		
-		This class is the implementation of ${tf.estimator.RunConfig} interface.
-		
-		If you're a Google-internal user using command line flags with
-		`learn_runner.py` (for instance, to do distributed training or to use
-		parameter servers), you probably want to use `learn_runner.EstimatorConfig`
-		instead.
+		This class is a deprecated implementation of `tf.estimator.RunConfig`
+		interface.
 	**/
-	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?log_step_count_steps:Dynamic, ?protocol:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -75,11 +74,11 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		      and the problem simplifies to ALS. Note that, in this case,
 		      col_weights must also be set to "None".
 		    - List of lists of non-negative scalars, of the form
-		      [[w_0, w_1, ...], [w_k, ... ], [...]],
+		      \\([[w_0, w_1, ...], [w_k, ... ], [...]]\\),
 		      where the number of inner lists equal to the number of row factor
 		      shards and the elements in each inner list are the weights for the
 		      rows of that shard. In this case,
-		      w_ij = unonbserved_weight + row_weights[i] * col_weights[j].
+		      \\(w_ij = unonbserved_weight + row_weights[i] * col_weights[j]\\).
 		    - A non-negative scalar: This value is used for all row weights.
 		      Note that it is allowed to have row_weights as a list and col_weights
 		      as a scalar, or vice-versa.
@@ -91,6 +90,11 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		  use_gramian_cache_for_training: Boolean, whether the Gramians will be
 		    cached on the workers before the updates start, during training.
 		    Defaults to True. Note that caching is disabled during prediction.
+		  max_sweeps: integer, optional. Specifies the number of sweeps for which
+		    to train the model, where a sweep is defined as a full update of all the
+		    row factors (resp. column factors).
+		    If `steps` or `max_steps` is also specified in model.fit(), training
+		    stops when either of the steps condition or sweeps condition is met.
 		  model_dir: The directory to save the model results and log files.
 		  config: A Configuration object. See Estimator.
 		
@@ -99,7 +103,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		    The current implementation only supports running on a single worker.
 	**/
 	@:native("__init__")
-	public function ___init__(num_rows:Dynamic, num_cols:Dynamic, embedding_dimension:Dynamic, ?unobserved_weight:Dynamic, ?regularization_coeff:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache_for_training:Dynamic, ?use_gramian_cache_for_training:Dynamic, ?model_dir:Dynamic, ?config:Dynamic):Dynamic;
+	public function ___init__(num_rows:Dynamic, num_cols:Dynamic, embedding_dimension:Dynamic, ?unobserved_weight:Dynamic, ?regularization_coeff:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache_for_training:Dynamic, ?use_gramian_cache_for_training:Dynamic, ?max_sweeps:Dynamic, ?model_dir:Dynamic, ?config:Dynamic):Dynamic;
 	/**
 		Creates a model for matrix factorization using the WALS method.
 		
@@ -122,11 +126,11 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		      and the problem simplifies to ALS. Note that, in this case,
 		      col_weights must also be set to "None".
 		    - List of lists of non-negative scalars, of the form
-		      [[w_0, w_1, ...], [w_k, ... ], [...]],
+		      \\([[w_0, w_1, ...], [w_k, ... ], [...]]\\),
 		      where the number of inner lists equal to the number of row factor
 		      shards and the elements in each inner list are the weights for the
 		      rows of that shard. In this case,
-		      w_ij = unonbserved_weight + row_weights[i] * col_weights[j].
+		      \\(w_ij = unonbserved_weight + row_weights[i] * col_weights[j]\\).
 		    - A non-negative scalar: This value is used for all row weights.
 		      Note that it is allowed to have row_weights as a list and col_weights
 		      as a scalar, or vice-versa.
@@ -138,6 +142,11 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		  use_gramian_cache_for_training: Boolean, whether the Gramians will be
 		    cached on the workers before the updates start, during training.
 		    Defaults to True. Note that caching is disabled during prediction.
+		  max_sweeps: integer, optional. Specifies the number of sweeps for which
+		    to train the model, where a sweep is defined as a full update of all the
+		    row factors (resp. column factors).
+		    If `steps` or `max_steps` is also specified in model.fit(), training
+		    stops when either of the steps condition or sweeps condition is met.
 		  model_dir: The directory to save the model results and log files.
 		  config: A Configuration object. See Estimator.
 		
@@ -145,14 +154,14 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		  ValueError: If config.num_worker_replicas is strictly greater than one.
 		    The current implementation only supports running on a single worker.
 	**/
-	public function new(num_rows:Dynamic, num_cols:Dynamic, embedding_dimension:Dynamic, ?unobserved_weight:Dynamic, ?regularization_coeff:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache_for_training:Dynamic, ?use_gramian_cache_for_training:Dynamic, ?model_dir:Dynamic, ?config:Dynamic):Void;
+	public function new(num_rows:Dynamic, num_cols:Dynamic, embedding_dimension:Dynamic, ?unobserved_weight:Dynamic, ?regularization_coeff:Dynamic, ?row_init:Dynamic, ?col_init:Dynamic, ?num_row_shards:Dynamic, ?num_col_shards:Dynamic, ?row_weights:Dynamic, ?col_weights:Dynamic, ?use_factors_weights_cache_for_training:Dynamic, ?use_gramian_cache_for_training:Dynamic, ?max_sweeps:Dynamic, ?model_dir:Dynamic, ?config:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -174,7 +183,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -217,7 +226,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -229,6 +238,8 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		  features: features dict.
 		  labels: labels dict.
 		  mode: ModeKeys
+		  metrics: Dict of metrics.
+		  config: RunConfig.
 		
 		Returns:
 		  A `ModelFnOps` object. If model_fn returns a tuple, wraps them up in a
@@ -237,7 +248,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		Raises:
 		  ValueError: if model_fn returns invalid objects.
 	**/
-	public function _call_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic):Dynamic;
+	public function _call_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic, ?metrics:Dynamic, ?config:Dynamic):Dynamic;
 	public function _check_inputs(features:Dynamic, labels:Dynamic):Dynamic;
 	public function _evaluate_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?metrics:Dynamic, ?name:Dynamic, ?checkpoint_path:Dynamic, ?hooks:Dynamic, ?log_progress:Dynamic):Dynamic;
 	/**
@@ -248,7 +259,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 	/**
 		Method that builds model graph and returns evaluation ops.
 		
-		Expected to be overriden by sub-classes that require custom support.
+		Expected to be overridden by sub-classes that require custom support.
 		This implementation uses `model_fn` passed as parameter to constructor to
 		build model.
 		
@@ -295,7 +306,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 	/**
 		Method that builds model graph and returns prediction ops.
 		
-		Expected to be overriden by sub-classes that require custom support.
+		Expected to be overridden by sub-classes that require custom support.
 		This implementation uses `model_fn` passed as parameter to constructor to
 		build model.
 		
@@ -309,7 +320,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 	/**
 		Method that builds model graph and returns trainer ops.
 		
-		Expected to be overriden by sub-classes that require custom support.
+		Expected to be overridden by sub-classes that require custom support.
 		This implementation uses `model_fn` passed as parameter to constructor to
 		build model.
 		
@@ -405,6 +416,14 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		  as_text: whether to write the SavedModel proto in text format.
 		  checkpoint_path: The checkpoint path to export.  If None (the default),
 		    the most recent checkpoint found within the model directory is chosen.
+		  graph_rewrite_specs: an iterable of `GraphRewriteSpec`.  Each element will
+		    produce a separate MetaGraphDef within the exported SavedModel, tagged
+		    and rewritten as specified.  Defaults to a single entry using the
+		    default serving tag ("serve") and no rewriting.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the NodeDefs. For a detailed guide, see
+		    [Stripping Default-Valued
+		      Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		
 		Returns:
 		  The string path to the exported directory.
@@ -412,7 +431,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		Raises:
 		  ValueError: if an unrecognized export_type is requested.
 	**/
-	public function export_savedmodel(export_dir_base:Dynamic, serving_input_fn:Dynamic, ?default_output_alternative_key:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
+	public function export_savedmodel(export_dir_base:Dynamic, serving_input_fn:Dynamic, ?default_output_alternative_key:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?graph_rewrite_specs:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
 	/**
 		See `Trainable`. (deprecated arguments)
 		
@@ -495,6 +514,14 @@ package tensorflow.contrib.factorization.python.ops.wals;
 	**/
 	public var model_dir : Dynamic;
 	/**
+		Returns the model_fn which is bound to self.params.
+		
+		Returns:
+		  The model_fn with the following signature:
+		    `def model_fn(features, labels, mode, metrics)`
+	**/
+	public var model_fn : Dynamic;
+	/**
 		Incremental fit on a batch of samples. (deprecated arguments)
 		
 		SOME ARGUMENTS ARE DEPRECATED. They will be removed after 2016-12-01.
@@ -561,6 +588,9 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		    for each example until inputs are exhausted. Note: The inputs must
 		    terminate if you want the iterable to terminate (e.g. be sure to pass
 		    num_epochs=1 if you are using something like read_batch_features).
+		  iterate_batches: If True, yield the whole batch at once instead of
+		    decomposing the batch into individual samples. Only relevant when
+		    as_iterable is True.
 		
 		Returns:
 		  A numpy array of predicted classes or regression values if the
@@ -571,7 +601,7 @@ package tensorflow.contrib.factorization.python.ops.wals;
 		Raises:
 		  ValueError: If x and input_fn are both provided or both `None`.
 	**/
-	public function predict(?x:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic):Dynamic;
+	public function predict(?x:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic, ?iterate_batches:Dynamic):Dynamic;
 	/**
 		Set the parameters of this estimator.
 		

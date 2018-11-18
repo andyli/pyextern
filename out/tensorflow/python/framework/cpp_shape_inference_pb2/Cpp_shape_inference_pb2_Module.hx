@@ -4,6 +4,8 @@ package tensorflow.python.framework.cpp_shape_inference_pb2;
 	static public var DESCRIPTOR : Dynamic;
 	static public var _CPPSHAPEINFERENCEINPUTSNEEDED : Dynamic;
 	static public var _CPPSHAPEINFERENCERESULT : Dynamic;
+	static public var _CPPSHAPEINFERENCERESULT_HANDLEDATA : Dynamic;
+	static public var _CPPSHAPEINFERENCERESULT_HANDLESHAPEANDTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

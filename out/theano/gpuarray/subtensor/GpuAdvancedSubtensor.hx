@@ -25,7 +25,7 @@ package theano.gpuarray.subtensor;
 		                          eval_points=eval_points)
 	**/
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
-	public function _HideC__hide():Dynamic;
+	static public function _HideC__hide(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: return some or all output[s] of `make_node`.
 		
@@ -101,7 +101,7 @@ package theano.gpuarray.subtensor;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -151,7 +151,7 @@ package theano.gpuarray.subtensor;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -191,27 +191,27 @@ package theano.gpuarray.subtensor;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
-	public function c_cleanup_code_struct():Dynamic;
-	public function c_code():Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
+	static public function c_cleanup_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_code(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function c_code_cache_version():Dynamic;
 	public function c_code_cache_version_apply(node:Dynamic):Dynamic;
-	public function c_code_cleanup():Dynamic;
-	public function c_compile_args():Dynamic;
-	public function c_header_dirs():Dynamic;
-	public function c_headers():Dynamic;
-	public function c_init_code():Dynamic;
-	public function c_init_code_apply():Dynamic;
-	public function c_init_code_struct():Dynamic;
-	public function c_lib_dirs():Dynamic;
-	public function c_libraries():Dynamic;
-	public function c_no_compile_args():Dynamic;
-	public function c_support_code():Dynamic;
-	public function c_support_code_apply():Dynamic;
-	public function c_support_code_struct():Dynamic;
+	static public function c_code_cleanup(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_header_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_headers(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_lib_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_libraries(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_no_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function connection_pattern(node:Dynamic):Dynamic;
 	static public var default_output : Dynamic;
 	/**
@@ -222,6 +222,7 @@ package theano.gpuarray.subtensor;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	public function grad(inputs:Dynamic, grads:Dynamic):Dynamic;
 	public function infer_shape(node:Dynamic, ishapes:Dynamic):Dynamic;
 	/**
@@ -274,36 +275,6 @@ package theano.gpuarray.subtensor;
 		fail and we try again 'py', prepare_node will be called twice.
 	**/
 	public function make_thunk(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, no_recycling:Dynamic, ?impl:Dynamic):Dynamic;
-	/**
-		Required: Calculate the function on the inputs and put the variables in
-		the output storage. Return None.
-		
-		Parameters
-		----------
-		node : Apply instance
-		    Contains the symbolic inputs and outputs.
-		inputs : list
-		    Sequence of inputs (immutable).
-		output_storage : list
-		     List of mutable 1-element lists (do not change the length of
-		     these lists)
-		
-		Notes
-		-----
-		The `output_storage` list might contain data. If an element of
-		output_storage is not None, it has to be of the right type,
-		for instance, for a TensorVariable, it has to be a Numpy ndarray,
-		with the right number of dimensions, and the correct dtype.
-		Its shape and stride pattern, can be arbitrary. It not is
-		guaranteed that it was produced by a previous call to impl. It
-		could be allocated by another Op impl is free to reuse it as it
-		sees fit, or to discard it and allocate new memory.
-		
-		Raises
-		------
-		MethodNotDefined
-		    The subclass does not override this method.
-	**/
 	public function perform(node:Dynamic, inputs:Dynamic, out_:Dynamic):Dynamic;
 	/**
 		Make any special modifications that the Op needs before doing
@@ -312,7 +283,7 @@ package theano.gpuarray.subtensor;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;

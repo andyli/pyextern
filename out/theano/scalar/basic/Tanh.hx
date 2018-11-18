@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.scalar.basic;
 @:pythonImport("theano.scalar.basic", "Tanh") extern class Tanh {
-	public function L_op(inputs:Dynamic, outputs:Dynamic, output_grads:Dynamic):Dynamic;
+	public function L_op(inputs:Dynamic, outputs:Dynamic, gout:Dynamic):Dynamic;
 	/**
 		This method is primarily used by tensor.Rop
 		
@@ -106,7 +106,7 @@ package theano.scalar.basic;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -158,7 +158,7 @@ package theano.scalar.basic;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -186,10 +186,10 @@ package theano.scalar.basic;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
 	static public var amd_float32 : Dynamic;
 	static public var amd_float64 : Dynamic;
 	/**
@@ -500,7 +500,7 @@ package theano.scalar.basic;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -564,7 +564,8 @@ package theano.scalar.basic;
 		operations (see *IncSubtensor).
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
-	public function grad(inputs:Dynamic, gout:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
+	public function grad(inputs:Dynamic, output_gradients:Dynamic):Dynamic;
 	public function impl(x:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
@@ -658,8 +659,13 @@ package theano.scalar.basic;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;
+	/**
+		Returns True if the current op has functioning C code for
+		the given Elemwise inputs, outputs.
+	**/
+	public function supports_c_code(inputs:Dynamic, outputs:Dynamic):Dynamic;
 }

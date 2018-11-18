@@ -4,7 +4,7 @@ package matplotlib.transforms;
 	static public var INVALID : Dynamic;
 	static public var INVALID_AFFINE : Dynamic;
 	static public var INVALID_NON_AFFINE : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function __deepcopy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -46,20 +46,24 @@ package matplotlib.transforms;
 	/**
 		Creates a new :class:`TransformNode`.
 		
-		**shorthand_name** - a string representing the "name" of this
-		                     transform. The name carries no significance
-		                     other than to improve the readability of
-		                     ``str(transform)`` when DEBUG=True.
+		Parameters
+		----------
+		shorthand_name : str
+		    A string representing the "name" of the transform. The name carries
+		    no significance other than to improve the readability of
+		    ``str(transform)`` when DEBUG=True.
 	**/
 	@:native("__init__")
 	public function ___init__(?shorthand_name:Dynamic):Dynamic;
 	/**
 		Creates a new :class:`TransformNode`.
 		
-		**shorthand_name** - a string representing the "name" of this
-		                     transform. The name carries no significance
-		                     other than to improve the readability of
-		                     ``str(transform)`` when DEBUG=True.
+		Parameters
+		----------
+		shorthand_name : str
+		    A string representing the "name" of the transform. The name carries
+		    no significance other than to improve the readability of
+		    ``str(transform)`` when DEBUG=True.
 	**/
 	public function new(?shorthand_name:Dynamic):Void;
 	/**
@@ -68,7 +72,7 @@ package matplotlib.transforms;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -120,7 +124,7 @@ package matplotlib.transforms;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

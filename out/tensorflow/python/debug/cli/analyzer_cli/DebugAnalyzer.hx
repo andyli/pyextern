@@ -1,7 +1,12 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.cli.analyzer_cli;
 @:pythonImport("tensorflow.python.debug.cli.analyzer_cli", "DebugAnalyzer") extern class DebugAnalyzer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _DUMP_SIZE_COLUMN_HEAD : Dynamic;
+	static public var _GRAPH_STRUCT_OP_TYPE_BLACKLIST : Dynamic;
+	static public var _OP_TYPE_COLUMN_HEAD : Dynamic;
+	static public var _TENSOR_NAME_COLUMN_HEAD : Dynamic;
+	static public var _TIMESTAMP_COLUMN_HEAD : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,23 +47,27 @@ package tensorflow.python.debug.cli.analyzer_cli;
 		
 		Args:
 		  debug_dump: A DebugDumpDir object.
+		  config: A `cli_config.CLIConfig` object that carries user-facing
+		    configurations.
 	**/
 	@:native("__init__")
-	public function ___init__(debug_dump:Dynamic):Dynamic;
+	public function ___init__(debug_dump:Dynamic, config:Dynamic):Dynamic;
 	/**
 		DebugAnalyzer constructor.
 		
 		Args:
 		  debug_dump: A DebugDumpDir object.
+		  config: A `cli_config.CLIConfig` object that carries user-facing
+		    configurations.
 	**/
-	public function new(debug_dump:Dynamic):Void;
+	public function new(debug_dump:Dynamic, config:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,11 +118,21 @@ package tensorflow.python.debug.cli.analyzer_cli;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Build argument parsers for DebugAnalayzer.
+		
+		Args:
+		  config: A `cli_config.CLIConfig` object.
+		
+		Returns:
+		  A dict mapping command handler name to `ArgumentParser` instance.
+	**/
+	public function _build_argument_parsers(config:Dynamic):Dynamic;
 	/**
 		Perform depth-first search (DFS) traversal of a node's input tree.
 		
@@ -143,6 +162,16 @@ package tensorflow.python.debug.cli.analyzer_cli;
 		  command_template: (str) Template for command shortcut of the node names.
 	**/
 	public function _dfs_from_node(lines:Dynamic, attr_segs:Dynamic, node_name:Dynamic, tracker:Dynamic, max_depth:Dynamic, depth:Dynamic, unfinished:Dynamic, ?include_control:Dynamic, ?show_op_type:Dynamic, ?command_template:Dynamic):Dynamic;
+	/**
+		Exclude all nodes whose op types are in _GRAPH_STRUCT_OP_TYPE_BLACKLIST.
+		
+		Args:
+		  node_names: An iterable of node or graph element names.
+		
+		Returns:
+		  A list of node names that are not blacklisted.
+	**/
+	public function _exclude_blacklisted_ops(node_names:Dynamic):Dynamic;
 	/**
 		List neighbors (inputs or recipients) of a node.
 		
@@ -227,7 +256,7 @@ package tensorflow.python.debug.cli.analyzer_cli;
 		  (int) maximum width of the op type column. 0 if data is empty.
 	**/
 	public function _measure_tensor_list_column_widths(data:Dynamic):Dynamic;
-	public function _reconstruct_print_source_command(parsed:Dynamic, ?line_begin_decrease:Dynamic, ?max_elements_per_line_increase:Dynamic):Dynamic;
+	public function _reconstruct_print_source_command(parsed:Dynamic, line_begin:Dynamic, ?max_elements_per_line_increase:Dynamic):Dynamic;
 	/**
 		Render traceback of a node's creation in Python, if available.
 		
@@ -270,7 +299,7 @@ package tensorflow.python.debug.cli.analyzer_cli;
 	/**
 		Add a tensor filter.
 		
-		A tensor filter is a named callable of the siganture:
+		A tensor filter is a named callable of the signature:
 		  filter_callable(dump_datum, tensor),
 		
 		wherein dump_datum is an instance of debug_data.DebugTensorDatum carrying
@@ -291,6 +320,7 @@ package tensorflow.python.debug.cli.analyzer_cli;
 		             Or if filter_callable is not callable.
 	**/
 	public function add_tensor_filter(filter_name:Dynamic, filter_callable:Dynamic):Dynamic;
+	public function evaluate_expression(args:Dynamic, ?screen_info:Dynamic):Dynamic;
 	public function get_help(handler_name:Dynamic):Dynamic;
 	/**
 		Retrieve filter function by name.
@@ -352,6 +382,10 @@ package tensorflow.python.debug.cli.analyzer_cli;
 		
 		Returns:
 		  Output text lines as a RichTextLines object.
+		
+		Raises:
+		  ValueError: If `--filter_exclude_node_names` is used without `-f` or
+		    `--tensor_filter` being used.
 	**/
 	public function list_tensors(args:Dynamic, ?screen_info:Dynamic):Dynamic;
 	/**

@@ -25,7 +25,7 @@ package theano.gpuarray.elemwise;
 		                          eval_points=eval_points)
 	**/
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
-	public function _HideC__hide():Dynamic;
+	static public function _HideC__hide(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: return some or all output[s] of `make_node`.
 		
@@ -102,7 +102,7 @@ package theano.gpuarray.elemwise;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -156,12 +156,12 @@ package theano.gpuarray.elemwise;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _bgrad(inputs:Dynamic, ograds:Dynamic):Dynamic;
+	public function _bgrad(inputs:Dynamic, outputs:Dynamic, ograds:Dynamic):Dynamic;
 	public function _c_all(node:Dynamic, nodename:Dynamic, inames:Dynamic, onames:Dynamic, sub:Dynamic):Dynamic;
 	static public var _f16_ok : Dynamic;
 	public function _generate_op_string(node:Dynamic):Dynamic;
@@ -201,11 +201,26 @@ package theano.gpuarray.elemwise;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
-	public function c_cleanup_code_struct():Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
+	/**
+		Optional: return a code string specific to the apply to be
+		inserted in the struct cleanup code.
+		
+		Parameters
+		----------
+		node : an Apply instance in the graph being compiled
+		name : str
+		    A unique name to distinguish variables from those of other nodes.
+		
+		Raises
+		------
+		MethodNotDefined
+		    The subclass does not override this method.
+	**/
+	public function c_cleanup_code_struct(node:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Required: return the C implementation of an Op.
 		
@@ -260,15 +275,15 @@ package theano.gpuarray.elemwise;
 	**/
 	public function c_code_cache_version():Dynamic;
 	public function c_code_cache_version_apply(node:Dynamic):Dynamic;
-	public function c_code_cleanup():Dynamic;
-	public function c_compile_args():Dynamic;
-	public function c_header_dirs():Dynamic;
+	static public function c_code_cleanup(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_header_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the header file name "omp.h" if openMP is supported
 	**/
 	public function c_headers():Dynamic;
-	public function c_init_code():Dynamic;
-	public function c_init_code_apply():Dynamic;
+	static public function c_init_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: return a code string specific to the apply
 		to be inserted in the struct initialization code.
@@ -289,11 +304,11 @@ package theano.gpuarray.elemwise;
 		    The subclass does not override this method.
 	**/
 	public function c_init_code_struct(node:Dynamic, name:Dynamic, sub:Dynamic):Dynamic;
-	public function c_lib_dirs():Dynamic;
-	public function c_libraries():Dynamic;
-	public function c_no_compile_args():Dynamic;
-	public function c_support_code():Dynamic;
-	public function c_support_code_apply():Dynamic;
+	static public function c_lib_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_libraries(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_no_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: return utility code for use by an `Op` that will be
 		inserted at struct scope, that can be specialized for the
@@ -424,7 +439,7 @@ package theano.gpuarray.elemwise;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;
@@ -436,7 +451,7 @@ package theano.gpuarray.elemwise;
 	/**
 		Check if openMP is supported
 	**/
-	public function test_gxx_support():Dynamic;
+	static public function test_gxx_support():Dynamic;
 	/**
 		Make sure self.openmp is not True if there is no support in gxx.
 	**/

@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.summary.summary;
 @:pythonImport("tensorflow.python.summary.summary") extern class Summary_Module {
-	static public var _INVALID_TAG_CHARACTERS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,9 +9,7 @@ package tensorflow.python.summary.summary;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
-	static public function _clean_tag(name:Dynamic):Dynamic;
-	static public function _collect(val:Dynamic, collections:Dynamic, default_collections:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with audio.
 		
@@ -39,12 +36,15 @@ package tensorflow.python.summary.summary;
 		  max_outputs: Max number of batch elements to generate audio for.
 		  collections: Optional list of ops.GraphKeys.  The collections to add the
 		    summary to.  Defaults to [_ops.GraphKeys.SUMMARIES]
+		  family: Optional; if provided, used as the prefix of the summary tag name,
+		    which controls the tab name used for display on Tensorboard.
 		
 		Returns:
 		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
 		  buffer.
 	**/
-	static public function audio(name:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function audio(name:Dynamic, tensor:Dynamic, sample_rate:Dynamic, ?max_outputs:Dynamic, ?collections:Dynamic, ?family:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Given a TensorSummary node_def, retrieve its SummaryDescription.
 		
@@ -59,6 +59,11 @@ package tensorflow.python.summary.summary;
 		
 		Raises:
 		  ValueError: if the node is not a summary op.
+		
+		@compatibility(eager)
+		Not compatible with eager execution. To write TensorBoard
+		summaries under eager execution, use `tf.contrib.summary` instead.
+		@end_compatibility
 	**/
 	static public function get_summary_description(node_def:Dynamic):Dynamic;
 	/**
@@ -82,12 +87,14 @@ package tensorflow.python.summary.summary;
 		    build the histogram.
 		  collections: Optional list of graph collections keys. The new summary op is
 		    added to these collections. Defaults to `[GraphKeys.SUMMARIES]`.
+		  family: Optional; if provided, used as the prefix of the summary tag name,
+		    which controls the tab name used for display on Tensorboard.
 		
 		Returns:
 		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
 		  buffer.
 	**/
-	static public function histogram(name:Dynamic, values:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function histogram(name:Dynamic, values:Dynamic, ?collections:Dynamic, ?family:Dynamic):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with images.
 		
@@ -126,12 +133,14 @@ package tensorflow.python.summary.summary;
 		  max_outputs: Max number of batch elements to generate images for.
 		  collections: Optional list of ops.GraphKeys.  The collections to add the
 		    summary to.  Defaults to [_ops.GraphKeys.SUMMARIES]
+		  family: Optional; if provided, used as the prefix of the summary tag name,
+		    which controls the tab name used for display on Tensorboard.
 		
 		Returns:
 		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
 		  buffer.
 	**/
-	static public function image(name:Dynamic, tensor:Dynamic, ?max_outputs:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function image(name:Dynamic, tensor:Dynamic, ?max_outputs:Dynamic, ?collections:Dynamic, ?family:Dynamic):Dynamic;
 	/**
 		Merges summaries.
 		
@@ -153,6 +162,14 @@ package tensorflow.python.summary.summary;
 		Returns:
 		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
 		  buffer resulting from the merging.
+		
+		Raises:
+		  RuntimeError: If called with eager mode enabled.
+		
+		@compatibility(eager)
+		Not compatible with eager execution. To write TensorBoard
+		summaries under eager execution, use `tf.contrib.summary` instead.
+		@end_compatibility
 	**/
 	static public function merge(inputs:Dynamic, ?collections:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -161,13 +178,23 @@ package tensorflow.python.summary.summary;
 		Args:
 		  key: `GraphKey` used to collect the summaries.  Defaults to
 		    `GraphKeys.SUMMARIES`.
+		  scope: Optional scope used to filter the summary ops, using `re.match`
 		
 		Returns:
 		  If no summaries were collected, returns None.  Otherwise returns a scalar
 		  `Tensor` of type `string` containing the serialized `Summary` protocol
 		  buffer resulting from the merging.
+		
+		Raises:
+		  RuntimeError: If called with eager execution enabled.
+		
+		@compatibility(eager)
+		Not compatible with eager execution. To write TensorBoard
+		summaries under eager execution, use `tf.contrib.summary` instead.
+		@end_compatibility
 	**/
-	static public function merge_all(?key:Dynamic):Dynamic;
+	static public function merge_all(?key:Dynamic, ?scope:Dynamic, ?name:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer containing a single scalar value.
 		
@@ -179,6 +206,8 @@ package tensorflow.python.summary.summary;
 		  tensor: A real numeric Tensor containing a single value.
 		  collections: Optional list of graph collections keys. The new summary op is
 		    added to these collections. Defaults to `[GraphKeys.SUMMARIES]`.
+		  family: Optional; if provided, used as the prefix of the summary tag name,
+		    which controls the tab name used for display on Tensorboard.
 		
 		Returns:
 		  A scalar `Tensor` of type `string`. Which contains a `Summary` protobuf.
@@ -186,27 +215,32 @@ package tensorflow.python.summary.summary;
 		Raises:
 		  ValueError: If tensor has the wrong shape or type.
 	**/
-	static public function scalar(name:Dynamic, tensor:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function scalar(name:Dynamic, tensor:Dynamic, ?collections:Dynamic, ?family:Dynamic):Dynamic;
 	/**
 		Outputs a `Summary` protocol buffer with a serialized tensor.proto.
 		
-		The generated
-		[`Summary`](https://www.tensorflow.org/code/tensorflow/core/framework/summary.proto)
-		has one summary value containing the input tensor.
-		
 		Args:
-		  name: A name for the generated node. Will also serve as the series name in
-		    TensorBoard.
+		  name: A name for the generated node. If display_name is not set, it will
+		    also serve as the tag name in TensorBoard. (In that case, the tag
+		    name will inherit tf name scopes.)
 		  tensor: A tensor of any type and shape to serialize.
-		  summary_description: Optional summary_pb2.SummaryDescription()
+		  summary_description: A long description of the summary sequence. Markdown
+		    is supported.
 		  collections: Optional list of graph collections keys. The new summary op is
 		    added to these collections. Defaults to `[GraphKeys.SUMMARIES]`.
+		  summary_metadata: Optional SummaryMetadata proto (which describes which
+		    plugins may use the summary value).
+		  family: Optional; if provided, used as the prefix of the summary tag,
+		    which controls the name used for display on TensorBoard when
+		    display_name is not set.
+		  display_name: A string used to name this data in TensorBoard. If this is
+		    not set, then the node name will be used instead.
 		
 		Returns:
 		  A scalar `Tensor` of type `string`. The serialized `Summary` protocol
 		  buffer.
 	**/
-	static public function tensor_summary(name:Dynamic, tensor:Dynamic, ?summary_description:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function tensor_summary(name:Dynamic, tensor:Dynamic, ?summary_description:Dynamic, ?collections:Dynamic, ?summary_metadata:Dynamic, ?family:Dynamic, ?display_name:Dynamic):Dynamic;
 	/**
 		Summarizes textual data.
 		
@@ -226,7 +260,7 @@ package tensorflow.python.summary.summary;
 		    summary to.  Defaults to [_ops.GraphKeys.SUMMARIES]
 		
 		Returns:
-		  A  TensorSummary op that is configured so that TensorBoard will recognize
+		  A TensorSummary op that is configured so that TensorBoard will recognize
 		  that it contains textual data. The TensorSummary is a scalar `Tensor` of
 		  type `string` which contains `Summary` protobufs.
 		
@@ -234,4 +268,5 @@ package tensorflow.python.summary.summary;
 		  ValueError: If tensor has the wrong type.
 	**/
 	static public function text(name:Dynamic, tensor:Dynamic, ?collections:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

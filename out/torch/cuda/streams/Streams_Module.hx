@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package torch.cuda.streams;
 @:pythonImport("torch.cuda.streams") extern class Streams_Module {
-	static public var ERROR_NOT_READY : Dynamic;
-	static public var SUCCESS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

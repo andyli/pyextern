@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.data_flow_ops;
 @:pythonImport("tensorflow.python.ops.data_flow_ops", "StagingArea") extern class StagingArea {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _StagingArea__internal_get(get_fn:Dynamic, name:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -62,12 +63,17 @@ package tensorflow.python.ops.data_flow_ops;
 		  shared_name: (Optional.) A name to be used for the shared object. By
 		    passing the same name to two different python objects they will share
 		    the underlying staging area. Must be a string.
+		  capacity: (Optional.) Maximum number of elements.
+		    An integer. If zero, the Staging Area is unbounded
+		  memory_limit: (Optional.) Maximum number of bytes of all tensors
+		    in the Staging Area.
+		    An integer. If zero, the Staging Area is unbounded
 		
 		Raises:
 		  ValueError: If one of the arguments is invalid.
 	**/
 	@:native("__init__")
-	public function ___init__(dtypes:Dynamic, ?shapes:Dynamic, ?names:Dynamic, ?shared_name:Dynamic):Dynamic;
+	public function ___init__(dtypes:Dynamic, ?shapes:Dynamic, ?names:Dynamic, ?shared_name:Dynamic, ?capacity:Dynamic, ?memory_limit:Dynamic):Dynamic;
 	/**
 		Constructs a staging area object.
 		
@@ -93,18 +99,23 @@ package tensorflow.python.ops.data_flow_ops;
 		  shared_name: (Optional.) A name to be used for the shared object. By
 		    passing the same name to two different python objects they will share
 		    the underlying staging area. Must be a string.
+		  capacity: (Optional.) Maximum number of elements.
+		    An integer. If zero, the Staging Area is unbounded
+		  memory_limit: (Optional.) Maximum number of bytes of all tensors
+		    in the Staging Area.
+		    An integer. If zero, the Staging Area is unbounded
 		
 		Raises:
 		  ValueError: If one of the arguments is invalid.
 	**/
-	public function new(dtypes:Dynamic, ?shapes:Dynamic, ?names:Dynamic, ?shared_name:Dynamic):Void;
+	public function new(dtypes:Dynamic, ?shapes:Dynamic, ?names:Dynamic, ?shared_name:Dynamic, ?capacity:Dynamic, ?memory_limit:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -155,7 +166,7 @@ package tensorflow.python.ops.data_flow_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -166,21 +177,34 @@ package tensorflow.python.ops.data_flow_ops;
 		The `vals` argument can be a Tensor, a list or tuple of tensors, or a
 		dictionary with tensor values.
 		
+		If `vals` is a list, then the appropriate indices associated with the
+		values must be provided.
+		
 		If it is a dictionary, the staging area must have been constructed with a
 		`names` attribute and the dictionary keys must match the staging area names.
+		`indices` will be inferred from the dictionary keys.
 		If the staging area was constructed with a `names` attribute, `vals` must
 		be a dictionary.
 		
+		Checks that the dtype and shape of each value matches that
+		of the staging area.
+		
 		Args:
-		  vals: A tensor, a list or tuple of tensors, or a dictionary..
+		  vals: A tensor, a list or tuple of tensors, or a dictionary.
 		
 		Returns:
-		  A list of `Tensor` objects.
+		  A (tensors, indices) tuple where `tensors` is a list of `Tensor` objects
+		  and `indices` is a list of indices associed with the tensors.
 		
 		Raises:
-		  ValueError: If `vals` is invalid.
+		  ValueError: If `vals` or `indices` is invalid.
 	**/
-	public function _check_put_dtypes(vals:Dynamic):Dynamic;
+	public function _check_put_dtypes(vals:Dynamic, ?indices:Dynamic):Dynamic;
+	/**
+		Encode inter-device transfers if the current device
+		is not the same as the Staging Area's device.
+	**/
+	public function _create_device_transfers(tensors:Dynamic):Dynamic;
 	/**
 		Return the value to return from a get op.
 		
@@ -190,12 +214,13 @@ package tensorflow.python.ops.data_flow_ops;
 		
 		Args:
 		  tensors: List of tensors from the get op.
+		  indices: Indices of associated names and shapes
 		
 		Returns:
 		  A single tensor, a list of tensors, or a dictionary
 		  of tensors.
 	**/
-	public function _get_return_value(tensors:Dynamic):Dynamic;
+	public function _get_return_value(tensors:Dynamic, indices:Dynamic):Dynamic;
 	static public var _identifier : Dynamic;
 	static public var _lock : Dynamic;
 	/**
@@ -208,6 +233,20 @@ package tensorflow.python.ops.data_flow_ops;
 		  The values in vals as a list.
 	**/
 	public function _scope_vals(vals:Dynamic):Dynamic;
+	/**
+		The maximum number of elements of this staging area.
+	**/
+	public var capacity : Dynamic;
+	/**
+		Clears the staging area.
+		
+		Args:
+		    name: A name for the operation (optional)
+		
+		Returns:
+		    The created op
+	**/
+	public function clear(?name:Dynamic):Dynamic;
 	/**
 		The list of dtypes for each component of a staging area element.
 	**/
@@ -236,6 +275,10 @@ package tensorflow.python.ops.data_flow_ops;
 	**/
 	public function get(?name:Dynamic):Dynamic;
 	/**
+		The maximum number of bytes of this staging area.
+	**/
+	public var memory_limit : Dynamic;
+	/**
 		The name of the staging area.
 	**/
 	public var name : Dynamic;
@@ -244,10 +287,34 @@ package tensorflow.python.ops.data_flow_ops;
 	**/
 	public var names : Dynamic;
 	/**
-		Create an op that places a value into the staging area.
+		Peeks at an element in the staging area.
+		
+		If the staging area is too small to contain the element at
+		the specified index, it will block until enough elements
+		are inserted to complete the operation.
+		
+		The placement of the returned tensor will be determined by
+		the current device scope when this function is called.
 		
 		Args:
-		  values: Tensor (or a tuple of Tensors) to place into the staging area.
+		  index: The index of the tensor within the staging area
+		          to look up.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The tuple of tensors that was gotten.
+	**/
+	public function peek(index:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Create an op that places a value into the staging area.
+		
+		This operation will block if the `StagingArea` has reached
+		its capacity.
+		
+		Args:
+		  values: A single tensor, a list or tuple of tensors, or a dictionary with
+		    tensor values. The number of elements must match the length of the
+		    list provided to the dtypes argument when creating the StagingArea.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -261,4 +328,14 @@ package tensorflow.python.ops.data_flow_ops;
 		The list of shapes for each component of a staging area element.
 	**/
 	public var shapes : Dynamic;
+	/**
+		Returns the number of elements in the staging area.
+		
+		Args:
+		    name: A name for the operation (optional)
+		
+		Returns:
+		    The created op
+	**/
+	public function size(?name:Dynamic):Dynamic;
 }

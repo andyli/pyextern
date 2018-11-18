@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.type;
 @:pythonImport("theano.gpuarray.type") extern class Type_Module {
+	static public var EQ_MAP : Dynamic;
 	static public function GpuArray_pickler(cnda:Dynamic):Dynamic;
 	static public function GpuArray_unpickler(npa:Dynamic, ctx_name:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -34,6 +35,17 @@ package theano.gpuarray.type;
 	static public function get_context(name:Dynamic):Dynamic;
 	static public function gpu_context_type(?name:Dynamic):Dynamic;
 	/**
+		Is the following data supported on the GPU?
+		
+		Currently, only complex aren't supported.
+		
+		Parameters
+		----------
+		data : numpy.ndarray or TensorVariable
+		       (it must have dtype and ndim parameter)
+	**/
+	static public function gpu_supported(data:Dynamic):Dynamic;
+	/**
 		SharedVariable constructor for GpuArrayType.
 		
 		See :func:`theano.shared`.
@@ -55,7 +67,7 @@ package theano.gpuarray.type;
 	/**
 		Do we want to move this computation to the GPU?
 		
-		Currently, we don't move complex and scalar int.
+		Currently, we don't move complex and scalar.
 		
 		Parameters
 		----------
@@ -81,4 +93,8 @@ package theano.gpuarray.type;
 		    Context instance
 	**/
 	static public function reg_context(name:Dynamic, ctx:Dynamic):Dynamic;
+	static public function values_eq_approx(a:Dynamic, b:Dynamic, ?allow_remove_inf:Dynamic, ?allow_remove_nan:Dynamic, ?rtol:Dynamic, ?atol:Dynamic):Dynamic;
+	static public function values_eq_approx_remove_inf(a:Dynamic, b:Dynamic):Dynamic;
+	static public function values_eq_approx_remove_inf_nan(a:Dynamic, b:Dynamic):Dynamic;
+	static public function values_eq_approx_remove_nan(a:Dynamic, b:Dynamic):Dynamic;
 }

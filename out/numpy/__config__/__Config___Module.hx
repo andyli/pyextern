@@ -13,6 +13,7 @@ package numpy.__config__;
 	static public var blas_mkl_info : Dynamic;
 	static public var blas_opt_info : Dynamic;
 	static public var blis_info : Dynamic;
+	static public var extra_dll_dir : Dynamic;
 	static public function get_info(name:Dynamic):Dynamic;
 	static public var lapack_mkl_info : Dynamic;
 	static public var lapack_opt_info : Dynamic;

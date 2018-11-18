@@ -10,8 +10,23 @@ package numpy.lib._iotools;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _bytes_to_complex(s:Dynamic):Dynamic;
-	static public function _bytes_to_name(s:Dynamic):Dynamic;
+	/**
+		Decode bytes from binary input streams.
+		
+		Defaults to decoding from 'latin1'. That differs from the behavior of
+		np.compat.asunicode that decodes from 'ascii'.
+		
+		Parameters
+		----------
+		line : str or bytes
+		     Line to be decoded.
+		
+		Returns
+		-------
+		decoded_line : unicode
+		     Unicode in Python 2, a str (unicode) in Python 3.
+	**/
+	static public function _decode_line(line:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		Check whether obj behaves like a bytes object.
 	**/
@@ -37,6 +52,7 @@ package numpy.lib._iotools;
 	static public var absolute_import : Dynamic;
 	static public function asbytes(s:Dynamic):Dynamic;
 	static public function asbytes_nested(x:Dynamic):Dynamic;
+	static public function asunicode(s:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Convenience function to create a `np.dtype` object.

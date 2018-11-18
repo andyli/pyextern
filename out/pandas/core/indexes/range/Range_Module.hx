@@ -11,6 +11,10 @@ package pandas.core.indexes.range;
 	static public var __spec__ : Dynamic;
 	static public var _index_shared_docs : Dynamic;
 	/**
+		Gets the start, stop, and step parameters from a range object
+	**/
+	static public function get_range_parameters(data:Dynamic):Dynamic;
+	/**
 		getsizeof(object, default) -> int
 		
 		Return the size of object in bytes.
@@ -70,6 +74,7 @@ package pandas.core.indexes.range;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

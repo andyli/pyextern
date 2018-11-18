@@ -40,6 +40,7 @@ package tensorflow.python.tools.inspect_checkpoint;
 		  file_name: Name of the checkpoint file.
 		  tensor_name: Name of the tensor in the checkpoint file to print.
 		  all_tensors: Boolean indicating whether to print all tensors.
+		  all_tensor_names: Boolean indicating whether to print all tensor names.
 	**/
-	static public function print_tensors_in_checkpoint_file(file_name:Dynamic, tensor_name:Dynamic, all_tensors:Dynamic):Dynamic;
+	static public function print_tensors_in_checkpoint_file(file_name:Dynamic, tensor_name:Dynamic, all_tensors:Dynamic, ?all_tensor_names:Dynamic):Dynamic;
 }

@@ -5,7 +5,7 @@ package tensorflow.contrib.framework.python.ops.variables;
 		Call self as a function.
 	**/
 	public function __call__(op:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -60,7 +60,7 @@ package tensorflow.contrib.framework.python.ops.variables;
 		    unspecified, device represents 'any' device_index.
 	**/
 	@:native("__init__")
-	public function ___init__(?num_tasks:Dynamic, ?job_name:Dynamic, ?device_type:Dynamic, ?device_index:Dynamic):Dynamic;
+	public function ___init__(?num_tasks:Dynamic, ?job_name:Dynamic, ?device_type:Dynamic, ?device_index:Dynamic, ?replica:Dynamic):Dynamic;
 	/**
 		Initialize VariableDeviceChooser.
 		
@@ -79,14 +79,14 @@ package tensorflow.contrib.framework.python.ops.variables;
 		  device_index: int.  Optional device index.  If left
 		    unspecified, device represents 'any' device_index.
 	**/
-	public function new(?num_tasks:Dynamic, ?job_name:Dynamic, ?device_type:Dynamic, ?device_index:Dynamic):Void;
+	public function new(?num_tasks:Dynamic, ?job_name:Dynamic, ?device_type:Dynamic, ?device_index:Dynamic, ?replica:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -137,7 +137,7 @@ package tensorflow.contrib.framework.python.ops.variables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

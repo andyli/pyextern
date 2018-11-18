@@ -15,6 +15,7 @@ package tensorflow.contrib.tensor_forest.client.eval_metrics;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _accuracy(predictions:Dynamic, targets:Dynamic, ?weights:Dynamic):Dynamic;
+	static public function _auc(probs:Dynamic, targets:Dynamic, ?weights:Dynamic):Dynamic;
 	static public function _class_log_loss(probabilities:Dynamic, targets:Dynamic, ?weights:Dynamic):Dynamic;
 	static public function _precision(predictions:Dynamic, targets:Dynamic, ?weights:Dynamic):Dynamic;
 	static public function _precision_at_thresholds(predictions:Dynamic, targets:Dynamic, ?weights:Dynamic):Dynamic;

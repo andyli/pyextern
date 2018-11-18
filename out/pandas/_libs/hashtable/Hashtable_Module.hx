@@ -7,9 +7,12 @@ package pandas._libs.hashtable;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public function __pyx_unpickle_Enum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_Factorizer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_HashTable(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function __pyx_unpickle_Int64Factorizer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
-	static public function checknull(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function duplicated_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function duplicated_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function duplicated_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -80,7 +83,7 @@ package pandas._libs.hashtable;
 	static public var nan : Dynamic;
 	/**
 		indices of the first occurrences of the unique labels
-		*excluding* -1. equivelent to:
+		*excluding* -1. equivalent to:
 		    np.unique(labels, return_index=True)[1]
 	**/
 	static public function unique_label_indices(args:haxe.extern.Rest<Dynamic>):Dynamic;

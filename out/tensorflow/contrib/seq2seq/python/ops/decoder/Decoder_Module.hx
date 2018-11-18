@@ -15,20 +15,22 @@ package tensorflow.contrib.seq2seq.python.ops.decoder;
 	**/
 	static public function _create_zero_outputs(size:Dynamic, dtype:Dynamic, batch_size:Dynamic):Dynamic;
 	/**
-		Transpose the batch and time dimensions of a Tensor.
+		Transposes the batch and time dimensions of a Tensor.
 		
-		Retains as much of the static shape information as possible.
+		If the input tensor has rank < 2 it returns the original tensor. Retains as
+		much of the static shape information as possible.
 		
 		Args:
-		  x: A tensor of rank 2 or higher.
+		  x: A Tensor.
 		
 		Returns:
 		  x transposed along the first two dimensions.
-		
-		Raises:
-		  ValueError: if `x` is rank 1 or lower.
 	**/
 	static public function _transpose_batch_time(x:Dynamic):Dynamic;
+	/**
+		Create tensors of zeros based on state_size, batch_size, and dtype.
+	**/
+	static public function _zero_state_tensors(state_size:Dynamic, batch_size:Dynamic, dtype:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**

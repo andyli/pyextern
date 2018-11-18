@@ -13,7 +13,7 @@ package pandas.core.api;
 	static public var __spec__ : Dynamic;
 	static public var _removals : Dynamic;
 	/**
-		Return a fixed frequency datetime index, with business day as the default
+		Return a fixed frequency DatetimeIndex, with business day as the default
 		frequency
 		
 		Parameters
@@ -22,8 +22,8 @@ package pandas.core.api;
 		    Left bound for generating dates
 		end : string or datetime-like, default None
 		    Right bound for generating dates
-		periods : integer or None, default None
-		    If None, must specify start and end
+		periods : integer, default None
+		    Number of periods to generate
 		freq : string or DateOffset, default 'B' (business daily)
 		    Frequency strings can have multiples, e.g. '5H'
 		tz : string or None
@@ -31,15 +31,32 @@ package pandas.core.api;
 		    Asia/Beijing
 		normalize : bool, default False
 		    Normalize start/end dates to midnight before generating date range
-		name : str, default None
-		    Name for the resulting index
-		closed : string or None, default None
+		name : string, default None
+		    Name of the resulting DatetimeIndex
+		weekmask : string or None, default None
+		    Weekmask of valid business days, passed to ``numpy.busdaycalendar``,
+		    only used when custom frequency strings are passed.  The default
+		    value None is equivalent to 'Mon Tue Wed Thu Fri'
+		
+		    .. versionadded:: 0.21.0
+		
+		holidays : list-like or None, default None
+		    Dates to exclude from the set of valid business days, passed to
+		    ``numpy.busdaycalendar``, only used when custom frequency strings
+		    are passed
+		
+		    .. versionadded:: 0.21.0
+		
+		closed : string, default None
 		    Make the interval closed with respect to the given frequency to
 		    the 'left', 'right', or both sides (None)
 		
 		Notes
 		-----
-		2 of start, end, or periods must be specified
+		Of the four parameters: ``start``, ``end``, ``periods``, and ``freq``,
+		exactly three must be specified.  Specifying ``freq`` is a requirement
+		for ``bdate_range``.  Use ``date_range`` if specifying ``freq`` is not
+		desired.
 		
 		To learn more about the frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
@@ -48,42 +65,141 @@ package pandas.core.api;
 		-------
 		rng : DatetimeIndex
 	**/
-	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
+	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?weekmask:Dynamic, ?holidays:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
-		Return a fixed frequency datetime index, with day (calendar) as the default
-		frequency
+		Return a fixed frequency DatetimeIndex.
 		
 		Parameters
 		----------
-		start : string or datetime-like, default None
-		    Left bound for generating dates
-		end : string or datetime-like, default None
-		    Right bound for generating dates
-		periods : integer or None, default None
-		    If None, must specify start and end
-		freq : string or DateOffset, default 'D' (calendar daily)
-		    Frequency strings can have multiples, e.g. '5H'
-		tz : string or None
+		start : str or datetime-like, optional
+		    Left bound for generating dates.
+		end : str or datetime-like, optional
+		    Right bound for generating dates.
+		periods : integer, optional
+		    Number of periods to generate.
+		freq : str or DateOffset, default 'D' (calendar daily)
+		    Frequency strings can have multiples, e.g. '5H'. See
+		    :ref:`here <timeseries.offset_aliases>` for a list of
+		    frequency aliases.
+		tz : str or tzinfo, optional
 		    Time zone name for returning localized DatetimeIndex, for example
-		    Asia/Hong_Kong
+		    'Asia/Hong_Kong'. By default, the resulting DatetimeIndex is
+		    timezone-naive.
 		normalize : bool, default False
-		    Normalize start/end dates to midnight before generating date range
+		    Normalize start/end dates to midnight before generating date range.
 		name : str, default None
-		    Name of the resulting index
-		closed : string or None, default None
+		    Name of the resulting DatetimeIndex.
+		closed : {None, 'left', 'right'}, optional
 		    Make the interval closed with respect to the given frequency to
-		    the 'left', 'right', or both sides (None)
-		
-		Notes
-		-----
-		2 of start, end, or periods must be specified
-		
-		To learn more about the frequency strings, please see `this link
-		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		    the 'left', 'right', or both sides (None, the default).
+		**kwargs
+		    For compatibility. Has no effect on the result.
 		
 		Returns
 		-------
 		rng : DatetimeIndex
+		
+		See Also
+		--------
+		pandas.DatetimeIndex : An immutable container for datetimes.
+		pandas.timedelta_range : Return a fixed frequency TimedeltaIndex.
+		pandas.period_range : Return a fixed frequency PeriodIndex.
+		pandas.interval_range : Return a fixed frequency IntervalIndex.
+		
+		Notes
+		-----
+		Of the four parameters ``start``, ``end``, ``periods``, and ``freq``,
+		exactly three must be specified. If ``freq`` is omitted, the resulting
+		``DatetimeIndex`` will have ``periods`` linearly spaced elements between
+		``start`` and ``end`` (closed on both sides).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
+		Examples
+		--------
+		**Specifying the values**
+		
+		The next four examples generate the same `DatetimeIndex`, but vary
+		the combination of `start`, `end` and `periods`.
+		
+		Specify `start` and `end`, with the default daily frequency.
+		
+		>>> pd.date_range(start='1/1/2018', end='1/08/2018')
+		DatetimeIndex(['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04',
+		               '2018-01-05', '2018-01-06', '2018-01-07', '2018-01-08'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		Specify `start` and `periods`, the number of periods (days).
+		
+		>>> pd.date_range(start='1/1/2018', periods=8)
+		DatetimeIndex(['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04',
+		               '2018-01-05', '2018-01-06', '2018-01-07', '2018-01-08'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		Specify `end` and `periods`, the number of periods (days).
+		
+		>>> pd.date_range(end='1/1/2018', periods=8)
+		DatetimeIndex(['2017-12-25', '2017-12-26', '2017-12-27', '2017-12-28',
+		               '2017-12-29', '2017-12-30', '2017-12-31', '2018-01-01'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		Specify `start`, `end`, and `periods`; the frequency is generated
+		automatically (linearly spaced).
+		
+		>>> pd.date_range(start='2018-04-24', end='2018-04-27', periods=3)
+		DatetimeIndex(['2018-04-24 00:00:00', '2018-04-25 12:00:00',
+		               '2018-04-27 00:00:00'], freq=None)
+		
+		**Other Parameters**
+		
+		Changed the `freq` (frequency) to ``'M'`` (month end frequency).
+		
+		>>> pd.date_range(start='1/1/2018', periods=5, freq='M')
+		DatetimeIndex(['2018-01-31', '2018-02-28', '2018-03-31', '2018-04-30',
+		               '2018-05-31'],
+		              dtype='datetime64[ns]', freq='M')
+		
+		Multiples are allowed
+		
+		>>> pd.date_range(start='1/1/2018', periods=5, freq='3M')
+		DatetimeIndex(['2018-01-31', '2018-04-30', '2018-07-31', '2018-10-31',
+		               '2019-01-31'],
+		              dtype='datetime64[ns]', freq='3M')
+		
+		`freq` can also be specified as an Offset object.
+		
+		>>> pd.date_range(start='1/1/2018', periods=5, freq=pd.offsets.MonthEnd(3))
+		DatetimeIndex(['2018-01-31', '2018-04-30', '2018-07-31', '2018-10-31',
+		               '2019-01-31'],
+		              dtype='datetime64[ns]', freq='3M')
+		
+		Specify `tz` to set the timezone.
+		
+		>>> pd.date_range(start='1/1/2018', periods=5, tz='Asia/Tokyo')
+		DatetimeIndex(['2018-01-01 00:00:00+09:00', '2018-01-02 00:00:00+09:00',
+		               '2018-01-03 00:00:00+09:00', '2018-01-04 00:00:00+09:00',
+		               '2018-01-05 00:00:00+09:00'],
+		              dtype='datetime64[ns, Asia/Tokyo]', freq='D')
+		
+		`closed` controls whether to include `start` and `end` that are on the
+		boundary. The default includes boundary points on either end.
+		
+		>>> pd.date_range(start='2017-01-01', end='2017-01-04', closed=None)
+		DatetimeIndex(['2017-01-01', '2017-01-02', '2017-01-03', '2017-01-04'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		Use ``closed='left'`` to exclude `end` if it falls on the boundary.
+		
+		>>> pd.date_range(start='2017-01-01', end='2017-01-04', closed='left')
+		DatetimeIndex(['2017-01-01', '2017-01-02', '2017-01-03'],
+		              dtype='datetime64[ns]', freq='D')
+		
+		Use ``closed='right'`` to exclude `start` if it falls on the boundary.
+		
+		>>> pd.date_range(start='2017-01-01', end='2017-01-04', closed='right')
+		DatetimeIndex(['2017-01-02', '2017-01-03', '2017-01-04'],
+		              dtype='datetime64[ns]', freq='D')
 	**/
 	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	static public var datetools : Dynamic;
@@ -98,15 +214,14 @@ package pandas.core.api;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -114,7 +229,9 @@ package pandas.core.api;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -185,16 +302,22 @@ package pandas.core.api;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -238,11 +361,6 @@ package pandas.core.api;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -259,7 +377,7 @@ package pandas.core.api;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -304,12 +422,6 @@ package pandas.core.api;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -360,21 +472,22 @@ package pandas.core.api;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -385,6 +498,11 @@ package pandas.core.api;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -394,37 +512,128 @@ package pandas.core.api;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function describe_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Encode input values as an enumerated type or categorical variable
+		Encode the object as an enumerated type or categorical variable.
+		
+		This method is useful for obtaining a numeric representation of an
+		array when all that matters is identifying distinct values. `factorize`
+		is available as both a top-level function :func:`pandas.factorize`,
+		and as a method :meth:`Series.factorize` and :meth:`Index.factorize`.
 		
 		Parameters
 		----------
-		values : ndarray (1-d)
-		    Sequence
-		sort : boolean, default False
-		    Sort by values
+		values : sequence
+		    A 1-D seqeunce. Sequences that aren't pandas objects are
+		    coereced to ndarrays before factorization.
+		sort : bool, default False
+		    Sort `uniques` and shuffle `labels` to maintain the
+		    relationship.
+		order
+		    .. deprecated:: 0.23.0
+		
+		       This parameter has no effect and is deprecated.
+		
 		na_sentinel : int, default -1
-		    Value to mark "not found"
-		size_hint : hint to the hashtable sizer
+		    Value to mark "not found".
+		size_hint : int, optional
+		    Hint to the hashtable sizer.
 		
 		Returns
 		-------
-		labels : the indexer to the original array
-		uniques : ndarray (1-d) or Index
-		    the unique values. Index is returned when passed values is Index or
-		    Series
+		labels : ndarray
+		    An integer ndarray that's an indexer into `uniques`.
+		    ``uniques.take(labels)`` will have the same values as `values`.
+		uniques : ndarray, Index, or Categorical
+		    The unique valid values. When `values` is Categorical, `uniques`
+		    is a Categorical. When `values` is some other pandas object, an
+		    `Index` is returned. Otherwise, a 1-D ndarray is returned.
 		
-		note: an array of Periods will ignore sort as it returns an always sorted
-		PeriodIndex
+		    .. note ::
+		
+		       Even if there's a missing value in `values`, `uniques` will
+		       *not* contain an entry for it.
+		
+		See Also
+		--------
+		pandas.cut : Discretize continuous-valued array.
+		pandas.unique : Find the unique valuse in an array.
+		
+		Examples
+		--------
+		These examples all show factorize as a top-level method like
+		``pd.factorize(values)``. The results are identical for methods like
+		:meth:`Series.factorize`.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'])
+		>>> labels
+		array([0, 0, 1, 2, 0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		With ``sort=True``, the `uniques` will be sorted, and `labels` will be
+		shuffled so that the relationship is the maintained.
+		
+		>>> labels, uniques = pd.factorize(['b', 'b', 'a', 'c', 'b'], sort=True)
+		>>> labels
+		array([1, 1, 0, 2, 1])
+		>>> uniques
+		array(['a', 'b', 'c'], dtype=object)
+		
+		Missing values are indicated in `labels` with `na_sentinel`
+		(``-1`` by default). Note that missing values are never
+		included in `uniques`.
+		
+		>>> labels, uniques = pd.factorize(['b', None, 'a', 'c', 'b'])
+		>>> labels
+		array([ 0, -1,  1,  2,  0])
+		>>> uniques
+		array(['b', 'a', 'c'], dtype=object)
+		
+		Thus far, we've only factorized lists (which are internally coerced to
+		NumPy arrays). When factorizing pandas objects, the type of `uniques`
+		will differ. For Categoricals, a `Categorical` is returned.
+		
+		>>> cat = pd.Categorical(['a', 'a', 'c'], categories=['a', 'b', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		[a, c]
+		Categories (3, object): [a, b, c]
+		
+		Notice that ``'b'`` is in ``uniques.categories``, desipite not being
+		present in ``cat.values``.
+		
+		For all other pandas objects, an Index of the appropriate type is
+		returned.
+		
+		>>> cat = pd.Series(['a', 'a', 'c'])
+		>>> labels, uniques = pd.factorize(cat)
+		>>> labels
+		array([0, 0, 1])
+		>>> uniques
+		Index(['a', 'c'], dtype='object')
 	**/
-	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):Dynamic;
+	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):numpy.Ndarray;
 	/**
 		Convert categorical variable into dummy/indicator variables
 		
@@ -432,9 +641,9 @@ package pandas.core.api;
 		----------
 		data : array-like, Series, or DataFrame
 		prefix : string, list of strings, or dict of strings, default None
-		    String to append DataFrame column names
+		    String to append DataFrame column names.
 		    Pass a list with length equal to the number of columns
-		    when calling get_dummies on a DataFrame. Alternativly, `prefix`
+		    when calling get_dummies on a DataFrame. Alternatively, `prefix`
 		    can be a dictionary mapping column names to prefixes.
 		prefix_sep : string, default '_'
 		    If appending prefix, separator/delimiter to use. Or pass a
@@ -449,13 +658,17 @@ package pandas.core.api;
 		    Whether the dummy columns should be sparse or not.  Returns
 		    SparseDataFrame if `data` is a Series or if all columns are included.
 		    Otherwise returns a DataFrame with some SparseBlocks.
-		
-		    .. versionadded:: 0.16.1
 		drop_first : bool, default False
 		    Whether to get k-1 dummies out of k categorical levels by removing the
 		    first level.
 		
 		    .. versionadded:: 0.18.0
+		
+		dtype : dtype, default np.uint8
+		    Data type for new columns. Only a single dtype is allowed.
+		
+		    .. versionadded:: 0.23.0
+		
 		Returns
 		-------
 		dummies : DataFrame or SparseDataFrame
@@ -487,7 +700,7 @@ package pandas.core.api;
 		2  0  0    1
 		
 		>>> df = pd.DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
-		                    'C': [1, 2, 3]})
+		...                    'C': [1, 2, 3]})
 		
 		>>> pd.get_dummies(df, prefix=['col1', 'col2'])
 		   C  col1_a  col1_b  col2_a  col2_b  col2_c
@@ -503,7 +716,7 @@ package pandas.core.api;
 		3  1  0  0
 		4  1  0  0
 		
-		>>> pd.get_dummies(pd.Series(list('abcaa')), drop_first=True))
+		>>> pd.get_dummies(pd.Series(list('abcaa')), drop_first=True)
 		   b  c
 		0  0  0
 		1  1  0
@@ -511,11 +724,17 @@ package pandas.core.api;
 		3  0  0
 		4  0  0
 		
+		>>> pd.get_dummies(pd.Series(list('abc')), dtype=float)
+		     a    b    c
+		0  1.0  0.0  0.0
+		1  0.0  1.0  0.0
+		2  0.0  0.0  1.0
+		
 		See Also
 		--------
 		Series.str.get_dummies
 	**/
-	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic):Dynamic;
+	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -525,15 +744,14 @@ package pandas.core.api;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -541,7 +759,9 @@ package pandas.core.api;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -614,16 +834,22 @@ package pandas.core.api;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -667,11 +893,6 @@ package pandas.core.api;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -688,7 +909,7 @@ package pandas.core.api;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -733,12 +954,6 @@ package pandas.core.api;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -789,21 +1004,22 @@ package pandas.core.api;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -814,6 +1030,11 @@ package pandas.core.api;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -823,11 +1044,23 @@ package pandas.core.api;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function groupby(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -836,148 +1069,435 @@ package pandas.core.api;
 		
 		Parameters
 		----------
-		start : string or datetime-like, default None
-		    Left bound for generating data
-		end : string or datetime-like, default None
-		    Right bound for generating data
-		freq : interger, string or DateOffset, default 1
-		periods : interger, default None
-		name : str, default None
-		    Name of the resulting index
-		closed : string, default 'right'
-		    options are: 'left', 'right', 'both', 'neither'
+		start : numeric or datetime-like, default None
+		    Left bound for generating intervals
+		end : numeric or datetime-like, default None
+		    Right bound for generating intervals
+		periods : integer, default None
+		    Number of periods to generate
+		freq : numeric, string, or DateOffset, default None
+		    The length of each interval. Must be consistent with the type of start
+		    and end, e.g. 2 for numeric, or '5H' for datetime-like.  Default is 1
+		    for numeric and 'D' (calendar daily) for datetime-like.
+		name : string, default None
+		    Name of the resulting IntervalIndex
+		closed : {'left', 'right', 'both', 'neither'}, default 'right'
+		    Whether the intervals are closed on the left-side, right-side, both
+		    or neither.
 		
 		Notes
 		-----
-		2 of start, end, or periods must be specified
+		Of the four parameters ``start``, ``end``, ``periods``, and ``freq``,
+		exactly three must be specified. If ``freq`` is omitted, the resulting
+		``IntervalIndex`` will have ``periods`` linearly spaced elements between
+		``start`` and ``end``, inclusively.
+		
+		To learn more about datetime-like frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Returns
 		-------
 		rng : IntervalIndex
-	**/
-	static public function interval_range(?start:Dynamic, ?end:Dynamic, ?freq:Dynamic, ?periods:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.IntervalIndex;
-	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
-		
-		See also
-		--------
-		pandas.notnull: boolean inverse of pandas.isnull
-	**/
-	static public function isnull(obj:Dynamic):Dynamic;
-	/**
-		Reshape long-format data to wide. Generalized inverse of DataFrame.pivot
-		
-		Parameters
-		----------
-		data : DataFrame
-		groups : dict
-		    {new_name : list_of_columns}
-		dropna : boolean, default True
 		
 		Examples
 		--------
-		>>> import pandas as pd
-		>>> data = pd.DataFrame({'hr1': [514, 573], 'hr2': [545, 526],
-		...                      'team': ['Red Sox', 'Yankees'],
-		...                      'year1': [2007, 2008], 'year2': [2008, 2008]})
-		>>> data
-		   hr1  hr2     team  year1  year2
-		0  514  545  Red Sox   2007   2008
-		1  573  526  Yankees   2007   2008
+		Numeric ``start`` and  ``end`` is supported.
 		
-		>>> pd.lreshape(data, {'year': ['year1', 'year2'], 'hr': ['hr1', 'hr2']})
-		      team   hr  year
-		0  Red Sox  514  2007
-		1  Yankees  573  2007
-		2  Red Sox  545  2008
-		3  Yankees  526  2008
+		>>> pd.interval_range(start=0, end=5)
+		IntervalIndex([(0, 1], (1, 2], (2, 3], (3, 4], (4, 5]]
+		              closed='right', dtype='interval[int64]')
 		
-		Returns
-		-------
-		reshaped : DataFrame
+		Additionally, datetime-like input is also supported.
+		
+		>>> pd.interval_range(start=pd.Timestamp('2017-01-01'),
+		                      end=pd.Timestamp('2017-01-04'))
+		IntervalIndex([(2017-01-01, 2017-01-02], (2017-01-02, 2017-01-03],
+		               (2017-01-03, 2017-01-04]]
+		              closed='right', dtype='interval[datetime64[ns]]')
+		
+		The ``freq`` parameter specifies the frequency between the left and right.
+		endpoints of the individual intervals within the ``IntervalIndex``.  For
+		numeric ``start`` and ``end``, the frequency must also be numeric.
+		
+		>>> pd.interval_range(start=0, periods=4, freq=1.5)
+		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]]
+		              closed='right', dtype='interval[float64]')
+		
+		Similarly, for datetime-like ``start`` and ``end``, the frequency must be
+		convertible to a DateOffset.
+		
+		>>> pd.interval_range(start=pd.Timestamp('2017-01-01'),
+		                      periods=3, freq='MS')
+		IntervalIndex([(2017-01-01, 2017-02-01], (2017-02-01, 2017-03-01],
+		               (2017-03-01, 2017-04-01]]
+		              closed='right', dtype='interval[datetime64[ns]]')
+		
+		Specify ``start``, ``end``, and ``periods``; the frequency is generated
+		automatically (linearly spaced).
+		
+		>>> pd.interval_range(start=0, end=6, periods=4)
+		IntervalIndex([(0.0, 1.5], (1.5, 3.0], (3.0, 4.5], (4.5, 6.0]]
+		          closed='right',
+		          dtype='interval[float64]')
+		
+		The ``closed`` parameter specifies which endpoints of the individual
+		intervals within the ``IntervalIndex`` are closed.
+		
+		>>> pd.interval_range(end=5, periods=4, closed='both')
+		IntervalIndex([[1, 2], [2, 3], [3, 4], [4, 5]]
+		              closed='both', dtype='interval[int64]')
+		
+		See Also
+		--------
+		IntervalIndex : an Index of intervals that are all closed on the same side.
 	**/
-	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):pandas.DataFrame;
-	static public function match(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function interval_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.IntervalIndex;
 	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.isnull : boolean inverse of pandas.notnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
+	**/
+	static public function isna(obj:Dynamic):Dynamic;
+	/**
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : scalar or array-like
+		    Object to check for null or missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
+		
+		See Also
+		--------
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
+	static public function match(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
+		
+		See Also
+		--------
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
+	**/
+	static public function notna(obj:Dynamic):Dynamic;
+	/**
+		Detect non-missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
+		
+		Parameters
+		----------
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
+		
+		Returns
+		-------
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
+		
+		See Also
+		--------
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
+		True
+		
+		>>> pd.notna(np.nan)
+		False
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
 	**/
 	static public function notnull(obj:Dynamic):Dynamic;
 	static public var options : Dynamic;
 	/**
-		Return a fixed frequency datetime index, with day (calendar) as the default
+		Return a fixed frequency PeriodIndex, with day (calendar) as the default
 		frequency
-		
 		
 		Parameters
 		----------
-		start : starting value, period-like, optional
-		end : ending value, period-like, optional
-		periods : int, default None
-		    Number of periods in the index
-		freq : str/DateOffset, default 'D'
+		start : string or period-like, default None
+		    Left bound for generating periods
+		end : string or period-like, default None
+		    Right bound for generating periods
+		periods : integer, default None
+		    Number of periods to generate
+		freq : string or DateOffset, default 'D' (calendar daily)
 		    Frequency alias
-		name : str, default None
-		    Name for the resulting PeriodIndex
+		name : string, default None
+		    Name of the resulting PeriodIndex
+		
+		Notes
+		-----
+		Of the three parameters: ``start``, ``end``, and ``periods``, exactly two
+		must be specified.
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Returns
 		-------
 		prng : PeriodIndex
+		
+		Examples
+		--------
+		
+		>>> pd.period_range(start='2017-01-01', end='2018-01-01', freq='M')
+		PeriodIndex(['2017-01', '2017-02', '2017-03', '2017-04', '2017-05',
+		             '2017-06', '2017-06', '2017-07', '2017-08', '2017-09',
+		             '2017-10', '2017-11', '2017-12', '2018-01'],
+		            dtype='period[M]', freq='M')
+		
+		If ``start`` or ``end`` are ``Period`` objects, they will be used as anchor
+		endpoints for a ``PeriodIndex`` with frequency matching that of the
+		``period_range`` constructor.
+		
+		>>> pd.period_range(start=pd.Period('2017Q1', freq='Q'),
+		...                 end=pd.Period('2017Q2', freq='Q'), freq='M')
+		PeriodIndex(['2017-03', '2017-04', '2017-05', '2017-06'],
+		            dtype='period[M]', freq='M')
 	**/
 	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
-	/**
-		Produce 'pivot' table based on 3 columns of this DataFrame.
-		Uses unique values from index / columns and fills with values.
-		
-		Parameters
-		----------
-		index : ndarray
-		    Labels to use to make new frame's index
-		columns : ndarray
-		    Labels to use to make new frame's columns
-		values : ndarray
-		    Values to use for populating new frame's values
-		
-		Notes
-		-----
-		Obviously, all 3 of the input arguments must have the same length
-		
-		Returns
-		-------
-		DataFrame
-		
-		See also
-		--------
-		DataFrame.pivot_table : generalization of pivot that can handle
-		    duplicate values for one index/column pair
-	**/
-	static public function pivot(index:Dynamic, columns:Dynamic, values:Dynamic):Dynamic;
 	static public function pnow(?freq:Dynamic):Dynamic;
 	/**
 		reset_option(pat)
@@ -990,15 +1510,14 @@ package pandas.core.api;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -1006,7 +1525,9 @@ package pandas.core.api;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -1075,16 +1596,22 @@ package pandas.core.api;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -1128,11 +1655,6 @@ package pandas.core.api;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -1149,7 +1671,7 @@ package pandas.core.api;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -1194,12 +1716,6 @@ package pandas.core.api;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -1250,21 +1766,22 @@ package pandas.core.api;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -1275,6 +1792,11 @@ package pandas.core.api;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -1284,11 +1806,23 @@ package pandas.core.api;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function reset_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1308,15 +1842,14 @@ package pandas.core.api;
 		
 		- compute.[use_bottleneck, use_numexpr]
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height]
-		- display.html.[table_schema]
+		  date_yearfirst, encoding, expand_frame_repr, float_format]
+		- display.html.[border, table_schema, use_mathjax]
 		- display.[large_repr]
 		- display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow,
 		  repr]
-		- display.[line_width, max_categories, max_columns, max_colwidth,
-		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
-		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
-		  show_dimensions]
+		- display.[max_categories, max_columns, max_colwidth, max_info_columns,
+		  max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse,
+		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- html.[border]
@@ -1324,7 +1857,9 @@ package pandas.core.api;
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
 		- io.hdf.[default_format, dropna_table]
-		- mode.[chained_assignment, sim_interactive, use_inf_as_null]
+		- io.parquet.[engine]
+		- mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]
+		- plotting.matplotlib.[register_converters]
 		
 		Parameters
 		----------
@@ -1399,16 +1934,22 @@ package pandas.core.api;
 		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
-		display.height : int
-		    Deprecated.
-		    [default: 60] [currently: 60]
-		    (Deprecated, use `display.max_rows` instead.)
+		display.html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		display.html.table_schema : boolean
 		    Whether to publish a Table Schema representation for frontends
 		    that support it.
 		    (default: False)
 		    [default: False] [currently: False]
+		
+		display.html.use_mathjax : boolean
+		    When True, Jupyter notebook will process table contents using MathJax,
+		    rendering mathematical expressions enclosed by the dollar symbol.
+		    (default: True)
+		    [default: True] [currently: True]
 		
 		display.large_repr : 'truncate'/'info'
 		    For DataFrames exceeding max_rows/max_cols, the repr (and HTML repr) can
@@ -1452,11 +1993,6 @@ package pandas.core.api;
 		    (default: False)
 		    [default: False] [currently: False]
 		
-		display.line_width : int
-		    Deprecated.
-		    [default: 80] [currently: 80]
-		    (Deprecated, use `display.width` instead.)
-		
 		display.max_categories : int
 		    This sets the maximum number of categories pandas should output when
 		    printing out a `Categorical` or a Series of dtype "category".
@@ -1473,7 +2009,7 @@ package pandas.core.api;
 		    the screen width. The IPython notebook, IPython qtconsole, or IDLE
 		    do not run in a terminal and hence it is not possible to do
 		    correct auto-detection.
-		    [default: 20] [currently: 20]
+		    [default: 0] [currently: 0]
 		
 		display.max_colwidth : int
 		    The maximum width in characters of a column in the repr of
@@ -1518,12 +2054,6 @@ package pandas.core.api;
 		    This specifies if the memory usage of a DataFrame should be displayed when
 		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
-		
-		display.mpl_style : bool
-		    Setting this to 'default' will modify the rcParams used by matplotlib
-		    to give plots a more pleasing visual style by default.
-		    Setting this to None/False restores the values to their initial value.
-		    [default: None] [currently: None]
 		
 		display.multi_sparse : boolean
 		    "sparsify" MultiIndex display (don't display repeated
@@ -1574,21 +2104,22 @@ package pandas.core.api;
 		    A ``border=value`` attribute is inserted in the ``<table>`` tag
 		    for the DataFrame HTML repr.
 		    [default: 1] [currently: 1]
+		    (Deprecated, use `display.html.border` instead.)
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
-		    'xlwt' (the default).
-		    [default: xlwt] [currently: xlwt]
+		    auto, xlwt.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsm.writer : string
 		    The default Excel writer engine for 'xlsm' files. Available options:
-		    'openpyxl' (the default).
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl.
+		    [default: auto] [currently: auto]
 		
 		io.excel.xlsx.writer : string
 		    The default Excel writer engine for 'xlsx' files. Available options:
-		    'openpyxl' (the default), 'xlsxwriter'.
-		    [default: openpyxl] [currently: openpyxl]
+		    auto, openpyxl, xlsxwriter.
+		    [default: auto] [currently: auto]
 		
 		io.hdf.default_format : format
 		    default format writing format, if None, then
@@ -1599,6 +2130,11 @@ package pandas.core.api;
 		    drop ALL nan rows when appending to a table
 		    [default: False] [currently: False]
 		
+		io.parquet.engine : string
+		    The default parquet reader/writer engine. Available options:
+		    'auto', 'pyarrow', 'fastparquet', the default is 'auto'
+		    [default: auto] [currently: auto]
+		
 		mode.chained_assignment : string
 		    Raise an exception, warn, or no action if trying to use chained assignment,
 		    The default is warn
@@ -1608,30 +2144,42 @@ package pandas.core.api;
 		    Whether to simulate interactive mode for purposes of testing
 		    [default: False] [currently: False]
 		
-		mode.use_inf_as_null : boolean
-		    True means treat None, NaN, INF, -INF as null (old way),
-		    False means None and NaN are null, but INF, -INF are not null
+		mode.use_inf_as_na : boolean
+		    True means treat None, NaN, INF, -INF as NA (old way),
+		    False means None and NaN are null, but INF, -INF are not NA
 		    (new way).
 		    [default: False] [currently: False]
+		
+		mode.use_inf_as_null : boolean
+		    use_inf_as_null had been deprecated and will be removed in a future
+		    version. Use `use_inf_as_na` instead.
+		    [default: False] [currently: False]
+		    (Deprecated, use `mode.use_inf_as_na` instead.)
+		
+		plotting.matplotlib.register_converters : bool
+		    Whether to register converters with matplotlib's units registry for
+		    dates, times, datetimes, and Periods. Toggling to False will remove
+		    the converters, restoring any converters that pandas overwrote.
+		    [default: True] [currently: True]
 	**/
 	static public function set_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a fixed frequency timedelta index, with day as the default
+		Return a fixed frequency TimedeltaIndex, with day as the default
 		frequency
 		
 		Parameters
 		----------
 		start : string or timedelta-like, default None
-		    Left bound for generating dates
-		end : string or datetime-like, default None
-		    Right bound for generating dates
-		periods : integer or None, default None
-		    If None, must specify start and end
+		    Left bound for generating timedeltas
+		end : string or timedelta-like, default None
+		    Right bound for generating timedeltas
+		periods : integer, default None
+		    Number of periods to generate
 		freq : string or DateOffset, default 'D' (calendar daily)
 		    Frequency strings can have multiples, e.g. '5H'
-		name : str, default None
-		    Name of the resulting index
-		closed : string or None, default None
+		name : string, default None
+		    Name of the resulting TimedeltaIndex
+		closed : string, default None
 		    Make the interval closed with respect to the given frequency to
 		    the 'left', 'right', or both sides (None)
 		
@@ -1641,10 +2189,44 @@ package pandas.core.api;
 		
 		Notes
 		-----
-		2 of start, end, or periods must be specified.
+		Of the four parameters ``start``, ``end``, ``periods``, and ``freq``,
+		exactly three must be specified. If ``freq`` is omitted, the resulting
+		``TimedeltaIndex`` will have ``periods`` linearly spaced elements between
+		``start`` and ``end`` (closed on both sides).
 		
 		To learn more about the frequency strings, please see `this link
 		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
+		Examples
+		--------
+		
+		>>> pd.timedelta_range(start='1 day', periods=4)
+		TimedeltaIndex(['1 days', '2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq='D')
+		
+		The ``closed`` parameter specifies which endpoint is included.  The default
+		behavior is to include both endpoints.
+		
+		>>> pd.timedelta_range(start='1 day', periods=4, closed='right')
+		TimedeltaIndex(['2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq='D')
+		
+		The ``freq`` parameter specifies the frequency of the TimedeltaIndex.
+		Only fixed frequencies can be passed, non-fixed frequencies such as
+		'M' (month end) will raise.
+		
+		>>> pd.timedelta_range(start='1 day', end='2 days', freq='6H')
+		TimedeltaIndex(['1 days 00:00:00', '1 days 06:00:00', '1 days 12:00:00',
+		                '1 days 18:00:00', '2 days 00:00:00'],
+		               dtype='timedelta64[ns]', freq='6H')
+		
+		Specify ``start``, ``end``, and ``periods``; the frequency is generated
+		automatically (linearly spaced).
+		
+		>>> pd.timedelta_range(start='1 day', end='5 days', periods=4)
+		TimedeltaIndex(['1 days 00:00:00', '2 days 08:00:00', '3 days 16:00:00',
+		            '5 days 00:00:00'],
+		           dtype='timedelta64[ns]', freq=None)
 	**/
 	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.TimedeltaIndex;
 	/**
@@ -1654,7 +2236,7 @@ package pandas.core.api;
 		----------
 		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
-		    .. versionadded: 0.18.1
+		    .. versionadded:: 0.18.1
 		
 		       or DataFrame/dict-like
 		
@@ -1680,7 +2262,7 @@ package pandas.core.api;
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
-		    .. versionadded: 0.16.1
+		    .. versionadded:: 0.16.1
 		
 		utc : boolean, default None
 		    Return UTC DatetimeIndex if True (converting any tz-aware
@@ -1718,7 +2300,13 @@ package pandas.core.api;
 		    - If Timestamp convertible, origin is set to Timestamp identified by
 		      origin.
 		
-		    .. versionadded: 0.20.0
+		    .. versionadded:: 0.20.0
+		cache : boolean, default False
+		    If True, use a cache of unique, converted dates to apply the datetime
+		    conversion. May produce sigificant speed-up when parsing duplicate date
+		    strings, especially ones with timezone offsets.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
@@ -1731,11 +2319,11 @@ package pandas.core.api;
 		
 		    In case when it is not possible to return designated types (e.g. when
 		    any element of input is before Timestamp.min or after Timestamp.max)
-		    return will have datetime.datetime type (or correspoding array/Series).
+		    return will have datetime.datetime type (or corresponding
+		    array/Series).
 		
 		Examples
 		--------
-		
 		Assembling a datetime from multiple columns of a DataFrame. The keys can be
 		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
 		'ms', 'us', 'ns']) or plurals of the same
@@ -1797,8 +2385,13 @@ package pandas.core.api;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
 		Convert argument to a numeric type.
 		
@@ -1870,6 +2463,13 @@ package pandas.core.api;
 		2    2.0
 		3   -3.0
 		dtype: float64
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
+		pandas.to_timedelta : Convert argument to timedelta.
+		numpy.ndarray.astype : Cast a numpy array to a specified type.
 	**/
 	static public function to_numeric(arg:Dynamic, ?errors:Dynamic, ?downcast:Dynamic):Dynamic;
 	/**
@@ -1918,6 +2518,11 @@ package pandas.core.api;
 		>>> pd.to_timedelta(np.arange(5), unit='d')
 		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
 		               dtype='timedelta64[ns]', freq=None)
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_datetime : Convert argument to datetime.
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
@@ -2016,183 +2621,4 @@ package pandas.core.api;
 		value_counts : Series
 	**/
 	static public function value_counts(values:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?normalize:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
-	/**
-		Wide panel to long format. Less flexible but more user-friendly than melt.
-		
-		With stubnames ['A', 'B'], this function expects to find one or more
-		group of columns with format Asuffix1, Asuffix2,..., Bsuffix1, Bsuffix2,...
-		You specify what you want to call this suffix in the resulting long format
-		with `j` (for example `j='year'`)
-		
-		Each row of these wide variables are assumed to be uniquely identified by
-		`i` (can be a single column name or a list of column names)
-		
-		All remaining variables in the data frame are left intact.
-		
-		Parameters
-		----------
-		df : DataFrame
-		    The wide-format DataFrame
-		stubnames : str or list-like
-		    The stub name(s). The wide format variables are assumed to
-		    start with the stub names.
-		i : str or list-like
-		    Column(s) to use as id variable(s)
-		j : str
-		    The name of the subobservation variable. What you wish to name your
-		    suffix in the long format.
-		sep : str, default ""
-		    A character indicating the separation of the variable names
-		    in the wide format, to be stripped from the names in the long format.
-		    For example, if your column names are A-suffix1, A-suffix2, you
-		    can strip the hypen by specifying `sep='-'`
-		
-		    .. versionadded:: 0.20.0
-		
-		suffix : str, default '\\d+'
-		    A regular expression capturing the wanted suffixes. '\\d+' captures
-		    numeric suffixes. Suffixes with no numbers could be specified with the
-		    negated character class '\\D+'. You can also further disambiguate
-		    suffixes, for example, if your wide variables are of the form
-		    Aone, Btwo,.., and you have an unrelated column Arating, you can
-		    ignore the last one by specifying `suffix='(!?one|two)'`
-		
-		    .. versionadded:: 0.20.0
-		
-		Returns
-		-------
-		DataFrame
-		    A DataFrame that contains each stub name as a variable, with new index
-		    (i, j)
-		
-		Examples
-		--------
-		>>> import pandas as pd
-		>>> import numpy as np
-		>>> np.random.seed(123)
-		>>> df = pd.DataFrame({"A1970" : {0 : "a", 1 : "b", 2 : "c"},
-		...                    "A1980" : {0 : "d", 1 : "e", 2 : "f"},
-		...                    "B1970" : {0 : 2.5, 1 : 1.2, 2 : .7},
-		...                    "B1980" : {0 : 3.2, 1 : 1.3, 2 : .1},
-		...                    "X"     : dict(zip(range(3), np.random.randn(3)))
-		...                   })
-		>>> df["id"] = df.index
-		>>> df
-		A1970 A1980  B1970  B1980         X  id
-		0     a     d    2.5    3.2 -1.085631   0
-		1     b     e    1.2    1.3  0.997345   1
-		2     c     f    0.7    0.1  0.282978   2
-		>>> pd.wide_to_long(df, ["A", "B"], i="id", j="year")
-		                X  A    B
-		id year
-		0  1970 -1.085631  a  2.5
-		1  1970  0.997345  b  1.2
-		2  1970  0.282978  c  0.7
-		0  1980 -1.085631  d  3.2
-		1  1980  0.997345  e  1.3
-		2  1980  0.282978  f  0.1
-		
-		With multuple id columns
-		
-		>>> df = pd.DataFrame({
-		...     'famid': [1, 1, 1, 2, 2, 2, 3, 3, 3],
-		...     'birth': [1, 2, 3, 1, 2, 3, 1, 2, 3],
-		...     'ht1': [2.8, 2.9, 2.2, 2, 1.8, 1.9, 2.2, 2.3, 2.1],
-		...     'ht2': [3.4, 3.8, 2.9, 3.2, 2.8, 2.4, 3.3, 3.4, 2.9]
-		... })
-		>>> df
-		   birth  famid  ht1  ht2
-		0      1      1  2.8  3.4
-		1      2      1  2.9  3.8
-		2      3      1  2.2  2.9
-		3      1      2  2.0  3.2
-		4      2      2  1.8  2.8
-		5      3      2  1.9  2.4
-		6      1      3  2.2  3.3
-		7      2      3  2.3  3.4
-		8      3      3  2.1  2.9
-		>>> l = pd.wide_to_long(df, stubnames='ht', i=['famid', 'birth'], j='age')
-		>>> l
-		                  ht
-		famid birth age
-		1     1     1    2.8
-		            2    3.4
-		      2     1    2.9
-		            2    3.8
-		      3     1    2.2
-		            2    2.9
-		2     1     1    2.0
-		            2    3.2
-		      2     1    1.8
-		            2    2.8
-		      3     1    1.9
-		            2    2.4
-		3     1     1    2.2
-		            2    3.3
-		      2     1    2.3
-		            2    3.4
-		      3     1    2.1
-		            2    2.9
-		
-		Going from long back to wide just takes some creative use of `unstack`
-		
-		>>> w = l.reset_index().set_index(['famid', 'birth', 'age']).unstack()
-		>>> w.columns = pd.Index(w.columns).str.join('')
-		>>> w.reset_index()
-		   famid  birth  ht1  ht2
-		0      1      1  2.8  3.4
-		1      1      2  2.9  3.8
-		2      1      3  2.2  2.9
-		3      2      1  2.0  3.2
-		4      2      2  1.8  2.8
-		5      2      3  1.9  2.4
-		6      3      1  2.2  3.3
-		7      3      2  2.3  3.4
-		8      3      3  2.1  2.9
-		
-		Less wieldy column names are also handled
-		
-		>>> df = pd.DataFrame({'A(quarterly)-2010': np.random.rand(3),
-		...                    'A(quarterly)-2011': np.random.rand(3),
-		...                    'B(quarterly)-2010': np.random.rand(3),
-		...                    'B(quarterly)-2011': np.random.rand(3),
-		...                    'X' : np.random.randint(3, size=3)})
-		>>> df['id'] = df.index
-		>>> df
-		  A(quarterly)-2010 A(quarterly)-2011 B(quarterly)-2010 B(quarterly)-2011
-		0          0.531828          0.724455          0.322959          0.293714
-		1          0.634401          0.611024          0.361789          0.630976
-		2          0.849432          0.722443          0.228263          0.092105
-		\
-		   X  id
-		0  0   0
-		1  1   1
-		2  2   2
-		>>> pd.wide_to_long(df, ['A(quarterly)', 'B(quarterly)'],
-		                    i='id', j='year', sep='-')
-		         X     A(quarterly)  B(quarterly)
-		id year
-		0  2010  0       0.531828       0.322959
-		1  2010  2       0.634401       0.361789
-		2  2010  2       0.849432       0.228263
-		0  2011  0       0.724455       0.293714
-		1  2011  2       0.611024       0.630976
-		2  2011  2       0.722443       0.092105
-		
-		If we have many columns, we could also use a regex to find our
-		stubnames and pass that list on to wide_to_long
-		
-		>>> stubnames = set([match[0] for match in
-		                    df.columns.str.findall('[A-B]\(.*\)').values
-		                    if match != [] ])
-		>>> list(stubnames)
-		['B(quarterly)', 'A(quarterly)']
-		
-		Notes
-		-----
-		All extra variables are left untouched. This simply uses
-		`pandas.melt` under the hood, but is hard-coded to "do the right thing"
-		in a typicaly case.
-	**/
-	static public function wide_to_long(df:Dynamic, stubnames:Dynamic, i:Dynamic, j:Dynamic, ?sep:Dynamic, ?suffix:Dynamic):Dynamic;
 }

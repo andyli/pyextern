@@ -25,7 +25,7 @@ package tensorflow.contrib.graph_editor.transform;
 		  ValueError: if the arguments are invalid.
 	**/
 	public function __call__(sgv:Dynamic, dst_graph:Dynamic, dst_scope:Dynamic, ?src_scope:Dynamic, ?reuse_dst_scope:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -112,7 +112,7 @@ package tensorflow.contrib.graph_editor.transform;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -163,7 +163,7 @@ package tensorflow.contrib.graph_editor.transform;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -171,11 +171,15 @@ package tensorflow.contrib.graph_editor.transform;
 	/**
 		Connect the previously copied ops.
 	**/
-	public function _connect_ops(info:Dynamic):Dynamic;
+	public function _connect_control_inputs(info:Dynamic):Dynamic;
 	/**
 		Copy ops without connecting them.
 	**/
 	public function _copy_ops(info:Dynamic):Dynamic;
+	/**
+		Reconnects the cyclic tensors.
+	**/
+	public function _finalize_cycles(info:Dynamic):Dynamic;
 	/**
 		Transform a subgraph view.
 		
@@ -192,5 +196,5 @@ package tensorflow.contrib.graph_editor.transform;
 	/**
 		Return tre transformed tensor of `t`.
 	**/
-	public function _transformed_t(info:Dynamic, t:Dynamic):Dynamic;
+	public function _transformed_t(info:Dynamic, t:Dynamic, consumer_op:Dynamic):Dynamic;
 }

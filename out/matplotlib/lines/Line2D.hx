@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.lines;
 @:pythonImport("matplotlib.lines", "Line2D") extern class Line2D {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -44,49 +44,49 @@ package matplotlib.lines;
 		
 		The kwargs are :class:`~matplotlib.lines.Line2D` properties:
 		
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color or c: any matplotlib color 
-		  contains: a callable function 
-		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
-		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
-		  dashes: sequence of on/off ink in points 
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
-		  gid: an id string 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float value in points 
-		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color 
-		  markeredgewidth or mew: float value in points 
-		  markerfacecolor or mfc: any matplotlib color 
-		  markerfacecoloralt or mfcalt: any matplotlib color 
-		  markersize or ms: float 
-		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
-		  path_effects: unknown
-		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
-		  pickradius: float distance in points 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
-		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
-		  transform: a :class:`matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  xdata: 1D array 
-		  ydata: 1D array 
-		  zorder: any number 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  alpha: float
+		  animated: bool
+		  antialiased: bool
+		  clip_box: `.Bbox`
+		  clip_on: bool
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  color: color
+		  contains: callable
+		  dash_capstyle: {'butt', 'round', 'projecting'}
+		  dash_joinstyle: {'miter', 'round', 'bevel'}
+		  dashes: sequence of floats (on/off ink in points) or (None, None)
+		  drawstyle: {'default', 'steps', 'steps-pre', 'steps-mid', 'steps-post'}
+		  figure: `.Figure`
+		  fillstyle: {'full', 'left', 'right', 'bottom', 'top', 'none'}
+		  gid: str
+		  in_layout: bool
+		  label: object
+		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth: float
+		  marker: unknown
+		  markeredgecolor: color
+		  markeredgewidth: float
+		  markerfacecolor: color
+		  markerfacecoloralt: color
+		  markersize: float
+		  markevery: unknown
+		  path_effects: `.AbstractPathEffect`
+		  picker: float or callable[[Artist, Event], Tuple[bool, dict]]
+		  pickradius: float
+		  rasterized: bool or None
+		  sketch_params: (scale: float, length: float, randomness: float) 
+		  snap: bool or None
+		  solid_capstyle: {'butt', 'round', 'projecting'}
+		  solid_joinstyle: {'miter', 'round', 'bevel'}
+		  transform: matplotlib.transforms.Transform
+		  url: str
+		  visible: bool
+		  xdata: 1D array
+		  ydata: 1D array
+		  zorder: float
 		
-		See :meth:`set_linestyle` for a decription of the line styles,
+		See :meth:`set_linestyle` for a description of the line styles,
 		:meth:`set_marker` for a description of the markers, and
 		:meth:`set_drawstyle` for a description of the draw styles.
 	**/
@@ -98,49 +98,49 @@ package matplotlib.lines;
 		
 		The kwargs are :class:`~matplotlib.lines.Line2D` properties:
 		
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  antialiased or aa: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color or c: any matplotlib color 
-		  contains: a callable function 
-		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
-		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
-		  dashes: sequence of on/off ink in points 
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
-		  gid: an id string 
-		  label: string or anything printable with '%s' conversion. 
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or lw: float value in points 
-		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color 
-		  markeredgewidth or mew: float value in points 
-		  markerfacecolor or mfc: any matplotlib color 
-		  markerfacecoloralt or mfcalt: any matplotlib color 
-		  markersize or ms: float 
-		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
-		  path_effects: unknown
-		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
-		  pickradius: float distance in points 
-		  rasterized: [True | False | None] 
-		  sketch_params: unknown
-		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
-		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
-		  transform: a :class:`matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  visible: [True | False] 
-		  xdata: 1D array 
-		  ydata: 1D array 
-		  zorder: any number 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  alpha: float
+		  animated: bool
+		  antialiased: bool
+		  clip_box: `.Bbox`
+		  clip_on: bool
+		  clip_path: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None] 
+		  color: color
+		  contains: callable
+		  dash_capstyle: {'butt', 'round', 'projecting'}
+		  dash_joinstyle: {'miter', 'round', 'bevel'}
+		  dashes: sequence of floats (on/off ink in points) or (None, None)
+		  drawstyle: {'default', 'steps', 'steps-pre', 'steps-mid', 'steps-post'}
+		  figure: `.Figure`
+		  fillstyle: {'full', 'left', 'right', 'bottom', 'top', 'none'}
+		  gid: str
+		  in_layout: bool
+		  label: object
+		  linestyle: {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
+		  linewidth: float
+		  marker: unknown
+		  markeredgecolor: color
+		  markeredgewidth: float
+		  markerfacecolor: color
+		  markerfacecoloralt: color
+		  markersize: float
+		  markevery: unknown
+		  path_effects: `.AbstractPathEffect`
+		  picker: float or callable[[Artist, Event], Tuple[bool, dict]]
+		  pickradius: float
+		  rasterized: bool or None
+		  sketch_params: (scale: float, length: float, randomness: float) 
+		  snap: bool or None
+		  solid_capstyle: {'butt', 'round', 'projecting'}
+		  solid_joinstyle: {'miter', 'round', 'bevel'}
+		  transform: matplotlib.transforms.Transform
+		  url: str
+		  visible: bool
+		  xdata: 1D array
+		  ydata: 1D array
+		  zorder: float
 		
-		See :meth:`set_linestyle` for a decription of the line styles,
+		See :meth:`set_linestyle` for a description of the line styles,
 		:meth:`set_marker` for a description of the markers, and
 		:meth:`set_drawstyle` for a description of the draw styles.
 	**/
@@ -151,7 +151,7 @@ package matplotlib.lines;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -202,24 +202,15 @@ package matplotlib.lines;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _alias_map : Dynamic;
 	static public var _drawStyles_l : Dynamic;
 	static public var _drawStyles_s : Dynamic;
-	public function _draw_dash_dot(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
-	public function _draw_dashed(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
-	public function _draw_dotted(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
-	public function _draw_lines(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
-	public function _draw_solid(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
-	public function _draw_steps_mid(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
-	public function _draw_steps_post(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
-	public function _draw_steps_pre(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;
 	public function _get_markerfacecolor(?alt:Dynamic):Dynamic;
-	public function _get_rgba_face(?alt:Dynamic):Dynamic;
-	public function _get_rgba_ln_color(?alt:Dynamic):Dynamic;
 	/**
 		Return the :class:`~matplotlib.transforms.TransformedPath` instance
 		of this line.
@@ -304,7 +295,7 @@ package matplotlib.lines;
 	/**
 		draw the Line with `renderer` unless visibility is False
 	**/
-	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function draw(renderer:Dynamic):Dynamic;
 	static public var drawStyleKeys : Dynamic;
 	static public var drawStyles : Dynamic;
 	static public var fillStyles : Dynamic;
@@ -333,11 +324,11 @@ package matplotlib.lines;
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		alias for get_antialiased
+		alias for `get_antialiased`
 	**/
-	public function get_aa():Dynamic;
+	public function get_aa(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return filter function to be used for agg filter
+		Return filter function to be used for agg filter.
 	**/
 	public function get_agg_filter():Dynamic;
 	/**
@@ -351,17 +342,9 @@ package matplotlib.lines;
 	public function get_animated():Dynamic;
 	public function get_antialiased():Dynamic;
 	/**
-		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
+		alias for `get_color`
 	**/
-	public function get_axes():Dynamic;
-	/**
-		alias for get_color
-	**/
-	public function get_c():Dynamic;
+	public function get_c(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a list of the child :class:`Artist`s this
 		:class:`Artist` contains.
@@ -404,8 +387,7 @@ package matplotlib.lines;
 	public function get_data(?orig:Dynamic):Dynamic;
 	public function get_drawstyle():Dynamic;
 	/**
-		Return the :class:`~matplotlib.figure.Figure` instance the
-		artist belongs to.
+		Return the `.Figure` instance the artist belongs to.
 	**/
 	public function get_figure():Dynamic;
 	/**
@@ -413,9 +395,18 @@ package matplotlib.lines;
 	**/
 	public function get_fillstyle():Dynamic;
 	/**
-		Returns the group id
+		Returns the group id.
 	**/
 	public function get_gid():Dynamic;
+	/**
+		Return boolean flag, ``True`` if artist is included in layout
+		calculations.
+		
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+	**/
+	public function get_in_layout():Dynamic;
 	/**
 		Get the label used for this artist in the legend.
 	**/
@@ -423,13 +414,13 @@ package matplotlib.lines;
 	public function get_linestyle():Dynamic;
 	public function get_linewidth():Dynamic;
 	/**
-		alias for get_linestyle
+		alias for `get_linestyle`
 	**/
-	public function get_ls():Dynamic;
+	public function get_ls(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for get_linewidth
+		alias for `get_linewidth`
 	**/
-	public function get_lw():Dynamic;
+	public function get_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_marker():Dynamic;
 	public function get_markeredgecolor():Dynamic;
 	public function get_markeredgewidth():Dynamic;
@@ -441,25 +432,25 @@ package matplotlib.lines;
 	**/
 	public function get_markevery():Dynamic;
 	/**
-		alias for get_markeredgecolor
+		alias for `get_markeredgecolor`
 	**/
-	public function get_mec():Dynamic;
+	public function get_mec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for get_markeredgewidth
+		alias for `get_markeredgewidth`
 	**/
-	public function get_mew():Dynamic;
+	public function get_mew(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for get_markerfacecolor
+		alias for `get_markerfacecolor`
 	**/
-	public function get_mfc():Dynamic;
+	public function get_mfc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for get_markerfacecoloralt
+		alias for `get_markerfacecoloralt`
 	**/
-	public function get_mfcalt(?alt:Dynamic):Dynamic;
+	public function get_mfcalt(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for get_markersize
+		alias for `get_markersize`
 	**/
-	public function get_ms():Dynamic;
+	public function get_ms(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the :class:`~matplotlib.path.Path` object associated
 		with this line.
@@ -467,7 +458,7 @@ package matplotlib.lines;
 	public function get_path():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist
+		Return the picker object used by this artist.
 	**/
 	public function get_picker():Dynamic;
 	/**
@@ -475,7 +466,7 @@ package matplotlib.lines;
 	**/
 	public function get_pickradius():Dynamic;
 	/**
-		return True if the artist is to be rasterized
+		Return whether the artist is to be rasterized.
 	**/
 	public function get_rasterized():Dynamic;
 	/**
@@ -485,17 +476,17 @@ package matplotlib.lines;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -520,6 +511,21 @@ package matplotlib.lines;
 	**/
 	public function get_solid_joinstyle():Dynamic;
 	/**
+		Like `Artist.get_window_extent`, but includes any clipping.
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` instance
+		    renderer that will be used to draw the figures (i.e.
+		    ``fig.canvas.get_renderer()``)
+		
+		Returns
+		-------
+		bbox : `.BboxBase`
+		    containing the bounding box (in figure pixel co-ordinates).
+	**/
+	public function get_tightbbox(renderer:Dynamic):Dynamic;
+	/**
 		Return the :class:`~matplotlib.transforms.Transform`
 		instance used by this artist.
 	**/
@@ -531,7 +537,7 @@ package matplotlib.lines;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url
+		Returns the url.
 	**/
 	public function get_url():Dynamic;
 	/**
@@ -572,7 +578,7 @@ package matplotlib.lines;
 	**/
 	public function get_ydata(?orig:Dynamic):Dynamic;
 	/**
-		Return the :class:`Artist`'s zorder.
+		Return the artist's zorder.
 	**/
 	public function get_zorder():Dynamic;
 	/**
@@ -580,6 +586,9 @@ package matplotlib.lines;
 	**/
 	public function have_units():Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
@@ -588,8 +597,10 @@ package matplotlib.lines;
 	**/
 	public function is_dashed():Dynamic;
 	/**
-		Returns True if the artist is assigned to a
-		:class:`~matplotlib.figure.Figure`.
+		.. deprecated:: 2.2
+		    artist.figure is not None
+		
+		Returns whether the artist is assigned to a `.Figure`.
 	**/
 	public function is_figure_set():Dynamic;
 	/**
@@ -651,50 +662,56 @@ package matplotlib.lines;
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_antialiased
+		alias for `set_antialiased`
 	**/
-	public function set_aa(val:Dynamic):Dynamic;
+	public function set_aa(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set agg_filter fuction.
+		Set the agg filter.
+		
+		Parameters
+		----------
+		filter_func : callable
+		    A filter function, which takes a (m, n, 3) float array and a dpi
+		    value, and returns a (m, n, 3) array.
+		
+		    .. ACCEPTS: a filter function, which takes a (m, n, 3) float array
+		        and a dpi value, and returns a (m, n, 3) array
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Set the alpha value used for blending - not supported on
-		all backends.
+		Set the alpha value used for blending - not supported on all backends.
 		
-		ACCEPTS: float (0.0 transparent through 1.0 opaque)
+		Parameters
+		----------
+		alpha : float
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
 		Set the artist's animation state.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
-		True if line should be drawin with antialiased rendering
+		Set whether to use antialiased rendering.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_antialiased(b:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.axes.Axes` instance in which the
-		artist resides, if any.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-		
-		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
+		alias for `set_color`
 	**/
-	public function set_axes(axes:Dynamic):Dynamic;
+	public function set_c(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_color
-	**/
-	public function set_c(val:Dynamic):Dynamic;
-	/**
-		Set the artist's clip :class:`~matplotlib.transforms.Bbox`.
+		Set the artist's clip `.Bbox`.
 		
-		ACCEPTS: a :class:`matplotlib.transforms.Bbox` instance
+		Parameters
+		----------
+		clipbox : `.Bbox`
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
@@ -703,34 +720,34 @@ package matplotlib.lines;
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_clip_on(b:Dynamic):Dynamic;
 	/**
 		Set the artist's clip path, which may be:
 		
-		  * a :class:`~matplotlib.patches.Patch` (or subclass) instance
+		- a :class:`~matplotlib.patches.Patch` (or subclass) instance; or
+		- a :class:`~matplotlib.path.Path` instance, in which case a
+		  :class:`~matplotlib.transforms.Transform` instance, which will be
+		  applied to the path before using it for clipping, must be provided;
+		  or
+		- ``None``, to remove a previously set clipping path.
 		
-		  * a :class:`~matplotlib.path.Path` instance, in which case
-		     an optional :class:`~matplotlib.transforms.Transform`
-		     instance may be provided, which will be applied to the
-		     path before using it for clipping.
+		For efficiency, if the path happens to be an axis-aligned rectangle,
+		this method will set the clipping box to the corresponding rectangle
+		and set the clipping path to ``None``.
 		
-		  * *None*, to remove the clipping path
-		
-		For efficiency, if the path happens to be an axis-aligned
-		rectangle, this method will set the clipping box to the
-		corresponding rectangle and set the clipping path to *None*.
-		
-		ACCEPTS: [ (:class:`~matplotlib.path.Path`,
-		:class:`~matplotlib.transforms.Transform`) |
-		:class:`~matplotlib.patches.Patch` | None ]
+		ACCEPTS: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		Set the color of the line
 		
-		ACCEPTS: any matplotlib color
+		Parameters
+		----------
+		color : color
 	**/
 	public function set_color(color:Dynamic):Dynamic;
 	/**
@@ -744,18 +761,25 @@ package matplotlib.lines;
 		and *props* is a dictionary of properties you want returned
 		with the contains test.
 		
-		ACCEPTS: a callable function
+		Parameters
+		----------
+		picker : callable
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		Set the cap style for dashed linestyles
+		Set the cap style for dashed linestyles.
 		
-		ACCEPTS: ['butt' | 'round' | 'projecting']
+		Parameters
+		----------
+		s : {'butt', 'round', 'projecting'}
 	**/
 	public function set_dash_capstyle(s:Dynamic):Dynamic;
 	/**
-		Set the join style for dashed linestyles
-		ACCEPTS: ['miter' | 'round' | 'bevel']
+		Set the join style for dashed linestyles.
+		
+		Parameters
+		----------
+		s : {'miter', 'round', 'bevel'}
 	**/
 	public function set_dash_joinstyle(s:Dynamic):Dynamic;
 	/**
@@ -763,7 +787,9 @@ package matplotlib.lines;
 		points.  If seq is empty or if seq = (None, None), the
 		linestyle will be set to solid.
 		
-		ACCEPTS: sequence of on/off ink in points
+		Parameters
+		----------
+		seq : sequence of floats (on/off ink in points) or (None, None)
 	**/
 	public function set_dashes(seq:Dynamic):Dynamic;
 	/**
@@ -779,34 +805,54 @@ package matplotlib.lines;
 		produce step-plots. 'steps' is equivalent to 'steps-pre' and
 		is maintained for backward-compatibility.
 		
-		ACCEPTS: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |
-		          'steps-post']
+		Parameters
+		----------
+		drawstyle : {'default', 'steps', 'steps-pre', 'steps-mid', 'steps-post'}
 	**/
 	public function set_drawstyle(drawstyle:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.figure.Figure` instance the artist
-		belongs to.
+		Set the `.Figure` instance the artist belongs to.
 		
-		ACCEPTS: a :class:`matplotlib.figure.Figure` instance
+		Parameters
+		----------
+		fig : `.Figure`
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
 		Set the marker fill style; 'full' means fill the whole marker.
 		'none' means no filling; other options are for half-filled markers.
 		
-		ACCEPTS: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']
+		Parameters
+		----------
+		fs : {'full', 'left', 'right', 'bottom', 'top', 'none'}
 	**/
 	public function set_fillstyle(fs:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist
+		Sets the (group) id for the artist.
 		
-		ACCEPTS: an id string
+		Parameters
+		----------
+		gid : str
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
 	/**
+		Set if artist is to be included in layout calculations,
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+		
+		Parameters
+		----------
+		in_layout : bool
+	**/
+	public function set_in_layout(in_layout:Dynamic):Dynamic;
+	/**
 		Set the label to *s* for auto legend.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : object
+		    *s* will be converted to a string by calling `str`.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
@@ -833,14 +879,7 @@ package matplotlib.lines;
 		
 		    (offset, onoffseq),
 		
-		where ``onoffseq`` is an even length tuple of on and off ink
-		in points.
-		
-		
-		ACCEPTS: ['solid' | 'dashed', 'dashdot', 'dotted' |
-		           (offset, on-off-dash-seq) |
-		           ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |
-		           ``' '`` | ``''``]
+		where ``onoffseq`` is an even length tuple of on and off ink in points.
 		
 		.. seealso::
 		
@@ -849,65 +888,74 @@ package matplotlib.lines;
 		
 		Parameters
 		----------
-		ls : { ``'-'``,  ``'--'``, ``'-.'``, ``':'``} and more see description
+		ls : {'-', '--', '-.', ':', '', (offset, on-off-seq), ...}
 		    The line style.
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;
 	/**
 		Set the line width in points
 		
-		ACCEPTS: float value in points
+		Parameters
+		----------
+		w : float
 	**/
 	public function set_linewidth(w:Dynamic):Dynamic;
 	/**
-		alias for set_linestyle
+		alias for `set_linestyle`
 	**/
-	public function set_ls(val:Dynamic):Dynamic;
+	public function set_ls(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_linewidth
+		alias for `set_linewidth`
 	**/
-	public function set_lw(val:Dynamic):Dynamic;
+	public function set_lw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the line marker
-		
-		ACCEPTS: :mod:`A valid marker style <matplotlib.markers>`
+		Set the line marker.
 		
 		Parameters
 		----------
-		
 		marker: marker style
 		    See `~matplotlib.markers` for full description of possible
-		    argument
+		    arguments.
 	**/
 	public function set_marker(marker:Dynamic):Dynamic;
 	/**
-		Set the marker edge color
+		Set the marker edge color.
 		
-		ACCEPTS: any matplotlib color
+		Parameters
+		----------
+		ec : color
 	**/
 	public function set_markeredgecolor(ec:Dynamic):Dynamic;
 	/**
-		Set the marker edge width in points
+		Set the marker edge width in points.
 		
-		ACCEPTS: float value in points
+		Parameters
+		----------
+		ew : float
 	**/
 	public function set_markeredgewidth(ew:Dynamic):Dynamic;
 	/**
 		Set the marker face color.
 		
-		ACCEPTS: any matplotlib color
+		Parameters
+		----------
+		fc : color
 	**/
 	public function set_markerfacecolor(fc:Dynamic):Dynamic;
 	/**
 		Set the alternate marker face color.
 		
-		ACCEPTS: any matplotlib color
+		Parameters
+		----------
+		fc : color
 	**/
 	public function set_markerfacecoloralt(fc:Dynamic):Dynamic;
 	/**
-		Set the marker size in points
+		Set the marker size in points.
 		
-		ACCEPTS: float
+		Parameters
+		----------
+		sz : float
 	**/
 	public function set_markersize(sz:Dynamic):Dynamic;
 	/**
@@ -915,13 +963,9 @@ package matplotlib.lines;
 		
 		e.g., if `every=5`, every 5-th marker will be plotted.
 		
-		ACCEPTS: [None | int | length-2 tuple of int | slice |
-		list/array of int | float | length-2 tuple of float]
-		
 		Parameters
 		----------
-		every: None | int | length-2 tuple of int | slice | list/array of int |
-		float | length-2 tuple of float
+		every: None or int or (int, int) or slice or List[int] or float or (float, float)
 		    Which markers to plot.
 		
 		    - every=None, every point will be plotted.
@@ -930,7 +974,7 @@ package matplotlib.lines;
 		    - every=(start, N), every N-th marker, starting at point
 		      start, will be plotted.
 		    - every=slice(start, end, N), every N-th marker, starting at
-		      point start, upto but not including point end, will be plotted.
+		      point start, up to but not including point end, will be plotted.
 		    - every=[i, j, m, n], only markers at points i, j, m, and n
 		      will be plotted.
 		    - every=0.1, (i.e. a float) then markers will be spaced at
@@ -962,49 +1006,59 @@ package matplotlib.lines;
 	**/
 	public function set_markevery(every:Dynamic):Dynamic;
 	/**
-		alias for set_markeredgecolor
+		alias for `set_markeredgecolor`
 	**/
-	public function set_mec(val:Dynamic):Dynamic;
+	public function set_mec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_markeredgewidth
+		alias for `set_markeredgewidth`
 	**/
-	public function set_mew(val:Dynamic):Dynamic;
+	public function set_mew(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_markerfacecolor
+		alias for `set_markerfacecolor`
 	**/
-	public function set_mfc(val:Dynamic):Dynamic;
+	public function set_mfc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_markerfacecoloralt
+		alias for `set_markerfacecoloralt`
 	**/
-	public function set_mfcalt(val:Dynamic):Dynamic;
+	public function set_mfcalt(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_markersize
+		alias for `set_markersize`
 	**/
-	public function set_ms(val:Dynamic):Dynamic;
+	public function set_ms(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set path_effects, which should be a list of instances of
-		matplotlib.patheffect._Base class or its derivatives.
+		Set the path effects.
+		
+		Parameters
+		----------
+		path_effects : `.AbstractPathEffect`
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
 		Sets the event picker details for the line.
 		
-		ACCEPTS: float distance in points or callable pick function
-		``fn(artist, event)``
+		Parameters
+		----------
+		p : float or callable[[Artist, Event], Tuple[bool, dict]]
+		    If a float, it is used as the pick radius in points.
 	**/
 	public function set_picker(p:Dynamic):Dynamic;
 	/**
-		Sets the pick radius used for containment tests
+		Set the pick radius used for containment tests.
 		
-		ACCEPTS: float distance in points
+		Parameters
+		----------
+		d : float
+		    Pick radius, in points.
 	**/
 	public function set_pickradius(d:Dynamic):Dynamic;
 	/**
 		Force rasterized (bitmap) drawing in vector backend output.
 		
-		Defaults to None, which implies the backend's default behavior
+		Defaults to None, which implies the backend's default behavior.
 		
-		ACCEPTS: [True | False | None]
+		Parameters
+		----------
+		rasterized : bool or None
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
@@ -1025,6 +1079,8 @@ package matplotlib.lines;
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
 		    expanded (default 16.0)
+		
+		    .. ACCEPTS: (scale: float, length: float, randomness: float)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
@@ -1038,54 +1094,75 @@ package matplotlib.lines;
 		    segments, round to the nearest pixel center
 		
 		Only supported by the Agg and MacOSX backends.
+		
+		Parameters
+		----------
+		snap : bool or None
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		Set the cap style for solid linestyles
+		Set the cap style for solid linestyles.
 		
-		ACCEPTS: ['butt' | 'round' |  'projecting']
+		Parameters
+		----------
+		s : {'butt', 'round', 'projecting'}
 	**/
 	public function set_solid_capstyle(s:Dynamic):Dynamic;
 	/**
-		Set the join style for solid linestyles
-		ACCEPTS: ['miter' | 'round' | 'bevel']
+		Set the join style for solid linestyles.
+		
+		Parameters
+		----------
+		s : {'miter', 'round', 'bevel'}
 	**/
 	public function set_solid_joinstyle(s:Dynamic):Dynamic;
 	/**
 		set the Transformation instance used by this artist
 		
-		ACCEPTS: a :class:`matplotlib.transforms.Transform` instance
+		Parameters
+		----------
+		t : matplotlib.transforms.Transform
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist
+		Sets the url for the artist.
 		
-		ACCEPTS: a url string
+		Parameters
+		----------
+		url : str
 	**/
 	public function set_url(url:Dynamic):Dynamic;
 	/**
-		Set the artist's visiblity.
+		Set the artist's visibility.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_visible(b:Dynamic):Dynamic;
 	/**
-		Set the data np.array for x
+		Set the data array for x.
 		
-		ACCEPTS: 1D array
+		Parameters
+		----------
+		x : 1D array
 	**/
 	public function set_xdata(x:Dynamic):Dynamic;
 	/**
-		Set the data np.array for y
+		Set the data array for y.
 		
-		ACCEPTS: 1D array
+		Parameters
+		----------
+		y : 1D array
 	**/
 	public function set_ydata(y:Dynamic):Dynamic;
 	/**
 		Set the zorder for the artist.  Artists with lower zorder
 		values are drawn first.
 		
-		ACCEPTS: any number
+		Parameters
+		----------
+		level : float
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
@@ -1113,8 +1190,7 @@ package matplotlib.lines;
 	**/
 	public var sticky_edges : Dynamic;
 	/**
-		Update the properties of this :class:`Artist` from the
-		dictionary *prop*.
+		Update this artist's properties from the dictionary *prop*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

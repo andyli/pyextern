@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.tri.triinterpolate;
 @:pythonImport("matplotlib.tri.triinterpolate", "TriInterpolator") extern class TriInterpolator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.tri.triinterpolate;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,13 @@ package matplotlib.tri.triinterpolate;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _docstring__call__ : Dynamic;
+	static public var _docstringgradient : Dynamic;
 	/**
 		Versatile (private) method defined for all TriInterpolators.
 		
@@ -180,6 +182,4 @@ package matplotlib.tri.triinterpolate;
 		    Returned array of the same size as *tri_index*
 	**/
 	public function _interpolate_single_key(return_key:Dynamic, tri_index:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
-	static public var docstring__call__ : Dynamic;
-	static public var docstringgradient : Dynamic;
 }

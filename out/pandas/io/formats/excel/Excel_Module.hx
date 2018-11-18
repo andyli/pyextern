@@ -28,6 +28,22 @@ package pandas.io.formats.excel;
 	static public var header_style : Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+		- instances of decimal.Decimal
+		- Interval
+		- DateOffset
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.
 		
@@ -64,5 +80,4 @@ package pandas.io.formats.excel;
 		sequence is empty.
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var string_types : Dynamic;
 }

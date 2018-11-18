@@ -5,7 +5,7 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -95,7 +95,11 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
-		Creates a validated `ModelFnOps` instance.
+		Creates a validated `ModelFnOps` instance. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		When switching to tf.estimator.Estimator, use tf.estimator.EstimatorSpec. You can use the `estimator_spec` method to create an equivalent one.
 		
 		For a multi-headed model, the predictions dict here will contain the outputs
 		of all of the heads.  However: at serving time, requests will be made
@@ -181,7 +185,7 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -194,7 +198,7 @@ package tensorflow.contrib.learn.python.learn.estimators.model_fn;
 	/**
 		Return a new ModelFnOps object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value

@@ -97,7 +97,7 @@ package numpy.lib.ufunclike;
 		>>> np.isneginf(np.PINF)
 		array(False, dtype=bool)
 		>>> np.isneginf([-np.inf, 0., np.inf])
-		array([ True, False, False], dtype=bool)
+		array([ True, False, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -152,7 +152,7 @@ package numpy.lib.ufunclike;
 		>>> np.isposinf(np.NINF)
 		array(False, dtype=bool)
 		>>> np.isposinf([-np.inf, 0., np.inf])
-		array([False, False,  True], dtype=bool)
+		array([False, False,  True])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])

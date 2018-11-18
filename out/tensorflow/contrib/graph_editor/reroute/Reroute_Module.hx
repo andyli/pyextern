@@ -24,7 +24,7 @@ package tensorflow.contrib.graph_editor.reroute;
 	/**
 		Re-route both the inputs and the outputs of the two subgraph views.
 		
-		This involves swapping all the inputs/ouputs of the two subgraph views.
+		This involves swapping all the inputs/outputs of the two subgraph views.
 		
 		Args:
 		  sgv0: the first subgraph to be swapped. This argument is converted to a
@@ -186,23 +186,51 @@ package tensorflow.contrib.graph_editor.reroute;
 	**/
 	static public function remove_control_inputs(op:Dynamic, cops:Dynamic):Dynamic;
 	/**
-		Re-route all the inputs of sgv0 to sgv1 (see reroute_inputs).
+		Re-route all the inputs of two subgraphs.
+		
+		Args:
+		  sgv0: the first subgraph to have its inputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		  sgv1: the second subgraph to have its inputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		Returns:
+		  A tuple `(sgv0, sgv1)` of subgraph views with their inputs swapped.
+		    Note that the function argument sgv0 and sgv1 are also modified in place.
+		Raises:
+		  StandardError: if sgv0 or sgv1 cannot be converted to a SubGraphView using
+		    the same rules than the function subgraph.make_view.
 	**/
 	static public function reroute_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Re-route the inputs and outputs of sgv0 to sgv1 (see _reroute).
+		Re-route the inputs and outputs of sgv0 to sgv1 (see _reroute_sgv).
 	**/
 	static public function reroute_ios(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Re-route all the outputs of sgv0 to sgv1 (see _reroute_outputs).
+		Re-route all the outputs of two operations.
+		
+		Args:
+		  sgv0: the first subgraph to have its outputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		  sgv1: the second subgraph to have its outputs swapped. This argument is
+		    converted to a subgraph using the same rules than the function
+		    subgraph.make_view.
+		Returns:
+		  A tuple `(sgv0, sgv1)` of subgraph views with their outputs swapped.
+		    Note that the function argument sgv0 and sgv1 are also modified in place.
+		Raises:
+		  StandardError: if sgv0 or sgv1 cannot be converted to a SubGraphView using
+		    the same rules than the function subgraph.make_view.
 	**/
 	static public function reroute_outputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
 		For each tensor's pair, replace the end of t1 by the end of t0.
 		
-		B0 B1     B0 B1
-		|  |    => |/
-		A0 A1     A0 A1
+		    B0 B1     B0 B1
+		    |  |    => |/
+		    A0 A1     A0 A1
 		
 		The end of the tensors in ts1 are left dangling.
 		
@@ -226,19 +254,19 @@ package tensorflow.contrib.graph_editor.reroute;
 	**/
 	static public function swap_inputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Swap the inputs and outputs of sgv1 to sgv0 (see _reroute).
+		Swap the inputs and outputs of sgv1 to sgv0 (see _reroute_sgv).
 	**/
 	static public function swap_ios(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
-		Swap all the outputs of sgv0 and sgv1 (see _reroute_outputs).
+		Swap all the outputs of sgv0 and sgv1 (see reroute_outputs).
 	**/
 	static public function swap_outputs(sgv0:Dynamic, sgv1:Dynamic):Dynamic;
 	/**
 		For each tensor's pair, swap the end of (t0,t1).
 		
-		B0 B1     B0 B1
-		|  |    =>  X
-		A0 A1     A0 A1
+		    B0 B1     B0 B1
+		    |  |    =>  X
+		    A0 A1     A0 A1
 		
 		Args:
 		  ts0: an object convertible to a list of `tf.Tensor`.

@@ -204,7 +204,10 @@ package scipy.optimize._lsq.trf;
 		    needed.
 		show : bool, optional
 		    Print iterations logs if ``show=True``.
+		x0 : array_like, shape (n,), optional
+		    Initial guess of x, if None zeros are used.
 		
+		    .. versionadded:: 1.0.0
 		Returns
 		-------
 		x : ndarray of float
@@ -212,7 +215,8 @@ package scipy.optimize._lsq.trf;
 		istop : int
 		    istop gives the reason for stopping::
 		
-		      istop   = 0 means x=0 is a solution.
+		      istop   = 0 means x=0 is a solution.  If x0 was given, then x=x0 is a
+		                  solution.
 		              = 1 means x is an approximate solution to A*x = B,
 		                  according to atol and btol.
 		              = 2 means x approximately solves the least-squares problem
@@ -250,8 +254,61 @@ package scipy.optimize._lsq.trf;
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
 		       http://arxiv.org/abs/1006.0758
 		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lsmr
+		>>> A = csc_matrix([[1., 0.], [1., 1.], [0., 1.]], dtype=float)
+		
+		The first example has the trivial solution `[0, 0]`
+		
+		>>> b = np.array([0., 0., 0.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		0
+		>>> x
+		array([ 0.,  0.])
+		
+		The stopping code `istop=0` returned indicates that a vector of zeros was
+		found as a solution. The returned solution `x` indeed contains `[0., 0.]`.
+		The next example has a non-trivial solution:
+		
+		>>> b = np.array([1., 0., -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		1
+		>>> x
+		array([ 1., -1.])
+		>>> itn
+		1
+		>>> normr
+		4.440892098500627e-16
+		
+		As indicated by `istop=1`, `lsmr` found a solution obeying the tolerance
+		limits. The given solution `[1., -1.]` obviously solves the equation. The
+		remaining return values include information about the number of iterations
+		(`itn=1`) and the remaining difference of left and right side of the solved
+		equation.
+		The final example demonstrates the behavior in the case where there is no
+		solution for the equation:
+		
+		>>> b = np.array([1., 0.01, -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		2
+		>>> x
+		array([ 1.00333333, -0.99666667])
+		>>> A.dot(x)-b
+		array([ 0.00333333, -0.00333333,  0.00333333])
+		>>> normr
+		0.005773502691896255
+		
+		`istop` indicates that the system is inconsistent and thus `x` is rather an
+		approximate solution to the corresponding least-squares problem. `normr`
+		contains the minimal distance that was found.
 	**/
-	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic):Dynamic;
+	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		Shift a point to the interior of a feasible region.
 		
@@ -292,6 +349,9 @@ package scipy.optimize._lsq.trf;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will
@@ -618,21 +678,21 @@ package scipy.optimize._lsq.trf;
 	/**
 		Singular Value Decomposition.
 		
-		Factorizes the matrix a into two unitary matrices U and Vh, and
-		a 1-D array s of singular values (real, non-negative) such that
-		``a == U*S*Vh``, where S is a suitably shaped matrix of zeros with
-		main diagonal s.
+		Factorizes the matrix `a` into two unitary matrices ``U`` and ``Vh``, and
+		a 1-D array ``s`` of singular values (real, non-negative) such that
+		``a == U @ S @ Vh``, where ``S`` is a suitably shaped matrix of zeros with
+		main diagonal ``s``.
 		
 		Parameters
 		----------
 		a : (M, N) array_like
 		    Matrix to decompose.
 		full_matrices : bool, optional
-		    If True, `U` and `Vh` are of shape ``(M,M)``, ``(N,N)``.
-		    If False, the shapes are ``(M,K)`` and ``(K,N)``, where
-		    ``K = min(M,N)``.
+		    If True (default), `U` and `Vh` are of shape ``(M, M)``, ``(N, N)``.
+		    If False, the shapes are ``(M, K)`` and ``(K, N)``, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether to compute also `U` and `Vh` in addition to `s`.
+		    Whether to compute also ``U`` and ``Vh`` in addition to ``s``.
 		    Default is True.
 		overwrite_a : bool, optional
 		    Whether to overwrite `a`; may improve performance.
@@ -653,15 +713,15 @@ package scipy.optimize._lsq.trf;
 		-------
 		U : ndarray
 		    Unitary matrix having left singular vectors as columns.
-		    Of shape ``(M,M)`` or ``(M,K)``, depending on `full_matrices`.
+		    Of shape ``(M, M)`` or ``(M, K)``, depending on `full_matrices`.
 		s : ndarray
 		    The singular values, sorted in non-increasing order.
 		    Of shape (K,), with ``K = min(M, N)``.
 		Vh : ndarray
 		    Unitary matrix having right singular vectors as rows.
-		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
+		    Of shape ``(N, N)`` or ``(K, N)`` depending on `full_matrices`.
 		
-		For ``compute_uv=False``, only `s` is returned.
+		For ``compute_uv=False``, only ``s`` is returned.
 		
 		Raises
 		------
@@ -676,15 +736,28 @@ package scipy.optimize._lsq.trf;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6) + 1.j*np.random.randn(9, 6)
+		>>> m, n = 9, 6
+		>>> a = np.random.randn(m, n) + 1.j*np.random.randn(m, n)
 		>>> U, s, Vh = linalg.svd(a)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 9), (6, 6), (6,))
+		>>> U.shape,  s.shape, Vh.shape
+		((9, 9), (6,), (6, 6))
+		
+		Reconstruct the original matrix from the decomposition:
+		
+		>>> sigma = np.zeros((m, n))
+		>>> for i in range(min(m, n)):
+		...     sigma[i, i] = s[i]
+		>>> a1 = np.dot(U, np.dot(sigma, Vh))
+		>>> np.allclose(a, a1)
+		True
+		
+		Alternatively, use ``full_matrices=False`` (notice that the shape of
+		``U`` is then ``(m, n)`` instead of ``(m, m)``):
 		
 		>>> U, s, Vh = linalg.svd(a, full_matrices=False)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = linalg.diagsvd(s, 6, 6)
+		>>> U.shape, s.shape, Vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> S = np.diag(s)
 		>>> np.allclose(a, np.dot(U, np.dot(S, Vh)))
 		True
 		

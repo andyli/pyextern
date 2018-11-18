@@ -119,10 +119,6 @@ package pandas.core.indexes.accessors;
 	**/
 	static public function is_datetime_arraylike(arr:Dynamic):Dynamic;
 	/**
-		return a boolean if we can be successfully converted to a datetimelike
-	**/
-	static public function is_datetimelike(data:Dynamic):Dynamic;
-	/**
 		Check whether the provided array or dtype is of an integer dtype.
 		
 		Unlike in `in_any_int_dtype`, timedelta64 instances will return False.
@@ -238,34 +234,23 @@ package pandas.core.indexes.accessors;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		return a DelegatedClass of a Series that is datetimelike
-		  (e.g. datetime64[ns],timedelta64[ns] dtype or a Series of Periods)
-		raise TypeError if this is not possible.
-		
-		Parameters
-		----------
-		data : Series
-		copy : boolean, default False
-		       copy the input data
-		
-		Returns
-		-------
-		DelegatedClass
-	**/
-	static public function maybe_to_datetimelike(data:Dynamic, ?copy:Dynamic):Dynamic;
-	/**
 		Specialized Cython take which sets NaN values in one pass
 		
+		This dispatches to ``take`` defined on ExtensionArrays. It does not
+		currently dispatch to ``SparseArray.take`` for sparse ``arr``.
+		
 		Parameters
 		----------
-		arr : ndarray
-		    Input array
+		arr : array-like
+		    Input array.
 		indexer : ndarray
 		    1-D array of indices to take, subarrays corresponding to -1 value
-		    indicies are filed with fill_value
+		    indices are filed with fill_value
 		axis : int, default 0
 		    Axis to take from
 		out : ndarray or None, default None
@@ -282,6 +267,11 @@ package pandas.core.indexes.accessors;
 		    If False, indexer is assumed to contain no -1 values so no filling
 		    will be done.  This short-circuits computation of a mask.  Result is
 		    undefined if allow_fill == False and -1 is present in indexer.
+		
+		Returns
+		-------
+		subarray : array-like
+		    May be the same type as the input, or cast to an ndarray.
 	**/
 	static public function take_1d(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 }

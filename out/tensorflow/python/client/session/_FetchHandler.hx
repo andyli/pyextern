@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.client.session;
 @:pythonImport("tensorflow.python.client.session", "_FetchHandler") extern class _FetchHandler {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -45,8 +45,8 @@ package tensorflow.python.client.session;
 		    and to convert all fetches to tensors or ops as needed.
 		  fetches: An arbitrary fetch structure: singleton, list, tuple,
 		    namedtuple, or dict.
-		  feeds: A feed dict where keys are fully resolved tensor names.
-		  feed_handles: A dict from feed names to TensorHandle objects used as
+		  feeds: A feed dict where keys are Tensors.
+		  feed_handles: A dict from feed Tensors to TensorHandle objects used as
 		    direct feeds.
 	**/
 	@:native("__init__")
@@ -59,8 +59,8 @@ package tensorflow.python.client.session;
 		    and to convert all fetches to tensors or ops as needed.
 		  fetches: An arbitrary fetch structure: singleton, list, tuple,
 		    namedtuple, or dict.
-		  feeds: A feed dict where keys are fully resolved tensor names.
-		  feed_handles: A dict from feed names to TensorHandle objects used as
+		  feeds: A feed dict where keys are Tensors.
+		  feed_handles: A dict from feed Tensors to TensorHandle objects used as
 		    direct feeds.
 	**/
 	public function new(graph:Dynamic, fetches:Dynamic, feeds:Dynamic, ?feed_handles:Dynamic):Void;
@@ -70,7 +70,7 @@ package tensorflow.python.client.session;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +121,7 @@ package tensorflow.python.client.session;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

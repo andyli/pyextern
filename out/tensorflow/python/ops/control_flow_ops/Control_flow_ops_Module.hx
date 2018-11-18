@@ -7,7 +7,8 @@ package tensorflow.python.ops.control_flow_ops;
 		If `condition` evaluates to false, print the list of tensors in `data`.
 		`summarize` determines how many entries of the tensors to print.
 		
-		NOTE: To ensure that Assert executes, one usually attaches a dependency:
+		NOTE: In graph mode, to ensure that Assert executes, one usually attaches
+		a dependency:
 		
 		```python
 		# Ensure maximum element of x is smaller or equal to 1
@@ -25,23 +26,40 @@ package tensorflow.python.ops.control_flow_ops;
 		Returns:
 		  assert_op: An `Operation` that, when executed, raises a
 		  `tf.errors.InvalidArgumentError` if `condition` is not true.
+		  @compatibility{eager} returns None.
+		
+		Raises:
+		  @compatibility{eager} `tf.errors.InvalidArgumentError` if `condition`
+		  is not true
 		
 		
 		**NOTE** The output of this function should be used.  If it is not, a warning will be logged.  To mark the output as used, call its .mark_used() method.
 	**/
 	static public function Assert(condition:Dynamic, data:Dynamic, ?summarize:Dynamic, ?name:Dynamic):Dynamic;
+	static public var ENABLE_COND_V2 : Dynamic;
+	static public var ENABLE_WHILE_V2 : Dynamic;
 	/**
-		Return true if `op` is an Exit.
+		Calculate a max_size for use by stack ops inside an XLA while_loop.
+		
+		Args:
+		  value: The value inside the while_loop forward context.  Used for printing
+		    error messages.
+		  while_ctxt: The forward context inside which value resides.  This does
+		    not always match the value's immediate context, as `value` may be
+		    inside e.g. a cond context inside the while_loop.
+		
+		Returns:
+		  A tensor containing the `max_size` to feed to a Stack initializer.
+		
+		Raises:
+		  ValueError: If `value` is nested inside a `while_loop` that either
+		    lacks a `maximum_iterations` parameter, or the `maximum_iterations`
+		    parameter:
+		
+		      - is inside a `while_loop` that is a parent of the calling context, and
+		      - cannot be evaluated at graph build time to a constant.
 	**/
-	static public function IsLoopExit(op:Dynamic):Dynamic;
-	/**
-		Return true if `op` is the Switch for a while loop.
-	**/
-	static public function IsLoopSwitch(op:Dynamic):Dynamic;
-	/**
-		Return true if `op` is a Switch.
-	**/
-	static public function IsSwitch(op:Dynamic):Dynamic;
+	static public function GetMaxSizeFromNestedMaximumIterations(value:Dynamic, while_ctxt:Dynamic):Dynamic;
 	/**
 		Create the state for all the while loops involved in one gradients().
 		
@@ -59,7 +77,7 @@ package tensorflow.python.ops.control_flow_ops;
 	/**
 		Add NextIteration and back edge from v to m.
 	**/
-	static public function _AddNextAndBackEdge(m:Dynamic, v:Dynamic):Dynamic;
+	static public function _AddNextAndBackEdge(m:Dynamic, v:Dynamic, ?enforce_shape_invariant:Dynamic):Dynamic;
 	/**
 		Return x as a list of Tensors or IndexedSlices.
 		
@@ -79,13 +97,13 @@ package tensorflow.python.ops.control_flow_ops;
 		Check if the shapes of the loops variables are invariants.
 		
 		Args:
-		  merge_vars: The list of tensors representing the initial values of the
+		  merge_var: The list of tensors representing the initial values of the
 		    loop variables.
-		  next_vars: The list of tensors representing the values of the loop
+		  next_var: The list of tensors representing the values of the loop
 		    variables after one loop iteration.
 		
 		Raises:
-		  ValueError: If any tensor in `merge_vars` has a more specific shape than
+		  ValueError: If any tensor in `merge_var` has a more specific shape than
 		    its correspnding tensor in `next_var`.
 	**/
 	static public function _EnforceShapeInvariant(merge_var:Dynamic, next_var:Dynamic):Dynamic;
@@ -110,14 +128,6 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	static public function _Enter(data:Dynamic, frame_name:Dynamic, ?is_constant:Dynamic, ?parallel_iterations:Dynamic, ?use_ref:Dynamic, ?use_input_shape:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Return the enter op if we can infer `value` to be a loop invariant.
-	**/
-	static public function _GetLoopConstantEnter(value:Dynamic):Dynamic;
-	/**
-		Return the control flow context for the output of an op.
-	**/
-	static public function _GetOutputContext(op:Dynamic):Dynamic;
-	/**
 		Get the WhileContext to which this op belongs.
 	**/
 	static public function _GetWhileContext(op:Dynamic):Dynamic;
@@ -133,10 +143,6 @@ package tensorflow.python.ops.control_flow_ops;
 		  A Tensor with the same type and value as the input Tensor.
 	**/
 	static public function _Identity(data:Dynamic, ?name:Dynamic):Dynamic;
-	/**
-		Return true iff op is a loop invariant.
-	**/
-	static public function _IsLoopConstantEnter(op:Dynamic):Dynamic;
 	static public function _NextIteration(data:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Set the shapes of the tensors in `enter_vars` to `shapes`.
@@ -155,7 +161,7 @@ package tensorflow.python.ops.control_flow_ops;
 	/**
 		Forwards `data` to an output determined by `pred`.
 		
-		If `pred` is false, the `data` input is forwared to the first output.
+		If `pred` is false, the `data` input is forwarded to the first output.
 		Otherwise, the data goes to the second output.
 		
 		This op handles `Tensor`s and `IndexedSlices`.
@@ -182,6 +188,74 @@ package tensorflow.python.ops.control_flow_ops;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Returns an Assert op that checks that at most n predicates are True.
+		
+		Args:
+		  predicates: list of bool scalar tensors.
+		  n: maximum number of true predicates allowed.
+		  msg: Error message.
+	**/
+	static public function _assert_at_most_n_true(predicates:Dynamic, n:Dynamic, msg:Dynamic):Dynamic;
+	/**
+		Creates default action for a list of actions and their predicates.
+		
+		It uses the input actions to select an arbitrary as default and makes sure
+		that corresponding predicates have valid values.
+		
+		Args:
+		  predicates: a list of bool scalar tensors
+		  actions: a list of callable objects which return tensors.
+		
+		Returns:
+		  a callable
+	**/
+	static public function _case_create_default_action(predicates:Dynamic, actions:Dynamic):Dynamic;
+	/**
+		Implementation of case that allows for different cond functions.
+		
+		Args:
+		  cond_fn: method that has signature and semantics of `cond` above.
+		  pred_fn_pairs: Dict or list of pairs of a boolean scalar tensor, and a
+		                 callable which returns a list of tensors.
+		  default: Optional callable that returns a list of tensors.
+		  exclusive: True iff at most one predicate is allowed to evaluate to `True`.
+		  name: A name for this operation (optional).
+		  allow_python_preds: if true, pred_fn_pairs may contain Python bools in
+		                      addition to boolean Tensors
+		  **cond_kwargs: keyword arguments that will be passed to `cond_fn`.
+		
+		Returns:
+		  The tensors returned by the first pair whose predicate evaluated to True, or
+		  those returned by `default` if none does.
+		
+		Raises:
+		  TypeError: If `pred_fn_pairs` is not a list/dictionary.
+		  TypeError: If `pred_fn_pairs` is a list but does not contain 2-tuples.
+		  TypeError: If `fns[i]` is not callable for any i, or `default` is not
+		             callable.
+	**/
+	static public function _case_helper(cond_fn:Dynamic, pred_fn_pairs:Dynamic, _default:Dynamic, exclusive:Dynamic, name:Dynamic, ?allow_python_preds:Dynamic, ?cond_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Verifies input arguments for the case function.
+		
+		Args:
+		  pred_fn_pairs: Dict or list of pairs of a boolean scalar tensor,
+		                 and a callable which returns a list of tensors.
+		  exclusive: True iff at most one predicate is allowed to evaluate to `True`.
+		  name: A name for the case operation.
+		  allow_python_preds: if true, pred_fn_pairs may contain Python bools in
+		                      addition to boolean Tensors
+		Raises:
+		  TypeError: If `pred_fn_pairs` is not a list/dictionary.
+		  TypeError: If `pred_fn_pairs` is a list but does not contain 2-tuples.
+		  TypeError: If `fns[i]` is not callable for any i, or `default` is not
+		             callable.
+		
+		Returns:
+		  a tuple <list of scalar bool tensors, list of callables>.
+	**/
+	static public function _case_verify_and_canonicalize_args(pred_fn_pairs:Dynamic, exclusive:Dynamic, name:Dynamic, allow_python_preds:Dynamic):Dynamic;
 	static public function _convert_flows_to_tensorarrays(tensors_or_tensorarrays:Dynamic, tensors_or_flows:Dynamic):Dynamic;
 	static public function _convert_tensorarray_to_flow(tensor_or_tensor_array:Dynamic):Dynamic;
 	static public function _make_tensor_array(ta:Dynamic, t_or_flow:Dynamic):Dynamic;
@@ -189,6 +263,15 @@ package tensorflow.python.ops.control_flow_ops;
 		Returns the shape of t or the variable it points to.
 	**/
 	static public function _resource_safe_shape(t:Dynamic):Dynamic;
+	/**
+		Returns a summarized string representation of eager `tensor`.
+		
+		Args:
+		  tensor: EagerTensor to summarize
+		  summarize: Include these many first elements of `array`
+	**/
+	static public function _summarize_eager(tensor:Dynamic, ?summarize:Dynamic):Dynamic;
+	static public var _while_v2 : Dynamic;
 	/**
 		Raise a exception to abort the process when called.
 		
@@ -207,6 +290,11 @@ package tensorflow.python.ops.control_flow_ops;
 		  The created Operation.
 	**/
 	static public function abort(?error_msg:Dynamic, ?exit_without_error:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function abort
+	**/
+	static public function abort_eager_fallback(?error_msg:Dynamic, ?exit_without_error:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Create a case operation.
@@ -215,12 +303,12 @@ package tensorflow.python.ops.control_flow_ops;
 		Each pair contains a boolean scalar tensor and a python callable that
 		creates the tensors to be returned if the boolean evaluates to True.
 		`default` is a callable generating a list of tensors. All the callables
-		in `pred_fn_pairs` as well as `default` should return the same number
-		and types of tensors.
+		in `pred_fn_pairs` as well as `default` (if provided) should return the same
+		number and types of tensors.
 		
 		If `exclusive==True`, all predicates are evaluated, and an exception is
 		thrown if more than one of the predicates evaluates to `True`.
-		If `exclusive==False`, execution stops are the first predicate which
+		If `exclusive==False`, execution stops at the first predicate which
 		evaluates to True, and the tensors generated by the corresponding function
 		are returned immediately. If none of the predicates evaluate to True, this
 		operation returns the tensors generated by `default`.
@@ -237,42 +325,48 @@ package tensorflow.python.ops.control_flow_ops;
 		deterministic, so that variables created in conditional branches are created
 		in fixed order across runs.
 		
-		Example 1:
-		  Pseudocode:
-		  ```
-		    if (x < y) return 17;
-		    else return 23;
-		  ```
+		**Example 1:**
 		
-		  Expressions:
-		  ```
-		    f1 = lambda: tf.constant(17)
-		    f2 = lambda: tf.constant(23)
-		    r = case([(tf.less(x, y), f1)], default=f2)
-		  ```
+		Pseudocode:
 		
-		Example 2:
-		  Pseudocode:
-		  ```
-		    if (x < y && x > z) raise OpError("Only one predicate may evaluate true");
-		    if (x < y) return 17;
-		    else if (x > z) return 23;
-		    else return -1;
-		  ```
+		```
+		if (x < y) return 17;
+		else return 23;
+		```
 		
-		  Expressions:
-		  ```
-		    def f1(): return tf.constant(17)
-		    def f2(): return tf.constant(23)
-		    def f3(): return tf.constant(-1)
-		    r = case({tf.less(x, y): f1, tf.greater(x, z): f2},
-		             default=f3, exclusive=True)
-		  ```
+		Expressions:
+		
+		```python
+		f1 = lambda: tf.constant(17)
+		f2 = lambda: tf.constant(23)
+		r = case([(tf.less(x, y), f1)], default=f2)
+		```
+		
+		**Example 2:**
+		
+		Pseudocode:
+		
+		```
+		if (x < y && x > z) raise OpError("Only one predicate may evaluate true");
+		if (x < y) return 17;
+		else if (x > z) return 23;
+		else return -1;
+		```
+		
+		Expressions:
+		
+		```python
+		def f1(): return tf.constant(17)
+		def f2(): return tf.constant(23)
+		def f3(): return tf.constant(-1)
+		r = case({tf.less(x, y): f1, tf.greater(x, z): f2},
+		         default=f3, exclusive=True)
+		```
 		
 		Args:
 		  pred_fn_pairs: Dict or list of pairs of a boolean scalar tensor and a
 		                 callable which returns a list of tensors.
-		  default: A callable that returns a list of tensors.
+		  default: Optional callable that returns a list of tensors.
 		  exclusive: True iff at most one predicate is allowed to evaluate to `True`.
 		  strict: A boolean that enables/disables 'strict' mode; see above.
 		  name: A name for this operation (optional).
@@ -288,7 +382,7 @@ package tensorflow.python.ops.control_flow_ops;
 		             callable.
 	**/
 	@:native("case")
-	static public function _case(pred_fn_pairs:Dynamic, _default:Dynamic, ?exclusive:Dynamic, ?strict:Dynamic, ?name:Dynamic):Dynamic;
+	static public function _case(pred_fn_pairs:Dynamic, ?_default:Dynamic, ?exclusive:Dynamic, ?strict:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Return `true_fn()` if the predicate `pred` is true else `false_fn()`. (deprecated arguments)
 		
@@ -299,8 +393,12 @@ package tensorflow.python.ops.control_flow_ops;
 		`true_fn` and `false_fn` both return lists of output tensors. `true_fn` and
 		`false_fn` must have the same non-zero number and type of outputs.
 		
-		Note that the conditional execution applies only to the operations defined in
-		`true_fn` and `false_fn`. Consider the following simple program:
+		**WARNING**: Any Tensors or Operations created outside of `true_fn` and
+		`false_fn` will be executed regardless of which branch is selected at runtime.
+		
+		Although this behavior is consistent with the dataflow model of TensorFlow,
+		it has frequently surprised users who expected a lazier semantics.
+		Consider the following simple program:
 		
 		```python
 		z = tf.multiply(a, b)
@@ -311,8 +409,6 @@ package tensorflow.python.ops.control_flow_ops;
 		operation will not be executed. Since `z` is needed for at least one
 		branch of the `cond`, the `tf.multiply` operation is always executed,
 		unconditionally.
-		Although this behavior is consistent with the dataflow model of TensorFlow,
-		it has occasionally surprised some users who expected a lazier semantics.
 		
 		Note that `cond` calls `true_fn` and `false_fn` *exactly once* (inside the
 		call to `cond`, and not at all during `Session.run()`). `cond`
@@ -347,13 +443,13 @@ package tensorflow.python.ops.control_flow_ops;
 		Example:
 		
 		```python
-		  x = tf.constant(2)
-		  y = tf.constant(5)
-		  def f1(): return tf.multiply(x, 17)
-		  def f2(): return tf.add(y, 23)
-		  r = tf.cond(tf.less(x, y), f1, f2)
-		  # r is set to f1().
-		  # Operations in f2 (e.g., tf.add) are not executed.
+		x = tf.constant(2)
+		y = tf.constant(5)
+		def f1(): return tf.multiply(x, 17)
+		def f2(): return tf.add(y, 23)
+		r = tf.cond(tf.less(x, y), f1, f2)
+		# r is set to f1().
+		# Operations in f2 (e.g., tf.add) are not executed.
 		```
 	**/
 	static public function cond(pred:Dynamic, ?true_fn:Dynamic, ?false_fn:Dynamic, ?strict:Dynamic, ?name:Dynamic, ?fn1:Dynamic, ?fn2:Dynamic):Dynamic;
@@ -369,6 +465,28 @@ package tensorflow.python.ops.control_flow_ops;
 		  The created Operation.
 	**/
 	static public function control_trigger(?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function control_trigger
+	**/
+	static public function control_trigger_eager_fallback(?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Creates or finds a child frame, and makes `data` available to the child frame.
@@ -389,9 +507,14 @@ package tensorflow.python.ops.control_flow_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `data`. The same tensor as `data`.
+		  A `Tensor`. Has the same type as `data`.
 	**/
 	static public function enter(data:Dynamic, frame_name:Dynamic, ?is_constant:Dynamic, ?parallel_iterations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function enter
+	**/
+	static public function enter_eager_fallback(data:Dynamic, frame_name:Dynamic, ?is_constant:Dynamic, ?parallel_iterations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Exits the current frame to its parent frame.
 		
@@ -406,17 +529,27 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	static public function exit(data:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		Deserializes `context_def` into the appropriate ControlFlowContext.
+		
+		Args:
+		  context_def: ControlFlowContextDef proto
+		  import_scope: Optional `string`. Name scope to add.
+		
+		Returns:
+		  A ControlFlowContext subclass
+	**/
+	static public function from_control_flow_context_def(context_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
 		Create an op that groups multiple operations.
 		
-		When this op finishes, all ops in `input` have finished. This op has no
+		When this op finishes, all ops in `inputs` have finished. This op has no
 		output.
 		
-		See also @{tf.tuple$tuple} and
-		@{tf.control_dependencies$control_dependencies}.
+		See also `tf.tuple` and
+		`tf.control_dependencies`.
 		
 		Args:
 		  *inputs: Zero or more tensors to group.
-		  **kwargs: Optional parameters to pass when constructing the NodeDef.
 		  name: A name for this operation (optional).
 		
 		Returns:
@@ -438,9 +571,14 @@ package tensorflow.python.ops.control_flow_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor` of type `bool`. The same tensor as `input`.
+		  A `Tensor` of type `bool`.
 	**/
 	static public function loop_cond(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function loop_cond
+	**/
+	static public function loop_cond_eager_fallback(input:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Returns the value of an available element of `inputs`.
 		
@@ -468,6 +606,11 @@ package tensorflow.python.ops.control_flow_ops;
 	**/
 	static public function merge(inputs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function merge
+	**/
+	static public function merge_eager_fallback(inputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Makes its input available to the next iteration.
 		
 		Args:
@@ -475,9 +618,14 @@ package tensorflow.python.ops.control_flow_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `data`. The same tensor as `data`.
+		  A `Tensor`. Has the same type as `data`.
 	**/
 	static public function next_iteration(data:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function next_iteration
+	**/
+	static public function next_iteration_eager_fallback(data:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Does nothing. Only useful as a placeholder for control edges.
 		
@@ -488,6 +636,11 @@ package tensorflow.python.ops.control_flow_ops;
 		  The created Operation.
 	**/
 	static public function no_op(?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function no_op
+	**/
+	static public function no_op_eager_fallback(?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Creates or finds a child frame, and makes `data` available to the child frame.
@@ -509,9 +662,43 @@ package tensorflow.python.ops.control_flow_ops;
 		
 		Returns:
 		  A mutable `Tensor`. Has the same type as `data`.
-		  The same tensor as `data`.
 	**/
 	static public function ref_enter(data:Dynamic, frame_name:Dynamic, ?is_constant:Dynamic, ?parallel_iterations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Exits the current frame to its parent frame.
+		
+		Exit makes its input `data` available to the parent frame.
+		
+		Args:
+		  data: A mutable `Tensor`.
+		    The tensor to be made available to the parent frame.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A mutable `Tensor`. Has the same type as `data`.
+	**/
+	static public function ref_exit(data:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Forwards the value of an available tensor from `inputs` to `output`.
+		
+		`Merge` waits for at least one of the tensors in `inputs` to become available.
+		It is usually combined with `Switch` to implement branching.
+		
+		`Merge` forwards the first tensor for become available to `output`, and sets
+		`value_index` to its index in `inputs`.
+		
+		Args:
+		  inputs: A list of at least 1 mutable `Tensor` objects with the same type.
+		    The input tensors, exactly one of which will become available.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (output, value_index).
+		
+		  output: A mutable `Tensor`. Has the same type as `inputs`.
+		  value_index: A `Tensor` of type `int32`.
+	**/
+	static public function ref_merge(inputs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Makes its input available to the next iteration.
 		
@@ -522,7 +709,6 @@ package tensorflow.python.ops.control_flow_ops;
 		
 		Returns:
 		  A mutable `Tensor`. Has the same type as `data`.
-		  The same tensor as `data`.
 	**/
 	static public function ref_next_iteration(data:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -536,7 +722,7 @@ package tensorflow.python.ops.control_flow_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A mutable `Tensor`. Has the same type as `inputs`. The forwarded tensor.
+		  A mutable `Tensor`. Has the same type as `inputs`.
 	**/
 	static public function ref_select(index:Dynamic, inputs:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -557,8 +743,8 @@ package tensorflow.python.ops.control_flow_ops;
 		Returns:
 		  A tuple of `Tensor` objects (output_false, output_true).
 		
-		  output_false: A mutable `Tensor`. Has the same type as `data`. If `pred` is false, data will be forwarded to this output.
-		  output_true: A mutable `Tensor`. Has the same type as `data`. If `pred` is true, data will be forwarded to this output.
+		  output_false: A mutable `Tensor`. Has the same type as `data`.
+		  output_true: A mutable `Tensor`. Has the same type as `data`.
 	**/
 	static public function ref_switch(data:Dynamic, pred:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -583,6 +769,12 @@ package tensorflow.python.ops.control_flow_ops;
 	@:native("switch")
 	static public function _switch(data:Dynamic, pred:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function switch
+	**/
+	static public function switch_eager_fallback(data:Dynamic, pred:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Group tensors together.
 		
 		This creates a tuple of tensors with the same values as the `tensors`
@@ -597,8 +789,8 @@ package tensorflow.python.ops.control_flow_ops;
 		returned by `tuple` are only available after all the parallel computations
 		are done.
 		
-		See also @{tf.group$group} and
-		@{tf.control_dependencies$control_dependencies}.
+		See also `tf.group` and
+		`tf.control_dependencies`.
 		
 		Args:
 		  tensors: A list of `Tensor`s or `IndexedSlices`, some entries can be `None`.
@@ -631,8 +823,8 @@ package tensorflow.python.ops.control_flow_ops;
 		Note that `while_loop` calls `cond` and `body` *exactly once* (inside the
 		call to `while_loop`, and not at all during `Session.run()`). `while_loop`
 		stitches together the graph fragments created during the `cond` and `body`
-		calls with some additional graph nodes to make something the repeats
-		`body` until `cond` returns false.
+		calls with some additional graph nodes to create the graph flow that
+		repeats `body` until `cond` returns false.
 		
 		For correctness, `tf.while_loop()` strictly enforces shape invariants for
 		the loop variables. A shape invariant is a (possibly partial) shape that
@@ -645,7 +837,7 @@ package tensorflow.python.ops.control_flow_ops;
 		`loop_vars` is the same in every iteration. The `shape_invariants` argument
 		allows the caller to specify a less specific shape invariant for each loop
 		variable, which is needed if the shape varies between iterations. The
-		@{tf.Tensor.set_shape}
+		`tf.Tensor.set_shape`
 		function may also be used in the `body` function to indicate that
 		the output loop variable has a particular shape. The shape invariant for
 		SparseTensor and IndexedSlices are treated specially as follows:
@@ -668,11 +860,11 @@ package tensorflow.python.ops.control_flow_ops;
 		memory consumption and execution order. For correct programs, `while_loop`
 		should return the same result for any parallel_iterations > 0.
 		
-		For training, TensorFlow remembers the tensors that are produced in the
-		forward inference but needed in back propagation. These tensors can be a
-		main source of memory consumption and often cause OOM problems when training
-		on GPUs.  When the flag swap_memory is true, we swap out these tensors from
-		GPU to CPU.  This for example allows us to train RNN models with very long
+		For training, TensorFlow stores the tensors that are produced in the
+		forward inference and are needed in back propagation. These tensors are a
+		main source of memory consumption and often cause OOM errors when training
+		on GPUs. When the flag swap_memory is true, we swap out these tensors from
+		GPU to CPU. This for example allows us to train RNN models with very long
 		sequences and large batches.
 		
 		Args:
@@ -686,11 +878,20 @@ package tensorflow.python.ops.control_flow_ops;
 		  back_prop: Whether backprop is enabled for this while loop.
 		  swap_memory: Whether GPU-CPU memory swap is enabled for this loop.
 		  name: Optional name prefix for the returned tensors.
+		  maximum_iterations: Optional maximum number of iterations of the while loop
+		    to run.  If provided, the `cond` output is AND-ed with an additional
+		    condition ensuring the number of iterations executed is no greater than
+		    `maximum_iterations`.
+		  return_same_structure: If True, output has same structure as `loop_vars`. If
+		    eager execution is enabled, this is ignored (and always treated as True).
 		
 		Returns:
-		  The output tensors for the loop variables after the loop. When the length
-		  of `loop_vars` is 1 this is a Tensor, TensorArray or IndexedSlice and when
-		  the length of `loop_vars` is greater than 1 it returns a list.
+		  The output tensors for the loop variables after the loop.
+		   If `return_same_structure` is True, the return value has the same
+		   structure as `loop_vars`.
+		   If `return_same_structure` is False, the return value is a Tensor,
+		   TensorArray or IndexedSlice if the length of `loop_vars` is 1, or a list
+		   otherwise.
 		
 		Raises:
 		  TypeError: if `cond` or `body` is not callable.
@@ -727,8 +928,46 @@ package tensorflow.python.ops.control_flow_ops;
 		    c, b, loop_vars=[i0, m0],
 		    shape_invariants=[i0.get_shape(), tf.TensorShape([None, 2])])
 		```
+		
+		Example which demonstrates non-strict semantics: In the following
+		example, the final value of the counter `i` does not depend on `x`. So
+		the `while_loop` can increment the counter parallel to updates of `x`.
+		However, because the loop counter at one loop iteration depends
+		on the value at the previous iteration, the loop counter itself cannot
+		be incremented in parallel. Hence if we just want the final value of the
+		counter (which we print on the line `print(sess.run(i))`), then
+		`x` will never be incremented, but the counter will be updated on a
+		single thread. Conversely, if we want the value of the output (which we
+		print on the line `print(sess.run(out).shape)`), then the counter may be
+		incremented on its own thread, while `x` can be incremented in
+		parallel on a separate thread. In the extreme case, it is conceivable
+		that the thread incrementing the counter runs until completion before
+		`x` is incremented even a single time. The only thing that can never
+		happen is that the thread updating `x` can never get ahead of the
+		counter thread because the thread incrementing `x` depends on the value
+		of the counter.
+		
+		```python
+		import tensorflow as tf
+		
+		n = 10000
+		x = tf.constant(list(range(n)))
+		c = lambda i, x: i < n
+		b = lambda i, x: (tf.Print(i + 1, [i]), tf.Print(x + 1, [i], "x:"))
+		i, out = tf.while_loop(c, b, (0, x))
+		with tf.Session() as sess:
+		    print(sess.run(i))  # prints [0] ... [9999]
+		
+		    # The following line may increment the counter and x in parallel.
+		    # The counter thread may get ahead of the other thread, but not the
+		    # other way around. So you may see things like
+		    # [9996] x:[9987]
+		    # meaning that the counter thread is on iteration 9996,
+		    # while the other thread is on iteration 9987
+		    print(sess.run(out).shape)
+		```
 	**/
-	static public function while_loop(cond:Dynamic, body:Dynamic, loop_vars:Dynamic, ?shape_invariants:Dynamic, ?parallel_iterations:Dynamic, ?back_prop:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic):Dynamic;
+	static public function while_loop(cond:Dynamic, body:Dynamic, loop_vars:Dynamic, ?shape_invariants:Dynamic, ?parallel_iterations:Dynamic, ?back_prop:Dynamic, ?swap_memory:Dynamic, ?name:Dynamic, ?maximum_iterations:Dynamic, ?return_same_structure:Dynamic):Dynamic;
 	/**
 		Produces the content of `output_tensor` only after `dependencies`.
 		
@@ -739,7 +978,7 @@ package tensorflow.python.ops.control_flow_ops;
 		no guarantee that `output_tensor` will be evaluated after any `dependencies`
 		have run.
 		
-		See also @{tf.tuple$tuple} and @{tf.group$group}.
+		See also `tf.tuple` and `tf.group`.
 		
 		Args:
 		  dependencies: Iterable of operations to run before this op finishes.

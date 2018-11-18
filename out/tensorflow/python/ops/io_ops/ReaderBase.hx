@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.io_ops;
 @:pythonImport("tensorflow.python.ops.io_ops", "ReaderBase") extern class ReaderBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -44,6 +44,9 @@ package tensorflow.python.ops.io_ops;
 		  reader_ref: The operation that implements the reader.
 		  supports_serialize: True if the reader implementation can
 		    serialize its state.
+		
+		Raises:
+		  RuntimeError: If eager execution is enabled.
 	**/
 	@:native("__init__")
 	public function ___init__(reader_ref:Dynamic, ?supports_serialize:Dynamic):Dynamic;
@@ -54,6 +57,9 @@ package tensorflow.python.ops.io_ops;
 		  reader_ref: The operation that implements the reader.
 		  supports_serialize: True if the reader implementation can
 		    serialize its state.
+		
+		Raises:
+		  RuntimeError: If eager execution is enabled.
 	**/
 	public function new(reader_ref:Dynamic, ?supports_serialize:Dynamic):Void;
 	/**
@@ -62,7 +68,7 @@ package tensorflow.python.ops.io_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -113,11 +119,13 @@ package tensorflow.python.ops.io_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Returns the number of records this reader has produced.
 		
@@ -142,7 +150,7 @@ package tensorflow.python.ops.io_ops;
 	**/
 	public function num_work_units_completed(?name:Dynamic):Dynamic;
 	/**
-		Returns the next record (key, value pair) produced by a reader.
+		Returns the next record (key, value) pair produced by a reader.
 		
 		Will dequeue a work unit from queue if necessary (e.g. when the
 		Reader needs to start reading from a new file since it has
@@ -160,7 +168,7 @@ package tensorflow.python.ops.io_ops;
 	**/
 	public function read(queue:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns up to num_records (key, value pairs) produced by a reader.
+		Returns up to num_records (key, value) pairs produced by a reader.
 		
 		Will dequeue a work unit from queue if necessary (e.g., when the
 		Reader needs to start reading from a new file since it has

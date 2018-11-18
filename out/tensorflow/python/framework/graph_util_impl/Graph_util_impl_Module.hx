@@ -11,6 +11,18 @@ package tensorflow.python.framework.graph_util_impl;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Assert that nodes are present in the graph.
+	**/
+	static public function _assert_nodes_are_present(name_to_node:Dynamic, nodes:Dynamic):Dynamic;
+	/**
+		Breadth first search for reachable nodes from target nodes.
+	**/
+	static public function _bfs_for_reachable_nodes(target_nodes:Dynamic, name_to_input_name:Dynamic):Dynamic;
+	/**
+		Extracts useful information from the graph and returns them.
+	**/
+	static public function _extract_graph_summary(graph_def:Dynamic):Dynamic;
+	/**
 		Returns true if 'op' refers to a Variable node.
 	**/
 	static public function _is_variable_op(op:Dynamic):Dynamic;
@@ -77,13 +89,17 @@ package tensorflow.python.framework.graph_util_impl;
 		
 		Args:
 		  input_graph: Model to analyze and prune.
+		  protected_nodes: An optional list of names of nodes to be kept
+		    unconditionally. This is for example useful to preserve Identity output
+		    nodes.
 		
 		Returns:
 		  A list of nodes with the unnecessary ones removed.
 	**/
-	static public function remove_training_nodes(input_graph:Dynamic):Dynamic;
+	static public function remove_training_nodes(input_graph:Dynamic, ?protected_nodes:Dynamic):Dynamic;
 	/**
 		Convenience function to get a shape from a NodeDef's input string.
 	**/
 	static public function tensor_shape_from_node_def_name(graph:Dynamic, input_name:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

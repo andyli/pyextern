@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.core._methods;
 @:pythonImport("numpy.core._methods") extern class _Methods_Module {
+	static public var _NoValue : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,14 +11,15 @@ package numpy.core._methods;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _all(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	static public function _amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	static public function _amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
+	static public function _amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	static public function _any(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public function _count_reduce_items(arr:Dynamic, axis:Dynamic):Dynamic;
 	static public function _mean(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	static public function _prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _prod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
+	static public function _ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public function _std(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?ddof:Dynamic, ?keepdims:Dynamic):Dynamic;
-	static public function _sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function _sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	static public function _var(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?ddof:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -64,7 +66,7 @@ package numpy.core._methods;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -72,7 +74,7 @@ package numpy.core._methods;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		reduce(a, axis=0, dtype=None, out=None, keepdims=False)
+		reduce(a, axis=0, dtype=None, out=None, keepdims=False, initial)
 		
 		Reduces `a`'s dimension by one, by applying ufunc along one axis.
 		
@@ -128,6 +130,14 @@ package numpy.core._methods;
 		    the result will broadcast correctly against the original `arr`.
 		
 		    .. versionadded:: 1.7.0
+		initial : scalar, optional
+		    The value with which to start the reduction.
+		    If the ufunc has no identity or the dtype is object, this defaults
+		    to None - otherwise it defaults to ufunc.identity.
+		    If ``None`` is given, the first element of the reduction is used,
+		    and an error is thrown if the reduction is empty.
+		    
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -159,10 +169,28 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
+		       
+		You can use the ``initial`` keyword argument to initialize the reduction with a
+		different value.
+		
+		>>> np.add.reduce([10], initial=5)
+		15
+		>>> np.add.reduce(np.ones((2, 2, 2)), axis=(0, 2), initializer=10)
+		array([14., 14.])
+		
+		Allows reductions of empty arrays where they would normally fail, i.e.
+		for ufuncs without an identity.
+		
+		>>> np.minimum.reduce([], initial=np.inf)
+		inf
+		>>> np.minimum.reduce([])
+		Traceback (most recent call last):
+		    ...
+		ValueError: zero-size array to reduction operation minimum which has no identity
 	**/
 	static public function umr_all(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		reduce(a, axis=0, dtype=None, out=None, keepdims=False)
+		reduce(a, axis=0, dtype=None, out=None, keepdims=False, initial)
 		
 		Reduces `a`'s dimension by one, by applying ufunc along one axis.
 		
@@ -218,6 +246,14 @@ package numpy.core._methods;
 		    the result will broadcast correctly against the original `arr`.
 		
 		    .. versionadded:: 1.7.0
+		initial : scalar, optional
+		    The value with which to start the reduction.
+		    If the ufunc has no identity or the dtype is object, this defaults
+		    to None - otherwise it defaults to ufunc.identity.
+		    If ``None`` is given, the first element of the reduction is used,
+		    and an error is thrown if the reduction is empty.
+		    
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -249,10 +285,28 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
+		       
+		You can use the ``initial`` keyword argument to initialize the reduction with a
+		different value.
+		
+		>>> np.add.reduce([10], initial=5)
+		15
+		>>> np.add.reduce(np.ones((2, 2, 2)), axis=(0, 2), initializer=10)
+		array([14., 14.])
+		
+		Allows reductions of empty arrays where they would normally fail, i.e.
+		for ufuncs without an identity.
+		
+		>>> np.minimum.reduce([], initial=np.inf)
+		inf
+		>>> np.minimum.reduce([])
+		Traceback (most recent call last):
+		    ...
+		ValueError: zero-size array to reduction operation minimum which has no identity
 	**/
 	static public function umr_any(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		reduce(a, axis=0, dtype=None, out=None, keepdims=False)
+		reduce(a, axis=0, dtype=None, out=None, keepdims=False, initial)
 		
 		Reduces `a`'s dimension by one, by applying ufunc along one axis.
 		
@@ -308,6 +362,14 @@ package numpy.core._methods;
 		    the result will broadcast correctly against the original `arr`.
 		
 		    .. versionadded:: 1.7.0
+		initial : scalar, optional
+		    The value with which to start the reduction.
+		    If the ufunc has no identity or the dtype is object, this defaults
+		    to None - otherwise it defaults to ufunc.identity.
+		    If ``None`` is given, the first element of the reduction is used,
+		    and an error is thrown if the reduction is empty.
+		    
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -339,10 +401,28 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
+		       
+		You can use the ``initial`` keyword argument to initialize the reduction with a
+		different value.
+		
+		>>> np.add.reduce([10], initial=5)
+		15
+		>>> np.add.reduce(np.ones((2, 2, 2)), axis=(0, 2), initializer=10)
+		array([14., 14.])
+		
+		Allows reductions of empty arrays where they would normally fail, i.e.
+		for ufuncs without an identity.
+		
+		>>> np.minimum.reduce([], initial=np.inf)
+		inf
+		>>> np.minimum.reduce([])
+		Traceback (most recent call last):
+		    ...
+		ValueError: zero-size array to reduction operation minimum which has no identity
 	**/
 	static public function umr_maximum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		reduce(a, axis=0, dtype=None, out=None, keepdims=False)
+		reduce(a, axis=0, dtype=None, out=None, keepdims=False, initial)
 		
 		Reduces `a`'s dimension by one, by applying ufunc along one axis.
 		
@@ -398,6 +478,14 @@ package numpy.core._methods;
 		    the result will broadcast correctly against the original `arr`.
 		
 		    .. versionadded:: 1.7.0
+		initial : scalar, optional
+		    The value with which to start the reduction.
+		    If the ufunc has no identity or the dtype is object, this defaults
+		    to None - otherwise it defaults to ufunc.identity.
+		    If ``None`` is given, the first element of the reduction is used,
+		    and an error is thrown if the reduction is empty.
+		    
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -429,10 +517,28 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
+		       
+		You can use the ``initial`` keyword argument to initialize the reduction with a
+		different value.
+		
+		>>> np.add.reduce([10], initial=5)
+		15
+		>>> np.add.reduce(np.ones((2, 2, 2)), axis=(0, 2), initializer=10)
+		array([14., 14.])
+		
+		Allows reductions of empty arrays where they would normally fail, i.e.
+		for ufuncs without an identity.
+		
+		>>> np.minimum.reduce([], initial=np.inf)
+		inf
+		>>> np.minimum.reduce([])
+		Traceback (most recent call last):
+		    ...
+		ValueError: zero-size array to reduction operation minimum which has no identity
 	**/
 	static public function umr_minimum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		reduce(a, axis=0, dtype=None, out=None, keepdims=False)
+		reduce(a, axis=0, dtype=None, out=None, keepdims=False, initial)
 		
 		Reduces `a`'s dimension by one, by applying ufunc along one axis.
 		
@@ -488,6 +594,14 @@ package numpy.core._methods;
 		    the result will broadcast correctly against the original `arr`.
 		
 		    .. versionadded:: 1.7.0
+		initial : scalar, optional
+		    The value with which to start the reduction.
+		    If the ufunc has no identity or the dtype is object, this defaults
+		    to None - otherwise it defaults to ufunc.identity.
+		    If ``None`` is given, the first element of the reduction is used,
+		    and an error is thrown if the reduction is empty.
+		    
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -519,10 +633,28 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
+		       
+		You can use the ``initial`` keyword argument to initialize the reduction with a
+		different value.
+		
+		>>> np.add.reduce([10], initial=5)
+		15
+		>>> np.add.reduce(np.ones((2, 2, 2)), axis=(0, 2), initializer=10)
+		array([14., 14.])
+		
+		Allows reductions of empty arrays where they would normally fail, i.e.
+		for ufuncs without an identity.
+		
+		>>> np.minimum.reduce([], initial=np.inf)
+		inf
+		>>> np.minimum.reduce([])
+		Traceback (most recent call last):
+		    ...
+		ValueError: zero-size array to reduction operation minimum which has no identity
 	**/
 	static public function umr_prod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		reduce(a, axis=0, dtype=None, out=None, keepdims=False)
+		reduce(a, axis=0, dtype=None, out=None, keepdims=False, initial)
 		
 		Reduces `a`'s dimension by one, by applying ufunc along one axis.
 		
@@ -578,6 +710,14 @@ package numpy.core._methods;
 		    the result will broadcast correctly against the original `arr`.
 		
 		    .. versionadded:: 1.7.0
+		initial : scalar, optional
+		    The value with which to start the reduction.
+		    If the ufunc has no identity or the dtype is object, this defaults
+		    to None - otherwise it defaults to ufunc.identity.
+		    If ``None`` is given, the first element of the reduction is used,
+		    and an error is thrown if the reduction is empty.
+		    
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -609,6 +749,24 @@ package numpy.core._methods;
 		>>> np.add.reduce(X, 2)
 		array([[ 1,  5],
 		       [ 9, 13]])
+		       
+		You can use the ``initial`` keyword argument to initialize the reduction with a
+		different value.
+		
+		>>> np.add.reduce([10], initial=5)
+		15
+		>>> np.add.reduce(np.ones((2, 2, 2)), axis=(0, 2), initializer=10)
+		array([14., 14.])
+		
+		Allows reductions of empty arrays where they would normally fail, i.e.
+		for ufuncs without an identity.
+		
+		>>> np.minimum.reduce([], initial=np.inf)
+		inf
+		>>> np.minimum.reduce([])
+		Traceback (most recent call last):
+		    ...
+		ValueError: zero-size array to reduction operation minimum which has no identity
 	**/
 	static public function umr_sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

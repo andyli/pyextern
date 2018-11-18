@@ -9,7 +9,7 @@ package tensorflow.python.ops.nn;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Generate the set of all classes.
 		
@@ -43,8 +43,8 @@ package tensorflow.python.ops.nn;
 		Atrous convolution (a.k.a. convolution with holes or dilated convolution).
 		
 		This function is a simpler wrapper around the more general
-		@{tf.nn.convolution}, and exists only for backwards compatibility. You can
-		use @{tf.nn.convolution} to perform 1-D, 2-D, or 3-D atrous convolution.
+		`tf.nn.convolution`, and exists only for backwards compatibility. You can
+		use `tf.nn.convolution` to perform 1-D, 2-D, or 3-D atrous convolution.
 		
 		
 		Computes a 2-D atrous convolution, also known as convolution with holes or
@@ -84,7 +84,8 @@ package tensorflow.python.ops.nn;
 		that effectively use atrous convolution in different ways are, among others,
 		[OverFeat: Integrated Recognition, Localization and Detection using
 		Convolutional Networks](http://arxiv.org/abs/1312.6229) and [Fast Image
-		Scanning with Deep Max-Pooling Convolutional Neural Networks](http://arxiv.org/abs/1302.1700).
+		Scanning with Deep Max-Pooling Convolutional Neural
+		Networks](http://arxiv.org/abs/1302.1700).
 		Atrous convolution is also closely related to the so-called noble identities
 		in multi-rate signal processing.
 		
@@ -153,7 +154,7 @@ package tensorflow.python.ops.nn;
 		
 		Returns:
 		  A `Tensor` with the same type as `value`.
-		  Output shape with `'VALID`` padding is:
+		  Output shape with `'VALID'` padding is:
 		
 		      [batch, height - 2 * (filter_width - 1),
 		       width - 2 * (filter_height - 1), out_channels].
@@ -214,13 +215,12 @@ package tensorflow.python.ops.nn;
 		Args:
 		  value: A 4-D `Tensor` of shape `[batch, height, width, channels]` and type
 		    `float32`, `float64`, `qint8`, `quint8`, or `qint32`.
-		  ksize: A list of ints that has length >= 4.
-		    The size of the window for each dimension of the input tensor.
-		  strides: A list of ints that has length >= 4.
-		    The stride of the sliding window for each dimension of the
-		    input tensor.
+		  ksize: A list or tuple of 4 ints. The size of the window for each dimension
+		    of the input tensor.
+		  strides: A list or tuple of 4 ints. The stride of the sliding window for
+		    each dimension of the input tensor.
 		  padding: A string, either `'VALID'` or `'SAME'`. The padding algorithm.
-		    See the @{tf.nn.convolution$comment here}
+		    See the "returns" section of `tf.nn.convolution` for details.
 		  data_format: A string. 'NHWC' and 'NCHW' are supported.
 		  name: Optional name for the operation.
 		
@@ -232,7 +232,7 @@ package tensorflow.python.ops.nn;
 		Performs 3D average pooling on the input.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    Shape `[batch, depth, rows, cols, channels]` tensor to pool over.
 		  ksize: A list of `ints` that has length `>= 5`.
 		    1-D tensor of length 5. The size of the window for each dimension of
@@ -252,9 +252,83 @@ package tensorflow.python.ops.nn;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
-		  The average pooled output tensor.
 	**/
 	static public function avg_pool3d(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function avg_pool3d
+	**/
+	static public function avg_pool3d_eager_fallback(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients of average pooling function.
+		
+		Args:
+		  orig_input_shape: A `Tensor` of type `int32`.
+		    The original input dimensions.
+		  grad: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    Output backprop of shape `[batch, depth, rows, cols, channels]`.
+		  ksize: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The size of the window for each dimension of
+		    the input tensor. Must have `ksize[0] = ksize[4] = 1`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The stride of the sliding window for each
+		    dimension of `input`. Must have `strides[0] = strides[4] = 1`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NDHWC", "NCDHW"`. Defaults to `"NDHWC"`.
+		    The data format of the input and output data. With the
+		    default format "NDHWC", the data is stored in the order of:
+		        [batch, in_depth, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCDHW", the data storage order is:
+		        [batch, in_channels, in_depth, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `grad`.
+	**/
+	static public function avg_pool3d_grad(orig_input_shape:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function avg_pool3d_grad
+	**/
+	static public function avg_pool3d_grad_eager_fallback(orig_input_shape:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function avg_pool
+	**/
+	static public function avg_pool_eager_fallback(value:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients of the average pooling function.
+		
+		Args:
+		  orig_input_shape: A `Tensor` of type `int32`.
+		    1-D.  Shape of the original input to `avg_pool`.
+		  grad: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    4-D with shape `[batch, height, width, channels]`.  Gradients w.r.t.
+		    the output of `avg_pool`.
+		  ksize: A list of `ints` that has length `>= 4`.
+		    The size of the sliding window for each dimension of the input.
+		  strides: A list of `ints` that has length `>= 4`.
+		    The stride of the sliding window for each dimension of the input.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, in_channels, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `grad`.
+	**/
+	static public function avg_pool_grad(orig_input_shape:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function avg_pool_grad
+	**/
+	static public function avg_pool_grad_eager_fallback(orig_input_shape:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Batch normalization.
 		
@@ -282,6 +356,48 @@ package tensorflow.python.ops.nn;
 		   A batch-normalized `t`.
 	**/
 	static public function batch_norm_with_global_normalization(t:Dynamic, m:Dynamic, v:Dynamic, beta:Dynamic, gamma:Dynamic, variance_epsilon:Dynamic, scale_after_normalization:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Gradients for batch normalization.
+		
+		This op is deprecated. See `tf.nn.batch_normalization`.
+		
+		Args:
+		  t: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
+		    A 4D input Tensor.
+		  m: A `Tensor`. Must have the same type as `t`.
+		    A 1D mean Tensor with size matching the last dimension of t.
+		    This is the first output from tf.nn.moments,
+		    or a saved moving average thereof.
+		  v: A `Tensor`. Must have the same type as `t`.
+		    A 1D variance Tensor with size matching the last dimension of t.
+		    This is the second output from tf.nn.moments,
+		    or a saved moving average thereof.
+		  gamma: A `Tensor`. Must have the same type as `t`.
+		    A 1D gamma Tensor with size matching the last dimension of t.
+		    If "scale_after_normalization" is true, this Tensor will be multiplied
+		    with the normalized Tensor.
+		  backprop: A `Tensor`. Must have the same type as `t`. 4D backprop Tensor.
+		  variance_epsilon: A `float`. A small float number to avoid dividing by 0.
+		  scale_after_normalization: A `bool`.
+		    A bool indicating whether the resulted tensor
+		    needs to be multiplied with gamma.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (dx, dm, dv, db, dg).
+		
+		  dx: A `Tensor`. Has the same type as `t`.
+		  dm: A `Tensor`. Has the same type as `t`.
+		  dv: A `Tensor`. Has the same type as `t`.
+		  db: A `Tensor`. Has the same type as `t`.
+		  dg: A `Tensor`. Has the same type as `t`.
+	**/
+	static public function batch_norm_with_global_normalization_grad(t:Dynamic, m:Dynamic, v:Dynamic, gamma:Dynamic, backprop:Dynamic, variance_epsilon:Dynamic, scale_after_normalization:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function batch_norm_with_global_normalization_grad
+	**/
+	static public function batch_norm_with_global_normalization_grad_eager_fallback(t:Dynamic, m:Dynamic, v:Dynamic, gamma:Dynamic, backprop:Dynamic, variance_epsilon:Dynamic, scale_after_normalization:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Batch normalization.
 		
@@ -347,6 +463,67 @@ package tensorflow.python.ops.nn;
 		  A `Tensor` with the same type as `value`.
 	**/
 	static public function bias_add(value:Dynamic, bias:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function bias_add
+	**/
+	static public function bias_add_eager_fallback(value:Dynamic, bias:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		The backward operation for "BiasAdd" on the "bias" tensor.
+		
+		It accumulates all the values from out_backprop into the feature dimension.
+		For NHWC data format, the feature dimension is the last. For NCHW data format,
+		the feature dimension is the third-to-last.
+		
+		Args:
+		  out_backprop: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `complex64`, `int64`, `qint8`, `quint8`, `qint32`, `bfloat16`, `uint16`, `complex128`, `half`, `uint32`, `uint64`.
+		    Any number of dimensions.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the bias tensor will be added to the last dimension
+		    of the value tensor.
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, in_channels, in_height, in_width].
+		    The tensor will be added to "in_channels", the third-to-the-last
+		        dimension.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `out_backprop`.
+	**/
+	static public function bias_add_grad(out_backprop:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function bias_add_grad
+	**/
+	static public function bias_add_grad_eager_fallback(out_backprop:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Adds `bias` to `value`.
+		
+		This is a deprecated version of bias_add and will soon to be removed.
+		
+		This is (mostly) a special case of `tf.add` where `bias` is restricted to 1-D.
+		Broadcasting is supported, so `value` may have any number of dimensions.
+		Unlike `tf.add`, the type of `bias` is allowed to differ from `value` in the
+		case where both types are quantized.
+		
+		Args:
+		  value: A `Tensor` with type `float`, `double`, `int64`, `int32`, `uint8`,
+		    `int16`, `int8`, `complex64`, or `complex128`.
+		  bias: A 1-D `Tensor` with size matching the last dimension of `value`.
+		    Must be the same type as `value` unless `value` is a quantized type,
+		    in which case a different quantized type may be used.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` with the same type as `value`.
+	**/
+	static public function bias_add_v1(value:Dynamic, bias:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function bias_add_v1
+	**/
+	static public function bias_add_v1_eager_fallback(value:Dynamic, bias:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a dynamic version of bidirectional recurrent neural network.
 		
@@ -465,13 +642,21 @@ package tensorflow.python.ops.nn;
 	**/
 	static public function compute_accidental_hits(true_classes:Dynamic, sampled_candidates:Dynamic, num_true:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes a 1-D convolution given 3-D input and filter tensors.
+		Computes a 1-D convolution given 3-D input and filter tensors. (deprecated arguments) (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		`NCHW` for data_format is deprecated, use `NCW` instead
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		`NHWC` for data_format is deprecated, use `NWC` instead
 		
 		Given an input tensor of shape
 		  [batch, in_width, in_channels]
-		if data_format is "NHWC", or
+		if data_format is "NWC", or
 		  [batch, in_channels, in_width]
-		if data_format is "NCHW",
+		if data_format is "NCW",
 		and a filter / kernel tensor of shape
 		[filter_width, in_channels, out_channels], this op reshapes
 		the arguments to pass them to conv2d to perform the equivalent
@@ -490,15 +675,15 @@ package tensorflow.python.ops.nn;
 		returned to the caller.
 		
 		Args:
-		  value: A 3D `Tensor`.  Must be of type `float32` or `float64`.
-		  filters: A 3D `Tensor`.  Must have the same type as `input`.
+		  value: A 3D `Tensor`.  Must be of type `float16`, `float32`, or `float64`.
+		  filters: A 3D `Tensor`.  Must have the same type as `value`.
 		  stride: An `integer`.  The number of entries by which
 		    the filter is moved right at each step.
 		  padding: 'SAME' or 'VALID'
 		  use_cudnn_on_gpu: An optional `bool`.  Defaults to `True`.
-		  data_format: An optional `string` from `"NHWC", "NCHW"`.  Defaults
-		    to `"NHWC"`, the data is stored in the order of
-		    [batch, in_width, in_channels].  The `"NCHW"` format stores
+		  data_format: An optional `string` from `"NWC", "NCW"`.  Defaults
+		    to `"NWC"`, the data is stored in the order of
+		    [batch, in_width, in_channels].  The `"NCW"` format stores
 		    data as [batch, in_channels, in_width].
 		  name: A name for the operation (optional).
 		
@@ -509,6 +694,38 @@ package tensorflow.python.ops.nn;
 		  ValueError: if `data_format` is invalid.
 	**/
 	static public function conv1d(value:Dynamic, filters:Dynamic, stride:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		The transpose of `conv1d`.
+		
+		This operation is sometimes called "deconvolution" after [Deconvolutional
+		Networks](http://www.matthewzeiler.com/pubs/cvpr2010/cvpr2010.pdf), but is
+		actually the transpose (gradient) of `conv1d` rather than an actual
+		deconvolution.
+		
+		Args:
+		  value: A 3-D `Tensor` of type `float` and shape
+		    `[batch, in_width, in_channels]` for `NWC` data format or
+		    `[batch, in_channels, in_width]` for `NCW` data format.
+		  filter: A 3-D `Tensor` with the same type as `value` and shape
+		    `[filter_width, output_channels, in_channels]`.  `filter`'s
+		    `in_channels` dimension must match that of `value`.
+		  output_shape: A 1-D `Tensor` representing the output shape of the
+		    deconvolution op.
+		  stride: An `integer`.  The number of entries by which
+		    the filter is moved right at each step.
+		  padding: A string, either `'VALID'` or `'SAME'`. The padding algorithm.
+		    See the "returns" section of `tf.nn.convolution` for details.
+		  data_format: A string. 'NHWC' and 'NCHW' are supported.
+		  name: Optional name for the returned tensor.
+		
+		Returns:
+		  A `Tensor` with the same type as `value`.
+		
+		Raises:
+		  ValueError: If input/output depth does not match `filter`'s shape, or if
+		    padding is other than `'VALID'` or `'SAME'`.
+	**/
+	static public function conv1d_transpose(value:Dynamic, filter:Dynamic, output_shape:Dynamic, stride:Dynamic, ?padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes a 2-D convolution given 4-D `input` and `filter` tensors.
 		
@@ -535,7 +752,7 @@ package tensorflow.python.ops.nn;
 		horizontal and vertices strides, `strides = [1, stride, stride, 1]`.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `half`, `float32`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    A 4-D tensor. The dimension order is interpreted according to the value
 		    of `data_format`, see below for details.
 		  filter: A `Tensor`. Must have the same type as `input`.
@@ -544,7 +761,7 @@ package tensorflow.python.ops.nn;
 		  strides: A list of `ints`.
 		    1-D tensor of length 4.  The stride of the sliding window for each
 		    dimension of `input`. The dimension order is determined by the value of
-		      `data_format`, see below for details.
+		    `data_format`, see below for details.
 		  padding: A `string` from: `"SAME", "VALID"`.
 		    The type of padding algorithm to use.
 		  use_cudnn_on_gpu: An optional `bool`. Defaults to `True`.
@@ -554,19 +771,23 @@ package tensorflow.python.ops.nn;
 		        [batch, height, width, channels].
 		    Alternatively, the format could be "NCHW", the data storage order of:
 		        [batch, channels, height, width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each
+		    filter element on that dimension. The dimension order is determined by the
+		    value of `data_format`, see above for details. Dilations in the batch and
+		    depth dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
-		  A 4-D tensor. The dimension order is determined by the value of
-		  `data_format`, see below for details.
 	**/
-	static public function conv2d(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conv2d(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the gradients of convolution with respect to the filter.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `half`, `float32`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    4-D with shape `[batch, in_height, in_width, in_channels]`.
 		  filter_sizes: A `Tensor` of type `int32`.
 		    An integer vector representing the tensor shape of `filter`,
@@ -588,14 +809,23 @@ package tensorflow.python.ops.nn;
 		        [batch, in_height, in_width, in_channels].
 		    Alternatively, the format could be "NCHW", the data storage order of:
 		        [batch, in_channels, in_height, in_width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each filter
+		    element on that dimension. The dimension order is determined by the value of
+		    `data_format`, see above for details. Dilations in the batch and depth
+		    dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`. 4-D with shape
-		  `[filter_height, filter_width, in_channels, out_channels]`.  Gradient w.r.t.
-		  the `filter` input of the convolution.
+		  A `Tensor`. Has the same type as `input`.
 	**/
-	static public function conv2d_backprop_filter(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conv2d_backprop_filter(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv2d_backprop_filter
+	**/
+	static public function conv2d_backprop_filter_eager_fallback(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the gradients of convolution with respect to the input.
 		
@@ -603,7 +833,7 @@ package tensorflow.python.ops.nn;
 		  input_sizes: A `Tensor` of type `int32`.
 		    An integer vector representing the shape of `input`,
 		    where `input` is a 4-D `[batch, height, width, channels]` tensor.
-		  filter: A `Tensor`. Must be one of the following types: `half`, `float32`.
+		  filter: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    4-D with shape
 		    `[filter_height, filter_width, in_channels, out_channels]`.
 		  out_backprop: A `Tensor`. Must have the same type as `filter`.
@@ -622,14 +852,28 @@ package tensorflow.python.ops.nn;
 		        [batch, in_height, in_width, in_channels].
 		    Alternatively, the format could be "NCHW", the data storage order of:
 		        [batch, in_channels, in_height, in_width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each filter
+		    element on that dimension. The dimension order is determined by the value of
+		    `data_format`, see above for details. Dilations in the batch and depth
+		    dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `filter`.
-		  4-D with shape `[batch, in_height, in_width, in_channels]`.  Gradient
-		  w.r.t. the input of the convolution.
 	**/
-	static public function conv2d_backprop_input(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conv2d_backprop_input(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv2d_backprop_input
+	**/
+	static public function conv2d_backprop_input_eager_fallback(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv2d
+	**/
+	static public function conv2d_eager_fallback(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?use_cudnn_on_gpu:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		The transpose of `conv2d`.
 		
@@ -650,7 +894,7 @@ package tensorflow.python.ops.nn;
 		  strides: A list of ints. The stride of the sliding window for each
 		    dimension of the input tensor.
 		  padding: A string, either `'VALID'` or `'SAME'`. The padding algorithm.
-		    See the @{tf.nn.convolution$comment here}
+		    See the "returns" section of `tf.nn.convolution` for details.
 		  data_format: A string. 'NHWC' and 'NCHW' are supported.
 		  name: Optional name for the returned tensor.
 		
@@ -672,7 +916,7 @@ package tensorflow.python.ops.nn;
 		Our Conv3D implements a form of cross-correlation.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    Shape `[batch, in_depth, in_height, in_width, in_channels]`.
 		  filter: A `Tensor`. Must have the same type as `input`.
 		    Shape `[filter_depth, filter_height, filter_width, in_channels,
@@ -688,17 +932,52 @@ package tensorflow.python.ops.nn;
 		        [batch, in_depth, in_height, in_width, in_channels].
 		    Alternatively, the format could be "NCDHW", the data storage order is:
 		        [batch, in_channels, in_depth, in_height, in_width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1, 1]`.
+		    1-D tensor of length 5.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each
+		    filter element on that dimension. The dimension order is determined by the
+		    value of `data_format`, see above for details. Dilations in the batch and
+		    depth dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
 	**/
-	static public function conv3d(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conv3d(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the gradients of 3-D convolution with respect to the filter.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		    Shape `[batch, depth, rows, cols, in_channels]`.
+		  filter: A `Tensor`. Must have the same type as `input`.
+		    Shape `[depth, rows, cols, in_channels, out_channels]`.
+		    `in_channels` must match between `input` and `filter`.
+		  out_backprop: A `Tensor`. Must have the same type as `input`.
+		    Backprop signal of shape `[batch, out_depth, out_rows, out_cols,
+		    out_channels]`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The stride of the sliding window for each
+		    dimension of `input`. Must have `strides[0] = strides[4] = 1`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1, 1]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function conv3d_backprop_filter(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv3d_backprop_filter
+	**/
+	static public function conv3d_backprop_filter_eager_fallback(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradients of 3-D convolution with respect to the filter.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    Shape `[batch, depth, rows, cols, in_channels]`.
 		  filter_sizes: A `Tensor` of type `int32`.
 		    An integer vector representing the tensor shape of `filter`,
@@ -719,12 +998,99 @@ package tensorflow.python.ops.nn;
 		        [batch, in_depth, in_height, in_width, in_channels].
 		    Alternatively, the format could be "NCDHW", the data storage order is:
 		        [batch, in_channels, in_depth, in_height, in_width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1, 1]`.
+		    1-D tensor of length 5.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each
+		    filter element on that dimension. The dimension order is determined by the
+		    value of `data_format`, see above for details. Dilations in the batch and
+		    depth dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
 	**/
-	static public function conv3d_backprop_filter_v2(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function conv3d_backprop_filter_v2(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv3d_backprop_filter_v2
+	**/
+	static public function conv3d_backprop_filter_v2_eager_fallback(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradients of 3-D convolution with respect to the input.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		    Shape `[batch, depth, rows, cols, in_channels]`.
+		  filter: A `Tensor`. Must have the same type as `input`.
+		    Shape `[depth, rows, cols, in_channels, out_channels]`.
+		    `in_channels` must match between `input` and `filter`.
+		  out_backprop: A `Tensor`. Must have the same type as `input`.
+		    Backprop signal of shape `[batch, out_depth, out_rows, out_cols,
+		    out_channels]`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The stride of the sliding window for each
+		    dimension of `input`. Must have `strides[0] = strides[4] = 1`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1, 1]`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function conv3d_backprop_input(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv3d_backprop_input
+	**/
+	static public function conv3d_backprop_input_eager_fallback(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradients of 3-D convolution with respect to the input.
+		
+		Args:
+		  input_sizes: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    An integer vector representing the tensor shape of `input`,
+		    where `input` is a 5-D
+		    `[batch, depth, rows, cols, in_channels]` tensor.
+		  filter: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    Shape `[depth, rows, cols, in_channels, out_channels]`.
+		    `in_channels` must match between `input` and `filter`.
+		  out_backprop: A `Tensor`. Must have the same type as `filter`.
+		    Backprop signal of shape `[batch, out_depth, out_rows, out_cols,
+		    out_channels]`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The stride of the sliding window for each
+		    dimension of `input`. Must have `strides[0] = strides[4] = 1`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NDHWC", "NCDHW"`. Defaults to `"NDHWC"`.
+		    The data format of the input and output data. With the
+		    default format "NDHWC", the data is stored in the order of:
+		        [batch, in_depth, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCDHW", the data storage order is:
+		        [batch, in_channels, in_depth, in_height, in_width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1, 1]`.
+		    1-D tensor of length 5.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each
+		    filter element on that dimension. The dimension order is determined by the
+		    value of `data_format`, see above for details. Dilations in the batch and
+		    depth dimensions must be 1.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `filter`.
+	**/
+	static public function conv3d_backprop_input_v2(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv3d_backprop_input_v2
+	**/
+	static public function conv3d_backprop_input_v2_eager_fallback(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function conv3d
+	**/
+	static public function conv3d_eager_fallback(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		The transpose of `conv3d`.
 		
@@ -744,7 +1110,7 @@ package tensorflow.python.ops.nn;
 		  strides: A list of ints. The stride of the sliding window for each
 		    dimension of the input tensor.
 		  padding: A string, either `'VALID'` or `'SAME'`. The padding algorithm.
-		    See the @{tf.nn.convolution$comment here}
+		    See the "returns" section of `tf.nn.convolution` for details.
 		  data_format: A string, either `'NDHWC'` or `'NCDHW`' specifying the layout
 		    of the input and output tensors. Defaults to `'NDHWC'`.
 		  name: Optional name for the returned tensor.
@@ -798,10 +1164,12 @@ package tensorflow.python.ops.nn;
 		                       x[N-1]*strides[N-1] + dilation_rate[N-1]*z[N-1],
 		                       q]
 		```
-		where `padded_input` is obtained by zero padding the input using an effective
+		where b is the index into the batch, k is the output channel number, q is the
+		input channel number, and z is the N-D spatial offset within the filter. Here,
+		`padded_input` is obtained by zero padding the input using an effective
 		spatial filter shape of `(spatial_filter_shape-1) * dilation_rate + 1` and
 		output striding `strides` as described in the
-		@{tf.nn.convolution$comment here}.
+		[comment here](https://tensorflow.org/api_guides/python/nn#Convolution).
 		
 		In the case that `data_format` does start with `"NC"`, the `input` and output
 		(but not the `filter`) are simply transposed as follows:
@@ -873,17 +1241,20 @@ package tensorflow.python.ops.nn;
 		Concatenates a ReLU which selects only the positive part of the activation
 		with a ReLU which selects only the *negative* part of the activation.
 		Note that as a result this non-linearity doubles the depth of the activations.
-		Source: [Understanding and Improving Convolutional Neural Networks via Concatenated Rectified Linear Units. W. Shang, et al.](https://arxiv.org/abs/1603.05201) 
+		Source: [Understanding and Improving Convolutional Neural Networks via
+		Concatenated Rectified Linear Units. W. Shang, et
+		al.](https://arxiv.org/abs/1603.05201)
 		
 		Args:
 		  features: A `Tensor` with type `float`, `double`, `int32`, `int64`, `uint8`,
 		    `int16`, or `int8`.
 		  name: A name for the operation (optional).
+		  axis: The axis that the output values are concatenated along. Default is -1.
 		
 		Returns:
 		  A `Tensor` with the same type as `features`.
 	**/
-	static public function crelu(features:Dynamic, ?name:Dynamic):Dynamic;
+	static public function crelu(features:Dynamic, ?name:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Performs beam search decoding on the logits given in input.
 		
@@ -893,11 +1264,11 @@ package tensorflow.python.ops.nn;
 		
 		If `merge_repeated` is `True`, merge repeated classes in the output beams.
 		This means that if consecutive entries in a beam are the same,
-		only the first of these is emitted.  That is, when the top path
-		is `A B B B B`, the return value is:
+		only the first of these is emitted.  That is, when the sequence is
+		`A B B * B * B` (where '*' is the blank label), the return value is:
 		
 		  * `A B` if `merge_repeated = True`.
-		  * `A B B B B` if `merge_repeated = False`.
+		  * `A B B B` if `merge_repeated = False`.
 		
 		Args:
 		  inputs: 3-D `float` `Tensor`, size
@@ -916,7 +1287,7 @@ package tensorflow.python.ops.nn;
 		      The rows store: [batch, time].
 		    `decoded[j].values`: Values vector, size `(total_decoded_outputs[j])`.
 		      The vector stores the decoded classes for beam j.
-		    `decoded[j].shape`: Shape vector, size `(2)`.
+		    `decoded[j].dense_shape`: Shape vector, size `(2)`.
 		      The shape values are: `[batch_size, max_decoded_length[j]]`.
 		  log_probability: A `float` matrix `(batch_size x top_paths)` containing
 		      sequence log-probabilities.
@@ -939,7 +1310,7 @@ package tensorflow.python.ops.nn;
 		
 		Args:
 		  inputs: 3-D `float` `Tensor` sized
-		    `[max_time x batch_size x num_classes]`.  The logits.
+		    `[max_time, batch_size, num_classes]`.  The logits.
 		  sequence_length: 1-D `int32` vector containing sequence lengths,
 		    having size `[batch_size]`.
 		  merge_repeated: Boolean.  Default: True.
@@ -948,11 +1319,11 @@ package tensorflow.python.ops.nn;
 		  A tuple `(decoded, neg_sum_logits)` where
 		  decoded: A single-element list. `decoded[0]`
 		    is an `SparseTensor` containing the decoded outputs s.t.:
-		    `decoded.indices`: Indices matrix `(total_decoded_outputs x 2)`.
+		    `decoded.indices`: Indices matrix `(total_decoded_outputs, 2)`.
 		      The rows store: `[batch, time]`.
 		    `decoded.values`: Values vector, size `(total_decoded_outputs)`.
 		      The vector stores the decoded classes.
-		    `decoded.shape`: Shape vector, size `(2)`.
+		    `decoded.dense_shape`: Shape vector, size `(2)`.
 		      The shape values are: `[batch_size, max_decoded_length]`
 		  neg_sum_logits: A `float` matrix `(batch_size x 1)` containing, for the
 		      sequence found, the negative of the sum of the greatest logit at each
@@ -965,8 +1336,9 @@ package tensorflow.python.ops.nn;
 		This op implements the CTC loss as presented in the article:
 		
 		[A. Graves, S. Fernandez, F. Gomez, J. Schmidhuber.
-		Connectionist Temporal Classification: Labelling Unsegmented Sequence Data
-		with Recurrent Neural Networks. ICML 2006, Pittsburgh, USA, pp. 369-376.](http://www.cs.toronto.edu/~graves/icml_2006.pdf)
+		Connectionist Temporal Classification: Labeling Unsegmented Sequence Data
+		with Recurrent Neural Networks. ICML 2006, Pittsburgh, USA,
+		pp. 369-376.](http://www.cs.toronto.edu/~graves/icml_2006.pdf)
 		
 		Input requirements:
 		
@@ -1036,9 +1408,9 @@ package tensorflow.python.ops.nn;
 		    See `core/ops/ctc_ops.cc` for more details.
 		  inputs: 3-D `float` `Tensor`.
 		    If time_major == False, this will be a `Tensor` shaped:
-		      `[batch_size x max_time x num_classes]`.
+		      `[batch_size, max_time, num_classes]`.
 		    If time_major == True (default), this will be a `Tensor` shaped:
-		      `[max_time x batch_size x num_classes]`.
+		      `[max_time, batch_size, num_classes]`.
 		    The logits.
 		  sequence_length: 1-D `int32` vector, size `[batch_size]`.
 		    The sequence lengths.
@@ -1048,20 +1420,142 @@ package tensorflow.python.ops.nn;
 		  ignore_longer_outputs_than_inputs: Boolean. Default: False.
 		    If True, sequences with longer outputs than inputs will be ignored.
 		  time_major: The shape format of the `inputs` Tensors.
-		    If True, these `Tensors` must be shaped `[max_time, batch_size, num_classes]`.
-		    If False, these `Tensors` must be shaped `[batch_size, max_time, num_classes]`.
-		    Using `time_major = True` (default) is a bit more efficient because it avoids
-		    transposes at the beginning of the ctc_loss calculation.  However, most
-		    TensorFlow data is batch-major, so by this function also accepts inputs
-		    in batch-major form.
+		    If True, these `Tensors` must be shaped `[max_time, batch_size,
+		    num_classes]`.
+		    If False, these `Tensors` must be shaped `[batch_size, max_time,
+		    num_classes]`.
+		    Using `time_major = True` (default) is a bit more efficient because it
+		    avoids transposes at the beginning of the ctc_loss calculation.  However,
+		    most TensorFlow data is batch-major, so by this function also accepts
+		    inputs in batch-major form.
 		
 		Returns:
-		  A 1-D `float` `Tensor`, size `[batch]`, containing the negative log probabilities.
+		  A 1-D `float` `Tensor`, size `[batch]`, containing the negative log
+		    probabilities.
 		
 		Raises:
 		  TypeError: if labels is not a `SparseTensor`.
 	**/
 	static public function ctc_loss(labels:Dynamic, inputs:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?time_major:Dynamic):Dynamic;
+	/**
+		Returns the dimension index in the destination data format given the one in
+		
+		the source data format.
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A Tensor with each element as a dimension index in source data format.
+		    Must be in the range [-4, 4).
+		  src_format: An optional `string`. Defaults to `"NHWC"`.
+		    source data format.
+		  dst_format: An optional `string`. Defaults to `"NCHW"`.
+		    destination data format.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function data_format_dim_map(x:Dynamic, ?src_format:Dynamic, ?dst_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function data_format_dim_map
+	**/
+	static public function data_format_dim_map_eager_fallback(x:Dynamic, ?src_format:Dynamic, ?dst_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Returns the permuted vector/tensor in the destination data format given the
+		
+		one in the source data format.
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    Vector of size 4 or Tensor of shape (4, 2) in source data format.
+		  src_format: An optional `string`. Defaults to `"NHWC"`.
+		    source data format.
+		  dst_format: An optional `string`. Defaults to `"NCHW"`.
+		    destination data format.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `x`.
+	**/
+	static public function data_format_vec_permute(x:Dynamic, ?src_format:Dynamic, ?dst_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function data_format_vec_permute
+	**/
+	static public function data_format_vec_permute_eager_fallback(x:Dynamic, ?src_format:Dynamic, ?dst_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking specific function arguments as deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called with the deprecated argument. It has the following format:
+		
+		  Calling <function> (from <module>) with <arg> is deprecated and will be
+		  removed after <date>. Instructions for updating:
+		    <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> includes the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated arguments)' is
+		appended to the first line of the docstring and a deprecation notice is
+		prepended to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  *deprecated_arg_names_or_tuples: String or 2-Tuple(String,
+		    [ok_vals]).  The string is the deprecated argument name.
+		    Optionally, an ok-value may be provided.  If the user provided
+		    argument equals this value, the warning is suppressed.
+		  **kwargs: If `warn_once=False` is passed, every call with a deprecated
+		    argument will log a warning. The default behavior is to only warn the
+		    first time the function is called with any given deprecated argument.
+		    All other kwargs raise `ValueError`.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, instructions are
+		    empty, the deprecated arguments are not present in the function
+		    signature, the second element of a deprecated_tuple is not a
+		    list, or if a kwarg other than `warn_once` is passed.
+	**/
+	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Looks up deprecated argument name and ensures both are not used.
+		
+		Args:
+		  new_name: new name of argument
+		  new_value: value of new argument (or None if not used)
+		  old_name: old name of argument
+		  old_value: value of old argument (or None if not used)
+		Returns:
+		  The effective argument that should be used.
+		Raises:
+		  ValueError: if new_value and old_value are both non-null
+	**/
+	static public function deprecated_argument_lookup(new_name:Dynamic, new_value:Dynamic, old_name:Dynamic, old_value:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Depthwise 2-D convolution.
 		
@@ -1092,7 +1586,7 @@ package tensorflow.python.ops.nn;
 		  strides: 1-D of size 4.  The stride of the sliding window for each
 		    dimension of `input`.
 		  padding: A string, either `'VALID'` or `'SAME'`. The padding algorithm.
-		    See the @{tf.nn.convolution$comment here}
+		    See the "returns" section of `tf.nn.convolution` for details.
 		  rate: 1-D of size 2. The dilation rate in which we sample input values
 		    across the `height` and `width` dimensions in atrous convolution. If it is
 		    greater than 1, then all values of strides must be 1.
@@ -1116,17 +1610,19 @@ package tensorflow.python.ops.nn;
 		`channel_multiplier` channels for each), then concatenates the results
 		together. Thus, the output has `in_channels * channel_multiplier` channels.
 		
+		```
 		for k in 0..in_channels-1
 		  for q in 0..channel_multiplier-1
 		    output[b, i, j, k * channel_multiplier + q] =
 		      sum_{di, dj} input[b, strides[1] * i + di, strides[2] * j + dj, k] *
 		                        filter[di, dj, k, q]
+		```
 		
 		Must have `strides[0] = strides[3] = 1`.  For the most common case of the same
 		horizontal and vertices strides, `strides = [1, stride, stride, 1]`.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		  filter: A `Tensor`. Must have the same type as `input`.
 		  strides: A list of `ints`.
 		    1-D of length 4.  The stride of the sliding window for each dimension
@@ -1139,17 +1635,23 @@ package tensorflow.python.ops.nn;
 		        [batch, height, width, channels].
 		    Alternatively, the format could be "NCHW", the data storage order of:
 		        [batch, channels, height, width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each filter
+		    element on that dimension. The dimension order is determined by the value of
+		    `data_format`, see above for details. Dilations in the batch and depth
+		    dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
 	**/
-	static public function depthwise_conv2d_native(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function depthwise_conv2d_native(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes the gradients of depthwise convolution with respect to the filter.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    4-D with shape based on `data_format`.  For example, if
 		    `data_format` is 'NHWC' then `input` is a 4-D `[batch, in_height,
 		    in_width, in_channels]` tensor.
@@ -1173,14 +1675,23 @@ package tensorflow.python.ops.nn;
 		        [batch, height, width, channels].
 		    Alternatively, the format could be "NCHW", the data storage order of:
 		        [batch, channels, height, width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each filter
+		    element on that dimension. The dimension order is determined by the value of
+		    `data_format`, see above for details. Dilations in the batch and depth
+		    dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`. 4-D with shape
-		  `[filter_height, filter_width, in_channels, out_channels]`.  Gradient w.r.t.
-		  the `filter` input of the convolution.
+		  A `Tensor`. Has the same type as `input`.
 	**/
-	static public function depthwise_conv2d_native_backprop_filter(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function depthwise_conv2d_native_backprop_filter(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function depthwise_conv2d_native_backprop_filter
+	**/
+	static public function depthwise_conv2d_native_backprop_filter_eager_fallback(input:Dynamic, filter_sizes:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the gradients of depthwise convolution with respect to the input.
 		
@@ -1189,7 +1700,7 @@ package tensorflow.python.ops.nn;
 		    An integer vector representing the shape of `input`, based
 		    on `data_format`.  For example, if `data_format` is 'NHWC' then
 		     `input` is a 4-D `[batch, height, width, channels]` tensor.
-		  filter: A `Tensor`. Must be one of the following types: `float32`, `float64`.
+		  filter: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    4-D with shape
 		    `[filter_height, filter_width, in_channels, depthwise_multiplier]`.
 		  out_backprop: A `Tensor`. Must have the same type as `filter`.
@@ -1208,16 +1719,28 @@ package tensorflow.python.ops.nn;
 		        [batch, height, width, channels].
 		    Alternatively, the format could be "NCHW", the data storage order of:
 		        [batch, channels, height, width].
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each filter
+		    element on that dimension. The dimension order is determined by the value of
+		    `data_format`, see above for details. Dilations in the batch and depth
+		    dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `filter`.
-		  4-D with shape according to `data_format`.  For example, if
-		  `data_format` is 'NHWC', output shape is `[batch, in_height,
-		  in_width, in_channels]`.  Gradient w.r.t. the input of the
-		  convolution.
 	**/
-	static public function depthwise_conv2d_native_backprop_input(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	static public function depthwise_conv2d_native_backprop_input(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function depthwise_conv2d_native_backprop_input
+	**/
+	static public function depthwise_conv2d_native_backprop_input_eager_fallback(input_sizes:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function depthwise_conv2d_native
+	**/
+	static public function depthwise_conv2d_native_eager_fallback(input:Dynamic, filter:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes the grayscale dilation of 4-D `input` and 3-D `filter` tensors.
 		
@@ -1246,7 +1769,7 @@ package tensorflow.python.ops.nn;
 		negation of the erosion of `-input` by the reflected `filter`.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		    4-D with shape `[batch, in_height, in_width, depth]`.
 		  filter: A `Tensor`. Must have the same type as `input`.
 		    3-D with shape `[filter_height, filter_width, depth]`.
@@ -1262,9 +1785,72 @@ package tensorflow.python.ops.nn;
 		
 		Returns:
 		  A `Tensor`. Has the same type as `input`.
-		  4-D with shape `[batch, out_height, out_width, depth]`.
 	**/
 	static public function dilation2d(input:Dynamic, filter:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes the gradient of morphological 2-D dilation with respect to the filter.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    4-D with shape `[batch, in_height, in_width, depth]`.
+		  filter: A `Tensor`. Must have the same type as `input`.
+		    3-D with shape `[filter_height, filter_width, depth]`.
+		  out_backprop: A `Tensor`. Must have the same type as `input`.
+		    4-D with shape `[batch, out_height, out_width, depth]`.
+		  strides: A list of `ints` that has length `>= 4`.
+		    1-D of length 4. The stride of the sliding window for each dimension of
+		    the input tensor. Must be: `[1, stride_height, stride_width, 1]`.
+		  rates: A list of `ints` that has length `>= 4`.
+		    1-D of length 4. The input stride for atrous morphological dilation.
+		    Must be: `[1, rate_height, rate_width, 1]`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function dilation2d_backprop_filter(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function dilation2d_backprop_filter
+	**/
+	static public function dilation2d_backprop_filter_eager_fallback(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes the gradient of morphological 2-D dilation with respect to the input.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    4-D with shape `[batch, in_height, in_width, depth]`.
+		  filter: A `Tensor`. Must have the same type as `input`.
+		    3-D with shape `[filter_height, filter_width, depth]`.
+		  out_backprop: A `Tensor`. Must have the same type as `input`.
+		    4-D with shape `[batch, out_height, out_width, depth]`.
+		  strides: A list of `ints` that has length `>= 4`.
+		    1-D of length 4. The stride of the sliding window for each dimension of
+		    the input tensor. Must be: `[1, stride_height, stride_width, 1]`.
+		  rates: A list of `ints` that has length `>= 4`.
+		    1-D of length 4. The input stride for atrous morphological dilation.
+		    Must be: `[1, rate_height, rate_width, 1]`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function dilation2d_backprop_input(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function dilation2d_backprop_input
+	**/
+	static public function dilation2d_backprop_input_eager_fallback(input:Dynamic, filter:Dynamic, out_backprop:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function dilation2d
+	**/
+	static public function dilation2d_eager_fallback(input:Dynamic, filter:Dynamic, strides:Dynamic, rates:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Computes dropout.
 		
@@ -1281,13 +1867,13 @@ package tensorflow.python.ops.nn;
 		kept independently and each row and column will be kept or not kept together.
 		
 		Args:
-		  x: A tensor.
+		  x: A floating point tensor.
 		  keep_prob: A scalar `Tensor` with the same type as x. The probability
 		    that each element is kept.
 		  noise_shape: A 1-D `Tensor` of type `int32`, representing the
 		    shape for randomly generated keep/drop flags.
 		  seed: A Python integer. Used to create random seeds. See
-		    @{tf.set_random_seed}
+		    `tf.set_random_seed`
 		    for behavior.
 		  name: A name for this operation (optional).
 		
@@ -1295,7 +1881,8 @@ package tensorflow.python.ops.nn;
 		  A Tensor of the same shape of `x`.
 		
 		Raises:
-		  ValueError: If `keep_prob` is not in `(0, 1]`.
+		  ValueError: If `keep_prob` is not in `(0, 1]` or if `x` is not a floating
+		    point tensor.
 	**/
 	static public function dropout(x:Dynamic, keep_prob:Dynamic, ?noise_shape:Dynamic, ?seed:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -1303,40 +1890,59 @@ package tensorflow.python.ops.nn;
 		
 		Performs fully dynamic unrolling of `inputs`.
 		
-		`Inputs` may be a single `Tensor` where the maximum time is either the first
-		or second dimension (see the parameter
-		`time_major`).  Alternatively, it may be a (possibly nested) tuple of
-		Tensors, each of them having matching batch and time dimensions.
-		The corresponding output is either a single `Tensor` having the same number
-		of time steps and batch size, or a (possibly nested) tuple of such tensors,
-		matching the nested structure of `cell.output_size`.
+		Example:
 		
-		The parameter `sequence_length` is optional and is used to copy-through state
-		and zero-out outputs when past a batch element's sequence length. So it's more
-		for correctness than performance.
+		```python
+		# create a BasicRNNCell
+		rnn_cell = tf.nn.rnn_cell.BasicRNNCell(hidden_size)
+		
+		# 'outputs' is a tensor of shape [batch_size, max_time, cell_state_size]
+		
+		# defining initial state
+		initial_state = rnn_cell.zero_state(batch_size, dtype=tf.float32)
+		
+		# 'state' is a tensor of shape [batch_size, cell_state_size]
+		outputs, state = tf.nn.dynamic_rnn(rnn_cell, input_data,
+		                                   initial_state=initial_state,
+		                                   dtype=tf.float32)
+		```
+		
+		```python
+		# create 2 LSTMCells
+		rnn_layers = [tf.nn.rnn_cell.LSTMCell(size) for size in [128, 256]]
+		
+		# create a RNN cell composed sequentially of a number of RNNCells
+		multi_rnn_cell = tf.nn.rnn_cell.MultiRNNCell(rnn_layers)
+		
+		# 'outputs' is a tensor of shape [batch_size, max_time, 256]
+		# 'state' is a N-tuple where N is the number of LSTMCells containing a
+		# tf.contrib.rnn.LSTMStateTuple for each cell
+		outputs, state = tf.nn.dynamic_rnn(cell=multi_rnn_cell,
+		                                   inputs=data,
+		                                   dtype=tf.float32)
+		```
+		
 		
 		Args:
 		  cell: An instance of RNNCell.
 		  inputs: The RNN inputs.
-		
 		    If `time_major == False` (default), this must be a `Tensor` of shape:
 		      `[batch_size, max_time, ...]`, or a nested tuple of such
 		      elements.
-		
 		    If `time_major == True`, this must be a `Tensor` of shape:
 		      `[max_time, batch_size, ...]`, or a nested tuple of such
 		      elements.
-		
 		    This may also be a (possibly nested) tuple of Tensors satisfying
 		    this property.  The first two dimensions must match across all the inputs,
 		    but otherwise the ranks and other shape components may differ.
 		    In this case, input to `cell` at each time-step will replicate the
 		    structure of these tuples, except for the time dimension (from which the
 		    time is taken).
-		
 		    The input to `cell` at each time step will be a `Tensor` or (possibly
 		    nested) tuple of Tensors each with dimensions `[batch_size, ...]`.
 		  sequence_length: (optional) An int32/int64 vector sized `[batch_size]`.
+		    Used to copy-through state and zero-out outputs when past a batch
+		    element's sequence length.  So it's more for performance than correctness.
 		  initial_state: (optional) An initial state for the RNN.
 		    If `cell.state_size` is an integer, this must be
 		    a `Tensor` of appropriate type and shape `[batch_size, cell.state_size]`.
@@ -1366,24 +1972,25 @@ package tensorflow.python.ops.nn;
 		Returns:
 		  A pair (outputs, state) where:
 		
-		    outputs: The RNN output `Tensor`.
+		  outputs: The RNN output `Tensor`.
 		
-		      If time_major == False (default), this will be a `Tensor` shaped:
-		        `[batch_size, max_time, cell.output_size]`.
+		    If time_major == False (default), this will be a `Tensor` shaped:
+		      `[batch_size, max_time, cell.output_size]`.
 		
-		      If time_major == True, this will be a `Tensor` shaped:
-		        `[max_time, batch_size, cell.output_size]`.
+		    If time_major == True, this will be a `Tensor` shaped:
+		      `[max_time, batch_size, cell.output_size]`.
 		
-		      Note, if `cell.output_size` is a (possibly nested) tuple of integers
-		      or `TensorShape` objects, then `outputs` will be a tuple having the
-		      same structure as `cell.output_size`, containing Tensors having shapes
-		      corresponding to the shape data in `cell.output_size`.
+		    Note, if `cell.output_size` is a (possibly nested) tuple of integers
+		    or `TensorShape` objects, then `outputs` will be a tuple having the
+		    same structure as `cell.output_size`, containing Tensors having shapes
+		    corresponding to the shape data in `cell.output_size`.
 		
-		    state: The final state.  If `cell.state_size` is an int, this
-		      will be shaped `[batch_size, cell.state_size]`.  If it is a
-		      `TensorShape`, this will be shaped `[batch_size] + cell.state_size`.
-		      If it is a (possibly nested) tuple of ints or `TensorShape`, this will
-		      be a tuple having the corresponding shapes.
+		  state: The final state.  If `cell.state_size` is an int, this
+		    will be shaped `[batch_size, cell.state_size]`.  If it is a
+		    `TensorShape`, this will be shaped `[batch_size] + cell.state_size`.
+		    If it is a (possibly nested) tuple of ints or `TensorShape`, this will
+		    be a tuple having the corresponding shapes. If cells are `LSTMCells`
+		    `state` will be a tuple containing a `LSTMStateTuple` for each cell.
 		
 		Raises:
 		  TypeError: If `cell` is not an instance of RNNCell.
@@ -1397,7 +2004,7 @@ package tensorflow.python.ops.nn;
 		](http://arxiv.org/abs/1511.07289)
 		
 		Args:
-		  features: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		  features: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -1405,11 +2012,35 @@ package tensorflow.python.ops.nn;
 	**/
 	static public function elu(features:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function elu
+	**/
+	static public function elu_eager_fallback(features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients for the exponential linear (Elu) operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    The backpropagated gradients to the corresponding Elu operation.
+		  outputs: A `Tensor`. Must have the same type as `gradients`.
+		    The outputs of the corresponding Elu operation.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function elu_grad(gradients:Dynamic, outputs:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function elu_grad
+	**/
+	static public function elu_grad_eager_fallback(gradients:Dynamic, outputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Looks up `ids` in a list of embedding tensors.
 		
 		This function is used to perform parallel lookups on the list of
 		tensors in `params`.  It is a generalization of
-		@{tf.gather}, where `params` is
+		`tf.gather`, where `params` is
 		interpreted as a partitioning of a large embedding tensor.  `params` may be
 		a `PartitionedVariable` as returned by using `tf.get_variable()` with a
 		partitioner.
@@ -1448,8 +2079,8 @@ package tensorflow.python.ops.nn;
 		    in `indices` are always validated to be within range.  If assigned to GPU,
 		    out-of-bound indices result in safe but unspecified behavior, which may
 		    include raising an error.
-		  max_norm: If not None, embedding values are l2-normalized to the value of
-		   max_norm.
+		  max_norm: If not `None`, each embedding is clipped if its l2-norm is
+		    larger than this value.
 		
 		Returns:
 		  A `Tensor` with the same type as the tensors in `params`.
@@ -1474,11 +2105,11 @@ package tensorflow.python.ops.nn;
 		    representing sharded embedding tensors.  Alternatively, a
 		    `PartitionedVariable`, created by partitioning along dimension 0. Each
 		    element must be appropriately sized for the given `partition_strategy`.
-		  sp_ids: N x M SparseTensor of int64 ids (typically from FeatureValueToId),
-		    where N is typically batch size and M is arbitrary.
-		  sp_weights: either a SparseTensor of float / double weights, or None to
-		    indicate all weights should be taken to be 1. If specified, sp_weights
-		    must have exactly the same shape and indices as sp_ids.
+		  sp_ids: N x M `SparseTensor` of int64 ids where N is typically batch size
+		    and M is arbitrary.
+		  sp_weights: either a `SparseTensor` of float / double weights, or `None` to
+		    indicate all weights should be taken to be 1. If specified, `sp_weights`
+		    must have exactly the same shape and indices as `sp_ids`.
 		  partition_strategy: A string specifying the partitioning strategy, relevant
 		    if `len(params) > 1`. Currently `"div"` and `"mod"` are supported. Default
 		    is `"mod"`. See `tf.nn.embedding_lookup` for more details.
@@ -1489,44 +2120,48 @@ package tensorflow.python.ops.nn;
 		    "mean" is the weighted sum divided by the total weight.
 		    "sqrtn" is the weighted sum divided by the square root of the sum of the
 		    squares of the weights.
-		  max_norm: If not None, each embedding is normalized to have l2 norm equal
-		    to max_norm before combining.
+		  max_norm: If not `None`, each embedding is clipped if its l2-norm is
+		    larger than this value, before combining.
 		
 		Returns:
 		  A dense tensor representing the combined embeddings for the
-		  sparse ids. For each row in the dense tensor represented by sp_ids, the op
+		  sparse ids. For each row in the dense tensor represented by `sp_ids`, the op
 		  looks up the embeddings for all ids in that row, multiplies them by the
 		  corresponding weight, and combines these embeddings as specified.
 		
 		  In other words, if
 		
-		    shape(combined params) = [p0, p1, ..., pm]
+		    `shape(combined params) = [p0, p1, ..., pm]`
 		
 		  and
 		
-		    shape(sp_ids) = shape(sp_weights) = [d0, d1, ..., dn]
+		    `shape(sp_ids) = shape(sp_weights) = [d0, d1, ..., dn]`
 		
 		  then
 		
-		    shape(output) = [d0, d1, ..., dn-1, p1, ..., pm].
+		    `shape(output) = [d0, d1, ..., dn-1, p1, ..., pm]`.
 		
 		  For instance, if params is a 10x20 matrix, and sp_ids / sp_weights are
 		
+		    ```python
 		    [0, 0]: id 1, weight 2.0
 		    [0, 1]: id 3, weight 0.5
 		    [1, 0]: id 0, weight 1.0
 		    [2, 3]: id 1, weight 3.0
+		    ```
 		
 		  with `combiner`="mean", then the output will be a 3x20 matrix where
 		
+		    ```python
 		    output[0, :] = (params[1, :] * 2.0 + params[3, :] * 0.5) / (2.0 + 0.5)
-		    output[1, :] = params[0, :] * 1.0
-		    output[2, :] = params[1, :] * 3.0
+		    output[1, :] = (params[0, :] * 1.0) / 1.0
+		    output[2, :] = (params[1, :] * 3.0) / 3.0
+		    ```
 		
 		Raises:
-		  TypeError: If sp_ids is not a SparseTensor, or if sp_weights is neither
-		    None nor SparseTensor.
-		  ValueError: If combiner is not one of {"mean", "sqrtn", "sum"}.
+		  TypeError: If `sp_ids` is not a `SparseTensor`, or if `sp_weights` is
+		    neither `None` nor `SparseTensor`.
+		  ValueError: If `combiner` is not one of {"mean", "sqrtn", "sum"}.
 	**/
 	static public function embedding_lookup_sparse(params:Dynamic, sp_ids:Dynamic, sp_weights:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic, ?combiner:Dynamic, ?max_norm:Dynamic):Dynamic;
 	/**
@@ -1619,7 +2254,7 @@ package tensorflow.python.ops.nn;
 		    `distortion = 1.0` gives regular unigram sampling (as defined by the vocab
 		    file), and `distortion = 0.0` gives a uniform distribution.
 		  num_reserved_ids: Optionally some reserved IDs can be added in the range
-		    `[0, num_reserved_ids]` by the users. One use case is that a special
+		    `[0, num_reserved_ids)` by the users. One use case is that a special
 		    unknown word token is used as ID 0. These IDs will have a sampling
 		    probability of 0.
 		  num_shards: A sampler can be used to sample from a subset of the original
@@ -1695,11 +2330,58 @@ package tensorflow.python.ops.nn;
 		Returns:
 		  A tuple of `Tensor` objects (output, row_pooling_sequence, col_pooling_sequence).
 		
-		  output: A `Tensor`. Has the same type as `value`. output tensor after fractional avg pooling.
-		  row_pooling_sequence: A `Tensor` of type `int64`. row pooling sequence, needed to calculate gradient.
-		  col_pooling_sequence: A `Tensor` of type `int64`. column pooling sequence, needed to calculate gradient.
+		  output: A `Tensor`. Has the same type as `value`.
+		  row_pooling_sequence: A `Tensor` of type `int64`.
+		  col_pooling_sequence: A `Tensor` of type `int64`.
 	**/
 	static public function fractional_avg_pool(value:Dynamic, pooling_ratio:Dynamic, ?pseudo_random:Dynamic, ?overlapping:Dynamic, ?deterministic:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fractional_avg_pool
+	**/
+	static public function fractional_avg_pool_eager_fallback(value:Dynamic, pooling_ratio:Dynamic, ?pseudo_random:Dynamic, ?overlapping:Dynamic, ?deterministic:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradient of the FractionalAvgPool function.
+		
+		Unlike FractionalMaxPoolGrad, we don't need to find arg_max for
+		FractionalAvgPoolGrad, we just need to evenly back-propagate each element of
+		out_backprop to those indices that form the same pooling cell. Therefore, we
+		just need to know the shape of original input tensor, instead of the whole
+		tensor.
+		
+		Args:
+		  orig_input_tensor_shape: A `Tensor` of type `int64`.
+		    Original input tensor shape for `fractional_avg_pool`
+		  out_backprop: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`.
+		    4-D with shape `[batch, height, width, channels]`.  Gradients
+		    w.r.t. the output of `fractional_avg_pool`.
+		  row_pooling_sequence: A `Tensor` of type `int64`.
+		    row pooling sequence, form pooling region with
+		    col_pooling_sequence.
+		  col_pooling_sequence: A `Tensor` of type `int64`.
+		    column pooling sequence, form pooling region with
+		    row_pooling sequence.
+		  overlapping: An optional `bool`. Defaults to `False`.
+		    When set to True, it means when pooling, the values at the boundary
+		    of adjacent pooling cells are used by both cells. For example:
+		
+		    `index  0  1  2  3  4`
+		
+		    `value  20 5  16 3  7`
+		
+		    If the pooling sequence is [0, 2, 4], then 16, at index 2 will be used twice.
+		    The result would be [41/3, 26/3] for fractional avg pooling.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `out_backprop`.
+	**/
+	static public function fractional_avg_pool_grad(orig_input_tensor_shape:Dynamic, out_backprop:Dynamic, row_pooling_sequence:Dynamic, col_pooling_sequence:Dynamic, ?overlapping:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fractional_avg_pool_grad
+	**/
+	static public function fractional_avg_pool_grad_eager_fallback(orig_input_tensor_shape:Dynamic, out_backprop:Dynamic, row_pooling_sequence:Dynamic, col_pooling_sequence:Dynamic, ?overlapping:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Performs fractional max pooling on the input.
 		
@@ -1772,11 +2454,54 @@ package tensorflow.python.ops.nn;
 		Returns:
 		  A tuple of `Tensor` objects (output, row_pooling_sequence, col_pooling_sequence).
 		
-		  output: A `Tensor`. Has the same type as `value`. output tensor after fractional max pooling.
-		  row_pooling_sequence: A `Tensor` of type `int64`. row pooling sequence, needed to calculate gradient.
-		  col_pooling_sequence: A `Tensor` of type `int64`. column pooling sequence, needed to calculate gradient.
+		  output: A `Tensor`. Has the same type as `value`.
+		  row_pooling_sequence: A `Tensor` of type `int64`.
+		  col_pooling_sequence: A `Tensor` of type `int64`.
 	**/
 	static public function fractional_max_pool(value:Dynamic, pooling_ratio:Dynamic, ?pseudo_random:Dynamic, ?overlapping:Dynamic, ?deterministic:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fractional_max_pool
+	**/
+	static public function fractional_max_pool_eager_fallback(value:Dynamic, pooling_ratio:Dynamic, ?pseudo_random:Dynamic, ?overlapping:Dynamic, ?deterministic:Dynamic, ?seed:Dynamic, ?seed2:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradient of the FractionalMaxPool function.
+		
+		Args:
+		  orig_input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`.
+		    Original input for `fractional_max_pool`
+		  orig_output: A `Tensor`. Must have the same type as `orig_input`.
+		    Original output for `fractional_max_pool`
+		  out_backprop: A `Tensor`. Must have the same type as `orig_input`.
+		    4-D with shape `[batch, height, width, channels]`.  Gradients
+		    w.r.t. the output of `fractional_max_pool`.
+		  row_pooling_sequence: A `Tensor` of type `int64`.
+		    row pooling sequence, form pooling region with
+		    col_pooling_sequence.
+		  col_pooling_sequence: A `Tensor` of type `int64`.
+		    column pooling sequence, form pooling region with
+		    row_pooling sequence.
+		  overlapping: An optional `bool`. Defaults to `False`.
+		    When set to True, it means when pooling, the values at the boundary
+		    of adjacent pooling cells are used by both cells. For example:
+		
+		    `index  0  1  2  3  4`
+		
+		    `value  20 5  16 3  7`
+		
+		    If the pooling sequence is [0, 2, 4], then 16, at index 2 will be used twice.
+		    The result would be [20, 16] for fractional max pooling.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `orig_input`.
+	**/
+	static public function fractional_max_pool_grad(orig_input:Dynamic, orig_output:Dynamic, out_backprop:Dynamic, row_pooling_sequence:Dynamic, col_pooling_sequence:Dynamic, ?overlapping:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fractional_max_pool_grad
+	**/
+	static public function fractional_max_pool_grad_eager_fallback(orig_input:Dynamic, orig_output:Dynamic, out_backprop:Dynamic, row_pooling_sequence:Dynamic, col_pooling_sequence:Dynamic, ?overlapping:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Batch normalization.
 		
@@ -1804,6 +2529,232 @@ package tensorflow.python.ops.nn;
 		  ValueError: If mean or variance is not None when is_training is True.
 	**/
 	static public function fused_batch_norm(x:Dynamic, scale:Dynamic, offset:Dynamic, ?mean:Dynamic, ?variance:Dynamic, ?epsilon:Dynamic, ?data_format:Dynamic, ?is_training:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Gradient for batch normalization.
+		
+		Note that the size of 4D Tensors are defined by either "NHWC" or "NCHW".
+		The size of 1D Tensors matches the dimension C of the 4D Tensors.
+		
+		Args:
+		  y_backprop: A `Tensor`. Must be one of the following types: `float32`.
+		    A 4D Tensor for the gradient with respect to y.
+		  x: A `Tensor`. Must have the same type as `y_backprop`.
+		    A 4D Tensor for input data.
+		  scale: A `Tensor`. Must have the same type as `y_backprop`.
+		    A 1D Tensor for scaling factor, to scale the normalized x.
+		  reserve_space_1: A `Tensor`. Must have the same type as `y_backprop`.
+		    When is_training is True, a 1D Tensor for the computed batch
+		    mean to be reused in gradient computation. When is_training is
+		    False, a 1D Tensor for the population mean to be reused in both
+		    1st and 2nd order gradient computation.
+		  reserve_space_2: A `Tensor`. Must have the same type as `y_backprop`.
+		    When is_training is True, a 1D Tensor for the computed batch
+		    variance (inverted variance in the cuDNN case) to be reused in
+		    gradient computation. When is_training is False, a 1D Tensor
+		    for the population variance to be reused in both 1st and 2nd
+		    order gradient computation.
+		  epsilon: An optional `float`. Defaults to `0.0001`.
+		    A small float number added to the variance of x.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    The data format for y_backprop, x, x_backprop.
+		    Either "NHWC" (default) or "NCHW".
+		  is_training: An optional `bool`. Defaults to `True`.
+		    A bool value to indicate the operation is for training (default)
+		    or inference.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (x_backprop, scale_backprop, offset_backprop, reserve_space_3, reserve_space_4).
+		
+		  x_backprop: A `Tensor`. Has the same type as `y_backprop`.
+		  scale_backprop: A `Tensor`. Has the same type as `y_backprop`.
+		  offset_backprop: A `Tensor`. Has the same type as `y_backprop`.
+		  reserve_space_3: A `Tensor`. Has the same type as `y_backprop`.
+		  reserve_space_4: A `Tensor`. Has the same type as `y_backprop`.
+	**/
+	static public function fused_batch_norm_grad(y_backprop:Dynamic, x:Dynamic, scale:Dynamic, reserve_space_1:Dynamic, reserve_space_2:Dynamic, ?epsilon:Dynamic, ?data_format:Dynamic, ?is_training:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fused_batch_norm_grad
+	**/
+	static public function fused_batch_norm_grad_eager_fallback(y_backprop:Dynamic, x:Dynamic, scale:Dynamic, reserve_space_1:Dynamic, reserve_space_2:Dynamic, ?epsilon:Dynamic, ?data_format:Dynamic, ?is_training:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Gradient for batch normalization.
+		
+		Note that the size of 4D Tensors are defined by either "NHWC" or "NCHW".
+		The size of 1D Tensors matches the dimension C of the 4D Tensors.
+		
+		Args:
+		  y_backprop: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
+		    A 4D Tensor for the gradient with respect to y.
+		  x: A `Tensor`. Must have the same type as `y_backprop`.
+		    A 4D Tensor for input data.
+		  scale: A `Tensor` of type `float32`.
+		    A 1D Tensor for scaling factor, to scale the normalized x.
+		  reserve_space_1: A `Tensor`. Must be one of the following types: `float32`.
+		    When is_training is True, a 1D Tensor for the computed batch
+		    mean to be reused in gradient computation. When is_training is
+		    False, a 1D Tensor for the population mean to be reused in both
+		    1st and 2nd order gradient computation.
+		  reserve_space_2: A `Tensor`. Must have the same type as `reserve_space_1`.
+		    When is_training is True, a 1D Tensor for the computed batch
+		    variance (inverted variance in the cuDNN case) to be reused in
+		    gradient computation. When is_training is False, a 1D Tensor
+		    for the population variance to be reused in both 1st and 2nd
+		    order gradient computation.
+		  epsilon: An optional `float`. Defaults to `0.0001`.
+		    A small float number added to the variance of x.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    The data format for y_backprop, x, x_backprop.
+		    Either "NHWC" (default) or "NCHW".
+		  is_training: An optional `bool`. Defaults to `True`.
+		    A bool value to indicate the operation is for training (default)
+		    or inference.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (x_backprop, scale_backprop, offset_backprop, reserve_space_3, reserve_space_4).
+		
+		  x_backprop: A `Tensor`. Has the same type as `y_backprop`.
+		  scale_backprop: A `Tensor`. Has the same type as `reserve_space_1`.
+		  offset_backprop: A `Tensor`. Has the same type as `reserve_space_1`.
+		  reserve_space_3: A `Tensor`. Has the same type as `reserve_space_1`.
+		  reserve_space_4: A `Tensor`. Has the same type as `reserve_space_1`.
+	**/
+	static public function fused_batch_norm_grad_v2(y_backprop:Dynamic, x:Dynamic, scale:Dynamic, reserve_space_1:Dynamic, reserve_space_2:Dynamic, ?epsilon:Dynamic, ?data_format:Dynamic, ?is_training:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fused_batch_norm_grad_v2
+	**/
+	static public function fused_batch_norm_grad_v2_eager_fallback(y_backprop:Dynamic, x:Dynamic, scale:Dynamic, reserve_space_1:Dynamic, reserve_space_2:Dynamic, ?epsilon:Dynamic, ?data_format:Dynamic, ?is_training:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Batch normalization.
+		
+		Note that the size of 4D Tensors are defined by either "NHWC" or "NCHW".
+		The size of 1D Tensors matches the dimension C of the 4D Tensors.
+		
+		Args:
+		  x: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
+		    A 4D Tensor for input data.
+		  scale: A `Tensor`. Must be one of the following types: `float32`.
+		    A 1D Tensor for scaling factor, to scale the normalized x.
+		  offset: A `Tensor`. Must have the same type as `scale`.
+		    A 1D Tensor for offset, to shift to the normalized x.
+		  mean: A `Tensor`. Must have the same type as `scale`.
+		    A 1D Tensor for population mean. Used for inference only;
+		    must be empty for training.
+		  variance: A `Tensor`. Must have the same type as `scale`.
+		    A 1D Tensor for population variance. Used for inference only;
+		    must be empty for training.
+		  epsilon: An optional `float`. Defaults to `0.0001`.
+		    A small float number added to the variance of x.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    The data format for x and y. Either "NHWC" (default) or "NCHW".
+		  is_training: An optional `bool`. Defaults to `True`.
+		    A bool value to indicate the operation is for training (default)
+		    or inference.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (y, batch_mean, batch_variance, reserve_space_1, reserve_space_2).
+		
+		  y: A `Tensor`. Has the same type as `x`.
+		  batch_mean: A `Tensor`. Has the same type as `scale`.
+		  batch_variance: A `Tensor`. Has the same type as `scale`.
+		  reserve_space_1: A `Tensor`. Has the same type as `scale`.
+		  reserve_space_2: A `Tensor`. Has the same type as `scale`.
+	**/
+	static public function fused_batch_norm_v2(x:Dynamic, scale:Dynamic, offset:Dynamic, mean:Dynamic, variance:Dynamic, ?epsilon:Dynamic, ?data_format:Dynamic, ?is_training:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fused_batch_norm_v2
+	**/
+	static public function fused_batch_norm_v2_eager_fallback(x:Dynamic, scale:Dynamic, offset:Dynamic, mean:Dynamic, variance:Dynamic, ?epsilon:Dynamic, ?data_format:Dynamic, ?is_training:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Performs a padding as a preprocess during a convolution.
+		
+		Similar to FusedResizeAndPadConv2d, this op allows for an optimized
+		implementation where the spatial padding transformation stage is fused with the
+		im2col lookup, but in this case without the bilinear filtering required for
+		resizing. Fusing the padding prevents the need to write out the intermediate
+		results as whole tensors, reducing memory pressure, and we can get some latency
+		gains by merging the transformation calculations.
+		The data_format attribute for Conv2D isn't supported by this op, and 'NHWC'
+		order is used instead.
+		Internally this op uses a single per-graph scratch buffer, which means that it
+		will block if multiple versions are being run in parallel. This is because this
+		operator is primarily an optimization to minimize memory usage.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		    4-D with shape `[batch, in_height, in_width, in_channels]`.
+		  paddings: A `Tensor` of type `int32`.
+		    A two-column matrix specifying the padding sizes. The number of
+		    rows must be the same as the rank of `input`.
+		  filter: A `Tensor`. Must have the same type as `input`. 4-D with shape
+		    `[filter_height, filter_width, in_channels, out_channels]`.
+		  mode: A `string` from: `"REFLECT", "SYMMETRIC"`.
+		  strides: A list of `ints`.
+		    1-D of length 4.  The stride of the sliding window for each dimension
+		    of `input`. Must be in the same order as the dimension specified with format.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function fused_pad_conv2d(input:Dynamic, paddings:Dynamic, filter:Dynamic, mode:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fused_pad_conv2d
+	**/
+	static public function fused_pad_conv2d_eager_fallback(input:Dynamic, paddings:Dynamic, filter:Dynamic, mode:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Performs a resize and padding as a preprocess during a convolution.
+		
+		It's often possible to do spatial transformations more efficiently as part of
+		the packing stage of a convolution, so this op allows for an optimized
+		implementation where these stages are fused together. This prevents the need to
+		write out the intermediate results as whole tensors, reducing memory pressure,
+		and we can get some latency gains by merging the transformation calculations.
+		The data_format attribute for Conv2D isn't supported by this op, and defaults to
+		'NHWC' order.
+		Internally this op uses a single per-graph scratch buffer, which means that it
+		will block if multiple versions are being run in parallel. This is because this
+		operator is primarily an optimization to minimize memory usage.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		    4-D with shape `[batch, in_height, in_width, in_channels]`.
+		  size: A `Tensor` of type `int32`.
+		    A 1-D int32 Tensor of 2 elements: `new_height, new_width`.  The
+		    new size for the images.
+		  paddings: A `Tensor` of type `int32`.
+		    A two-column matrix specifying the padding sizes. The number of
+		    rows must be the same as the rank of `input`.
+		  filter: A `Tensor`. Must have the same type as `input`. 4-D with shape
+		    `[filter_height, filter_width, in_channels, out_channels]`.
+		  mode: A `string` from: `"REFLECT", "SYMMETRIC"`.
+		  strides: A list of `ints`.
+		    1-D of length 4.  The stride of the sliding window for each dimension
+		    of `input`. Must be in the same order as the dimension specified with format.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  resize_align_corners: An optional `bool`. Defaults to `False`.
+		    If true, the centers of the 4 corner pixels of the input and output tensors are
+		    aligned, preserving the values at the corner pixels. Defaults to false.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function fused_resize_and_pad_conv2d(input:Dynamic, size:Dynamic, paddings:Dynamic, filter:Dynamic, mode:Dynamic, strides:Dynamic, padding:Dynamic, ?resize_align_corners:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function fused_resize_and_pad_conv2d
+	**/
+	static public function fused_resize_and_pad_conv2d_eager_fallback(input:Dynamic, size:Dynamic, paddings:Dynamic, filter:Dynamic, mode:Dynamic, strides:Dynamic, padding:Dynamic, ?resize_align_corners:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Says whether the targets are in the top `K` predictions.
 		
@@ -1835,6 +2786,47 @@ package tensorflow.python.ops.nn;
 	**/
 	static public function in_top_k(predictions:Dynamic, targets:Dynamic, k:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function in_top_k
+	**/
+	static public function in_top_k_eager_fallback(predictions:Dynamic, targets:Dynamic, k:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Says whether the targets are in the top `K` predictions.
+		
+		This outputs a `batch_size` bool array, an entry `out[i]` is `true` if the
+		prediction for the target class is among the top `k` predictions among
+		all predictions for example `i`. Note that the behavior of `InTopK` differs
+		from the `TopK` op in its handling of ties; if multiple classes have the
+		same prediction value and straddle the top-`k` boundary, all of those
+		classes are considered to be in the top `k`.
+		
+		More formally, let
+		
+		  \\(predictions_i\\) be the predictions for all classes for example `i`,
+		  \\(targets_i\\) be the target class for example `i`,
+		  \\(out_i\\) be the output for example `i`,
+		
+		$$out_i = predictions_{i, targets_i} \in TopKIncludingTies(predictions_i)$$
+		
+		Args:
+		  predictions: A `Tensor` of type `float32`.
+		    A `batch_size` x `classes` tensor.
+		  targets: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    A `batch_size` vector of class ids.
+		  k: A `Tensor`. Must have the same type as `targets`.
+		    Number of top elements to look at for computing precision.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `bool`.
+	**/
+	static public function in_top_kv2(predictions:Dynamic, targets:Dynamic, k:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function in_top_kv2
+	**/
+	static public function in_top_kv2_eager_fallback(predictions:Dynamic, targets:Dynamic, k:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		L2 Loss.
 		
 		Computes half the L2 norm of a tensor without the `sqrt`:
@@ -1842,36 +2834,63 @@ package tensorflow.python.ops.nn;
 		    output = sum(t ** 2) / 2
 		
 		Args:
-		  t: A `Tensor`. Must be one of the following types: `half`, `float32`, `float64`.
+		  t: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		    Typically 2-D, but may have any dimensions.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `t`. 0-D.
+		  A `Tensor`. Has the same type as `t`.
 	**/
 	static public function l2_loss(t:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Normalizes along dimension `dim` using an L2 norm.
+		This is the slowpath function for Eager mode.
+		This is for function l2_loss
+	**/
+	static public function l2_loss_eager_fallback(t:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Normalizes along dimension `axis` using an L2 norm. (deprecated arguments)
 		
-		For a 1-D tensor with `dim = 0`, computes
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		dim is deprecated, use axis instead
+		
+		For a 1-D tensor with `axis = 0`, computes
 		
 		    output = x / sqrt(max(sum(x**2), epsilon))
 		
 		For `x` with more dimensions, independently normalizes each 1-D slice along
-		dimension `dim`.
+		dimension `axis`.
 		
 		Args:
 		  x: A `Tensor`.
-		  dim: Dimension along which to normalize.  A scalar or a vector of
+		  axis: Dimension along which to normalize.  A scalar or a vector of
 		    integers.
 		  epsilon: A lower bound value for the norm. Will use `sqrt(epsilon)` as the
 		    divisor if `norm < sqrt(epsilon)`.
 		  name: A name for this operation (optional).
+		  dim: Deprecated alias for axis.
 		
 		Returns:
 		  A `Tensor` with the same shape as `x`.
 	**/
-	static public function l2_normalize(x:Dynamic, dim:Dynamic, ?epsilon:Dynamic, ?name:Dynamic):Dynamic;
+	static public function l2_normalize(x:Dynamic, ?axis:Dynamic, ?epsilon:Dynamic, ?name:Dynamic, ?dim:Dynamic):Dynamic;
+	/**
+		Compute the Leaky ReLU activation function.
+		
+		"Rectifier Nonlinearities Improve Neural Network Acoustic Models"
+		AL Maas, AY Hannun, AY Ng - Proc. ICML, 2013
+		https://ai.stanford.edu/~amaas/papers/relu_hybrid_icml2013_final.pdf
+		
+		Args:
+		  features: A `Tensor` representing preactivation values. Must be one of
+		    the following types: `float16`, `float32`, `float64`, `int32`, `int64`.
+		  alpha: Slope of the activation function at x < 0.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The activation value.
+	**/
+	static public function leaky_relu(features:Dynamic, ?alpha:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Samples a set of classes from a distribution learned during training.
 		
@@ -1937,7 +2956,7 @@ package tensorflow.python.ops.nn;
 		convolutional neural networks (NIPS 2012)](http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks).
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `half`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
 		    4-D.
 		  depth_radius: An optional `int`. Defaults to `5`.
 		    0-D.  Half-width of the 1-D normalization window.
@@ -1992,27 +3011,37 @@ package tensorflow.python.ops.nn;
 	**/
 	static public function log_poisson_loss(targets:Dynamic, log_input:Dynamic, ?compute_full_loss:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes log softmax activations.
+		Computes log softmax activations. (deprecated arguments)
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		dim is deprecated, use axis instead
 		
 		For each batch `i` and class `j` we have
 		
-		    logsoftmax = logits - log(reduce_sum(exp(logits), dim))
+		    logsoftmax = logits - log(reduce_sum(exp(logits), axis))
 		
 		Args:
 		  logits: A non-empty `Tensor`. Must be one of the following types: `half`,
 		    `float32`, `float64`.
-		  dim: The dimension softmax would be performed on. The default is -1 which
+		  axis: The dimension softmax would be performed on. The default is -1 which
 		    indicates the last dimension.
 		  name: A name for the operation (optional).
+		  dim: Deprecated alias for `axis`.
 		
 		Returns:
 		  A `Tensor`. Has the same type as `logits`. Same shape as `logits`.
 		
 		Raises:
-		  InvalidArgumentError: if `logits` is empty or `dim` is beyond the last
+		  InvalidArgumentError: if `logits` is empty or `axis` is beyond the last
 		    dimension of `logits`.
 	**/
-	static public function log_softmax(logits:Dynamic, ?dim:Dynamic, ?name:Dynamic):Dynamic;
+	static public function log_softmax(logits:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dim:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function log_softmax
+	**/
+	static public function log_softmax_eager_fallback(logits:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Samples a set of classes using a log-uniform (Zipfian) base distribution.
 		
@@ -2081,7 +3110,7 @@ package tensorflow.python.ops.nn;
 		convolutional neural networks (NIPS 2012)](http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks).
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `half`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
 		    4-D.
 		  depth_radius: An optional `int`. Defaults to `5`.
 		    0-D.  Half-width of the 1-D normalization window.
@@ -2097,29 +3126,61 @@ package tensorflow.python.ops.nn;
 	**/
 	static public function lrn(input:Dynamic, ?depth_radius:Dynamic, ?bias:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function lrn
+	**/
+	static public function lrn_eager_fallback(input:Dynamic, ?depth_radius:Dynamic, ?bias:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Gradients for Local Response Normalization.
+		
+		Args:
+		  input_grads: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
+		    4-D with shape `[batch, height, width, channels]`.
+		  input_image: A `Tensor`. Must have the same type as `input_grads`.
+		    4-D with shape `[batch, height, width, channels]`.
+		  output_image: A `Tensor`. Must have the same type as `input_grads`.
+		    4-D with shape `[batch, height, width, channels]`.
+		  depth_radius: An optional `int`. Defaults to `5`. A depth radius.
+		  bias: An optional `float`. Defaults to `1`.
+		    An offset (usually > 0 to avoid dividing by 0).
+		  alpha: An optional `float`. Defaults to `1`.
+		    A scale factor, usually positive.
+		  beta: An optional `float`. Defaults to `0.5`. An exponent.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input_grads`.
+	**/
+	static public function lrn_grad(input_grads:Dynamic, input_image:Dynamic, output_image:Dynamic, ?depth_radius:Dynamic, ?bias:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function lrn_grad
+	**/
+	static public function lrn_grad_eager_fallback(input_grads:Dynamic, input_image:Dynamic, output_image:Dynamic, ?depth_radius:Dynamic, ?bias:Dynamic, ?alpha:Dynamic, ?beta:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Performs the max pooling on the input.
 		
 		Args:
-		  value: A 4-D `Tensor` with shape `[batch, height, width, channels]` and
-		    type `tf.float32`.
-		  ksize: A list of ints that has length >= 4.  The size of the window for
+		  value: A 4-D `Tensor` of the format specified by `data_format`.
+		  ksize: A list or tuple of 4 ints. The size of the window for each dimension
+		    of the input tensor.
+		  strides: A list or tuple of 4 ints. The stride of the sliding window for
 		    each dimension of the input tensor.
-		  strides: A list of ints that has length >= 4.  The stride of the sliding
-		    window for each dimension of the input tensor.
 		  padding: A string, either `'VALID'` or `'SAME'`. The padding algorithm.
-		    See the @{tf.nn.convolution$comment here}
-		  data_format: A string. 'NHWC' and 'NCHW' are supported.
+		    See the "returns" section of `tf.nn.convolution` for details.
+		  data_format: A string. 'NHWC', 'NCHW' and 'NCHW_VECT_C' are supported.
 		  name: Optional name for the operation.
 		
 		Returns:
-		  A `Tensor` with type `tf.float32`.  The max pooled output tensor.
+		  A `Tensor` of format specified by `data_format`.
+		  The max pooled output tensor.
 	**/
 	static public function max_pool(value:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Performs 3D max pooling on the input.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`.
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
 		    Shape `[batch, depth, rows, cols, channels]` tensor to pool over.
 		  ksize: A list of `ints` that has length `>= 5`.
 		    1-D tensor of length 5. The size of the window for each dimension of
@@ -2138,9 +3199,313 @@ package tensorflow.python.ops.nn;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `input`. The max pooled output tensor.
+		  A `Tensor`. Has the same type as `input`.
 	**/
 	static public function max_pool3d(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool3d
+	**/
+	static public function max_pool3d_eager_fallback(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients of max pooling function.
+		
+		Args:
+		  orig_input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
+		    The original input tensor.
+		  orig_output: A `Tensor`. Must have the same type as `orig_input`.
+		    The original output tensor.
+		  grad: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`.
+		    Output backprop of shape `[batch, depth, rows, cols, channels]`.
+		  ksize: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The size of the window for each dimension of
+		    the input tensor. Must have `ksize[0] = ksize[4] = 1`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The stride of the sliding window for each
+		    dimension of `input`. Must have `strides[0] = strides[4] = 1`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NDHWC", "NCDHW"`. Defaults to `"NDHWC"`.
+		    The data format of the input and output data. With the
+		    default format "NDHWC", the data is stored in the order of:
+		        [batch, in_depth, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCDHW", the data storage order is:
+		        [batch, in_channels, in_depth, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `grad`.
+	**/
+	static public function max_pool3d_grad(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool3d_grad
+	**/
+	static public function max_pool3d_grad_eager_fallback(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes second-order gradients of the maxpooling function.
+		
+		Args:
+		  orig_input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The original input tensor.
+		  orig_output: A `Tensor`. Must have the same type as `orig_input`.
+		    The original output tensor.
+		  grad: A `Tensor`. Must have the same type as `orig_input`.
+		    Output backprop of shape `[batch, depth, rows, cols, channels]`.
+		  ksize: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The size of the window for each dimension of
+		    the input tensor. Must have `ksize[0] = ksize[4] = 1`.
+		  strides: A list of `ints` that has length `>= 5`.
+		    1-D tensor of length 5. The stride of the sliding window for each
+		    dimension of `input`. Must have `strides[0] = strides[4] = 1`.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NDHWC", "NCDHW"`. Defaults to `"NDHWC"`.
+		    The data format of the input and output data. With the
+		    default format "NDHWC", the data is stored in the order of:
+		        [batch, in_depth, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCDHW", the data storage order is:
+		        [batch, in_channels, in_depth, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `orig_input`.
+	**/
+	static public function max_pool3d_grad_grad(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool3d_grad_grad
+	**/
+	static public function max_pool3d_grad_grad_eager_fallback(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool
+	**/
+	static public function max_pool_eager_fallback(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients of the maxpooling function.
+		
+		Args:
+		  orig_input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The original input tensor.
+		  orig_output: A `Tensor`. Must have the same type as `orig_input`.
+		    The original output tensor.
+		  grad: A `Tensor`. Must have the same type as `orig_input`.
+		    4-D.  Gradients w.r.t. the output of `max_pool`.
+		  ksize: A list of `ints` that has length `>= 4`.
+		    The size of the window for each dimension of the input tensor.
+		  strides: A list of `ints` that has length `>= 4`.
+		    The stride of the sliding window for each dimension of the
+		    input tensor.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, in_channels, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `orig_input`.
+	**/
+	static public function max_pool_grad(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_grad
+	**/
+	static public function max_pool_grad_eager_fallback(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes second-order gradients of the maxpooling function.
+		
+		Args:
+		  orig_input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The original input tensor.
+		  orig_output: A `Tensor`. Must have the same type as `orig_input`.
+		    The original output tensor.
+		  grad: A `Tensor`. Must have the same type as `orig_input`.
+		    4-D.  Gradients of gradients w.r.t. the input of `max_pool`.
+		  ksize: A list of `ints` that has length `>= 4`.
+		    The size of the window for each dimension of the input tensor.
+		  strides: A list of `ints` that has length `>= 4`.
+		    The stride of the sliding window for each dimension of the
+		    input tensor.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, in_channels, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `orig_input`.
+	**/
+	static public function max_pool_grad_grad(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_grad_grad
+	**/
+	static public function max_pool_grad_grad_eager_fallback(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes second-order gradients of the maxpooling function.
+		
+		Args:
+		  orig_input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The original input tensor.
+		  orig_output: A `Tensor`. Must have the same type as `orig_input`.
+		    The original output tensor.
+		  grad: A `Tensor`. Must have the same type as `orig_input`.
+		    4-D.  Gradients of gradients w.r.t. the input of `max_pool`.
+		  ksize: A `Tensor` of type `int32`.
+		    The size of the window for each dimension of the input tensor.
+		  strides: A `Tensor` of type `int32`.
+		    The stride of the sliding window for each dimension of the
+		    input tensor.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, in_channels, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `orig_input`.
+	**/
+	static public function max_pool_grad_grad_v2(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_grad_grad_v2
+	**/
+	static public function max_pool_grad_grad_v2_eager_fallback(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes second-order gradients of the maxpooling function.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The original input.
+		  grad: A `Tensor`. Must have the same type as `input`.
+		    4-D with shape `[batch, height, width, channels]`.  Gradients w.r.t. the
+		    input of `max_pool`.
+		  argmax: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    The indices of the maximum values chosen for each output of `max_pool`.
+		  ksize: A list of `ints` that has length `>= 4`.
+		    The size of the window for each dimension of the input tensor.
+		  strides: A list of `ints` that has length `>= 4`.
+		    The stride of the sliding window for each dimension of the
+		    input tensor.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function max_pool_grad_grad_with_argmax(input:Dynamic, grad:Dynamic, argmax:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_grad_grad_with_argmax
+	**/
+	static public function max_pool_grad_grad_with_argmax_eager_fallback(input:Dynamic, grad:Dynamic, argmax:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients of the maxpooling function.
+		
+		Args:
+		  orig_input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The original input tensor.
+		  orig_output: A `Tensor`. Must have the same type as `orig_input`.
+		    The original output tensor.
+		  grad: A `Tensor`. Must have the same type as `orig_input`.
+		    4-D.  Gradients w.r.t. the output of `max_pool`.
+		  ksize: A `Tensor` of type `int32`.
+		    The size of the window for each dimension of the input tensor.
+		  strides: A `Tensor` of type `int32`.
+		    The stride of the sliding window for each dimension of the
+		    input tensor.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, in_channels, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `orig_input`.
+	**/
+	static public function max_pool_grad_v2(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_grad_v2
+	**/
+	static public function max_pool_grad_v2_eager_fallback(orig_input:Dynamic, orig_output:Dynamic, grad:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients of the maxpooling function.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The original input.
+		  grad: A `Tensor`. Must have the same type as `input`.
+		    4-D with shape `[batch, height, width, channels]`.  Gradients w.r.t. the
+		    output of `max_pool`.
+		  argmax: A `Tensor`. Must be one of the following types: `int32`, `int64`.
+		    The indices of the maximum values chosen for each output of `max_pool`.
+		  ksize: A list of `ints` that has length `>= 4`.
+		    The size of the window for each dimension of the input tensor.
+		  strides: A list of `ints` that has length `>= 4`.
+		    The stride of the sliding window for each dimension of the
+		    input tensor.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function max_pool_grad_with_argmax(input:Dynamic, grad:Dynamic, argmax:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_grad_with_argmax
+	**/
+	static public function max_pool_grad_with_argmax_eager_fallback(input:Dynamic, grad:Dynamic, argmax:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Performs max pooling on the input.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `qint8`.
+		    4-D input to pool over.
+		  ksize: A `Tensor` of type `int32`.
+		    The size of the window for each dimension of the input tensor.
+		  strides: A `Tensor` of type `int32`.
+		    The stride of the sliding window for each dimension of the
+		    input tensor.
+		  padding: A `string` from: `"SAME", "VALID"`.
+		    The type of padding algorithm to use.
+		  data_format: An optional `string` from: `"NHWC", "NCHW", "NCHW_VECT_C"`. Defaults to `"NHWC"`.
+		    Specify the data format of the input and output data. With the
+		    default format "NHWC", the data is stored in the order of:
+		        [batch, in_height, in_width, in_channels].
+		    Alternatively, the format could be "NCHW", the data storage order of:
+		        [batch, in_channels, in_height, in_width].
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+	**/
+	static public function max_pool_v2(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_v2
+	**/
+	static public function max_pool_v2_eager_fallback(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?data_format:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Performs max pooling on the input and outputs both max values and indices.
 		
@@ -2148,8 +3513,13 @@ package tensorflow.python.ops.nn;
 		`[b, y, x, c]` becomes flattened index
 		`((b * height + y) * width + x) * channels + c`.
 		
+		The indices returned are always in `[0, height) x [0, width)` before flattening,
+		even if padding is involved and the mathematically correct answer is outside
+		(either negative or too large).  This is a bug, but fixing it is difficult to do
+		in a safe backwards compatible way, especially due to flattening.
+		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
 		    4-D with shape `[batch, height, width, channels]`.  Input to pool over.
 		  ksize: A list of `ints` that has length `>= 4`.
 		    The size of the window for each dimension of the input tensor.
@@ -2164,10 +3534,15 @@ package tensorflow.python.ops.nn;
 		Returns:
 		  A tuple of `Tensor` objects (output, argmax).
 		
-		  output: A `Tensor`. Has the same type as `input`. The max pooled output tensor.
-		  argmax: A `Tensor` of type `Targmax`. 4-D.  The flattened indices of the max values chosen for each output.
+		  output: A `Tensor`. Has the same type as `input`.
+		  argmax: A `Tensor` of type `Targmax`.
 	**/
 	static public function max_pool_with_argmax(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?Targmax:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function max_pool_with_argmax
+	**/
+	static public function max_pool_with_argmax_eager_fallback(input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?Targmax:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Calculate the mean and variance of `x`.
 		
@@ -2175,8 +3550,7 @@ package tensorflow.python.ops.nn;
 		across `axes`.  If `x` is 1-D and `axes = [0]` this is just the mean
 		and variance of a vector.
 		
-		Note: for numerical stability, when shift=None, the true mean
-		would be computed and used as shift.
+		Note: shift is currently not used; the true mean is computed and used.
 		
 		When using these moments for batch normalization (see
 		`tf.nn.batch_normalization`):
@@ -2189,10 +3563,7 @@ package tensorflow.python.ops.nn;
 		  x: A `Tensor`.
 		  axes: Array of ints.  Axes along which to compute mean and
 		    variance.
-		  shift: A `Tensor` containing the value by which to shift the data for
-		    numerical stability, or `None` in which case the true mean of the data is
-		    used as shift. A shift close to the true mean provides the most
-		    numerically stable results.
+		  shift: Not used in the current implementation
 		  name: Name used to scope the operations that compute the moments.
 		  keep_dims: produce moments with the same dimensionality as the input.
 		
@@ -2236,7 +3607,7 @@ package tensorflow.python.ops.nn;
 		Note: By default this uses a log-uniform (Zipfian) distribution for sampling,
 		so your labels must be sorted in order of decreasing frequency to achieve
 		good results.  For more details, see
-		@{tf.nn.log_uniform_candidate_sampler}.
+		`tf.nn.log_uniform_candidate_sampler`.
 		
 		Note: In the case where `num_true` > 1, we assign to each target class
 		the target probability 1 / `num_true` so that the target probabilities
@@ -2257,7 +3628,9 @@ package tensorflow.python.ops.nn;
 		      num_true]`. The target classes.
 		  inputs: A `Tensor` of shape `[batch_size, dim]`.  The forward
 		      activations of the input network.
-		  num_sampled: An `int`.  The number of classes to randomly sample per batch.
+		  num_sampled: An `int`.  The number of negative classes to randomly sample
+		      per batch. This single sample of negative classes is evaluated for each
+		      element in the batch.
 		  num_classes: An `int`. The number of possible classes.
 		  num_true: An `int`.  The number of target classes per training example.
 		  sampled_values: a tuple of (`sampled_candidates`, `true_expected_count`,
@@ -2283,7 +3656,7 @@ package tensorflow.python.ops.nn;
 		Calculate the mean and variance of based on the sufficient statistics.
 		
 		Args:
-		  counts: A `Tensor` containing a the total count of the data (one value).
+		  counts: A `Tensor` containing the total count of the data (one value).
 		  mean_ss: A `Tensor` containing the mean sufficient statistics: the (possibly
 		    shifted) sum of the elements to average over.
 		  variance_ss: A `Tensor` containing the variance sufficient statistics: the
@@ -2296,6 +3669,37 @@ package tensorflow.python.ops.nn;
 		  Two `Tensor` objects: `mean` and `variance`.
 	**/
 	static public function normalize_moments(counts:Dynamic, mean_ss:Dynamic, variance_ss:Dynamic, shift:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Finds values of the `n`-th order statistic for the last dmension.
+		
+		If the input is a vector (rank-1), finds the entries which is the nth-smallest
+		value in the vector and outputs their values as scalar tensor.
+		
+		For matrices (resp. higher rank input), computes the entries which is the
+		nth-smallest value in each row (resp. vector along the last dimension). Thus,
+		
+		    values.shape = input.shape[:-1]
+		
+		Args:
+		  input: 1-D or higher `Tensor` with last dimension at least `n+1`.
+		  n: A `Tensor` of type `int32`.
+		    0-D. Position of sorted vector to select along the last dimension (along
+		    each row for matrices). Valid range of n is `[0, input.shape[:-1])`
+		  reverse: An optional `bool`. Defaults to `False`.
+		    When set to True, find the nth-largest value in the vector and vice
+		    versa.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `input`.
+		  The `n`-th order statistic along each last dimensional slice.
+	**/
+	static public function nth_element(input:Dynamic, n:Dynamic, ?reverse:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function nth_element
+	**/
+	static public function nth_element_eager_fallback(input:Dynamic, n:Dynamic, ?reverse:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Performs an N-D pooling operation.
 		
@@ -2315,8 +3719,8 @@ package tensorflow.python.ops.nn;
 		```
 		
 		where the reduction function REDUCE depends on the value of `pooling_type`,
-		and pad_before is defined based on the value of `padding` as described in the
-		@{tf.nn.convolution$comment here}.
+		and pad_before is defined based on the value of `padding` as described in
+		the "returns" section of `tf.nn.convolution` for details.
 		The reduction never includes out-of-bounds positions.
 		
 		In the case that `data_format` starts with `"NC"`, the `input` and output are
@@ -2338,7 +3742,7 @@ package tensorflow.python.ops.nn;
 		  window_shape: Sequence of N ints >= 1.
 		  pooling_type: Specifies pooling operation, must be "AVG" or "MAX".
 		  padding: The padding algorithm, must be "SAME" or "VALID".
-		    See the @{tf.nn.convolution$comment here}
+		    See the "returns" section of `tf.nn.convolution` for details.
 		  dilation_rate: Optional.  Dilation rate.  List of N ints >= 1.
 		    Defaults to [1]*N.  If any value of dilation_rate is > 1, then all values
 		    of strides must be 1.
@@ -2376,11 +3780,12 @@ package tensorflow.python.ops.nn;
 		  ValueError: if arguments are invalid.
 	**/
 	static public function pool(input:Dynamic, window_shape:Dynamic, pooling_type:Dynamic, padding:Dynamic, ?dilation_rate:Dynamic, ?strides:Dynamic, ?name:Dynamic, ?data_format:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Produces the average pool of the input tensor for quantized types.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint16`, `quint16`, `qint32`.
+		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
 		    4-D with shape `[batch, height, width, channels]`.
 		  min_input: A `Tensor` of type `float32`.
 		    The float value that the lowest quantized input value represents.
@@ -2400,10 +3805,112 @@ package tensorflow.python.ops.nn;
 		  A tuple of `Tensor` objects (output, min_output, max_output).
 		
 		  output: A `Tensor`. Has the same type as `input`.
-		  min_output: A `Tensor` of type `float32`. The float value that the lowest quantized output value represents.
-		  max_output: A `Tensor` of type `float32`. The float value that the highest quantized output value represents.
+		  min_output: A `Tensor` of type `float32`.
+		  max_output: A `Tensor` of type `float32`.
 	**/
 	static public function quantized_avg_pool(input:Dynamic, min_input:Dynamic, max_input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_avg_pool
+	**/
+	static public function quantized_avg_pool_eager_fallback(input:Dynamic, min_input:Dynamic, max_input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Quantized Batch normalization.
+		
+		This op is deprecated and will be removed in the future. Prefer
+		`tf.nn.batch_normalization`.
+		
+		Args:
+		  t: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
+		    A 4D input Tensor.
+		  t_min: A `Tensor` of type `float32`.
+		    The value represented by the lowest quantized input.
+		  t_max: A `Tensor` of type `float32`.
+		    The value represented by the highest quantized input.
+		  m: A `Tensor`. Must have the same type as `t`.
+		    A 1D mean Tensor with size matching the last dimension of t.
+		    This is the first output from tf.nn.moments,
+		    or a saved moving average thereof.
+		  m_min: A `Tensor` of type `float32`.
+		    The value represented by the lowest quantized mean.
+		  m_max: A `Tensor` of type `float32`.
+		    The value represented by the highest quantized mean.
+		  v: A `Tensor`. Must have the same type as `t`.
+		    A 1D variance Tensor with size matching the last dimension of t.
+		    This is the second output from tf.nn.moments,
+		    or a saved moving average thereof.
+		  v_min: A `Tensor` of type `float32`.
+		    The value represented by the lowest quantized variance.
+		  v_max: A `Tensor` of type `float32`.
+		    The value represented by the highest quantized variance.
+		  beta: A `Tensor`. Must have the same type as `t`.
+		    A 1D beta Tensor with size matching the last dimension of t.
+		    An offset to be added to the normalized tensor.
+		  beta_min: A `Tensor` of type `float32`.
+		    The value represented by the lowest quantized offset.
+		  beta_max: A `Tensor` of type `float32`.
+		    The value represented by the highest quantized offset.
+		  gamma: A `Tensor`. Must have the same type as `t`.
+		    A 1D gamma Tensor with size matching the last dimension of t.
+		    If "scale_after_normalization" is true, this tensor will be multiplied
+		    with the normalized tensor.
+		  gamma_min: A `Tensor` of type `float32`.
+		    The value represented by the lowest quantized gamma.
+		  gamma_max: A `Tensor` of type `float32`.
+		    The value represented by the highest quantized gamma.
+		  out_type: A `tf.DType` from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`.
+		  variance_epsilon: A `float`. A small float number to avoid dividing by 0.
+		  scale_after_normalization: A `bool`.
+		    A bool indicating whether the resulted tensor
+		    needs to be multiplied with gamma.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (result, result_min, result_max).
+		
+		  result: A `Tensor` of type `out_type`.
+		  result_min: A `Tensor` of type `float32`.
+		  result_max: A `Tensor` of type `float32`.
+	**/
+	static public function quantized_batch_norm_with_global_normalization(t:Dynamic, t_min:Dynamic, t_max:Dynamic, m:Dynamic, m_min:Dynamic, m_max:Dynamic, v:Dynamic, v_min:Dynamic, v_max:Dynamic, beta:Dynamic, beta_min:Dynamic, beta_max:Dynamic, gamma:Dynamic, gamma_min:Dynamic, gamma_max:Dynamic, out_type:Dynamic, variance_epsilon:Dynamic, scale_after_normalization:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_batch_norm_with_global_normalization
+	**/
+	static public function quantized_batch_norm_with_global_normalization_eager_fallback(t:Dynamic, t_min:Dynamic, t_max:Dynamic, m:Dynamic, m_min:Dynamic, m_max:Dynamic, v:Dynamic, v_min:Dynamic, v_max:Dynamic, beta:Dynamic, beta_min:Dynamic, beta_max:Dynamic, gamma:Dynamic, gamma_min:Dynamic, gamma_max:Dynamic, out_type:Dynamic, variance_epsilon:Dynamic, scale_after_normalization:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Adds Tensor 'bias' to Tensor 'input' for Quantized types.
+		
+		Broadcasts the values of bias on dimensions 0..N-2 of 'input'.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
+		  bias: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
+		    A 1D bias Tensor with size matching the last dimension of 'input'.
+		  min_input: A `Tensor` of type `float32`.
+		    The float value that the lowest quantized input value represents.
+		  max_input: A `Tensor` of type `float32`.
+		    The float value that the highest quantized input value represents.
+		  min_bias: A `Tensor` of type `float32`.
+		    The float value that the lowest quantized bias value represents.
+		  max_bias: A `Tensor` of type `float32`.
+		    The float value that the highest quantized bias value represents.
+		  out_type: A `tf.DType` from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (output, min_out, max_out).
+		
+		  output: A `Tensor` of type `out_type`.
+		  min_out: A `Tensor` of type `float32`.
+		  max_out: A `Tensor` of type `float32`.
+	**/
+	static public function quantized_bias_add(input:Dynamic, bias:Dynamic, min_input:Dynamic, max_input:Dynamic, min_bias:Dynamic, max_bias:Dynamic, out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_bias_add
+	**/
+	static public function quantized_bias_add_eager_fallback(input:Dynamic, bias:Dynamic, min_input:Dynamic, max_input:Dynamic, min_bias:Dynamic, max_bias:Dynamic, out_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes a 2D convolution given quantized 4D input and filter tensors.
 		
@@ -2413,8 +3920,8 @@ package tensorflow.python.ops.nn;
 		taking the returned minimum and maximum values into account.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint16`, `quint16`, `qint32`.
-		  filter: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint16`, `quint16`, `qint32`.
+		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
+		  filter: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
 		    filter's input_depth dimension must match input's depth dimensions.
 		  min_input: A `Tensor` of type `float32`.
 		    The float value that the lowest quantized input value represents.
@@ -2429,22 +3936,33 @@ package tensorflow.python.ops.nn;
 		    tensor.
 		  padding: A `string` from: `"SAME", "VALID"`.
 		    The type of padding algorithm to use.
-		  out_type: An optional `tf.DType` from: `tf.qint8, tf.quint8, tf.qint16, tf.quint16, tf.qint32`. Defaults to `tf.qint32`.
+		  out_type: An optional `tf.DType` from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`. Defaults to `tf.qint32`.
+		  dilations: An optional list of `ints`. Defaults to `[1, 1, 1, 1]`.
+		    1-D tensor of length 4.  The dilation factor for each dimension of
+		    `input`. If set to k > 1, there will be k-1 skipped cells between each
+		    filter element on that dimension. The dimension order is determined by the
+		    value of `data_format`, see above for details. Dilations in the batch and
+		    depth dimensions must be 1.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (output, min_output, max_output).
 		
 		  output: A `Tensor` of type `out_type`.
-		  min_output: A `Tensor` of type `float32`. The float value that the lowest quantized output value represents.
-		  max_output: A `Tensor` of type `float32`. The float value that the highest quantized output value represents.
+		  min_output: A `Tensor` of type `float32`.
+		  max_output: A `Tensor` of type `float32`.
 	**/
-	static public function quantized_conv2d(input:Dynamic, filter:Dynamic, min_input:Dynamic, max_input:Dynamic, min_filter:Dynamic, max_filter:Dynamic, strides:Dynamic, padding:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
+	static public function quantized_conv2d(input:Dynamic, filter:Dynamic, min_input:Dynamic, max_input:Dynamic, min_filter:Dynamic, max_filter:Dynamic, strides:Dynamic, padding:Dynamic, ?out_type:Dynamic, ?dilations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_conv2d
+	**/
+	static public function quantized_conv2d_eager_fallback(input:Dynamic, filter:Dynamic, min_input:Dynamic, max_input:Dynamic, min_filter:Dynamic, max_filter:Dynamic, strides:Dynamic, padding:Dynamic, ?out_type:Dynamic, ?dilations:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Produces the max pool of the input tensor for quantized types.
 		
 		Args:
-		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint16`, `quint16`, `qint32`.
+		  input: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
 		    The 4D (batch x rows x cols x depth) Tensor to MaxReduce over.
 		  min_input: A `Tensor` of type `float32`.
 		    The float value that the lowest quantized input value represents.
@@ -2464,31 +3982,91 @@ package tensorflow.python.ops.nn;
 		  A tuple of `Tensor` objects (output, min_output, max_output).
 		
 		  output: A `Tensor`. Has the same type as `input`.
-		  min_output: A `Tensor` of type `float32`. The float value that the lowest quantized output value represents.
-		  max_output: A `Tensor` of type `float32`. The float value that the highest quantized output value represents.
+		  min_output: A `Tensor` of type `float32`.
+		  max_output: A `Tensor` of type `float32`.
 	**/
 	static public function quantized_max_pool(input:Dynamic, min_input:Dynamic, max_input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes Quantized Rectified Linear X: `min(max(features, 0), max_value)`
+		This is the slowpath function for Eager mode.
+		This is for function quantized_max_pool
+	**/
+	static public function quantized_max_pool_eager_fallback(input:Dynamic, min_input:Dynamic, max_input:Dynamic, ksize:Dynamic, strides:Dynamic, padding:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes Quantized Rectified Linear: `max(features, 0)`
 		
 		Args:
-		  features: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint16`, `quint16`, `qint32`.
-		  max_value: A `Tensor` of type `float32`.
+		  features: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
 		  min_features: A `Tensor` of type `float32`.
 		    The float value that the lowest quantized value represents.
 		  max_features: A `Tensor` of type `float32`.
 		    The float value that the highest quantized value represents.
-		  out_type: An optional `tf.DType` from: `tf.qint8, tf.quint8, tf.qint16, tf.quint16, tf.qint32`. Defaults to `tf.quint8`.
+		  out_type: An optional `tf.DType` from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`. Defaults to `tf.quint8`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (activations, min_activations, max_activations).
 		
-		  activations: A `Tensor` of type `out_type`. Has the same output shape as "features".
-		  min_activations: A `Tensor` of type `float32`. The float value that the lowest quantized value represents.
-		  max_activations: A `Tensor` of type `float32`. The float value that the highest quantized value represents.
+		  activations: A `Tensor` of type `out_type`.
+		  min_activations: A `Tensor` of type `float32`.
+		  max_activations: A `Tensor` of type `float32`.
+	**/
+	static public function quantized_relu(features:Dynamic, min_features:Dynamic, max_features:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes Quantized Rectified Linear 6: `min(max(features, 0), 6)`
+		
+		Args:
+		  features: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
+		  min_features: A `Tensor` of type `float32`.
+		    The float value that the lowest quantized value represents.
+		  max_features: A `Tensor` of type `float32`.
+		    The float value that the highest quantized value represents.
+		  out_type: An optional `tf.DType` from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`. Defaults to `tf.quint8`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (activations, min_activations, max_activations).
+		
+		  activations: A `Tensor` of type `out_type`.
+		  min_activations: A `Tensor` of type `float32`.
+		  max_activations: A `Tensor` of type `float32`.
+	**/
+	static public function quantized_relu6(features:Dynamic, min_features:Dynamic, max_features:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_relu6
+	**/
+	static public function quantized_relu6_eager_fallback(features:Dynamic, min_features:Dynamic, max_features:Dynamic, ?out_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_relu
+	**/
+	static public function quantized_relu_eager_fallback(features:Dynamic, min_features:Dynamic, max_features:Dynamic, ?out_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes Quantized Rectified Linear X: `min(max(features, 0), max_value)`
+		
+		Args:
+		  features: A `Tensor`. Must be one of the following types: `qint8`, `quint8`, `qint32`, `qint16`, `quint16`.
+		  max_value: A `Tensor` of type `float32`.
+		  min_features: A `Tensor` of type `float32`.
+		    The float value that the lowest quantized value represents.
+		  max_features: A `Tensor` of type `float32`.
+		    The float value that the highest quantized value represents.
+		  out_type: An optional `tf.DType` from: `tf.qint8, tf.quint8, tf.qint32, tf.qint16, tf.quint16`. Defaults to `tf.quint8`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (activations, min_activations, max_activations).
+		
+		  activations: A `Tensor` of type `out_type`.
+		  min_activations: A `Tensor` of type `float32`.
+		  max_activations: A `Tensor` of type `float32`.
 	**/
 	static public function quantized_relu_x(features:Dynamic, max_value:Dynamic, min_features:Dynamic, max_features:Dynamic, ?out_type:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function quantized_relu_x
+	**/
+	static public function quantized_relu_x_eager_fallback(features:Dynamic, max_value:Dynamic, min_features:Dynamic, max_features:Dynamic, ?out_type:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates an `RNN` specified by RNNCell `cell` and loop function `loop_fn`.
 		
@@ -2509,7 +4087,7 @@ package tensorflow.python.ops.nn;
 		
 		```python
 		time = tf.constant(0, dtype=tf.int32)
-		(finished, next_input, initial_state, _, loop_state) = loop_fn(
+		(finished, next_input, initial_state, emit_structure, loop_state) = loop_fn(
 		    time=time, cell_output=None, cell_state=None, loop_state=None)
 		emit_ta = TensorArray(dynamic_size=True, dtype=initial_state.dtype)
 		state = initial_state
@@ -2520,7 +4098,7 @@ package tensorflow.python.ops.nn;
 		      loop_state=loop_state)
 		  # Emit zeros and copy forward state for minibatch entries that are finished.
 		  state = tf.where(finished, state, next_state)
-		  emit = tf.where(finished, tf.zeros_like(emit), emit)
+		  emit = tf.where(finished, tf.zeros_like(emit_structure), emit)
 		  emit_ta = emit_ta.write(time, emit)
 		  # If any new minibatch entries are marked as finished, mark these.
 		  finished = tf.logical_or(finished, next_finished)
@@ -2580,10 +4158,15 @@ package tensorflow.python.ops.nn;
 		    and `emit_output`: the output to store for this iteration.
 		
 		    Note that `emit_output` should be a `Tensor` or (possibly nested)
-		    tuple of tensors with shapes and structure matching `cell.output_size`
-		    and `cell_output` above.  The parameter `cell_state` and output
-		    `next_cell_state` may be either a single or (possibly nested) tuple
-		    of tensors.  The parameter `loop_state` and
+		    tuple of tensors which is aggregated in the `emit_ta` inside the
+		    `while_loop`. For the first call to `loop_fn`, the `emit_output`
+		    corresponds to the `emit_structure` which is then used to determine the
+		    size of the `zero_tensor` for the `emit_ta` (defaults to
+		    `cell.output_size`). For the subsequent calls to the `loop_fn`, the
+		    `emit_output` corresponds to the actual output tensor
+		    that is to be aggregated in the `emit_ta`. The parameter `cell_state`
+		    and output `next_cell_state` may be either a single or (possibly nested)
+		    tuple of tensors.  The parameter `loop_state` and
 		    output `next_loop_state` may be either a single or (possibly nested) tuple
 		    of `Tensor` and `TensorArray` objects.  This last parameter
 		    may be ignored by `loop_fn` and the return value may be `None`.  If it
@@ -2603,7 +4186,7 @@ package tensorflow.python.ops.nn;
 		    appropriate type and shape `[batch_size] + cell.state_size`.
 		    If `cell.state_size` is a (possibly nested) tuple of ints or
 		    `TensorShape`, this will be a tuple having the corresponding shapes.
-		    The `emit_output` value may be  either `None` or a (possibly nested)
+		    The `emit_output` value may be either `None` or a (possibly nested)
 		    tuple structure of tensors, e.g.,
 		    `(tf.zeros(shape_0, dtype=dtype_0), tf.zeros(shape_1, dtype=dtype_1))`.
 		    If this first `emit_output` return value is `None`,
@@ -2657,7 +4240,7 @@ package tensorflow.python.ops.nn;
 		Computes rectified linear: `max(features, 0)`.
 		
 		Args:
-		  features: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  features: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`, `qint8`.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -2666,7 +4249,9 @@ package tensorflow.python.ops.nn;
 	static public function relu(features:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Computes Rectified Linear 6: `min(max(features, 0), 6)`.
-		Source: [Convolutional Deep Belief Networks on CIFAR-10. A. Krizhevsky](http://www.cs.utoronto.ca/~kriz/conv-cifar10-aug2010.pdf)
+		
+		Source: [Convolutional Deep Belief Networks on CIFAR-10. A.
+		Krizhevsky](http://www.cs.utoronto.ca/~kriz/conv-cifar10-aug2010.pdf)
 		
 		Args:
 		  features: A `Tensor` with type `float`, `double`, `int32`, `int64`, `uint8`,
@@ -2677,6 +4262,56 @@ package tensorflow.python.ops.nn;
 		  A `Tensor` with the same type as `features`.
 	**/
 	static public function relu6(features:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function relu6
+	**/
+	static public function relu6_eager_fallback(features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes rectified linear 6 gradients for a Relu6 operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The backpropagated gradients to the corresponding Relu6 operation.
+		  features: A `Tensor`. Must have the same type as `gradients`.
+		    The features passed as input to the corresponding Relu6 operation, or
+		    its output; using either one produces the same result.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function relu6_grad(gradients:Dynamic, features:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function relu6_grad
+	**/
+	static public function relu6_grad_eager_fallback(gradients:Dynamic, features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function relu
+	**/
+	static public function relu_eager_fallback(features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes rectified linear gradients for a Relu operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    The backpropagated gradients to the corresponding Relu operation.
+		  features: A `Tensor`. Must have the same type as `gradients`.
+		    The features passed as input to the corresponding Relu operation, OR
+		    the outputs of that operation (both work equivalently).
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function relu_grad(gradients:Dynamic, features:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function relu_grad
+	**/
+	static public function relu_grad_eager_fallback(gradients:Dynamic, features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes Relu(x * weight + biases).
 		
@@ -2692,6 +4327,51 @@ package tensorflow.python.ops.nn;
 		  Dimensions typically: batch, out_units.
 	**/
 	static public function relu_layer(x:Dynamic, weights:Dynamic, biases:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Lookup embedding results, accounting for invalid IDs and empty features.
+		
+		The partitioned embedding in `embedding_weights` must all be the same shape
+		except for the first dimension. The first dimension is allowed to vary as the
+		vocabulary size is not necessarily a multiple of `P`.  `embedding_weights`
+		may be a `PartitionedVariable` as returned by using `tf.get_variable()` with a
+		partitioner.
+		
+		Invalid IDs (< 0) are pruned from input IDs and weights, as well as any IDs
+		with non-positive weight. For an entry with no features, the embedding vector
+		for `default_id` is returned, or the 0-vector if `default_id` is not supplied.
+		
+		The ids and weights may be multi-dimensional. Embeddings are always aggregated
+		along the last dimension.
+		
+		Args:
+		  embedding_weights:  A list of `P` float `Tensor`s or values representing
+		      partitioned embedding `Tensor`s.  Alternatively, a `PartitionedVariable`
+		      created by partitioning along dimension 0.  The total unpartitioned
+		      shape should be `[e_0, e_1, ..., e_m]`, where `e_0` represents the
+		      vocab size and `e_1, ..., e_m` are the embedding dimensions.
+		  sparse_ids: `SparseTensor` of shape `[d_0, d_1, ..., d_n]` containing the
+		      ids. `d_0` is typically batch size.
+		  sparse_weights: `SparseTensor` of same shape as `sparse_ids`, containing
+		      float weights corresponding to `sparse_ids`, or `None` if all weights
+		      are be assumed to be 1.0.
+		  combiner: A string specifying how to combine embedding results for each
+		      entry. Currently "mean", "sqrtn" and "sum" are supported, with "mean"
+		      the default.
+		  default_id: The id to use for an entry with no features.
+		  name: A name for this operation (optional).
+		  partition_strategy: A string specifying the partitioning strategy.
+		      Currently `"div"` and `"mod"` are supported. Default is `"div"`.
+		  max_norm: If not `None`, all embeddings are l2-normalized to max_norm before
+		      combining.
+		
+		
+		Returns:
+		  Dense `Tensor` of shape `[d_0, d_1, ..., d_{n-1}, e_1, ..., e_m]`.
+		
+		Raises:
+		  ValueError: if `embedding_weights` is empty.
+	**/
+	static public function safe_embedding_lookup_sparse(embedding_weights:Dynamic, sparse_ids:Dynamic, ?sparse_weights:Dynamic, ?combiner:Dynamic, ?default_id:Dynamic, ?name:Dynamic, ?partition_strategy:Dynamic, ?max_norm:Dynamic):Dynamic;
 	/**
 		Computes and returns the sampled softmax training loss.
 		
@@ -2719,7 +4399,7 @@ package tensorflow.python.ops.nn;
 		  logits = tf.matmul(inputs, tf.transpose(weights))
 		  logits = tf.nn.bias_add(logits, biases)
 		  labels_one_hot = tf.one_hot(labels, n_classes)
-		  loss = tf.nn.softmax_cross_entropy_with_logits(
+		  loss = tf.nn.softmax_cross_entropy_with_logits_v2(
 		      labels=labels_one_hot,
 		      logits=logits)
 		```
@@ -2737,7 +4417,7 @@ package tensorflow.python.ops.nn;
 		  biases: A `Tensor` of shape `[num_classes]`.  The class biases.
 		  labels: A `Tensor` of type `int64` and shape `[batch_size,
 		      num_true]`. The target classes.  Note that this format differs from
-		      the `labels` argument of `nn.softmax_cross_entropy_with_logits`.
+		      the `labels` argument of `nn.softmax_cross_entropy_with_logits_v2`.
 		  inputs: A `Tensor` of shape `[batch_size, dim]`.  The forward
 		      activations of the input network.
 		  num_sampled: An `int`.  The number of classes to randomly sample per batch.
@@ -2753,11 +4433,56 @@ package tensorflow.python.ops.nn;
 		      if `len(weights) > 1`. Currently `"div"` and `"mod"` are supported.
 		      Default is `"mod"`. See `tf.nn.embedding_lookup` for more details.
 		  name: A name for the operation (optional).
+		  seed: random seed for candidate sampling. Default to None, which doesn't set
+		      the op-level random seed for candidate sampling.
 		
 		Returns:
 		  A `batch_size` 1-D tensor of per-example sampled softmax losses.
 	**/
-	static public function sampled_softmax_loss(weights:Dynamic, biases:Dynamic, labels:Dynamic, inputs:Dynamic, num_sampled:Dynamic, num_classes:Dynamic, ?num_true:Dynamic, ?sampled_values:Dynamic, ?remove_accidental_hits:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic):Dynamic;
+	static public function sampled_softmax_loss(weights:Dynamic, biases:Dynamic, labels:Dynamic, inputs:Dynamic, num_sampled:Dynamic, num_classes:Dynamic, ?num_true:Dynamic, ?sampled_values:Dynamic, ?remove_accidental_hits:Dynamic, ?partition_strategy:Dynamic, ?name:Dynamic, ?seed:Dynamic):Dynamic;
+	/**
+		Computes scaled exponential linear: `scale * alpha * (exp(features) - 1)`
+		
+		if < 0, `scale * features` otherwise.
+		
+		To be used together with
+		`initializer = tf.variance_scaling_initializer(factor=1.0, mode='FAN_IN')`.
+		For correct dropout, use `tf.contrib.nn.alpha_dropout`.
+		
+		See [Self-Normalizing Neural Networks](https://arxiv.org/abs/1706.02515)
+		
+		Args:
+		  features: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `features`.
+	**/
+	static public function selu(features:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function selu
+	**/
+	static public function selu_eager_fallback(features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes gradients for the scaled exponential linear (Selu) operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    The backpropagated gradients to the corresponding Selu operation.
+		  outputs: A `Tensor`. Must have the same type as `gradients`.
+		    The outputs of the corresponding Selu operation.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function selu_grad(gradients:Dynamic, outputs:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function selu_grad
+	**/
+	static public function selu_grad_eager_fallback(gradients:Dynamic, outputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		2-D convolution with separable filters.
 		
@@ -2768,7 +4493,7 @@ package tensorflow.python.ops.nn;
 		
 		In detail,
 		
-		    output[b, i, j, k] = sum_{di, dj, q, r]
+		    output[b, i, j, k] = sum_{di, dj, q, r}
 		        input[b, strides[1] * i + di, strides[2] * j + dj, q] *
 		        depthwise_filter[di, dj, q, r] *
 		        pointwise_filter[0, 0, q * channel_multiplier + r, k]
@@ -2792,7 +4517,7 @@ package tensorflow.python.ops.nn;
 		  strides: 1-D of size 4.  The strides for the depthwise convolution for
 		    each dimension of `input`.
 		  padding: A string, either `'VALID'` or `'SAME'`.  The padding algorithm.
-		    See the @{tf.nn.convolution$comment here}
+		    See the "returns" section of `tf.nn.convolution` for details.
 		  rate: 1-D of size 2. The dilation rate in which we sample input values
 		    across the `height` and `width` dimensions in atrous convolution. If it is
 		    greater than 1, then all values of strides must be 1.
@@ -2803,10 +4528,6 @@ package tensorflow.python.ops.nn;
 		  A 4-D `Tensor` with shape according to 'data_format'. For
 		    example, with data_format="NHWC", shape is [batch, out_height,
 		    out_width, out_channels].
-		
-		Raises:
-		  ValueError: If channel_multiplier * in_channels > out_channels,
-		    which means that the separable convolution is overparameterized.
 	**/
 	static public function separable_conv2d(input:Dynamic, depthwise_filter:Dynamic, pointwise_filter:Dynamic, strides:Dynamic, padding:Dynamic, ?rate:Dynamic, ?name:Dynamic, ?data_format:Dynamic):Dynamic;
 	/**
@@ -2815,16 +4536,15 @@ package tensorflow.python.ops.nn;
 		Specifically, `y = 1 / (1 + exp(-x))`.
 		
 		Args:
-		  x: A Tensor with type `float32`, `float64`, `int32`, `complex64`, `int64`,
-		    or `qint32`.
+		  x: A Tensor with type `float16`, `float32`, `float64`, `complex64`,
+		    or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A Tensor with the same type as `x` if `x.dtype != qint32`
-		    otherwise the return type is `quint8`.
+		  A Tensor with the same type as `x`.
 		
-		@compatibility(numpy)
-		Equivalent to np.scipy.special.expit
+		@compatibility(scipy)
+		Equivalent to scipy.special.expit
 		@end_compatibility
 	**/
 	static public function sigmoid(x:Dynamic, ?name:Dynamic):Dynamic;
@@ -2873,26 +4593,93 @@ package tensorflow.python.ops.nn;
 	**/
 	static public function sigmoid_cross_entropy_with_logits(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Computes softmax activations.
+		Computes softmax activations. (deprecated arguments)
 		
-		For each batch `i` and class `j` we have
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		dim is deprecated, use axis instead
 		
-		    softmax = exp(logits) / reduce_sum(exp(logits), dim)
+		This function performs the equivalent of
+		
+		    softmax = tf.exp(logits) / tf.reduce_sum(tf.exp(logits), axis)
 		
 		Args:
 		  logits: A non-empty `Tensor`. Must be one of the following types: `half`,
 		    `float32`, `float64`.
-		  dim: The dimension softmax would be performed on. The default is -1 which
+		  axis: The dimension softmax would be performed on. The default is -1 which
 		    indicates the last dimension.
+		  name: A name for the operation (optional).
+		  dim: Deprecated alias for `axis`.
+		
+		Returns:
+		  A `Tensor`. Has the same type and shape as `logits`.
+		
+		Raises:
+		  InvalidArgumentError: if `logits` is empty or `axis` is beyond the last
+		    dimension of `logits`.
+	**/
+	static public function softmax(logits:Dynamic, ?axis:Dynamic, ?name:Dynamic, ?dim:Dynamic):Dynamic;
+	/**
+		Computes softmax cross entropy between `logits` and `labels`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		
+		Future major versions of TensorFlow will allow gradients to flow
+		into the labels input on backprop by default.
+		
+		See `tf.nn.softmax_cross_entropy_with_logits_v2`.
+		
+		
+		Measures the probability error in discrete classification tasks in which the
+		classes are mutually exclusive (each entry is in exactly one class).  For
+		example, each CIFAR-10 image is labeled with one and only one label: an image
+		can be a dog or a truck, but not both.
+		
+		**NOTE:**  While the classes are mutually exclusive, their probabilities
+		need not be.  All that is required is that each row of `labels` is
+		a valid probability distribution.  If they are not, the computation of the
+		gradient will be incorrect.
+		
+		If using exclusive `labels` (wherein one and only
+		one class is true at a time), see `sparse_softmax_cross_entropy_with_logits`.
+		
+		**WARNING:** This op expects unscaled logits, since it performs a `softmax`
+		on `logits` internally for efficiency.  Do not call this op with the
+		output of `softmax`, as it will produce incorrect results.
+		
+		A common use case is to have logits and labels of shape
+		`[batch_size, num_classes]`, but higher dimensions are supported, with
+		the `dim` argument specifying the class dimension.
+		
+		Backpropagation will happen only into `logits`.  To calculate a cross entropy
+		loss that allows backpropagation into both `logits` and `labels`, see
+		`tf.nn.softmax_cross_entropy_with_logits_v2`.
+		
+		**Note that to avoid confusion, it is required to pass only named arguments to
+		this function.**
+		
+		Args:
+		  _sentinel: Used to prevent positional parameters. Internal, do not use.
+		  labels: Each vector along the class dimension should hold a valid
+		    probability distribution e.g. for the case in which labels are of shape
+		    `[batch_size, num_classes]`, each row of `labels[i]` must be a valid
+		    probability distribution.
+		  logits: Unscaled log probabilities.
+		  dim: The class dimension. Defaulted to -1 which is the last dimension.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A `Tensor`. Has the same type as `logits`. Same shape as `logits`.
-		Raises:
-		  InvalidArgumentError: if `logits` is empty or `dim` is beyond the last
-		    dimension of `logits`.
+		  A `Tensor` that contains the softmax cross entropy loss. Its type is the
+		  same as `logits` and its shape is the same as `labels` except that it does
+		  not have the last dimension of `labels`.
 	**/
-	static public function softmax(logits:Dynamic, ?dim:Dynamic, ?name:Dynamic):Dynamic;
+	static public function softmax_cross_entropy_with_logits(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?dim:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function softmax_cross_entropy_with_logits
+	**/
+	static public function softmax_cross_entropy_with_logits_eager_fallback(features:Dynamic, labels:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes softmax cross entropy between `logits` and `labels`.
 		
@@ -2913,29 +4700,46 @@ package tensorflow.python.ops.nn;
 		on `logits` internally for efficiency.  Do not call this op with the
 		output of `softmax`, as it will produce incorrect results.
 		
-		`logits` and `labels` must have the same shape `[batch_size, num_classes]`
-		and the same dtype (either `float16`, `float32`, or `float64`).
+		A common use case is to have logits and labels of shape
+		`[batch_size, num_classes]`, but higher dimensions are supported, with
+		the `dim` argument specifying the class dimension.
+		
+		`logits` and `labels` must have the same dtype (either `float16`, `float32`,
+		or `float64`).
+		
+		Backpropagation will happen into both `logits` and `labels`.  To disallow
+		backpropagation into `labels`, pass label tensors through `tf.stop_gradient`
+		before feeding it to this function.
 		
 		**Note that to avoid confusion, it is required to pass only named arguments to
 		this function.**
 		
 		Args:
 		  _sentinel: Used to prevent positional parameters. Internal, do not use.
-		  labels: Each row `labels[i]` must be a valid probability distribution.
+		  labels: Each vector along the class dimension should hold a valid
+		    probability distribution e.g. for the case in which labels are of shape
+		    `[batch_size, num_classes]`, each row of `labels[i]` must be a valid
+		    probability distribution.
 		  logits: Unscaled log probabilities.
 		  dim: The class dimension. Defaulted to -1 which is the last dimension.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A 1-D `Tensor` of length `batch_size` of the same type as `logits` with the
-		  softmax cross entropy loss.
+		  A `Tensor` that contains the softmax cross entropy loss. Its type is the
+		  same as `logits` and its shape is the same as `labels` except that it does
+		  not have the last dimension of `labels`.
 	**/
-	static public function softmax_cross_entropy_with_logits(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?dim:Dynamic, ?name:Dynamic):Dynamic;
+	static public function softmax_cross_entropy_with_logits_v2(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?dim:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function softmax
+	**/
+	static public function softmax_eager_fallback(logits:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes softplus: `log(exp(features) + 1)`.
 		
 		Args:
-		  features: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  features: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -2943,16 +4747,64 @@ package tensorflow.python.ops.nn;
 	**/
 	static public function softplus(features:Dynamic, ?name:Dynamic):Dynamic;
 	/**
+		This is the slowpath function for Eager mode.
+		This is for function softplus
+	**/
+	static public function softplus_eager_fallback(features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes softplus gradients for a softplus operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    The backpropagated gradients to the corresponding softplus operation.
+		  features: A `Tensor`. Must have the same type as `gradients`.
+		    The features passed as input to the corresponding softplus operation.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function softplus_grad(gradients:Dynamic, features:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function softplus_grad
+	**/
+	static public function softplus_grad_eager_fallback(gradients:Dynamic, features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
 		Computes softsign: `features / (abs(features) + 1)`.
 		
 		Args:
-		  features: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `int64`, `uint8`, `int16`, `int8`, `uint16`, `half`.
+		  features: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A `Tensor`. Has the same type as `features`.
 	**/
 	static public function softsign(features:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function softsign
+	**/
+	static public function softsign_eager_fallback(features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Computes softsign gradients for a softsign operation.
+		
+		Args:
+		  gradients: A `Tensor`. Must be one of the following types: `half`, `bfloat16`, `float32`, `float64`.
+		    The backpropagated gradients to the corresponding softsign operation.
+		  features: A `Tensor`. Must have the same type as `gradients`.
+		    The features passed as input to the corresponding softsign operation.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor`. Has the same type as `gradients`.
+	**/
+	static public function softsign_grad(gradients:Dynamic, features:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function softsign_grad
+	**/
+	static public function softsign_grad_eager_fallback(gradients:Dynamic, features:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Computes sparse softmax cross entropy between `logits` and `labels`.
 		
@@ -2966,14 +4818,17 @@ package tensorflow.python.ops.nn;
 		must provide a single specific index for the true class for each row of
 		`logits` (each minibatch entry).  For soft softmax classification with
 		a probability distribution for each entry, see
-		`softmax_cross_entropy_with_logits`.
+		`softmax_cross_entropy_with_logits_v2`.
 		
 		**WARNING:** This op expects unscaled logits, since it performs a `softmax`
 		on `logits` internally for efficiency.  Do not call this op with the
 		output of `softmax`, as it will produce incorrect results.
 		
-		A common use case is to have logits of shape `[batch_size, num_classes]` and
-		labels of shape `[batch_size]`. But higher dimensions are supported.
+		A common use case is to have logits and labels of shape
+		`[batch_size, num_classes]`, but higher dimensions are supported, in which
+		case the `dim`-th dimension is assumed to be of size `num_classes`.
+		`logits` must have the dtype of `float16`, `float32`, or `float64`, and
+		`labels` must have the dtype of `int32` or `int64`.
 		
 		**Note that to avoid confusion, it is required to pass only named arguments to
 		this function.**
@@ -2986,7 +4841,8 @@ package tensorflow.python.ops.nn;
 		    exception when this op is run on CPU, and return `NaN` for corresponding
 		    loss and gradient rows on GPU.
 		  logits: Unscaled log probabilities of shape
-		    `[d_0, d_1, ..., d_{r-1}, num_classes]` and dtype `float32` or `float64`.
+		    `[d_0, d_1, ..., d_{r-1}, num_classes]` and dtype `float16`, `float32`, or
+		    `float64`.
 		  name: A name for the operation (optional).
 		
 		Returns:
@@ -2995,52 +4851,14 @@ package tensorflow.python.ops.nn;
 		
 		Raises:
 		  ValueError: If logits are scalars (need to have rank >= 1) or if the rank
-		    of the labels is not equal to the rank of the labels minus one.
+		    of the labels is not equal to the rank of the logits minus one.
 	**/
 	static public function sparse_softmax_cross_entropy_with_logits(?_sentinel:Dynamic, ?labels:Dynamic, ?logits:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Creates a bidirectional recurrent neural network.
-		
-		Similar to the unidirectional case above (rnn) but takes input and builds
-		independent forward and backward RNNs with the final forward and backward
-		outputs depth-concatenated, such that the output will have the format
-		[time][batch][cell_fw.output_size + cell_bw.output_size]. The input_size of
-		forward and backward cell must match. The initial state for both directions
-		is zero by default (but can be set optionally) and no intermediate states are
-		ever returned -- the network is fully unrolled for the given (passed in)
-		length(s) of the sequence(s) or completely unrolled if length(s) is not given.
-		
-		Args:
-		  cell_fw: An instance of RNNCell, to be used for forward direction.
-		  cell_bw: An instance of RNNCell, to be used for backward direction.
-		  inputs: A length T list of inputs, each a tensor of shape
-		    [batch_size, input_size], or a nested tuple of such elements.
-		  initial_state_fw: (optional) An initial state for the forward RNN.
-		    This must be a tensor of appropriate type and shape
-		    `[batch_size, cell_fw.state_size]`.
-		    If `cell_fw.state_size` is a tuple, this should be a tuple of
-		    tensors having shapes `[batch_size, s] for s in cell_fw.state_size`.
-		  initial_state_bw: (optional) Same as for `initial_state_fw`, but using
-		    the corresponding properties of `cell_bw`.
-		  dtype: (optional) The data type for the initial state.  Required if
-		    either of the initial states are not provided.
-		  sequence_length: (optional) An int32/int64 vector, size `[batch_size]`,
-		    containing the actual lengths for each of the sequences.
-		  scope: VariableScope for the created subgraph; defaults to
-		    "bidirectional_rnn"
-		
-		Returns:
-		  A tuple (outputs, output_state_fw, output_state_bw) where:
-		    outputs is a length `T` list of outputs (one for each input), which
-		      are depth-concatenated forward and backward outputs.
-		    output_state_fw is the final state of the forward rnn.
-		    output_state_bw is the final state of the backward rnn.
-		
-		Raises:
-		  TypeError: If `cell_fw` or `cell_bw` is not an instance of `RNNCell`.
-		  ValueError: If inputs is None or an empty list.
+		This is the slowpath function for Eager mode.
+		This is for function sparse_softmax_cross_entropy_with_logits
 	**/
-	static public function static_bidirectional_rnn(cell_fw:Dynamic, cell_bw:Dynamic, inputs:Dynamic, ?initial_state_fw:Dynamic, ?initial_state_bw:Dynamic, ?dtype:Dynamic, ?sequence_length:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function sparse_softmax_cross_entropy_with_logits_eager_fallback(features:Dynamic, labels:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Creates a recurrent neural network specified by RNNCell `cell`.
 		
@@ -3154,23 +4972,24 @@ package tensorflow.python.ops.nn;
 		  * the shift by which the mean must be corrected or None if `shift` is None.
 	**/
 	static public function sufficient_statistics(x:Dynamic, axes:Dynamic, ?shift:Dynamic, ?keep_dims:Dynamic, ?name:Dynamic):Dynamic;
+	static public function swish(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes hyperbolic tangent of `x` element-wise.
 		
 		Args:
-		  x: A Tensor or SparseTensor with type `float`, `double`, `int32`,
-		    `complex64`, `int64`, or `qint32`.
+		  x: A Tensor or SparseTensor with type `float16`, `float32`, `double`,
+		    `complex64`, or `complex128`.
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  A Tensor or SparseTensor respectively with the same type as `x` if
-		  `x.dtype != qint32` otherwise the return type is `quint8`.
+		  A Tensor or SparseTensor respectively with the same type as `x`.
 	**/
 	static public function tanh(x:Dynamic, ?name:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finds values and indices of the `k` largest entries for the last dimension.
 		
-		If the input is a vector (rank-1), finds the `k` largest entries in the vector
+		If the input is a vector (rank=1), finds the `k` largest entries in the vector
 		and outputs their values and indices as vectors.  Thus `values[j]` is the
 		`j`-th largest entry in `input`, and its index is `indices[j]`.
 		
@@ -3194,6 +5013,48 @@ package tensorflow.python.ops.nn;
 		  indices: The indices of `values` within the last dimension of `input`.
 	**/
 	static public function top_k(input:Dynamic, ?k:Dynamic, ?sorted:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function top_k
+	**/
+	static public function top_k_eager_fallback(input:Dynamic, k:Dynamic, ?sorted:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Finds values and indices of the `k` largest elements for the last dimension.
+		
+		If the input is a vector (rank-1), finds the `k` largest entries in the vector
+		and outputs their values and indices as vectors.  Thus `values[j]` is the
+		`j`-th largest entry in `input`, and its index is `indices[j]`.
+		
+		For matrices (resp. higher rank input), computes the top `k` entries in each
+		row (resp. vector along the last dimension).  Thus,
+		
+		    values.shape = indices.shape = input.shape[:-1] + [k]
+		
+		If two elements are equal, the lower-index element appears first.
+		
+		Args:
+		  input: A `Tensor`. Must be one of the following types: `float32`, `float64`, `int32`, `uint8`, `int16`, `int8`, `int64`, `bfloat16`, `uint16`, `half`, `uint32`, `uint64`.
+		    1-D or higher with last dimension at least `k`.
+		  k: A `Tensor` of type `int32`.
+		    0-D.  Number of top elements to look for along the last dimension (along each
+		    row for matrices).
+		  sorted: An optional `bool`. Defaults to `True`.
+		    If true the resulting `k` elements will be sorted by the values in
+		    descending order.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (values, indices).
+		
+		  values: A `Tensor`. Has the same type as `input`.
+		  indices: A `Tensor` of type `int32`.
+	**/
+	static public function top_kv2(input:Dynamic, k:Dynamic, ?sorted:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function top_kv2
+	**/
+	static public function top_kv2_eager_fallback(input:Dynamic, k:Dynamic, ?sorted:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Samples a set of classes using a uniform base distribution.
 		
@@ -3255,7 +5116,13 @@ package tensorflow.python.ops.nn;
 		    targets * -log(sigmoid(logits)) +
 		        (1 - targets) * -log(1 - sigmoid(logits))
 		
-		The argument `pos_weight` is used as a multiplier for the positive targets:
+		A value `pos_weights > 1` decreases the false negative count, hence increasing
+		the recall.
+		Conversely setting `pos_weights < 1` decreases the false positive count and
+		increases the precision.
+		This can be seen from the fact that `pos_weight` is introduced as a
+		multiplicative coefficient for the positive targets term
+		in the loss expression:
 		
 		    targets * -log(sigmoid(logits)) * pos_weight +
 		        (1 - targets) * -log(1 - sigmoid(logits))
@@ -3457,6 +5324,23 @@ package tensorflow.python.ops.nn;
 		  Dimensions typically: batch, out_units.
 	**/
 	static public function xw_plus_b(x:Dynamic, weights:Dynamic, biases:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes matmul(x, weights) + biases.
+		
+		This is a deprecated version of that will soon be removed.
+		
+		Args:
+		  x: a 2D tensor.  Dimensions typically: batch, in_units
+		  weights: a 2D tensor.  Dimensions typically: in_units, out_units
+		  biases: a 1D tensor.  Dimensions: out_units
+		  name: A name for the operation (optional).  If not specified
+		    "xw_plus_b_v1" is used.
+		
+		Returns:
+		  A 2-D Tensor computing matmul(x, weights) + biases.
+		  Dimensions typically: batch, out_units.
+	**/
+	static public function xw_plus_b_v1(x:Dynamic, weights:Dynamic, biases:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Returns the fraction of zeros in `value`.
 		

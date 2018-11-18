@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.monitored_session;
 @:pythonImport("tensorflow.python.training.monitored_session", "_WrappedSession") extern class _WrappedSession {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -58,7 +58,7 @@ package tensorflow.python.training.monitored_session;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,7 +109,7 @@ package tensorflow.python.training.monitored_session;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -124,6 +124,7 @@ package tensorflow.python.training.monitored_session;
 	public function close():Dynamic;
 	public var graph : Dynamic;
 	public function run(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function run_step_fn(step_fn:Dynamic, raw_session:Dynamic, run_with_hooks:Dynamic):Dynamic;
 	public var sess_str : Dynamic;
 	/**
 		Return true if this session should not be used anymore.

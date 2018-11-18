@@ -51,6 +51,15 @@ package scipy.linalg.basic;
 		to hold the exact value --- some LAPACK versions (<= 3.5.0 at
 		least) truncate the returned integer to single precision and in
 		some cases this can be smaller than the required value.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lapack
+		>>> n = 5000
+		>>> s_r, s_lw = lapack.get_lapack_funcs(('sysvx', 'sysvx_lwork'))
+		>>> lwork = lapack._compute_lwork(s_lw, n)
+		>>> lwork
+		32000
 	**/
 	static public function _compute_lwork(routine:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -59,6 +68,10 @@ package scipy.linalg.basic;
 	**/
 	static public function _datacopied(arr:Dynamic, original:Dynamic):Dynamic;
 	static public function _get_axis_len(aname:Dynamic, a:Dynamic, axis:Dynamic):Dynamic;
+	/**
+		Check arguments during the different steps of the solution phase 
+	**/
+	static public function _solve_check(n:Dynamic, info:Dynamic, ?lamch:Dynamic, ?rcond:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Convert inputs to arrays with at least one dimension.
@@ -203,12 +216,10 @@ package scipy.linalg.basic;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -219,8 +230,37 @@ package scipy.linalg.basic;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -318,7 +358,7 @@ package scipy.linalg.basic;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
-		lapack_driver: str, optional
+		lapack_driver : str, optional
 		    Which LAPACK driver is used to solve the least-squares problem.
 		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
 		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
@@ -331,11 +371,11 @@ package scipy.linalg.basic;
 		-------
 		x : (N,) or (N, K) ndarray
 		    Least-squares solution.  Return shape matches shape of `b`.
-		residues : () or (1,) or (K,) ndarray
+		residues : (0,) or () or (K,) ndarray
 		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is ``< N`` or ``> M``, or ``'gelsy'`` is used,
-		    this is an empty array. If b was 1-D, this is an (1,) shape array,
-		    otherwise the shape is (K,).
+		    If rank of matrix a is ``< N`` or ``N > M``, or ``'gelsy'`` is used,
+		    this is a length zero array. If b was 1-D, this is a () shape array
+		    (numpy scalar), otherwise the shape is (K,).
 		rank : int
 		    Effective rank of matrix `a`.
 		s : (min(M,N),) ndarray or None
@@ -353,6 +393,50 @@ package scipy.linalg.basic;
 		See Also
 		--------
 		optimize.nnls : linear least squares with non-negativity constraint
+		
+		Examples
+		--------
+		>>> from scipy.linalg import lstsq
+		>>> import matplotlib.pyplot as plt
+		
+		Suppose we have the following data:
+		
+		>>> x = np.array([1, 2.5, 3.5, 4, 5, 7, 8.5])
+		>>> y = np.array([0.3, 1.1, 1.5, 2.0, 3.2, 6.6, 8.6])
+		
+		We want to fit a quadratic polynomial of the form ``y = a + b*x**2``
+		to this data.  We first form the "design matrix" M, with a constant
+		column of 1s and a column containing ``x**2``:
+		
+		>>> M = x[:, np.newaxis]**[0, 2]
+		>>> M
+		array([[  1.  ,   1.  ],
+		       [  1.  ,   6.25],
+		       [  1.  ,  12.25],
+		       [  1.  ,  16.  ],
+		       [  1.  ,  25.  ],
+		       [  1.  ,  49.  ],
+		       [  1.  ,  72.25]])
+		
+		We want to find the least-squares solution to ``M.dot(p) = y``,
+		where ``p`` is a vector with length 2 that holds the parameters
+		``a`` and ``b``.
+		
+		>>> p, res, rnk, s = lstsq(M, y)
+		>>> p
+		array([ 0.20925829,  0.12013861])
+		
+		Plot the data and the fitted curve.
+		
+		>>> plt.plot(x, y, 'o', label='data')
+		>>> xx = np.linspace(0, 9, 101)
+		>>> yy = p[0] + p[1]*xx**2
+		>>> plt.plot(xx, yy, label='least squares fit, $y = a + bx^2$')
+		>>> plt.xlabel('x')
+		>>> plt.ylabel('y')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.show()
 	**/
 	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
@@ -432,13 +516,13 @@ package scipy.linalg.basic;
 		>>> np.abs(x).sum(axis=0) / np.abs(x).sum(axis=1)
 		array([ 3.66666667,  0.4995005 ,  0.91312162])
 		
-		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1) # 1-norms approx. equal
-		array([ 1.10625   ,  0.90547703,  1.00011878])
+		>>> np.abs(y).sum(axis=0) / np.abs(y).sum(axis=1)
+		array([ 1.2       ,  1.27041742,  0.92658316])  # may vary
 		
 		>>> permscale  # only powers of 2 (0.5 == 2^(-1))
-		array([[  0.5,   0. ,   0. ],
-		       [  0. ,   1. ,   0. ],
-		       [  0. ,   0. ,  16. ]])
+		array([[  0.5,   0. ,  0. ],  # may vary
+		       [  0. ,   1. ,  0. ],
+		       [  0. ,   0. ,  1. ]])
 		
 		References
 		----------
@@ -644,8 +728,8 @@ package scipy.linalg.basic;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -658,8 +742,10 @@ package scipy.linalg.basic;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -682,7 +768,7 @@ package scipy.linalg.basic;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
@@ -722,6 +808,34 @@ package scipy.linalg.basic;
 		x : (M,) or (M, K) ndarray
 		    The solution to the system a x = b.  Returned shape depends on the
 		    shape of `b`.
+		
+		Examples
+		--------
+		Solve the banded system a x = b, where::
+		
+		        [5  2 -1  0  0]       [0]
+		        [1  4  2 -1  0]       [1]
+		    a = [0  1  3  2 -1]   b = [2]
+		        [0  0  1  2  2]       [2]
+		        [0  0  0  1  1]       [3]
+		
+		There is one nonzero diagonal below the main diagonal (l = 1), and
+		two above (u = 2).  The diagonal banded form of the matrix is::
+		
+		         [*  * -1 -1 -1]
+		    ab = [*  2  2  2  2]
+		         [5  4  3  2  1]
+		         [1  1  1  1  *]
+		
+		>>> from scipy.linalg import solve_banded
+		>>> ab = np.array([[0,  0, -1, -1, -1],
+		...                [0,  2,  2,  2,  2],
+		...                [5,  4,  3,  2,  1],
+		...                [1,  1,  1,  1,  0]])
+		>>> b = np.array([0, 1, 2, 2, 3])
+		>>> x = solve_banded((1, 2), ab, b)
+		>>> x
+		array([-2.37288136,  3.93220339, -4.        ,  4.3559322 , -1.3559322 ])
 	**/
 	static public function solve_banded(l_and_u:Dynamic, ab:Dynamic, b:Dynamic, ?overwrite_ab:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -783,7 +897,7 @@ package scipy.linalg.basic;
 		
 		See Also
 		--------
-		circulant
+		circulant : circulant matrix
 		
 		Notes
 		-----
@@ -900,10 +1014,42 @@ package scipy.linalg.basic;
 		    The solution to the system ``T x = b``.  Shape of return matches shape
 		    of `b`.
 		
+		See Also
+		--------
+		toeplitz : Toeplitz matrix
+		
 		Notes
 		-----
 		The solution is computed using Levinson-Durbin recursion, which is faster
 		than generic least-squares methods, but can be less numerically stable.
+		
+		Examples
+		--------
+		Solve the Toeplitz system T x = b, where::
+		
+		        [ 1 -1 -2 -3]       [1]
+		    T = [ 3  1 -1 -2]   b = [2]
+		        [ 6  3  1 -1]       [2]
+		        [10  6  3  1]       [5]
+		
+		To specify the Toeplitz matrix, only the first column and the first
+		row are needed.
+		
+		>>> c = np.array([1, 3, 6, 10])    # First column of T
+		>>> r = np.array([1, -1, -2, -3])  # First row of T
+		>>> b = np.array([1, 2, 2, 5])
+		
+		>>> from scipy.linalg import solve_toeplitz, toeplitz
+		>>> x = solve_toeplitz((c, r), b)
+		>>> x
+		array([ 1.66666667, -1.        , -2.66666667,  2.33333333])
+		
+		Check the result by creating the full Toeplitz matrix and
+		multiplying it by `x`.  We should get `b`.
+		
+		>>> T = toeplitz(c, r)
+		>>> T.dot(x)
+		array([ 1.,  2.,  2.,  5.])
 	**/
 	static public function solve_toeplitz(c_or_cr:Dynamic, b:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -951,6 +1097,24 @@ package scipy.linalg.basic;
 		Notes
 		-----
 		.. versionadded:: 0.9.0
+		
+		Examples
+		--------
+		Solve the lower triangular system a x = b, where::
+		
+		         [3  0  0  0]       [4]
+		    a =  [2  1  0  0]   b = [2]
+		         [1  0  1  0]       [4]
+		         [1  1  1  1]       [2]
+		
+		>>> from scipy.linalg import solve_triangular
+		>>> a = np.array([[3, 0, 0, 0], [2, 1, 0, 0], [1, 0, 1, 0], [1, 1, 1, 1]])
+		>>> b = np.array([4, 2, 4, 2])
+		>>> x = solve_triangular(a, b, lower=True)
+		>>> x
+		array([ 1.33333333, -0.66666667,  2.66666667, -1.33333333])
+		>>> a.dot(x)  # Check the result
+		array([ 4.,  2.,  4.,  2.])
 	**/
 	static public function solve_triangular(a:Dynamic, b:Dynamic, ?trans:Dynamic, ?lower:Dynamic, ?unit_diagonal:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
@@ -998,6 +1162,53 @@ package scipy.linalg.basic;
 		x : (M,) or (M, K) ndarray
 		    The solution to the system a x = b.  Shape of return matches shape
 		    of `b`.
+		
+		Examples
+		--------
+		Solve the banded system A x = b, where::
+		
+		        [ 4  2 -1  0  0  0]       [1]
+		        [ 2  5  2 -1  0  0]       [2]
+		    A = [-1  2  6  2 -1  0]   b = [2]
+		        [ 0 -1  2  7  2 -1]       [3]
+		        [ 0  0 -1  2  8  2]       [3]
+		        [ 0  0  0 -1  2  9]       [3]
+		
+		>>> from scipy.linalg import solveh_banded
+		
+		`ab` contains the main diagonal and the nonzero diagonals below the
+		main diagonal.  That is, we use the lower form:
+		
+		>>> ab = np.array([[ 4,  5,  6,  7, 8, 9],
+		...                [ 2,  2,  2,  2, 2, 0],
+		...                [-1, -1, -1, -1, 0, 0]])
+		>>> b = np.array([1, 2, 2, 3, 3, 3])
+		>>> x = solveh_banded(ab, b, lower=True)
+		>>> x
+		array([ 0.03431373,  0.45938375,  0.05602241,  0.47759104,  0.17577031,
+		        0.34733894])
+		
+		
+		Solve the Hermitian banded system H x = b, where::
+		
+		        [ 8   2-1j   0     0  ]        [ 1  ]
+		    H = [2+1j  5     1j    0  ]    b = [1+1j]
+		        [ 0   -1j    9   -2-1j]        [1-2j]
+		        [ 0    0   -2+1j   6  ]        [ 0  ]
+		
+		In this example, we put the upper diagonals in the array `hb`:
+		
+		>>> hb = np.array([[0, 2-1j, 1j, -2-1j],
+		...                [8,  5,    9,   6  ]])
+		>>> b = np.array([1, 1+1j, 1-2j, 0])
+		>>> x = solveh_banded(hb, b)
+		>>> x
+		array([ 0.07318536-0.02939412j,  0.11877624+0.17696461j,
+		        0.10077984-0.23035393j, -0.00479904-0.09358128j])
 	**/
 	static public function solveh_banded(ab:Dynamic, b:Dynamic, ?overwrite_ab:Dynamic, ?overwrite_b:Dynamic, ?lower:Dynamic, ?check_finite:Dynamic):Dynamic;
+	/**
+		Issue a warning, or maybe ignore it or raise an exception.
+	**/
+	static public function warn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

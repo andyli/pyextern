@@ -16,10 +16,7 @@ package scipy.linalg._procrustes;
 		Compute the matrix solution of the orthogonal Procrustes problem.
 		
 		Given matrices A and B of equal shape, find an orthogonal matrix R
-		that most closely maps A to B [1]_.
-		Note that unlike higher level Procrustes analyses of spatial data,
-		this function only uses orthogonal transformations like rotations
-		and reflections, and it does not use scaling or translation.
+		that most closely maps A to B using the algorithm given in [1]_.
 		
 		Parameters
 		----------
@@ -36,48 +33,65 @@ package scipy.linalg._procrustes;
 		-------
 		R : (N, N) ndarray
 		    The matrix solution of the orthogonal Procrustes problem.
-		    Minimizes the Frobenius norm of dot(A, R) - B, subject to
-		    dot(R.T, R) == I.
+		    Minimizes the Frobenius norm of ``(A @ R) - B``, subject to
+		    ``R.T @ R = I``.
 		scale : float
-		    Sum of the singular values of ``dot(A.T, B)``.
+		    Sum of the singular values of ``A.T @ B``.
 		
 		Raises
 		------
 		ValueError
-		    If the input arrays are incompatibly shaped.
-		    This may also be raised if matrix A or B contains an inf or nan
-		    and check_finite is True, or if the matrix product AB contains
-		    an inf or nan.
+		    If the input array shapes don't match or if check_finite is True and
+		    the arrays contain Inf or NaN.
 		
 		Notes
 		-----
+		Note that unlike higher level Procrustes analyses of spatial data, this
+		function only uses orthogonal transformations like rotations and
+		reflections, and it does not use scaling or translation.
+		
 		.. versionadded:: 0.15.0
 		
 		References
 		----------
 		.. [1] Peter H. Schonemann, "A generalized solution of the orthogonal
 		       Procrustes problem", Psychometrica -- Vol. 31, No. 1, March, 1996.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import orthogonal_procrustes
+		>>> A = np.array([[ 2,  0,  1], [-2,  0,  0]])
+		
+		Flip the order of columns and check for the anti-diagonal mapping
+		
+		>>> R, sca = orthogonal_procrustes(A, np.fliplr(A))
+		>>> R
+		array([[-5.34384992e-17,  0.00000000e+00,  1.00000000e+00],
+		       [ 0.00000000e+00,  1.00000000e+00,  0.00000000e+00],
+		       [ 1.00000000e+00,  0.00000000e+00, -7.85941422e-17]])
+		>>> sca
+		9.0
 	**/
 	static public function orthogonal_procrustes(A:Dynamic, B:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Singular Value Decomposition.
 		
-		Factorizes the matrix a into two unitary matrices U and Vh, and
-		a 1-D array s of singular values (real, non-negative) such that
-		``a == U*S*Vh``, where S is a suitably shaped matrix of zeros with
-		main diagonal s.
+		Factorizes the matrix `a` into two unitary matrices ``U`` and ``Vh``, and
+		a 1-D array ``s`` of singular values (real, non-negative) such that
+		``a == U @ S @ Vh``, where ``S`` is a suitably shaped matrix of zeros with
+		main diagonal ``s``.
 		
 		Parameters
 		----------
 		a : (M, N) array_like
 		    Matrix to decompose.
 		full_matrices : bool, optional
-		    If True, `U` and `Vh` are of shape ``(M,M)``, ``(N,N)``.
-		    If False, the shapes are ``(M,K)`` and ``(K,N)``, where
-		    ``K = min(M,N)``.
+		    If True (default), `U` and `Vh` are of shape ``(M, M)``, ``(N, N)``.
+		    If False, the shapes are ``(M, K)`` and ``(K, N)``, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether to compute also `U` and `Vh` in addition to `s`.
+		    Whether to compute also ``U`` and ``Vh`` in addition to ``s``.
 		    Default is True.
 		overwrite_a : bool, optional
 		    Whether to overwrite `a`; may improve performance.
@@ -98,15 +112,15 @@ package scipy.linalg._procrustes;
 		-------
 		U : ndarray
 		    Unitary matrix having left singular vectors as columns.
-		    Of shape ``(M,M)`` or ``(M,K)``, depending on `full_matrices`.
+		    Of shape ``(M, M)`` or ``(M, K)``, depending on `full_matrices`.
 		s : ndarray
 		    The singular values, sorted in non-increasing order.
 		    Of shape (K,), with ``K = min(M, N)``.
 		Vh : ndarray
 		    Unitary matrix having right singular vectors as rows.
-		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
+		    Of shape ``(N, N)`` or ``(K, N)`` depending on `full_matrices`.
 		
-		For ``compute_uv=False``, only `s` is returned.
+		For ``compute_uv=False``, only ``s`` is returned.
 		
 		Raises
 		------
@@ -121,15 +135,28 @@ package scipy.linalg._procrustes;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6) + 1.j*np.random.randn(9, 6)
+		>>> m, n = 9, 6
+		>>> a = np.random.randn(m, n) + 1.j*np.random.randn(m, n)
 		>>> U, s, Vh = linalg.svd(a)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 9), (6, 6), (6,))
+		>>> U.shape,  s.shape, Vh.shape
+		((9, 9), (6,), (6, 6))
+		
+		Reconstruct the original matrix from the decomposition:
+		
+		>>> sigma = np.zeros((m, n))
+		>>> for i in range(min(m, n)):
+		...     sigma[i, i] = s[i]
+		>>> a1 = np.dot(U, np.dot(sigma, Vh))
+		>>> np.allclose(a, a1)
+		True
+		
+		Alternatively, use ``full_matrices=False`` (notice that the shape of
+		``U`` is then ``(m, n)`` instead of ``(m, m)``):
 		
 		>>> U, s, Vh = linalg.svd(a, full_matrices=False)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = linalg.diagsvd(s, 6, 6)
+		>>> U.shape, s.shape, Vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> S = np.diag(s)
 		>>> np.allclose(a, np.dot(U, np.dot(S, Vh)))
 		True
 		

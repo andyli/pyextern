@@ -13,11 +13,10 @@ package theano.compile.function_module;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _constructor_Function(maker:Dynamic, input_storage:Dynamic, inputs_data:Dynamic):Dynamic;
+	static public function _constructor_Function(maker:Dynamic, input_storage:Dynamic, inputs_data:Dynamic, ?trust_input:Dynamic):Dynamic;
 	static public function _constructor_FunctionMaker(kwargs:Dynamic):Dynamic;
 	static public var _logger : Dynamic;
 	static public function _pickle_Function(f:Dynamic):Dynamic;
-	static public function _pickle_FunctionMaker(self:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Return the variable to which v is aliased by view_maps and destroy_maps.
@@ -66,7 +65,7 @@ package theano.compile.function_module;
 		as any of the specified variables. Used internally by function,
 		FunctionMaker.
 		
-		This list (or set) is also refered to as no_recycling sometimes,
+		This list (or set) is also referred to as no_recycling sometimes,
 		especially by linker code.
 	**/
 	static public function infer_reuse_pattern(fgraph:Dynamic, outputs_to_disown:Dynamic):Dynamic;

@@ -23,11 +23,29 @@ package theano.scalar.basic_scipy;
 	static public var float_types : Dynamic;
 	static public function gamma(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gammaln(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return an un-computable symbolic variable of type `x.type`.
+		
+		If any call to tensor.grad results in an expression containing this
+		un-computable variable, an exception (NotImplementedError) will be
+		raised indicating that the gradient on the
+		`x_pos`'th input of `op` has not been implemented. Likewise if
+		any call to theano.function involves this variable.
+		
+		Optionally adds a comment to the exception explaining why this
+		gradient is not implemented.
+	**/
+	static public function grad_not_implemented(op:Dynamic, x_pos:Dynamic, x:Dynamic, ?comment:Dynamic):Dynamic;
+	static public function i0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function i1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var imported_scipy_special : Dynamic;
+	static public function iv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function j0(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function j1(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function jv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	static public function psi(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function tri_gamma(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function upcast(dtype:Dynamic, ?dtypes:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Upgrade any int types to float32 or float64 to avoid losing precision.

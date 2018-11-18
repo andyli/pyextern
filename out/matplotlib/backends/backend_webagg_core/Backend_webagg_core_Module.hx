@@ -16,16 +16,25 @@ package matplotlib.backends.backend_webagg_core;
 		Handle key codes
 	**/
 	static public function _handle_key(key:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
+	static public var backend_version : Dynamic;
+	static public function draw_if_interactive():Dynamic;
 	/**
-		Create a new figure manager instance
+		Create a new figure manager instance.
+		        
 	**/
 	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
+		        
 	**/
 	static public function new_figure_manager_given_figure(num:Dynamic, figure:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
-	static public var unicode_literals : Dynamic;
+	static public var required_interactive_framework : Dynamic;
+	/**
+		Show all figures.
+		
+		`show` blocks by calling `mainloop` if *block* is ``True``, or if it
+		is ``None`` and we are neither in IPython's ``%pylab`` mode, nor in
+		`interactive` mode.
+	**/
+	static public function show(?block:Dynamic):Dynamic;
 }

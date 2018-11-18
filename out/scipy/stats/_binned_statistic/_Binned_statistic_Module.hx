@@ -148,7 +148,7 @@ package scipy.stats._binned_statistic;
 		>>> bin_centers = bin_edges[1:] - bin_width/2
 		
 		>>> plt.figure()
-		>>> plt.hist(samples, bins=50, normed=True, histtype='stepfilled',
+		>>> plt.hist(samples, bins=50, density=True, histtype='stepfilled',
 		...          alpha=0.2, label='histogram of data')
 		>>> plt.plot(x, x_pdf, 'r-', label='analytical pdf')
 		>>> plt.hlines(bin_means, bin_edges[:-1], bin_edges[1:], colors='g', lw=2,
@@ -347,7 +347,7 @@ package scipy.stats._binned_statistic;
 		
 		range : sequence, optional
 		    A sequence of lower and upper bin edges to be used if the edges are
-		    not given explicitely in `bins`. Defaults to the minimum and maximum
+		    not given explicitly in `bins`. Defaults to the minimum and maximum
 		    values along each dimension.
 		expand_binnumbers : bool, optional
 		    'False' (default): the returned `binnumber` is a shape (N,) array of

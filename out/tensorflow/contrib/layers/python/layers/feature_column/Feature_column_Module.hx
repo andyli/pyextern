@@ -53,7 +53,6 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		
 		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
 		
-		
 		Note, this is not integrated with any of the DNNEstimators, except the RNN
 		ones DynamicRNNEstimator and the StateSavingRNNEstimator.
 		
@@ -413,7 +412,8 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		  ValueError: if sparse_id_columns is empty, or its elements are not
 		    compatible with each other.
 		  TypeError: if `sparse_id_columns` is not a sequence or is a string. If at
-		    least one element of `sparse_id_columns` is not a `SparseTensor`.
+		    least one element of `sparse_id_columns` is not a `SparseColumn` or a
+		    `WeightedSparseColumn`.
 	**/
 	static public function shared_embedding_columns(sparse_id_columns:Dynamic, dimension:Dynamic, ?combiner:Dynamic, ?shared_embedding_name:Dynamic, ?initializer:Dynamic, ?ckpt_to_load_from:Dynamic, ?tensor_name_in_ckpt:Dynamic, ?max_norm:Dynamic, ?trainable:Dynamic):Dynamic;
 	/**
@@ -422,6 +422,9 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		Use this when your sparse features are in string or integer format, but you
 		don't have a vocab file that maps each value to an integer ID.
 		output_id = Hash(input_feature_string) % bucket_size
+		
+		When hash_keys is set, multiple integer IDs would be created with each key
+		pair in the `hash_keys`. This is useful to reduce the collision of hashed ids.
 		
 		Args:
 		  column_name: A string defining sparse column name.
@@ -435,6 +438,9 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		      * "sqrtn": do l2 normalization on features in the column
 		    For more information: `tf.embedding_lookup_sparse`.
 		  dtype: The type of features. Only string and integer types are supported.
+		  hash_keys: The hash keys to use. It is a list of lists of two uint64s. If
+		    None, simple and fast hashing algorithm is used. Otherwise, multiple
+		    strong hash ids would be produced with each two unit64s in this argument.
 		
 		Returns:
 		  A _SparseColumn with hashed bucket configuration
@@ -443,7 +449,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		  ValueError: hash_bucket_size is not greater than 2.
 		  ValueError: dtype is neither string nor integer.
 	**/
-	static public function sparse_column_with_hash_bucket(column_name:Dynamic, hash_bucket_size:Dynamic, ?combiner:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function sparse_column_with_hash_bucket(column_name:Dynamic, hash_bucket_size:Dynamic, ?combiner:Dynamic, ?dtype:Dynamic, ?hash_keys:Dynamic):Dynamic;
 	/**
 		Creates an integerized _SparseColumn.
 		
@@ -460,7 +466,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		
 		Args:
 		  column_name: A string defining sparse column name.
-		  bucket_size: An int that is > 1. The number of buckets. It should be bigger
+		  bucket_size: An int that is >= 1. The number of buckets. It should be bigger
 		    than maximum feature. In other words features in this column should be an
 		    int64 in range [0, bucket_size)
 		  combiner: A string specifying how to reduce if the sparse column is
@@ -478,7 +484,7 @@ package tensorflow.contrib.layers.python.layers.feature_column;
 		  An integerized _SparseColumn definition.
 		
 		Raises:
-		  ValueError: bucket_size is not greater than 1.
+		  ValueError: bucket_size is less than 1.
 		  ValueError: dtype is not integer.
 	**/
 	static public function sparse_column_with_integerized_feature(column_name:Dynamic, bucket_size:Dynamic, ?combiner:Dynamic, ?dtype:Dynamic):Dynamic;

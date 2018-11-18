@@ -1,7 +1,9 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework.tensor_util;
 @:pythonImport("tensorflow.python.framework.tensor_util") extern class Tensor_util_Module {
+	static public function ExtractBitsFromBFloat16(x:Dynamic):Dynamic;
 	static public function ExtractBitsFromFloat16(x:Dynamic):Dynamic;
+	static public function FastAppendBFloat16ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
 	static public function GetFromNumpyDTypeDict(dtype_dict:Dynamic, dtype:Dynamic):Dynamic;
 	static public function GetNumpyAppendFn(dtype:Dynamic):Dynamic;
 	/**
@@ -34,16 +36,8 @@ package tensorflow.python.framework.tensor_util;
 		    TensorShape, list, or tuple.
 	**/
 	static public function ShapeEquals(tensor_proto:Dynamic, shape:Dynamic):Dynamic;
-	static public function SlowAppendBoolArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendComplex128ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendComplex64ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
+	static public function SlowAppendBFloat16ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
 	static public function SlowAppendFloat16ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendFloat32ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendFloat64ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendInt64ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendIntArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendObjectArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
-	static public function SlowAppendQIntArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
 	/**
 		Convert a TensorShape to a list.
 		
@@ -55,7 +49,7 @@ package tensorflow.python.framework.tensor_util;
 	**/
 	static public function TensorShapeProtoToList(shape:Dynamic):Dynamic;
 	static public function _AssertCompatible(values:Dynamic, dtype:Dynamic):Dynamic;
-	static public function _ConstantValue(tensor:Dynamic):Dynamic;
+	static public function _ConstantValue(tensor:Dynamic, partial:Dynamic):Dynamic;
 	static public var _FAST_TENSOR_UTIL_AVAILABLE : Dynamic;
 	static public function _FilterBool(v:Dynamic):Dynamic;
 	static public function _FilterComplex(v:Dynamic):Dynamic;
@@ -70,6 +64,7 @@ package tensorflow.python.framework.tensor_util;
 		Returns the inferred dense dimensions of a list of lists.
 	**/
 	static public function _GetDenseDimensions(list_of_lists:Dynamic):Dynamic;
+	static public function _MediumAppendFloat16ArrayToTensorProto(tensor_proto:Dynamic, proto_values:Dynamic):Dynamic;
 	static public var _NP_TO_APPEND_FN : Dynamic;
 	static public function _NotNone(v:Dynamic):Dynamic;
 	static public var _TENSOR_CONTENT_TYPES : Dynamic;
@@ -100,6 +95,8 @@ package tensorflow.python.framework.tensor_util;
 		
 		Args:
 		  tensor: The Tensor to be evaluated.
+		  partial: If True, the returned numpy array is allowed to have partially
+		    evaluated values. Values that can't be evaluated will be None.
 		
 		Returns:
 		  A numpy ndarray containing the constant value of the given `tensor`,
@@ -108,7 +105,7 @@ package tensorflow.python.framework.tensor_util;
 		Raises:
 		  TypeError: if tensor is not an ops.Tensor.
 	**/
-	static public function constant_value(tensor:Dynamic):Dynamic;
+	static public function constant_value(tensor:Dynamic, ?partial:Dynamic):Dynamic;
 	/**
 		A version of `constant_value()` that returns a `TensorShape`.
 		
@@ -120,21 +117,26 @@ package tensorflow.python.framework.tensor_util;
 		all-or-nothing.
 		
 		Args:
-		  tensor: The rank-1 Tensor to be evaluated.
+		  tensor: The rank-0 or rank-1 Tensor to be evaluated.
 		
 		Returns:
 		  A `TensorShape` based on the constant value of the given `tensor`.
+		
+		Raises:
+		  ValueError: If the shape is rank-0 and is not statically known to be -1.
 	**/
 	static public function constant_value_as_shape(tensor:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Check whether `x` is of tensor type.
 		
-		Check whether an object is a tensor. Equivalent to
-		`isinstance(x, [tf.Tensor, tf.SparseTensor, tf.Variable])`.
+		Check whether an object is a tensor. This check is equivalent to calling
+		`isinstance(x, (tf.Tensor, tf.SparseTensor, tf.Variable))` and also checks
+		if all the component variables of a MirroredVariable or a TowerLocalVariable
+		are tensors.
 		
 		Args:
-		  x: An python object to check.
+		  x: A python object to check.
 		
 		Returns:
 		  `True` if `x` is a tensor, `False` if not.
@@ -150,10 +152,13 @@ package tensorflow.python.framework.tensor_util;
 		  verify_shape:   Boolean that enables verification of a shape of values.
 		
 		Returns:
-		  A TensorProto. Depending on the type, it may contain data in the
+		  A `TensorProto`. Depending on the type, it may contain data in the
 		  "tensor_content" attribute, which is not directly useful to Python programs.
 		  To access the values you should convert the proto back to a numpy ndarray
-		  with tensor_util.MakeNdarray(proto).
+		  with `tf.make_ndarray(proto)`.
+		
+		  If `values` is a `TensorProto`, it is immediately returned; `dtype` and
+		  `shape` are ignored.
 		
 		Raises:
 		  TypeError:  if unsupported types are provided.
@@ -182,4 +187,5 @@ package tensorflow.python.framework.tensor_util;
 	**/
 	static public function make_tensor_proto(values:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?verify_shape:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

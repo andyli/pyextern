@@ -34,18 +34,7 @@ package scipy.stats.mstats;
 	**/
 	static public function argstoarray(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		`betai` is deprecated!
-		mstats.betai is deprecated in scipy 0.17.0; use special.betainc instead.
-		
-		
-		    betai() is deprecated in scipy 0.17.0.
-		
-		    For details about this function, see `stats.betai`.
-		    
-	**/
-	static public function betai(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Calculates a one-way chi square test.
+		Calculate a one-way chi square test.
 		
 		The chi square test tests the null hypothesis that the categorical data
 		has the given frequencies.
@@ -163,9 +152,9 @@ package scipy.stats.mstats;
 		Parameters
 		----------
 		group_1 : array_like
-		    First dataset.
+		    First dataset.  Has to be of size >=7.
 		group_2 : array_like
-		    Second dataset.
+		    Second dataset.  Has to be of size >=7.
 		axis : int, optional
 		    Axis along which the medians are estimated. If None, the arrays are
 		    flattened.  If `axis` is not None, then `group_1` and `group_2`
@@ -253,16 +242,13 @@ package scipy.stats.mstats;
 		>>> from scipy.stats.mstats import describe
 		>>> ma = np.ma.array(range(6), mask=[0, 0, 0, 1, 1, 1])
 		>>> describe(ma)
-		DescribeResult(nobs=array(3), minmax=(masked_array(data = 0,
-		             mask = False,
-		       fill_value = 999999)
-		, masked_array(data = 2,
-		             mask = False,
-		       fill_value = 999999)
-		), mean=1.0, variance=0.66666666666666663, skewness=masked_array(data = 0.0,
-		             mask = False,
-		       fill_value = 1e+20)
-		, kurtosis=-1.5)
+		DescribeResult(nobs=3, minmax=(masked_array(data=0,
+		             mask=False,
+		       fill_value=999999), masked_array(data=2,
+		             mask=False,
+		       fill_value=999999)), mean=1.0, variance=0.6666666666666666,
+		       skewness=masked_array(data=0., mask=False, fill_value=1e+20),
+		        kurtosis=-1.5)
 	**/
 	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?bias:Dynamic):Int;
 	static public var division : Dynamic;
@@ -281,15 +267,6 @@ package scipy.stats.mstats;
 		    The associated p-value from the F-distribution.
 	**/
 	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
-	/**
-		`f_value_wilks_lambda` is deprecated!
-		mstats.f_value_wilks_lambda deprecated in scipy 0.17.0
-		
-		Calculation of Wilks lambda F-statistic for multivariate data, per
-		    Maxwell & Delaney p.657.
-		    
-	**/
-	static public function f_value_wilks_lambda(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find repeats in arr and return a tuple (repeats, repeat_count).
 		
@@ -334,7 +311,7 @@ package scipy.stats.mstats;
 	/**
 		Compute the geometric mean along the specified axis.
 		
-		Returns the geometric average of the array elements.
+		Return the geometric average of the array elements.
 		That is:  n-th root of (x1 * x2 * ... * xn)
 		
 		Parameters
@@ -371,6 +348,14 @@ package scipy.stats.mstats;
 		Use masked arrays to ignore any non-finite values in the input or that
 		arise in the calculations such as Not a Number and infinity because masked
 		arrays automatically mask any non-finite values.
+		
+		Examples
+		--------
+		>>> from scipy.stats import gmean
+		>>> gmean([1, 4])
+		2.0
+		>>> gmean([1, 2, 3, 4, 5, 6, 7])
+		3.3800151591412964
 	**/
 	static public function gmean(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
@@ -385,6 +370,13 @@ package scipy.stats.mstats;
 		    array.
 		var : bool, optional
 		    Whether to return the variance of the estimate.
+		
+		Returns
+		-------
+		hdmedian : MaskedArray
+		    The median values.  If ``var=True``, the variance is returned inside
+		    the masked array.  E.g. for a 1-D array the shape change from (1,) to
+		    (2,).
 	**/
 	static public function hdmedian(data:Dynamic, ?axis:Dynamic, ?_var:Dynamic):Dynamic;
 	/**
@@ -411,6 +403,10 @@ package scipy.stats.mstats;
 		    A (p,) array of quantiles (if `var` is False), or a (2,p) array of
 		    quantiles and variances (if `var` is True), where ``p`` is the
 		    number of quantiles.
+		
+		See Also
+		--------
+		hdquantiles_sd
 	**/
 	static public function hdquantiles(data:Dynamic, ?prob:Dynamic, ?axis:Dynamic, ?_var:Dynamic):Dynamic;
 	/**
@@ -430,10 +426,14 @@ package scipy.stats.mstats;
 		-------
 		hdquantiles_sd : MaskedArray
 		    Standard error of the Harrell-Davis quantile estimates.
+		
+		See Also
+		--------
+		hdquantiles
 	**/
 	static public function hdquantiles_sd(data:Dynamic, ?prob:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Calculates the harmonic mean along the specified axis.
+		Calculate the harmonic mean along the specified axis.
 		
 		That is:  n / (1/x1 + 1/x2 + ... + 1/xn)
 		
@@ -470,6 +470,14 @@ package scipy.stats.mstats;
 		
 		Use masked arrays to ignore any non-finite values in the input or that
 		arise in the calculations such as Not a Number and infinity.
+		
+		Examples
+		--------
+		>>> from scipy.stats import hmean
+		>>> hmean([1, 4])
+		1.6000000000000001
+		>>> hmean([1, 2, 3, 4, 5, 6, 7])
+		2.6997245179063363
 	**/
 	static public function hmean(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
@@ -693,7 +701,8 @@ package scipy.stats.mstats;
 		    correlation coefficient
 		pvalue : float
 		    two-sided p-value for a hypothesis test whose null hypothesis is
-		    that the slope is zero.
+		    that the slope is zero, using Wald Test with t-distribution of
+		    the test statistic.
 		stderr : float
 		    Standard error of the estimated gradient.
 		
@@ -716,7 +725,7 @@ package scipy.stats.mstats;
 		To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
-		('r-squared:', 0.080402268539028335)
+		r-squared: 0.08040226853902833
 		
 		Plot the data along with the fitted line
 		
@@ -967,9 +976,9 @@ package scipy.stats.mstats;
 		...                  [  40., -999., -999.],
 		...                  [  36., -999., -999.]])
 		>>> print(mquantiles(data, axis=0, limit=(0, 50)))
-		[[ 19.2   14.6    1.45]
-		 [ 40.    37.5    2.5 ]
-		 [ 42.8   40.05   3.55]]
+		[[19.2  14.6   1.45]
+		 [40.   37.5   2.5 ]
+		 [42.8  40.05  3.55]]
 		
 		>>> data[:, 2] = -999.
 		>>> print(mquantiles(data, axis=0, limit=(0, 50)))
@@ -993,6 +1002,15 @@ package scipy.stats.mstats;
 		axis : int or None, optional
 		    Axis along which to compute the quantiles.
 		    If None, use a flattened array.
+		
+		Returns
+		-------
+		ci_lower : ndarray
+		    The lower boundaries of the confidence interval.  Of the same length as
+		    `prob`.
+		ci_upper : ndarray
+		    The upper boundaries of the confidence interval.  Of the same length as
+		    `prob`.
 	**/
 	static public function mquantiles_cimj(data:Dynamic, ?prob:Dynamic, ?alpha:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -1156,13 +1174,15 @@ package scipy.stats.mstats;
 	**/
 	static public function rankdata(data:Dynamic, ?axis:Dynamic, ?use_missing:Dynamic):Dynamic;
 	/**
-		Evaluates Rosenblatt's shifted histogram estimators for each point
-		on the dataset 'data'.
+		Evaluates Rosenblatt's shifted histogram estimators for each data point.
+		
+		Rosenblatt's estimator is a centered finite-difference approximation to the
+		derivative of the empirical cumulative distribution function.
 		
 		Parameters
 		----------
 		data : sequence
-		    Input data. Masked values are ignored.
+		    Input data, should be 1-D. Masked values are ignored.
 		points : sequence or None, optional
 		    Sequence of points where to evaluate Rosenblatt shifted histogram.
 		    If None, use the data.
@@ -1222,23 +1242,6 @@ package scipy.stats.mstats;
 	static public function sem(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	static public function sen_seasonal_slopes(x:Dynamic):Dynamic;
 	/**
-		`signaltonoise` is deprecated!
-		mstats.signaltonoise is deprecated in scipy 0.16.0
-		
-		Calculates the signal-to-noise ratio, as the ratio of the mean over
-		    standard deviation along the given axis.
-		
-		    Parameters
-		    ----------
-		    data : sequence
-		        Input data
-		    axis : {0, int}, optional
-		        Axis along which to compute. If None, the computation is performed
-		        on a flat version of the array.
-		    
-	**/
-	static public function signaltonoise(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Computes the skewness of a data set.
 		
 		Parameters
@@ -1294,7 +1297,7 @@ package scipy.stats.mstats;
 		Spearman correlation does not assume that both datasets are normally
 		distributed. Like other correlation coefficients, this one varies
 		between -1 and +1 with 0 implying no correlation. Correlations of -1 or
-		+1 imply an exact linear relationship. Positive correlations imply that
+		+1 imply a monotonic relationship. Positive correlations imply that
 		as `x` increases, so does `y`. Negative correlations imply that as `x`
 		increases, `y` decreases.
 		
@@ -1360,37 +1363,6 @@ package scipy.stats.mstats;
 		For more details on `theilslopes`, see `stats.theilslopes`.
 	**/
 	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
-	/**
-		`threshold` is deprecated!
-		mstats.threshold is deprecated in scipy 0.17.0
-		
-		
-		    Clip array to a given value.
-		
-		    Similar to numpy.clip(), except that values less than `threshmin` or
-		    greater than `threshmax` are replaced by `newval`, instead of by
-		    `threshmin` and `threshmax` respectively.
-		
-		    Parameters
-		    ----------
-		    a : ndarray
-		        Input data
-		    threshmin : {None, float}, optional
-		        Lower threshold. If None, set to the minimum value.
-		    threshmax : {None, float}, optional
-		        Upper threshold. If None, set to the maximum value.
-		    newval : {0, float}, optional
-		        Value outside the thresholds.
-		
-		    Returns
-		    -------
-		    threshold : ndarray
-		        Returns `a`, with values less then `threshmin` and values greater
-		        `threshmax` replaced with `newval`.
-		
-		    
-	**/
-	static public function threshold(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the trimmed maximum
 		
@@ -1911,7 +1883,7 @@ package scipy.stats.mstats;
 		    indicate an open interval.
 		inclusive : {(True, True) tuple}, optional
 		    Tuple indicating whether the number of data being masked on each side
-		    should be rounded (True) or truncated (False).
+		    should be truncated (True) or rounded (False).
 		inplace : {False, True}, optional
 		    Whether to winsorize in place (True) or to use a copy (False)
 		axis : {None, int}, optional
@@ -1925,9 +1897,9 @@ package scipy.stats.mstats;
 	**/
 	static public function winsorize(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?inplace:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Calculates the relative z-scores.
+		Calculate the relative z-scores.
 		
-		Returns an array of z-scores, i.e., scores that are standardized to
+		Return an array of z-scores, i.e., scores that are standardized to
 		zero mean and unit variance, where mean and variance are calculated
 		from the comparison array.
 		
@@ -1967,7 +1939,7 @@ package scipy.stats.mstats;
 	**/
 	static public function zmap(scores:Dynamic, compare:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	/**
-		Calculates the z score of each value in the sample, relative to the
+		Calculate the z score of each value in the sample, relative to the
 		sample mean and standard deviation.
 		
 		Parameters

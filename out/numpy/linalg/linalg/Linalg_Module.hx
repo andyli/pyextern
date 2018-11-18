@@ -26,7 +26,6 @@ package numpy.linalg.linalg;
 	static public function _complexType(t:Dynamic, ?_default:Dynamic):Dynamic;
 	static public var _complex_types_map : Dynamic;
 	static public function _convertarray(a:Dynamic):Dynamic;
-	static public function _determine_error_states():Dynamic;
 	/**
 		_fastCopyAndTranspose(a)
 	**/
@@ -90,6 +89,7 @@ package numpy.linalg.linalg;
 	**/
 	static public function _multi_svd_norm(x:Dynamic, row_axis:Dynamic, col_axis:Dynamic, op:Dynamic):Dynamic;
 	static public function _raise_linalgerror_eigenvalues_nonconvergence(err:Dynamic, flag:Dynamic):Dynamic;
+	static public function _raise_linalgerror_lstsq(err:Dynamic, flag:Dynamic):Dynamic;
 	static public function _raise_linalgerror_nonposdef(err:Dynamic, flag:Dynamic):Dynamic;
 	static public function _raise_linalgerror_singular(err:Dynamic, flag:Dynamic):Dynamic;
 	static public function _raise_linalgerror_svd_nonconvergence(err:Dynamic, flag:Dynamic):Dynamic;
@@ -100,6 +100,8 @@ package numpy.linalg.linalg;
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
+		
+		``np.abs`` is a shorthand for this function.
 		
 		Parameters
 		----------
@@ -123,6 +125,7 @@ package numpy.linalg.linalg;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -174,8 +177,8 @@ package numpy.linalg.linalg;
 		Returns
 		-------
 		add : ndarray or scalar
-		    The sum of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    The sum of `x1` and `x2`, element-wise.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -225,7 +228,7 @@ package numpy.linalg.linalg;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `all` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
 		
 		Returns
@@ -251,7 +254,7 @@ package numpy.linalg.linalg;
 		False
 		
 		>>> np.all([[True,False],[True,True]], axis=0)
-		array([ True, False], dtype=bool)
+		array([ True, False])
 		
 		>>> np.all([-1, 4, 5])
 		True
@@ -262,7 +265,7 @@ package numpy.linalg.linalg;
 		>>> o=np.array([False])
 		>>> z=np.all([-1, 4, 5], out=o)
 		>>> id(z), id(o), z                             # doctest: +SKIP
-		(28293632, 28293632, array([ True], dtype=bool))
+		(28293632, 28293632, array([ True]))
 	**/
 	static public function all(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
@@ -293,8 +296,15 @@ package numpy.linalg.linalg;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amax` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The minimum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
+		
 		
 		Returns
 		-------
@@ -341,14 +351,29 @@ package numpy.linalg.linalg;
 		>>> np.amax(a, axis=1)   # Maxima along the second axis
 		array([1, 3])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amax(b)
 		nan
 		>>> np.nanmax(b)
 		4.0
+		
+		You can use an initial value to compute the maximum of an empty slice, or
+		to initialize it to a different value:
+		
+		>>> np.max([[-50], [10]], axis=-1, initial=0)
+		array([ 0, 10])
+		
+		Notice that the initial value is used as one of the elements for which the
+		maximum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		>>> np.max([5], initial=6)
+		6
+		>>> max([5], default=6)
+		5
 	**/
-	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		Return the minimum of an array or minimum along an axis.
 		
@@ -377,8 +402,14 @@ package numpy.linalg.linalg;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `amin` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		
+		initial : scalar, optional
+		    The maximum value of an output element. Must be present to allow
+		    computation on empty slice. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -425,14 +456,28 @@ package numpy.linalg.linalg;
 		>>> np.amin(a, axis=1)   # Minima along the second axis
 		array([0, 2])
 		
-		>>> b = np.arange(5, dtype=np.float)
+		>>> b = np.arange(5, dtype=float)
 		>>> b[2] = np.NaN
 		>>> np.amin(b)
 		nan
 		>>> np.nanmin(b)
 		0.0
+		
+		>>> np.min([[-50], [10]], axis=-1, initial=0)
+		array([-50,   0])
+		
+		Notice that the initial value is used as one of the elements for which the
+		minimum is determined, unlike for the default argument Python's max
+		function, which is only used for empty iterables.
+		
+		Notice that this isn't the same as Python's ``default`` argument.
+		
+		>>> np.min([6], initial=5)
+		5
+		>>> min([6], default=5)
+		6
 	**/
-	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function amin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
@@ -486,7 +531,15 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -581,7 +634,7 @@ package numpy.linalg.linalg;
 		
 		Instances of `ndarray` subclasses are passed through as-is:
 		
-		>>> a = np.matrix([1, 2])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asanyarray(a) is a
 		True
 	**/
@@ -645,41 +698,15 @@ package numpy.linalg.linalg;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
 		True
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
-	/**
-		Return an array converted to a float type.
-		
-		Parameters
-		----------
-		a : array_like
-		    The input array.
-		dtype : str or dtype object, optional
-		    Float type code to coerce input array `a`.  If `dtype` is one of the
-		    'int' dtypes, it is replaced with float64.
-		
-		Returns
-		-------
-		out : ndarray
-		    The input `a` as a float ndarray.
-		
-		Examples
-		--------
-		>>> np.asfarray([2, 3])
-		array([ 2.,  3.])
-		>>> np.asfarray([2, 3], dtype='float')
-		array([ 2.,  3.])
-		>>> np.asfarray([2, 3], dtype='int8')
-		array([ 2.,  3.])
-	**/
-	static public function asfarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -867,6 +894,53 @@ package numpy.linalg.linalg;
 	**/
 	static public function cond(x:Dynamic, ?p:Dynamic):Dynamic;
 	/**
+		Counts the number of non-zero values in the array ``a``.
+		
+		The word "non-zero" is in reference to the Python 2.x
+		built-in method ``__nonzero__()`` (renamed ``__bool__()``
+		in Python 3.x) of Python objects that tests an object's
+		"truthfulness". For example, any number is considered
+		truthful if it is nonzero, whereas any string is considered
+		truthful if it is not the empty string. Thus, this function
+		(recursively) counts how many elements in ``a`` (and in
+		sub-arrays thereof) have their ``__nonzero__()`` or ``__bool__()``
+		method evaluated to ``True``.
+		
+		Parameters
+		----------
+		a : array_like
+		    The array for which to count non-zeros.
+		axis : int or tuple, optional
+		    Axis or tuple of axes along which to count non-zeros.
+		    Default is None, meaning that non-zeros will be counted
+		    along a flattened version of ``a``.
+		
+		    .. versionadded:: 1.12.0
+		
+		Returns
+		-------
+		count : int or array of int
+		    Number of non-zero values in the array along a given axis.
+		    Otherwise, the total number of non-zero values in the array
+		    is returned.
+		
+		See Also
+		--------
+		nonzero : Return the coordinates of all the non-zero values.
+		
+		Examples
+		--------
+		>>> np.count_nonzero(np.eye(4))
+		4
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]])
+		5
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=0)
+		array([1, 1, 1, 1, 1])
+		>>> np.count_nonzero([[0,1,7,0,0],[3,0,0,2,19]], axis=1)
+		array([2, 3])
+	**/
+	static public function count_nonzero(a:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
 		Compute the determinant of an array.
 		
 		Parameters
@@ -881,7 +955,7 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		slogdet : Another way to representing the determinant, more suitable
+		slogdet : Another way to represent the determinant, more suitable
 		  for large matrices where underflow/overflow may occur.
 		
 		Notes
@@ -912,16 +986,87 @@ package numpy.linalg.linalg;
 		array([-2., -3., -8.])
 	**/
 	static public function det(a:Dynamic):Dynamic;
+	/**
+		true_divide(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Returns a true division of the inputs, element-wise.
+		
+		Instead of the Python traditional 'floor division', this returns a true
+		division.  True division adjusts the output type to present the best
+		answer, regardless of input types.
+		
+		Parameters
+		----------
+		x1 : array_like
+		    Dividend array.
+		x2 : array_like
+		    Divisor array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		out : ndarray or scalar
+		    This is a scalar if both `x1` and `x2` are scalars.
+		
+		Notes
+		-----
+		The floor division operator ``//`` was added in Python 2.2 making
+		``//`` and ``/`` equivalent operators.  The default floor division
+		operation of ``/`` can be replaced by true division with ``from
+		__future__ import division``.
+		
+		In Python 3.0, ``//`` is the floor division operator and ``/`` the
+		true division operator.  The ``true_divide(x1, x2)`` function is
+		equivalent to true division in Python.
+		
+		Examples
+		--------
+		>>> x = np.arange(5)
+		>>> np.true_divide(x, 4)
+		array([ 0.  ,  0.25,  0.5 ,  0.75,  1.  ])
+		
+		>>> x/4
+		array([0, 0, 0, 0, 1])
+		>>> x//4
+		array([0, 0, 0, 0, 1])
+		
+		>>> from __future__ import division
+		>>> x/4
+		array([ 0.  ,  0.25,  0.5 ,  0.75,  1.  ])
+		>>> x//4
+		array([0, 0, 0, 0, 1])
+	**/
+	static public function divide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -1361,10 +1506,11 @@ package numpy.linalg.linalg;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -1377,7 +1523,11 @@ package numpy.linalg.linalg;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -1398,24 +1548,24 @@ package numpy.linalg.linalg;
 	**/
 	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		empty_like(a, dtype=None, order='K', subok=True)
+		empty_like(prototype, dtype=None, order='K', subok=True)
 		
 		Return a new array with the same shape and type as a given array.
 		
 		Parameters
 		----------
-		a : array_like
-		    The shape and data-type of `a` define these same attributes of the
-		    returned array.
+		prototype : array_like
+		    The shape and data-type of `prototype` define these same attributes
+		    of the returned array.
 		dtype : data-type, optional
 		    Overrides the data type of the result.
 		
 		    .. versionadded:: 1.6.0
 		order : {'C', 'F', 'A', or 'K'}, optional
 		    Overrides the memory layout of the result. 'C' means C-order,
-		    'F' means F-order, 'A' means 'F' if ``a`` is Fortran contiguous,
-		    'C' otherwise. 'K' means match the layout of ``a`` as closely
-		    as possible.
+		    'F' means F-order, 'A' means 'F' if ``prototype`` is Fortran
+		    contiguous, 'C' otherwise. 'K' means match the layout of ``prototype``
+		    as closely as possible.
 		
 		    .. versionadded:: 1.6.0
 		subok : bool, optional.
@@ -1427,15 +1577,14 @@ package numpy.linalg.linalg;
 		-------
 		out : ndarray
 		    Array of uninitialized (arbitrary) data with the same
-		    shape and type as `a`.
+		    shape and type as `prototype`.
 		
 		See Also
 		--------
 		ones_like : Return an array of ones with shape and type of input.
 		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		empty : Return a new uninitialized array.
-		ones : Return a new array setting values to one.
-		zeros : Return a new array setting values to zero.
 		
 		Notes
 		-----
@@ -1455,6 +1604,49 @@ package numpy.linalg.linalg;
 		       [  4.38791518e-305,  -2.00000715e+000,   4.17269252e-309]])
 	**/
 	static public function empty_like(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return a 2-D array with ones on the diagonal and zeros elsewhere.
+		
+		Parameters
+		----------
+		N : int
+		  Number of rows in the output.
+		M : int, optional
+		  Number of columns in the output. If None, defaults to `N`.
+		k : int, optional
+		  Index of the diagonal: 0 (the default) refers to the main diagonal,
+		  a positive value refers to an upper diagonal, and a negative value
+		  to a lower diagonal.
+		dtype : data-type, optional
+		  Data-type of the returned array.
+		order : {'C', 'F'}, optional
+		    Whether the output should be stored in row-major (C-style) or
+		    column-major (Fortran-style) order in memory.
+		
+		    .. versionadded:: 1.14.0
+		
+		Returns
+		-------
+		I : ndarray of shape (N,M)
+		  An array where all elements are equal to zero, except for the `k`-th
+		  diagonal, whose values are equal to one.
+		
+		See Also
+		--------
+		identity : (almost) equivalent function
+		diag : diagonal 2-D array from a 1-D array specified by the user.
+		
+		Examples
+		--------
+		>>> np.eye(2, dtype=int)
+		array([[1, 0],
+		       [0, 1]])
+		>>> np.eye(3, k=1)
+		array([[ 0.,  1.,  0.],
+		       [ 0.,  0.,  1.],
+		       [ 0.,  0.,  0.]])
+	**/
+	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		_fastCopyAndTranspose(a)
 	**/
@@ -1605,15 +1797,9 @@ package numpy.linalg.linalg;
 		Returns
 		-------
 		y : ndarray, bool
-		    For scalar input, the result is a new boolean with value True
-		    if the input is finite; otherwise the value is False (input is
-		    either positive infinity, negative infinity or Not a Number).
-		
-		    For array input, the result is a boolean array with the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is finite; otherwise the values
-		    are False (element is either positive infinity, negative infinity
-		    or Not a Number).
+		    True where ``x`` is not positive infinity, negative infinity,
+		    or NaN; false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -1644,7 +1830,7 @@ package numpy.linalg.linalg;
 		>>> np.isfinite(np.NINF)
 		False
 		>>> np.isfinite([np.log(-1.),1.,np.log(0)])
-		array([False,  True, False], dtype=bool)
+		array([False,  True, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -1655,28 +1841,51 @@ package numpy.linalg.linalg;
 	**/
 	static public function isfinite(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns True if the type of `num` is a scalar type.
+		isnan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Test element-wise for NaN and return result as a boolean array.
 		
 		Parameters
 		----------
-		num : any
-		    Input argument, can be of any type and shape.
+		x : array_like
+		    Input array.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
 		
 		Returns
 		-------
-		val : bool
-		    True if `num` is a scalar type, False if it is not.
+		y : ndarray or bool
+		    True where ``x`` is NaN, false otherwise.
+		    This is a scalar if `x` is a scalar.
+		
+		See Also
+		--------
+		isinf, isneginf, isposinf, isfinite, isnat
+		
+		Notes
+		-----
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
 		Examples
 		--------
-		>>> np.isscalar(3.1)
+		>>> np.isnan(np.nan)
 		True
-		>>> np.isscalar([3.1])
+		>>> np.isnan(np.inf)
 		False
-		>>> np.isscalar(False)
-		True
+		>>> np.isnan([np.log(-1.),1.,np.log(0)])
+		array([ True, False, False])
 	**/
-	static public function isscalar(num:Dynamic):Bool;
+	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return the least-squares solution to a linear matrix equation.
 		
@@ -1702,12 +1911,19 @@ package numpy.linalg.linalg;
 		    as zero if they are smaller than `rcond` times the largest singular
 		    value of `a`.
 		
+		    .. versionchanged:: 1.14.0
+		       If not set, a FutureWarning is given. The previous default
+		       of ``-1`` will use the machine precision as `rcond` parameter,
+		       the new default will use the machine precision times `max(M, N)`.
+		       To silence the warning and use the new default, use ``rcond=None``,
+		       to keep using the old behavior, use ``rcond=-1``.
+		
 		Returns
 		-------
 		x : {(N,), (N, K)} ndarray
 		    Least-squares solution. If `b` is two-dimensional,
 		    the solutions are in the `K` columns of `x`.
-		residuals : {(), (1,), (K,)} ndarray
+		residuals : {(1,), (K,), (0,)} ndarray
 		    Sums of residuals; squared Euclidean 2-norm for each column in
 		    ``b - a*x``.
 		    If the rank of `a` is < N or M <= N, this is an empty array.
@@ -1747,7 +1963,7 @@ package numpy.linalg.linalg;
 		       [ 2.,  1.],
 		       [ 3.,  1.]])
 		
-		>>> m, c = np.linalg.lstsq(A, y)[0]
+		>>> m, c = np.linalg.lstsq(A, y, rcond=None)[0]
 		>>> print(m, c)
 		1.0 -0.95
 		
@@ -1761,6 +1977,127 @@ package numpy.linalg.linalg;
 	**/
 	static public function lstsq(a:Dynamic, b:Dynamic, ?rcond:Dynamic):Dynamic;
 	/**
+		matmul(a, b, out=None)
+		
+		Matrix product of two arrays.
+		
+		The behavior depends on the arguments in the following way.
+		
+		- If both arguments are 2-D they are multiplied like conventional
+		  matrices.
+		- If either argument is N-D, N > 2, it is treated as a stack of
+		  matrices residing in the last two indexes and broadcast accordingly.
+		- If the first argument is 1-D, it is promoted to a matrix by
+		  prepending a 1 to its dimensions. After matrix multiplication
+		  the prepended 1 is removed.
+		- If the second argument is 1-D, it is promoted to a matrix by
+		  appending a 1 to its dimensions. After matrix multiplication
+		  the appended 1 is removed.
+		
+		Multiplication by a scalar is not allowed, use ``*`` instead. Note that
+		multiplying a stack of matrices with a vector will result in a stack of
+		vectors, but matmul will not recognize it as such.
+		
+		``matmul`` differs from ``dot`` in two important ways.
+		
+		- Multiplication by scalars is not allowed.
+		- Stacks of matrices are broadcast together as if the matrices
+		  were elements.
+		
+		.. warning::
+		   This function is preliminary and included in NumPy 1.10.0 for testing
+		   and documentation. Its semantics will not change, but the number and
+		   order of the optional arguments will.
+		
+		.. versionadded:: 1.10.0
+		
+		Parameters
+		----------
+		a : array_like
+		    First argument.
+		b : array_like
+		    Second argument.
+		out : ndarray, optional
+		    Output argument. This must have the exact kind that would be returned
+		    if it was not used. In particular, it must have the right type, must be
+		    C-contiguous, and its dtype must be the dtype that would be returned
+		    for `dot(a,b)`. This is a performance feature. Therefore, if these
+		    conditions are not met, an exception is raised, instead of attempting
+		    to be flexible.
+		
+		Returns
+		-------
+		output : ndarray
+		    Returns the dot product of `a` and `b`.  If `a` and `b` are both
+		    1-D arrays then a scalar is returned; otherwise an array is
+		    returned.  If `out` is given, then it is returned.
+		
+		Raises
+		------
+		ValueError
+		    If the last dimension of `a` is not the same size as
+		    the second-to-last dimension of `b`.
+		
+		    If scalar value is passed.
+		
+		See Also
+		--------
+		vdot : Complex-conjugating dot product.
+		tensordot : Sum products over arbitrary axes.
+		einsum : Einstein summation convention.
+		dot : alternative matrix product with different broadcasting rules.
+		
+		Notes
+		-----
+		The matmul function implements the semantics of the `@` operator introduced
+		in Python 3.5 following PEP465.
+		
+		Examples
+		--------
+		For 2-D arrays it is the matrix product:
+		
+		>>> a = [[1, 0], [0, 1]]
+		>>> b = [[4, 1], [2, 2]]
+		>>> np.matmul(a, b)
+		array([[4, 1],
+		       [2, 2]])
+		
+		For 2-D mixed with 1-D, the result is the usual.
+		
+		>>> a = [[1, 0], [0, 1]]
+		>>> b = [1, 2]
+		>>> np.matmul(a, b)
+		array([1, 2])
+		>>> np.matmul(b, a)
+		array([1, 2])
+		
+		
+		Broadcasting is conventional for stacks of arrays
+		
+		>>> a = np.arange(2*2*4).reshape((2,2,4))
+		>>> b = np.arange(2*2*4).reshape((2,4,2))
+		>>> np.matmul(a,b).shape
+		(2, 2, 2)
+		>>> np.matmul(a,b)[0,1,1]
+		98
+		>>> sum(a[0,1,:] * b[0,:,1])
+		98
+		
+		Vector, vector returns the scalar inner product, but neither argument
+		is complex-conjugated:
+		
+		>>> np.matmul([2j, 3j], [2j, 3j])
+		(-13+0j)
+		
+		Scalar multiplication raises an error.
+		
+		>>> np.matmul([1,2], 3)
+		Traceback (most recent call last):
+		...
+		ValueError: Scalar operands are not allowed, use '*' instead
+	**/
+	static public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Raise a square matrix to the (integer) power `n`.
 		
 		For positive integers `n`, the power is computed by repeated matrix
@@ -1768,18 +2105,19 @@ package numpy.linalg.linalg;
 		of the same shape as M is returned. If ``n < 0``, the inverse
 		is computed and then raised to the ``abs(n)``.
 		
+		.. note:: Stacks of object matrices are not currently supported.
+		
 		Parameters
 		----------
-		M : ndarray or matrix object
-		    Matrix to be "powered."  Must be square, i.e. ``M.shape == (m, m)``,
-		    with `m` a positive integer.
+		a : (..., M, M) array_like
+		    Matrix to be "powered."
 		n : int
 		    The exponent can be any integer or long integer, positive,
 		    negative, or zero.
 		
 		Returns
 		-------
-		M**n : ndarray or matrix object
+		a**n : (..., M, M) ndarray or matrix object
 		    The return value is the same shape and type as `M`;
 		    if the exponent is positive or zero then the type of the
 		    elements is the same as those of `M`. If the exponent is
@@ -1788,28 +2126,20 @@ package numpy.linalg.linalg;
 		Raises
 		------
 		LinAlgError
-		    If the matrix is not numerically invertible.
-		
-		See Also
-		--------
-		matrix
-		    Provides an equivalent function as the exponentiation operator
-		    (``**``, not ``^``).
+		    For matrices that are not square or that (for negative powers) cannot
+		    be inverted numerically.
 		
 		Examples
 		--------
-		>>> from numpy import linalg as LA
+		>>> from numpy.linalg import matrix_power
 		>>> i = np.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit
-		>>> LA.matrix_power(i, 3) # should = -i
+		>>> matrix_power(i, 3) # should = -i
 		array([[ 0, -1],
 		       [ 1,  0]])
-		>>> LA.matrix_power(np.matrix(i), 3) # matrix arg returns matrix
-		matrix([[ 0, -1],
-		        [ 1,  0]])
-		>>> LA.matrix_power(i, 0)
+		>>> matrix_power(i, 0)
 		array([[1, 0],
 		       [0, 1]])
-		>>> LA.matrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements
+		>>> matrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements
 		array([[ 0.,  1.],
 		       [-1.,  0.]])
 		
@@ -1823,28 +2153,40 @@ package numpy.linalg.linalg;
 		       [ 1.,  0.,  0.,  0.],
 		       [ 0.,  0.,  0.,  1.],
 		       [ 0.,  0., -1.,  0.]])
-		>>> LA.matrix_power(q, 2) # = -np.eye(4)
+		>>> matrix_power(q, 2) # = -np.eye(4)
 		array([[-1.,  0.,  0.,  0.],
 		       [ 0., -1.,  0.,  0.],
 		       [ 0.,  0., -1.,  0.],
 		       [ 0.,  0.,  0., -1.]])
 	**/
-	static public function matrix_power(M:Dynamic, n:Dynamic):Dynamic;
+	static public function matrix_power(a:Dynamic, n:Dynamic):Dynamic;
 	/**
 		Return matrix rank of array using SVD method
 		
-		Rank of the array is the number of SVD singular values of the array that are
+		Rank of the array is the number of singular values of the array that are
 		greater than `tol`.
+		
+		.. versionchanged:: 1.14
+		   Can now operate on stacks of matrices
 		
 		Parameters
 		----------
 		M : {(M,), (..., M, N)} array_like
 		    input vector or stack of matrices
-		tol : {None, float}, optional
-		   threshold below which SVD values are considered zero. If `tol` is
-		   None, and ``S`` is an array with singular values for `M`, and
-		   ``eps`` is the epsilon value for datatype of ``S``, then `tol` is
-		   set to ``S.max() * max(M.shape) * eps``.
+		tol : (...) array_like, float, optional
+		    threshold below which SVD values are considered zero. If `tol` is
+		    None, and ``S`` is an array with singular values for `M`, and
+		    ``eps`` is the epsilon value for datatype of ``S``, then `tol` is
+		    set to ``S.max() * max(M.shape) * eps``.
+		
+		    .. versionchanged:: 1.14
+		       Broadcasted against the stack of matrices
+		hermitian : bool, optional
+		    If True, `M` is assumed to be Hermitian (symmetric if real-valued),
+		    enabling a more efficient method for finding singular values.
+		    Defaults to False.
+		
+		    .. versionadded:: 1.14
 		
 		Notes
 		-----
@@ -1905,76 +2247,55 @@ package numpy.linalg.linalg;
 		>>> matrix_rank(np.zeros((4,)))
 		0
 	**/
-	static public function matrix_rank(M:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function matrix_rank(M:Dynamic, ?tol:Dynamic, ?hermitian:Dynamic):Dynamic;
 	/**
-		maximum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		Move axes of an array to new positions.
 		
-		Element-wise maximum of array elements.
+		Other axes remain in their original order.
 		
-		Compare two arrays and returns a new array containing the element-wise
-		maxima. If one of the elements being compared is a NaN, then that
-		element is returned. If both elements are NaNs then the first is
-		returned. The latter distinction is important for complex NaNs, which
-		are defined as at least one of the real or imaginary parts being a NaN.
-		The net effect is that NaNs are propagated.
+		.. versionadded:: 1.11.0
 		
 		Parameters
 		----------
-		x1, x2 : array_like
-		    The arrays holding the elements to be compared. They must have
-		    the same shape, or shapes that can be broadcast to a single shape.
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		a : np.ndarray
+		    The array whose axes should be reordered.
+		source : int or sequence of int
+		    Original positions of the axes to move. These must be unique.
+		destination : int or sequence of int
+		    Destination positions for each of the original axes. These must also be
+		    unique.
 		
 		Returns
 		-------
-		y : ndarray or scalar
-		    The maximum of `x1` and `x2`, element-wise.  Returns scalar if
-		    both  `x1` and `x2` are scalars.
+		result : np.ndarray
+		    Array with moved axes. This array is a view of the input array.
 		
 		See Also
 		--------
-		minimum :
-		    Element-wise minimum of two arrays, propagates NaNs.
-		fmax :
-		    Element-wise maximum of two arrays, ignores NaNs.
-		amax :
-		    The maximum value of an array along a given axis, propagates NaNs.
-		nanmax :
-		    The maximum value of an array along a given axis, ignores NaNs.
-		
-		fmin, amin, nanmin
-		
-		Notes
-		-----
-		The maximum is equivalent to ``np.where(x1 >= x2, x1, x2)`` when
-		neither x1 nor x2 are nans, but it is faster and does proper
-		broadcasting.
+		transpose: Permute the dimensions of an array.
+		swapaxes: Interchange two axes of an array.
 		
 		Examples
 		--------
-		>>> np.maximum([2, 3, 4], [1, 5, 2])
-		array([2, 5, 4])
 		
-		>>> np.maximum(np.eye(2), [0.5, 2]) # broadcasting
-		array([[ 1. ,  2. ],
-		       [ 0.5,  2. ]])
+		>>> x = np.zeros((3, 4, 5))
+		>>> np.moveaxis(x, 0, -1).shape
+		(4, 5, 3)
+		>>> np.moveaxis(x, -1, 0).shape
+		(5, 3, 4)
 		
-		>>> np.maximum([np.nan, 0, np.nan], [0, np.nan, np.nan])
-		array([ NaN,  NaN,  NaN])
-		>>> np.maximum(np.Inf, 1)
-		inf
+		These all achieve the same result:
+		
+		>>> np.transpose(x).shape
+		(5, 4, 3)
+		>>> np.swapaxes(x, 0, -1).shape
+		(5, 4, 3)
+		>>> np.moveaxis(x, [0, 1], [-1, -2]).shape
+		(5, 4, 3)
+		>>> np.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape
+		(5, 4, 3)
 	**/
-	static public function maximum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function moveaxis(a:Dynamic, source:Dynamic, destination:Dynamic):Dynamic;
 	/**
 		Compute the dot product of two or more arrays in a single function call,
 		while automatically selecting the fastest evaluation order.
@@ -2075,7 +2396,8 @@ package numpy.linalg.linalg;
 		-------
 		y : ndarray
 		    The product of `x1` and `x2`, element-wise. Returns a scalar if
-		    both  `x1` and `x2` are scalars.
+		    both `x1` and `x2` are scalars.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		Notes
 		-----
@@ -2115,6 +2437,9 @@ package numpy.linalg.linalg;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will
@@ -2282,73 +2607,35 @@ package numpy.linalg.linalg;
 	**/
 	static public function normalize_axis_index(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a new array of given shape and type, filled with ones.
-		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of ones with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros, ones_like
-		
-		Examples
-		--------
-		>>> np.ones(5)
-		array([ 1.,  1.,  1.,  1.,  1.])
-		
-		>>> np.ones((5,), dtype=np.int)
-		array([1, 1, 1, 1, 1])
-		
-		>>> np.ones((2, 1))
-		array([[ 1.],
-		       [ 1.]])
-		
-		>>> s = (2,2)
-		>>> np.ones(s)
-		array([[ 1.,  1.],
-		       [ 1.,  1.]])
-	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
-	/**
 		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
 		
 		Calculate the generalized inverse of a matrix using its
 		singular-value decomposition (SVD) and including all
 		*large* singular values.
 		
+		.. versionchanged:: 1.14
+		   Can now operate on stacks of matrices
+		
 		Parameters
 		----------
-		a : (M, N) array_like
-		  Matrix to be pseudo-inverted.
-		rcond : float
-		  Cutoff for small singular values.
-		  Singular values smaller (in modulus) than
-		  `rcond` * largest_singular_value (again, in modulus)
-		  are set to zero.
+		a : (..., M, N) array_like
+		    Matrix or stack of matrices to be pseudo-inverted.
+		rcond : (...) array_like of float
+		    Cutoff for small singular values.
+		    Singular values smaller (in modulus) than
+		    `rcond` * largest_singular_value (again, in modulus)
+		    are set to zero. Broadcasts against the stack of matrices
 		
 		Returns
 		-------
-		B : (N, M) ndarray
-		  The pseudo-inverse of `a`. If `a` is a `matrix` instance, then so
-		  is `B`.
+		B : (..., N, M) ndarray
+		    The pseudo-inverse of `a`. If `a` is a `matrix` instance, then so
+		    is `B`.
 		
 		Raises
 		------
 		LinAlgError
-		  If the SVD computation does not converge.
+		    If the SVD computation does not converge.
 		
 		Notes
 		-----
@@ -2392,7 +2679,7 @@ package numpy.linalg.linalg;
 		--------
 		prod : equivalent function; see for details.
 	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the qr factorization of a matrix.
 		
@@ -2406,15 +2693,15 @@ package numpy.linalg.linalg;
 		mode : {'reduced', 'complete', 'r', 'raw', 'full', 'economic'}, optional
 		    If K = min(M, N), then
 		
-		    'reduced'  : returns q, r with dimensions (M, K), (K, N) (default)
-		    'complete' : returns q, r with dimensions (M, M), (M, N)
-		    'r'        : returns r only with dimensions (K, N)
-		    'raw'      : returns h, tau with dimensions (N, M), (K,)
-		    'full'     : alias of 'reduced', deprecated
-		    'economic' : returns h from 'raw', deprecated.
+		    * 'reduced'  : returns q, r with dimensions (M, K), (K, N) (default)
+		    * 'complete' : returns q, r with dimensions (M, M), (M, N)
+		    * 'r'        : returns r only with dimensions (K, N)
+		    * 'raw'      : returns h, tau with dimensions (N, M), (K,)
+		    * 'full'     : alias of 'reduced', deprecated
+		    * 'economic' : returns h from 'raw', deprecated.
 		
 		    The options 'reduced', 'complete, and 'raw' are new in numpy 1.8,
-		    see the notes for more information. The default is 'reduced' and to
+		    see the notes for more information. The default is 'reduced', and to
 		    maintain backward compatibility with earlier versions of numpy both
 		    it and the old default 'full' can be omitted. Note that array h
 		    returned in 'raw' mode is transposed for calling Fortran. The
@@ -2509,178 +2796,6 @@ package numpy.linalg.linalg;
 		array([  1.1e-16,   1.0e+00])
 	**/
 	static public function qr(a:Dynamic, ?mode:Dynamic):Dynamic;
-	/**
-		Return a contiguous flattened array.
-		
-		A 1-D array, containing the elements of the input, is returned.  A copy is
-		made only if needed.
-		
-		As of NumPy 1.10, the returned array will have the same type as the input
-		array. (for example, a masked array will be returned for a masked array
-		input)
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.  The elements in `a` are read in the order specified by
-		    `order`, and packed as a 1-D array.
-		order : {'C','F', 'A', 'K'}, optional
-		
-		    The elements of `a` are read using this index order. 'C' means
-		    to index the elements in row-major, C-style order,
-		    with the last axis index changing fastest, back to the first
-		    axis index changing slowest.  'F' means to index the elements
-		    in column-major, Fortran-style order, with the
-		    first index changing fastest, and the last index changing
-		    slowest. Note that the 'C' and 'F' options take no account of
-		    the memory layout of the underlying array, and only refer to
-		    the order of axis indexing.  'A' means to read the elements in
-		    Fortran-like index order if `a` is Fortran *contiguous* in
-		    memory, C-like order otherwise.  'K' means to read the
-		    elements in the order they occur in memory, except for
-		    reversing the data when strides are negative.  By default, 'C'
-		    index order is used.
-		
-		Returns
-		-------
-		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
-		
-		See Also
-		--------
-		ndarray.flat : 1-D iterator over an array.
-		ndarray.flatten : 1-D array copy of the elements of an array
-		                  in row-major order.
-		ndarray.reshape : Change the shape of an array without changing its data.
-		
-		Notes
-		-----
-		In row-major, C-style order, in two dimensions, the row index
-		varies the slowest, and the column index the quickest.  This can
-		be generalized to multiple dimensions, where row-major order
-		implies that the index along the first axis varies slowest, and
-		the index along the last quickest.  The opposite holds for
-		column-major, Fortran-style index ordering.
-		
-		When a view is desired in as many cases as possible, ``arr.reshape(-1)``
-		may be preferable.
-		
-		Examples
-		--------
-		It is equivalent to ``reshape(-1, order=order)``.
-		
-		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print(np.ravel(x))
-		[1 2 3 4 5 6]
-		
-		>>> print(x.reshape(-1))
-		[1 2 3 4 5 6]
-		
-		>>> print(np.ravel(x, order='F'))
-		[1 4 2 5 3 6]
-		
-		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
-		
-		>>> print(np.ravel(x.T))
-		[1 4 2 5 3 6]
-		>>> print(np.ravel(x.T, order='A'))
-		[1 2 3 4 5 6]
-		
-		When ``order`` is 'K', it will preserve orderings that are neither 'C'
-		nor 'F', but won't reverse axes:
-		
-		>>> a = np.arange(3)[::-1]; a
-		array([2, 1, 0])
-		>>> a.ravel(order='C')
-		array([2, 1, 0])
-		>>> a.ravel(order='K')
-		array([2, 1, 0])
-		
-		>>> a = np.arange(12).reshape(2,3,2).swapaxes(1,2); a
-		array([[[ 0,  2,  4],
-		        [ 1,  3,  5]],
-		       [[ 6,  8, 10],
-		        [ 7,  9, 11]]])
-		>>> a.ravel(order='C')
-		array([ 0,  2,  4,  1,  3,  5,  6,  8, 10,  7,  9, 11])
-		>>> a.ravel(order='K')
-		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
-	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
-	/**
-		Roll the specified axis backwards, until it lies in a given position.
-		
-		Parameters
-		----------
-		a : ndarray
-		    Input array.
-		axis : int
-		    The axis to roll backwards.  The positions of the other axes do not
-		    change relative to one another.
-		start : int, optional
-		    The axis is rolled until it lies before this position.  The default,
-		    0, results in a "complete" roll.
-		
-		Returns
-		-------
-		res : ndarray
-		    For NumPy >= 1.10.0 a view of `a` is always returned. For earlier
-		    NumPy versions a view of `a` is returned only if the order of the
-		    axes is changed, otherwise the input array is returned.
-		
-		See Also
-		--------
-		moveaxis : Move array axes to new positions.
-		roll : Roll the elements of an array by a number of positions along a
-		    given axis.
-		
-		Examples
-		--------
-		>>> a = np.ones((3,4,5,6))
-		>>> np.rollaxis(a, 3, 1).shape
-		(3, 6, 4, 5)
-		>>> np.rollaxis(a, 2).shape
-		(5, 3, 4, 6)
-		>>> np.rollaxis(a, 1, 4).shape
-		(3, 5, 6, 4)
-	**/
-	static public function rollaxis(a:Dynamic, axis:Dynamic, ?start:Dynamic):numpy.Ndarray;
-	/**
-		Return the number of elements along a given axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data.
-		axis : int, optional
-		    Axis along which the elements are counted.  By default, give
-		    the total number of elements.
-		
-		Returns
-		-------
-		element_count : int
-		    Number of elements along the specified axis.
-		
-		See Also
-		--------
-		shape : dimensions of array
-		ndarray.shape : dimensions of array
-		ndarray.size : number of elements in array
-		
-		Examples
-		--------
-		>>> a = np.array([[1,2,3],[4,5,6]])
-		>>> np.size(a)
-		6
-		>>> np.size(a,1)
-		3
-		>>> np.size(a,0)
-		2
-	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		Compute the sign and (natural) logarithm of the determinant of an array.
 		
@@ -2816,7 +2931,7 @@ package numpy.linalg.linalg;
 	/**
 		sqrt(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Return the positive square-root of an array, element-wise.
+		Return the non-negative square-root of an array, element-wise.
 		
 		Parameters
 		----------
@@ -2843,6 +2958,7 @@ package numpy.linalg.linalg;
 		    negative reals are calculated).  If all of the elements in `x`
 		    are real, so is `y`, with negative elements returning ``nan``.
 		    If `out` was provided, `y` is a reference to it.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -2904,8 +3020,12 @@ package numpy.linalg.linalg;
 		    If the default value is passed, then `keepdims` will not be
 		    passed through to the `sum` method of sub-classes of
 		    `ndarray`, however any non-default value will be.  If the
-		    sub-classes `sum` method does not implement `keepdims` any
+		    sub-class' method does not implement `keepdims` any
 		    exceptions will be raised.
+		initial : scalar, optional
+		    Starting value for the sum. See `~numpy.ufunc.reduce` for details.
+		
+		    .. versionadded:: 1.15.0
 		
 		Returns
 		-------
@@ -2952,36 +3072,50 @@ package numpy.linalg.linalg;
 		
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
+		
+		You can also start the sum with a value other than zero:
+		
+		>>> np.sum([10], initial=5)
+		15
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic, ?initial:Dynamic):numpy.Ndarray;
 	/**
 		Singular Value Decomposition.
 		
-		Factors the matrix `a` as ``u * np.diag(s) * v``, where `u` and `v`
-		are unitary and `s` is a 1-d array of `a`'s singular values.
+		When `a` is a 2D array, it is factorized as ``u @ np.diag(s) @ vh
+		= (u * s) @ vh``, where `u` and `vh` are 2D unitary arrays and `s` is a 1D
+		array of `a`'s singular values. When `a` is higher-dimensional, SVD is
+		applied in stacked mode as explained below.
 		
 		Parameters
 		----------
 		a : (..., M, N) array_like
-		    A real or complex matrix of shape (`M`, `N`) .
+		    A real or complex array with ``a.ndim >= 2``.
 		full_matrices : bool, optional
-		    If True (default), `u` and `v` have the shapes (`M`, `M`) and
-		    (`N`, `N`), respectively.  Otherwise, the shapes are (`M`, `K`)
-		    and (`K`, `N`), respectively, where `K` = min(`M`, `N`).
+		    If True (default), `u` and `vh` have the shapes ``(..., M, M)`` and
+		    ``(..., N, N)``, respectively.  Otherwise, the shapes are
+		    ``(..., M, K)`` and ``(..., K, N)``, respectively, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether or not to compute `u` and `v` in addition to `s`.  True
+		    Whether or not to compute `u` and `vh` in addition to `s`.  True
 		    by default.
 		
 		Returns
 		-------
 		u : { (..., M, M), (..., M, K) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		s : (..., K) array
-		    The singular values for every matrix, sorted in descending order.
-		v : { (..., N, N), (..., K, N) } array
-		    Unitary matrices. The actual shape depends on the value of
-		    ``full_matrices``. Only returned when ``compute_uv`` is True.
+		    Vector(s) with the singular values, within each vector sorted in
+		    descending order. The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`.
+		vh : { (..., N, N), (..., K, N) } array
+		    Unitary array(s). The first ``a.ndim - 2`` dimensions have the same
+		    size as those of the input `a`. The size of the last two dimensions
+		    depends on the value of `full_matrices`. Only returned when
+		    `compute_uv` is True.
 		
 		Raises
 		------
@@ -2991,51 +3125,124 @@ package numpy.linalg.linalg;
 		Notes
 		-----
 		
-		.. versionadded:: 1.8.0
+		.. versionchanged:: 1.8.0
+		   Broadcasting rules apply, see the `numpy.linalg` documentation for
+		   details.
 		
-		Broadcasting rules apply, see the `numpy.linalg` documentation for
-		details.
+		The decomposition is performed using LAPACK routine ``_gesdd``.
 		
-		The decomposition is performed using LAPACK routine _gesdd
+		SVD is usually described for the factorization of a 2D matrix :math:`A`.
+		The higher-dimensional case will be discussed below. In the 2D case, SVD is
+		written as :math:`A = U S V^H`, where :math:`A = a`, :math:`U= u`,
+		:math:`S= \mathtt{np.diag}(s)` and :math:`V^H = vh`. The 1D array `s`
+		contains the singular values of `a` and `u` and `vh` are unitary. The rows
+		of `vh` are the eigenvectors of :math:`A^H A` and the columns of `u` are
+		the eigenvectors of :math:`A A^H`. In both cases the corresponding
+		(possibly non-zero) eigenvalues are given by ``s**2``.
 		
-		The SVD is commonly written as ``a = U S V.H``.  The `v` returned
-		by this function is ``V.H`` and ``u = U``.
+		If `a` has more than two dimensions, then broadcasting rules apply, as
+		explained in :ref:`routines.linalg-broadcasting`. This means that SVD is
+		working in "stacked" mode: it iterates over all indices of the first
+		``a.ndim - 2`` dimensions and for each combination SVD is applied to the
+		last two indices. The matrix `a` can be reconstructed from the
+		decomposition with either ``(u * s[..., None, :]) @ vh`` or
+		``u @ (s[..., None] * vh)``. (The ``@`` operator can be replaced by the
+		function ``np.matmul`` for python versions below 3.5.)
 		
-		If ``U`` is a unitary matrix, it means that it
-		satisfies ``U.H = inv(U)``.
-		
-		The rows of `v` are the eigenvectors of ``a.H a``. The columns
-		of `u` are the eigenvectors of ``a a.H``.  For row ``i`` in
-		`v` and column ``i`` in `u`, the corresponding eigenvalue is
-		``s[i]**2``.
-		
-		If `a` is a `matrix` object (as opposed to an `ndarray`), then so
-		are all the return values.
+		If `a` is a ``matrix`` object (as opposed to an ``ndarray``), then so are
+		all the return values.
 		
 		Examples
 		--------
 		>>> a = np.random.randn(9, 6) + 1j*np.random.randn(9, 6)
+		>>> b = np.random.randn(2, 7, 8, 3) + 1j*np.random.randn(2, 7, 8, 3)
 		
-		Reconstruction based on full SVD:
+		Reconstruction based on full SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=True)
-		>>> U.shape, V.shape, s.shape
-		((9, 9), (6, 6), (6,))
-		>>> S = np.zeros((9, 6), dtype=complex)
-		>>> S[:6, :6] = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((9, 9), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u[:, :6] * s, vh))
+		True
+		>>> smat = np.zeros((9, 6), dtype=complex)
+		>>> smat[:6, :6] = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
 		True
 		
-		Reconstruction based on reduced SVD:
+		Reconstruction based on reduced SVD, 2D case:
 		
-		>>> U, s, V = np.linalg.svd(a, full_matrices=False)
-		>>> U.shape, V.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = np.diag(s)
-		>>> np.allclose(a, np.dot(U, np.dot(S, V)))
+		>>> u, s, vh = np.linalg.svd(a, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> np.allclose(a, np.dot(u * s, vh))
+		True
+		>>> smat = np.diag(s)
+		>>> np.allclose(a, np.dot(u, np.dot(smat, vh)))
+		True
+		
+		Reconstruction based on full SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=True)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 8), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u[..., :3] * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u[..., :3], s[..., None] * vh))
+		True
+		
+		Reconstruction based on reduced SVD, 4D case:
+		
+		>>> u, s, vh = np.linalg.svd(b, full_matrices=False)
+		>>> u.shape, s.shape, vh.shape
+		((2, 7, 8, 3), (2, 7, 3), (2, 7, 3, 3))
+		>>> np.allclose(b, np.matmul(u * s[..., None, :], vh))
+		True
+		>>> np.allclose(b, np.matmul(u, s[..., None] * vh))
 		True
 	**/
 	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic):Dynamic;
+	/**
+		Interchange two axes of an array.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis1 : int
+		    First axis.
+		axis2 : int
+		    Second axis.
+		
+		Returns
+		-------
+		a_swapped : ndarray
+		    For NumPy >= 1.10.0, if `a` is an ndarray, then a view of `a` is
+		    returned; otherwise a new array is created. For earlier NumPy
+		    versions a view of `a` is returned only if the order of the
+		    axes is changed, otherwise the input array is returned.
+		
+		Examples
+		--------
+		>>> x = np.array([[1,2,3]])
+		>>> np.swapaxes(x,0,1)
+		array([[1],
+		       [2],
+		       [3]])
+		
+		>>> x = np.array([[[0,1],[2,3]],[[4,5],[6,7]]])
+		>>> x
+		array([[[0, 1],
+		        [2, 3]],
+		       [[4, 5],
+		        [6, 7]]])
+		
+		>>> np.swapaxes(x,0,2)
+		array([[[0, 4],
+		        [2, 6]],
+		       [[1, 5],
+		        [3, 7]]])
+	**/
+	static public function swapaxes(a:Dynamic, axis1:Dynamic, axis2:Dynamic):numpy.Ndarray;
 	/**
 		Compute the 'inverse' of an N-dimensional array.
 		
@@ -3135,50 +3342,20 @@ package numpy.linalg.linalg;
 	**/
 	static public function tensorsolve(a:Dynamic, b:Dynamic, ?axes:Dynamic):Dynamic;
 	/**
-		Permute the dimensions of an array.
+		Transpose each matrix in a stack of matrices.
+		
+		Unlike np.transpose, this only swaps the last two axes, rather than all of
+		them
 		
 		Parameters
 		----------
-		a : array_like
-		    Input array.
-		axes : list of ints, optional
-		    By default, reverse the dimensions, otherwise permute the axes
-		    according to the values given.
+		a : (...,M,N) array_like
 		
 		Returns
 		-------
-		p : ndarray
-		    `a` with its axes permuted.  A view is returned whenever
-		    possible.
-		
-		See Also
-		--------
-		moveaxis
-		argsort
-		
-		Notes
-		-----
-		Use `transpose(a, argsort(axes))` to invert the transposition of tensors
-		when using the `axes` keyword argument.
-		
-		Transposing a 1-D array returns an unchanged view of the original array.
-		
-		Examples
-		--------
-		>>> x = np.arange(4).reshape((2,2))
-		>>> x
-		array([[0, 1],
-		       [2, 3]])
-		
-		>>> np.transpose(x)
-		array([[0, 2],
-		       [1, 3]])
-		
-		>>> x = np.ones((1, 2, 3))
-		>>> np.transpose(x, (1, 0, 2)).shape
-		(2, 1, 3)
+		aT : (...,N,M) ndarray
 	**/
-	static public function transpose(a:Dynamic, ?axes:Dynamic):numpy.Ndarray;
+	static public function transpose(a:Dynamic):Dynamic;
 	/**
 		Upper triangle of an array.
 		
@@ -3207,14 +3384,15 @@ package numpy.linalg.linalg;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -3224,17 +3402,16 @@ package numpy.linalg.linalg;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

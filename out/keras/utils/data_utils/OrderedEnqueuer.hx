@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package keras.utils.data_utils;
 @:pythonImport("keras.utils.data_utils", "OrderedEnqueuer") extern class OrderedEnqueuer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package keras.utils.data_utils;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(sequence:Dynamic, ?use_multiprocessing:Dynamic, ?scheduling:Dynamic):Dynamic;
+	public function ___init__(sequence:Dynamic, ?use_multiprocessing:Dynamic, ?shuffle:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(sequence:Dynamic, ?use_multiprocessing:Dynamic, ?scheduling:Dynamic):Void;
+	public function new(sequence:Dynamic, ?use_multiprocessing:Dynamic, ?shuffle:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,23 +103,39 @@ package keras.utils.data_utils;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Function to submit request to the executor and queue the `Future` objects.
+		Get the Pool initializer for multiprocessing.
+		
+		# Returns
+		    Function, a Function to initialize the pool
+	**/
+	public function _get_executor_init(workers:Dynamic):Dynamic;
+	/**
+		Submits request to the executor and queue the `Future` objects.
 	**/
 	public function _run():Dynamic;
+	/**
+		Send current Iterable to all workers.
+	**/
+	public function _send_sequence():Dynamic;
+	/**
+		Wait for the queue to be empty.
+	**/
+	public function _wait_queue():Dynamic;
 	/**
 		Creates a generator to extract data from the queue.
 		
 		Skip the data if it is `None`.
 		
-		# Returns
-		    Generator yielding tuples (inputs, targets)
-		        or (inputs, targets, sample_weights)
+		# Yields
+		    The next element in the queue, i.e. a tuple
+		    `(inputs, targets)` or
+		    `(inputs, targets, sample_weights)`.
 	**/
 	public function get():Dynamic;
 	public function is_running():Dynamic;

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.cbook;
 @:pythonImport("matplotlib.cbook", "Grouper") extern class Grouper {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __contains__(item:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -53,7 +53,7 @@ package matplotlib.cbook;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Iterate over each of the disjoint sets as a list.
 		
@@ -110,13 +110,13 @@ package matplotlib.cbook;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Clean dead weak references from the dictionary
+		Clean dead weak references from the dictionary.
 	**/
 	public function clean():Dynamic;
 	/**
@@ -124,8 +124,7 @@ package matplotlib.cbook;
 	**/
 	public function get_siblings(a:Dynamic):Dynamic;
 	/**
-		Join given arguments into the same set.  Accepts one or more
-		arguments.
+		Join given arguments into the same set.  Accepts one or more arguments.
 	**/
 	public function join(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**

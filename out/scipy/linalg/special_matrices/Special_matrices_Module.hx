@@ -12,6 +12,62 @@ package scipy.linalg.special_matrices;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
+		Create a view into the array with the given shape and strides.
+		
+		.. warning:: This function has to be used with extreme care, see notes.
+		
+		Parameters
+		----------
+		x : ndarray
+		    Array to create a new.
+		shape : sequence of int, optional
+		    The shape of the new array. Defaults to ``x.shape``.
+		strides : sequence of int, optional
+		    The strides of the new array. Defaults to ``x.strides``.
+		subok : bool, optional
+		    .. versionadded:: 1.10
+		
+		    If True, subclasses are preserved.
+		writeable : bool, optional
+		    .. versionadded:: 1.12
+		
+		    If set to False, the returned array will always be readonly.
+		    Otherwise it will be writable if the original array was. It
+		    is advisable to set this to False if possible (see Notes).
+		
+		Returns
+		-------
+		view : ndarray
+		
+		See also
+		--------
+		broadcast_to: broadcast an array to a given shape.
+		reshape : reshape an array.
+		
+		Notes
+		-----
+		``as_strided`` creates a view into the array given the exact strides
+		and shape. This means it manipulates the internal data structure of
+		ndarray and, if done incorrectly, the array elements can point to
+		invalid memory and can corrupt results or crash your program.
+		It is advisable to always use the original ``x.strides`` when
+		calculating new strides to avoid reliance on a contiguous memory
+		layout.
+		
+		Furthermore, arrays created with this function often contain self
+		overlapping memory, so that two elements are identical.
+		Vectorized write operations on such arrays will typically be
+		unpredictable. They may even give different results for small, large,
+		or transposed arrays.
+		Since writing to these arrays has to be tested and done with great
+		care, you may want to use ``writeable=False`` to avoid accidental write
+		operations.
+		
+		For these reasons it is advisable to avoid ``as_strided`` when
+		possible.
+	**/
+	static public function as_strided(x:Dynamic, ?shape:Dynamic, ?strides:Dynamic, ?subok:Dynamic, ?writeable:Dynamic):Dynamic;
+	/**
 		Create a block diagonal matrix from provided arrays.
 		
 		Given the inputs `A`, `B` and `C`, the output will have these
@@ -84,10 +140,11 @@ package scipy.linalg.special_matrices;
 		A : (N, N) ndarray
 		    A circulant matrix whose first column is `c`.
 		
-		See also
+		See Also
 		--------
 		toeplitz : Toeplitz matrix
 		hankel : Hankel matrix
+		solve_circulant : Solve a circulant system.
 		
 		Notes
 		-----
@@ -257,7 +314,7 @@ package scipy.linalg.special_matrices;
 		A : (len(c), len(r)) ndarray
 		    The Hankel matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
 		
-		See also
+		See Also
 		--------
 		toeplitz : Toeplitz matrix
 		circulant : circulant matrix
@@ -502,7 +559,7 @@ package scipy.linalg.special_matrices;
 		Create a Leslie matrix.
 		
 		Given the length n array of fecundity coefficients `f` and the length
-		n-1 array of survival coefficents `s`, return the associated Leslie matrix.
+		n-1 array of survival coefficients `s`, return the associated Leslie matrix.
 		
 		Parameters
 		----------
@@ -632,10 +689,11 @@ package scipy.linalg.special_matrices;
 		A : (len(c), len(r)) ndarray
 		    The Toeplitz matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
 		
-		See also
+		See Also
 		--------
 		circulant : circulant matrix
 		hankel : Hankel matrix
+		solve_toeplitz : Solve a Toeplitz system.
 		
 		Notes
 		-----

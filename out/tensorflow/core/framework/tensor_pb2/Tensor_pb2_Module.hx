@@ -3,6 +3,7 @@ package tensorflow.core.framework.tensor_pb2;
 @:pythonImport("tensorflow.core.framework.tensor_pb2") extern class Tensor_pb2_Module {
 	static public var DESCRIPTOR : Dynamic;
 	static public var _TENSORPROTO : Dynamic;
+	static public var _VARIANTTENSORDATAPROTO : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

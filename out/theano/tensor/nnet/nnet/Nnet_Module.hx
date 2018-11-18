@@ -141,7 +141,7 @@ package theano.tensor.nnet.nnet;
 	static public function confusion_matrix(actual:Dynamic, pred:Dynamic):Dynamic;
 	/**
 		Copies the stack trace from one or more tensor variables to
-		one or more tensor variables.
+		one or more tensor variables and returns the destination variables.
 		
 		Parameters
 		----------
@@ -184,7 +184,7 @@ package theano.tensor.nnet.nnet;
 	static public function crossentropy_to_crossentropy_with_softmax_with_bias(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Compute the element-wise exponential linear activation function.
+		Compute the element-wise exponential linear activation function [2]_.
 		
 		.. versionadded:: 0.8.0
 		
@@ -202,7 +202,7 @@ package theano.tensor.nnet.nnet;
 		
 		References
 		-----
-		.. [1] Djork-Arne Clevert,  Thomas Unterthiner, Sepp Hochreiter
+		.. [2] Djork-Arne Clevert,  Thomas Unterthiner, Sepp Hochreiter
 		    "Fast and Accurate Deep Network Learning by
 		    Exponential Linear Units (ELUs)" <http://arxiv.org/abs/1511.07289>`.
 	**/
@@ -399,7 +399,42 @@ package theano.tensor.nnet.nnet;
 	**/
 	static public function relu(x:Dynamic, ?alpha:Dynamic):Dynamic;
 	static public function scalar_softsign(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Compute the element-wise Scaled Exponential Linear unit [3]_.
+		
+		.. versionadded:: 0.9.0
+		
+		Parameters
+		----------
+		x : symbolic tensor
+		    Tensor to compute the activation function for.
+		
+		Returns
+		-------
+		symbolic tensor
+		    Element-wise scaled exponential linear activation function applied to `x`.
+		
+		References
+		----------
+		.. [3] Klambauer G, Unterthiner T, Mayr A, Hochreiter S.
+		    "Self-Normalizing Neural Networks" <https://arxiv.org/abs/1706.02515>
+	**/
+	static public function selu(x:Dynamic):Dynamic;
 	static public function sigmoid(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Compute the cross-entropy of binary random variables.
+		
+		`output` should be real-valued (range (-inf, +inf)); `sigmoid` will be
+		applied to produce a (0, 1) valued input.
+		
+		`target` is assumed to be probabilities in [0, 1].
+		
+		Notes
+		-----
+		Mathematically equivalent to `binary_crossentropy(sigmoid(output), target)`,
+		but with more efficient and numerically stable computation.
+	**/
+	static public function sigmoid_binary_crossentropy(output:Dynamic, target:Dynamic):Dynamic;
 	static public function softmax(c:Dynamic):Dynamic;
 	static public function softmax_grad(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function softmax_graph(c:Dynamic):Dynamic;

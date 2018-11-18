@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.tools.selective_registration_header_lib;
 @:pythonImport("tensorflow.python.tools.selective_registration_header_lib") extern class Selective_registration_header_lib_Module {
+	static public var OPS_WITHOUT_KERNEL_WHITELIST : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

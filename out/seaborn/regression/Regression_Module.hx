@@ -14,119 +14,6 @@ package seaborn.regression;
 	static public var _has_statsmodels : Dynamic;
 	static public var _regression_docs : Dynamic;
 	/**
-		Plot the coefficients from a linear model.
-		
-		Parameters
-		----------
-		formula : string
-		    patsy formula for ols model
-		data : dataframe
-		    data for the plot; formula terms must appear in columns
-		groupby : grouping object, optional
-		    object to group data with to fit conditional models
-		intercept : bool, optional
-		    if False, strips the intercept term before plotting
-		ci : float, optional
-		    size of confidence intervals
-		palette : seaborn color palette, optional
-		    palette for the horizonal plots
-	**/
-	static public function coefplot(formula:Dynamic, data:Dynamic, ?groupby:Dynamic, ?intercept:Dynamic, ?ci:Dynamic, ?palette:Dynamic):Dynamic;
-	/**
-		Return a list of colors defining a color palette.
-		
-		Available seaborn palette names:
-		    deep, muted, bright, pastel, dark, colorblind
-		
-		Other options:
-		    hls, husl, any named matplotlib palette, list of colors
-		
-		Calling this function with ``palette=None`` will return the current
-		matplotlib color cycle.
-		
-		Matplotlib palettes can be specified as reversed palettes by appending
-		"_r" to the name or as dark palettes by appending "_d" to the name.
-		(These options are mutually exclusive, but the resulting list of colors
-		can also be reversed).
-		
-		This function can also be used in a ``with`` statement to temporarily
-		set the color cycle for a plot or set of plots.
-		
-		Parameters
-		----------
-		palette: None, string, or sequence, optional
-		    Name of palette or None to return current palette. If a sequence, input
-		    colors are used but possibly cycled and desaturated.
-		n_colors : int, optional
-		    Number of colors in the palette. If ``None``, the default will depend
-		    on how ``palette`` is specified. Named palettes default to 6 colors,
-		    but grabbing the current palette or passing in a list of colors will
-		    not change the number of colors unless this is specified. Asking for
-		    more colors than exist in the palette will cause it to cycle.
-		desat : float, optional
-		    Proportion to desaturate each color by.
-		
-		Returns
-		-------
-		palette : list of RGB tuples.
-		    Color palette. Behaves like a list, but can be used as a context
-		    manager and possesses an ``as_hex`` method to convert to hex color
-		    codes.
-		
-		See Also
-		--------
-		set_palette : Set the default color cycle for all plots.
-		set_color_codes : Reassign color codes like ``"b"``, ``"g"``, etc. to
-		                  colors from one of the seaborn palettes.
-		
-		Examples
-		--------
-		
-		Show one of the "seaborn palettes", which have the same basic order of hues
-		as the default matplotlib color cycle but more attractive colors.
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> import seaborn as sns; sns.set()
-		    >>> sns.palplot(sns.color_palette("muted"))
-		
-		Use discrete values from one of the built-in matplotlib colormaps.
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> sns.palplot(sns.color_palette("RdBu", n_colors=7))
-		
-		Make a "dark" matplotlib sequential palette variant. (This can be good
-		when coloring multiple lines or points that correspond to an ordered
-		variable, where you don't want the lightest lines to be invisible).
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> sns.palplot(sns.color_palette("Blues_d"))
-		
-		Use a categorical matplotlib palette, add some desaturation. (This can be
-		good when making plots with large patches, which look best with dimmer
-		colors).
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> sns.palplot(sns.color_palette("Set1", n_colors=8, desat=.5))
-		
-		Use as a context manager:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> import numpy as np, matplotlib.pyplot as plt
-		    >>> with sns.color_palette("husl", 8):
-		    ...    _ = plt.plot(np.c_[np.zeros(8), np.arange(8)].T)
-	**/
-	static public function color_palette(?palette:Dynamic, ?n_colors:Dynamic, ?desat:Dynamic):Dynamic;
-	/**
 		Remove any common leading whitespace from every line in `text`.
 		
 		This can be used to make triple-quoted strings line up with the left
@@ -142,39 +29,6 @@ package seaborn.regression;
 	static public function dedent(text:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Visualize a continuous two-way interaction with a contour plot.
-		
-		Parameters
-		----------
-		x1, x2, y, strings or array-like
-		    Either the two independent variables and the dependent variable,
-		    or keys to extract them from `data`
-		data : DataFrame
-		    Pandas DataFrame with the data in the columns.
-		filled : bool
-		    Whether to plot with filled or unfilled contours
-		cmap : matplotlib colormap
-		    Colormap to represent yhat in the countour plot.
-		colorbar : bool
-		    Whether to draw the colorbar for interpreting the color values.
-		levels : int or sequence
-		    Number or position of contour plot levels.
-		logistic : bool
-		    Fit a logistic regression model instead of linear regression.
-		contour_kws : dictionary
-		    Keyword arguments for contour[f]().
-		scatter_kws : dictionary
-		    Keyword arguments for plot().
-		ax : matplotlib axis
-		    Axis to draw plot in.
-		
-		Returns
-		-------
-		ax : Matplotlib axis
-		    Axis with the contour plot.
-	**/
-	static public function interactplot(x1:Dynamic, x2:Dynamic, y:Dynamic, ?data:Dynamic, ?filled:Dynamic, ?cmap:Dynamic, ?colorbar:Dynamic, ?levels:Dynamic, ?logistic:Dynamic, ?contour_kws:Dynamic, ?scatter_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Plot data and regression model fits across a FacetGrid.
 		
 		This function combines :func:`regplot` and :class:`FacetGrid`. It is
@@ -188,8 +42,8 @@ package seaborn.regression;
 		creating.
 		
 		There are a number of mutually exclusive options for estimating the
-		regression model: ``order``, ``logistic``, ``lowess``, ``robust``, and
-		``logx``. See the parameter docs for more information on these options.    
+		regression model. See the :ref:`tutorial <regression_tutorial>` for more
+		information.    
 		
 		The parameters to this function span most of the options in
 		:class:`FacetGrid`, although there may be occasional cases where you will
@@ -206,22 +60,22 @@ package seaborn.regression;
 		    Variables that define subsets of the data, which will be drawn on
 		    separate facets in the grid. See the ``*_order`` parameters to control
 		    the order of levels of this variable.
-		palette : seaborn color palette or dict, optional
+		palette : palette name, list, or dict, optional
 		    Colors to use for the different levels of the ``hue`` variable. Should
 		    be something that can be interpreted by :func:`color_palette`, or a
 		    dictionary mapping hue levels to matplotlib colors.    
 		col_wrap : int, optional
 		    "Wrap" the column variable at this width, so that the column facets
 		    span multiple rows. Incompatible with a ``row`` facet.    
-		size : scalar, optional
+		height : scalar, optional
 		    Height (in inches) of each facet. See also: ``aspect``.    
 		aspect : scalar, optional
-		    Aspect ratio of each facet, so that ``aspect * size`` gives the width
+		    Aspect ratio of each facet, so that ``aspect * height`` gives the width
 		    of each facet in inches.    
 		markers : matplotlib marker code or list of marker codes, optional
 		    Markers for the scatterplot. If a list, each marker in the list will be
 		    used for each level of the ``hue`` variable.
-		share{x,y} : bool, optional
+		share{x,y} : bool, 'col', or 'row' optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
 		{hue,col,row}_order : lists, optional
@@ -249,8 +103,8 @@ package seaborn.regression;
 		x_ci : "ci", "sd", int in [0, 100] or None, optional
 		    Size of the confidence interval used when plotting a central tendency
 		    for discrete values of ``x``. If ``"ci"``, defer to the value of the
-		    ``ci`` parameter. If ``"sd"``, skip bootstrappig and show the standard
-		    deviation of the observations in each bin.    
+		    ``ci`` parameter. If ``"sd"``, skip bootstrapping and show the
+		    standard deviation of the observations in each bin.    
 		scatter : bool, optional
 		    If ``True``, draw a scatterplot with the underlying observations (or
 		    the ``x_estimator`` values).    
@@ -322,18 +176,9 @@ package seaborn.regression;
 		Notes
 		-----
 		
-		Understanding the difference between :func:`regplot` and :func:`lmplot` can
-		be a bit tricky. In fact, they are closely related, as :func:`lmplot` uses
-		:func:`regplot` internally and takes most of its parameters. However,
-		:func:`regplot` is an axes-level function, so it draws directly onto an
-		axes (either the currently active axes or the one provided by the ``ax``
-		parameter), while :func:`lmplot` is a figure-level function and creates its
-		own figure, which is managed through a :class:`FacetGrid`. This has a few
-		consequences, namely that :func:`regplot` can happily coexist in a figure
-		with other kinds of plots and will follow the global matplotlib color
-		cycle. In contrast, :func:`lmplot` needs to occupy an entire figure, and
-		the size and color cycle are controlled through function parameters,
-		ignoring the global defaults.    
+		The :func:`regplot` and :func:`lmplot` functions are closely related, but
+		the former is an axes-level function while the latter is a figure-level
+		function that combines :func:`regplot` and :class:`FacetGrid`.    
 		
 		Examples
 		--------
@@ -392,13 +237,13 @@ package seaborn.regression;
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", col="smoker", data=tips)
 		
-		Change the size and aspect ratio of the facets:
+		Change the height and aspect ratio of the facets:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="size", y="total_bill", hue="day", col="day",
-		    ...                data=tips, aspect=.4, x_jitter=.1)
+		    ...                data=tips, height=6, aspect=.4, x_jitter=.1)
 		
 		Wrap the levels of the column variable into multiple rows:
 		
@@ -406,7 +251,7 @@ package seaborn.regression;
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", col="day", hue="day",
-		    ...                data=tips, col_wrap=2, size=3)
+		    ...                data=tips, col_wrap=2, height=3)
 		
 		Condition on two variables to make a full grid:
 		
@@ -414,7 +259,7 @@ package seaborn.regression;
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", row="sex", col="time",
-		    ...                data=tips, size=3)
+		    ...                data=tips, height=3)
 		
 		Use methods on the returned :class:`FacetGrid` instance to further tweak
 		the plot:
@@ -423,19 +268,19 @@ package seaborn.regression;
 		    :context: close-figs
 		
 		    >>> g = sns.lmplot(x="total_bill", y="tip", row="sex", col="time",
-		    ...                data=tips, size=3)
+		    ...                data=tips, height=3)
 		    >>> g = (g.set_axis_labels("Total bill (US Dollars)", "Tip")
 		    ...       .set(xlim=(0, 60), ylim=(0, 12),
 		    ...            xticks=[10, 30, 50], yticks=[2, 6, 10])
 		    ...       .fig.subplots_adjust(wspace=.02))
 	**/
-	static public function lmplot(x:Dynamic, y:Dynamic, data:Dynamic, ?hue:Dynamic, ?col:Dynamic, ?row:Dynamic, ?palette:Dynamic, ?col_wrap:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?markers:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?hue_order:Dynamic, ?col_order:Dynamic, ?row_order:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?x_estimator:Dynamic, ?x_bins:Dynamic, ?x_ci:Dynamic, ?scatter:Dynamic, ?fit_reg:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?logistic:Dynamic, ?lowess:Dynamic, ?robust:Dynamic, ?logx:Dynamic, ?x_partial:Dynamic, ?y_partial:Dynamic, ?truncate:Dynamic, ?x_jitter:Dynamic, ?y_jitter:Dynamic, ?scatter_kws:Dynamic, ?line_kws:Dynamic):Dynamic;
+	static public function lmplot(x:Dynamic, y:Dynamic, data:Dynamic, ?hue:Dynamic, ?col:Dynamic, ?row:Dynamic, ?palette:Dynamic, ?col_wrap:Dynamic, ?height:Dynamic, ?aspect:Dynamic, ?markers:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?hue_order:Dynamic, ?col_order:Dynamic, ?row_order:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?x_estimator:Dynamic, ?x_bins:Dynamic, ?x_ci:Dynamic, ?scatter:Dynamic, ?fit_reg:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?logistic:Dynamic, ?lowess:Dynamic, ?robust:Dynamic, ?logx:Dynamic, ?x_partial:Dynamic, ?y_partial:Dynamic, ?truncate:Dynamic, ?x_jitter:Dynamic, ?y_jitter:Dynamic, ?scatter_kws:Dynamic, ?line_kws:Dynamic, ?size:Dynamic):Dynamic;
 	/**
 		Plot data and a linear regression model fit.
 		
 		There are a number of mutually exclusive options for estimating the
-		regression model: ``order``, ``logistic``, ``lowess``, ``robust``, and
-		``logx``. See the parameter docs for more information on these options.    
+		regression model. See the :ref:`tutorial <regression_tutorial>` for more
+		information.    
 		
 		Parameters
 		----------
@@ -462,8 +307,8 @@ package seaborn.regression;
 		x_ci : "ci", "sd", int in [0, 100] or None, optional
 		    Size of the confidence interval used when plotting a central tendency
 		    for discrete values of ``x``. If ``"ci"``, defer to the value of the
-		    ``ci`` parameter. If ``"sd"``, skip bootstrappig and show the standard
-		    deviation of the observations in each bin.    
+		    ``ci`` parameter. If ``"sd"``, skip bootstrapping and show the
+		    standard deviation of the observations in each bin.    
 		scatter : bool, optional
 		    If ``True``, draw a scatterplot with the underlying observations (or
 		    the ``x_estimator`` values).    
@@ -553,18 +398,9 @@ package seaborn.regression;
 		Notes
 		-----
 		
-		Understanding the difference between :func:`regplot` and :func:`lmplot` can
-		be a bit tricky. In fact, they are closely related, as :func:`lmplot` uses
-		:func:`regplot` internally and takes most of its parameters. However,
-		:func:`regplot` is an axes-level function, so it draws directly onto an
-		axes (either the currently active axes or the one provided by the ``ax``
-		parameter), while :func:`lmplot` is a figure-level function and creates its
-		own figure, which is managed through a :class:`FacetGrid`. This has a few
-		consequences, namely that :func:`regplot` can happily coexist in a figure
-		with other kinds of plots and will follow the global matplotlib color
-		cycle. In contrast, :func:`lmplot` needs to occupy an entire figure, and
-		the size and color cycle are controlled through function parameters,
-		ignoring the global defaults.    
+		The :func:`regplot` and :func:`lmplot` functions are closely related, but
+		the former is an axes-level function while the latter is a figure-level
+		function that combines :func:`regplot` and :class:`FacetGrid`.    
 		
 		
 		It's also easy to combine combine :func:`regplot` and :class:`JointGrid` or

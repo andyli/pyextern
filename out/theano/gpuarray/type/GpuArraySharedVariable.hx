@@ -22,7 +22,7 @@ package theano.gpuarray.type;
 	public function __div__(other:Dynamic):Dynamic;
 	public function __divmod__(other:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
-	public function __dot__(right:Dynamic):Dynamic;
+	static public function __dot__(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Return self==value.
 	**/
@@ -65,7 +65,7 @@ package theano.gpuarray.type;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __invert__():Dynamic;
 	public function __iter__():Dynamic;
 	/**
@@ -95,7 +95,7 @@ package theano.gpuarray.type;
 	public function __rand__(other:Dynamic):Dynamic;
 	public function __rdiv__(other:Dynamic):Dynamic;
 	public function __rdivmod__(other:Dynamic):Dynamic;
-	public function __rdot__(left:Dynamic):Dynamic;
+	static public function __rdot__(right:Dynamic, left:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -153,7 +153,7 @@ package theano.gpuarray.type;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -167,6 +167,7 @@ package theano.gpuarray.type;
 	public function _value_set(new_value:Dynamic):Dynamic;
 	public function all(?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	public function any(?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function append_construction_observer(observer:Dynamic):Dynamic;
 	public function arccos():Dynamic;
 	public function arccosh():Dynamic;
 	public function arcsin():Dynamic;
@@ -192,7 +193,7 @@ package theano.gpuarray.type;
 		Construct an array from an index array and a set of arrays to choose
 		from.
 	**/
-	public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	public function choose(choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Clip (limit) the values in an array.
 	**/
@@ -225,6 +226,7 @@ package theano.gpuarray.type;
 		See `theano.tensor.conj`.
 	**/
 	public function conjugate():Dynamic;
+	static public var construction_observers : Dynamic;
 	static public var container : Dynamic;
 	/**
 		Return a symbolic copy and optionally assign a name.
@@ -266,7 +268,7 @@ package theano.gpuarray.type;
 		DimShuffle
 	**/
 	public function dimshuffle(?pattern:python.VarArgs<Dynamic>):Dynamic;
-	public function dot(right:Dynamic):Dynamic;
+	static public function dot(left:Dynamic, right:Dynamic):Dynamic;
 	public var dtype : Dynamic;
 	/**
 		Evaluates this variable.
@@ -409,7 +411,8 @@ package theano.gpuarray.type;
 	**/
 	public function nonzero_values():Dynamic;
 	public function norm(L:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
-	public function ones_like(?dtype:Dynamic):Dynamic;
+	static public function notify_construction_observers(instance:Dynamic):Dynamic;
+	static public function ones_like(model:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		See `theano.tensor.prod`.
 	**/
@@ -467,6 +470,7 @@ package theano.gpuarray.type;
 		| Elemwise(log)(rand(3, 4, 5))
 	**/
 	public var real : Dynamic;
+	static public function remove_construction_observer(observer:Dynamic):Dynamic;
 	/**
 		See `theano.tensor.repeat`.
 	**/
@@ -605,5 +609,5 @@ package theano.gpuarray.type;
 		this SharedVariable.
 	**/
 	public function zero(?borrow:Dynamic):Dynamic;
-	public function zeros_like(?dtype:Dynamic):Dynamic;
+	static public function zeros_like(model:Dynamic, ?dtype:Dynamic):Dynamic;
 }

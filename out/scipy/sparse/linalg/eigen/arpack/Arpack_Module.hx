@@ -403,6 +403,17 @@ package scipy.sparse.linalg.eigen.arpack;
 		-----
 		This is a naive implementation using ARPACK as an eigensolver
 		on A.H * A or A * A.H, depending on which one is more efficient.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import svds, eigs
+		>>> A = csc_matrix([[1, 0, 0], [5, 0, 2], [0, -1, 0], [0, 0, 3]], dtype=float)
+		>>> u, s, vt = svds(A, k=2)
+		>>> s
+		array([ 2.75193379,  5.6059665 ])
+		>>> np.sqrt(eigs(A.dot(A.T), k=2)[0]).real
+		array([ 5.6059665 ,  2.75193379])
 	**/
 	static public function svds(A:Dynamic, ?k:Dynamic, ?ncv:Dynamic, ?tol:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?maxiter:Dynamic, ?return_singular_vectors:Dynamic):Dynamic;
 }

@@ -2,7 +2,7 @@
 package tensorflow.python.training.server_lib;
 @:pythonImport("tensorflow.python.training.server_lib", "ClusterSpec") extern class ClusterSpec {
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -70,7 +70,7 @@ package tensorflow.python.training.server_lib;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -122,7 +122,7 @@ package tensorflow.python.training.server_lib;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -135,6 +135,8 @@ package tensorflow.python.training.server_lib;
 		    of strings.
 	**/
 	public function _make_cluster_def():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Returns a `tf.train.ClusterDef` protocol buffer based on this cluster.
 	**/
@@ -158,7 +160,7 @@ package tensorflow.python.training.server_lib;
 		NOTE: For backwards compatibility, this method returns a list. If
 		the given job was defined with a sparse set of task indices, the
 		length of this list may not reflect the number of tasks defined in
-		this job. Use the @{tf.train.ClusterSpec.num_tasks} method
+		this job. Use the `tf.train.ClusterSpec.num_tasks` method
 		to find the number of tasks defined in a particular job.
 		
 		Args:

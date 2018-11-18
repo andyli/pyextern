@@ -9,18 +9,10 @@ package matplotlib.units;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	/**
-		return true if *obj* looks like a number
-	**/
-	static public function is_numlike(obj:Dynamic):Dynamic;
 	/**
 		return true if *obj* is iterable
 	**/
 	static public function iterable(obj:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var registry : Dynamic;
 	static public function safe_first_element(obj:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

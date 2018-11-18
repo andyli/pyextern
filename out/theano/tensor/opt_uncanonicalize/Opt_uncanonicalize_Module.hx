@@ -11,6 +11,25 @@ package theano.tensor.opt_uncanonicalize;
 	static public var __spec__ : Dynamic;
 	static public var _logger : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Copies the stack trace from one or more tensor variables to
+		one or more tensor variables and returns the destination variables.
+		
+		Parameters
+		----------
+		from_var
+		    Tensor variable or list of tensor variables to copy stack traces from.
+		to_var
+		    Tensor variable or list of tensor variables to copy stack traces to.
+		
+		Notes
+		-----
+		The stacktrace is assumed to be of the form of a list of lists
+		of tuples. Each tuple contains the filename, line number, function name
+		and so on. Each list of tuples contains the truples belonging to a
+		particular variable.
+	**/
+	static public function copy_stack_trace(from_var:Dynamic, to_var:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var local_alloc_dimshuffle : Dynamic;
 	static public var local_dimshuffle_alloc : Dynamic;

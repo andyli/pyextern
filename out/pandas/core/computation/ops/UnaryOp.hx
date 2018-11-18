@@ -12,7 +12,7 @@ package pandas.core.computation.ops;
 		Call self as a function.
 	**/
 	public function __call__(env:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -63,7 +63,7 @@ package pandas.core.computation.ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -120,7 +120,7 @@ package pandas.core.computation.ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Print a generic n-ary operator and its operands using infix
 		notation
@@ -132,7 +132,7 @@ package pandas.core.computation.ops;
 	public var __weakref__ : Dynamic;
 	public var has_invalid_return_type : Dynamic;
 	public var is_datetime : Dynamic;
-	public var isscalar : Dynamic;
+	public var is_scalar : Dynamic;
 	public var operand_types : Dynamic;
 	public var return_type : Dynamic;
 }

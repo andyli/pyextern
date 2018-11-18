@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.stata;
 @:pythonImport("pandas.io.stata", "StataReader") extern class StataReader {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -49,18 +49,18 @@ package pandas.io.stata;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(path_or_buf:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Dynamic;
+	public function ___init__(path_or_buf:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index_col:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(path_or_buf:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Void;
+	public function new(path_or_buf:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index_col:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -113,7 +113,7 @@ package pandas.io.stata;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -144,34 +144,39 @@ package pandas.io.stata;
 	public function _read_strls():Dynamic;
 	public function _read_value_labels():Dynamic;
 	/**
+		Map between numpy and state dtypes
+	**/
+	public function _setup_dtype():Dynamic;
+	/**
 		close the handle if its open 
 	**/
 	public function close():Dynamic;
 	/**
-		DEPRECATED: Reads observations from Stata file, converting them into a dataframe
+		Reads observations from Stata file, converting them into a dataframe
 		
-		This is a legacy method.  Use `read` in new code.
+		    .. deprecated::
+		       This is a legacy method.  Use `read` in new code.
 		
 		Parameters
 		----------
 		convert_dates : boolean, defaults to True
-		    Convert date variables to DataFrame time values
+		    Convert date variables to DataFrame time values.
 		convert_categoricals : boolean, defaults to True
-		    Read value labels and convert columns to Categorical/Factor variables
-		index : identifier of index column
-		    identifier of column that should be used as index of the DataFrame
+		    Read value labels and convert columns to Categorical/Factor variables.
+		index_col : string, optional, default: None
+		    Column to set as index.
 		convert_missing : boolean, defaults to False
 		    Flag indicating whether to convert missing values to their Stata
-		    representations.  If False, missing values are replaced with nans.
+		    representations.  If False, missing values are replaced with nan.
 		    If True, columns containing missing values are returned with
 		    object data types and missing values are represented by
 		    StataMissingValue objects.
 		preserve_dtypes : boolean, defaults to True
 		    Preserve Stata datatypes. If False, numeric data are upcast to pandas
-		    default types for foreign data (float64 or int64)
+		    default types for foreign data (float64 or int64).
 		columns : list or None
 		    Columns to retain.  Columns will be returned in the given order.  None
-		    returns all columns
+		    returns all columns.
 		order_categoricals : boolean, defaults to True
 		    Flag indicating whether converted categorical data are ordered.
 		
@@ -205,23 +210,23 @@ package pandas.io.stata;
 		nrows : int
 		    Number of lines to read from data file, if None read whole file.
 		convert_dates : boolean, defaults to True
-		    Convert date variables to DataFrame time values
+		    Convert date variables to DataFrame time values.
 		convert_categoricals : boolean, defaults to True
-		    Read value labels and convert columns to Categorical/Factor variables
-		index : identifier of index column
-		    identifier of column that should be used as index of the DataFrame
+		    Read value labels and convert columns to Categorical/Factor variables.
+		index_col : string, optional, default: None
+		    Column to set as index.
 		convert_missing : boolean, defaults to False
 		    Flag indicating whether to convert missing values to their Stata
-		    representations.  If False, missing values are replaced with nans.
+		    representations.  If False, missing values are replaced with nan.
 		    If True, columns containing missing values are returned with
 		    object data types and missing values are represented by
 		    StataMissingValue objects.
 		preserve_dtypes : boolean, defaults to True
 		    Preserve Stata datatypes. If False, numeric data are upcast to pandas
-		    default types for foreign data (float64 or int64)
+		    default types for foreign data (float64 or int64).
 		columns : list or None
 		    Columns to retain.  Columns will be returned in the given order.  None
-		    returns all columns
+		    returns all columns.
 		order_categoricals : boolean, defaults to True
 		    Flag indicating whether converted categorical data are ordered.
 		
@@ -229,7 +234,7 @@ package pandas.io.stata;
 		-------
 		DataFrame
 	**/
-	public function read(?nrows:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic):Dynamic;
+	public function read(?nrows:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index_col:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic):Dynamic;
 	/**
 		Returns a dict, associating each variable name a dict, associating
 		each value its corresponding label

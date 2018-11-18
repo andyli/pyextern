@@ -149,6 +149,9 @@ package tensorflow.contrib.graph_editor.select;
 		  within_ops: an iterable of `tf.Operation` within which the search is
 		    restricted. If `within_ops` is `None`, the search is performed within
 		    the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  stop_at_ts: an iterable of tensors at which the graph walk stops.
 		  control_inputs: if True, control inputs will be used while moving backward.
 		Returns:
@@ -157,7 +160,7 @@ package tensorflow.contrib.graph_editor.select;
 		  TypeError: if `seed_ops` or `within_ops` cannot be converted to a list of
 		    `tf.Operation`.
 	**/
-	static public function get_backward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?stop_at_ts:Dynamic, ?control_inputs:Dynamic):Dynamic;
+	static public function get_backward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?stop_at_ts:Dynamic, ?control_inputs:Dynamic):Dynamic;
 	/**
 		Do a forward graph walk and return all the visited ops.
 		
@@ -169,6 +172,9 @@ package tensorflow.contrib.graph_editor.select;
 		  within_ops: an iterable of `tf.Operation` within which the search is
 		    restricted. If `within_ops` is `None`, the search is performed within
 		    the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  stop_at_ts: an iterable of tensors at which the graph walk stops.
 		  control_outputs: a `util.ControlOutputs` instance or None.
 		    If not `None`, it will be used while walking the graph forward.
@@ -178,7 +184,7 @@ package tensorflow.contrib.graph_editor.select;
 		  TypeError: if `seed_ops` or `within_ops` cannot be converted to a list of
 		    `tf.Operation`.
 	**/
-	static public function get_forward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?stop_at_ts:Dynamic, ?control_outputs:Dynamic):Dynamic;
+	static public function get_forward_walk_ops(seed_ops:Dynamic, ?inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?stop_at_ts:Dynamic, ?control_outputs:Dynamic):Dynamic;
 	/**
 		Get all the operations under the given scope path.
 		
@@ -226,6 +232,9 @@ package tensorflow.contrib.graph_editor.select;
 		  within_ops: an iterable of tf.Operation within which the search is
 		    restricted. If within_ops is None, the search is performed within
 		    the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  control_inputs: A boolean indicating whether control inputs are enabled.
 		  control_outputs: An instance of util.ControlOutputs or None. If not None,
 		    control outputs are enabled.
@@ -240,7 +249,7 @@ package tensorflow.contrib.graph_editor.select;
 		  TypeError: if `forward_seed_ops` or `backward_seed_ops` or `within_ops`
 		    cannot be converted to a list of `tf.Operation`.
 	**/
-	static public function get_walks_intersection_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
+	static public function get_walks_intersection_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
 	/**
 		Return the union of a forward and a backward walk.
 		
@@ -257,6 +266,9 @@ package tensorflow.contrib.graph_editor.select;
 		    resulting set.
 		  within_ops: restrict the search within those operations. If within_ops is
 		    None, the search is done within the whole graph.
+		  within_ops_fn: if provided, a function on ops that should return True iff
+		    the op is within the graph traversal. This can be used along within_ops,
+		    in which case an op is within if it is also in within_ops.
 		  control_inputs: A boolean indicating whether control inputs are enabled.
 		  control_outputs: An instance of util.ControlOutputs or None. If not None,
 		    control outputs are enabled.
@@ -271,7 +283,7 @@ package tensorflow.contrib.graph_editor.select;
 		  TypeError: if forward_seed_ops or backward_seed_ops or within_ops cannot be
 		    converted to a list of tf.Operation.
 	**/
-	static public function get_walks_union_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
+	static public function get_walks_union_ops(forward_seed_ops:Dynamic, backward_seed_ops:Dynamic, ?forward_inclusive:Dynamic, ?backward_inclusive:Dynamic, ?within_ops:Dynamic, ?within_ops_fn:Dynamic, ?control_inputs:Dynamic, ?control_outputs:Dynamic, ?control_ios:Dynamic):Dynamic;
 	/**
 		Return all the `tf.Operation` within the given boundary.
 		
@@ -317,7 +329,7 @@ package tensorflow.contrib.graph_editor.select;
 		Helper to select operations.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Operation`. `tf.Tensor` instances are silently ignored.
 		  **kwargs: 'graph': `tf.Graph` in which to perform the regex query.This is
 		    required when using regex.
@@ -340,7 +352,7 @@ package tensorflow.contrib.graph_editor.select;
 		Helper to select operations and tensors.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Operation` 3) (array of) tf.Tensor. Regular expressions matching
 		    tensors must start with the comment `"(?#ts)"`, for instance:
 		    `"(?#ts)^foo/.*"`.
@@ -364,7 +376,7 @@ package tensorflow.contrib.graph_editor.select;
 		Helper to select tensors.
 		
 		Args:
-		  *args: list of 1) regular expressions (compiled or not) or  2) (array of)
+		  *args: list of 1) regular expressions (compiled or not) or 2) (array of)
 		    `tf.Tensor`. `tf.Operation` instances are silently ignored.
 		  **kwargs: 'graph': `tf.Graph` in which to perform the regex query.This is
 		    required when using regex.

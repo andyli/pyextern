@@ -5,7 +5,7 @@ package pandas.plotting._core;
 		Boxplot(ax, lines)
 	**/
 	static public function BP(ax:Dynamic, lines:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package pandas.plotting._core;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -107,7 +107,7 @@ package pandas.plotting._core;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -206,7 +206,7 @@ package pandas.plotting._core;
 		errors defaults to 'strict'.
 	**/
 	public var orientation : Dynamic;
-	static public var plt : Dynamic;
+	public var plt : Dynamic;
 	/**
 		Return result axes
 	**/

@@ -10,7 +10,7 @@ package matplotlib.contour;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		find closest point to p0 on line segment connecting p1 and p2
+		Find the closest point to p0 on line segment connecting p1 and p2.
 	**/
 	static public function _find_closest_point_on_leg(p1:Dynamic, p2:Dynamic, p0:Dynamic):Dynamic;
 	/**
@@ -18,8 +18,10 @@ package matplotlib.contour;
 		point: coordinates of test point
 	**/
 	static public function _find_closest_point_on_path(lc:Dynamic, point:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
-	static public var unicode_literals : Dynamic;
+	/**
+		Return whether first and last object in a sequence are the same. These are
+		presumably coordinates on a polygonal curve, in which case this function
+		tests if that curve is closed.
+	**/
+	static public function _is_closed_polygon(X:Dynamic):Dynamic;
 }

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.manpage;
 @:pythonImport("docutils.writers.manpage", "Translator") extern class Translator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package docutils.writers.manpage;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package docutils.writers.manpage;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -169,6 +169,7 @@ package docutils.writers.manpage;
 	public function depart_header(node:Dynamic):Dynamic;
 	public function depart_hint(node:Dynamic):Dynamic;
 	public function depart_important(node:Dynamic):Dynamic;
+	public function depart_inline(node:Dynamic):Dynamic;
 	public function depart_label(node:Dynamic):Dynamic;
 	public function depart_legend(node:Dynamic):Dynamic;
 	public function depart_line(node:Dynamic):Dynamic;
@@ -299,6 +300,7 @@ package docutils.writers.manpage;
 	public function visit_hint(node:Dynamic):Dynamic;
 	public function visit_image(node:Dynamic):Dynamic;
 	public function visit_important(node:Dynamic):Dynamic;
+	public function visit_inline(node:Dynamic):Dynamic;
 	public function visit_label(node:Dynamic):Dynamic;
 	public function visit_legend(node:Dynamic):Dynamic;
 	public function visit_line(node:Dynamic):Dynamic;

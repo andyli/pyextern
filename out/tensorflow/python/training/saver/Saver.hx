@@ -14,29 +14,22 @@ package tensorflow.python.training.saver;
 	/**
 		Deletes old checkpoints if necessary.
 		
-		Always keep the last `max_to_keep` checkpoints.  If
+		`self._checkpoints_to_be_deleted` is going to contain checkpoints that are
+		over `max_to_keep`.  They are going to be deleted.  If
 		`keep_checkpoint_every_n_hours` was specified, keep an additional checkpoint
 		every `N` hours. For example, if `N` is 0.5, an additional checkpoint is
 		kept for every 0.5 hours of training; if `N` is 10, an additional
 		checkpoint is kept for every 10 hours of training.
 		
 		Args:
-		  latest_save_path: Name including path of checkpoint file to save.
 		  meta_graph_suffix: Suffix for `MetaGraphDef` file. Defaults to 'meta'.
 	**/
-	public function _MaybeDeleteOldCheckpoints(latest_save_path:Dynamic, ?meta_graph_suffix:Dynamic):Dynamic;
+	public function _MaybeDeleteOldCheckpoints(?meta_graph_suffix:Dynamic):Dynamic;
 	/**
-		Returns the meta graph filename.
-		
-		Args:
-		  checkpoint_filename: Name of the checkpoint file.
-		  meta_graph_suffix: Suffix for `MetaGraphDef` file. Defaults to 'meta'.
-		
-		Returns:
-		  MetaGraph file name.
+		Manages the list of the latest checkpoints.
 	**/
-	public function _MetaGraphFilename(checkpoint_filename:Dynamic, ?meta_graph_suffix:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _RecordLastCheckpoint(latest_save_path:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -130,7 +123,7 @@ package tensorflow.python.training.saver;
 		    The `saver_def` proto should be the one returned by the
 		    `as_saver_def()` call of the `Saver` that was created for that `Graph`.
 		  builder: Optional `SaverBuilder` to use if a `saver_def` was not provided.
-		    Defaults to `BaseSaverBuilder()`.
+		    Defaults to `BulkSaverBuilder()`.
 		  defer_build: If `True`, defer adding the save and restore ops to the
 		    `build()` call. In that case `build()` should be called before
 		    finalizing the graph or using the saver.
@@ -148,13 +141,22 @@ package tensorflow.python.training.saver;
 		  save_relative_paths: If `True`, will write relative paths to the
 		    checkpoint state file. This is needed if the user wants to copy the
 		    checkpoint directory and reload from the copied directory.
+		  filename: If known at graph construction time, filename used for variable
+		    loading/saving.
 		
 		Raises:
 		  TypeError: If `var_list` is invalid.
 		  ValueError: If any of the keys or values in `var_list` are not unique.
+		  RuntimeError: If eager execution is enabled and`var_list` does not specify
+		    a list of varialbes to save.
+		
+		@compatibility(eager)
+		When eager execution is enabled, `var_list` must specify a `list` or `dict`
+		of variables to save. Otherwise, a `RuntimeError` will be raised.
+		@end_compatibility
 	**/
 	@:native("__init__")
-	public function ___init__(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic, ?defer_build:Dynamic, ?allow_empty:Dynamic, ?write_version:Dynamic, ?pad_step_number:Dynamic, ?save_relative_paths:Dynamic):Dynamic;
+	public function ___init__(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic, ?defer_build:Dynamic, ?allow_empty:Dynamic, ?write_version:Dynamic, ?pad_step_number:Dynamic, ?save_relative_paths:Dynamic, ?filename:Dynamic):Dynamic;
 	/**
 		Creates a `Saver`.
 		
@@ -213,7 +215,7 @@ package tensorflow.python.training.saver;
 		    The `saver_def` proto should be the one returned by the
 		    `as_saver_def()` call of the `Saver` that was created for that `Graph`.
 		  builder: Optional `SaverBuilder` to use if a `saver_def` was not provided.
-		    Defaults to `BaseSaverBuilder()`.
+		    Defaults to `BulkSaverBuilder()`.
 		  defer_build: If `True`, defer adding the save and restore ops to the
 		    `build()` call. In that case `build()` should be called before
 		    finalizing the graph or using the saver.
@@ -231,19 +233,28 @@ package tensorflow.python.training.saver;
 		  save_relative_paths: If `True`, will write relative paths to the
 		    checkpoint state file. This is needed if the user wants to copy the
 		    checkpoint directory and reload from the copied directory.
+		  filename: If known at graph construction time, filename used for variable
+		    loading/saving.
 		
 		Raises:
 		  TypeError: If `var_list` is invalid.
 		  ValueError: If any of the keys or values in `var_list` are not unique.
+		  RuntimeError: If eager execution is enabled and`var_list` does not specify
+		    a list of varialbes to save.
+		
+		@compatibility(eager)
+		When eager execution is enabled, `var_list` must specify a `list` or `dict`
+		of variables to save. Otherwise, a `RuntimeError` will be raised.
+		@end_compatibility
 	**/
-	public function new(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic, ?defer_build:Dynamic, ?allow_empty:Dynamic, ?write_version:Dynamic, ?pad_step_number:Dynamic, ?save_relative_paths:Dynamic):Void;
+	public function new(?var_list:Dynamic, ?reshape:Dynamic, ?sharded:Dynamic, ?max_to_keep:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?name:Dynamic, ?restore_sequentially:Dynamic, ?saver_def:Dynamic, ?builder:Dynamic, ?defer_build:Dynamic, ?allow_empty:Dynamic, ?write_version:Dynamic, ?pad_step_number:Dynamic, ?save_relative_paths:Dynamic, ?filename:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -294,7 +305,7 @@ package tensorflow.python.training.saver;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -308,8 +319,14 @@ package tensorflow.python.training.saver;
 		  export_scope: Optional `string`. Name scope to remove.
 	**/
 	static public function _add_collection_def(meta_graph_def:Dynamic, key:Dynamic, ?export_scope:Dynamic):Dynamic;
+	/**
+		Builds saver_def.
+	**/
+	public function _build(checkpoint_path:Dynamic, build_save:Dynamic, build_restore:Dynamic):Dynamic;
+	public function _build_eager(checkpoint_path:Dynamic, build_save:Dynamic, build_restore:Dynamic):Dynamic;
 	public function _check_saver_def():Dynamic;
-	public function _delete_file_if_exists(filespec:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Generates a `SaverDef` representation of this saver.
 		
@@ -317,9 +334,6 @@ package tensorflow.python.training.saver;
 		  A `SaverDef` proto.
 	**/
 	public function as_saver_def():Dynamic;
-	/**
-		Builds saver_def.
-	**/
 	public function build():Dynamic;
 	/**
 		Writes `MetaGraphDef` to save_path/filename.
@@ -331,16 +345,22 @@ package tensorflow.python.training.saver;
 		  export_scope: Optional `string`. Name scope to remove.
 		  clear_devices: Whether or not to clear the device field for an `Operation`
 		    or `Tensor` during export.
+		  clear_extraneous_savers: Remove any Saver-related information from the
+		    graph (both Save/Restore ops and SaverDefs) that are not associated
+		    with this Saver.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the NodeDefs. For a detailed guide, see
+		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		
 		Returns:
 		  A `MetaGraphDef` proto.
 	**/
-	public function export_meta_graph(?filename:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic, ?export_scope:Dynamic, ?clear_devices:Dynamic):Dynamic;
+	public function export_meta_graph(?filename:Dynamic, ?collection_list:Dynamic, ?as_text:Dynamic, ?export_scope:Dynamic, ?clear_devices:Dynamic, ?clear_extraneous_savers:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
 	/**
 		Returns a `Saver` object created from `saver_def`.
 		
 		Args:
-		  saver_def: a `SaveDef` protocol buffer.
+		  saver_def: a `SaverDef` protocol buffer.
 		  import_scope: Optional `string`. Name scope to use.
 		
 		Returns:
@@ -380,8 +400,11 @@ package tensorflow.python.training.saver;
 		`save()` call, or a call to `latest_checkpoint()`.
 		
 		Args:
-		  sess: A `Session` to use to restore the parameters.
+		  sess: A `Session` to use to restore the parameters. None in eager mode.
 		  save_path: Path where parameters were previously saved.
+		
+		Raises:
+		  ValueError: If save_path is None or not a valid checkpoint.
 	**/
 	public function restore(sess:Dynamic, save_path:Dynamic):Dynamic;
 	/**
@@ -391,18 +414,17 @@ package tensorflow.python.training.saver;
 		It requires a session in which the graph was launched.  The variables to
 		save must also have been initialized.
 		
-		The method returns the path of the newly created checkpoint file.  This
-		path can be passed directly to a call to `restore()`.
+		The method returns the path prefix of the newly created checkpoint files.
+		This string can be passed directly to a call to `restore()`.
 		
 		Args:
 		  sess: A Session to use to save the variables.
-		  save_path: String.  Path to the checkpoint filename.  If the saver is
-		    `sharded`, this is the prefix of the sharded checkpoint filename.
+		  save_path: String.  Prefix of filenames created for the checkpoint.
 		  global_step: If provided the global step number is appended to
-		    `save_path` to create the checkpoint filename. The optional argument
+		    `save_path` to create the checkpoint filenames. The optional argument
 		    can be a `Tensor`, a `Tensor` name or an integer.
 		  latest_filename: Optional name for the protocol buffer file that will
-		    contains the list of most recent checkpoint filenames.  That file,
+		    contains the list of most recent checkpoints.  That file,
 		    kept in the same directory as the checkpoint files, is automatically
 		    managed by the saver to keep track of recent checkpoints.  Defaults to
 		    'checkpoint'.
@@ -411,9 +433,12 @@ package tensorflow.python.training.saver;
 		    graph file.
 		  write_state: `Boolean` indicating whether or not to write the
 		    `CheckpointStateProto`.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the NodeDefs. For a detailed guide, see
+		    [Stripping Default-Valued Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		
 		Returns:
-		  A string: path at which the variables were saved.  If the saver is
+		  A string: path prefix used for the checkpoint files.  If the saver is
 		    sharded, this string ends with: '-?????-of-nnnnn' where 'nnnnn'
 		    is the number of shards created.
 		  If the saver is empty, returns None.
@@ -424,7 +449,7 @@ package tensorflow.python.training.saver;
 		    collides with `save_path`.
 		  RuntimeError: If save and restore ops weren't built.
 	**/
-	public function save(sess:Dynamic, save_path:Dynamic, ?global_step:Dynamic, ?latest_filename:Dynamic, ?meta_graph_suffix:Dynamic, ?write_meta_graph:Dynamic, ?write_state:Dynamic):Dynamic;
+	public function save(sess:Dynamic, save_path:Dynamic, ?global_step:Dynamic, ?latest_filename:Dynamic, ?meta_graph_suffix:Dynamic, ?write_meta_graph:Dynamic, ?write_state:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
 	/**
 		DEPRECATED: Use set_last_checkpoints_with_time.
 		

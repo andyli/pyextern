@@ -32,19 +32,98 @@ package tensorflow.python.saved_model.builder_impl;
 	**/
 	static public function _asset_path_from_tensor(path_tensor:Dynamic):Dynamic;
 	/**
+		Get a unique basename to add to the SavedModel if this file is unseen.
+		
+		Assets come from users as full paths, and we save them out to the
+		SavedModel as basenames. In some cases, the basenames collide. Here,
+		we dedupe asset basenames by first checking if the file is the same,
+		and, if different, generate and return an index-suffixed basename
+		that can be used to add the asset to the SavedModel.
+		
+		Args:
+		  asset_filepath: the full path to the asset that is being saved
+		  asset_filename_map: a dict of filenames used for saving the asset in
+		    the SavedModel to full paths from which the filenames were derived.
+		
+		Returns:
+		  Uniquified filename string if the file is not a duplicate, or the original
+		  filename if the file has already been seen and saved.
+	**/
+	static public function _get_asset_filename_to_add(asset_filepath:Dynamic, asset_filename_map:Dynamic):Dynamic;
+	static public function _get_unique_asset_filename(asset_filename:Dynamic, asset_filename_map:Dynamic):Dynamic;
+	/**
 		Saves assets to the meta graph.
 		
 		Args:
 		  assets_collection_to_add: The collection where the asset paths are setup.
 		
 		Returns:
-		  The list of filepaths to the assets in the assets collection.
+		  A dict of asset basenames for saving to the original full path to the asset.
 		
 		Raises:
 		  ValueError: Indicating an invalid filepath tensor.
 	**/
 	static public function _maybe_save_assets(?assets_collection_to_add:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Decorator for marking specific function arguments as deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called with the deprecated argument. It has the following format:
+		
+		  Calling <function> (from <module>) with <arg> is deprecated and will be
+		  removed after <date>. Instructions for updating:
+		    <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> includes the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated arguments)' is
+		appended to the first line of the docstring and a deprecation notice is
+		prepended to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  *deprecated_arg_names_or_tuples: String or 2-Tuple(String,
+		    [ok_vals]).  The string is the deprecated argument name.
+		    Optionally, an ok-value may be provided.  If the user provided
+		    argument equals this value, the warning is suppressed.
+		  **kwargs: If `warn_once=False` is passed, every call with a deprecated
+		    argument will log a warning. The default behavior is to only warn the
+		    first time the function is called with any given deprecated argument.
+		    All other kwargs raise `ValueError`.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, instructions are
+		    empty, the deprecated arguments are not present in the function
+		    signature, the second element of a deprecated_tuple is not a
+		    list, or if a kwarg other than `warn_once` is passed.
+	**/
+	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

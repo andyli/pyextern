@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.variable_scope;
 @:pythonImport("tensorflow.python.ops.variable_scope", "_VariableStore") extern class _VariableStore {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package tensorflow.python.ops.variable_scope;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package tensorflow.python.ops.variable_scope;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -138,8 +138,8 @@ package tensorflow.python.ops.variable_scope;
 		
 		Set `reuse` to `True` when you only want to reuse existing Variables.
 		Set `reuse` to `False` when you only want to create new Variables.
-		If `reuse` is `None` (the default), both new and existing variables are
-		returned.
+		Set `reuse` to None (the default) or tf.AUTO_REUSE when you want
+		variables to be created if they don't exist or returned if they do.
 		
 		If initializer is `None` (the default), the default initializer passed in
 		the constructor is used. If that one is `None` too, we use a new
@@ -165,7 +165,8 @@ package tensorflow.python.ops.variable_scope;
 		  regularizer: a (Tensor -> Tensor or None) function; the result of
 		    applying it on a newly created variable will be added to the collection
 		    GraphKeys.REGULARIZATION_LOSSES and can be used for regularization.
-		  reuse: a Boolean or `None`. Controls reuse or creation of variables.
+		  reuse: a Boolean, None, or tf.AUTO_REUSE. Controls reuse or creation
+		    of variables.
 		  trainable: If `True` also add the variable to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
 		  collections: List of graph collections keys to add the Variable to.
@@ -181,6 +182,13 @@ package tensorflow.python.ops.variable_scope;
 		  use_resource: If False, creates a regular Variable. If True, creates an
 		    experimental ResourceVariable which has well-defined semantics. Defaults
 		    to False (will later change to True).
+		  constraint: An optional projection function to be applied to the variable
+		    after being updated by an `Optimizer` (e.g. used to implement norm
+		    constraints or value constraints for layer weights). The function must
+		    take as input the unprojected Tensor representing the value of the
+		    variable and return the Tensor for the projected value
+		    (which must have the same shape). Constraints are not safe to
+		    use when doing asynchronous distributed training.
 		
 		Returns:
 		  A `PartitionedVariable` object.
@@ -191,7 +199,7 @@ package tensorflow.python.ops.variable_scope;
 		    when violating reuse during variable creation, or if an existing
 		    sharded variable exists for the given name but with different sharding.
 	**/
-	public function _get_partitioned_variable(name:Dynamic, partitioner:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic):Dynamic;
+	public function _get_partitioned_variable(name:Dynamic, partitioner:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic):Dynamic;
 	/**
 		Get or create a single Variable (e.g. a shard or entire variable).
 		
@@ -211,6 +219,9 @@ package tensorflow.python.ops.variable_scope;
 		  caching_device: see get_variable.
 		  validate_shape: see get_variable.
 		  use_resource: see get_variable.
+		  constraint: see get_variable.
+		  synchronization: see get_variable.
+		  aggregation: see get_variable.
 		
 		Returns:
 		  A Variable.  See documentation of get_variable above.
@@ -218,8 +229,7 @@ package tensorflow.python.ops.variable_scope;
 		Raises:
 		  ValueError: See documentation of get_variable above.
 	**/
-	public function _get_single_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?partition_info:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic):Dynamic;
-	public function close_variable_subscopes(scope_name:Dynamic):Dynamic;
+	public function _get_single_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?partition_info:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
 	/**
 		Gets an existing variable with these parameters or create a new one.
 		
@@ -228,8 +238,8 @@ package tensorflow.python.ops.variable_scope;
 		
 		Set `reuse` to `True` when you only want to reuse existing Variables.
 		Set `reuse` to `False` when you only want to create new Variables.
-		If `reuse` is `None` (the default), both new and existing variables are
-		returned.
+		Set `reuse` to None (the default) or tf.AUTO_REUSE when you want
+		variables to be created if they don't exist or returned if they do.
 		
 		If initializer is `None` (the default), the default initializer passed in
 		the constructor is used. If that one is `None` too, we use a new
@@ -251,9 +261,13 @@ package tensorflow.python.ops.variable_scope;
 		  regularizer: A (Tensor -> Tensor or None) function; the result of
 		    applying it on a newly created variable will be added to the collection
 		    GraphKeys.REGULARIZATION_LOSSES and can be used for regularization.
-		  reuse: a Boolean or `None`. Controls reuse or creation of variables.
+		  reuse: a Boolean, None, or tf.AUTO_REUSE. Controls reuse or creation
+		    of variables. When eager execution is enabled  this argument is always
+		    forced to be False.
 		  trainable: If `True` also add the variable to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see `tf.Variable`).
+		    `trainable` defaults to `True` unless `synchronization` is
+		    set to `ON_READ`.
 		  collections: List of graph collections keys to add the `Variable` to.
 		    Defaults to `[GraphKeys.GLOBAL_VARIABLES]` (see `tf.Variable`).
 		  caching_device: Optional device string or function describing where the
@@ -270,6 +284,8 @@ package tensorflow.python.ops.variable_scope;
 		  use_resource: If False, creates a regular Variable. If True, creates
 		    instead an experimental ResourceVariable which has well-defined
 		    semantics. Defaults to False (will later change to True).
+		    When eager execution is enabled this argument is always forced to be
+		    true.
 		  custom_getter: Callable that takes as a first argument the true getter,
 		    and allows overwriting the internal get_variable method.
 		    The signature of `custom_getter` should match that of this method,
@@ -282,6 +298,22 @@ package tensorflow.python.ops.variable_scope;
 		    def custom_getter(getter, name, *args, **kwargs):
 		      return getter(name + '_suffix', *args, **kwargs)
 		    ```
+		  constraint: An optional projection function to be applied to the variable
+		    after being updated by an `Optimizer` (e.g. used to implement norm
+		    constraints or value constraints for layer weights). The function must
+		    take as input the unprojected Tensor representing the value of the
+		    variable and return the Tensor for the projected value
+		    (which must have the same shape). Constraints are not safe to
+		    use when doing asynchronous distributed training.
+		  synchronization: Indicates when a distributed a variable will be
+		    aggregated. Accepted values are constants defined in the class
+		    `tf.VariableSynchronization`. By default the synchronization is set to
+		    `AUTO` and the current `DistributionStrategy` chooses
+		    when to synchronize. If `synchronization` is set to `ON_READ`,
+		    `trainable` must not be set to `True`.
+		  aggregation: Indicates how a distributed variable will be aggregated.
+		    Accepted values are constants defined in the class
+		    `tf.VariableAggregation`.
 		
 		Returns:
 		  The created or existing `Variable` (or `PartitionedVariable`, if a
@@ -291,8 +323,8 @@ package tensorflow.python.ops.variable_scope;
 		  ValueError: when creating a new variable and shape is not declared,
 		    when reusing a variable and specifying a conflicting shape,
 		    or when violating reuse during variable creation.
+		  RuntimeError: when eager execution is enabled and not called from an
+		    EagerVariableStore.
 	**/
-	public function get_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic):Dynamic;
-	public function open_variable_scope(scope_name:Dynamic):Dynamic;
-	public function variable_scope_count(scope_name:Dynamic):Dynamic;
+	public function get_variable(name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic, ?constraint:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
 }

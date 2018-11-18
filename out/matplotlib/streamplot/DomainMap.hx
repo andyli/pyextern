@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.streamplot;
 @:pythonImport("matplotlib.streamplot", "DomainMap") extern class DomainMap {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.streamplot;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,12 +103,13 @@ package matplotlib.streamplot;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function data2grid(xd:Dynamic, yd:Dynamic):Dynamic;
+	public function grid2data(xg:Dynamic, yg:Dynamic):Dynamic;
 	/**
 		Return nearest space in mask-coords from given grid-coords.
 	**/

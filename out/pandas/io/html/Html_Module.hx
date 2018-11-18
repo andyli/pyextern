@@ -118,7 +118,7 @@ package pandas.io.html;
 		    If `url` has a valid protocol return True otherwise False.
 	**/
 	static public function _is_url(url:Dynamic):Bool;
-	static public function _parse(flavor:Dynamic, io:Dynamic, match:Dynamic, attrs:Dynamic, encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _parse(flavor:Dynamic, io:Dynamic, match:Dynamic, attrs:Dynamic, encoding:Dynamic, displayed_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Choose the parser based on the input flavor.
 		
@@ -210,14 +210,6 @@ package pandas.io.html;
 	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Parse a URL into 6 components:
-		<scheme>://<netloc>/<path>;<params>?<query>#<fragment>
-		Return a 6-tuple: (scheme, netloc, path, params, query, fragment).
-		Note that we don't break the components up in smaller bits
-		(e.g. netloc is a single string) and we don't expand % escapes.
-	**/
-	static public function parse_url(url:Dynamic, ?scheme:Dynamic, ?allow_fragments:Dynamic):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.
@@ -316,6 +308,9 @@ package pandas.io.html;
 		    :class:`~pandas.MultiIndex`, otherwise return raw tuples. Defaults to
 		    ``False``.
 		
+		    .. deprecated:: 0.21.0
+		       This argument will be removed and will always convert to MultiIndex
+		
 		thousands : str, optional
 		    Separator to use to parse thousands. Defaults to ``','``.
 		
@@ -349,6 +344,11 @@ package pandas.io.html;
 		    values are overridden, otherwise they're appended to
 		
 		    .. versionadded:: 0.19.0
+		
+		display_only : bool, default True
+		    Whether elements with "display: none" should be parsed
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
@@ -384,7 +384,7 @@ package pandas.io.html;
 		--------
 		pandas.read_csv
 	**/
-	static public function read_html(io:Dynamic, ?match:Dynamic, ?flavor:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?skiprows:Dynamic, ?attrs:Dynamic, ?parse_dates:Dynamic, ?tupleize_cols:Dynamic, ?thousands:Dynamic, ?encoding:Dynamic, ?decimal:Dynamic, ?converters:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic):Dynamic;
+	static public function read_html(io:Dynamic, ?match:Dynamic, ?flavor:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?skiprows:Dynamic, ?attrs:Dynamic, ?parse_dates:Dynamic, ?tupleize_cols:Dynamic, ?thousands:Dynamic, ?encoding:Dynamic, ?decimal:Dynamic, ?converters:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic, ?displayed_only:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 	/**

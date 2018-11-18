@@ -10,9 +10,6 @@ package matplotlib.tri;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
-	static public var division : Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		Draw contours on an unstructured triangular grid.
 		:func:`~matplotlib.pyplot.tricontour` and
@@ -22,18 +19,18 @@ package matplotlib.tri;
 		
 		The triangulation can be specified in one of two ways; either::
 		
-		  tricontour(triangulation, ...)
+		    tricontour(triangulation, ...)
 		
 		where triangulation is a :class:`matplotlib.tri.Triangulation`
 		object, or
 		
 		::
 		
-		  tricontour(x, y, ...)
-		  tricontour(x, y, triangles, ...)
-		  tricontour(x, y, triangles=triangles, ...)
-		  tricontour(x, y, mask=mask, ...)
-		  tricontour(x, y, triangles, mask=mask, ...)
+		    tricontour(x, y, ...)
+		    tricontour(x, y, triangles, ...)
+		    tricontour(x, y, triangles=triangles, ...)
+		    tricontour(x, y, mask=mask, ...)
+		    tricontour(x, y, triangles, mask=mask, ...)
 		
 		in which case a Triangulation object will be created.  See
 		:class:`~matplotlib.tri.Triangulation` for a explanation of
@@ -41,7 +38,7 @@ package matplotlib.tri;
 		
 		The remaining arguments may be::
 		
-		  tricontour(..., Z)
+		    tricontour(..., Z)
 		
 		where *Z* is the array of values to contour, one per point
 		in the triangulation.  The level values are chosen
@@ -49,27 +46,28 @@ package matplotlib.tri;
 		
 		::
 		
-		  tricontour(..., Z, N)
+		    tricontour(..., Z, N)
 		
-		contour *N* automatically-chosen levels.
+		contour up to *N+1* automatically chosen contour levels
+		(*N* intervals).
 		
 		::
 		
-		  tricontour(..., Z, V)
+		    tricontour(..., Z, V)
 		
 		draw contour lines at the values specified in sequence *V*,
 		which must be in increasing order.
 		
 		::
 		
-		  tricontourf(..., Z, V)
+		    tricontourf(..., Z, V)
 		
 		fill the (len(*V*)-1) regions between the values in *V*,
 		which must be in increasing order.
 		
 		::
 		
-		  tricontour(Z, **kwargs)
+		    tricontour(Z, **kwargs)
 		
 		Use keyword args to control colors, linewidth, origin, cmap ... see
 		below for more details.
@@ -79,7 +77,7 @@ package matplotlib.tri;
 		
 		Optional keyword arguments:
 		
-		  *colors*: [ *None* | string | (mpl_colors) ]
+		    *colors*: [ *None* | string | (mpl_colors) ]
 		    If *None*, the colormap specified by cmap will be used.
 		
 		    If a string, like 'r' or 'red', all levels will be plotted in this
@@ -89,25 +87,25 @@ package matplotlib.tri;
 		    different levels will be plotted in different colors in the order
 		    specified.
 		
-		  *alpha*: float
+		    *alpha*: float
 		    The alpha blending value
 		
-		  *cmap*: [ *None* | Colormap ]
+		    *cmap*: [ *None* | Colormap ]
 		    A cm :class:`~matplotlib.colors.Colormap` instance or
 		    *None*. If *cmap* is *None* and *colors* is *None*, a
 		    default Colormap is used.
 		
-		  *norm*: [ *None* | Normalize ]
+		    *norm*: [ *None* | Normalize ]
 		    A :class:`matplotlib.colors.Normalize` instance for
 		    scaling data values to colors. If *norm* is *None* and
 		    *colors* is *None*, the default linear scaling is used.
 		
-		  *levels* [level0, level1, ..., leveln]
+		    *levels* [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
 		    curves to draw, in increasing order; e.g., to draw just
 		    the zero contour pass ``levels=[0]``
 		
-		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
+		    *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the
 		    lower left corner, location (0,0). If 'image', the rc
 		    value for ``image.origin`` will be used.
@@ -115,7 +113,7 @@ package matplotlib.tri;
 		    This keyword is not active if *X* and *Y* are specified in
 		    the call to contour.
 		
-		  *extent*: [ *None* | (x0,x1,y0,y1) ]
+		    *extent*: [ *None* | (x0,x1,y0,y1) ]
 		
 		    If *origin* is not *None*, then *extent* is interpreted as
 		    in :func:`matplotlib.pyplot.imshow`: it gives the outer
@@ -127,13 +125,13 @@ package matplotlib.tri;
 		    This keyword is not active if *X* and *Y* are specified in
 		    the call to contour.
 		
-		  *locator*: [ *None* | ticker.Locator subclass ]
+		    *locator*: [ *None* | ticker.Locator subclass ]
 		    If *locator* is None, the default
 		    :class:`~matplotlib.ticker.MaxNLocator` is used. The
 		    locator is used to determine the contour levels if they
 		    are not given explicitly via the *V* argument.
 		
-		  *extend*: [ 'neither' | 'both' | 'min' | 'max' ]
+		    *extend*: [ 'neither' | 'both' | 'min' | 'max' ]
 		    Unless this is 'neither', contour levels are automatically
 		    added to one or both ends of the range so that all data
 		    are included. These added ranges are then mapped to the
@@ -142,23 +140,22 @@ package matplotlib.tri;
 		    :meth:`matplotlib.colors.Colormap.set_under` and
 		    :meth:`matplotlib.colors.Colormap.set_over` methods.
 		
-		  *xunits*, *yunits*: [ *None* | registered units ]
+		    *xunits*, *yunits*: [ *None* | registered units ]
 		    Override axis units by specifying an instance of a
 		    :class:`matplotlib.units.ConversionInterface`.
 		
 		
 		tricontour-only keyword arguments:
 		
-		  *linewidths*: [ *None* | number | tuple of numbers ]
-		    If *linewidths* is *None*, the default width in
-		    ``lines.linewidth`` in ``matplotlibrc`` is used.
+		    *linewidths*: [ *None* | number | tuple of numbers ]
+		    If *linewidths* is *None*, defaults to rc:`lines.linewidth`.
 		
 		    If a number, all levels will be plotted with this linewidth.
 		
 		    If a tuple, different levels will be plotted with different
 		    linewidths in the order specified
 		
-		  *linestyles*: [ *None* | 'solid' | 'dashed' | 'dashdot' | 'dotted' ]
+		    *linestyles*: [ *None* | 'solid' | 'dashed' | 'dashdot' | 'dotted' ]
 		    If *linestyles* is *None*, the 'solid' is used.
 		
 		    *linestyles* can also be an iterable of the above strings
@@ -168,12 +165,11 @@ package matplotlib.tri;
 		
 		    If contour is using a monochrome colormap and the contour
 		    level is less than 0, then the linestyle specified
-		    in ``contour.negative_linestyle`` in ``matplotlibrc``
-		    will be used.
+		    in :rc:`contour.negative_linestyle` will be used.
 		
 		tricontourf-only keyword arguments:
 		
-		  *antialiased*: [ *True* | *False* ]
+		    *antialiased*: bool
 		    enable antialiasing
 		
 		Note: tricontourf fills intervals that are closed at the top; that
@@ -184,10 +180,6 @@ package matplotlib.tri;
 		There is one exception: if the lowest boundary coincides with
 		the minimum value of the *z* array, then that minimum value
 		will be included in the lowest interval.
-		
-		**Examples:**
-		
-		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
 	static public function tricontour(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -199,18 +191,18 @@ package matplotlib.tri;
 		
 		The triangulation can be specified in one of two ways; either::
 		
-		  tricontour(triangulation, ...)
+		    tricontour(triangulation, ...)
 		
 		where triangulation is a :class:`matplotlib.tri.Triangulation`
 		object, or
 		
 		::
 		
-		  tricontour(x, y, ...)
-		  tricontour(x, y, triangles, ...)
-		  tricontour(x, y, triangles=triangles, ...)
-		  tricontour(x, y, mask=mask, ...)
-		  tricontour(x, y, triangles, mask=mask, ...)
+		    tricontour(x, y, ...)
+		    tricontour(x, y, triangles, ...)
+		    tricontour(x, y, triangles=triangles, ...)
+		    tricontour(x, y, mask=mask, ...)
+		    tricontour(x, y, triangles, mask=mask, ...)
 		
 		in which case a Triangulation object will be created.  See
 		:class:`~matplotlib.tri.Triangulation` for a explanation of
@@ -218,7 +210,7 @@ package matplotlib.tri;
 		
 		The remaining arguments may be::
 		
-		  tricontour(..., Z)
+		    tricontour(..., Z)
 		
 		where *Z* is the array of values to contour, one per point
 		in the triangulation.  The level values are chosen
@@ -226,27 +218,28 @@ package matplotlib.tri;
 		
 		::
 		
-		  tricontour(..., Z, N)
+		    tricontour(..., Z, N)
 		
-		contour *N* automatically-chosen levels.
+		contour up to *N+1* automatically chosen contour levels
+		(*N* intervals).
 		
 		::
 		
-		  tricontour(..., Z, V)
+		    tricontour(..., Z, V)
 		
 		draw contour lines at the values specified in sequence *V*,
 		which must be in increasing order.
 		
 		::
 		
-		  tricontourf(..., Z, V)
+		    tricontourf(..., Z, V)
 		
 		fill the (len(*V*)-1) regions between the values in *V*,
 		which must be in increasing order.
 		
 		::
 		
-		  tricontour(Z, **kwargs)
+		    tricontour(Z, **kwargs)
 		
 		Use keyword args to control colors, linewidth, origin, cmap ... see
 		below for more details.
@@ -256,7 +249,7 @@ package matplotlib.tri;
 		
 		Optional keyword arguments:
 		
-		  *colors*: [ *None* | string | (mpl_colors) ]
+		    *colors*: [ *None* | string | (mpl_colors) ]
 		    If *None*, the colormap specified by cmap will be used.
 		
 		    If a string, like 'r' or 'red', all levels will be plotted in this
@@ -266,25 +259,25 @@ package matplotlib.tri;
 		    different levels will be plotted in different colors in the order
 		    specified.
 		
-		  *alpha*: float
+		    *alpha*: float
 		    The alpha blending value
 		
-		  *cmap*: [ *None* | Colormap ]
+		    *cmap*: [ *None* | Colormap ]
 		    A cm :class:`~matplotlib.colors.Colormap` instance or
 		    *None*. If *cmap* is *None* and *colors* is *None*, a
 		    default Colormap is used.
 		
-		  *norm*: [ *None* | Normalize ]
+		    *norm*: [ *None* | Normalize ]
 		    A :class:`matplotlib.colors.Normalize` instance for
 		    scaling data values to colors. If *norm* is *None* and
 		    *colors* is *None*, the default linear scaling is used.
 		
-		  *levels* [level0, level1, ..., leveln]
+		    *levels* [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
 		    curves to draw, in increasing order; e.g., to draw just
 		    the zero contour pass ``levels=[0]``
 		
-		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
+		    *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the
 		    lower left corner, location (0,0). If 'image', the rc
 		    value for ``image.origin`` will be used.
@@ -292,7 +285,7 @@ package matplotlib.tri;
 		    This keyword is not active if *X* and *Y* are specified in
 		    the call to contour.
 		
-		  *extent*: [ *None* | (x0,x1,y0,y1) ]
+		    *extent*: [ *None* | (x0,x1,y0,y1) ]
 		
 		    If *origin* is not *None*, then *extent* is interpreted as
 		    in :func:`matplotlib.pyplot.imshow`: it gives the outer
@@ -304,13 +297,13 @@ package matplotlib.tri;
 		    This keyword is not active if *X* and *Y* are specified in
 		    the call to contour.
 		
-		  *locator*: [ *None* | ticker.Locator subclass ]
+		    *locator*: [ *None* | ticker.Locator subclass ]
 		    If *locator* is None, the default
 		    :class:`~matplotlib.ticker.MaxNLocator` is used. The
 		    locator is used to determine the contour levels if they
 		    are not given explicitly via the *V* argument.
 		
-		  *extend*: [ 'neither' | 'both' | 'min' | 'max' ]
+		    *extend*: [ 'neither' | 'both' | 'min' | 'max' ]
 		    Unless this is 'neither', contour levels are automatically
 		    added to one or both ends of the range so that all data
 		    are included. These added ranges are then mapped to the
@@ -319,23 +312,22 @@ package matplotlib.tri;
 		    :meth:`matplotlib.colors.Colormap.set_under` and
 		    :meth:`matplotlib.colors.Colormap.set_over` methods.
 		
-		  *xunits*, *yunits*: [ *None* | registered units ]
+		    *xunits*, *yunits*: [ *None* | registered units ]
 		    Override axis units by specifying an instance of a
 		    :class:`matplotlib.units.ConversionInterface`.
 		
 		
 		tricontour-only keyword arguments:
 		
-		  *linewidths*: [ *None* | number | tuple of numbers ]
-		    If *linewidths* is *None*, the default width in
-		    ``lines.linewidth`` in ``matplotlibrc`` is used.
+		    *linewidths*: [ *None* | number | tuple of numbers ]
+		    If *linewidths* is *None*, defaults to rc:`lines.linewidth`.
 		
 		    If a number, all levels will be plotted with this linewidth.
 		
 		    If a tuple, different levels will be plotted with different
 		    linewidths in the order specified
 		
-		  *linestyles*: [ *None* | 'solid' | 'dashed' | 'dashdot' | 'dotted' ]
+		    *linestyles*: [ *None* | 'solid' | 'dashed' | 'dashdot' | 'dotted' ]
 		    If *linestyles* is *None*, the 'solid' is used.
 		
 		    *linestyles* can also be an iterable of the above strings
@@ -345,12 +337,11 @@ package matplotlib.tri;
 		
 		    If contour is using a monochrome colormap and the contour
 		    level is less than 0, then the linestyle specified
-		    in ``contour.negative_linestyle`` in ``matplotlibrc``
-		    will be used.
+		    in :rc:`contour.negative_linestyle` will be used.
 		
 		tricontourf-only keyword arguments:
 		
-		  *antialiased*: [ *True* | *False* ]
+		    *antialiased*: bool
 		    enable antialiasing
 		
 		Note: tricontourf fills intervals that are closed at the top; that
@@ -361,10 +352,6 @@ package matplotlib.tri;
 		There is one exception: if the lowest boundary coincides with
 		the minimum value of the *z* array, then that minimum value
 		will be included in the lowest interval.
-		
-		**Examples:**
-		
-		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
 	static public function tricontourf(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -395,7 +382,7 @@ package matplotlib.tri;
 		are defined at triangles. If there are the same number of points
 		and triangles in the triangulation it is assumed that color
 		values are defined at points; to force the use of color values at
-		triangles use the kwarg *facecolors*=C instead of just *C*.
+		triangles use the kwarg ``facecolors=C`` instead of just ``C``.
 		
 		*shading* may be 'flat' (the default) or 'gouraud'. If *shading*
 		is 'flat' and C values are defined at points, the color values
@@ -405,12 +392,8 @@ package matplotlib.tri;
 		
 		The remaining kwargs are the same as for
 		:meth:`~matplotlib.axes.Axes.pcolor`.
-		
-		**Example:**
-		
-		    .. plot:: mpl_examples/pylab_examples/tripcolor_demo.py
 	**/
-	static public function tripcolor(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function tripcolor(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?alpha:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?shading:Dynamic, ?facecolors:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a unstructured triangular grid as lines and/or markers.
 		
@@ -442,11 +425,6 @@ package matplotlib.tri;
 		
 		    - the lines plotted for triangles edges
 		    - the markers plotted for triangles nodes
-		
-		**Example:**
-		
-		    .. plot:: mpl_examples/pylab_examples/triplot_demo.py
 	**/
 	static public function triplot(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var unicode_literals : Dynamic;
 }

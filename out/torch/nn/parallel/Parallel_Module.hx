@@ -23,22 +23,31 @@ package torch.nn.parallel;
 		    output_device: GPU location of the output  Use -1 to indicate the CPU.
 		        (default: device_ids[0])
 		Returns:
-		    a Variable containing the result of module(input) located on
+		    a Tensor containing the result of module(input) located on
 		    output_device
 	**/
 	static public function data_parallel(module:Dynamic, inputs:Dynamic, ?device_ids:Dynamic, ?output_device:Dynamic, ?dim:Dynamic, ?module_kwargs:Dynamic):Dynamic;
 	/**
-		Gathers variables from different GPUs on a specified device
+		Gathers tensors from different GPUs on a specified device
 		  (-1 means the CPU).
 	**/
 	static public function gather(outputs:Dynamic, target_device:Dynamic, ?dim:Dynamic):Dynamic;
-	static public function parallel_apply(modules:Dynamic, inputs:Dynamic, ?kwargs_tup:Dynamic):Dynamic;
-	static public function replicate(network:Dynamic, devices:Dynamic):Dynamic;
 	/**
-		Slices variables into approximately equal chunks and
-		distributes them accross given GPUs. Duplicates
-		references to objects that are not variables. Does not
-		support Tensors.
+		Applies each `module` in :attr:`modules` in parallel on arguments
+		contained in :attr:`inputs` (positional) and :attr:`kwargs_tup` (keyword)
+		on each of :attr:`devices`.
+		
+		:attr:`modules`, :attr:`inputs`, :attr:`kwargs_tup` (if given), and
+		:attr:`devices` (if given) should all have same length. Moreover, each
+		element of :attr:`inputs` can either be a single object as the only argument
+		to a module, or a collection of positional arguments.
+	**/
+	static public function parallel_apply(modules:Dynamic, inputs:Dynamic, ?kwargs_tup:Dynamic, ?devices:Dynamic):Dynamic;
+	static public function replicate(network:Dynamic, devices:Dynamic, ?detach:Dynamic):Dynamic;
+	/**
+		Slices tensors into approximately equal chunks and
+		distributes them across given GPUs. Duplicates
+		references to objects that are not tensors.
 	**/
 	static public function scatter(inputs:Dynamic, target_gpus:Dynamic, ?dim:Dynamic):Dynamic;
 }

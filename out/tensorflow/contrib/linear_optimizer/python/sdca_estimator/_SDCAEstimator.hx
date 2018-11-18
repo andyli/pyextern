@@ -4,15 +4,11 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 	/**
 		This class specifies the configurations for an `Estimator` run.
 		
-		This class is the implementation of ${tf.estimator.RunConfig} interface.
-		
-		If you're a Google-internal user using command line flags with
-		`learn_runner.py` (for instance, to do distributed training or to use
-		parameter servers), you probably want to use `learn_runner.EstimatorConfig`
-		instead.
+		This class is a deprecated implementation of `tf.estimator.RunConfig`
+		interface.
 	**/
-	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _Config(?master:Dynamic, ?num_cores:Dynamic, ?log_device_placement:Dynamic, ?gpu_memory_fraction:Dynamic, ?tf_random_seed:Dynamic, ?save_summary_steps:Dynamic, ?save_checkpoints_secs:Dynamic, ?save_checkpoints_steps:Dynamic, ?keep_checkpoint_max:Dynamic, ?keep_checkpoint_every_n_hours:Dynamic, ?log_step_count_steps:Dynamic, ?protocol:Dynamic, ?evaluation_master:Dynamic, ?model_dir:Dynamic, ?session_config:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -62,7 +58,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		    will be multiplied by the loss of the example.
 		  model_dir: Directory to save model parameters, graph etc. This can also be
 		    used to load checkpoints from the directory into an estimator to
-		    continue  training a previously saved model.
+		    continue training a previously saved model.
 		  head: type of head. Currently, _BinaryLogisticHead and _BinarySvmHead are
 		    supported for classification and _RegressionHead for regression. It
 		    should be a subclass of _SingleHead.
@@ -76,6 +72,8 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		  feature_engineering_fn: Feature engineering function. Takes features and
 		    labels which are the output of `input_fn` and returns features and
 		    labels which will be fed into the model.
+		  partitioner: Variable partitioner for the primal weights (`div`
+		    partitioning strategy will be used).
 		
 		Returns:
 		  A `_SDCAEstimator` estimator.
@@ -84,7 +82,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		  ValueError: if head is not supported by SDCA.
 	**/
 	@:native("__init__")
-	public function ___init__(example_id_column:Dynamic, feature_columns:Dynamic, ?weight_column_name:Dynamic, ?model_dir:Dynamic, ?head:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?num_loss_partitions:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic):Dynamic;
+	public function ___init__(example_id_column:Dynamic, feature_columns:Dynamic, ?weight_column_name:Dynamic, ?model_dir:Dynamic, ?head:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?num_loss_partitions:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic, ?partitioner:Dynamic):Dynamic;
 	/**
 		Construct a `_SDCAEstimator` estimator object.
 		
@@ -99,7 +97,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		    will be multiplied by the loss of the example.
 		  model_dir: Directory to save model parameters, graph etc. This can also be
 		    used to load checkpoints from the directory into an estimator to
-		    continue  training a previously saved model.
+		    continue training a previously saved model.
 		  head: type of head. Currently, _BinaryLogisticHead and _BinarySvmHead are
 		    supported for classification and _RegressionHead for regression. It
 		    should be a subclass of _SingleHead.
@@ -113,6 +111,8 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		  feature_engineering_fn: Feature engineering function. Takes features and
 		    labels which are the output of `input_fn` and returns features and
 		    labels which will be fed into the model.
+		  partitioner: Variable partitioner for the primal weights (`div`
+		    partitioning strategy will be used).
 		
 		Returns:
 		  A `_SDCAEstimator` estimator.
@@ -120,14 +120,14 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		Raises:
 		  ValueError: if head is not supported by SDCA.
 	**/
-	public function new(example_id_column:Dynamic, feature_columns:Dynamic, ?weight_column_name:Dynamic, ?model_dir:Dynamic, ?head:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?num_loss_partitions:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic):Void;
+	public function new(example_id_column:Dynamic, feature_columns:Dynamic, ?weight_column_name:Dynamic, ?model_dir:Dynamic, ?head:Dynamic, ?l1_regularization:Dynamic, ?l2_regularization:Dynamic, ?num_loss_partitions:Dynamic, ?config:Dynamic, ?feature_engineering_fn:Dynamic, ?partitioner:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -149,7 +149,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __metaclass__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
@@ -192,7 +192,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -204,6 +204,8 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		  features: features dict.
 		  labels: labels dict.
 		  mode: ModeKeys
+		  metrics: Dict of metrics.
+		  config: RunConfig.
 		
 		Returns:
 		  A `ModelFnOps` object. If model_fn returns a tuple, wraps them up in a
@@ -212,7 +214,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		Raises:
 		  ValueError: if model_fn returns invalid objects.
 	**/
-	public function _call_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic):Dynamic;
+	public function _call_model_fn(features:Dynamic, labels:Dynamic, mode:Dynamic, ?metrics:Dynamic, ?config:Dynamic):Dynamic;
 	public function _check_inputs(features:Dynamic, labels:Dynamic):Dynamic;
 	public function _evaluate_model(input_fn:Dynamic, steps:Dynamic, ?feed_fn:Dynamic, ?metrics:Dynamic, ?name:Dynamic, ?checkpoint_path:Dynamic, ?hooks:Dynamic, ?log_progress:Dynamic):Dynamic;
 	/**
@@ -223,7 +225,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 	/**
 		Method that builds model graph and returns evaluation ops.
 		
-		Expected to be overriden by sub-classes that require custom support.
+		Expected to be overridden by sub-classes that require custom support.
 		This implementation uses `model_fn` passed as parameter to constructor to
 		build model.
 		
@@ -270,7 +272,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 	/**
 		Method that builds model graph and returns prediction ops.
 		
-		Expected to be overriden by sub-classes that require custom support.
+		Expected to be overridden by sub-classes that require custom support.
 		This implementation uses `model_fn` passed as parameter to constructor to
 		build model.
 		
@@ -284,7 +286,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 	/**
 		Method that builds model graph and returns trainer ops.
 		
-		Expected to be overriden by sub-classes that require custom support.
+		Expected to be overridden by sub-classes that require custom support.
 		This implementation uses `model_fn` passed as parameter to constructor to
 		build model.
 		
@@ -380,6 +382,14 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		  as_text: whether to write the SavedModel proto in text format.
 		  checkpoint_path: The checkpoint path to export.  If None (the default),
 		    the most recent checkpoint found within the model directory is chosen.
+		  graph_rewrite_specs: an iterable of `GraphRewriteSpec`.  Each element will
+		    produce a separate MetaGraphDef within the exported SavedModel, tagged
+		    and rewritten as specified.  Defaults to a single entry using the
+		    default serving tag ("serve") and no rewriting.
+		  strip_default_attrs: Boolean. If `True`, default-valued attributes will be
+		    removed from the NodeDefs. For a detailed guide, see
+		    [Stripping Default-Valued
+		      Attributes](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/saved_model/README.md#stripping-default-valued-attributes).
 		
 		Returns:
 		  The string path to the exported directory.
@@ -387,7 +397,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		Raises:
 		  ValueError: if an unrecognized export_type is requested.
 	**/
-	public function export_savedmodel(export_dir_base:Dynamic, serving_input_fn:Dynamic, ?default_output_alternative_key:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic):Dynamic;
+	public function export_savedmodel(export_dir_base:Dynamic, serving_input_fn:Dynamic, ?default_output_alternative_key:Dynamic, ?assets_extra:Dynamic, ?as_text:Dynamic, ?checkpoint_path:Dynamic, ?graph_rewrite_specs:Dynamic, ?strip_default_attrs:Dynamic):Dynamic;
 	/**
 		See `Trainable`. (deprecated arguments)
 		
@@ -439,6 +449,14 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		Returns a path in which the eval process will look for checkpoints.
 	**/
 	public var model_dir : Dynamic;
+	/**
+		Returns the model_fn which is bound to self.params.
+		
+		Returns:
+		  The model_fn with the following signature:
+		    `def model_fn(features, labels, mode, metrics)`
+	**/
+	public var model_fn : Dynamic;
 	/**
 		Incremental fit on a batch of samples. (deprecated arguments)
 		
@@ -506,6 +524,9 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		    for each example until inputs are exhausted. Note: The inputs must
 		    terminate if you want the iterable to terminate (e.g. be sure to pass
 		    num_epochs=1 if you are using something like read_batch_features).
+		  iterate_batches: If True, yield the whole batch at once instead of
+		    decomposing the batch into individual samples. Only relevant when
+		    as_iterable is True.
 		
 		Returns:
 		  A numpy array of predicted classes or regression values if the
@@ -516,7 +537,7 @@ package tensorflow.contrib.linear_optimizer.python.sdca_estimator;
 		Raises:
 		  ValueError: If x and input_fn are both provided or both `None`.
 	**/
-	public function predict(?x:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic):Dynamic;
+	public function predict(?x:Dynamic, ?input_fn:Dynamic, ?batch_size:Dynamic, ?outputs:Dynamic, ?as_iterable:Dynamic, ?iterate_batches:Dynamic):Dynamic;
 	/**
 		Set the parameters of this estimator.
 		

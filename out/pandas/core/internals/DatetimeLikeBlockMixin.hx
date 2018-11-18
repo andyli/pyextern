@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.internals;
 @:pythonImport("pandas.core.internals", "DatetimeLikeBlockMixin") extern class DatetimeLikeBlockMixin {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package pandas.core.internals;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,16 +103,13 @@ package pandas.core.internals;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var _holder : Dynamic;
 	public var _na_value : Dynamic;
-	/**
-		return a version to operate on 
-	**/
-	public function _try_operate(values:Dynamic):Dynamic;
 	public var fill_value : Dynamic;
 	/**
 		return object dtype as boxed values, such as Timestamps/Timedelta

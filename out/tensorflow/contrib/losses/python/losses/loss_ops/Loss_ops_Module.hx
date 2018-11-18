@@ -154,11 +154,15 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 	**/
 	static public function compute_weighted_loss(losses:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
 	/**
-		Adds a cosine-distance loss to the training procedure. (deprecated)
+		Adds a cosine-distance loss to the training procedure. (deprecated arguments) (deprecated)
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
 		Use tf.losses.cosine_distance instead.
+		
+		SOME ARGUMENTS ARE DEPRECATED. They will be removed in a future version.
+		Instructions for updating:
+		dim is deprecated, use axis instead
 		
 		Note that the function assumes that `predictions` and `labels` are already
 		unit-normalized.
@@ -166,10 +170,11 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		Args:
 		  predictions: An arbitrary matrix.
 		  labels: A `Tensor` whose shape matches 'predictions'
-		  dim: The dimension along which the cosine distance is computed.
+		  axis: The dimension along which the cosine distance is computed.
 		  weights: Coefficients for the loss a scalar, a tensor of shape
 		    [batch_size] or a tensor whose shape matches `predictions`.
 		  scope: The scope for the operations performed in computing the loss.
+		  dim: The old (deprecated) name for `axis`.
 		
 		Returns:
 		  A scalar `Tensor` representing the loss value.
@@ -178,7 +183,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		  ValueError: If `predictions` shape doesn't match `labels` shape, or
 		    `weights` is `None`.
 	**/
-	static public function cosine_distance(predictions:Dynamic, ?labels:Dynamic, ?dim:Dynamic, ?weights:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function cosine_distance(predictions:Dynamic, ?labels:Dynamic, ?axis:Dynamic, ?weights:Dynamic, ?scope:Dynamic, ?dim:Dynamic):Dynamic;
 	/**
 		Decorator for marking functions or methods deprecated.
 		
@@ -201,6 +206,8 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		    Must be ISO 8601 (YYYY-MM-DD), or None.
 		  instructions: String. Instructions on how to update code using the
 		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
 		
 		Returns:
 		  Decorated function or method.
@@ -209,7 +216,62 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		  ValueError: If date is not None or in ISO 8601 format, or instructions are
 		    empty.
 	**/
-	static public function deprecated(date:Dynamic, instructions:Dynamic):Dynamic;
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
+	/**
+		Decorator for marking specific function arguments as deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called with the deprecated argument. It has the following format:
+		
+		  Calling <function> (from <module>) with <arg> is deprecated and will be
+		  removed after <date>. Instructions for updating:
+		    <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> includes the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated arguments)' is
+		appended to the first line of the docstring and a deprecation notice is
+		prepended to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  *deprecated_arg_names_or_tuples: String or 2-Tuple(String,
+		    [ok_vals]).  The string is the deprecated argument name.
+		    Optionally, an ok-value may be provided.  If the user provided
+		    argument equals this value, the warning is suppressed.
+		  **kwargs: If `warn_once=False` is passed, every call with a deprecated
+		    argument will log a warning. The default behavior is to only warn the
+		    first time the function is called with any given deprecated argument.
+		    All other kwargs raise `ValueError`.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, instructions are
+		    empty, the deprecated arguments are not present in the function
+		    signature, the second element of a deprecated_tuple is not a
+		    list, or if a kwarg other than `warn_once` is passed.
+	**/
+	static public function deprecated_args(date:Dynamic, instructions:Dynamic, ?deprecated_arg_names_or_tuples:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Looks up deprecated argument name and ensures both are not used.
+		
+		Args:
+		  new_name: new name of argument
+		  new_value: value of new argument (or None if not used)
+		  old_name: old name of argument
+		  old_value: value of old argument (or None if not used)
+		Returns:
+		  The effective argument that should be used.
+		Raises:
+		  ValueError: if new_value and old_value are both non-null
+	**/
+	static public function deprecated_argument_lookup(new_name:Dynamic, new_value:Dynamic, old_name:Dynamic, old_value:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Gets the list of losses from the loss_collection. (deprecated)
@@ -266,17 +328,21 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
-		Use tf.losses.hinge_loss instead. Note that the order of the predictions and labels arguments were changed.
+		Use tf.losses.hinge_loss instead. Note that the order of the logits and labels arguments has been changed, and to stay unweighted, reduction=Reduction.NONE
 		
 		Args:
-		  logits: The logits, a float tensor.
+		  logits: The logits, a float tensor. Note that logits are assumed to be
+		    unbounded and 0-centered. A value > 0 (resp. < 0) is considered a positive
+		    (resp. negative) binary prediction.
 		  labels: The ground truth output tensor. Its shape should match the shape of
-		    logits. The values of the tensor are expected to be 0.0 or 1.0.
+		    logits. The values of the tensor are expected to be 0.0 or 1.0. Internally
+		    the {0,1} labels are converted to {-1,1} when calculating the hinge loss.
 		  scope: The scope for the operations performed in computing the loss.
 		
 		Returns:
-		  A `Tensor` of same shape as `logits` and `labels` representing the loss
-		    values across the batch.
+		  An unweighted `Tensor` of same shape as `logits` and `labels` representing
+		  the
+		    loss values across the batch.
 		
 		Raises:
 		  ValueError: If the shapes of `logits` and `labels` don't match.
@@ -287,7 +353,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
-		Use tf.losses.log_loss instead. Note that the order of the predictions and labels arguments was changed.
+		Use tf.losses.log_loss instead. Note that the order of the predictions and labels arguments has been changed.
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided, then
 		the loss is simply scaled by the given value. If `weights` is a tensor of size
@@ -318,7 +384,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
-		Use tf.losses.mean_pairwise_squared_error instead. Note that the order of the predictions and labels arguments was changed.
+		Use tf.losses.mean_pairwise_squared_error instead. Note that the order of the predictions and labels arguments has been changed.
 		
 		Unlike `mean_squared_error`, which is a measure of the differences between
 		corresponding elements of `predictions` and `labels`,
@@ -393,7 +459,7 @@ package tensorflow.contrib.losses.python.losses.loss_ops;
 		
 		THIS FUNCTION IS DEPRECATED. It will be removed after 2016-12-30.
 		Instructions for updating:
-		Use tf.losses.sigmoid_cross_entropy instead. Note that the order of the predictions and labels arguments was changed.
+		Use tf.losses.sigmoid_cross_entropy instead. Note that the order of the predictions and labels arguments has been changed.
 		
 		`weights` acts as a coefficient for the loss. If a scalar is provided,
 		then the loss is simply scaled by the given value. If `weights` is a

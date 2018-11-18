@@ -11,6 +11,7 @@ package docutils.utils;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __version_info__ : Dynamic;
 	/**
 		Return a mapping of option names to values.
 		
@@ -33,6 +34,7 @@ package docutils.utils;
 	/**
 		Indices of Unicode string `text` when skipping combining characters.
 		
+		>>> from docutils.utils import column_indices
 		>>> column_indices(u'A t̆ab̆lĕ')
 		[0, 1, 2, 4, 5, 7, 8]
 	**/
@@ -99,6 +101,7 @@ package docutils.utils;
 	/**
 		Return indices of all combining chars in  Unicode string `text`.
 		
+		>>> from docutils.utils import find_combining_chars
 		>>> find_combining_chars(u'A t̆ab̆lĕ')
 		[3, 6, 9]
 	**/
@@ -168,8 +171,11 @@ package docutils.utils;
 		
 		Example:
 		
+		>>> from docutils.utils import normalize_language_tag
 		>>> normalize_language_tag('de_AT-1901')
 		['de-at-1901', 'de-at', 'de-1901', 'de']
+		>>> normalize_language_tag('de-CH-x_altquot')
+		['de-ch-x-altquot', 'de-ch', 'de-x-altquot', 'de']
 	**/
 	static public function normalize_language_tag(tag:Dynamic):Dynamic;
 	/**
@@ -178,15 +184,26 @@ package docutils.utils;
 		If there is no common prefix, return the absolute path to `target`.
 	**/
 	static public function relative_path(source:Dynamic, target:Dynamic):Dynamic;
+	static public var release_level_abbreviations : Dynamic;
+	/**
+		Split `text` on escaped whitespace (null+space or null+newline).
+		Return a list of strings.
+	**/
+	static public function split_escaped_whitespace(text:Dynamic):Dynamic;
 	static public function strip_combining_chars(text:Dynamic):Dynamic;
 	/**
 		Return a string with nulls removed or restored to backslashes.
 		Backslash-escaped spaces are also removed.
 	**/
-	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic):Dynamic;
+	static public function unescape(text:Dynamic, ?restore_backslashes:Dynamic, ?respect_whitespace:Dynamic):Dynamic;
 	static public function uniq(L:Dynamic):Dynamic;
 	/**
 		Return n-length tuples, in sorted order, no repeated elements
 	**/
 	static public function unique_combinations(items:Dynamic, n:Dynamic):Dynamic;
+	/**
+		Given a `version_info` tuple (default is docutils.__version_info__),
+		build & return a version identifier string.
+	**/
+	static public function version_identifier(?version_info:Dynamic):Dynamic;
 }

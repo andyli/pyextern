@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.legend;
 @:pythonImport("matplotlib.legend", "Legend") extern class Legend {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -39,47 +39,214 @@ package matplotlib.legend;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		- *parent*: the artist that contains the legend
-		- *handles*: a list of artists (lines, patches) to be added to the
-		              legend
-		- *labels*: a list of strings to label the legend
+		Parameters
+		----------
+		parent : `~matplotlib.axes.Axes` or `.Figure`
+		    The artist that contains the legend.
 		
-		Optional keyword arguments:
+		handles : sequence of `.Artist`
+		    A list of Artists (lines, patches) to be added to the legend.
 		
-		================   ====================================================
-		Keyword            Description
-		================   ====================================================
-		loc                Location code string, or tuple (see below).
-		prop               the font property
-		fontsize           the font size (used only if prop is not specified)
-		markerscale        the relative size of legend markers vs. original
-		markerfirst        If True (default), marker is to left of the label.
-		numpoints          the number of points in the legend for line
-		scatterpoints      the number of points in the legend for scatter plot
-		scatteryoffsets    a list of yoffsets for scatter symbols in legend
-		frameon            If True, draw the legend on a patch (frame).
-		fancybox           If True, draw the frame with a round fancybox.
-		shadow             If True, draw a shadow behind legend.
-		framealpha         Transparency of the frame.
-		edgecolor          Frame edgecolor.
-		facecolor          Frame facecolor.
-		ncol               number of columns
-		borderpad          the fractional whitespace inside the legend border
-		labelspacing       the vertical space between the legend entries
-		handlelength       the length of the legend handles
-		handleheight       the height of the legend handles
-		handletextpad      the pad between the legend handle and text
-		borderaxespad      the pad between the axes and legend border
-		columnspacing      the spacing between columns
-		title              the legend title
-		bbox_to_anchor     the bbox that the legend will be anchored.
-		bbox_transform     the transform for the bbox. transAxes if None.
-		================   ====================================================
+		labels : sequence of strings
+		    A list of labels to show next to the artists. The length of handles
+		    and labels should be the same. If they are not, they are truncated
+		    to the smaller of both lengths.
+		
+		Other Parameters
+		----------------
 		
 		
-		The pad and spacing parameters are measured in font-size units.  e.g.,
-		a fontsize of 10 points and a handlelength=5 implies a handlelength of
-		50 points.  Values from rcParams will be used if None.
+		loc : int or string or pair of floats, default: :rc:`legend.loc` ('best' for axes, 'upper right' for figures)
+		    The location of the legend. Possible codes are:
+		
+		        ===============   =============
+		        Location String   Location Code
+		        ===============   =============
+		        'best'            0
+		        'upper right'     1
+		        'upper left'      2
+		        'lower left'      3
+		        'lower right'     4
+		        'right'           5
+		        'center left'     6
+		        'center right'    7
+		        'lower center'    8
+		        'upper center'    9
+		        'center'          10
+		        ===============   =============
+		
+		
+		    Alternatively can be a 2-tuple giving ``x, y`` of the lower-left
+		    corner of the legend in axes coordinates (in which case
+		    ``bbox_to_anchor`` will be ignored).
+		
+		    The 'best' option can be quite slow for plots with large amounts
+		    of data. Your plotting speed may benefit from providing a specific
+		    location.
+		
+		bbox_to_anchor : `.BboxBase`, 2-tuple, or 4-tuple of floats
+		    Box that is used to position the legend in conjunction with *loc*.
+		    Defaults to `axes.bbox` (if called as a method to `.Axes.legend`) or
+		    `figure.bbox` (if `.Figure.legend`).  This argument allows arbitrary
+		    placement of the legend.
+		
+		    Bbox coordinates are interpreted in the coordinate system given by
+		    `bbox_transform`, with the default transform
+		    Axes or Figure coordinates, depending on which ``legend`` is called.
+		
+		    If a 4-tuple or `.BboxBase` is given, then it specifies the bbox
+		    ``(x, y, width, height)`` that the legend is placed in.
+		    To put the legend in the best location in the bottom right
+		    quadrant of the axes (or figure)::
+		
+		        loc='best', bbox_to_anchor=(0.5, 0., 0.5, 0.5)
+		
+		    A 2-tuple ``(x, y)`` places the corner of the legend specified by *loc* at
+		    x, y.  For example, to put the legend's upper right-hand corner in the
+		    center of the axes (or figure) the following keywords can be used::
+		
+		        loc='upper right', bbox_to_anchor=(0.5, 0.5)
+		
+		ncol : integer
+		    The number of columns that the legend has. Default is 1.
+		
+		prop : None or :class:`matplotlib.font_manager.FontProperties` or dict
+		    The font properties of the legend. If None (default), the current
+		    :data:`matplotlib.rcParams` will be used.
+		
+		fontsize : int or float or {'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
+		    Controls the font size of the legend. If the value is numeric the
+		    size will be the absolute font size in points. String values are
+		    relative to the current default font size. This argument is only
+		    used if `prop` is not specified.
+		
+		numpoints : None or int
+		    The number of marker points in the legend when creating a legend
+		    entry for a `.Line2D` (line).
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.numpoints`.
+		
+		scatterpoints : None or int
+		    The number of marker points in the legend when creating
+		    a legend entry for a `.PathCollection` (scatter plot).
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.scatterpoints`.
+		
+		scatteryoffsets : iterable of floats
+		    The vertical offset (relative to the font size) for the markers
+		    created for a scatter plot legend entry. 0.0 is at the base the
+		    legend text, and 1.0 is at the top. To draw all markers at the
+		    same height, set to ``[0.5]``. Default is ``[0.375, 0.5, 0.3125]``.
+		
+		markerscale : None or int or float
+		    The relative size of legend markers compared with the originally
+		    drawn ones.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.markerscale`.
+		
+		markerfirst : bool
+		    If *True*, legend marker is placed to the left of the legend label.
+		    If *False*, legend marker is placed to the right of the legend
+		    label.
+		    Default is *True*.
+		
+		frameon : None or bool
+		    Control whether the legend should be drawn on a patch
+		    (frame).
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.frameon`.
+		
+		fancybox : None or bool
+		    Control whether round edges should be enabled around the
+		    :class:`~matplotlib.patches.FancyBboxPatch` which makes up the
+		    legend's background.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.fancybox`.
+		
+		shadow : None or bool
+		    Control whether to draw a shadow behind the legend.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.shadow`.
+		
+		framealpha : None or float
+		    Control the alpha transparency of the legend's background.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.framealpha`.  If shadow is activated and
+		    *framealpha* is ``None``, the default value is ignored.
+		
+		facecolor : None or "inherit" or a color spec
+		    Control the legend's background color.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.facecolor`.  If ``"inherit"``, it will take
+		    :rc:`axes.facecolor`.
+		
+		edgecolor : None or "inherit" or a color spec
+		    Control the legend's background patch edge color.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.edgecolor` If ``"inherit"``, it will take
+		    :rc:`axes.edgecolor`.
+		
+		mode : {"expand", None}
+		    If `mode` is set to ``"expand"`` the legend will be horizontally
+		    expanded to fill the axes area (or `bbox_to_anchor` if defines
+		    the legend's size).
+		
+		bbox_transform : None or :class:`matplotlib.transforms.Transform`
+		    The transform for the bounding box (`bbox_to_anchor`). For a value
+		    of ``None`` (default) the Axes'
+		    :data:`~matplotlib.axes.Axes.transAxes` transform will be used.
+		
+		title : str or None
+		    The legend's title. Default is no title (``None``).
+		
+		title_fontsize: str or None
+		    The fontsize of the legend's title.  Default is the default fontsize.
+		
+		borderpad : float or None
+		    The fractional whitespace inside the legend border.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.borderpad`.
+		
+		labelspacing : float or None
+		    The vertical space between the legend entries.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.labelspacing`.
+		
+		handlelength : float or None
+		    The length of the legend handles.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.handlelength`.
+		
+		handletextpad : float or None
+		    The pad between the legend handle and text.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.handletextpad`.
+		
+		borderaxespad : float or None
+		    The pad between the axes and legend border.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.borderaxespad`.
+		
+		columnspacing : float or None
+		    The spacing between columns.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.columnspacing`.
+		
+		handler_map : dict or None
+		    The custom dictionary mapping instances or types to a legend
+		    handler. This `handler_map` updates the default handler map
+		    found at :func:`matplotlib.legend.Legend.get_legend_handler_map`.
+		
+		
+		
+		Notes
+		-----
 		
 		Users can specify any arbitrary location for the legend using the
 		*bbox_to_anchor* keyword argument. bbox_to_anchor can be an instance
@@ -91,49 +258,216 @@ package matplotlib.legend;
 		in the normalized axes coordinate.
 	**/
 	@:native("__init__")
-	public function ___init__(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Dynamic;
+	public function ___init__(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?title_fontsize:Dynamic, ?framealpha:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Dynamic;
 	/**
-		- *parent*: the artist that contains the legend
-		- *handles*: a list of artists (lines, patches) to be added to the
-		              legend
-		- *labels*: a list of strings to label the legend
+		Parameters
+		----------
+		parent : `~matplotlib.axes.Axes` or `.Figure`
+		    The artist that contains the legend.
 		
-		Optional keyword arguments:
+		handles : sequence of `.Artist`
+		    A list of Artists (lines, patches) to be added to the legend.
 		
-		================   ====================================================
-		Keyword            Description
-		================   ====================================================
-		loc                Location code string, or tuple (see below).
-		prop               the font property
-		fontsize           the font size (used only if prop is not specified)
-		markerscale        the relative size of legend markers vs. original
-		markerfirst        If True (default), marker is to left of the label.
-		numpoints          the number of points in the legend for line
-		scatterpoints      the number of points in the legend for scatter plot
-		scatteryoffsets    a list of yoffsets for scatter symbols in legend
-		frameon            If True, draw the legend on a patch (frame).
-		fancybox           If True, draw the frame with a round fancybox.
-		shadow             If True, draw a shadow behind legend.
-		framealpha         Transparency of the frame.
-		edgecolor          Frame edgecolor.
-		facecolor          Frame facecolor.
-		ncol               number of columns
-		borderpad          the fractional whitespace inside the legend border
-		labelspacing       the vertical space between the legend entries
-		handlelength       the length of the legend handles
-		handleheight       the height of the legend handles
-		handletextpad      the pad between the legend handle and text
-		borderaxespad      the pad between the axes and legend border
-		columnspacing      the spacing between columns
-		title              the legend title
-		bbox_to_anchor     the bbox that the legend will be anchored.
-		bbox_transform     the transform for the bbox. transAxes if None.
-		================   ====================================================
+		labels : sequence of strings
+		    A list of labels to show next to the artists. The length of handles
+		    and labels should be the same. If they are not, they are truncated
+		    to the smaller of both lengths.
+		
+		Other Parameters
+		----------------
 		
 		
-		The pad and spacing parameters are measured in font-size units.  e.g.,
-		a fontsize of 10 points and a handlelength=5 implies a handlelength of
-		50 points.  Values from rcParams will be used if None.
+		loc : int or string or pair of floats, default: :rc:`legend.loc` ('best' for axes, 'upper right' for figures)
+		    The location of the legend. Possible codes are:
+		
+		        ===============   =============
+		        Location String   Location Code
+		        ===============   =============
+		        'best'            0
+		        'upper right'     1
+		        'upper left'      2
+		        'lower left'      3
+		        'lower right'     4
+		        'right'           5
+		        'center left'     6
+		        'center right'    7
+		        'lower center'    8
+		        'upper center'    9
+		        'center'          10
+		        ===============   =============
+		
+		
+		    Alternatively can be a 2-tuple giving ``x, y`` of the lower-left
+		    corner of the legend in axes coordinates (in which case
+		    ``bbox_to_anchor`` will be ignored).
+		
+		    The 'best' option can be quite slow for plots with large amounts
+		    of data. Your plotting speed may benefit from providing a specific
+		    location.
+		
+		bbox_to_anchor : `.BboxBase`, 2-tuple, or 4-tuple of floats
+		    Box that is used to position the legend in conjunction with *loc*.
+		    Defaults to `axes.bbox` (if called as a method to `.Axes.legend`) or
+		    `figure.bbox` (if `.Figure.legend`).  This argument allows arbitrary
+		    placement of the legend.
+		
+		    Bbox coordinates are interpreted in the coordinate system given by
+		    `bbox_transform`, with the default transform
+		    Axes or Figure coordinates, depending on which ``legend`` is called.
+		
+		    If a 4-tuple or `.BboxBase` is given, then it specifies the bbox
+		    ``(x, y, width, height)`` that the legend is placed in.
+		    To put the legend in the best location in the bottom right
+		    quadrant of the axes (or figure)::
+		
+		        loc='best', bbox_to_anchor=(0.5, 0., 0.5, 0.5)
+		
+		    A 2-tuple ``(x, y)`` places the corner of the legend specified by *loc* at
+		    x, y.  For example, to put the legend's upper right-hand corner in the
+		    center of the axes (or figure) the following keywords can be used::
+		
+		        loc='upper right', bbox_to_anchor=(0.5, 0.5)
+		
+		ncol : integer
+		    The number of columns that the legend has. Default is 1.
+		
+		prop : None or :class:`matplotlib.font_manager.FontProperties` or dict
+		    The font properties of the legend. If None (default), the current
+		    :data:`matplotlib.rcParams` will be used.
+		
+		fontsize : int or float or {'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
+		    Controls the font size of the legend. If the value is numeric the
+		    size will be the absolute font size in points. String values are
+		    relative to the current default font size. This argument is only
+		    used if `prop` is not specified.
+		
+		numpoints : None or int
+		    The number of marker points in the legend when creating a legend
+		    entry for a `.Line2D` (line).
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.numpoints`.
+		
+		scatterpoints : None or int
+		    The number of marker points in the legend when creating
+		    a legend entry for a `.PathCollection` (scatter plot).
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.scatterpoints`.
+		
+		scatteryoffsets : iterable of floats
+		    The vertical offset (relative to the font size) for the markers
+		    created for a scatter plot legend entry. 0.0 is at the base the
+		    legend text, and 1.0 is at the top. To draw all markers at the
+		    same height, set to ``[0.5]``. Default is ``[0.375, 0.5, 0.3125]``.
+		
+		markerscale : None or int or float
+		    The relative size of legend markers compared with the originally
+		    drawn ones.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.markerscale`.
+		
+		markerfirst : bool
+		    If *True*, legend marker is placed to the left of the legend label.
+		    If *False*, legend marker is placed to the right of the legend
+		    label.
+		    Default is *True*.
+		
+		frameon : None or bool
+		    Control whether the legend should be drawn on a patch
+		    (frame).
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.frameon`.
+		
+		fancybox : None or bool
+		    Control whether round edges should be enabled around the
+		    :class:`~matplotlib.patches.FancyBboxPatch` which makes up the
+		    legend's background.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.fancybox`.
+		
+		shadow : None or bool
+		    Control whether to draw a shadow behind the legend.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.shadow`.
+		
+		framealpha : None or float
+		    Control the alpha transparency of the legend's background.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.framealpha`.  If shadow is activated and
+		    *framealpha* is ``None``, the default value is ignored.
+		
+		facecolor : None or "inherit" or a color spec
+		    Control the legend's background color.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.facecolor`.  If ``"inherit"``, it will take
+		    :rc:`axes.facecolor`.
+		
+		edgecolor : None or "inherit" or a color spec
+		    Control the legend's background patch edge color.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.edgecolor` If ``"inherit"``, it will take
+		    :rc:`axes.edgecolor`.
+		
+		mode : {"expand", None}
+		    If `mode` is set to ``"expand"`` the legend will be horizontally
+		    expanded to fill the axes area (or `bbox_to_anchor` if defines
+		    the legend's size).
+		
+		bbox_transform : None or :class:`matplotlib.transforms.Transform`
+		    The transform for the bounding box (`bbox_to_anchor`). For a value
+		    of ``None`` (default) the Axes'
+		    :data:`~matplotlib.axes.Axes.transAxes` transform will be used.
+		
+		title : str or None
+		    The legend's title. Default is no title (``None``).
+		
+		title_fontsize: str or None
+		    The fontsize of the legend's title.  Default is the default fontsize.
+		
+		borderpad : float or None
+		    The fractional whitespace inside the legend border.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.borderpad`.
+		
+		labelspacing : float or None
+		    The vertical space between the legend entries.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.labelspacing`.
+		
+		handlelength : float or None
+		    The length of the legend handles.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.handlelength`.
+		
+		handletextpad : float or None
+		    The pad between the legend handle and text.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.handletextpad`.
+		
+		borderaxespad : float or None
+		    The pad between the axes and legend border.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.borderaxespad`.
+		
+		columnspacing : float or None
+		    The spacing between columns.
+		    Measured in font-size units.
+		    Default is ``None``, which will take the value from
+		    :rc:`legend.columnspacing`.
+		
+		handler_map : dict or None
+		    The custom dictionary mapping instances or types to a legend
+		    handler. This `handler_map` updates the default handler map
+		    found at :func:`matplotlib.legend.Legend.get_legend_handler_map`.
+		
+		
+		
+		Notes
+		-----
 		
 		Users can specify any arbitrary location for the legend using the
 		*bbox_to_anchor* keyword argument. bbox_to_anchor can be an instance
@@ -144,14 +478,14 @@ package matplotlib.legend;
 		2 floats, which is interpreted as the lower-left corner of the legend
 		in the normalized axes coordinate.
 	**/
-	public function new(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Void;
+	public function new(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?title_fontsize:Dynamic, ?framealpha:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -202,7 +536,7 @@ package matplotlib.legend;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -229,18 +563,14 @@ package matplotlib.legend;
 	/**
 		Determine the best location to place the legend.
 		
-		`consider` is a list of (x, y) pairs to consider as a potential
+		*consider* is a list of ``(x, y)`` pairs to consider as a potential
 		lower-left corner of the legend. All are display coords.
 	**/
 	public function _find_best_position(width:Dynamic, height:Dynamic, renderer:Dynamic, ?consider:Dynamic):Dynamic;
 	/**
-		Helper function to locate the legend at its best position
+		Helper function to locate the legend.
 	**/
-	public function _findoffset_best(width:Dynamic, height:Dynamic, xdescent:Dynamic, ydescent:Dynamic, renderer:Dynamic):Dynamic;
-	/**
-		Helper function to locate the legend using the location code
-	**/
-	public function _findoffset_loc(width:Dynamic, height:Dynamic, xdescent:Dynamic, ydescent:Dynamic, renderer:Dynamic):Dynamic;
+	public function _findoffset(width:Dynamic, height:Dynamic, xdescent:Dynamic, ydescent:Dynamic, renderer:Dynamic):Dynamic;
 	/**
 		Place the *bbox* inside the *parentbbox* according to a given
 		location code. Return the (x,y) coordinate of the bbox.
@@ -249,7 +579,7 @@ package matplotlib.legend;
 		  This corresponds to the possible values for self._loc, excluding
 		  "best".
 		
-		- bbox: bbox to be placed, display coodinate units.
+		- bbox: bbox to be placed, display coordinate units.
 		- parentbbox: a parent box which will contain the bbox. In
 		    display coordinates.
 	**/
@@ -265,7 +595,7 @@ package matplotlib.legend;
 	public var _loc : Dynamic;
 	static public var _prop_order : Dynamic;
 	/**
-		set the boilerplate props for artists added to axes
+		Set the boilerplate props for artists added to axes.
 	**/
 	public function _set_artist_props(a:Dynamic):Dynamic;
 	/**
@@ -316,20 +646,24 @@ package matplotlib.legend;
 		  * False : turn draggable off
 		
 		If draggable is on, you can drag the legend on the canvas with
-		the mouse.  The DraggableLegend helper instance is returned if
+		the mouse. The `.DraggableLegend` helper instance is returned if
 		draggable is on.
 		
 		The update parameter control which parameter of the legend changes
-		when dragged. If update is "loc", the *loc* paramter of the legend
+		when dragged. If update is "loc", the *loc* parameter of the legend
 		is changed. If "bbox", the *bbox_to_anchor* parameter is changed.
 	**/
 	public function draggable(?state:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Dynamic;
 	/**
-		Draw everything that belongs to the legend
+		Draw everything that belongs to the legend.
 	**/
-	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function draw(renderer:Dynamic):Dynamic;
 	/**
-		b is a boolean.  Set draw frame to b
+		Set draw frame to b.
+		
+		Parameters
+		----------
+		b : bool
 	**/
 	public function draw_frame(b:Dynamic):Dynamic;
 	/**
@@ -356,7 +690,7 @@ package matplotlib.legend;
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		return filter function to be used for agg filter
+		Return filter function to be used for agg filter.
 	**/
 	public function get_agg_filter():Dynamic;
 	/**
@@ -369,19 +703,11 @@ package matplotlib.legend;
 	**/
 	public function get_animated():Dynamic;
 	/**
-		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-	**/
-	public function get_axes():Dynamic;
-	/**
-		return the bbox that the legend will be anchored
+		Return the bbox that the legend will be anchored to.
 	**/
 	public function get_bbox_to_anchor():Dynamic;
 	/**
-		return a list of child artists
+		Return a list of child artists.
 	**/
 	public function get_children():Dynamic;
 	/**
@@ -409,28 +735,40 @@ package matplotlib.legend;
 	**/
 	static public function get_default_handler_map():Dynamic;
 	/**
-		Return the :class:`~matplotlib.figure.Figure` instance the
-		artist belongs to.
+		Return ``True`` if the legend is draggable, ``False`` otherwise.
+	**/
+	public function get_draggable():Dynamic;
+	/**
+		Return the `.Figure` instance the artist belongs to.
 	**/
 	public function get_figure():Dynamic;
 	/**
-		return the Rectangle instance used to frame the legend
+		Return the `~.patches.Rectangle` instances used to frame the legend.
 	**/
 	public function get_frame():Dynamic;
 	/**
-		Get whether the legend box patch is drawn
+		Get whether the legend box patch is drawn.
 	**/
 	public function get_frame_on():Dynamic;
 	/**
-		Returns the group id
+		Returns the group id.
 	**/
 	public function get_gid():Dynamic;
+	/**
+		Return boolean flag, ``True`` if artist is included in layout
+		calculations.
+		
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+	**/
+	public function get_in_layout():Dynamic;
 	/**
 		Get the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	/**
-		return a legend handler from *legend_handler_map* that
+		Return a legend handler from *legend_handler_map* that
 		corresponds to *orig_handler*.
 		
 		*legend_handler_map* should be a dictionary object (that is
@@ -440,28 +778,28 @@ package matplotlib.legend;
 		*legend_hanler_map* and return the associated value.
 		Otherwise, it checks for each of the classes in its
 		method-resolution-order. If no matching key is found, it
-		returns None.
+		returns ``None``.
 	**/
 	static public function get_legend_handler(legend_handler_map:Dynamic, orig_handle:Dynamic):Dynamic;
 	/**
-		return the handler map.
+		Return the handler map.
 	**/
 	public function get_legend_handler_map():Dynamic;
 	/**
-		return a list of lines.Line2D instances in the legend
+		Return a list of `~.lines.Line2D` instances in the legend.
 	**/
 	public function get_lines():Dynamic;
 	/**
-		return a list of patch instances in the legend
+		Return a list of `~.patches.Patch` instances in the legend.
 	**/
 	public function get_patches():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist
+		Return the picker object used by this artist.
 	**/
 	public function get_picker():Dynamic;
 	/**
-		return True if the artist is to be rasterized
+		Return whether the artist is to be rasterized.
 	**/
 	public function get_rasterized():Dynamic;
 	/**
@@ -471,17 +809,17 @@ package matplotlib.legend;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -498,11 +836,25 @@ package matplotlib.legend;
 	**/
 	public function get_snap():Dynamic;
 	/**
-		return a list of text.Text instance in the legend
+		Return a list of `~.text.Text` instances in the legend.
 	**/
 	public function get_texts():Dynamic;
 	/**
-		return Text instance for the legend title
+		Like `.Legend.get_window_extent`, but uses the box for the legend.
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` instance
+		    renderer that will be used to draw the figures (i.e.
+		    ``fig.canvas.get_renderer()``)
+		
+		Returns
+		-------
+		`.BboxBase` : containing the bounding box in figure pixel co-ordinates.
+	**/
+	public function get_tightbbox(renderer:Dynamic):Dynamic;
+	/**
+		Return the `.Text` instance for the legend title.
 	**/
 	public function get_title():Dynamic;
 	/**
@@ -517,7 +869,7 @@ package matplotlib.legend;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url
+		Returns the url.
 	**/
 	public function get_url():Dynamic;
 	/**
@@ -525,11 +877,11 @@ package matplotlib.legend;
 	**/
 	public function get_visible():Dynamic;
 	/**
-		return a extent of the legend
+		Return extent of the legend.
 	**/
-	public function get_window_extent(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_window_extent(?renderer:Dynamic):Dynamic;
 	/**
-		Return the :class:`Artist`'s zorder.
+		Return the artist's zorder.
 	**/
 	public function get_zorder():Dynamic;
 	/**
@@ -537,12 +889,17 @@ package matplotlib.legend;
 	**/
 	public function have_units():Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
-		Returns True if the artist is assigned to a
-		:class:`~matplotlib.figure.Figure`.
+		.. deprecated:: 2.2
+		    artist.figure is not None
+		
+		Returns whether the artist is assigned to a `.Figure`.
 	**/
 	public function is_figure_set():Dynamic;
 	/**
@@ -600,45 +957,52 @@ package matplotlib.legend;
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set agg_filter fuction.
+		Set the agg filter.
+		
+		Parameters
+		----------
+		filter_func : callable
+		    A filter function, which takes a (m, n, 3) float array and a dpi
+		    value, and returns a (m, n, 3) array.
+		
+		    .. ACCEPTS: a filter function, which takes a (m, n, 3) float array
+		        and a dpi value, and returns a (m, n, 3) array
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Set the alpha value used for blending - not supported on
-		all backends.
+		Set the alpha value used for blending - not supported on all backends.
 		
-		ACCEPTS: float (0.0 transparent through 1.0 opaque)
+		Parameters
+		----------
+		alpha : float
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
 		Set the artist's animation state.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.axes.Axes` instance in which the
-		artist resides, if any.
+		Set the bbox that the legend will be anchored to.
 		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
+		*bbox* can be
 		
-		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
-	**/
-	public function set_axes(axes:Dynamic):Dynamic;
-	/**
-		set the bbox that the legend will be anchored.
-		
-		*bbox* can be a BboxBase instance, a tuple of [left, bottom,
-		width, height] in the given transform (normalized axes
-		coordinate if None), or a tuple of [left, bottom] where the
-		width and height will be assumed to be zero.
+		- A `.BboxBase` instance
+		- A tuple of ``(left, bottom, width, height)`` in the given transform
+		  (normalized axes coordinate if None)
+		- A tuple of ``(left, bottom)`` where the width and height will be
+		  assumed to be zero.
 	**/
 	public function set_bbox_to_anchor(bbox:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
-		Set the artist's clip :class:`~matplotlib.transforms.Bbox`.
+		Set the artist's clip `.Bbox`.
 		
-		ACCEPTS: a :class:`matplotlib.transforms.Bbox` instance
+		Parameters
+		----------
+		clipbox : `.Bbox`
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
@@ -647,28 +1011,26 @@ package matplotlib.legend;
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_clip_on(b:Dynamic):Dynamic;
 	/**
 		Set the artist's clip path, which may be:
 		
-		  * a :class:`~matplotlib.patches.Patch` (or subclass) instance
+		- a :class:`~matplotlib.patches.Patch` (or subclass) instance; or
+		- a :class:`~matplotlib.path.Path` instance, in which case a
+		  :class:`~matplotlib.transforms.Transform` instance, which will be
+		  applied to the path before using it for clipping, must be provided;
+		  or
+		- ``None``, to remove a previously set clipping path.
 		
-		  * a :class:`~matplotlib.path.Path` instance, in which case
-		     an optional :class:`~matplotlib.transforms.Transform`
-		     instance may be provided, which will be applied to the
-		     path before using it for clipping.
+		For efficiency, if the path happens to be an axis-aligned rectangle,
+		this method will set the clipping box to the corresponding rectangle
+		and set the clipping path to ``None``.
 		
-		  * *None*, to remove the clipping path
-		
-		For efficiency, if the path happens to be an axis-aligned
-		rectangle, this method will set the clipping box to the
-		corresponding rectangle and set the clipping path to *None*.
-		
-		ACCEPTS: [ (:class:`~matplotlib.path.Path`,
-		:class:`~matplotlib.transforms.Transform`) |
-		:class:`~matplotlib.patches.Patch` | None ]
+		ACCEPTS: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
@@ -682,7 +1044,9 @@ package matplotlib.legend;
 		and *props* is a dictionary of properties you want returned
 		with the contains test.
 		
-		ACCEPTS: a callable function
+		Parameters
+		----------
+		picker : callable
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
@@ -690,33 +1054,77 @@ package matplotlib.legend;
 	**/
 	static public function set_default_handler_map(handler_map:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.figure.Figure` instance the artist
-		belongs to.
+		Enable or disable mouse dragging support of the legend.
 		
-		ACCEPTS: a :class:`matplotlib.figure.Figure` instance
+		Parameters
+		----------
+		state : bool
+		    Whether mouse dragging is enabled.
+		use_blit : bool, optional
+		    Use blitting for faster image composition. For details see
+		    :ref:`func-animation`.
+		update : {'loc', 'bbox'}, optional
+		    The legend parameter to be changed when dragged:
+		
+		    - 'loc': update the *loc* parameter of the legend
+		    - 'bbox': update the *bbox_to_anchor* parameter of the legend
+		
+		Returns
+		-------
+		If *state* is ``True`` this returns the `~.DraggableLegend` helper
+		instance. Otherwise this returns ``None``.
+	**/
+	public function set_draggable(state:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Dynamic;
+	/**
+		Set the `.Figure` instance the artist belongs to.
+		
+		Parameters
+		----------
+		fig : `.Figure`
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
-		Set whether the legend box patch is drawn
+		Set whether the legend box patch is drawn.
 		
-		ACCEPTS: [ *True* | *False* ]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_frame_on(b:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist
+		Sets the (group) id for the artist.
 		
-		ACCEPTS: an id string
+		Parameters
+		----------
+		gid : str
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
 	/**
+		Set if artist is to be included in layout calculations,
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+		
+		Parameters
+		----------
+		in_layout : bool
+	**/
+	public function set_in_layout(in_layout:Dynamic):Dynamic;
+	/**
 		Set the label to *s* for auto legend.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : object
+		    *s* will be converted to a string by calling `str`.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		set path_effects, which should be a list of instances of
-		matplotlib.patheffect._Base class or its derivatives.
+		Set the path effects.
+		
+		Parameters
+		----------
+		path_effects : `.AbstractPathEffect`
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
@@ -748,15 +1156,19 @@ package matplotlib.legend;
 		    artist, return *hit=True* and props is a dictionary of
 		    properties you want added to the PickEvent attributes.
 		
-		ACCEPTS: [None|float|boolean|callable]
+		Parameters
+		----------
+		picker : None or bool or float or callable
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
 		Force rasterized (bitmap) drawing in vector backend output.
 		
-		Defaults to None, which implies the backend's default behavior
+		Defaults to None, which implies the backend's default behavior.
 		
-		ACCEPTS: [True | False | None]
+		Parameters
+		----------
+		rasterized : bool or None
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
@@ -777,6 +1189,8 @@ package matplotlib.legend;
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
 		    expanded (default 16.0)
+		
+		    .. ACCEPTS: (scale: float, length: float, randomness: float)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
@@ -790,37 +1204,48 @@ package matplotlib.legend;
 		    segments, round to the nearest pixel center
 		
 		Only supported by the Agg and MacOSX backends.
+		
+		Parameters
+		----------
+		snap : bool or None
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		set the legend title. Fontproperties can be optionally set
+		Set the legend title. Fontproperties can be optionally set
 		with *prop* parameter.
 	**/
 	public function set_title(title:Dynamic, ?prop:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.transforms.Transform` instance
-		used by this artist.
+		Set the artist transform.
 		
-		ACCEPTS: :class:`~matplotlib.transforms.Transform` instance
+		Parameters
+		----------
+		t : `.Transform`
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist
+		Sets the url for the artist.
 		
-		ACCEPTS: a url string
+		Parameters
+		----------
+		url : str
 	**/
 	public function set_url(url:Dynamic):Dynamic;
 	/**
-		Set the artist's visiblity.
+		Set the artist's visibility.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_visible(b:Dynamic):Dynamic;
 	/**
 		Set the zorder for the artist.  Artists with lower zorder
 		values are drawn first.
 		
-		ACCEPTS: any number
+		Parameters
+		----------
+		level : float
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
@@ -848,8 +1273,7 @@ package matplotlib.legend;
 	**/
 	public var sticky_edges : Dynamic;
 	/**
-		Update the properties of this :class:`Artist` from the
-		dictionary *prop*.
+		Update this artist's properties from the dictionary *prop*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

@@ -9,7 +9,7 @@ package tensorflow.python.framework.graph_util;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Replaces all the variables in a graph with constants of the same values.
 		
@@ -31,6 +31,7 @@ package tensorflow.python.framework.graph_util;
 		  GraphDef containing a simplified version of the original.
 	**/
 	static public function convert_variables_to_constants(sess:Dynamic, input_graph_def:Dynamic, output_node_names:Dynamic, ?variable_names_whitelist:Dynamic, ?variable_names_blacklist:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Extract the subgraph that can reach any of the nodes in 'dest_nodes'.
 		
@@ -57,6 +58,7 @@ package tensorflow.python.framework.graph_util;
 		  True if the given node must run on CPU, otherwise False.
 	**/
 	static public function must_run_on_cpu(node:Dynamic, ?pin_variables_on_cpu:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	/**
 		Prunes out nodes that aren't needed for inference.
 		
@@ -69,11 +71,14 @@ package tensorflow.python.framework.graph_util;
 		
 		Args:
 		  input_graph: Model to analyze and prune.
+		  protected_nodes: An optional list of names of nodes to be kept
+		    unconditionally. This is for example useful to preserve Identity output
+		    nodes.
 		
 		Returns:
 		  A list of nodes with the unnecessary ones removed.
 	**/
-	static public function remove_training_nodes(input_graph:Dynamic):Dynamic;
+	static public function remove_training_nodes(input_graph:Dynamic, ?protected_nodes:Dynamic):Dynamic;
 	/**
 		Convenience function to get a shape from a NodeDef's input string.
 	**/

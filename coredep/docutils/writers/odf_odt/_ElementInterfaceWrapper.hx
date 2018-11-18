@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.odf_odt;
 @:pythonImport("docutils.writers.odf_odt", "_ElementInterfaceWrapper") extern class _ElementInterfaceWrapper {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__():Dynamic;
 	public function __deepcopy__(memo:Dynamic):Dynamic;
 	/**
@@ -63,7 +63,7 @@ package docutils.writers.odf_odt;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -123,7 +123,7 @@ package docutils.writers.odf_odt;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function append(subelement:Dynamic):Dynamic;
 	/**
 		A dictionary containing the element's attributes

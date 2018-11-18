@@ -5,7 +5,7 @@ package matplotlib.font_manager;
 	static public var MSFontDirectories : Dynamic;
 	static public var OSXFontDirectories : Dynamic;
 	/**
-		Get list of font files on OS X - ignores font suffix by default.
+		Get list of font files on OS X.
 	**/
 	static public function OSXInstalledFonts(?directories:Dynamic, ?fontext:Dynamic):Dynamic;
 	static public var USE_FONTCONFIG : Dynamic;
@@ -24,16 +24,50 @@ package matplotlib.font_manager;
 	**/
 	static public function _call_fc_list():Dynamic;
 	static public var _fmcache : Dynamic;
-	static public var _is_opentype_cff_font_cache : Dynamic;
-	static public var _lookup_cache : Dynamic;
+	/**
+		FT2Font(ttffile)
+		
+		Create a new FT2Font object
+		The following global font attributes are defined:
+		  num_faces              number of faces in file
+		  face_flags             face flags  (int type); see the ft2font constants
+		  style_flags            style flags  (int type); see the ft2font constants
+		  num_glyphs             number of glyphs in the face
+		  family_name            face family name
+		  style_name             face style name
+		  num_fixed_sizes        number of bitmap in the face
+		  scalable               face is scalable
+		
+		The following are available, if scalable is true:
+		  bbox                   face global bounding box (xmin, ymin, xmax, ymax)
+		  units_per_EM           number of font units covered by the EM
+		  ascender               ascender in 26.6 units
+		  descender              descender in 26.6 units
+		  height                 height in 26.6 units; used to compute a default
+		                         line spacing (baseline-to-baseline distance)
+		  max_advance_width      maximum horizontal cursor advance for all glyphs
+		  max_advance_height     same for vertical layout
+		  underline_position     vertical position of the underline bar
+		  underline_thickness    vertical thickness of the underline
+		  postscript_name        PostScript name of the font
+	**/
+	static public function _get_font(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _json_decode(o:Dynamic):Dynamic;
+	static public var _log : Dynamic;
 	static public function _normalize_font_family(family:Dynamic):Dynamic;
 	static public function _rebuild():Dynamic;
-	static public var absolute_import : Dynamic;
 	/**
-		A function for populating a :class:`FontKey` instance by
-		extracting information from the AFM font file.
+		Extract information from an AFM font file.
 		
-		*font* is a class:`AFM` instance.
+		Parameters
+		----------
+		font : `.AFM`
+		    The AFM font file from which information will be extracted.
+		
+		Returns
+		-------
+		`FontEntry`
+		    The extracted font properties.
 	**/
 	static public function afmFontProperty(fontpath:Dynamic, font:Dynamic):Dynamic;
 	static public var cachedir : Dynamic;
@@ -43,7 +77,6 @@ package matplotlib.font_manager;
 		created.
 	**/
 	static public function createFontList(fontfiles:Dynamic, ?fontext:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	/**
 		Search for fonts in the specified font paths.  If no paths are
 		given, will use a standard set of system paths, as well as the
@@ -67,35 +100,8 @@ package matplotlib.font_manager;
 		The procedure used to find the directory is the same as for
 		_get_config_dir, except using `$XDG_CACHE_HOME`/`~/.cache` instead.
 	**/
-	static public function get_cachedir(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		FT2Font(ttffile)
-		
-		Create a new FT2Font object
-		The following global font attributes are defined:
-		  num_faces              number of faces in file
-		  face_flags             face flags  (int type); see the ft2font constants
-		  style_flags            style flags  (int type); see the ft2font constants
-		  num_glyphs             number of glyphs in the face
-		  family_name            face family name
-		  style_name             face syle name
-		  num_fixed_sizes        number of bitmap in the face
-		  scalable               face is scalable
-		
-		The following are available, if scalable is true:
-		  bbox                   face global bounding box (xmin, ymin, xmax, ymax)
-		  units_per_EM           number of font units covered by the EM
-		  ascender               ascender in 26.6 units
-		  descender              descender in 26.6 units
-		  height                 height in 26.6 units; used to compute a default
-		                         line spacing (baseline-to-baseline distance)
-		  max_advance_width      maximum horizontal cursor advance for all glyphs
-		  max_advance_height     same for vertical layout
-		  underline_position     vertical position of the underline bar
-		  underline_thickness    vertical thickness of the underline
-		  postscript_name        PostScript name of the font
-	**/
-	static public function get_font(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function get_cachedir():Dynamic;
+	static public function get_font(filename:Dynamic, ?hinting_factor:Dynamic):Dynamic;
 	/**
 		List the font filenames known to `fc-list` having the given extension.
 		    
@@ -106,7 +112,6 @@ package matplotlib.font_manager;
 		the given file extension *fileext*.
 	**/
 	static public function get_fontext_synonyms(fontext:Dynamic):Dynamic;
-	static public var home : Dynamic;
 	/**
 		Returns True if the given font is a Postscript Compact Font Format
 		Font embedded in an OpenType wrapper.  Used by the PostScript and
@@ -114,12 +119,24 @@ package matplotlib.font_manager;
 	**/
 	static public function is_opentype_cff_font(filename:Dynamic):Dynamic;
 	/**
-		Return True if *obj* looks like a string
+		Dumps a data structure as JSON in the named file.
+		
+		Handles FontManager and its fields.  File paths that are children of the
+		Matplotlib data path (typically, fonts shipped with Matplotlib) are stored
+		relative to that data path (to remain valid across virtualenvs).
 	**/
-	static public function is_string_like(obj:Dynamic):Dynamic;
+	static public function json_dump(data:Dynamic, filename:Dynamic):Dynamic;
 	/**
-		Return a list of all fonts matching any of the extensions,
-		possibly upper-cased, found recursively under the directory.
+		Loads a data structure as JSON from the named file.
+		
+		Handles FontManager and its fields.  Relative file paths are interpreted
+		as being relative to the Matplotlib data path, and transformed into
+		absolute paths.
+	**/
+	static public function json_load(filename:Dynamic):Dynamic;
+	/**
+		Return a list of all fonts matching any of the extensions, found
+		recursively under the directory.
 	**/
 	static public function list_fonts(directory:Dynamic, extensions:Dynamic):Dynamic;
 	/**
@@ -147,44 +164,28 @@ package matplotlib.font_manager;
 		:class:`font_manager.FontProperties` object.
 	**/
 	static public function parse_fontconfig_pattern(pattern:Dynamic):Dynamic;
-	static public var path : Dynamic;
-	/**
-		Equivalent to pickle.dump(data, open(filename, 'w'))
-		but closes the file to prevent filehandle leakage.
-	**/
-	static public function pickle_dump(data:Dynamic, filename:Dynamic):Dynamic;
-	/**
-		Equivalent to pickle.load(open(filename, 'r'))
-		but closes the file to prevent filehandle leakage.
-	**/
-	static public function pickle_load(filename:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	static public var stretch_dict : Dynamic;
 	/**
-		A function for populating the :class:`FontKey` by extracting
-		information from the TrueType font file.
+		Extract information from a TrueType font file.
 		
-		*font* is a :class:`FT2Font` instance.
+		Parameters
+		----------
+		font : `.FT2Font`
+		    The TrueType font file from which information will be extracted.
+		
+		Returns
+		-------
+		`FontEntry`
+		    The extracted font properties.
 	**/
 	static public function ttfFontProperty(font:Dynamic):Dynamic;
-	/**
-		flatten a ttfdict to all the filenames it contains
-	**/
-	static public function ttfdict_to_fnames(d:Dynamic):Dynamic;
-	static public var unicode_literals : Dynamic;
-	static public var verbose : Dynamic;
-	/**
-		Return the weight property as a numeric value.  String values
-		are converted to their corresponding numeric value.
-	**/
-	static public function weight_as_number(weight:Dynamic):Dynamic;
 	static public var weight_dict : Dynamic;
 	/**
 		Return the user-specified font directory for Win32.  This is
 		looked up from the registry key::
 		
-		  \HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Fonts
+		  \\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Fonts
 		
 		If the key is not found, $WINDIR/Fonts will be returned.
 	**/

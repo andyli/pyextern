@@ -26,7 +26,7 @@ package tensorflow.contrib.factorization.python.ops.gmm;
 		no guarantee that `output_tensor` will be evaluated after any `dependencies`
 		have run.
 		
-		See also @{tf.tuple$tuple} and @{tf.group$group}.
+		See also `tf.tuple` and `tf.group`.
 		
 		Args:
 		  dependencies: Iterable of operations to run before this op finishes.

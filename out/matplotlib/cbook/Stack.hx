@@ -2,10 +2,10 @@
 package matplotlib.cbook;
 @:pythonImport("matplotlib.cbook", "Stack") extern class Stack {
 	/**
-		return the current element, or None
+		Return the current element, or None.
 	**/
 	public function __call__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -57,7 +57,7 @@ package matplotlib.cbook;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -109,40 +109,47 @@ package matplotlib.cbook;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		move the position back and return the current element
+		Move the position back and return the current element.
 	**/
 	public function back():Dynamic;
 	/**
-		raise *o* to the top of the stack and return *o*.  *o* must be
-		in the stack
+		Raise *o* to the top of the stack.  *o* must be present in the stack.
+		
+		*o* is returned.
 	**/
 	public function bubble(o:Dynamic):Dynamic;
 	/**
-		empty the stack
+		Empty the stack.
 	**/
 	public function clear():Dynamic;
+	/**
+		Return whether the stack is empty.
+	**/
 	public function empty():Dynamic;
 	/**
-		move the position forward and return the current element
+		Move the position forward and return the current element.
 	**/
 	public function forward():Dynamic;
 	/**
-		push the first element onto the top of the stack
+		Push the first element onto the top of the stack.
+		
+		The first element is returned.
 	**/
 	public function home():Dynamic;
 	/**
-		push object onto stack at current position - all elements
-		occurring later than the current position are discarded
+		Push *o* to the stack at current position.  Discard all later elements.
+		
+		*o* is returned.
 	**/
 	public function push(o:Dynamic):Dynamic;
 	/**
-		remove element *o* from the stack
+		Remove *o* from the stack.
 	**/
 	public function remove(o:Dynamic):Dynamic;
 }

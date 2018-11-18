@@ -10,10 +10,19 @@ package tensorflow.python.estimator.estimator;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _check_checkpoint_available(model_dir:Dynamic):Dynamic;
 	/**
-		Returns hooks if all are SessionRunHook, raises TypeError otherwise.
+		Returns hooks if all are `SessionRunHook`, raises TypeError otherwise.
 	**/
 	static public function _check_hooks_type(hooks:Dynamic):Dynamic;
+	/**
+		Check listeners type.
+	**/
+	static public function _check_listeners_type(saving_listeners:Dynamic):Dynamic;
+	/**
+		Combines scaffold(s) returned from `distribution.call_for_each_tower`.
+	**/
+	static public function _combine_distributed_scaffold(grouped_scaffold:Dynamic, distribution:Dynamic):Dynamic;
 	/**
 		Get a `str` representation of a `dict`.
 		
@@ -27,39 +36,65 @@ package tensorflow.python.estimator.estimator;
 	/**
 		Separate update operations from metric value operations.
 	**/
-	static public function _extract_metric_update_ops(eval_dict:Dynamic):Dynamic;
+	static public function _extract_metric_update_ops(eval_dict:Dynamic, ?distribution:Dynamic):Dynamic;
 	/**
-		Creates a replica device setter if required as a default device_fn.
-		
-		`Estimator` uses ReplicaDeviceSetter as a default device placer. It sets the
-		distributed related arguments such as number of ps_replicas based on given
-		config.
+		Returns default `tf.estimator.WarmStartSettings`.
 		
 		Args:
-		  config: A `RunConfig` instance.
+		  warm_start_from: Either a string representing the filepath of a checkpoint
+		    or `SavedModel` to initialize from, or an instance of
+		    `tf.estimator.WarmStartSettings`.
 		
 		Returns:
-		  A replica device setter, or None.
-	**/
-	static public function _get_replica_device_setter(config:Dynamic):Dynamic;
-	static public function _load_global_step_from_checkpoint_dir(checkpoint_dir:Dynamic):Dynamic;
-	/**
-		Get argument names for function-like object.
-		
-		Args:
-		  fn: Function, or function-like object (e.g., result of `functools.partial`).
-		
-		Returns:
-		  `tuple` of string argument names.
+		  Either None or an instance of `WarmStartSettings`.
 		
 		Raises:
-		  ValueError: if partial function has positionally bound arguments
+		  ValueError: If `warm_start_from` is not `None` but is neither a string nor
+		  an
+		    instance of `WarmStartSettings`.
 	**/
-	static public function _model_fn_args(fn:Dynamic):Dynamic;
+	static public function _get_default_warm_start_settings(warm_start_from:Dynamic):Dynamic;
 	/**
-		Verifies model fn arguments.
+		Creates a replica device setter if required as a default `device_fn`.
+		
+		`Estimator` uses `tf.train.ReplicaDeviceSetter` as a default device placer. It
+		sets the
+		distributed related arguments such as number of `ps_replicas` based on given
+		`config`.
+		
+		Args:
+		  config: A `tf.estimator.RunConfig` instance.
+		
+		Returns:
+		  A replica device setter, or `None`.
+	**/
+	static public function _get_replica_device_setter(config:Dynamic):Dynamic;
+	/**
+		Return path to variables checkpoint in a `SavedModel` directory.
+	**/
+	static public function _get_saved_model_ckpt(saved_model_dir:Dynamic):Dynamic;
+	/**
+		Returns `True` if `Dataset` or `QueueRunner` has been used.
+	**/
+	static public function _has_dataset_or_queue_runner(maybe_tensor:Dynamic):Dynamic;
+	static public function _load_global_step_from_checkpoint_dir(checkpoint_dir:Dynamic):Dynamic;
+	/**
+		Creates a metric for loss and throws an error if one already exists.
+	**/
+	static public function _verify_and_create_loss_metric(eval_metric_ops:Dynamic, loss:Dynamic, ?distribution:Dynamic):Dynamic;
+	/**
+		Verifies `model_fn` arguments.
 	**/
 	static public function _verify_model_fn_args(model_fn:Dynamic, params:Dynamic):Dynamic;
+	/**
+		Writes `checkpoint_path` into summary file in the given output directory.
+		
+		Args:
+		  output_dir: `str`, directory to write the summary file in.
+		  checkpoint_path: `str`, checkpoint file path to be written to summary file.
+		  current_global_step: `int`, the current global step.
+	**/
+	static public function _write_checkpoint_path_to_summary(output_dir:Dynamic, checkpoint_path:Dynamic, current_global_step:Dynamic):Dynamic;
 	/**
 		Writes a `dict` into summary file in given output directory.
 		
@@ -71,24 +106,24 @@ package tensorflow.python.estimator.estimator;
 	static public function _write_dict_to_summary(output_dir:Dynamic, dictionary:Dynamic, current_global_step:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Build `SignatureDef`s for all export outputs.
+		Create a `tf.train.Scaffold.ready_for_local_init_op` inside a tower.
 	**/
-	static public function build_all_signature_defs(receiver_tensors:Dynamic, export_outputs:Dynamic):Dynamic;
+	static public function create_per_tower_ready_for_local_init_op(scaffold:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function estimator_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Builds a path to a new subdirectory within the base directory.
-		
-		Each export is written into a new subdirectory named using the
-		current time.  This guarantees monotonically increasing version
-		numbers even across multiple runs of the pipeline.
-		The timestamp used is the number of seconds since epoch UTC.
+		Overwrite estimator config by `model_dir` and `session_config` if needed.
 		
 		Args:
-		  export_dir_base: A string containing a directory to write the exported
-		      graph and checkpoints.
+		  config: Original estimator config.
+		  model_dir: Estimator model checkpoint directory.
+		
 		Returns:
-		  The full path of the new subdirectory (which is not actually created yet).
+		  Overwritten estimator config.
+		
+		Raises:
+		  ValueError: Model directory inconsistent between `model_dir` and `config`.
 	**/
-	static public function get_timestamped_export_dir(export_dir_base:Dynamic):Dynamic;
+	static public function maybe_overwrite_model_dir_and_session_config(config:Dynamic, model_dir:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

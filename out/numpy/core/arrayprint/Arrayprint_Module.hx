@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package numpy.core.arrayprint;
 @:pythonImport("numpy.core.arrayprint") extern class Arrayprint_Module {
-	static public var _MAXINT : Dynamic;
-	static public var _MININT : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -13,12 +11,8 @@ package numpy.core.arrayprint;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _array2string(a:Dynamic, max_line_width:Dynamic, precision:Dynamic, suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?formatter:Dynamic):Dynamic;
-	static public function _boolFormatter(x:Dynamic):Dynamic;
-	static public function _digits(x:Dynamic, precision:Dynamic, format:Dynamic):Dynamic;
-	static public function _extendLine(s:Dynamic, line:Dynamic, word:Dynamic, max_line_len:Dynamic, next_line_prefix:Dynamic):Dynamic;
-	static public var _float_output_precision : Dynamic;
-	static public var _float_output_suppress_small : Dynamic;
+	static public function _array2string(a:Dynamic, options:Dynamic, ?separator:Dynamic, ?prefix:Dynamic):Dynamic;
+	static public function _extendLine(s:Dynamic, line:Dynamic, word:Dynamic, line_width:Dynamic, next_line_prefix:Dynamic, legacy:Dynamic):Dynamic;
 	/**
 		formatArray is designed for two modes of operation:
 		
@@ -26,17 +20,38 @@ package numpy.core.arrayprint;
 		
 		2. Summarized output
 	**/
-	static public function _formatArray(a:Dynamic, format_function:Dynamic, rank:Dynamic, max_line_len:Dynamic, next_line_prefix:Dynamic, separator:Dynamic, edge_items:Dynamic, summary_insert:Dynamic):Dynamic;
-	static public var _formatter : Dynamic;
+	static public function _formatArray(a:Dynamic, format_function:Dynamic, line_width:Dynamic, next_line_prefix:Dynamic, separator:Dynamic, edge_items:Dynamic, summary_insert:Dynamic, legacy:Dynamic):Dynamic;
+	static public var _format_options : Dynamic;
 	/**
 		find the right formatting function for the dtype_
 	**/
-	static public function _get_format_function(data:Dynamic, precision:Dynamic, suppress_small:Dynamic, formatter:Dynamic):Dynamic;
-	static public function _get_formatdict(data:Dynamic, precision:Dynamic, suppress_small:Dynamic, formatter:Dynamic):Dynamic;
-	static public var _inf_str : Dynamic;
-	static public function _leading_trailing(a:Dynamic):Dynamic;
-	static public var _line_width : Dynamic;
-	static public var _nan_str : Dynamic;
+	static public function _get_format_function(data:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _get_formatdict(data:Dynamic, ?opt:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		str(object='') -> str
+		str(bytes_or_buffer[, encoding[, errors]]) -> str
+		
+		Create a new string object from the given object. If encoding or
+		errors is specified, then the object must expose a data buffer
+		that will be decoded using the given encoding and error handler.
+		Otherwise, returns the result of object.__str__() (if defined)
+		or repr(object).
+		encoding defaults to sys.getdefaultencoding().
+		errors defaults to 'strict'.
+	**/
+	static public function _guarded_str(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Keep only the N-D corners (leading and trailing edges) of an array.
+		
+		Should be passed a base-class ndarray, since it makes no guarantees about
+		preserving subclasses.
+	**/
+	static public function _leading_trailing(a:Dynamic, edgeitems:Dynamic, ?index:Dynamic):Dynamic;
+	/**
+		make a dictionary out of the non-None arguments, plus sanity checks 
+	**/
+	static public function _make_options_dict(?precision:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?linewidth:Dynamic, ?suppress:Dynamic, ?nanstr:Dynamic, ?infstr:Dynamic, ?sign:Dynamic, ?formatter:Dynamic, ?floatmode:Dynamic, ?legacy:Dynamic):Dynamic;
+	static public function _none_or_positive_arg(x:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Object arrays containing lists should be printed unambiguously 
 	**/
@@ -50,12 +65,19 @@ package numpy.core.arrayprint;
 		Largely copied from reprlib.recursive_repr
 	**/
 	static public function _recursive_guard(?fillvalue:Dynamic):Dynamic;
-	static public var _summaryEdgeItems : Dynamic;
-	static public var _summaryThreshold : Dynamic;
+	static public var _typelessdata : Dynamic;
+	/**
+		Implements the repr for structured-void scalars. It is called from the
+		scalartypes.c.src code, and is placed here because it uses the elementwise
+		formatters defined above.
+	**/
+	static public function _void_scalar_repr(x:Dynamic):Dynamic;
 	/**
 		absolute(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
 		Calculate the absolute value element-wise.
+		
+		``np.abs`` is a shorthand for this function.
 		
 		Parameters
 		----------
@@ -79,6 +101,7 @@ package numpy.core.arrayprint;
 		    An ndarray containing the absolute value of
 		    each element in `x`.  For complex input, ``a + ib``, the
 		    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -104,6 +127,85 @@ package numpy.core.arrayprint;
 	**/
 	static public function absolute(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Test whether any array element along a given axis evaluates to True.
+		
+		Returns single boolean unless `axis` is not ``None``
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array or object that can be converted to an array.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which a logical OR reduction is performed.
+		    The default (`axis` = `None`) is to perform a logical OR over all
+		    the dimensions of the input array. `axis` may be negative, in
+		    which case it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.7.0
+		
+		    If this is a tuple of ints, a reduction is performed on multiple
+		    axes, instead of a single axis or all the axes as before.
+		out : ndarray, optional
+		    Alternate output array in which to place the result.  It must have
+		    the same shape as the expected output and its type is preserved
+		    (e.g., if it is of type float, then it will remain so, returning
+		    1.0 for True and 0.0 for False, regardless of the type of `a`).
+		    See `doc.ufuncs` (Section "Output arguments") for details.
+		
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `any` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-class' method does not implement `keepdims` any
+		    exceptions will be raised.
+		
+		Returns
+		-------
+		any : bool or ndarray
+		    A new boolean or `ndarray` is returned unless `out` is specified,
+		    in which case a reference to `out` is returned.
+		
+		See Also
+		--------
+		ndarray.any : equivalent method
+		
+		all : Test whether all elements along a given axis evaluate to True.
+		
+		Notes
+		-----
+		Not a Number (NaN), positive infinity and negative infinity evaluate
+		to `True` because these are not equal to zero.
+		
+		Examples
+		--------
+		>>> np.any([[True, False], [True, True]])
+		True
+		
+		>>> np.any([[True, False], [False, False]], axis=0)
+		array([ True, False])
+		
+		>>> np.any([-1, 0, 5])
+		True
+		
+		>>> np.any(np.nan)
+		True
+		
+		>>> o=np.array([False])
+		>>> z=np.any([-1, 4, 5], out=o)
+		>>> z, o
+		(array([ True]), array([ True]))
+		>>> # Check now that z is a reference to o
+		>>> z is o
+		True
+		>>> id(z), id(o) # identity of z and o              # doctest: +SKIP
+		(191614240, 191614240)
+	**/
+	static public function any(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order='K', subok=False, ndmin=0)
 		
@@ -157,7 +259,15 @@ package numpy.core.arrayprint;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -213,12 +323,12 @@ package numpy.core.arrayprint;
 		
 		Parameters
 		----------
-		a : ndarray
+		a : array_like
 		    Input array.
 		max_line_width : int, optional
 		    The maximum number of columns the string should span. Newline
 		    characters splits the string appropriately after array elements.
-		precision : int, optional
+		precision : int or None, optional
 		    Floating point precision. Default is the current printing
 		    precision (usually 8), which can be altered using `set_printoptions`.
 		suppress_small : bool, optional
@@ -227,40 +337,81 @@ package numpy.core.arrayprint;
 		separator : str, optional
 		    Inserted between elements.
 		prefix : str, optional
-		    An array is typically printed as::
+		suffix: str, optional
+		    The length of the prefix and suffix strings are used to respectively
+		    align and wrap the output. An array is typically printed as::
 		
-		      'prefix(' + array2string(a) + ')'
+		      prefix + array2string(a) + suffix
 		
-		    The length of the prefix string is used to align the
-		    output correctly.
-		style : function, optional
-		    A function that accepts an ndarray and returns a string.  Used only
-		    when the shape of `a` is equal to ``()``, i.e. for 0-D arrays.
+		    The output is left-padded by the length of the prefix string, and
+		    wrapping is forced at the column ``max_line_width - len(suffix)``.
+		style : _NoValue, optional
+		    Has no effect, do not use.
+		
+		    .. deprecated:: 1.14.0
 		formatter : dict of callables, optional
 		    If not None, the keys should indicate the type(s) that the respective
 		    formatting function applies to.  Callables should return a string.
 		    Types that are not specified (by their corresponding keys) are handled
 		    by the default formatters.  Individual types for which a formatter
-		    can be set are::
+		    can be set are:
 		
-		        - 'bool'
-		        - 'int'
-		        - 'timedelta' : a `numpy.timedelta64`
-		        - 'datetime' : a `numpy.datetime64`
-		        - 'float'
-		        - 'longfloat' : 128-bit floats
-		        - 'complexfloat'
-		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
-		        - 'str' : all other strings
+		    - 'bool'
+		    - 'int'
+		    - 'timedelta' : a `numpy.timedelta64`
+		    - 'datetime' : a `numpy.datetime64`
+		    - 'float'
+		    - 'longfloat' : 128-bit floats
+		    - 'complexfloat'
+		    - 'longcomplexfloat' : composed of two 128-bit floats
+		    - 'void' : type `numpy.void`
+		    - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		    - 'str' : all other strings
 		
-		    Other keys that can be used to set a group of types at once are::
+		    Other keys that can be used to set a group of types at once are:
 		
-		        - 'all' : sets all types
-		        - 'int_kind' : sets 'int'
-		        - 'float_kind' : sets 'float' and 'longfloat'
-		        - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
-		        - 'str_kind' : sets 'str' and 'numpystr'
+		    - 'all' : sets all types
+		    - 'int_kind' : sets 'int'
+		    - 'float_kind' : sets 'float' and 'longfloat'
+		    - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
+		    - 'str_kind' : sets 'str' and 'numpystr'
+		threshold : int, optional
+		    Total number of array elements which trigger summarization
+		    rather than full repr.
+		edgeitems : int, optional
+		    Number of array items in summary at beginning and end of
+		    each dimension.
+		sign : string, either '-', '+', or ' ', optional
+		    Controls printing of the sign of floating-point types. If '+', always
+		    print the sign of positive values. If ' ', always prints a space
+		    (whitespace character) in the sign position of positive values.  If
+		    '-', omit the sign character of positive values.
+		floatmode : str, optional
+		    Controls the interpretation of the `precision` option for
+		    floating-point types. Can take the following values:
+		
+		    - 'fixed': Always print exactly `precision` fractional digits,
+		      even if this would print more or fewer digits than
+		      necessary to specify the value uniquely.
+		    - 'unique': Print the minimum number of fractional digits necessary
+		      to represent each value uniquely. Different elements may
+		      have a different number of digits.  The value of the
+		      `precision` option is ignored.
+		    - 'maxprec': Print at most `precision` fractional digits, but if
+		      an element can be uniquely represented with fewer digits
+		      only print it with that many.
+		    - 'maxprec_equal': Print at most `precision` fractional digits,
+		      but if every element in the array can be uniquely
+		      represented with an equal number of fewer digits, use that
+		      many digits for all elements.
+		legacy : string or `False`, optional
+		    If set to the string `'1.13'` enables 1.13 legacy printing mode. This
+		    approximates numpy 1.13 print output by including a space in the sign
+		    position of floats and different behavior for 0d arrays. If set to
+		    `False`, disables legacy mode. Unrecognized strings will be ignored
+		    with a warning for forward compatibility.
+		
+		    .. versionadded:: 1.14.0
 		
 		Returns
 		-------
@@ -300,7 +451,81 @@ package numpy.core.arrayprint;
 		>>> np.array2string(x, formatter={'int':lambda x: hex(x)})
 		'[0x0L 0x1L 0x2L]'
 	**/
-	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):String;
+	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?sign:Dynamic, ?floatmode:Dynamic, ?suffix:Dynamic, ?kwarg:python.KwArgs<Dynamic>):String;
+	/**
+		Return the string representation of an array.
+		
+		Parameters
+		----------
+		arr : ndarray
+		    Input array.
+		max_line_width : int, optional
+		    The maximum number of columns the string should span. Newline
+		    characters split the string appropriately after array elements.
+		precision : int, optional
+		    Floating point precision. Default is the current printing precision
+		    (usually 8), which can be altered using `set_printoptions`.
+		suppress_small : bool, optional
+		    Represent very small numbers as zero, default is False. Very small
+		    is defined by `precision`, if the precision is 8 then
+		    numbers smaller than 5e-9 are represented as zero.
+		
+		Returns
+		-------
+		string : str
+		  The string representation of an array.
+		
+		See Also
+		--------
+		array_str, array2string, set_printoptions
+		
+		Examples
+		--------
+		>>> np.array_repr(np.array([1,2]))
+		'array([1, 2])'
+		>>> np.array_repr(np.ma.array([0.]))
+		'MaskedArray([ 0.])'
+		>>> np.array_repr(np.array([], np.int32))
+		'array([], dtype=int32)'
+		
+		>>> x = np.array([1e-6, 4e-7, 2, 3])
+		>>> np.array_repr(x, precision=6, suppress_small=True)
+		'array([ 0.000001,  0.      ,  2.      ,  3.      ])'
+	**/
+	static public function array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):String;
+	/**
+		Return a string representation of the data in an array.
+		
+		The data in the array is returned as a single string.  This function is
+		similar to `array_repr`, the difference being that `array_repr` also
+		returns information on the kind of array and its data type.
+		
+		Parameters
+		----------
+		a : ndarray
+		    Input array.
+		max_line_width : int, optional
+		    Inserts newlines if text is longer than `max_line_width`.  The
+		    default is, indirectly, 75.
+		precision : int, optional
+		    Floating point precision.  Default is the current printing precision
+		    (usually 8), which can be altered using `set_printoptions`.
+		suppress_small : bool, optional
+		    Represent numbers "very close" to zero as zero; default is False.
+		    Very close is defined by precision: if the precision is 8, e.g.,
+		    numbers smaller (in absolute value) than 5e-9 are represented as
+		    zero.
+		
+		See Also
+		--------
+		array2string, array_repr, set_printoptions
+		
+		Examples
+		--------
+		>>> np.array_str(np.arange(3))
+		'[0 1 2]'
+	**/
+	static public function array_str(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):Dynamic;
 	/**
 		Convert the input to an array.
 		
@@ -360,19 +585,352 @@ package numpy.core.arrayprint;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
 		True
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
+	/**
+		concatenate((a1, a2, ...), axis=0, out=None)
+		
+		Join a sequence of arrays along an existing axis.
+		
+		Parameters
+		----------
+		a1, a2, ... : sequence of array_like
+		    The arrays must have the same shape, except in the dimension
+		    corresponding to `axis` (the first, by default).
+		axis : int, optional
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
+		
+		Returns
+		-------
+		res : ndarray
+		    The concatenated array.
+		
+		See Also
+		--------
+		ma.concatenate : Concatenate function that preserves input masks.
+		array_split : Split an array into multiple sub-arrays of equal or
+		              near-equal size.
+		split : Split array into a list of multiple sub-arrays of equal size.
+		hsplit : Split array into multiple sub-arrays horizontally (column wise)
+		vsplit : Split array into multiple sub-arrays vertically (row wise)
+		dsplit : Split array into multiple sub-arrays along the 3rd axis (depth).
+		stack : Stack a sequence of arrays along a new axis.
+		hstack : Stack arrays in sequence horizontally (column wise)
+		vstack : Stack arrays in sequence vertically (row wise)
+		dstack : Stack arrays in sequence depth wise (along third dimension)
+		
+		Notes
+		-----
+		When one or more of the arrays to be concatenated is a MaskedArray,
+		this function will return a MaskedArray object instead of an ndarray,
+		but the input masks are *not* preserved. In cases where a MaskedArray
+		is expected as input, use the ma.concatenate function from the masked
+		array module instead.
+		
+		Examples
+		--------
+		>>> a = np.array([[1, 2], [3, 4]])
+		>>> b = np.array([[5, 6]])
+		>>> np.concatenate((a, b), axis=0)
+		array([[1, 2],
+		       [3, 4],
+		       [5, 6]])
+		>>> np.concatenate((a, b.T), axis=1)
+		array([[1, 2, 5],
+		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
+		
+		This function will not preserve masking of MaskedArray inputs.
+		
+		>>> a = np.ma.arange(3)
+		>>> a[1] = np.ma.masked
+		>>> b = np.arange(2, 5)
+		>>> a
+		masked_array(data = [0 -- 2],
+		             mask = [False  True False],
+		       fill_value = 999999)
+		>>> b
+		array([2, 3, 4])
+		>>> np.concatenate([a, b])
+		masked_array(data = [0 1 2 2 3 4],
+		             mask = False,
+		       fill_value = 999999)
+		>>> np.ma.concatenate([a, b])
+		masked_array(data = [0 -- 2 2 3 4],
+		             mask = [False  True False False False False],
+		       fill_value = 999999)
+	**/
+	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		datetime_as_string(arr, unit=None, timezone='naive', casting='same_kind')
+		
+		Convert an array of datetimes into an array of strings.
+		
+		Parameters
+		----------
+		arr : array_like of datetime64
+		    The array of UTC timestamps to format.
+		unit : str
+		    One of None, 'auto', or a :ref:`datetime unit <arrays.dtypes.dateunits>`.
+		timezone : {'naive', 'UTC', 'local'} or tzinfo
+		    Timezone information to use when displaying the datetime. If 'UTC', end
+		    with a Z to indicate UTC time. If 'local', convert to the local timezone
+		    first, and suffix with a +-#### timezone offset. If a tzinfo object,
+		    then do as with 'local', but use the specified timezone.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}
+		    Casting to allow when changing between datetime units.
+		
+		Returns
+		-------
+		str_arr : ndarray
+		    An array of strings the same shape as `arr`.
+		
+		Examples
+		--------
+		>>> d = np.arange('2002-10-27T04:30', 4*60, 60, dtype='M8[m]')
+		>>> d
+		array(['2002-10-27T04:30', '2002-10-27T05:30', '2002-10-27T06:30',
+		       '2002-10-27T07:30'], dtype='datetime64[m]')
+		
+		Setting the timezone to UTC shows the same information, but with a Z suffix
+		
+		>>> np.datetime_as_string(d, timezone='UTC')
+		array(['2002-10-27T04:30Z', '2002-10-27T05:30Z', '2002-10-27T06:30Z',
+		       '2002-10-27T07:30Z'], dtype='<U35')
+		
+		Note that we picked datetimes that cross a DST boundary. Passing in a
+		``pytz`` timezone object will print the appropriate offset
+		
+		>>> np.datetime_as_string(d, timezone=pytz.timezone('US/Eastern'))
+		array(['2002-10-27T00:30-0400', '2002-10-27T01:30-0400',
+		       '2002-10-27T01:30-0500', '2002-10-27T02:30-0500'], dtype='<U39')
+		
+		Passing in a unit will change the precision
+		
+		>>> np.datetime_as_string(d, unit='h')
+		array(['2002-10-27T04', '2002-10-27T05', '2002-10-27T06', '2002-10-27T07'],
+		      dtype='<U32')
+		>>> np.datetime_as_string(d, unit='s')
+		array(['2002-10-27T04:30:00', '2002-10-27T05:30:00', '2002-10-27T06:30:00',
+		       '2002-10-27T07:30:00'], dtype='<U38')
+		
+		'casting' can be used to specify whether precision can be changed
+		
+		>>> np.datetime_as_string(d, unit='h', casting='safe')
+		TypeError: Cannot create a datetime string as units 'h' from a NumPy
+		datetime with units 'm' according to the rule 'safe'
+	**/
 	static public function datetime_as_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		datetime_data(dtype, /)
+		
+		Get information about the step size of a date or time type.
+		
+		The returned tuple can be passed as the second argument of `datetime64` and
+		`timedelta64`.
+		
+		Parameters
+		----------
+		dtype : dtype
+		    The dtype object, which must be a `datetime64` or `timedelta64` type.
+		
+		Returns
+		-------
+		unit : str
+		    The :ref:`datetime unit <arrays.dtypes.dateunits>` on which this dtype
+		    is based.
+		count : int
+		    The number of base units in a step.
+		
+		Examples
+		--------
+		>>> dt_25s = np.dtype('timedelta64[25s]')
+		>>> np.datetime_data(dt_25s)
+		('s', 25)
+		>>> np.array(10, dt_25s).astype('timedelta64[s]')
+		array(250, dtype='timedelta64[s]')
+		
+		The result can be used to construct a datetime that uses the same units
+		as a timedelta::
+		
+		>>> np.datetime64('2010', np.datetime_data(dt_25s))
+		numpy.datetime64('2010-01-01T00:00:00','25s')
+	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
-	static public function format_longfloat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function dragon4_positional(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function dragon4_scientific(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Determine if the given dtype is implied by the representation of its values.
+		
+		Parameters
+		----------
+		dtype : dtype
+		    Data type
+		
+		Returns
+		-------
+		implied : bool
+		    True if the dtype is implied by the representation of its values.
+		
+		Examples
+		--------
+		>>> np.core.arrayprint.dtype_is_implied(int)
+		True
+		>>> np.array([1, 2, 3], int)
+		array([1, 2, 3])
+		>>> np.core.arrayprint.dtype_is_implied(np.int8)
+		False
+		>>> np.array([1, 2, 3], np.int8)
+		array([1, 2, 3], dtype=np.int8)
+	**/
+	static public function dtype_is_implied(dtype:Dynamic):Bool;
+	/**
+		Convert a dtype to a short form which evaluates to the same dtype.
+		
+		The intent is roughly that the following holds
+		
+		>>> from numpy import *
+		>>> assert eval(dtype_short_repr(dt)) == dt
+	**/
+	static public function dtype_short_repr(dtype:Dynamic):Dynamic;
+	/**
+		Format a floating-point scalar as a decimal string in positional notation.
+		
+		Provides control over rounding, trimming and padding. Uses and assumes
+		IEEE unbiased rounding. Uses the "Dragon4" algorithm.
+		
+		Parameters
+		----------
+		x : python float or numpy floating scalar
+		    Value to format.
+		precision : non-negative integer or None, optional
+		    Maximum number of digits to print. May be None if `unique` is
+		    `True`, but must be an integer if unique is `False`.
+		unique : boolean, optional
+		    If `True`, use a digit-generation strategy which gives the shortest
+		    representation which uniquely identifies the floating-point number from
+		    other values of the same type, by judicious rounding. If `precision`
+		    was omitted, print out all necessary digits, otherwise digit generation
+		    is cut off after `precision` digits and the remaining value is rounded.
+		    If `False`, digits are generated as if printing an infinite-precision
+		    value and stopping after `precision` digits, rounding the remaining
+		    value.
+		fractional : boolean, optional
+		    If `True`, the cutoff of `precision` digits refers to the total number
+		    of digits after the decimal point, including leading zeros.
+		    If `False`, `precision` refers to the total number of significant
+		    digits, before or after the decimal point, ignoring leading zeros.
+		trim : one of 'k', '.', '0', '-', optional
+		    Controls post-processing trimming of trailing digits, as follows:
+		
+		    * 'k' : keep trailing zeros, keep decimal point (no trimming)
+		    * '.' : trim all trailing zeros, leave decimal point
+		    * '0' : trim all but the zero before the decimal point. Insert the
+		      zero if it is missing.
+		    * '-' : trim trailing zeros and any trailing decimal point
+		sign : boolean, optional
+		    Whether to show the sign for positive values.
+		pad_left : non-negative integer, optional
+		    Pad the left side of the string with whitespace until at least that
+		    many characters are to the left of the decimal point.
+		pad_right : non-negative integer, optional
+		    Pad the right side of the string with whitespace until at least that
+		    many characters are to the right of the decimal point.
+		
+		Returns
+		-------
+		rep : string
+		    The string representation of the floating point value
+		
+		See Also
+		--------
+		format_float_scientific
+		
+		Examples
+		--------
+		>>> np.format_float_positional(np.float32(np.pi))
+		'3.1415927'
+		>>> np.format_float_positional(np.float16(np.pi))
+		'3.14'
+		>>> np.format_float_positional(np.float16(0.3))
+		'0.3'
+		>>> np.format_float_positional(np.float16(0.3), unique=False, precision=10)
+		'0.3000488281'
+	**/
+	static public function format_float_positional(x:Dynamic, ?precision:Dynamic, ?unique:Dynamic, ?fractional:Dynamic, ?trim:Dynamic, ?sign:Dynamic, ?pad_left:Dynamic, ?pad_right:Dynamic):String;
+	/**
+		Format a floating-point scalar as a decimal string in scientific notation.
+		
+		Provides control over rounding, trimming and padding. Uses and assumes
+		IEEE unbiased rounding. Uses the "Dragon4" algorithm.
+		
+		Parameters
+		----------
+		x : python float or numpy floating scalar
+		    Value to format.
+		precision : non-negative integer or None, optional
+		    Maximum number of digits to print. May be None if `unique` is
+		    `True`, but must be an integer if unique is `False`.
+		unique : boolean, optional
+		    If `True`, use a digit-generation strategy which gives the shortest
+		    representation which uniquely identifies the floating-point number from
+		    other values of the same type, by judicious rounding. If `precision`
+		    was omitted, print all necessary digits, otherwise digit generation is
+		    cut off after `precision` digits and the remaining value is rounded.
+		    If `False`, digits are generated as if printing an infinite-precision
+		    value and stopping after `precision` digits, rounding the remaining
+		    value.
+		trim : one of 'k', '.', '0', '-', optional
+		    Controls post-processing trimming of trailing digits, as follows:
+		
+		    * 'k' : keep trailing zeros, keep decimal point (no trimming)
+		    * '.' : trim all trailing zeros, leave decimal point
+		    * '0' : trim all but the zero before the decimal point. Insert the
+		      zero if it is missing.
+		    * '-' : trim trailing zeros and any trailing decimal point
+		sign : boolean, optional
+		    Whether to show the sign for positive values.
+		pad_left : non-negative integer, optional
+		    Pad the left side of the string with whitespace until at least that
+		    many characters are to the left of the decimal point.
+		exp_digits : non-negative integer, optional
+		    Pad the exponent with zeros until it contains at least this many digits.
+		    If omitted, the exponent will be at least 2 digits.
+		
+		Returns
+		-------
+		rep : string
+		    The string representation of the floating point value
+		
+		See Also
+		--------
+		format_float_positional
+		
+		Examples
+		--------
+		>>> np.format_float_scientific(np.float32(np.pi))
+		'3.1415927e+00'
+		>>> s = np.float32(1.23e24)
+		>>> np.format_float_scientific(s, unique=False, precision=15)
+		'1.230000071797338e+24'
+		>>> np.format_float_scientific(s, exp_digits=4)
+		'1.23e+0024'
+	**/
+	static public function format_float_scientific(x:Dynamic, ?precision:Dynamic, ?unique:Dynamic, ?trim:Dynamic, ?sign:Dynamic, ?pad_left:Dynamic, ?exp_digits:Dynamic):String;
 	/**
 		get_ident() -> integer
 		
@@ -401,6 +959,7 @@ package numpy.core.arrayprint;
 		      - nanstr : str
 		      - infstr : str
 		      - formatter : dict of callables
+		      - sign : str
 		
 		    For a full description of these options, see `set_printoptions`.
 		
@@ -409,6 +968,75 @@ package numpy.core.arrayprint;
 		set_printoptions, set_string_function
 	**/
 	static public function get_printoptions():python.Dict<Dynamic, Dynamic>;
+	/**
+		isfinite(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Test element-wise for finiteness (not infinity or not Not a Number).
+		
+		The result is returned as a boolean array.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input values.
+		out : ndarray, None, or tuple of ndarray and None, optional
+		    A location into which the result is stored. If provided, it must have
+		    a shape that the inputs broadcast to. If not provided or `None`,
+		    a freshly-allocated array is returned. A tuple (possible only as a
+		    keyword argument) must have length equal to the number of outputs.
+		where : array_like, optional
+		    Values of True indicate to calculate the ufunc at that position, values
+		    of False indicate to leave the value in the output alone.
+		**kwargs
+		    For other keyword-only arguments, see the
+		    :ref:`ufunc docs <ufuncs.kwargs>`.
+		
+		Returns
+		-------
+		y : ndarray, bool
+		    True where ``x`` is not positive infinity, negative infinity,
+		    or NaN; false otherwise.
+		    This is a scalar if `x` is a scalar.
+		
+		See Also
+		--------
+		isinf, isneginf, isposinf, isnan
+		
+		Notes
+		-----
+		Not a Number, positive infinity and negative infinity are considered
+		to be non-finite.
+		
+		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+		(IEEE 754). This means that Not a Number is not equivalent to infinity.
+		Also that positive infinity is not equivalent to negative infinity. But
+		infinity is equivalent to positive infinity.  Errors result if the
+		second argument is also supplied when `x` is a scalar input, or if
+		first and second arguments have different shapes.
+		
+		Examples
+		--------
+		>>> np.isfinite(1)
+		True
+		>>> np.isfinite(0)
+		True
+		>>> np.isfinite(np.nan)
+		False
+		>>> np.isfinite(np.inf)
+		False
+		>>> np.isfinite(np.NINF)
+		False
+		>>> np.isfinite([np.log(-1.),1.,np.log(0)])
+		array([False,  True, False])
+		
+		>>> x = np.array([-np.inf, 0., np.inf])
+		>>> y = np.array([2, 2, 2])
+		>>> np.isfinite(x, y)
+		array([0, 1, 0])
+		>>> y
+		array([0, 1, 0])
+	**/
+	static public function isfinite(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -436,18 +1064,8 @@ package numpy.core.arrayprint;
 		Returns
 		-------
 		y : bool (scalar) or boolean ndarray
-		    For scalar input, the result is a new boolean with value True if
-		    the input is positive or negative infinity; otherwise the value is
-		    False.
-		
-		    For array input, the result is a boolean array with the same shape
-		    as the input and the values are True where the corresponding
-		    element of the input is positive or negative infinity; elsewhere
-		    the values are False.  If a second argument was supplied the result
-		    is stored there.  If the type of that array is a numeric type the
-		    result is represented as zeros and ones, if the type is boolean
-		    then as False and True, respectively.  The return value `y` is then
-		    a reference to that array.
+		    True where ``x`` is positive or negative infinity, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -471,7 +1089,7 @@ package numpy.core.arrayprint;
 		>>> np.isinf(np.NINF)
 		True
 		>>> np.isinf([np.inf, -np.inf, 1.0, np.nan])
-		array([ True,  True, False, False], dtype=bool)
+		array([ True,  True, False, False])
 		
 		>>> x = np.array([-np.inf, 0., np.inf])
 		>>> y = np.array([2, 2, 2])
@@ -505,13 +1123,8 @@ package numpy.core.arrayprint;
 		Returns
 		-------
 		y : ndarray or bool
-		    For scalar input, the result is a new boolean with value True if
-		    the input is NaN; otherwise the value is False.
-		
-		    For array input, the result is a boolean array of the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is NaN; otherwise the values are
-		    False.
+		    True where ``x`` is NaN, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
@@ -529,26 +1142,18 @@ package numpy.core.arrayprint;
 		>>> np.isnan(np.inf)
 		False
 		>>> np.isnan([np.log(-1.),1.,np.log(0)])
-		array([ True, False, False], dtype=bool)
+		array([ True, False, False])
 	**/
 	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		maximum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		isnat(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
-		Element-wise maximum of array elements.
-		
-		Compare two arrays and returns a new array containing the element-wise
-		maxima. If one of the elements being compared is a NaN, then that
-		element is returned. If both elements are NaNs then the first is
-		returned. The latter distinction is important for complex NaNs, which
-		are defined as at least one of the real or imaginary parts being a NaN.
-		The net effect is that NaNs are propagated.
+		Test element-wise for NaT (not a time) and return result as a boolean array.
 		
 		Parameters
 		----------
-		x1, x2 : array_like
-		    The arrays holding the elements to be compared. They must have
-		    the same shape, or shapes that can be broadcast to a single shape.
+		x : array_like
+		    Input array with datetime or timedelta data type.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -563,113 +1168,24 @@ package numpy.core.arrayprint;
 		
 		Returns
 		-------
-		y : ndarray or scalar
-		    The maximum of `x1` and `x2`, element-wise.  Returns scalar if
-		    both  `x1` and `x2` are scalars.
+		y : ndarray or bool
+		    True where ``x`` is NaT, false otherwise.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
-		minimum :
-		    Element-wise minimum of two arrays, propagates NaNs.
-		fmax :
-		    Element-wise maximum of two arrays, ignores NaNs.
-		amax :
-		    The maximum value of an array along a given axis, propagates NaNs.
-		nanmax :
-		    The maximum value of an array along a given axis, ignores NaNs.
-		
-		fmin, amin, nanmin
-		
-		Notes
-		-----
-		The maximum is equivalent to ``np.where(x1 >= x2, x1, x2)`` when
-		neither x1 nor x2 are nans, but it is faster and does proper
-		broadcasting.
+		isnan, isinf, isneginf, isposinf, isfinite
 		
 		Examples
 		--------
-		>>> np.maximum([2, 3, 4], [1, 5, 2])
-		array([2, 5, 4])
-		
-		>>> np.maximum(np.eye(2), [0.5, 2]) # broadcasting
-		array([[ 1. ,  2. ],
-		       [ 0.5,  2. ]])
-		
-		>>> np.maximum([np.nan, 0, np.nan], [0, np.nan, np.nan])
-		array([ NaN,  NaN,  NaN])
-		>>> np.maximum(np.Inf, 1)
-		inf
+		>>> np.isnat(np.datetime64("NaT"))
+		True
+		>>> np.isnat(np.datetime64("2016-01-01"))
+		False
+		>>> np.isnat(np.array(["NaT", "2016-01-01"], dtype="datetime64[ns]"))
+		array([ True, False])
 	**/
-	static public function maximum(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		minimum(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
-		
-		Element-wise minimum of array elements.
-		
-		Compare two arrays and returns a new array containing the element-wise
-		minima. If one of the elements being compared is a NaN, then that
-		element is returned. If both elements are NaNs then the first is
-		returned. The latter distinction is important for complex NaNs, which
-		are defined as at least one of the real or imaginary parts being a NaN.
-		The net effect is that NaNs are propagated.
-		
-		Parameters
-		----------
-		x1, x2 : array_like
-		    The arrays holding the elements to be compared. They must have
-		    the same shape, or shapes that can be broadcast to a single shape.
-		out : ndarray, None, or tuple of ndarray and None, optional
-		    A location into which the result is stored. If provided, it must have
-		    a shape that the inputs broadcast to. If not provided or `None`,
-		    a freshly-allocated array is returned. A tuple (possible only as a
-		    keyword argument) must have length equal to the number of outputs.
-		where : array_like, optional
-		    Values of True indicate to calculate the ufunc at that position, values
-		    of False indicate to leave the value in the output alone.
-		**kwargs
-		    For other keyword-only arguments, see the
-		    :ref:`ufunc docs <ufuncs.kwargs>`.
-		
-		Returns
-		-------
-		y : ndarray or scalar
-		    The minimum of `x1` and `x2`, element-wise.  Returns scalar if
-		    both  `x1` and `x2` are scalars.
-		
-		See Also
-		--------
-		maximum :
-		    Element-wise maximum of two arrays, propagates NaNs.
-		fmin :
-		    Element-wise minimum of two arrays, ignores NaNs.
-		amin :
-		    The minimum value of an array along a given axis, propagates NaNs.
-		nanmin :
-		    The minimum value of an array along a given axis, ignores NaNs.
-		
-		fmax, amax, nanmax
-		
-		Notes
-		-----
-		The minimum is equivalent to ``np.where(x1 <= x2, x1, x2)`` when
-		neither x1 nor x2 are NaNs, but it is faster and does proper
-		broadcasting.
-		
-		Examples
-		--------
-		>>> np.minimum([2, 3, 4], [1, 5, 2])
-		array([1, 3, 2])
-		
-		>>> np.minimum(np.eye(2), [0.5, 2]) # broadcasting
-		array([[ 0.5,  0. ],
-		       [ 0. ,  1. ]])
-		
-		>>> np.minimum([np.nan, 0, np.nan],[0, np.nan, np.nan])
-		array([ NaN,  NaN,  NaN])
-		>>> np.minimum(-np.Inf, 1)
-		-inf
-	**/
-	static public function minimum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function isnat(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		not_equal(x1, x2, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
 		
@@ -678,7 +1194,7 @@ package numpy.core.arrayprint;
 		Parameters
 		----------
 		x1, x2 : array_like
-		  Input arrays.
+		    Input arrays.
 		out : ndarray, None, or tuple of ndarray and None, optional
 		    A location into which the result is stored. If provided, it must have
 		    a shape that the inputs broadcast to. If not provided or `None`,
@@ -693,10 +1209,10 @@ package numpy.core.arrayprint;
 		
 		Returns
 		-------
-		not_equal : ndarray bool, scalar bool
-		  For each element in `x1, x2`, return True if `x1` is not equal
-		  to `x2` and False otherwise.
-		
+		out : ndarray or scalar
+		    Output array, element-wise comparison of `x1` and `x2`.
+		    Typically of type bool, unless ``dtype=object`` is passed.
+		    This is a scalar if both `x1` and `x2` are scalars.
 		
 		See Also
 		--------
@@ -705,14 +1221,37 @@ package numpy.core.arrayprint;
 		Examples
 		--------
 		>>> np.not_equal([1.,2.], [1., 3.])
-		array([False,  True], dtype=bool)
+		array([False,  True])
 		>>> np.not_equal([1, 2], [[1, 3],[1, 4]])
 		array([[False,  True],
-		       [False,  True]], dtype=bool)
+		       [False,  True]])
 	**/
 	static public function not_equal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
-	static public function product(x:Dynamic, y:Dynamic):Dynamic;
+	/**
+		Context manager for setting print options.
+		
+		Set print options for the scope of the `with` block, and restore the old
+		options at the end. See `set_printoptions` for the full description of
+		available options.
+		
+		Examples
+		--------
+		
+		>>> with np.printoptions(precision=2):
+		...     print(np.array([2.0])) / 3
+		[0.67]
+		
+		The `as`-clause of the `with`-statement gives the current print options:
+		
+		>>> with np.printoptions(precision=2) as opts:
+		...      assert_equal(opts, np.get_printoptions())
+		
+		See Also
+		--------
+		set_printoptions, get_printoptions
+	**/
+	static public function printoptions(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a contiguous flattened array.
 		
@@ -748,10 +1287,9 @@ package numpy.core.arrayprint;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -815,6 +1353,7 @@ package numpy.core.arrayprint;
 	**/
 	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
 	static public function repr_format(x:Dynamic):Dynamic;
+	static public function set_legacy_print_mode(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Set printing options.
 		
@@ -823,8 +1362,10 @@ package numpy.core.arrayprint;
 		
 		Parameters
 		----------
-		precision : int, optional
+		precision : int or None, optional
 		    Number of digits of precision for floating point output (default 8).
+		    May be `None` if `floatmode` is not `fixed`, to print as many digits as
+		    necessary to uniquely specify the value.
 		threshold : int, optional
 		    Total number of array elements which trigger summarization
 		    rather than full repr (default 1000).
@@ -835,38 +1376,72 @@ package numpy.core.arrayprint;
 		    The number of characters per line for the purpose of inserting
 		    line breaks (default 75).
 		suppress : bool, optional
-		    Whether or not suppress printing of small floating point values
-		    using scientific notation (default False).
+		    If True, always print floating point numbers using fixed point
+		    notation, in which case numbers equal to zero in the current precision
+		    will print as zero.  If False, then scientific notation is used when
+		    absolute value of the smallest number is < 1e-4 or the ratio of the
+		    maximum absolute value to the minimum is > 1e3. The default is False.
 		nanstr : str, optional
 		    String representation of floating point not-a-number (default nan).
 		infstr : str, optional
 		    String representation of floating point infinity (default inf).
+		sign : string, either '-', '+', or ' ', optional
+		    Controls printing of the sign of floating-point types. If '+', always
+		    print the sign of positive values. If ' ', always prints a space
+		    (whitespace character) in the sign position of positive values.  If
+		    '-', omit the sign character of positive values. (default '-')
 		formatter : dict of callables, optional
 		    If not None, the keys should indicate the type(s) that the respective
 		    formatting function applies to.  Callables should return a string.
 		    Types that are not specified (by their corresponding keys) are handled
 		    by the default formatters.  Individual types for which a formatter
-		    can be set are::
+		    can be set are:
 		
-		        - 'bool'
-		        - 'int'
-		        - 'timedelta' : a `numpy.timedelta64`
-		        - 'datetime' : a `numpy.datetime64`
-		        - 'float'
-		        - 'longfloat' : 128-bit floats
-		        - 'complexfloat'
-		        - 'longcomplexfloat' : composed of two 128-bit floats
-		        - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
-		        - 'object' : `np.object_` arrays
-		        - 'str' : all other strings
+		    - 'bool'
+		    - 'int'
+		    - 'timedelta' : a `numpy.timedelta64`
+		    - 'datetime' : a `numpy.datetime64`
+		    - 'float'
+		    - 'longfloat' : 128-bit floats
+		    - 'complexfloat'
+		    - 'longcomplexfloat' : composed of two 128-bit floats
+		    - 'numpystr' : types `numpy.string_` and `numpy.unicode_`
+		    - 'object' : `np.object_` arrays
+		    - 'str' : all other strings
 		
-		    Other keys that can be used to set a group of types at once are::
+		    Other keys that can be used to set a group of types at once are:
 		
-		        - 'all' : sets all types
-		        - 'int_kind' : sets 'int'
-		        - 'float_kind' : sets 'float' and 'longfloat'
-		        - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
-		        - 'str_kind' : sets 'str' and 'numpystr'
+		    - 'all' : sets all types
+		    - 'int_kind' : sets 'int'
+		    - 'float_kind' : sets 'float' and 'longfloat'
+		    - 'complex_kind' : sets 'complexfloat' and 'longcomplexfloat'
+		    - 'str_kind' : sets 'str' and 'numpystr'
+		floatmode : str, optional
+		    Controls the interpretation of the `precision` option for
+		    floating-point types. Can take the following values:
+		
+		    * 'fixed': Always print exactly `precision` fractional digits,
+		            even if this would print more or fewer digits than
+		            necessary to specify the value uniquely.
+		    * 'unique': Print the minimum number of fractional digits necessary
+		            to represent each value uniquely. Different elements may
+		            have a different number of digits. The value of the
+		            `precision` option is ignored.
+		    * 'maxprec': Print at most `precision` fractional digits, but if
+		            an element can be uniquely represented with fewer digits
+		            only print it with that many.
+		    * 'maxprec_equal': Print at most `precision` fractional digits,
+		            but if every element in the array can be uniquely
+		            represented with an equal number of fewer digits, use that
+		            many digits for all elements.
+		legacy : string or `False`, optional
+		    If set to the string `'1.13'` enables 1.13 legacy printing mode. This
+		    approximates numpy 1.13 print output by including a space in the sign
+		    position of floats and different behavior for 0d arrays. If set to
+		    `False`, disables legacy mode. Unrecognized strings will be ignored
+		    with a warning for forward compatibility.
+		
+		    .. versionadded:: 1.14.0
 		
 		See Also
 		--------
@@ -916,5 +1491,56 @@ package numpy.core.arrayprint;
 		... linewidth=75, nanstr='nan', precision=8,
 		... suppress=False, threshold=1000, formatter=None)
 	**/
-	static public function set_printoptions(?precision:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?linewidth:Dynamic, ?suppress:Dynamic, ?nanstr:Dynamic, ?infstr:Dynamic, ?formatter:Dynamic):Dynamic;
+	static public function set_printoptions(?precision:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?linewidth:Dynamic, ?suppress:Dynamic, ?nanstr:Dynamic, ?infstr:Dynamic, ?formatter:Dynamic, ?sign:Dynamic, ?floatmode:Dynamic, ?kwarg:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Set a Python function to be used when pretty printing arrays.
+		
+		Parameters
+		----------
+		f : function or None
+		    Function to be used to pretty print arrays. The function should expect
+		    a single array argument and return a string of the representation of
+		    the array. If None, the function is reset to the default NumPy function
+		    to print arrays.
+		repr : bool, optional
+		    If True (default), the function for pretty printing (``__repr__``)
+		    is set, if False the function that returns the default string
+		    representation (``__str__``) is set.
+		
+		See Also
+		--------
+		set_printoptions, get_printoptions
+		
+		Examples
+		--------
+		>>> def pprint(arr):
+		...     return 'HA! - What are you going to do now?'
+		...
+		>>> np.set_string_function(pprint)
+		>>> a = np.arange(10)
+		>>> a
+		HA! - What are you going to do now?
+		>>> print(a)
+		[0 1 2 3 4 5 6 7 8 9]
+		
+		We can reset the function to the default:
+		
+		>>> np.set_string_function(None)
+		>>> a
+		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+		
+		`repr` affects either pretty printing or normal string representation.
+		Note that ``__repr__`` is still affected by setting ``__str__``
+		because the width of each array element in the returned string becomes
+		equal to the length of the result of ``__str__()``.
+		
+		>>> x = np.arange(4)
+		>>> np.set_string_function(lambda x:'random', repr=False)
+		>>> x.__str__()
+		'random'
+		>>> x.__repr__()
+		'array([     0,      1,      2,      3])'
+	**/
+	static public function set_string_function(f:Dynamic, ?repr:Dynamic):Dynamic;
+	static public function str_format(x:Dynamic):Dynamic;
 }

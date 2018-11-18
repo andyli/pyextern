@@ -59,7 +59,7 @@ package theano.gradient;
 		- `SparseVariable` subclass of Variable that represents
 		  a scipy.sparse.{csc,csr}_matrix object.
 		
-		- `CudaNdarrayVariable` subclass of Variable that represents our object on
+		- `GpuArrayVariable` subclass of Variable that represents our object on
 		  the GPU that is a subset of numpy.ndarray.
 		
 		- `RandomVariable`.
@@ -111,7 +111,7 @@ package theano.gradient;
 		    theano.function([d,b], [e])     # this works.  d's default value of 1.5 is ignored.
 		
 		The python variables :literal:`a,b,c` all refer to instances of type
-		`Variable`. The `Variable` refered to by `a` is also an instance of
+		`Variable`. The `Variable` referred to by `a` is also an instance of
 		`Constant`.
 		
 		`compile.function` uses each `Apply` instance's `inputs` attribute together
@@ -179,7 +179,7 @@ package theano.gradient;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -231,7 +231,7 @@ package theano.gradient;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -324,6 +324,16 @@ package theano.gradient;
 		    return "PyObject ** addr_of_%(name)s;"
 	**/
 	public function c_declare(name:Dynamic, sub:Dynamic, ?check_input:Dynamic):Dynamic;
+	/**
+		Optional: Return the name of the primitive C type of items into variables
+		handled by this type.
+		
+		e.g:
+		
+		 - For ``TensorType(dtype='int64', ...)``: should return ``"npy_int64"``.
+		 - For ``GpuArrayType(dtype='int32', ...)``: should return ``"ga_int"``.
+	**/
+	public function c_element_type():Dynamic;
 	/**
 		Required: Return c code to extract a PyObject * instance.
 		
@@ -517,7 +527,7 @@ package theano.gradient;
 	**/
 	public function c_no_compile_args():Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -593,8 +603,9 @@ package theano.gradient;
 		Convert a symbolic variable into this Type, if compatible.
 		
 		For the moment, the only Types compatible with one another are
-		TensorType and CudaNdarrayType, provided they have the same
-		number of dimensions, same broadcasting pattern, and same dtype.
+		TensorType and GpuArrayType, provided they have the same
+		number of dimensions, same broadcasting pattern, and same
+		dtype.
 		
 		If Types are not compatible, a TypeError should be raised.
 	**/
@@ -615,8 +626,8 @@ package theano.gradient;
 		    A pretty string for printing and debugging.
 	**/
 	public function make_variable(?name:Dynamic):Dynamic;
-	public function may_share_memory(b:Dynamic):Dynamic;
-	public function value_eq(b:Dynamic, ?force_same_dtype:Dynamic):Dynamic;
+	static public function may_share_memory(a:Dynamic, b:Dynamic):Dynamic;
+	static public function value_eq(a:Dynamic, b:Dynamic, ?force_same_dtype:Dynamic):Dynamic;
 	/**
 		Optional: Return a message explaining the output of
 		is_valid_value.

@@ -14,6 +14,7 @@ package tensorflow.python.framework.ops;
 	static public var LOCAL_RESOURCES : Dynamic;
 	static public var LOCAL_VARIABLES : Dynamic;
 	static public var LOSSES : Dynamic;
+	static public var METRIC_VARIABLES : Dynamic;
 	static public var MODEL_VARIABLES : Dynamic;
 	static public var MOVING_AVERAGE_VARIABLES : Dynamic;
 	static public var QUEUE_RUNNERS : Dynamic;
@@ -34,7 +35,9 @@ package tensorflow.python.framework.ops;
 	static public var WEIGHTS : Dynamic;
 	static public var WHILE_CONTEXT : Dynamic;
 	static public var _STREAMING_MODEL_PORTS : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _SUMMARY_COLLECTION : Dynamic;
+	static public var _VARIABLE_COLLECTIONS : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -85,7 +88,7 @@ package tensorflow.python.framework.ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -136,9 +139,11 @@ package tensorflow.python.framework.ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 }

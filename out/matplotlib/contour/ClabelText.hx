@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.contour;
 @:pythonImport("matplotlib.contour", "ClabelText") extern class ClabelText {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -39,102 +39,102 @@ package matplotlib.contour;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create a :class:`~matplotlib.text.Text` instance at *x*, *y*
-		with string *text*.
+		Create a `.Text` instance at *x*, *y* with string *text*.
 		
 		Valid kwargs are
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  backgroundcolor: any matplotlib color 
-		  bbox: FancyBboxPatch prop dict 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: any matplotlib color 
-		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
-		  gid: an id string 
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
-		  label: string or anything printable with '%s' conversion. 
-		  linespacing: float (multiple of font size) 
-		  multialignment: ['left' | 'right' | 'center' ] 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  position: (x,y) 
-		  rasterized: [True | False | None] 
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
-		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
-		  sketch_params: unknown
-		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
-		  text: string or anything printable with '%s' conversion. 
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
-		  visible: [True | False] 
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
-		  wrap: unknown
-		  x: float 
-		  y: float 
-		  zorder: any number 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  alpha: float
+		  animated: bool
+		  backgroundcolor: color
+		  bbox: dict with properties for `.patches.FancyBboxPatch`
+		  clip_box: `matplotlib.transforms.Bbox`
+		  clip_on: bool
+		  clip_path: { (`.path.Path`, `.transforms.Transform`), `.patches.Patch`, None } 
+		  color: color
+		  contains: callable
+		  figure: `.Figure`
+		  fontfamily: {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
+		  fontname: {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
+		  fontproperties: `.font_manager.FontProperties`
+		  fontsize: {size in points, 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
+		  fontstretch: {a numeric value in range 0-1000, 'ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'}
+		  fontstyle: {'normal', 'italic', 'oblique'}
+		  fontvariant: {'normal', 'small-caps'}
+		  fontweight: {a numeric value in range 0-1000, 'ultralight', 'light', 'normal', 'regular', 'book', 'medium', 'roman', 'semibold', 'demibold', 'demi', 'bold', 'heavy', 'extra bold', 'black'}
+		  gid: str
+		  horizontalalignment: {'center', 'right', 'left'}
+		  in_layout: bool
+		  label: object
+		  linespacing: float (multiple of font size)
+		  multialignment: {'left', 'right', 'center'}
+		  path_effects: `.AbstractPathEffect`
+		  picker: None or bool or float or callable
+		  position: (float, float)
+		  rasterized: bool or None
+		  rotation: {angle in degrees, 'vertical', 'horizontal'}
+		  rotation_mode: {None, 'default', 'anchor'}
+		  sketch_params: (scale: float, length: float, randomness: float) 
+		  snap: bool or None
+		  text: string or object castable to string (but ``None`` becomes ``''``)
+		  transform: `.Transform`
+		  url: str
+		  usetex: bool or None
+		  verticalalignment: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+		  visible: bool
+		  wrap: bool
+		  x: float
+		  y: float
+		  zorder: float
 	**/
 	@:native("__init__")
 	public function ___init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, ?usetex:Dynamic, ?wrap:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Create a :class:`~matplotlib.text.Text` instance at *x*, *y*
-		with string *text*.
+		Create a `.Text` instance at *x*, *y* with string *text*.
 		
 		Valid kwargs are
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  backgroundcolor: any matplotlib color 
-		  bbox: FancyBboxPatch prop dict 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: any matplotlib color 
-		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
-		  gid: an id string 
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
-		  label: string or anything printable with '%s' conversion. 
-		  linespacing: float (multiple of font size) 
-		  multialignment: ['left' | 'right' | 'center' ] 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  position: (x,y) 
-		  rasterized: [True | False | None] 
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
-		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
-		  sketch_params: unknown
-		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
-		  text: string or anything printable with '%s' conversion. 
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
-		  visible: [True | False] 
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
-		  wrap: unknown
-		  x: float 
-		  y: float 
-		  zorder: any number 
+		  agg_filter: a filter function, which takes a (m, n, 3) float array and a dpi value, and returns a (m, n, 3) array 
+		  alpha: float
+		  animated: bool
+		  backgroundcolor: color
+		  bbox: dict with properties for `.patches.FancyBboxPatch`
+		  clip_box: `matplotlib.transforms.Bbox`
+		  clip_on: bool
+		  clip_path: { (`.path.Path`, `.transforms.Transform`), `.patches.Patch`, None } 
+		  color: color
+		  contains: callable
+		  figure: `.Figure`
+		  fontfamily: {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
+		  fontname: {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
+		  fontproperties: `.font_manager.FontProperties`
+		  fontsize: {size in points, 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
+		  fontstretch: {a numeric value in range 0-1000, 'ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'}
+		  fontstyle: {'normal', 'italic', 'oblique'}
+		  fontvariant: {'normal', 'small-caps'}
+		  fontweight: {a numeric value in range 0-1000, 'ultralight', 'light', 'normal', 'regular', 'book', 'medium', 'roman', 'semibold', 'demibold', 'demi', 'bold', 'heavy', 'extra bold', 'black'}
+		  gid: str
+		  horizontalalignment: {'center', 'right', 'left'}
+		  in_layout: bool
+		  label: object
+		  linespacing: float (multiple of font size)
+		  multialignment: {'left', 'right', 'center'}
+		  path_effects: `.AbstractPathEffect`
+		  picker: None or bool or float or callable
+		  position: (float, float)
+		  rasterized: bool or None
+		  rotation: {angle in degrees, 'vertical', 'horizontal'}
+		  rotation_mode: {None, 'default', 'anchor'}
+		  sketch_params: (scale: float, length: float, randomness: float) 
+		  snap: bool or None
+		  text: string or object castable to string (but ``None`` becomes ``''``)
+		  transform: `.Transform`
+		  url: str
+		  usetex: bool or None
+		  verticalalignment: {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
+		  visible: bool
+		  wrap: bool
+		  x: float
+		  y: float
+		  zorder: float
 	**/
 	public function new(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, ?usetex:Dynamic, ?wrap:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -143,7 +143,7 @@ package matplotlib.contour;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -194,20 +194,21 @@ package matplotlib.contour;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _alias_map : Dynamic;
 	static public var _cached : Dynamic;
 	/**
-		Update the location and the size of the bbox
-		(FancyBboxPatch), and draw
+		Update the location and size of the bbox (`.patches.FancyBboxPatch`),
+		and draw.
 	**/
 	public function _draw_bbox(renderer:Dynamic, posx:Dynamic, posy:Dynamic):Dynamic;
 	/**
-		Returns the distance from the given points, to the boundaries
-		of a rotated box in pixels.
+		Return the distance from the given points to the boundaries of a
+		rotated box, in pixels.
 	**/
 	public function _get_dist_to_box(rotation:Dynamic, x0:Dynamic, y0:Dynamic, figure_box:Dynamic):Dynamic;
 	/**
@@ -218,12 +219,12 @@ package matplotlib.contour;
 	public function _get_layout(renderer:Dynamic):Dynamic;
 	public function _get_multialignment():Dynamic;
 	/**
-		Returns the width of a given text string, in pixels.
+		Return the width of a given text string, in pixels.
 	**/
 	public function _get_rendered_text_width(text:Dynamic):Dynamic;
 	/**
-		Returns the maximum line width for wrapping text based on the
-		current orientation.
+		Return the maximum line width for wrapping text based on the current
+		orientation.
 	**/
 	public function _get_wrap_line_width():Dynamic;
 	/**
@@ -232,7 +233,7 @@ package matplotlib.contour;
 	**/
 	public function _get_wrapped_text():Dynamic;
 	/**
-		get the (possibly unit converted) transformed x, y in display coords
+		Get the (possibly unit converted) transformed x, y in display coords.
 	**/
 	public function _get_xy_display():Dynamic;
 	static public var _prop_order : Dynamic;
@@ -261,9 +262,11 @@ package matplotlib.contour;
 		In the case of text, a hit is true anywhere in the
 		axis-aligned bounding-box containing the text.
 		
-		Returns True or False.
+		Returns
+		-------
+		bool : bool
 	**/
-	public function contains(mouseevent:Dynamic):Dynamic;
+	public function contains(mouseevent:Dynamic):Bool;
 	/**
 		For artists in an axes, if the xaxis has units support,
 		convert *x* using xaxis unit type
@@ -275,9 +278,9 @@ package matplotlib.contour;
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
 	/**
-		Draws the :class:`Text` object to the given *renderer*.
+		Draws the `.Text` object to the given *renderer*.
 	**/
-	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function draw(renderer:Dynamic):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -302,7 +305,7 @@ package matplotlib.contour;
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		return filter function to be used for agg filter
+		Return filter function to be used for agg filter.
 	**/
 	public function get_agg_filter():Dynamic;
 	/**
@@ -315,16 +318,8 @@ package matplotlib.contour;
 	**/
 	public function get_animated():Dynamic;
 	/**
-		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-	**/
-	public function get_axes():Dynamic;
-	/**
-		Return the bbox Patch object. Returns None if the
-		FancyBboxPatch is not made.
+		Return the bbox Patch, or None if the `.patches.FancyBboxPatch`
+		is not made.
 	**/
 	public function get_bbox_patch():Dynamic;
 	/**
@@ -357,74 +352,102 @@ package matplotlib.contour;
 	**/
 	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
-		Return the list of font families used for font lookup
+		alias for `get_fontfamily`
 	**/
-	public function get_family():Dynamic;
+	public function get_family(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the :class:`~matplotlib.figure.Figure` instance the
-		artist belongs to.
+		Return the `.Figure` instance the artist belongs to.
 	**/
 	public function get_figure():Dynamic;
 	/**
-		alias for get_fontproperties
+		alias for `get_fontproperties`
 	**/
-	public function get_font_properties():Dynamic;
+	public function get_font_properties(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for get_family
+		Return the list of font families used for font lookup
+		
+		See Also
+		--------
+		.font_manager.FontProperties.get_family
 	**/
 	public function get_fontfamily():Dynamic;
 	/**
-		alias for get_name
+		Return the font name as string
+		
+		See Also
+		--------
+		.font_manager.FontProperties.get_name
 	**/
 	public function get_fontname():Dynamic;
 	/**
-		Return the :class:`~font_manager.FontProperties` object
+		Return the `.font_manager.FontProperties` object
 	**/
 	public function get_fontproperties():Dynamic;
 	/**
-		alias for get_size
+		Return the font size as integer
+		
+		See Also
+		--------
+		.font_manager.FontProperties.get_size_in_points
 	**/
 	public function get_fontsize():Dynamic;
 	/**
-		alias for get_stretch
-	**/
-	public function get_fontstretch():Dynamic;
-	/**
-		alias for get_style
+		Return the font style as string
+		
+		See Also
+		--------
+		.font_manager.FontProperties.get_style
 	**/
 	public function get_fontstyle():Dynamic;
 	/**
-		alias for get_variant
+		Return the font variant as a string
+		
+		See Also
+		--------
+		.font_manager.FontProperties.get_variant
 	**/
 	public function get_fontvariant():Dynamic;
 	/**
-		alias for get_weight
+		Get the font weight as string or number
+		
+		See Also
+		--------
+		.font_manager.FontProperties.get_weight
 	**/
 	public function get_fontweight():Dynamic;
 	/**
-		Returns the group id
+		Returns the group id.
 	**/
 	public function get_gid():Dynamic;
 	/**
-		alias for get_horizontalalignment
+		alias for `get_horizontalalignment`
 	**/
-	public function get_ha():Dynamic;
+	public function get_ha(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the horizontal alignment as string.  Will be one of
 		'left', 'center' or 'right'.
 	**/
 	public function get_horizontalalignment():Dynamic;
 	/**
+		Return boolean flag, ``True`` if artist is included in layout
+		calculations.
+		
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+	**/
+	public function get_in_layout():Dynamic;
+	/**
 		Get the label used for this artist in the legend.
 	**/
 	public function get_label():Dynamic;
 	/**
-		Return the font name as string
+		alias for `get_fontname`
 	**/
-	public function get_name():Dynamic;
+	public function get_name(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist
+		Return the picker object used by this artist.
 	**/
 	public function get_picker():Dynamic;
 	/**
@@ -440,21 +463,21 @@ package matplotlib.contour;
 	**/
 	public function get_prop_tup(?renderer:Dynamic):Dynamic;
 	/**
-		return True if the artist is to be rasterized
+		Return whether the artist is to be rasterized.
 	**/
 	public function get_rasterized():Dynamic;
 	/**
-		return the text angle as float in degrees
+		Return the text angle as float in degrees.
 	**/
 	public function get_rotation():Dynamic;
 	/**
-		get text rotation mode
+		Get the text rotation mode.
 	**/
 	public function get_rotation_mode():Dynamic;
 	/**
-		Return the font size as integer
+		alias for `get_fontsize`
 	**/
-	public function get_size():Dynamic;
+	public function get_size(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the sketch parameters for the artist.
 		
@@ -462,17 +485,17 @@ package matplotlib.contour;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -490,16 +513,35 @@ package matplotlib.contour;
 	public function get_snap():Dynamic;
 	/**
 		Get the font stretch as a string or number
+		
+		See Also
+		--------
+		.font_manager.FontProperties.get_stretch
 	**/
 	public function get_stretch():Dynamic;
 	/**
-		Return the font style as string
+		alias for `get_fontstyle`
 	**/
-	public function get_style():Dynamic;
+	public function get_style(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get the text as string
 	**/
 	public function get_text():Dynamic;
+	/**
+		Like `Artist.get_window_extent`, but includes any clipping.
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` instance
+		    renderer that will be used to draw the figures (i.e.
+		    ``fig.canvas.get_renderer()``)
+		
+		Returns
+		-------
+		bbox : `.BboxBase`
+		    containing the bounding box (in figure pixel co-ordinates).
+	**/
+	public function get_tightbbox(renderer:Dynamic):Dynamic;
 	/**
 		Return the :class:`~matplotlib.transforms.Transform`
 		instance used by this artist.
@@ -516,24 +558,24 @@ package matplotlib.contour;
 	**/
 	public function get_unitless_position():Dynamic;
 	/**
-		Returns the url
+		Returns the url.
 	**/
 	public function get_url():Dynamic;
 	/**
-		Return whether this `Text` object will render using TeX.
+		Return whether this `Text` object uses TeX for rendering.
 		
-		If the user has not manually set this value, it will default to
-		the value of `rcParams['text.usetex']`
+		If the user has not manually set this value, it defaults to
+		:rc:`text.usetex`.
 	**/
 	public function get_usetex():Dynamic;
 	/**
-		alias for :meth:`getverticalalignment`
+		alias for `get_verticalalignment`
 	**/
-	public function get_va():Dynamic;
+	public function get_va(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return the font variant as a string
+		alias for `get_fontvariant`
 	**/
-	public function get_variant():Dynamic;
+	public function get_variant(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the vertical alignment as string.  Will be one of
 		'top', 'center', 'bottom' or 'baseline'.
@@ -544,35 +586,36 @@ package matplotlib.contour;
 	**/
 	public function get_visible():Dynamic;
 	/**
-		Get the font weight as string or number
+		alias for `get_fontweight`
 	**/
-	public function get_weight():Dynamic;
+	public function get_weight(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a :class:`~matplotlib.transforms.Bbox` object bounding
-		the text, in display units.
+		Return the `Bbox` bounding the text, in display units.
 		
-		In addition to being used internally, this is useful for
-		specifying clickable regions in a png file on a web page.
+		In addition to being used internally, this is useful for specifying
+		clickable regions in a png file on a web page.
 		
-		*renderer* defaults to the _renderer attribute of the text
-		object.  This is not assigned until the first execution of
-		:meth:`draw`, so you must use this kwarg if you want
-		to call :meth:`get_window_extent` prior to the first
-		:meth:`draw`.  For getting web page regions, it is
-		simpler to call the method after saving the figure.
+		Parameters
+		----------
+		renderer : Renderer, optional
+		    A renderer is needed to compute the bounding box.  If the artist
+		    has already been drawn, the renderer is cached; thus, it is only
+		    necessary to pass this argument when calling `get_window_extent`
+		    before the first `draw`.  In practice, it is usually easier to
+		    trigger a draw first (e.g. by saving the figure).
 		
-		*dpi* defaults to self.figure.dpi; the renderer dpi is
-		irrelevant.  For the web application, if figure.dpi is not
-		the value used when saving the figure, then the value that
-		was used must be specified as the *dpi* argument.
+		dpi : float, optional
+		    The dpi value for computing the bbox, defaults to
+		    ``self.figure.dpi`` (*not* the renderer dpi); should be set e.g. if
+		    to match regions with a figure saved with a custom dpi value.
 	**/
 	public function get_window_extent(?renderer:Dynamic, ?dpi:Dynamic):Dynamic;
 	/**
-		Returns the wrapping state for the text.
+		Return the wrapping state for the text.
 	**/
 	public function get_wrap():Dynamic;
 	/**
-		Return the :class:`Artist`'s zorder.
+		Return the artist's zorder.
 	**/
 	public function get_zorder():Dynamic;
 	/**
@@ -580,12 +623,17 @@ package matplotlib.contour;
 	**/
 	public function have_units():Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
-		Returns True if the artist is assigned to a
-		:class:`~matplotlib.figure.Figure`.
+		.. deprecated:: 2.2
+		    artist.figure is not None
+		
+		Returns whether the artist is assigned to a `.Figure`.
 	**/
 	public function is_figure_set():Dynamic;
 	/**
@@ -651,77 +699,88 @@ package matplotlib.contour;
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set agg_filter fuction.
+		Set the agg filter.
+		
+		Parameters
+		----------
+		filter_func : callable
+		    A filter function, which takes a (m, n, 3) float array and a dpi
+		    value, and returns a (m, n, 3) array.
+		
+		    .. ACCEPTS: a filter function, which takes a (m, n, 3) float array
+		        and a dpi value, and returns a (m, n, 3) array
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Set the alpha value used for blending - not supported on
-		all backends.
+		Set the alpha value used for blending - not supported on all backends.
 		
-		ACCEPTS: float (0.0 transparent through 1.0 opaque)
+		Parameters
+		----------
+		alpha : float
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
 		Set the artist's animation state.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.axes.Axes` instance in which the
-		artist resides, if any.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-		
-		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
-	**/
-	public function set_axes(axes:Dynamic):Dynamic;
-	/**
 		Set the background color of the text by updating the bbox.
 		
-		.. seealso::
+		Parameters
+		----------
+		color : color
 		
-		    :meth:`set_bbox`
-		       To change the position of the bounding box.
-		
-		ACCEPTS: any matplotlib color
+		See Also
+		--------
+		.set_bbox : To change the position of the bounding box
 	**/
 	public function set_backgroundcolor(color:Dynamic):Dynamic;
 	/**
-		Draw a bounding box around self.  rectprops are any settable
-		properties for a FancyBboxPatch, e.g., facecolor='red', alpha=0.5.
+		Draw a bounding box around self.
 		
-		  t.set_bbox(dict(facecolor='red', alpha=0.5))
+		Parameters
+		----------
+		rectprops : dict with properties for `.patches.FancyBboxPatch`
+		     The default boxstyle is 'square'. The mutation
+		     scale of the `.patches.FancyBboxPatch` is set to the fontsize.
 		
-		The default boxstyle is 'square'. The mutation
-		scale of the FancyBboxPatch is set to the fontsize.
+		Examples
+		--------
+		::
 		
-		ACCEPTS: FancyBboxPatch prop dict
+		    t.set_bbox(dict(facecolor='red', alpha=0.5))
 	**/
 	public function set_bbox(rectprops:Dynamic):Dynamic;
 	/**
-		Set the artist's clip :class:`~matplotlib.transforms.Bbox`.
+		Set the artist's clip `~.transforms.Bbox`.
 		
-		ACCEPTS: a :class:`matplotlib.transforms.Bbox` instance
+		Parameters
+		----------
+		clipbox : `matplotlib.transforms.Bbox`
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
 		Set whether artist uses clipping.
 		
-		When False artists will be visible out side of the axes which
-		can lead to unexpected results.
+		When False, artists will be visible outside of the axes, which can lead
+		to unexpected results.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_clip_on(b:Dynamic):Dynamic;
 	/**
 		Set the artist's clip path, which may be:
 		
-		  * a :class:`~matplotlib.patches.Patch` (or subclass) instance
+		  * a `~matplotlib.patches.Patch` (or subclass) instance
 		
-		  * a :class:`~matplotlib.path.Path` instance, in which case
-		     an optional :class:`~matplotlib.transforms.Transform`
+		  * a `~matplotlib.path.Path` instance, in which case
+		     an optional `~matplotlib.transforms.Transform`
 		     instance may be provided, which will be applied to the
 		     path before using it for clipping.
 		
@@ -731,15 +790,16 @@ package matplotlib.contour;
 		rectangle, this method will set the clipping box to the
 		corresponding rectangle and set the clipping path to *None*.
 		
-		ACCEPTS: [ (:class:`~matplotlib.path.Path`,
-		:class:`~matplotlib.transforms.Transform`) |
-		:class:`~matplotlib.patches.Patch` | None ]
+		ACCEPTS: { (`.path.Path`, `.transforms.Transform`),
+		          `.patches.Patch`, None }
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		Set the foreground color of the text
 		
-		ACCEPTS: any matplotlib color
+		Parameters
+		----------
+		color : color
 	**/
 	public function set_color(color:Dynamic):Dynamic;
 	/**
@@ -753,111 +813,199 @@ package matplotlib.contour;
 		and *props* is a dictionary of properties you want returned
 		with the contains test.
 		
-		ACCEPTS: a callable function
+		Parameters
+		----------
+		picker : callable
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
-		Set the font family.  May be either a single string, or a list
-		of strings in decreasing priority.  Each string may be either
-		a real font name or a generic font class name.  If the latter,
-		the specific font names will be looked up in the
-		:file:`matplotlibrc` file.
-		
-		ACCEPTS: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |
-		          'monospace' ]
+		alias for `set_fontfamily`
 	**/
-	public function set_family(fontname:Dynamic):Dynamic;
+	public function set_family(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the :class:`~matplotlib.figure.Figure` instance the artist
-		belongs to.
+		Set the `.Figure` instance the artist belongs to.
 		
-		ACCEPTS: a :class:`matplotlib.figure.Figure` instance
+		Parameters
+		----------
+		fig : `.Figure`
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
-		alias for set_fontproperties
+		alias for `set_fontproperties`
 	**/
-	public function set_font_properties(fp:Dynamic):Dynamic;
+	public function set_font_properties(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		alias for set_family
+		Set the font family.  May be either a single string, or a list of
+		strings in decreasing priority.  Each string may be either a real font
+		name or a generic font class name.  If the latter, the specific font
+		names will be looked up in the corresponding rcParams.
+		
+		Parameters
+		----------
+		fontname : {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
+		
+		See Also
+		--------
+		.font_manager.FontProperties.set_family
+	**/
+	public function set_fontfamily(fontname:Dynamic):Dynamic;
+	/**
+		alias for `.set_family`
+		
+		One-way alias only: the getter differs.
+		
+		Parameters
+		----------
+		fontname : {FONTNAME, 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace'}
+		
+		See Also
+		--------
+		.font_manager.FontProperties.set_family
 	**/
 	public function set_fontname(fontname:Dynamic):Dynamic;
 	/**
-		Set the font properties that control the text.  *fp* must be a
-		:class:`matplotlib.font_manager.FontProperties` object.
+		Set the font properties that control the text.
 		
-		ACCEPTS: a :class:`matplotlib.font_manager.FontProperties` instance
+		Parameters
+		----------
+		fp : `.font_manager.FontProperties`
 	**/
 	public function set_fontproperties(fp:Dynamic):Dynamic;
 	/**
-		alias for set_size
+		Set the font size.  May be either a size string, relative to
+		the default font size, or an absolute font size in points.
+		
+		Parameters
+		----------
+		fontsize : {size in points, 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'}
+		
+		See Also
+		--------
+		.font_manager.FontProperties.set_size
 	**/
 	public function set_fontsize(fontsize:Dynamic):Dynamic;
 	/**
-		alias for set_stretch
+		Set the font stretch (horizontal condensation or expansion).
+		
+		Parameters
+		----------
+		stretch : {a numeric value in range 0-1000, 'ultra-condensed', 'extra-condensed', 'condensed', 'semi-condensed', 'normal', 'semi-expanded', 'expanded', 'extra-expanded', 'ultra-expanded'}
+		
+		See Also
+		--------
+		.font_manager.FontProperties.set_stretch
 	**/
 	public function set_fontstretch(stretch:Dynamic):Dynamic;
 	/**
-		alias for set_style
+		Set the font style.
+		
+		Parameters
+		----------
+		fontstyle : {'normal', 'italic', 'oblique'}
+		
+		See Also
+		--------
+		.font_manager.FontProperties.set_style
 	**/
 	public function set_fontstyle(fontstyle:Dynamic):Dynamic;
 	/**
-		alias for set_variant
+		Set the font variant, either 'normal' or 'small-caps'.
+		
+		Parameters
+		----------
+		variant : {'normal', 'small-caps'}
+		
+		See Also
+		--------
+		.font_manager.FontProperties.set_variant
 	**/
 	public function set_fontvariant(variant:Dynamic):Dynamic;
 	/**
-		alias for set_weight
+		Set the font weight.
+		
+		Parameters
+		----------
+		weight : {a numeric value in range 0-1000, 'ultralight', 'light', 'normal', 'regular', 'book', 'medium', 'roman', 'semibold', 'demibold', 'demi', 'bold', 'heavy', 'extra bold', 'black'}
+		
+		See Also
+		--------
+		.font_manager.FontProperties.set_weight
 	**/
 	public function set_fontweight(weight:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist
+		Sets the (group) id for the artist.
 		
-		ACCEPTS: an id string
+		Parameters
+		----------
+		gid : str
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
 	/**
-		alias for set_horizontalalignment
+		alias for `set_horizontalalignment`
 	**/
-	public function set_ha(align:Dynamic):Dynamic;
+	public function set_ha(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the horizontal alignment to one of
 		
-		ACCEPTS: [ 'center' | 'right' | 'left' ]
+		Parameters
+		----------
+		align : {'center', 'right', 'left'}
 	**/
 	public function set_horizontalalignment(align:Dynamic):Dynamic;
 	/**
+		Set if artist is to be included in layout calculations,
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+		
+		Parameters
+		----------
+		in_layout : bool
+	**/
+	public function set_in_layout(in_layout:Dynamic):Dynamic;
+	/**
 		Set the label to *s* for auto legend.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : object
+		    *s* will be converted to a string by calling `str`.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
 		Set the line spacing as a multiple of the font size.
 		Default is 1.2.
 		
-		ACCEPTS: float (multiple of font size)
+		Parameters
+		----------
+		spacing : float (multiple of font size)
 	**/
 	public function set_linespacing(spacing:Dynamic):Dynamic;
 	/**
-		alias for set_verticalalignment
+		alias for `set_multialignment`
 	**/
-	public function set_ma(align:Dynamic):Dynamic;
+	public function set_ma(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the alignment for multiple lines layout.  The layout of the
 		bounding box of all the lines is determined bu the horizontalalignment
 		and verticalalignment properties, but the multiline text within that
 		box can be
 		
-		ACCEPTS: ['left' | 'right' | 'center' ]
+		Parameters
+		----------
+		align : {'left', 'right', 'center'}
 	**/
 	public function set_multialignment(align:Dynamic):Dynamic;
 	/**
-		alias for set_family
+		alias for `set_fontname`
 	**/
-	public function set_name(fontname:Dynamic):Dynamic;
+	public function set_name(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set path_effects, which should be a list of instances of
-		matplotlib.patheffect._Base class or its derivatives.
+		Set the path effects.
+		
+		Parameters
+		----------
+		path_effects : `.AbstractPathEffect`
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
@@ -889,45 +1037,52 @@ package matplotlib.contour;
 		    artist, return *hit=True* and props is a dictionary of
 		    properties you want added to the PickEvent attributes.
 		
-		ACCEPTS: [None|float|boolean|callable]
+		Parameters
+		----------
+		picker : None or bool or float or callable
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
-		Set the (*x*, *y*) position of the text
+		Set the (*x*, *y*) position of the text.
 		
-		ACCEPTS: (x,y)
+		Parameters
+		----------
+		xy : (float, float)
 	**/
 	public function set_position(xy:Dynamic):Dynamic;
 	/**
 		Force rasterized (bitmap) drawing in vector backend output.
 		
-		Defaults to None, which implies the backend's default behavior
+		Defaults to None, which implies the backend's default behavior.
 		
-		ACCEPTS: [True | False | None]
+		Parameters
+		----------
+		rasterized : bool or None
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Set the rotation of the text
+		Set the rotation of the text.
 		
-		ACCEPTS: [ angle in degrees | 'vertical' | 'horizontal' ]
+		Parameters
+		----------
+		s : {angle in degrees, 'vertical', 'horizontal'}
 	**/
 	public function set_rotation(s:Dynamic):Dynamic;
 	/**
-		set text rotation mode. If "anchor", the un-rotated text
-		will first aligned according to their *ha* and
-		*va*, and then will be rotated with the alignement
-		reference point as a origin. If None (default), the text will be
-		rotated first then will be aligned.
+		Set text rotation mode.
+		
+		Parameters
+		----------
+		m : {None, 'default', 'anchor'}
+		    If ``None`` or ``"default"``, the text will be first rotated, then
+		    aligned according to their horizontal and vertical alignments.  If
+		    ``"anchor"``, then alignment occurs before rotation.
 	**/
 	public function set_rotation_mode(m:Dynamic):Dynamic;
 	/**
-		Set the font size.  May be either a size string, relative to
-		the default font size, or an absolute font size in points.
-		
-		ACCEPTS: [size in points | 'xx-small' | 'x-small' | 'small' |
-		          'medium' | 'large' | 'x-large' | 'xx-large' ]
+		alias for `set_fontsize`
 	**/
-	public function set_size(fontsize:Dynamic):Dynamic;
+	public function set_size(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the sketch parameters.
 		
@@ -946,6 +1101,8 @@ package matplotlib.contour;
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
 		    expanded (default 16.0)
+		
+		    .. ACCEPTS: (scale: float, length: float, randomness: float)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
@@ -959,103 +1116,113 @@ package matplotlib.contour;
 		    segments, round to the nearest pixel center
 		
 		Only supported by the Agg and MacOSX backends.
+		
+		Parameters
+		----------
+		snap : bool or None
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		Set the font stretch (horizontal condensation or expansion).
-		
-		ACCEPTS: [a numeric value in range 0-1000 | 'ultra-condensed' |
-		          'extra-condensed' | 'condensed' | 'semi-condensed' |
-		          'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |
-		          'ultra-expanded' ]
+		alias for `set_fontstretch`
 	**/
-	public function set_stretch(stretch:Dynamic):Dynamic;
+	public function set_stretch(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the font style.
-		
-		ACCEPTS: [ 'normal' | 'italic' | 'oblique']
+		alias for `set_fontstyle`
 	**/
-	public function set_style(fontstyle:Dynamic):Dynamic;
+	public function set_style(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the text string *s*
+		Set the text string *s*.
 		
 		It may contain newlines (``\n``) or math in LaTeX syntax.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : string or object castable to string (but ``None`` becomes ``''``)
 	**/
 	public function set_text(s:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.transforms.Transform` instance
-		used by this artist.
+		Set the artist transform.
 		
-		ACCEPTS: :class:`~matplotlib.transforms.Transform` instance
+		Parameters
+		----------
+		t : `.Transform`
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist
+		Sets the url for the artist.
 		
-		ACCEPTS: a url string
+		Parameters
+		----------
+		url : str
 	**/
 	public function set_url(url:Dynamic):Dynamic;
 	/**
-		Set this `Text` object to render using TeX (or not).
-		
-		If `None` is given, the option will be reset to use the value of
-		`rcParams['text.usetex']`
+		Parameters
+		----------
+		usetex : bool or None
+		    Whether to render using TeX, ``None`` means to use
+		    :rc:`text.usetex`.
 	**/
 	public function set_usetex(usetex:Dynamic):Dynamic;
 	/**
-		alias for set_verticalalignment
+		alias for `set_verticalalignment`
 	**/
-	public function set_va(align:Dynamic):Dynamic;
+	public function set_va(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Set the font variant, either 'normal' or 'small-caps'.
-		
-		ACCEPTS: [ 'normal' | 'small-caps' ]
+		alias for `set_fontvariant`
 	**/
-	public function set_variant(variant:Dynamic):Dynamic;
+	public function set_variant(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the vertical alignment
 		
-		ACCEPTS: [ 'center' | 'top' | 'bottom' | 'baseline' ]
+		Parameters
+		----------
+		align : {'center', 'top', 'bottom', 'baseline', 'center_baseline'}
 	**/
 	public function set_verticalalignment(align:Dynamic):Dynamic;
 	/**
-		Set the artist's visiblity.
+		Set the artist's visibility.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_visible(b:Dynamic):Dynamic;
 	/**
-		Set the font weight.
-		
-		ACCEPTS: [a numeric value in range 0-1000 | 'ultralight' | 'light' |
-		          'normal' | 'regular' | 'book' | 'medium' | 'roman' |
-		          'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |
-		          'extra bold' | 'black' ]
+		alias for `set_fontweight`
 	**/
-	public function set_weight(weight:Dynamic):Dynamic;
+	public function set_weight(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Sets the wrapping state for the text.
+		Set the wrapping state for the text.
+		
+		Parameters
+		----------
+		wrap : bool
 	**/
 	public function set_wrap(wrap:Dynamic):Dynamic;
 	/**
-		Set the *x* position of the text
+		Set the *x* position of the text.
 		
-		ACCEPTS: float
+		Parameters
+		----------
+		x : float
 	**/
 	public function set_x(x:Dynamic):Dynamic;
 	/**
-		Set the *y* position of the text
+		Set the *y* position of the text.
 		
-		ACCEPTS: float
+		Parameters
+		----------
+		y : float
 	**/
 	public function set_y(y:Dynamic):Dynamic;
 	/**
 		Set the zorder for the artist.  Artists with lower zorder
 		values are drawn first.
 		
-		ACCEPTS: any number
+		Parameters
+		----------
+		level : float
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
@@ -1087,13 +1254,14 @@ package matplotlib.contour;
 	**/
 	public function update(kwargs:Dynamic):Dynamic;
 	/**
-		Update the location and the size of the bbox. This method
-		should be used when the position and size of the bbox needs to
-		be updated before actually drawing the bbox.
+		Update the location and the size of the bbox.
+		
+		This method should be used when the position and size of the bbox needs
+		to be updated before actually drawing the bbox.
 	**/
 	public function update_bbox_position_size(renderer:Dynamic):Dynamic;
 	/**
-		Copy properties from other to self
+		Copy properties from other to self.
 	**/
 	public function update_from(other:Dynamic):Dynamic;
 	static public var zorder : Dynamic;

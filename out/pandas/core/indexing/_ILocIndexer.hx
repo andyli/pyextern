@@ -5,7 +5,7 @@ package pandas.core.indexing;
 		Call self as a function.
 	**/
 	public function __call__(?axis:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,18 +46,18 @@ package pandas.core.indexing;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, name:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, name:Dynamic):Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -76,9 +76,6 @@ package pandas.core.indexing;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		helper for pickle
-	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		helper for pickle
@@ -93,6 +90,7 @@ package pandas.core.indexing;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setitem__(key:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -110,7 +108,7 @@ package pandas.core.indexing;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -153,7 +151,7 @@ package pandas.core.indexing;
 	/**
 		Sequence index out of range.
 	**/
-	static public function _exception(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function _exception(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_label(label:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return Series values by list or array of integers
@@ -192,25 +190,64 @@ package pandas.core.indexing;
 		check the key for valid keys across my indexer 
 	**/
 	public function _has_valid_tuple(key:Dynamic):Dynamic;
-	public function _has_valid_type(key:Dynamic, axis:Dynamic):Dynamic;
 	public function _is_nested_tuple_indexer(tup:Dynamic):Dynamic;
 	public function _is_scalar_access(key:Dynamic):Dynamic;
-	public function _is_valid_integer(key:Dynamic, axis:Dynamic):Dynamic;
-	public function _is_valid_list_like(key:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		create the reindex map for our objects, raise the _exception if we
 		can't create the indexer
 	**/
 	public function _multi_take(tup:Dynamic):Dynamic;
 	public function _multi_take_opportunity(tup:Dynamic):Dynamic;
+	public var _ndim : Dynamic;
 	public function _setitem_with_indexer(indexer:Dynamic, value:Dynamic):Dynamic;
-	/**
-		return a boolean whether this axes needs validation for a passed
-		iterable
-	**/
-	public function _should_validate_iterable(?axis:Dynamic):Dynamic;
 	public function _slice(obj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _tuplify(loc:Dynamic):Dynamic;
 	static public var _valid_types : Dynamic;
+	public function _validate_integer(key:Dynamic, axis:Dynamic):Dynamic;
+	/**
+		Ensure that key is valid for current indexer.
+		
+		Parameters
+		----------
+		key : scalar, slice or list-like
+		    The key requested
+		
+		axis : int
+		    Dimension on which the indexing is being made
+		
+		Raises
+		------
+		TypeError
+		    If the key (or some element of it) has wrong type
+		
+		IndexError
+		    If the key (or some element of it) is out of bounds
+		
+		KeyError
+		    If the key was not found
+	**/
+	public function _validate_key(key:Dynamic, axis:Dynamic):Dynamic;
+	/**
+		Check that indexer can be used to return a result (e.g. at least one
+		element was found, unless the list of keys was actually empty).
+		
+		Parameters
+		----------
+		key : list-like
+		    Target labels (only used to show correct error message)
+		indexer: array-like of booleans
+		    Indices corresponding to the key (with -1 indicating not found)
+		axis: int
+		    Dimension on which the indexing is being made
+		
+		Raises
+		------
+		KeyError
+		    If at least one key was requested none was found.
+	**/
+	public function _validate_read_indexer(key:Dynamic, indexer:Dynamic, axis:Dynamic):Dynamic;
 	static public var axis : Dynamic;
+	public var name : Dynamic;
+	public var ndim : Dynamic;
+	public var obj : Dynamic;
 }

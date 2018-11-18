@@ -10,9 +10,21 @@ package tensorflow.python.framework.common_shapes;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Core implementaton of call_cpp_shape_fn.
+		Helper functions for is_broadcast_compatible and broadcast_shape.
+		
+		Args:
+		  shape_x: A `TensorShape`
+		  shape_y: A `TensorShape`
+		
+		Returns:
+		  Returns None if the shapes are not broadcast compatible,
+		  a list of the broadcast dimensions otherwise.
 	**/
-	static public function _call_cpp_shape_fn_impl(op:Dynamic, input_tensors_needed:Dynamic, input_tensors_as_shapes_needed:Dynamic, debug_python_shape_fn:Dynamic, require_shape_fn:Dynamic):Dynamic;
+	static public function _broadcast_shape_helper(shape_x:Dynamic, shape_y:Dynamic):Dynamic;
+	/**
+		Core implementation of call_cpp_shape_fn.
+	**/
+	static public function _call_cpp_shape_fn_impl(op:Dynamic, input_tensors_needed:Dynamic, input_tensors_as_shapes_needed:Dynamic, require_shape_fn:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Shape function for an AvgPool op.
@@ -55,15 +67,6 @@ package tensorflow.python.framework.common_shapes;
 		
 		Args:
 		  op: the node in the graph for which to compute output shapes.
-		  input_tensors_needed: a list of input tensor indices for which to compute
-		    the input tensor's value and pass to the C++ shape function.
-		  input_tensors_as_shapes_needed: a list of input tensor indices for which to
-		    compute the constant_value_as_shape and pass to the C++ shape function.
-		  debug_python_shape_fn: For testing only during migration to using
-		    call_cpp_shape_fn. Do not submit calls that set this,
-		    as the comparison is slow. If non-None, the python shape function;
-		    this function will be called and its output compared to that of
-		    the C++ shape function.
 		  require_shape_fn: If true, and the C++ shape function is not registered
 		    in the current binary then an exception is raised; otherwise, if the
 		    C++ shape function is not registered then unknown_shape is used.
@@ -83,7 +86,7 @@ package tensorflow.python.framework.common_shapes;
 		  RuntimeError: If the C++ shape function is not registered and
 		    <require_shape_fn> is True.
 	**/
-	static public function call_cpp_shape_fn(op:Dynamic, ?input_tensors_needed:Dynamic, ?input_tensors_as_shapes_needed:Dynamic, ?debug_python_shape_fn:Dynamic, ?require_shape_fn:Dynamic):Dynamic;
+	static public function call_cpp_shape_fn(op:Dynamic, ?require_shape_fn:Dynamic):Dynamic;
 	/**
 		Shape function for a Conv2D op.
 		
@@ -140,6 +143,22 @@ package tensorflow.python.framework.common_shapes;
 	**/
 	static public function get_conv_output_size(input_size:Dynamic, filter_size:Dynamic, strides:Dynamic, padding_type:Dynamic):Dynamic;
 	/**
+		Returns true if tensor has a fully defined shape.
+	**/
+	static public function has_fully_defined_shape(tensor:Dynamic):Dynamic;
+	/**
+		Returns True if `shape_x` and `shape_y` are broadcast compatible.
+		
+		Args:
+		  shape_x: A `TensorShape`
+		  shape_y: A `TensorShape`
+		
+		Returns:
+		  True if a shape exists that both `shape_x` and `shape_y` can be broadcasted
+		  to.  False otherwise.
+	**/
+	static public function is_broadcast_compatible(shape_x:Dynamic, shape_y:Dynamic):Dynamic;
+	/**
 		Shape function for a MatMul op.
 	**/
 	static public function matmul_shape(op:Dynamic):Dynamic;
@@ -170,6 +189,10 @@ package tensorflow.python.framework.common_shapes;
 	**/
 	static public function no_outputs(unused_op:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Return a rank if it is a tensor, else return None.
+	**/
+	static public function rank(tensor:Dynamic):Dynamic;
 	/**
 		Shape function for ops that output a scalar value.
 	**/
@@ -202,7 +225,7 @@ package tensorflow.python.framework.common_shapes;
 	**/
 	static public function separable_conv2d_shape(op:Dynamic):Dynamic;
 	/**
-		Shape function for ops that output an tensor like their first input.
+		Shape function for ops that output a tensor like their first input.
 	**/
 	static public function unchanged_shape(op:Dynamic):Dynamic;
 	/**

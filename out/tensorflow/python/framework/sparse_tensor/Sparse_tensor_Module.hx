@@ -42,7 +42,7 @@ package tensorflow.python.framework.sparse_tensor;
 		  ValueError: If operator has already been overwritten,
 		    or if operator is not allowed to be overwritten.
 	**/
-	static public function _override_helper(clazz_object:Dynamic, operator:Dynamic, func:Dynamic):Dynamic;
+	static public function _override_helper(clazz_object:Dynamic, _operator:Dynamic, func:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Converts value to a `SparseTensor` or `Tensor`.
@@ -62,5 +62,18 @@ package tensorflow.python.framework.sparse_tensor;
 	**/
 	static public function convert_to_tensor_or_sparse_tensor(value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Check whether `x` is sparse.
+		
+		Check whether an object is a `tf.SparseTensor` or `tf.SparseTensorValue`.
+		
+		Args:
+		  x: A python object to check.
+		
+		Returns:
+		  `True` iff `x` is a `tf.SparseTensor` or `tf.SparseTensorValue`.
+	**/
+	static public function is_sparse(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

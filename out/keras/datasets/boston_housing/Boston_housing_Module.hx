@@ -9,6 +9,8 @@ package keras.datasets.boston_housing;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Downloads a file from a URL if it not already in the cache.
 		
@@ -56,12 +58,13 @@ package keras.datasets.boston_housing;
 		# Arguments
 		    path: path where to cache the dataset locally
 		        (relative to ~/.keras/datasets).
+		    test_split: fraction of the data to reserve as test set.
 		    seed: Random seed for shuffling the data
 		        before computing the test split.
-		    test_split: fraction of the data to reserve as test set.
 		
 		# Returns
 		    Tuple of Numpy arrays: `(x_train, y_train), (x_test, y_test)`.
 	**/
-	static public function load_data(?path:Dynamic, ?seed:Dynamic, ?test_split:Dynamic):Dynamic;
+	static public function load_data(?path:Dynamic, ?test_split:Dynamic, ?seed:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

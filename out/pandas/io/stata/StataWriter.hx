@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.stata;
 @:pythonImport("pandas.io.stata", "StataWriter") extern class StataWriter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package pandas.io.stata;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package pandas.io.stata;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -121,7 +121,21 @@ package pandas.io.stata;
 		conversion dictionary
 	**/
 	public function _check_column_names(data:Dynamic):Dynamic;
+	/**
+		Close the file if it was created by the writer.
+		
+		If a buffer or file-like object was passed in, for example a GzipFile,
+		then leave this file open for the caller to close. In either case,
+		attempt to flush the file contents to ensure they are written to disk
+		(if supported)
+	**/
+	public function _close():Dynamic;
+	/**
+		No-op, future compatibility
+	**/
+	public function _convert_strls(data:Dynamic):Dynamic;
 	static public var _default_encoding : Dynamic;
+	static public var _max_string_length : Dynamic;
 	public function _null_terminate(s:Dynamic, ?as_string:Dynamic):Dynamic;
 	/**
 		Check for categorical columns, retain categorical information for
@@ -135,14 +149,43 @@ package pandas.io.stata;
 		the generic Stata for missing value (.)
 	**/
 	public function _replace_nans(data:Dynamic):Dynamic;
+	public function _set_formats_and_types(data:Dynamic, dtypes:Dynamic):Dynamic;
+	/**
+		No-op, forward compatibility
+	**/
+	public function _update_strl_names():Dynamic;
 	/**
 		Helper to call encode before writing to file for Python 3 compat.
 	**/
 	public function _write(to_write:Dynamic):Dynamic;
+	/**
+		No-op, future compatibility
+	**/
+	public function _write_characteristics():Dynamic;
 	public function _write_data():Dynamic;
-	public function _write_descriptors(?typlist:Dynamic, ?varlist:Dynamic, ?srtlist:Dynamic, ?fmtlist:Dynamic, ?lbllist:Dynamic):Dynamic;
+	/**
+		Write 5 zeros for expansion fields
+	**/
+	public function _write_expansion_fields():Dynamic;
+	/**
+		No-op, future compatibility
+	**/
+	public function _write_file_close_tag():Dynamic;
+	public function _write_formats():Dynamic;
 	public function _write_header(?data_label:Dynamic, ?time_stamp:Dynamic):Dynamic;
+	/**
+		No-op, future compatibility
+	**/
+	public function _write_map():Dynamic;
+	public function _write_sortlist():Dynamic;
+	/**
+		No-op, future compatibility
+	**/
+	public function _write_strls():Dynamic;
+	public function _write_value_label_names():Dynamic;
 	public function _write_value_labels():Dynamic;
 	public function _write_variable_labels():Dynamic;
+	public function _write_variable_types():Dynamic;
+	public function _write_varnames():Dynamic;
 	public function write_file():Dynamic;
 }

@@ -10,8 +10,21 @@ package tensorflow.python.estimator.inputs.pandas_io;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Returns a key that does not exist in the input DataFrame `features`.
+		
+		Args:
+		  features: DataFrame
+		  target_column_name: Name of the target column as a `str`
+		
+		Returns:
+		  A unique key that can be used to insert the target into
+		    features.
+	**/
+	static public function _get_unique_target_key(features:Dynamic, target_column_name:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	static public function estimator_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns input function that would feed Pandas DataFrame into the model.
 		
@@ -19,7 +32,7 @@ package tensorflow.python.estimator.inputs.pandas_io;
 		
 		Args:
 		  x: pandas `DataFrame` object.
-		  y: pandas `Series` object. `None` if absent.
+		  y: pandas `Series` object or `DataFrame`. `None` if absent.
 		  batch_size: int, size of batches to return.
 		  num_epochs: int, number of epochs to iterate over data. If not `None`,
 		    read attempts that would exceed this value will raise `OutOfRangeError`.
@@ -29,7 +42,8 @@ package tensorflow.python.estimator.inputs.pandas_io;
 		  num_threads: Integer, number of threads used for reading and enqueueing. In
 		    order to have predicted and repeatable order of reading and enqueueing,
 		    such as in prediction and evaluation mode, `num_threads` should be 1.
-		  target_column: str, name to give the target column `y`.
+		  target_column: str, name to give the target column `y`. This parameter
+		    is not used when `y` is a `DataFrame`.
 		
 		Returns:
 		  Function, that has signature of ()->(dict of `features`, `target`)
@@ -37,7 +51,7 @@ package tensorflow.python.estimator.inputs.pandas_io;
 		Raises:
 		  ValueError: if `x` already contains a column with the same name as `y`, or
 		    if the indexes of `x` and `y` don't match.
-		  TypeError: `shuffle` is not bool.
+		  ValueError: if 'shuffle' is not provided or a bool.
 	**/
 	static public function pandas_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic, ?target_column:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

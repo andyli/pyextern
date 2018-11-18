@@ -25,7 +25,6 @@ package theano.gpuarray.multinomial;
 	**/
 	static public function as_gpuarray_variable(x:Dynamic, context_name:Dynamic):Dynamic;
 	static public function as_scalar(x:Dynamic, ?name:Dynamic):Dynamic;
-	static public var config : Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the constant scalar(0-D) value underlying variable `v`.
@@ -56,10 +55,18 @@ package theano.gpuarray.multinomial;
 		    but I'm not sure where it is.
 	**/
 	static public function get_scalar_constant_value(orig_v:Dynamic, ?elemwise:Dynamic, ?only_process_constants:Dynamic, ?max_recur:Dynamic):Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	/**
 		Infer the context name to use from the inputs given
 	**/
 	static public function infer_context_name(?vars:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Return the function name to load data.
+		
+		This should be used like this::
+		
+		    code = '%s(ival)' % (load_w(input_type),)
+	**/
 	static public function load_w(dtype:Dynamic):Dynamic;
 	static public var local_gpua_multinomial : Dynamic;
 	static public var local_gpua_multinomial_wor : Dynamic;
@@ -84,6 +91,16 @@ package theano.gpuarray.multinomial;
 		    The optimization tag to which the optimizer will be registered.
 	**/
 	static public function register_opt2(tracks:Dynamic, ?tags:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return the data type for working memory.
+	**/
 	static public function work_dtype(dtype:Dynamic):Dynamic;
+	/**
+		Return the function name to write data.
+		
+		This should be used like this::
+		
+		    code = 'res = %s(oval)' % (write_w(output_type),)
+	**/
 	static public function write_w(dtype:Dynamic):Dynamic;
 }

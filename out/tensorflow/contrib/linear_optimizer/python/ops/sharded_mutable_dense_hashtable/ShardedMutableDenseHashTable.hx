@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_hashtable;
 @:pythonImport("tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_hashtable", "ShardedMutableDenseHashTable") extern class ShardedMutableDenseHashTable {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,7 +46,7 @@ package tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_has
 		  name: A name for the operation (optional).
 	**/
 	@:native("__init__")
-	public function ___init__(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, ?num_shards:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, ?num_shards:Dynamic, ?checkpoint:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Construct a lookup table interface.
 		
@@ -55,14 +55,14 @@ package tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_has
 		  value_dtype: The table value type.
 		  name: A name for the operation (optional).
 	**/
-	public function new(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, ?num_shards:Dynamic, ?name:Dynamic):Void;
+	public function new(key_dtype:Dynamic, value_dtype:Dynamic, default_value:Dynamic, empty_key:Dynamic, ?num_shards:Dynamic, ?checkpoint:Dynamic, ?name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -113,7 +113,7 @@ package tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_has
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -121,18 +121,6 @@ package tensorflow.contrib.linear_optimizer.python.ops.sharded_mutable_dense_has
 	public function _check_keys(keys:Dynamic):Dynamic;
 	public var _num_shards : Dynamic;
 	public function _shard_indices(keys:Dynamic):Dynamic;
-	/**
-		Check that the given key_dtype and value_dtype matches the table dtypes.
-		
-		Args:
-		  key_dtype: The key data type to check.
-		  value_dtype: The value data type to check.
-		
-		Raises:
-		  TypeError: when 'key_dtype' or 'value_dtype' doesn't match the table data
-		    types.
-	**/
-	public function check_table_dtypes(key_dtype:Dynamic, value_dtype:Dynamic):Dynamic;
 	/**
 		Returns lists of the keys and values tensors in the sharded table.
 		

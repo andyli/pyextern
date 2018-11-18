@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.compile.profiling;
 @:pythonImport("theano.compile.profiling", "ScanProfileStats") extern class ScanProfileStats {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package theano.compile.profiling;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package theano.compile.profiling;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -166,6 +166,7 @@ package theano.compile.profiling;
 	public function op_time():Dynamic;
 	static public var optimizer_profile : Dynamic;
 	static public var optimizer_time : Dynamic;
+	public function print_extra(file:Dynamic):Dynamic;
 	public function print_tips(file:Dynamic):Dynamic;
 	/**
 		Ignore previous function call
@@ -179,6 +180,7 @@ package theano.compile.profiling;
 	public function summary_nodes(?file:Dynamic, ?N:Dynamic):Dynamic;
 	public function summary_ops(?file:Dynamic, ?N:Dynamic):Dynamic;
 	static public var validate_time : Dynamic;
+	static public var variable_offset : Dynamic;
 	static public var variable_shape : Dynamic;
 	static public var variable_strides : Dynamic;
 	static public var vm_call_time : Dynamic;

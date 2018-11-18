@@ -106,5 +106,5 @@ package theano.gpuarray.fft;
 		    The optimization tag to which the optimizer will be registered.
 	**/
 	static public function register_opt2(tracks:Dynamic, ?tags:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var scikits_cuda_available : Dynamic;
+	static public var skcuda_available : Dynamic;
 }

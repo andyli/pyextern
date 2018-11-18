@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.colors;
 @:pythonImport("matplotlib.colors", "_ColorMapping") extern class _ColorMapping {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if D has a key k, else False.
 	**/
@@ -13,7 +13,7 @@ package matplotlib.colors;
 	/**
 		Delete self[key].
 	**/
-	public function __delitem__(key:Dynamic, value:Dynamic):Dynamic;
+	public function __delitem__(key:Dynamic):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
 		__dir__() -> list
@@ -61,7 +61,7 @@ package matplotlib.colors;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -123,7 +123,7 @@ package matplotlib.colors;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

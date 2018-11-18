@@ -164,9 +164,9 @@ package scipy.signal.ltisys;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -359,7 +359,7 @@ package scipy.signal.ltisys;
 		.. [3] G. Zhang, X. Chen, and T. Chen, Digital redesign via the generalized
 		    bilinear transformation, Int. J. Control, vol. 82, no. 4, pp. 741-754,
 		    2009.
-		    (http://www.ece.ualberta.ca/~gfzhang/research/ZCC07_preprint.pdf)
+		    (http://www.mypolyuweb.hk/~magzhang/Research/ZCC09_IJC.pdf)
 	**/
 	static public function cont2discrete(system:Dynamic, dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
@@ -576,12 +576,22 @@ package scipy.signal.ltisys;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -834,7 +844,7 @@ package scipy.signal.ltisys;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -859,22 +869,33 @@ package scipy.signal.ltisys;
 		Given the M-order numerator `b` and N-order denominator `a` of a digital
 		filter, compute its frequency response::
 		
-		             jw               -jw               -jwM
-		    jw    B(e  )  b[0] + b[1]e    + .... + b[M]e
-		 H(e  ) = ---- = -----------------------------------
-		             jw               -jw               -jwN
-		          A(e  )  a[0] + a[1]e    + .... + a[N]e
+		             jw                 -jw              -jwM
+		    jw    B(e  )    b[0] + b[1]e    + ... + b[M]e
+		 H(e  ) = ------ = -----------------------------------
+		             jw                 -jw              -jwN
+		          A(e  )    a[0] + a[1]e    + ... + a[N]e
 		
 		Parameters
 		----------
 		b : array_like
-		    numerator of a linear filter
+		    Numerator of a linear filter.  If `b` has dimension greater than 1,
+		    it is assumed that the coefficients are stored in the first dimension,
+		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
+		    array must be compatible for broadcasting.
 		a : array_like
-		    denominator of a linear filter
+		    Denominator of a linear filter.  If `b` has dimension greater than 1,
+		    it is assumed that the coefficients are stored in the first dimension,
+		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
+		    array must be compatible for broadcasting.
 		worN : {None, int, array_like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
+		    If None, then compute at 512 equally spaced frequencies.
+		    If a single integer, then compute at that many frequencies.  This is
+		    a convenient alternative to::
+		
+		        np.linspace(0, 2*pi if whole else pi, N, endpoint=False)
+		
+		    Using a number that is fast for FFT computations can result in
+		    faster computations (see Notes).
 		    If an array_like, compute the response at the frequencies given (in
 		    radians/sample).
 		whole : bool, optional
@@ -896,13 +917,29 @@ package scipy.signal.ltisys;
 		
 		See Also
 		--------
+		freqz_zpk
 		sosfreqz
 		
 		Notes
 		-----
-		Using Matplotlib's "plot" function as the callable for `plot` produces
-		unexpected results,  this plots the real part of the complex transfer
-		function, not the magnitude.  Try ``lambda w, h: plot(w, abs(h))``.
+		Using Matplotlib's :func:`matplotlib.pyplot.plot` function as the callable
+		for `plot` produces unexpected results, as this plots the real part of the
+		complex transfer function, not the magnitude.
+		Try ``lambda w, h: plot(w, np.abs(h))``.
+		
+		A direct computation via (R)FFT is used to compute the frequency response
+		when the following conditions are met:
+		
+		1. An integer value is given for `worN`.
+		2. `worN` is fast to compute via FFT (i.e.,
+		   `next_fast_len(worN) <scipy.fftpack.next_fast_len>` equals `worN`).
+		3. The denominator coefficients are a single value (``a.shape[0] == 1``).
+		4. `worN` is at least as long as the numerator coefficients
+		   (``worN >= b.shape[0]``).
+		5. If ``b.ndim > 1``, then ``b.shape[-1] == 1``.
+		
+		For long FIR filters, the FFT approach can have lower error and be much
+		faster than the equivalent direct polynomial calculation.
 		
 		Examples
 		--------
@@ -926,6 +963,48 @@ package scipy.signal.ltisys;
 		>>> plt.grid()
 		>>> plt.axis('tight')
 		>>> plt.show()
+		
+		Broadcasting Examples
+		
+		Suppose we have two FIR filters whose coefficients are stored in the
+		rows of an array with shape (2, 25).  For this demonstration we'll
+		use random data:
+		
+		>>> np.random.seed(42)
+		>>> b = np.random.rand(2, 25)
+		
+		To compute the frequency response for these two filters with one call
+		to `freqz`, we must pass in ``b.T``, because `freqz` expects the first
+		axis to hold the coefficients. We must then extend the shape with a
+		trivial dimension of length 1 to allow broadcasting with the array
+		of frequencies.  That is, we pass in ``b.T[..., np.newaxis]``, which has
+		shape (25, 2, 1):
+		
+		>>> w, h = signal.freqz(b.T[..., np.newaxis], worN=1024)
+		>>> w.shape
+		(1024,)
+		>>> h.shape
+		(2, 1024)
+		
+		Now suppose we have two transfer functions, with the same numerator
+		coefficients ``b = [0.5, 0.5]``. The coefficients for the two denominators
+		are stored in the first dimension of the two-dimensional array  `a`::
+		
+		    a = [   1      1  ]
+		        [ -0.25, -0.5 ]
+		
+		>>> b = np.array([0.5, 0.5])
+		>>> a = np.array([[1, 1], [-0.25, -0.5]])
+		
+		Only `a` is more than one-dimensional.  To make it compatible for
+		broadcasting with the frequencies, we extend it with a trivial dimension
+		in the call to `freqz`:
+		
+		>>> w, h = signal.freqz(b, a[..., np.newaxis], worN=1024)
+		>>> w.shape
+		(1024,)
+		>>> h.shape
+		(2, 1024)
 	**/
 	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
 	/**
@@ -948,11 +1027,9 @@ package scipy.signal.ltisys;
 		k : scalar
 		    Gain of a linear filter
 		worN : {None, int, array_like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
-		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample).
+		    If single integer (default 512, same as None), then compute at `worN`
+		    frequencies equally spaced around the unit circle. If an array_like,
+		    compute the response at the frequencies given (in radians/sample).
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
 		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
@@ -974,7 +1051,7 @@ package scipy.signal.ltisys;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -1284,15 +1361,20 @@ package scipy.signal.ltisys;
 	**/
 	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Replace nan with zero and inf with finite numbers.
+		Replace NaN with zero and infinity with large finite numbers.
 		
-		Returns an array or scalar replacing Not a Number (NaN) with zero,
-		(positive) infinity with a very large number and negative infinity
-		with a very small (or negative) number.
+		If `x` is inexact, NaN is replaced by zero, and infinity and -infinity
+		replaced by the respectively largest and most negative finite floating
+		point values representable by ``x.dtype``.
+		
+		For complex dtypes, the above is applied to each of the real and
+		imaginary components of `x` separately.
+		
+		If `x` is not inexact, then no replacements are made.
 		
 		Parameters
 		----------
-		x : array_like
+		x : scalar or array_like
 		    Input data.
 		copy : bool, optional
 		    Whether to create a copy of `x` (True) or to replace values
@@ -1305,12 +1387,8 @@ package scipy.signal.ltisys;
 		Returns
 		-------
 		out : ndarray
-		    New Array with the same shape as `x` and dtype of the element in
-		    `x`  with the greatest precision. If `x` is inexact, then NaN is
-		    replaced by zero, and infinity (-infinity) is replaced by the
-		    largest (smallest or most negative) floating point value that fits
-		    in the output dtype. If `x` is not inexact, then a copy of `x` is
-		    returned.
+		    `x`, with the non-finite values replaced. If `copy` is False, this may
+		    be `x` itself.
 		
 		See Also
 		--------
@@ -1325,14 +1403,23 @@ package scipy.signal.ltisys;
 		NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
 		(IEEE 754). This means that Not a Number is not equivalent to infinity.
 		
-		
 		Examples
 		--------
-		>>> np.set_printoptions(precision=8)
+		>>> np.nan_to_num(np.inf)
+		1.7976931348623157e+308
+		>>> np.nan_to_num(-np.inf)
+		-1.7976931348623157e+308
+		>>> np.nan_to_num(np.nan)
+		0.0
 		>>> x = np.array([np.inf, -np.inf, np.nan, -128, 128])
 		>>> np.nan_to_num(x)
 		array([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000,
 		        -1.28000000e+002,   1.28000000e+002])
+		>>> y = np.array([complex(np.inf, np.nan), np.nan, complex(np.nan, np.inf)])
+		>>> np.nan_to_num(y)
+		array([  1.79769313e+308 +0.00000000e+000j,
+		         0.00000000e+000 +0.00000000e+000j,
+		         0.00000000e+000 +1.79769313e+308j])
 	**/
 	static public function nan_to_num(x:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
@@ -1374,9 +1461,10 @@ package scipy.signal.ltisys;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -1385,14 +1473,18 @@ package scipy.signal.ltisys;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -2091,14 +2183,15 @@ package scipy.signal.ltisys;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -2108,17 +2201,16 @@ package scipy.signal.ltisys;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))
@@ -2166,11 +2258,10 @@ package scipy.signal.ltisys;
 		
 		See Also
 		--------
-		ones_like : Return an array of ones with shape and type of input.
 		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		zeros : Return a new array setting values to zero.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
 		
 		Examples
 		--------
@@ -2183,7 +2274,7 @@ package scipy.signal.ltisys;
 		array([[0, 0, 0],
 		       [0, 0, 0]])
 		
-		>>> y = np.arange(3, dtype=np.float)
+		>>> y = np.arange(3, dtype=float)
 		>>> y
 		array([ 0.,  1.,  2.])
 		>>> np.zeros_like(y)

@@ -114,11 +114,15 @@ package scipy.signal;
 		
 		See Also
 		--------
-		argrelextrema, argrelmin
+		argrelextrema, argrelmin, find_peaks
 		
 		Notes
 		-----
-		This function uses `argrelextrema` with np.greater as comparator.
+		This function uses `argrelextrema` with np.greater as comparator. Therefore
+		it  requires a strict inequality on both sides of a value to consider it a
+		maximum. This means flat maxima (more than one sample wide) are not detected.
+		In case of one-dimensional `data` `find_peaks` can be used to detect all
+		local maxima, including flat ones.
 		
 		.. versionadded:: 0.11.0
 		
@@ -163,11 +167,15 @@ package scipy.signal;
 		
 		See Also
 		--------
-		argrelextrema, argrelmax
+		argrelextrema, argrelmax, find_peaks
 		
 		Notes
 		-----
-		This function uses `argrelextrema` with np.less as comparator.
+		This function uses `argrelextrema` with np.less as comparator. Therefore it
+		requires a strict inequality on both sides of a value to consider it a
+		minimum. This means flat minima (more than one sample wide) are not detected.
+		In case of one-dimensional `data` `find_peaks` can be used to detect all
+		local minima, including flat ones, by calling it with negated `data`.
 		
 		.. versionadded:: 0.11.0
 		
@@ -216,6 +224,9 @@ package scipy.signal;
 	/**
 		Return a modified Bartlett-Hann window.
 		
+		.. warning:: scipy.signal.barthann is deprecated,
+		             use scipy.signal.windows.barthann instead.
+		
 		Parameters
 		----------
 		M : int
@@ -256,7 +267,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function barthann(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function barthann(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a Bartlett window.
 		
@@ -264,6 +275,9 @@ package scipy.signal;
 		that the end points are at zero.  It is often used in signal
 		processing for tapering a signal, without generating too much
 		ripple in the frequency domain.
+		
+		.. warning:: scipy.signal.bartlett is deprecated,
+		             use scipy.signal.windows.bartlett instead.
 		
 		Parameters
 		----------
@@ -341,7 +355,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function bartlett(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function bartlett(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Bessel/Thomson digital and analog filter design.
 		
@@ -569,8 +583,51 @@ package scipy.signal;
 		Return a digital filter from an analog one using a bilinear transform.
 		
 		The bilinear transform substitutes ``(z-1) / (z+1)`` for ``s``.
+		
+		See Also
+		--------
+		lp2lp, lp2hp, lp2bp, lp2bs
+		bilinear_zpk
 	**/
 	static public function bilinear(b:Dynamic, a:Dynamic, ?fs:Dynamic):Dynamic;
+	/**
+		Return a digital IIR filter from an analog one using a bilinear transform.
+		
+		Transform a set of poles and zeros from the analog s-plane to the digital
+		z-plane using Tustin's method, which substitutes ``(z-1) / (z+1)`` for
+		``s``, maintaining the shape of the frequency response.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		fs : float
+		    Sample rate, as ordinary frequency (e.g. hertz). No prewarping is
+		    done in this function.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed digital filter transfer function.
+		p : ndarray
+		    Poles of the transformed digital filter transfer function.
+		k : float
+		    System gain of the transformed digital filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2hp_zpk, lp2bp_zpk, lp2bs_zpk
+		bilinear
+		
+		Notes
+		-----
+		.. versionadded:: 1.1.0
+	**/
+	static public function bilinear_zpk(z:Dynamic, p:Dynamic, k:Dynamic, fs:Dynamic):Dynamic;
 	/**
 		Return a Blackman window.
 		
@@ -578,6 +635,9 @@ package scipy.signal;
 		a summation of cosines. It was designed to have close to the minimal
 		leakage possible.  It is close to optimal, only slightly worse than a
 		Kaiser window.
+		
+		.. warning:: scipy.signal.blackman is deprecated,
+		             use scipy.signal.windows.blackman instead.
 		
 		Parameters
 		----------
@@ -649,9 +709,12 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function blackman(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function blackman(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a minimum 4-term Blackman-Harris window.
+		
+		.. warning:: scipy.signal.blackmanharris is deprecated,
+		             use scipy.signal.windows.blackmanharris instead.
 		
 		Parameters
 		----------
@@ -693,7 +756,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function blackmanharris(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function blackmanharris(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate Bode magnitude and phase data of a continuous-time system.
 		
@@ -752,6 +815,9 @@ package scipy.signal;
 	/**
 		Return a Bohman window.
 		
+		.. warning:: scipy.signal.bohman is deprecated,
+		             use scipy.signal.windows.bohman instead.
+		
 		Parameters
 		----------
 		M : int
@@ -792,12 +858,15 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function bohman(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function bohman(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a boxcar or rectangular window.
 		
 		Also known as a rectangular window or Dirichlet window, this is equivalent
 		to no window at all.
+		
+		.. warning:: scipy.signal.boxcar is deprecated,
+		             use scipy.signal.windows.boxcar instead.
 		
 		Parameters
 		----------
@@ -836,7 +905,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function boxcar(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function boxcar(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		B-spline basis function of order n.
 		
@@ -1195,6 +1264,9 @@ package scipy.signal;
 	/**
 		Return a Dolph-Chebyshev window.
 		
+		.. warning:: scipy.signal.chebwin is deprecated,
+		             use scipy.signal.windows.chebwin instead.
+		
 		Parameters
 		----------
 		M : int
@@ -1276,7 +1348,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function chebwin(M:Dynamic, at:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function chebwin(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Chebyshev type I digital and analog filter design.
 		
@@ -1440,9 +1512,11 @@ package scipy.signal;
 		Parameters
 		----------
 		window : str or tuple or array_like
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be `nperseg`.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg.
 		nperseg : int
 		    Length of each segment.
 		noverlap : int
@@ -1607,6 +1681,83 @@ package scipy.signal;
 		    ``f(t) = f0*f1*t1 / ((f0 - f1)*t + f1*t1)``
 		
 		    f0 and f1 must be nonzero.
+		
+		Examples
+		--------
+		The following will be used in the examples:
+		
+		>>> from scipy.signal import chirp, spectrogram
+		>>> import matplotlib.pyplot as plt
+		
+		For the first example, we'll plot the waveform for a linear chirp
+		from 6 Hz to 1 Hz over 10 seconds:
+		
+		>>> t = np.linspace(0, 10, 5001)
+		>>> w = chirp(t, f0=6, f1=1, t1=10, method='linear')
+		>>> plt.plot(t, w)
+		>>> plt.title("Linear Chirp, f(0)=6, f(10)=1")
+		>>> plt.xlabel('t (sec)')
+		>>> plt.show()
+		
+		For the remaining examples, we'll use higher frequency ranges,
+		and demonstrate the result using `scipy.signal.spectrogram`.
+		We'll use a 10 second interval sampled at 8000 Hz.
+		
+		>>> fs = 8000
+		>>> T = 10
+		>>> t = np.linspace(0, T, T*fs, endpoint=False)
+		
+		Quadratic chirp from 1500 Hz to 250 Hz over 10 seconds
+		(vertex of the parabolic curve of the frequency is at t=0):
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='quadratic')
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Quadratic Chirp, f(0)=1500, f(10)=250')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
+		
+		Quadratic chirp from 1500 Hz to 250 Hz over 10 seconds
+		(vertex of the parabolic curve of the frequency is at t=10):
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='quadratic',
+		...           vertex_zero=False)
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Quadratic Chirp, f(0)=2500, f(10)=250\n' +
+		...           '(vertex_zero=False)')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
+		
+		Logarithmic chirp from 1500 Hz to 250 Hz over 10 seconds:
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='logarithmic')
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Logarithmic Chirp, f(0)=1500, f(10)=250')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
+		
+		Hyperbolic chirp from 1500 Hz to 250 Hz over 10 seconds:
+		
+		>>> w = chirp(t, f0=1500, f1=250, t1=10, method='hyperbolic')
+		>>> ff, tt, Sxx = spectrogram(w, fs=fs, noverlap=256, nperseg=512,
+		...                           nfft=2048)
+		>>> plt.pcolormesh(tt, ff[:513], Sxx[:513], cmap='gray_r')
+		>>> plt.title('Hyperbolic Chirp, f(0)=1500, f(10)=250')
+		>>> plt.xlabel('t (sec)')
+		>>> plt.ylabel('Frequency (Hz)')
+		>>> plt.grid()
+		>>> plt.show()
 	**/
 	static public function chirp(t:Dynamic, f0:Dynamic, t1:Dynamic, f1:Dynamic, ?method:Dynamic, ?phi:Dynamic, ?vertex_zero:Dynamic):Dynamic;
 	/**
@@ -1711,6 +1862,16 @@ package scipy.signal;
 		    Sorted roots.
 		indx : ndarray
 		    Array of indices needed to sort the input `p`.
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> vals = [1, 4, 1+1.j, 3]
+		>>> p_sorted, indx = signal.cmplx_sort(vals)
+		>>> p_sorted
+		array([1.+0.j, 1.+1.j, 3.+0.j, 4.+0.j])
+		>>> indx
+		array([0, 2, 3, 1])
 	**/
 	static public function cmplx_sort(p:Dynamic):Dynamic;
 	/**
@@ -1731,10 +1892,12 @@ package scipy.signal;
 		    Sampling frequency of the `x` and `y` time series. Defaults
 		    to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be `nperseg`.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
 		    tuple, is set to 256, and if window is array_like, is set to the
@@ -1772,8 +1935,8 @@ package scipy.signal;
 		Notes
 		--------
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements. For the default 'hann' window an overlap
-		of 50% is a reasonable trade off between accurately estimating the
+		and on your requirements. For the default Hann window an overlap of
+		50% is a reasonable trade off between accurately estimating the
 		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
@@ -1873,7 +2036,7 @@ package scipy.signal;
 		.. [3] G. Zhang, X. Chen, and T. Chen, Digital redesign via the generalized
 		    bilinear transformation, Int. J. Control, vol. 82, no. 4, pp. 741-754,
 		    2009.
-		    (http://www.ece.ualberta.ca/~gfzhang/research/ZCC07_preprint.pdf)
+		    (http://www.mypolyuweb.hk/~magzhang/Research/ZCC09_IJC.pdf)
 	**/
 	static public function cont2discrete(system:Dynamic, dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
@@ -1974,8 +2137,6 @@ package scipy.signal;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1984,11 +2145,11 @@ package scipy.signal;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
-		
 		boundary : str {'fill', 'wrap', 'symm'}, optional
 		    A flag indicating how to handle boundaries:
 		
@@ -2093,11 +2254,12 @@ package scipy.signal;
 		
 		    z[...,k,...] = sum[..., i_l, ...] x[..., i_l,...] * conj(y[..., i_l - k,...])
 		
-		This way, if x and y are 1-D arrays and ``z = correlate(x, y, 'full')`` then
-		  
+		This way, if x and y are 1-D arrays and ``z = correlate(x, y, 'full')``
+		then
+		
 		.. math::
 		
-		      z[k] = (x * y)(k - N + 1) 
+		      z[k] = (x * y)(k - N + 1)
 		           = \sum_{l=0}^{||x||-1}x_l y_{l-k+N-1}^{*}
 		
 		for :math:`k = 0, 1, ..., ||x|| + ||y|| - 2`
@@ -2148,8 +2310,6 @@ package scipy.signal;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -2158,11 +2318,11 @@ package scipy.signal;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
-		
 		boundary : str {'fill', 'wrap', 'symm'}, optional
 		    A flag indicating how to handle boundaries:
 		
@@ -2215,6 +2375,9 @@ package scipy.signal;
 	/**
 		Return a window with a simple cosine shape.
 		
+		.. warning:: scipy.signal.cosine is deprecated,
+		             use scipy.signal.windows.cosine instead.
+		
 		Parameters
 		----------
 		M : int
@@ -2261,7 +2424,7 @@ package scipy.signal;
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 		>>> plt.show()
 	**/
-	static public function cosine(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function cosine(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Estimate the cross power spectral density, Pxy, using Welch's
 		method.
@@ -2276,10 +2439,12 @@ package scipy.signal;
 		    Sampling frequency of the `x` and `y` time series. Defaults
 		    to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
 		    tuple, is set to 256, and if window is array_like, is set to the
@@ -2333,8 +2498,8 @@ package scipy.signal;
 		zero-padded to match.
 		
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements. For the default 'hann' window an overlap
-		of 50% is a reasonable trade off between accurately estimating the
+		and on your requirements. For the default Hann window an overlap of
+		50% is a reasonable trade off between accurately estimating the
 		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
@@ -2561,14 +2726,15 @@ package scipy.signal;
 		
 		Parameters
 		----------
-		x : ndarray
+		x : array_like
 		    The signal to be downsampled, as an N-dimensional array.
 		q : int
-		    The downsampling factor. For downsampling factors higher than 13, it is
-		    recommended to call `decimate` multiple times.
+		    The downsampling factor. When using IIR downsampling, it is recommended
+		    to call `decimate` multiple times for downsampling factors higher than
+		    13.
 		n : int, optional
 		    The order of the filter (1 less than the length for 'fir'). Defaults to
-		    8 for 'iir' and 30 for 'fir'.
+		    8 for 'iir' and 20 times the downsampling factor for 'fir'.
 		ftype : str {'iir', 'fir'} or ``dlti`` instance, optional
 		    If 'iir' or 'fir', specifies the type of lowpass filter. If an instance
 		    of an `dlti` object, uses that object to filter before downsampling.
@@ -2577,11 +2743,8 @@ package scipy.signal;
 		zero_phase : bool, optional
 		    Prevent phase shift by filtering with `filtfilt` instead of `lfilter`
 		    when using an IIR filter, and shifting the outputs back by the filter's
-		    group delay when using an FIR filter. A value of ``True`` is
-		    recommended, since a phase shift is generally not desired. Using
-		    ``None`` defaults to ``False`` for backwards compatibility. This
-		    default will change to ``True`` in a future release, so it is best to
-		    set this argument explicitly.
+		    group delay when using an FIR filter. The default value of ``True`` is
+		    recommended, since a phase shift is generally not desired.
 		
 		    .. versionadded:: 0.18.0
 		
@@ -2603,7 +2766,7 @@ package scipy.signal;
 	**/
 	static public function decimate(x:Dynamic, q:Dynamic, ?n:Dynamic, ?ftype:Dynamic, ?axis:Dynamic, ?zero_phase:Dynamic):Dynamic;
 	/**
-		Deconvolves ``divisor`` out of ``signal``.
+		Deconvolves ``divisor`` out of ``signal`` using inverse filtering.
 		
 		Returns the quotient and remainder such that
 		``signal = convolve(divisor, quotient) + remainder``
@@ -3044,6 +3207,9 @@ package scipy.signal;
 	/**
 		Return an exponential (or Poisson) window.
 		
+		.. warning:: scipy.signal.exponential is deprecated,
+		             use scipy.signal.windows.exponential instead.
+		
 		Parameters
 		----------
 		M : int
@@ -3114,7 +3280,7 @@ package scipy.signal;
 		>>> plt.ylabel("Amplitude")
 		>>> plt.xlabel("Sample")
 	**/
-	static public function exponential(M:Dynamic, ?center:Dynamic, ?tau:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function exponential(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convolve two N-dimensional arrays using FFT.
 		
@@ -3134,8 +3300,6 @@ package scipy.signal;
 		    First input.
 		in2 : array_like
 		    Second input. Should have the same number of dimensions as `in1`.
-		    If operating in 'valid' mode, either `in1` or `in2` must be
-		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -3144,7 +3308,8 @@ package scipy.signal;
 		       of the inputs. (Default)
 		    ``valid``
 		       The output consists only of those elements that do not
-		       rely on the zero-padding.
+		       rely on the zero-padding. In 'valid' mode, either `in1` or `in2`
+		       must be at least as large as the other in every dimension.
 		    ``same``
 		       The output is the same size as `in1`, centered
 		       with respect to the 'full' output.
@@ -3197,25 +3362,13 @@ package scipy.signal;
 	**/
 	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
-		A forward-backward filter.
+		Apply a digital filter forward and backward to a signal.
 		
-		This function applies a linear filter twice, once forward and once
-		backwards.  The combined filter has linear phase.
+		This function applies a linear digital filter twice, once forward and
+		once backwards.  The combined filter has zero phase and a filter order
+		twice that of the original.
 		
 		The function provides options for handling the edges of the signal.
-		
-		When `method` is "pad", the function pads the data along the given axis
-		in one of three ways: odd, even or constant.  The odd and even extensions
-		have the corresponding symmetry about the end point of the data.  The
-		constant extension extends the data with the values at the end points. On
-		both the forward and backward passes, the initial condition of the
-		filter is found by using `lfilter_zi` and scaling it by the end point of
-		the extended data.
-		
-		When `method` is "gust", Gustafsson's method [1]_ is used.  Initial
-		conditions are chosen for the forward and backward passes so that the
-		forward-backward filter gives the same result as the backward-forward
-		filter.
 		
 		Parameters
 		----------
@@ -3262,6 +3415,19 @@ package scipy.signal;
 		
 		Notes
 		-----
+		When `method` is "pad", the function pads the data along the given axis
+		in one of three ways: odd, even or constant.  The odd and even extensions
+		have the corresponding symmetry about the end point of the data.  The
+		constant extension extends the data with the values at the end points. On
+		both the forward and backward passes, the initial condition of the
+		filter is found by using `lfilter_zi` and scaling it by the end point of
+		the extended data.
+		
+		When `method` is "gust", Gustafsson's method [1]_ is used.  Initial
+		conditions are chosen for the forward and backward passes so that the
+		forward-backward filter gives the same result as the backward-forward
+		filter.
+		
 		The option to use Gustaffson's method was added in scipy version 0.16.0.
 		
 		References
@@ -3286,7 +3452,7 @@ package scipy.signal;
 		>>> x = xlow + xhigh
 		
 		Now create a lowpass Butterworth filter with a cutoff of 0.125 times
-		the Nyquist rate, or 125 Hz, and apply it to ``x`` with `filtfilt`.
+		the Nyquist frequency, or 125 Hz, and apply it to ``x`` with `filtfilt`.
 		The result should be approximately ``xlow``, with no phase shift.
 		
 		>>> b, a = signal.butter(8, 0.125)
@@ -3347,7 +3513,194 @@ package scipy.signal;
 	**/
 	static public function filtfilt(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?padtype:Dynamic, ?padlen:Dynamic, ?method:Dynamic, ?irlen:Dynamic):Dynamic;
 	/**
-		Attempt to find the peaks in a 1-D array.
+		Find peaks inside a signal based on peak properties.
+		
+		This function takes a one-dimensional array and finds all local maxima by
+		simple comparison of neighbouring values. Optionally, a subset of these
+		peaks can be selected by specifying conditions for a peak's properties.
+		
+		Parameters
+		----------
+		x : sequence
+		    A signal with peaks.
+		height : number or ndarray or sequence, optional
+		    Required height of peaks. Either a number, ``None``, an array matching
+		    `x` or a 2-element sequence of the former. The first element is
+		    always interpreted as the  minimal and the second, if supplied, as the
+		    maximal required height.
+		threshold : number or ndarray or sequence, optional
+		    Required threshold of peaks, the vertical distance to its neighbouring
+		    samples. Either a number, ``None``, an array matching `x` or a
+		    2-element sequence of the former. The first element is always
+		    interpreted as the  minimal and the second, if supplied, as the maximal
+		    required threshold.
+		distance : number, optional
+		    Required minimal horizontal distance (>= 1) in samples between
+		    neighbouring peaks. The removal order is explained in the notes section.
+		prominence : number or ndarray or sequence, optional
+		    Required prominence of peaks. Either a number, ``None``, an array
+		    matching `x` or a 2-element sequence of the former. The first
+		    element is always interpreted as the  minimal and the second, if
+		    supplied, as the maximal required prominence.
+		width : number or ndarray or sequence, optional
+		    Required width of peaks in samples. Either a number, ``None``, an array
+		    matching `x` or a 2-element sequence of the former. The first
+		    element is always interpreted as the  minimal and the second, if
+		    supplied, as the maximal required prominence.
+		wlen : number, optional
+		    Used for calculation of the peaks prominences, thus it is only used if
+		    one of the arguments `prominence` or `width` is given. See argument
+		    `wlen` in `peak_prominences` for a full description of its effects.
+		rel_height : float, optional
+		    Used for calculation of the peaks width, thus it is only used if `width`
+		    is given. See argument  `rel_height` in `peak_widths` for a full
+		    description of its effects.
+		
+		Returns
+		-------
+		peaks : ndarray
+		    Indices of peaks in `x` that satisfy all given conditions.
+		properties : dict
+		    A dictionary containing properties of the returned peaks which were
+		    calculated as intermediate results during evaluation of the specified
+		    conditions:
+		
+		    * 'peak_heights'
+		          If `height` is given, the height of each peak in `x`.
+		    * 'left_thresholds', 'right_thresholds'
+		          If `threshold` is given, these keys contain a peaks vertical
+		          distance to its neighbouring samples.
+		    * 'peak_prominences', 'right_bases', 'left_bases'
+		          If `prominence` is given, these keys are accessible. See
+		          `peak_prominences` for a description of their content.
+		    * 'width_heights', 'left_ips', 'right_ips'
+		          If `width` is given, these keys are accessible. See `peak_widths`
+		          for a description of their content.
+		
+		    To calculate and return properties without excluding peaks, provide the
+		    open interval ``(None, None)`` as a value to the appropriate argument
+		    (excluding `distance`).
+		
+		See Also
+		--------
+		find_peaks_cwt
+		    Find peaks using the wavelet transformation.
+		peak_prominences
+		    Directly calculate the prominence of peaks.
+		peak_widths
+		    Directly calculate the width of peaks.
+		
+		Notes
+		-----
+		In the context of this function, a peak or local maximum is defined as any
+		sample whose two direct neighbours have a smaller amplitude. For flat peaks
+		(more than one sample of equal amplitude wide) the index of the middle
+		sample is returned (rounded down in case the number of samples is even).
+		For noisy signals the peak locations can be off because the noise might
+		change the position of local maxima. In those cases consider smoothing the
+		signal before searching for peaks or use other peak finding and fitting
+		methods (like `find_peaks_cwt`).
+		
+		Some additional comments on specifying conditions:
+		
+		* Almost all conditions (excluding `distance`) can be given as half-open or
+		  closed intervals, e.g ``1`` or ``(1, None)`` defines the half-open
+		  interval :math:`[1, \infty]` while ``(None, 1)`` defines the interval
+		  :math:`[-\infty, 1]`. The open interval ``(None, None)`` can be specified
+		  as well, which returns the matching properties without exclusion of peaks.
+		* The border is always included in the interval used to select valid peaks.
+		* For several conditions the interval borders can be specified with
+		  arrays matching `x` in shape which enables dynamic constrains based on
+		  the sample position.
+		* The order of arguments given in the function definition above mirrors the
+		  actual order in which conditions are evaluated. In most cases this order
+		  is the fastest one because faster operations are applied first to reduce
+		  the number of peaks that need to be evaluated later.
+		* Satisfying the distance condition is accomplished by iterating over all
+		  peaks in descending order based on their height and removing all lower
+		  peaks that are too close.
+		* Use `wlen` to reduce the time it takes to evaluate the conditions for
+		  `prominence` or `width` if `x` is large or has many local maxima
+		  (see `peak_prominences`).
+		
+		.. warning::
+		
+		   This function may return unexpected results for data containing NaNs. To
+		   avoid this, NaNs should either be removed or replaced.
+		
+		.. versionadded:: 1.1.0
+		
+		Examples
+		--------
+		To demonstrate this function's usage we use a signal `x` supplied with
+		SciPy (see `scipy.misc.electrocardiogram`). Let's find all peaks (local
+		maxima) in `x` whose amplitude lies above 0.
+		
+		>>> import matplotlib.pyplot as plt
+		>>> from scipy.misc import electrocardiogram
+		>>> from scipy.signal import find_peaks
+		>>> x = electrocardiogram()[2000:4000]
+		>>> peaks, _ = find_peaks(x, height=0)
+		>>> plt.plot(x)
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.plot(np.zeros_like(x), "--", color="gray")
+		>>> plt.show()
+		
+		We can select peaks below 0 with ``height=(None, 0)`` or use arrays matching
+		`x` in size to reflect a changing condition for different parts of the
+		signal.
+		
+		>>> border = np.sin(np.linspace(0, 3 * np.pi, x.size))
+		>>> peaks, _ = find_peaks(x, height=(-border, border))
+		>>> plt.plot(x)
+		>>> plt.plot(-border, "--", color="gray")
+		>>> plt.plot(border, ":", color="gray")
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.show()
+		
+		Another useful condition for periodic signals can be given with the
+		`distance` argument. In this case we can easily select the positions of
+		QRS complexes within the electrocardiogram (ECG) by demanding a distance of
+		at least 150 samples.
+		
+		>>> peaks, _ = find_peaks(x, distance=150)
+		>>> np.diff(peaks)
+		array([186, 180, 177, 171, 177, 169, 167, 164, 158, 162, 172])
+		>>> plt.plot(x)
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.show()
+		
+		Especially for noisy signals peaks can be easily grouped by their
+		prominence (see `peak_prominences`). E.g. we can select all peaks except
+		for the mentioned QRS complexes by limiting the allowed prominenence to 0.6.
+		
+		>>> peaks, properties = find_peaks(x, prominence=(None, 0.6))
+		>>> properties["prominences"].max()
+		0.5049999999999999
+		>>> plt.plot(x)
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.show()
+		
+		And finally let's examine a different section of the ECG which contains
+		beat forms of different shape. To select only the atypical heart beats we
+		combine two conditions: a minimal prominence of 1 and width of at least 20
+		samples.
+		
+		>>> x = electrocardiogram()[17000:18000]
+		>>> peaks, properties = find_peaks(x, prominence=1, width=20)
+		>>> properties["prominences"], properties["widths"]
+		(array([1.495, 2.3  ]), array([36.93773946, 39.32723577]))
+		>>> plt.plot(x)
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.vlines(x=peaks, ymin=x[peaks] - properties["prominences"],
+		...            ymax = x[peaks], color = "C1")
+		>>> plt.hlines(y=properties["width_heights"], xmin=properties["left_ips"],
+		...            xmax=properties["right_ips"], color = "C1")
+		>>> plt.show()
+	**/
+	static public function find_peaks(x:Dynamic, ?height:Dynamic, ?threshold:Dynamic, ?distance:Dynamic, ?prominence:Dynamic, ?width:Dynamic, ?wlen:Dynamic, ?rel_height:Dynamic):Dynamic;
+	/**
+		Find peaks in a 1-D array with wavelet transformation.
 		
 		The general approach is to smooth `vector` by convolving it with
 		`wavelet(width)` for each width in `widths`. Relative maxima which
@@ -3363,8 +3716,8 @@ package scipy.signal;
 		    this range should cover the expected width of peaks of interest.
 		wavelet : callable, optional
 		    Should take two parameters and return a 1-D array to convolve
-		    with `vector`. The first parameter determines the number of points 
-		    of the returned wavelet array, the second parameter is the scale 
+		    with `vector`. The first parameter determines the number of points
+		    of the returned wavelet array, the second parameter is the scale
 		    (`width`) of the wavelet. Should be normalized and symmetric.
 		    Default is the ricker wavelet.
 		max_distances : ndarray, optional
@@ -3375,7 +3728,7 @@ package scipy.signal;
 		    If a relative maximum is not found within `max_distances`,
 		    there will be a gap. A ridge line is discontinued if there are more
 		    than `gap_thresh` points without connecting a new relative maximum.
-		    Default is 2.
+		    Default is the first value of the widths array i.e. widths[0].
 		min_length : int, optional
 		    Minimum length a ridge line needs to be acceptable.
 		    Default is ``cwt.shape[0] / 4``, ie 1/4-th the number of widths.
@@ -3398,6 +3751,9 @@ package scipy.signal;
 		See Also
 		--------
 		cwt
+		    Continuous wavelet transform.
+		find_peaks
+		    Find peaks inside a signal based on peak properties.
 		
 		Notes
 		-----
@@ -3492,8 +3848,12 @@ package scipy.signal;
 		    the least squares problem. `weight` has to be half the size of
 		    `bands`.
 		nyq : float, optional
+		    *Deprecated.  Use `fs` instead.*
 		    Nyquist frequency. Each frequency in `bands` must be between 0
-		    and `nyq` (inclusive).
+		    and `nyq` (inclusive).  Default is 1.
+		fs : float, optional
+		    The sampling frequency of the signal. Each frequency in `bands`
+		    must be between 0 and ``fs/2`` (inclusive).  Default is 2.
 		
 		Returns
 		-------
@@ -3544,21 +3904,23 @@ package scipy.signal;
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		>>> fig, axs = plt.subplots(2)
-		>>> nyq = 5.  # Hz
+		>>> fs = 10.0  # Hz
 		>>> desired = (0, 0, 1, 1, 0, 0)
 		>>> for bi, bands in enumerate(((0, 1, 2, 3, 4, 5), (0, 1, 2, 4, 4.5, 5))):
-		...     fir_firls = signal.firls(73, bands, desired, nyq=nyq)
-		...     fir_remez = signal.remez(73, bands, desired[::2], Hz=2 * nyq)
-		...     fir_firwin2 = signal.firwin2(73, bands, desired, nyq=nyq)
+		...     fir_firls = signal.firls(73, bands, desired, fs=fs)
+		...     fir_remez = signal.remez(73, bands, desired[::2], fs=fs)
+		...     fir_firwin2 = signal.firwin2(73, bands, desired, fs=fs)
 		...     hs = list()
 		...     ax = axs[bi]
 		...     for fir in (fir_firls, fir_remez, fir_firwin2):
 		...         freq, response = signal.freqz(fir)
-		...         hs.append(ax.semilogy(nyq*freq/(np.pi), np.abs(response))[0])
-		...     for band, gains in zip(zip(bands[::2], bands[1::2]), zip(desired[::2], desired[1::2])):
+		...         hs.append(ax.semilogy(0.5*fs*freq/np.pi, np.abs(response))[0])
+		...     for band, gains in zip(zip(bands[::2], bands[1::2]),
+		...                            zip(desired[::2], desired[1::2])):
 		...         ax.semilogy(band, np.maximum(gains, 1e-7), 'k--', linewidth=2)
 		...     if bi == 0:
-		...         ax.legend(hs, ('firls', 'remez', 'firwin2'), loc='lower center', frameon=False)
+		...         ax.legend(hs, ('firls', 'remez', 'firwin2'),
+		...                   loc='lower center', frameon=False)
 		...     else:
 		...         ax.set_xlabel('Frequency (Hz)')
 		...     ax.grid(True)
@@ -3567,7 +3929,7 @@ package scipy.signal;
 		>>> fig.tight_layout()
 		>>> plt.show()
 	**/
-	static public function firls(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?nyq:Dynamic):Dynamic;
+	static public function firls(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?nyq:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		FIR filter design using the window method.
 		
@@ -3575,9 +3937,9 @@ package scipy.signal;
 		filter.  The filter will have linear phase; it will be Type I if
 		`numtaps` is odd and Type II if `numtaps` is even.
 		
-		Type II filters always have zero response at the Nyquist rate, so a
+		Type II filters always have zero response at the Nyquist frequency, so a
 		ValueError exception is raised if firwin is called with `numtaps` even and
-		having a passband whose right end is at the Nyquist rate.
+		having a passband whose right end is at the Nyquist frequency.
 		
 		Parameters
 		----------
@@ -3609,13 +3971,17 @@ package scipy.signal;
 		
 		    - 0 (DC) if the first passband starts at 0 (i.e. pass_zero
 		      is True)
-		    - `nyq` (the Nyquist rate) if the first passband ends at
+		    - `nyq` (the Nyquist frequency) if the first passband ends at
 		      `nyq` (i.e the filter is a single band highpass filter);
 		      center of first passband otherwise
 		
 		nyq : float, optional
-		    Nyquist frequency.  Each frequency in `cutoff` must be between 0
-		    and `nyq`.
+		    *Deprecated.  Use `fs` instead.*  This is the Nyquist frequency.
+		    Each frequency in `cutoff` must be between 0 and `nyq`. Default
+		    is 1.
+		fs : float, optional
+		    The sampling frequency of the signal.  Each frequency in `cutoff`
+		    must be between 0 and ``fs/2``.  Default is 2.
 		
 		Returns
 		-------
@@ -3626,11 +3992,11 @@ package scipy.signal;
 		------
 		ValueError
 		    If any value in `cutoff` is less than or equal to 0 or greater
-		    than or equal to `nyq`, if the values in `cutoff` are not strictly
+		    than or equal to ``fs/2``, if the values in `cutoff` are not strictly
 		    monotonically increasing, or if `numtaps` is even but a passband
 		    includes the Nyquist frequency.
 		
-		See also
+		See Also
 		--------
 		firwin2
 		firls
@@ -3679,7 +4045,7 @@ package scipy.signal;
 		>>> signal.firwin(numtaps, [f1, f2, f3, f4], pass_zero=False)
 		array([ 0.04890915,  0.91284326,  0.04890915])
 	**/
-	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic):Dynamic;
+	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		FIR filter design using the window method.
 		
@@ -3694,11 +4060,10 @@ package scipy.signal;
 		    `nfreqs`.
 		freq : array_like, 1D
 		    The frequency sampling points. Typically 0.0 to 1.0 with 1.0 being
-		    Nyquist.  The Nyquist frequency can be redefined with the argument
-		    `nyq`.
+		    Nyquist.  The Nyquist frequency is half `fs`.
 		    The values in `freq` must be nondecreasing.  A value can be repeated
 		    once to implement a discontinuity.  The first value in `freq` must
-		    be 0, and the last value must be `nyq`.
+		    be 0, and the last value must be ``fs/2``.
 		gain : array_like
 		    The filter gains at the frequency sampling points. Certain
 		    constraints to gain values, depending on the filter type, are applied,
@@ -3714,11 +4079,14 @@ package scipy.signal;
 		    `scipy.signal.get_window` for the complete list of possible values.
 		    If None, no window function is applied.
 		nyq : float, optional
-		    Nyquist frequency.  Each frequency in `freq` must be between 0 and
-		    `nyq` (inclusive).
+		    *Deprecated.  Use `fs` instead.*  This is the Nyquist frequency.
+		    Each frequency in `freq` must be between 0 and `nyq`.  Default is 1.
 		antisymmetric : bool, optional
 		    Whether resulting impulse response is symmetric/antisymmetric.
 		    See Notes for more details.
+		fs : float, optional
+		    The sampling frequency of the signal.  Each frequency in `cutoff`
+		    must be between 0 and ``fs/2``.  Default is 2.
 		
 		Returns
 		-------
@@ -3778,9 +4146,12 @@ package scipy.signal;
 		>>> print(taps[72:78])
 		[-0.02286961 -0.06362756  0.57310236  0.57310236 -0.06362756 -0.02286961]
 	**/
-	static public function firwin2(numtaps:Dynamic, freq:Dynamic, gain:Dynamic, ?nfreqs:Dynamic, ?window:Dynamic, ?nyq:Dynamic, ?antisymmetric:Dynamic):Dynamic;
+	static public function firwin2(numtaps:Dynamic, freq:Dynamic, gain:Dynamic, ?nfreqs:Dynamic, ?window:Dynamic, ?nyq:Dynamic, ?antisymmetric:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Return a flat top window.
+		
+		.. warning:: scipy.signal.flattop is deprecated,
+		             use scipy.signal.windows.flattop instead.
 		
 		Parameters
 		----------
@@ -3836,7 +4207,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function flattop(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function flattop(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate the frequency response of a continuous-time system.
 		
@@ -3990,7 +4361,7 @@ package scipy.signal;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -4015,22 +4386,33 @@ package scipy.signal;
 		Given the M-order numerator `b` and N-order denominator `a` of a digital
 		filter, compute its frequency response::
 		
-		             jw               -jw               -jwM
-		    jw    B(e  )  b[0] + b[1]e    + .... + b[M]e
-		 H(e  ) = ---- = -----------------------------------
-		             jw               -jw               -jwN
-		          A(e  )  a[0] + a[1]e    + .... + a[N]e
+		             jw                 -jw              -jwM
+		    jw    B(e  )    b[0] + b[1]e    + ... + b[M]e
+		 H(e  ) = ------ = -----------------------------------
+		             jw                 -jw              -jwN
+		          A(e  )    a[0] + a[1]e    + ... + a[N]e
 		
 		Parameters
 		----------
 		b : array_like
-		    numerator of a linear filter
+		    Numerator of a linear filter.  If `b` has dimension greater than 1,
+		    it is assumed that the coefficients are stored in the first dimension,
+		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
+		    array must be compatible for broadcasting.
 		a : array_like
-		    denominator of a linear filter
+		    Denominator of a linear filter.  If `b` has dimension greater than 1,
+		    it is assumed that the coefficients are stored in the first dimension,
+		    and ``b.shape[1:]``, ``a.shape[1:]``, and the shape of the frequencies
+		    array must be compatible for broadcasting.
 		worN : {None, int, array_like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
+		    If None, then compute at 512 equally spaced frequencies.
+		    If a single integer, then compute at that many frequencies.  This is
+		    a convenient alternative to::
+		
+		        np.linspace(0, 2*pi if whole else pi, N, endpoint=False)
+		
+		    Using a number that is fast for FFT computations can result in
+		    faster computations (see Notes).
 		    If an array_like, compute the response at the frequencies given (in
 		    radians/sample).
 		whole : bool, optional
@@ -4052,13 +4434,29 @@ package scipy.signal;
 		
 		See Also
 		--------
+		freqz_zpk
 		sosfreqz
 		
 		Notes
 		-----
-		Using Matplotlib's "plot" function as the callable for `plot` produces
-		unexpected results,  this plots the real part of the complex transfer
-		function, not the magnitude.  Try ``lambda w, h: plot(w, abs(h))``.
+		Using Matplotlib's :func:`matplotlib.pyplot.plot` function as the callable
+		for `plot` produces unexpected results, as this plots the real part of the
+		complex transfer function, not the magnitude.
+		Try ``lambda w, h: plot(w, np.abs(h))``.
+		
+		A direct computation via (R)FFT is used to compute the frequency response
+		when the following conditions are met:
+		
+		1. An integer value is given for `worN`.
+		2. `worN` is fast to compute via FFT (i.e.,
+		   `next_fast_len(worN) <scipy.fftpack.next_fast_len>` equals `worN`).
+		3. The denominator coefficients are a single value (``a.shape[0] == 1``).
+		4. `worN` is at least as long as the numerator coefficients
+		   (``worN >= b.shape[0]``).
+		5. If ``b.ndim > 1``, then ``b.shape[-1] == 1``.
+		
+		For long FIR filters, the FFT approach can have lower error and be much
+		faster than the equivalent direct polynomial calculation.
 		
 		Examples
 		--------
@@ -4082,6 +4480,48 @@ package scipy.signal;
 		>>> plt.grid()
 		>>> plt.axis('tight')
 		>>> plt.show()
+		
+		Broadcasting Examples
+		
+		Suppose we have two FIR filters whose coefficients are stored in the
+		rows of an array with shape (2, 25).  For this demonstration we'll
+		use random data:
+		
+		>>> np.random.seed(42)
+		>>> b = np.random.rand(2, 25)
+		
+		To compute the frequency response for these two filters with one call
+		to `freqz`, we must pass in ``b.T``, because `freqz` expects the first
+		axis to hold the coefficients. We must then extend the shape with a
+		trivial dimension of length 1 to allow broadcasting with the array
+		of frequencies.  That is, we pass in ``b.T[..., np.newaxis]``, which has
+		shape (25, 2, 1):
+		
+		>>> w, h = signal.freqz(b.T[..., np.newaxis], worN=1024)
+		>>> w.shape
+		(1024,)
+		>>> h.shape
+		(2, 1024)
+		
+		Now suppose we have two transfer functions, with the same numerator
+		coefficients ``b = [0.5, 0.5]``. The coefficients for the two denominators
+		are stored in the first dimension of the two-dimensional array  `a`::
+		
+		    a = [   1      1  ]
+		        [ -0.25, -0.5 ]
+		
+		>>> b = np.array([0.5, 0.5])
+		>>> a = np.array([[1, 1], [-0.25, -0.5]])
+		
+		Only `a` is more than one-dimensional.  To make it compatible for
+		broadcasting with the frequencies, we extend it with a trivial dimension
+		in the call to `freqz`:
+		
+		>>> w, h = signal.freqz(b, a[..., np.newaxis], worN=1024)
+		>>> w.shape
+		(1024,)
+		>>> h.shape
+		(2, 1024)
 	**/
 	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
 	/**
@@ -4104,11 +4544,9 @@ package scipy.signal;
 		k : scalar
 		    Gain of a linear filter
 		worN : {None, int, array_like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
-		    around the unit circle.
-		    If a single integer, then compute at that many frequencies.
-		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample).
+		    If single integer (default 512, same as None), then compute at `worN`
+		    frequencies equally spaced around the unit circle. If an array_like,
+		    compute the response at the frequencies given (in radians/sample).
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
 		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
@@ -4130,7 +4568,7 @@ package scipy.signal;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		Examples
 		--------
@@ -4163,6 +4601,9 @@ package scipy.signal;
 	static public function gauss_spline(x:Dynamic, n:Dynamic):Dynamic;
 	/**
 		Return a Gaussian window.
+		
+		.. warning:: scipy.signal.gaussian is deprecated,
+		             use scipy.signal.windows.gaussian instead.
 		
 		Parameters
 		----------
@@ -4212,7 +4653,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function gaussian(M:Dynamic, std:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function gaussian(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a Gaussian modulated sinusoid:
 		
@@ -4273,6 +4714,9 @@ package scipy.signal;
 	/**
 		Return a window with a generalized Gaussian shape.
 		
+		.. warning:: scipy.signal.general_gaussian is deprecated,
+		             use scipy.signal.windows.general_gaussian instead.
+		
 		Parameters
 		----------
 		M : int
@@ -4329,7 +4773,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function general_gaussian(M:Dynamic, p:Dynamic, sig:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function general_gaussian(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a window.
 		
@@ -4358,8 +4802,9 @@ package scipy.signal;
 		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
 		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
 		    deviation), `general_gaussian` (needs power, width), `slepian`
-		    (needs width), `chebwin` (needs attenuation), `exponential`
-		    (needs decay scale), `tukey` (needs taper fraction)
+		    (needs width), `dpss` (needs normalized half-bandwidth),
+		    `chebwin` (needs attenuation), `exponential` (needs decay scale),
+		    `tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -4403,7 +4848,7 @@ package scipy.signal;
 		system : tuple of array_like (b, a)
 		    Numerator and denominator coefficients of a filter transfer function.
 		w : {None, int, array-like}, optional
-		    If None (default), then compute at 512 frequencies equally spaced
+		    If None, then compute at 512 frequencies equally spaced
 		    around the unit circle.
 		    If a single integer, then compute at that many frequencies.
 		    If array, compute the delay at the frequencies given
@@ -4432,7 +4877,7 @@ package scipy.signal;
 		
 		For the details of numerical computation of the group delay refer to [1]_.
 		
-		.. versionadded: 0.16.0
+		.. versionadded:: 0.16.0
 		
 		See Also
 		--------
@@ -4462,6 +4907,9 @@ package scipy.signal;
 		
 		The Hamming window is a taper formed by using a raised cosine with
 		non-zero endpoints, optimized to minimize the nearest side lobe.
+		
+		.. warning:: scipy.signal.hamming is deprecated,
+		             use scipy.signal.windows.hamming instead.
 		
 		Parameters
 		----------
@@ -4530,12 +4978,15 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function hamming(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function hamming(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a Hann window.
 		
 		The Hann window is a taper formed by using a raised cosine or sine-squared
 		with ends that touch zero.
+		
+		.. warning:: scipy.signal.hann is deprecated,
+		             use scipy.signal.windows.hann instead.
 		
 		Parameters
 		----------
@@ -4606,83 +5057,11 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function hann(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function hann(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a Hann window.
-		
-		The Hann window is a taper formed by using a raised cosine or sine-squared
-		with ends that touch zero.
-		
-		Parameters
-		----------
-		M : int
-		    Number of points in the output window. If zero or less, an empty
-		    array is returned.
-		sym : bool, optional
-		    When True (default), generates a symmetric window, for use in filter
-		    design.
-		    When False, generates a periodic window, for use in spectral analysis.
-		
-		Returns
-		-------
-		w : ndarray
-		    The window, with the maximum value normalized to 1 (though the value 1
-		    does not appear if `M` is even and `sym` is True).
-		
-		Notes
-		-----
-		The Hann window is defined as
-		
-		.. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{M-1}\right)
-		           \qquad 0 \leq n \leq M-1
-		
-		The window was named for Julius von Hann, an Austrian meteorologist. It is
-		also known as the Cosine Bell. It is sometimes erroneously referred to as
-		the "Hanning" window, from the use of "hann" as a verb in the original
-		paper and confusion with the very similar Hamming window.
-		
-		Most references to the Hann window come from the signal processing
-		literature, where it is used as one of many windowing functions for
-		smoothing values.  It is also known as an apodization (which means
-		"removing the foot", i.e. smoothing discontinuities at the beginning
-		and end of the sampled signal) or tapering function.
-		
-		References
-		----------
-		.. [1] Blackman, R.B. and Tukey, J.W., (1958) The measurement of power
-		       spectra, Dover Publications, New York.
-		.. [2] E.R. Kanasewich, "Time Sequence Analysis in Geophysics",
-		       The University of Alberta Press, 1975, pp. 106-108.
-		.. [3] Wikipedia, "Window function",
-		       http://en.wikipedia.org/wiki/Window_function
-		.. [4] W.H. Press,  B.P. Flannery, S.A. Teukolsky, and W.T. Vetterling,
-		       "Numerical Recipes", Cambridge University Press, 1986, page 425.
-		
-		Examples
-		--------
-		Plot the window and its frequency response:
-		
-		>>> from scipy import signal
-		>>> from scipy.fftpack import fft, fftshift
-		>>> import matplotlib.pyplot as plt
-		
-		>>> window = signal.hann(51)
-		>>> plt.plot(window)
-		>>> plt.title("Hann window")
-		>>> plt.ylabel("Amplitude")
-		>>> plt.xlabel("Sample")
-		
-		>>> plt.figure()
-		>>> A = fft(window, 2048) / (len(window)/2.0)
-		>>> freq = np.linspace(-0.5, 0.5, len(A))
-		>>> response = 20 * np.log10(np.abs(fftshift(A / abs(A).max())))
-		>>> plt.plot(freq, response)
-		>>> plt.axis([-0.5, 0.5, -120, 0])
-		>>> plt.title("Frequency response of the Hann window")
-		>>> plt.ylabel("Normalized magnitude [dB]")
-		>>> plt.xlabel("Normalized frequency [cycles per sample]")
+		`hanning` is deprecated, use `scipy.signal.windows.hann` instead!
 	**/
-	static public function hanning(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function hanning(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the analytic signal, using the Hilbert transform.
 		
@@ -4977,7 +5356,7 @@ package scipy.signal;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		References
 		----------
@@ -5052,7 +5431,7 @@ package scipy.signal;
 		
 		Notes
 		-----
-		.. versionadded: 0.19.0
+		.. versionadded:: 0.19.0
 		
 		References
 		----------
@@ -5321,11 +5700,13 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be `nperseg`.
-		    Defaults to a Hann window. Must match the window used to
-		    generate the STFT for faithful inversion.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window. Must match the window used to generate the
+		    STFT for faithful inversion.
 		nperseg : int, optional
 		    Number of data points corresponding to each STFT segment. This
 		    parameter must be specified if the number of data points per
@@ -5469,6 +5850,9 @@ package scipy.signal;
 		
 		The Kaiser window is a taper formed by using a Bessel function.
 		
+		.. warning:: scipy.signal.kaiser is deprecated,
+		             use scipy.signal.windows.kaiser instead.
+		
 		Parameters
 		----------
 		M : int
@@ -5568,7 +5952,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function kaiser(M:Dynamic, beta:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function kaiser(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the attenuation of a Kaiser FIR filter.
 		
@@ -5583,7 +5967,8 @@ package scipy.signal;
 		    The number of taps in the FIR filter.
 		width : float
 		    The desired width of the transition region between passband and
-		    stopband (or, in general, at any discontinuity) for the filter.
+		    stopband (or, in general, at any discontinuity) for the filter,
+		    expressed as a fraction of the Nyquist frequency.
 		
 		Returns
 		-------
@@ -5593,6 +5978,18 @@ package scipy.signal;
 		See Also
 		--------
 		kaiserord, kaiser_beta
+		
+		Examples
+		--------
+		Suppose we want to design a FIR filter using the Kaiser window method
+		that will have 211 taps and a transition width of 9 Hz for a signal that
+		is sampled at 480 Hz.  Expressed as a fraction of the Nyquist frequency,
+		the width is 9/(0.5*480) = 0.0375.  The approximate attenuation (in dB)
+		is computed as follows:
+		
+		>>> from scipy.signal import kaiser_atten
+		>>> kaiser_atten(211, 0.0375)
+		64.48099630593983
 	**/
 	static public function kaiser_atten(numtaps:Dynamic, width:Dynamic):Float;
 	/**
@@ -5612,26 +6009,49 @@ package scipy.signal;
 		References
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
+		
+		Examples
+		--------
+		Suppose we want to design a lowpass filter, with 65 dB attenuation
+		in the stop band.  The Kaiser window parameter to be used in the
+		window method is computed by `kaiser_beta(65)`:
+		
+		>>> from scipy.signal import kaiser_beta
+		>>> kaiser_beta(65)
+		6.20426
 	**/
 	static public function kaiser_beta(a:Dynamic):Float;
 	/**
-		Design a Kaiser window to limit ripple and width of transition region.
+		Determine the filter window parameters for the Kaiser window method.
+		
+		The parameters returned by this function are generally used to create
+		a finite impulse response filter using the window method, with either
+		`firwin` or `firwin2`.
 		
 		Parameters
 		----------
 		ripple : float
-		    Positive number specifying maximum ripple in passband (dB) and minimum
-		    ripple in stopband.
+		    Upper bound for the deviation (in dB) of the magnitude of the
+		    filter's frequency response from that of the desired filter (not
+		    including frequencies in any transition intervals).  That is, if w
+		    is the frequency expressed as a fraction of the Nyquist frequency,
+		    A(w) is the actual frequency response of the filter and D(w) is the
+		    desired frequency response, the design requirement is that::
+		
+		        abs(A(w) - D(w))) < 10**(-ripple/20)
+		
+		    for 0 <= w <= 1 and w not in a transition interval.
 		width : float
-		    Width of transition region (normalized so that 1 corresponds to pi
-		    radians / sample).
+		    Width of transition region, normalized so that 1 corresponds to pi
+		    radians / sample.  That is, the frequency is expressed as a fraction
+		    of the Nyquist frequency.
 		
 		Returns
 		-------
 		numtaps : int
-		    The length of the kaiser window.
+		    The length of the Kaiser window.
 		beta : float
-		    The beta parameter for the kaiser window.
+		    The beta parameter for the Kaiser window.
 		
 		See Also
 		--------
@@ -5650,6 +6070,73 @@ package scipy.signal;
 		References
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
+		
+		Examples
+		--------
+		We will use the Kaiser window method to design a lowpass FIR filter
+		for a signal that is sampled at 1000 Hz.
+		
+		We want at least 65 dB rejection in the stop band, and in the pass
+		band the gain should vary no more than 0.5%.
+		
+		We want a cutoff frequency of 175 Hz, with a transition between the
+		pass band and the stop band of 24 Hz.  That is, in the band [0, 163],
+		the gain varies no more than 0.5%, and in the band [187, 500], the
+		signal is attenuated by at least 65 dB.
+		
+		>>> from scipy.signal import kaiserord, firwin, freqz
+		>>> import matplotlib.pyplot as plt
+		>>> fs = 1000.0
+		>>> cutoff = 175
+		>>> width = 24
+		
+		The Kaiser method accepts just a single parameter to control the pass
+		band ripple and the stop band rejection, so we use the more restrictive
+		of the two.  In this case, the pass band ripple is 0.005, or 46.02 dB,
+		so we will use 65 dB as the design parameter.
+		
+		Use `kaiserord` to determine the length of the filter and the
+		parameter for the Kaiser window.
+		
+		>>> numtaps, beta = kaiserord(65, width/(0.5*fs))
+		>>> numtaps
+		167
+		>>> beta
+		6.20426
+		
+		Use `firwin` to create the FIR filter.
+		
+		>>> taps = firwin(numtaps, cutoff, window=('kaiser', beta),
+		...               scale=False, nyq=0.5*fs)
+		
+		Compute the frequency response of the filter.  ``w`` is the array of
+		frequencies, and ``h`` is the corresponding complex array of frequency
+		responses.
+		
+		>>> w, h = freqz(taps, worN=8000)
+		>>> w *= 0.5*fs/np.pi  # Convert w to Hz.
+		
+		Compute the deviation of the magnitude of the filter's response from
+		that of the ideal lowpass filter.  Values in the transition region are
+		set to ``nan``, so they won't appear in the plot.
+		
+		>>> ideal = w < cutoff  # The "ideal" frequency response.
+		>>> deviation = np.abs(np.abs(h) - ideal)
+		>>> deviation[(w > cutoff - 0.5*width) & (w < cutoff + 0.5*width)] = np.nan
+		
+		Plot the deviation.  A close look at the left end of the stop band shows
+		that the requirement for 65 dB attenuation is violated in the first lobe
+		by about 0.125 dB.  This is not unusual for the Kaiser window method.
+		
+		>>> plt.plot(w, 20*np.log10(np.abs(deviation)))
+		>>> plt.xlim(0, 0.5*fs)
+		>>> plt.ylim(-90, -60)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.axhline(-65, color='r', ls='--', alpha=0.3)
+		>>> plt.xlabel('Frequency (Hz)')
+		>>> plt.ylabel('Deviation from ideal (dB)')
+		>>> plt.title('Lowpass Filter Frequency Response')
+		>>> plt.show()
 	**/
 	static public function kaiserord(ripple:Dynamic, width:Dynamic):Int;
 	/**
@@ -5770,7 +6257,9 @@ package scipy.signal;
 	**/
 	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Array<Dynamic>;
 	/**
-		Compute an initial state `zi` for the lfilter function that corresponds
+		Construct initial conditions for lfilter for step response steady-state.
+		
+		Compute an initial state `zi` for the `lfilter` function that corresponds
 		to the steady state of the step response.
 		
 		A typical use of this function is to set the initial state so that the
@@ -5849,7 +6338,7 @@ package scipy.signal;
 	**/
 	static public function lfilter_zi(b:Dynamic, a:Dynamic):Dynamic;
 	/**
-		Construct initial conditions for lfilter.
+		Construct initial conditions for lfilter given input and output vectors.
 		
 		Given a linear filter (b, a) and initial conditions on the output `y`
 		and the input `x`, return the initial conditions on the state vector zi
@@ -5896,9 +6385,14 @@ package scipy.signal;
 		extended by Scargle [2]_ to find, and test the significance of weak
 		periodic signals with uneven temporal sampling.
 		
-		The computed periodogram is unnormalized, it takes the value
-		``(A**2) * N/4`` for a harmonic signal with amplitude A for sufficiently
-		large N.
+		When *normalize* is False (default) the computed periodogram
+		is unnormalized, it takes the value ``(A**2) * N/4`` for a harmonic
+		signal with amplitude A for sufficiently large N.
+		
+		When *normalize* is True the computed periodogram is is normalized by
+		the residuals of the data around a constant reference model (at zero).
+		
+		Input arrays should be one-dimensional and will be cast to float64.
 		
 		Parameters
 		----------
@@ -5908,6 +6402,10 @@ package scipy.signal;
 		    Measurement values.
 		freqs : array_like
 		    Angular frequencies for output periodogram.
+		precenter : bool, optional
+		    Pre-center amplitudes by subtracting the mean.
+		normalize : bool, optional
+		    Compute normalized periodogram.
 		
 		Returns
 		-------
@@ -5961,7 +6459,6 @@ package scipy.signal;
 		>>> r = np.random.rand(nin)
 		>>> x = np.linspace(0.01, 10*np.pi, nin)
 		>>> x = x[r >= frac_points]
-		>>> normval = x.shape[0] # For normalization of the periodogram
 		 
 		Plot a sine wave for the selected times:
 		
@@ -5974,56 +6471,255 @@ package scipy.signal;
 		Calculate Lomb-Scargle periodogram:
 		
 		>>> import scipy.signal as signal
-		>>> pgram = signal.lombscargle(x, y, f)
+		>>> pgram = signal.lombscargle(x, y, f, normalize=True)
 		
 		Now make a plot of the input data:
 		
 		>>> plt.subplot(2, 1, 1)
-		<matplotlib.axes.AxesSubplot object at 0x102154f50>
 		>>> plt.plot(x, y, 'b+')
-		[<matplotlib.lines.Line2D object at 0x102154a10>]
 		
 		Then plot the normalized periodogram:
 		
 		>>> plt.subplot(2, 1, 2)
-		<matplotlib.axes.AxesSubplot object at 0x104b0a990>
-		>>> plt.plot(f, np.sqrt(4*(pgram/normval)))
-		[<matplotlib.lines.Line2D object at 0x104b2f910>]
+		>>> plt.plot(f, pgram)
 		>>> plt.show()
 	**/
-	static public function lombscargle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function lombscargle(x:Dynamic, y:Dynamic, freqs:Dynamic, ?precenter:Dynamic, ?normalize:Dynamic):Dynamic;
 	/**
 		Transform a lowpass filter prototype to a bandpass filter.
 		
 		Return an analog band-pass filter with center frequency `wo` and
 		bandwidth `bw` from an analog low-pass filter prototype with unity
 		cutoff frequency, in transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2lp, lp2hp, lp2bs, bilinear
+		lp2bp_zpk
 	**/
 	static public function lp2bp(b:Dynamic, a:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a bandpass filter.
+		
+		Return an analog band-pass filter with center frequency `wo` and
+		bandwidth `bw` from an analog low-pass filter prototype with unity
+		cutoff frequency, using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired passband center, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		bw : float
+		    Desired passband width, as angular frequency (e.g. rad/s).
+		    Defaults to 1.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed band-pass filter transfer function.
+		p : ndarray
+		    Poles of the transformed band-pass filter transfer function.
+		k : float
+		    System gain of the transformed band-pass filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2hp_zpk, lp2bs_zpk, bilinear
+		lp2bp
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s^2 + {\omega_0}^2}{s \cdot \mathrm{BW}}
+		
+		This is the "wideband" transformation, producing a passband with
+		geometric (log frequency) symmetry about `wo`.
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2bp_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
 	/**
 		Transform a lowpass filter prototype to a bandstop filter.
 		
 		Return an analog band-stop filter with center frequency `wo` and
 		bandwidth `bw` from an analog low-pass filter prototype with unity
 		cutoff frequency, in transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2lp, lp2hp, lp2bp, bilinear
+		lp2bs_zpk
 	**/
 	static public function lp2bs(b:Dynamic, a:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a bandstop filter.
+		
+		Return an analog band-stop filter with center frequency `wo` and
+		stopband width `bw` from an analog low-pass filter prototype with unity
+		cutoff frequency, using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired stopband center, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		bw : float
+		    Desired stopband width, as angular frequency (e.g. rad/s).
+		    Defaults to 1.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed band-stop filter transfer function.
+		p : ndarray
+		    Poles of the transformed band-stop filter transfer function.
+		k : float
+		    System gain of the transformed band-stop filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2hp_zpk, lp2bp_zpk, bilinear
+		lp2bs
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s \cdot \mathrm{BW}}{s^2 + {\omega_0}^2}
+		
+		This is the "wideband" transformation, producing a stopband with
+		geometric (log frequency) symmetry about `wo`.
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2bs_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic, ?bw:Dynamic):Dynamic;
 	/**
 		Transform a lowpass filter prototype to a highpass filter.
 		
 		Return an analog high-pass filter with cutoff frequency `wo`
 		from an analog low-pass filter prototype with unity cutoff frequency, in
 		transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2lp, lp2bp, lp2bs, bilinear
+		lp2hp_zpk
 	**/
 	static public function lp2hp(b:Dynamic, a:Dynamic, ?wo:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a highpass filter.
+		
+		Return an analog high-pass filter with cutoff frequency `wo`
+		from an analog low-pass filter prototype with unity cutoff frequency,
+		using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired cutoff, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed high-pass filter transfer function.
+		p : ndarray
+		    Poles of the transformed high-pass filter transfer function.
+		k : float
+		    System gain of the transformed high-pass filter.
+		
+		See Also
+		--------
+		lp2lp_zpk, lp2bp_zpk, lp2bs_zpk, bilinear
+		lp2hp
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{\omega_0}{s}
+		
+		This maintains symmetry of the lowpass and highpass responses on a
+		logarithmic scale.
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2hp_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
 	/**
 		Transform a lowpass filter prototype to a different frequency.
 		
 		Return an analog low-pass filter with cutoff frequency `wo`
 		from an analog low-pass filter prototype with unity cutoff frequency, in
 		transfer function ('ba') representation.
+		
+		See Also
+		--------
+		lp2hp, lp2bp, lp2bs, bilinear
+		lp2lp_zpk
 	**/
 	static public function lp2lp(b:Dynamic, a:Dynamic, ?wo:Dynamic):Dynamic;
+	/**
+		Transform a lowpass filter prototype to a different frequency.
+		
+		Return an analog low-pass filter with cutoff frequency `wo`
+		from an analog low-pass filter prototype with unity cutoff frequency,
+		using zeros, poles, and gain ('zpk') representation.
+		
+		Parameters
+		----------
+		z : array_like
+		    Zeros of the analog filter transfer function.
+		p : array_like
+		    Poles of the analog filter transfer function.
+		k : float
+		    System gain of the analog filter transfer function.
+		wo : float
+		    Desired cutoff, as angular frequency (e.g. rad/s).
+		    Defaults to no change.
+		
+		Returns
+		-------
+		z : ndarray
+		    Zeros of the transformed low-pass filter transfer function.
+		p : ndarray
+		    Poles of the transformed low-pass filter transfer function.
+		k : float
+		    System gain of the transformed low-pass filter.
+		
+		See Also
+		--------
+		lp2hp_zpk, lp2bp_zpk, lp2bs_zpk, bilinear
+		lp2lp
+		
+		Notes
+		-----
+		This is derived from the s-plane substitution
+		
+		.. math:: s \rightarrow \frac{s}{\omega_0}
+		
+		.. versionadded:: 1.1.0
+	**/
+	static public function lp2lp_zpk(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
 	/**
 		Simulate output of a continuous-time linear system.
 		
@@ -6171,8 +6867,7 @@ package scipy.signal;
 		The default values for taps are specifically taken from the first
 		option listed for each value of ``nbits`` in:
 		
-		    http://www.newwaveinstruments.com/resources/articles/
-		        m_sequence_linear_feedback_shift_register_lfsr.htm
+		    http://www.newwaveinstruments.com/resources/articles/m_sequence_linear_feedback_shift_register_lfsr.htm
 		
 		.. versionadded:: 0.15.0
 		
@@ -6374,7 +7069,7 @@ package scipy.signal;
 		       doi: 10.1109/ICASSP.1999.756179
 		.. [2] X. Chen and T. W. Parks, "Design of optimal minimum phase FIR
 		       filters by direct factorization," Signal Processing,
-		       vol. 10, no. 4, pp. 369–383, Jun. 1986.
+		       vol. 10, no. 4, pp. 369-383, Jun. 1986.
 		.. [3] T. Saramaki, "Finite Impulse Response Filter Design," in
 		       Handbook for Digital Signal Processing, chapter 4,
 		       New York: Wiley-Interscience, 1993.
@@ -6469,6 +7164,9 @@ package scipy.signal;
 		
 		This variation is called "Nuttall4c" by Heinzel. [2]_
 		
+		.. warning:: scipy.signal.nuttall is deprecated,
+		             use scipy.signal.windows.nuttall instead.
+		
 		Parameters
 		----------
 		M : int
@@ -6519,7 +7217,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function nuttall(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function nuttall(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Perform an order filter on an N-dimensional array.
 		
@@ -6575,6 +7273,9 @@ package scipy.signal;
 	/**
 		Return a Parzen window.
 		
+		.. warning:: scipy.signal.parzen is deprecated,
+		             use scipy.signal.windows.parzen instead.
+		
 		Parameters
 		----------
 		M : int
@@ -6620,7 +7321,250 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function parzen(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function parzen(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Calculate the prominence of each peak in a signal.
+		
+		The prominence of a peak measures how much a peak stands out from the
+		surrounding baseline of the signal and is defined as the vertical distance
+		between the peak and its lowest contour line.
+		
+		Parameters
+		----------
+		x : sequence
+		    A signal with peaks.
+		peaks : sequence
+		    Indices of peaks in `x`.
+		wlen : int or float, optional
+		    A window length in samples that optionally limits the evaluated area for
+		    each peak to a subset of `x`. The peak is always placed in the middle of
+		    the window therefore the given length is rounded up to the next odd
+		    integer. This parameter can speed up the calculation (see Notes).
+		
+		Returns
+		-------
+		prominences : ndarray
+		    The calculated prominences for each peak in `peaks`.
+		left_bases, right_bases : ndarray
+		    The peaks' bases as indices in `x` to the left and right of each peak.
+		    The higher base of each pair is a peak's lowest contour line.
+		
+		Raises
+		------
+		ValueError
+		    If an index in `peaks` does not point to a local maximum in `x`.
+		
+		See Also
+		--------
+		find_peaks
+		    Find peaks inside a signal based on peak properties.
+		peak_widths
+		    Calculate the width of peaks.
+		
+		Notes
+		-----
+		Strategy to compute a peak's prominence:
+		
+		1. Extend a horizontal line from the current peak to the left and right
+		   until the line either reaches the window border (see `wlen`) or
+		   intersects the signal again at the slope of a higher peak. An
+		   intersection with a peak of the same height is ignored.
+		2. On each side find the minimal signal value within the interval defined
+		   above. These points are the peak's bases.
+		3. The higher one of the two bases marks the peak's lowest contour line. The
+		   prominence can then be calculated as the vertical difference between the
+		   peaks height itself and its lowest contour line.
+		
+		Searching for the peak's bases can be slow for large `x` with periodic
+		behavior because large chunks or even the full signal need to be evaluated
+		for the first algorithmic step. This evaluation area can be limited with the
+		parameter `wlen` which restricts the algorithm to a window around the
+		current peak and can shorten the calculation time if the window length is
+		short in relation to `x`.
+		However this may stop the algorithm from finding the true global contour
+		line if the peak's true bases are outside this window. Instead a higher
+		contour line is found within the restricted window leading to a smaller
+		calculated prominence. In practice this is only relevant for the highest set
+		of peaks in `x`. This behavior may even be used intentionally to calculate
+		"local" prominences.
+		
+		.. warning::
+		
+		   This function may return unexpected results for data containing NaNs. To
+		   avoid this, NaNs should either be removed or replaced.
+		
+		.. versionadded:: 1.1.0
+		
+		References
+		----------
+		.. [1] Wikipedia Article for Topographic Prominence:
+		   https://en.wikipedia.org/wiki/Topographic_prominence
+		
+		Examples
+		--------
+		>>> from scipy.signal import find_peaks, peak_prominences
+		>>> import matplotlib.pyplot as plt
+		
+		Create a test signal with two overlayed harmonics
+		
+		>>> x = np.linspace(0, 6 * np.pi, 1000)
+		>>> x = np.sin(x) + 0.6 * np.sin(2.6 * x)
+		
+		Find all peaks and calculate prominences
+		
+		>>> peaks, _ = find_peaks(x)
+		>>> prominences = peak_prominences(x, peaks)[0]
+		>>> prominences
+		array([1.24159486, 0.47840168, 0.28470524, 3.10716793, 0.284603  ,
+		       0.47822491, 2.48340261, 0.47822491])
+		
+		Calculate the height of each peak's contour line and plot the results
+		
+		>>> contour_heights = x[peaks] - prominences
+		>>> plt.plot(x)
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.vlines(x=peaks, ymin=contour_heights, ymax=x[peaks])
+		>>> plt.show()
+		
+		Let's evaluate a second example that demonstrates several edge cases for
+		one peak at index 5.
+		
+		>>> x = np.array([0, 1, 0, 3, 1, 3, 0, 4, 0])
+		>>> peaks = np.array([5])
+		>>> plt.plot(x)
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.show()
+		>>> peak_prominences(x, peaks)  # -> (prominences, left_bases, right_bases)
+		(array([3.]), array([2]), array([6]))
+		
+		Note how the peak at index 3 of the same height is not considered as a
+		border while searching for the left base. Instead two minima at 0 and 2
+		are found in which case the one closer to the evaluated peak is always
+		chosen. On the right side however the base must be placed at 6 because the
+		higher peak represents the right border to the evaluated area.
+		
+		>>> peak_prominences(x, peaks, wlen=3.1)
+		(array([2.]), array([4]), array([6]))
+		
+		Here we restricted the algorithm to a window from 3 to 7 (the length is 5
+		samples because `wlen` was rounded up to the next odd integer). Thus the
+		only two candidates in the evaluated area are the two neighbouring samples
+		and a smaller prominence is calculated.
+	**/
+	static public function peak_prominences(x:Dynamic, peaks:Dynamic, ?wlen:Dynamic):Dynamic;
+	/**
+		Calculate the width of each peak in a signal.
+		
+		This function calculates the width of a peak in samples at a relative
+		distance to the peak's height and prominence.
+		
+		Parameters
+		----------
+		x : sequence
+		    A signal with peaks.
+		peaks : sequence
+		    Indices of peaks in `x`.
+		rel_height : float, optional
+		    Chooses the relative height at which the peak width is measured as a
+		    percentage of its prominence. 1.0 calculates the width of the peak at
+		    its lowest contour line while 0.5 evaluates at half the prominence
+		    height. Must be at least 0. See notes for further explanation.
+		prominence_data : tuple, optional
+		    A tuple of three arrays matching the output of `peak_prominences` when
+		    called with the same arguments `x` and `peaks`. This data is calculated
+		    internally if not provided.
+		wlen : int, optional
+		    A window length in samples passed to `peak_prominences` as an optional
+		    argument for internal calculation of `prominence_data`. This argument
+		    is ignored if `prominence_data` is given.
+		
+		Returns
+		-------
+		widths : ndarray
+		    The widths for each peak in samples.
+		width_heights : ndarray
+		    The height of the contour lines at which the `widths` where evaluated.
+		left_ips, right_ips : ndarray
+		    Interpolated positions of left and right intersection points of a
+		    horizontal line at the respective evaluation height.
+		
+		Raises
+		------
+		ValueError
+		    If `prominence_data` is supplied but doesn't satisfy the condition
+		    ``0 <= left_base <= peak <= right_base < x.shape[0]`` for each peak,
+		    has the wrong dtype, is not C-contiguous or does not have the same
+		    shape.
+		
+		See Also
+		--------
+		find_peaks
+		    Find peaks inside a signal based on peak properties.
+		peak_prominences
+		    Calculate the prominence of peaks.
+		
+		Notes
+		-----
+		The basic algorithm to calculate a peak's width is as follows:
+		
+		* Calculate the evaluation height :math:`h_{eval}` with the formula
+		  :math:`h_{eval} = h_{Peak} - P \cdot R`, where :math:`h_{Peak}` is the
+		  height of the peak itself, :math:`P` is the peak's prominence and
+		  :math:`R` a positive ratio specified with the argument `rel_height`.
+		* Draw a horizontal line at the evaluation height to both sides, starting at
+		  the peak's current vertical position until the lines either intersect a
+		  slope, the signal border or cross the vertical position of the peak's
+		  base (see `peak_prominences` for an definition). For the first case,
+		  intersection with the signal, the true intersection point is estimated
+		  with linear interpolation.
+		* Calculate the width as the horizontal distance between the chosen
+		  endpoints on both sides. As a consequence of this the maximal possible
+		  width for each peak is the horizontal distance between its bases.
+		
+		As shown above to calculate a peak's width its prominence and bases must be
+		known. You can supply these yourself with the argument `prominence_data`.
+		Otherwise they are internally calculated (see `peak_prominences`).
+		
+		.. warning::
+		
+		   This function may return unexpected results for data containing NaNs. To
+		   avoid this, NaNs should either be removed or replaced.
+		
+		.. versionadded:: 1.1.0
+		
+		Examples
+		--------
+		>>> from scipy.signal import chirp, find_peaks, peak_widths
+		>>> import matplotlib.pyplot as plt
+		
+		Create a test signal with two overlayed harmonics
+		
+		>>> x = np.linspace(0, 6 * np.pi, 1000)
+		>>> x = np.sin(x) + 0.6 * np.sin(2.6 * x)
+		
+		Find all peaks and calculate their widths at the relative height of 0.5
+		(contour line at half the prominence height) and 1 (at the lowest contour
+		line at full prominence height).
+		
+		>>> peaks, _ = find_peaks(x)
+		>>> results_half = peak_widths(x, peaks, rel_height=0.5)
+		>>> results_half[0]  # widths
+		array([ 64.25172825,  41.29465463,  35.46943289, 104.71586081,
+		        35.46729324,  41.30429622, 181.93835853,  45.37078546])
+		>>> results_full = peak_widths(x, peaks, rel_height=1)
+		>>> results_full[0]  # widths
+		array([181.9396084 ,  72.99284945,  61.28657872, 373.84622694,
+		    61.78404617,  72.48822812, 253.09161876,  79.36860878])
+		
+		Plot signal, peaks and contour lines at which the widths where calculated
+		
+		>>> plt.plot(x)
+		>>> plt.plot(peaks, x[peaks], "x")
+		>>> plt.hlines(*results_half[1:], color="C2")
+		>>> plt.hlines(*results_full[1:], color="C3")
+		>>> plt.show()
+	**/
+	static public function peak_widths(x:Dynamic, peaks:Dynamic, ?rel_height:Dynamic, ?prominence_data:Dynamic, ?wlen:Dynamic):Dynamic;
 	/**
 		Estimate power spectral density using a periodogram.
 		
@@ -6631,10 +7575,12 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to 'boxcar'.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to 'boxcar'.
 		nfft : int, optional
 		    Length of the FFT used. If `None` the length of `x` will be
 		    used.
@@ -6704,8 +7650,8 @@ package scipy.signal;
 		If we average the last half of the spectral density, to exclude the
 		peak, we can recover the noise power on the signal.
 		
-		>>> np.mean(Pxx_den[256:])
-		0.0018156616014838548
+		>>> np.mean(Pxx_den[25000:])
+		0.00099728892368242854
 		
 		Now compute and plot the power spectrum.
 		
@@ -6977,9 +7923,9 @@ package scipy.signal;
 		    The desired number of taps in the filter. The number of taps is
 		    the number of terms in the filter, or the filter order plus one.
 		bands : array_like
-		    A monotonic sequence containing the band edges in Hz.
+		    A monotonic sequence containing the band edges.
 		    All elements must be non-negative and less than half the sampling
-		    frequency as given by `Hz`.
+		    frequency as given by `fs`.
 		desired : array_like
 		    A sequence half the size of bands containing the desired gain
 		    in each of the specified bands.
@@ -6987,6 +7933,7 @@ package scipy.signal;
 		    A relative weighting to give to each band region. The length of
 		    `weight` has to be half the length of `bands`.
 		Hz : scalar, optional
+		    *Deprecated.  Use `fs` instead.*
 		    The sampling frequency in Hz. Default is 1.
 		type : {'bandpass', 'differentiator', 'hilbert'}, optional
 		    The type of filter:
@@ -7004,6 +7951,8 @@ package scipy.signal;
 		grid_density : int, optional
 		    Grid density. The dense grid used in `remez` is of size
 		    ``(numtaps + 1) * grid_density``. Default is 16.
+		fs : float, optional
+		    The sampling frequency of the signal.  Default is 1.
 		
 		Returns
 		-------
@@ -7030,23 +7979,24 @@ package scipy.signal;
 		
 		Examples
 		--------
-		We want to construct a filter with a passband at 0.2-0.4 Hz, and
-		stop bands at 0-0.1 Hz and 0.45-0.5 Hz. Note that this means that the
-		behavior in the frequency ranges between those bands is unspecified and
-		may overshoot.
+		For a signal sampled at 100 Hz, we want to construct a filter with a
+		passband at 20-40 Hz, and stop bands at 0-10 Hz and 45-50 Hz. Note that
+		this means that the behavior in the frequency ranges between those bands
+		is unspecified and may overshoot.
 		
 		>>> from scipy import signal
-		>>> bpass = signal.remez(72, [0, 0.1, 0.2, 0.4, 0.45, 0.5], [0, 1, 0])
+		>>> fs = 100
+		>>> bpass = signal.remez(72, [0, 10, 20, 40, 45, 50], [0, 1, 0], fs=fs)
 		>>> freq, response = signal.freqz(bpass)
-		>>> ampl = np.abs(response)
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig = plt.figure()
-		>>> ax1 = fig.add_subplot(111)
-		>>> ax1.semilogy(freq/(2*np.pi), ampl, 'b-')  # freq in Hz
+		>>> plt.semilogy(0.5*fs*freq/np.pi, np.abs(response), 'b-')
+		>>> plt.grid(alpha=0.25)
+		>>> plt.xlabel('Frequency (Hz)')
+		>>> plt.ylabel('Gain')
 		>>> plt.show()
 	**/
-	static public function remez(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?Hz:Dynamic, ?type:Dynamic, ?maxiter:Dynamic, ?grid_density:Dynamic):Dynamic;
+	static public function remez(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?Hz:Dynamic, ?type:Dynamic, ?maxiter:Dynamic, ?grid_density:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Resample `x` to `num` samples using Fourier method along the given axis.
 		
@@ -7187,7 +8137,7 @@ package scipy.signal;
 		
 		The first sample of the returned vector is the same as the first
 		sample of the input vector. The spacing between samples is changed
-		from ``dx`` to ``dx * up / float(down)``.
+		from ``dx`` to ``dx * down / float(up)``.
 		
 		Examples
 		--------
@@ -7431,7 +8381,8 @@ package scipy.signal;
 		    before filtering.
 		window_length : int
 		    The length of the filter window (i.e. the number of coefficients).
-		    `window_length` must be a positive odd integer.
+		    `window_length` must be a positive odd integer. If `mode` is 'interp',
+		    `window_length` must be less than or equal to the size of `x`.
 		polyorder : int
 		    The order of the polynomial used to fit the samples.
 		    `polyorder` must be less than `window_length`.
@@ -7570,6 +8521,14 @@ package scipy.signal;
 		Used to maximize the energy concentration in the main lobe.  Also called
 		the digital prolate spheroidal sequence (DPSS).
 		
+		.. note:: Deprecated in SciPy 1.1.
+		          `slepian` will be removed in a future version of SciPy, it is
+		          replaced by `dpss`, which uses the standard definition of a
+		          digital Slepian window.
+		
+		.. warning:: scipy.signal.slepian is deprecated,
+		             use scipy.signal.windows.slepian instead.
+		
 		Parameters
 		----------
 		M : int
@@ -7586,6 +8545,10 @@ package scipy.signal;
 		-------
 		w : ndarray
 		    The window, with the maximum value always normalized to 1
+		
+		See Also
+		--------
+		dpss
 		
 		References
 		----------
@@ -7620,7 +8583,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function slepian(M:Dynamic, width:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function slepian(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a single transfer function from a series of second-order sections
 		
@@ -7668,7 +8631,7 @@ package scipy.signal;
 	**/
 	static public function sos2zpk(sos:Dynamic):Dynamic;
 	/**
-		Filter data along one dimension using cascaded second-order sections
+		Filter data along one dimension using cascaded second-order sections.
 		
 		Filter a data sequence, `x`, using a digital IIR filter defined by
 		`sos`. This is implemented by performing `lfilter` for each
@@ -7738,7 +8701,9 @@ package scipy.signal;
 	**/
 	static public function sosfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Dynamic;
 	/**
-		Compute an initial state `zi` for the sosfilt function that corresponds
+		Construct initial conditions for sosfilt for step response steady-state.
+		
+		Compute an initial state `zi` for the `sosfilt` function that corresponds
 		to the steady state of the step response.
 		
 		A typical use of this function is to set the initial state so that the
@@ -7788,7 +8753,7 @@ package scipy.signal;
 	**/
 	static public function sosfilt_zi(sos:Dynamic):Dynamic;
 	/**
-		A forward-backward filter using cascaded second-order sections.
+		A forward-backward digital filter using cascaded second-order sections.
 		
 		See `filtfilt` for more complete information about this method.
 		
@@ -7836,6 +8801,42 @@ package scipy.signal;
 		Notes
 		-----
 		.. versionadded:: 0.18.0
+		
+		Examples
+		--------
+		>>> from scipy.signal import sosfiltfilt, butter
+		>>> import matplotlib.pyplot as plt
+		
+		Create an interesting signal to filter.
+		
+		>>> n = 201
+		>>> t = np.linspace(0, 1, n)
+		>>> np.random.seed(123)
+		>>> x = 1 + (t < 0.5) - 0.25*t**2 + 0.05*np.random.randn(n)
+		
+		Create a lowpass Butterworth filter, and use it to filter `x`.
+		
+		>>> sos = butter(4, 0.125, output='sos')
+		>>> y = sosfiltfilt(sos, x)
+		
+		For comparison, apply an 8th order filter using `sosfilt`.  The filter
+		is initialized using the mean of the first four values of `x`.
+		
+		>>> from scipy.signal import sosfilt, sosfilt_zi
+		>>> sos8 = butter(8, 0.125, output='sos')
+		>>> zi = x[:4].mean() * sosfilt_zi(sos8)
+		>>> y2, zo = sosfilt(sos8, x, zi=zi)
+		
+		Plot the results.  Note that the phase of `y` matches the input, while
+		`y2` has a significant phase delay.
+		
+		>>> plt.plot(t, x, alpha=0.5, label='x(t)')
+		>>> plt.plot(t, y, label='y(t)')
+		>>> plt.plot(t, y2, label='y2(t)')
+		>>> plt.legend(framealpha=1, shadow=True)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.xlabel('t')
+		>>> plt.show()
 	**/
 	static public function sosfiltfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?padtype:Dynamic, ?padlen:Dynamic):Dynamic;
 	/**
@@ -7863,8 +8864,10 @@ package scipy.signal;
 		    If None (default), then compute at 512 frequencies equally spaced
 		    around the unit circle.
 		    If a single integer, then compute at that many frequencies.
+		    Using a number that is fast for FFT computations can result in
+		    faster computations (see Notes of `freqz`).
 		    If an array_like, compute the response at the frequencies given (in
-		    radians/sample).
+		    radians/sample; must be 1D).
 		whole : bool, optional
 		    Normally, frequencies are computed from 0 to the Nyquist frequency,
 		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
@@ -7946,9 +8949,11 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg.
 		    Defaults to a Tukey window with shape parameter of 0.25.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
@@ -8291,10 +9296,12 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to 256.
 		noverlap : int, optional
@@ -8471,6 +9478,33 @@ package scipy.signal;
 		
 		where `phase` is the integral from 0 to `t` of ``2 * pi * f(t)``,
 		``f(t)`` as defined above.
+		
+		Examples
+		--------
+		Compute the waveform with instantaneous frequency::
+		
+		    f(t) = 0.025*t**3 - 0.36*t**2 + 1.25*t + 2
+		
+		over the interval 0 <= t <= 10.
+		
+		>>> from scipy.signal import sweep_poly
+		>>> p = np.poly1d([0.025, -0.36, 1.25, 2.0])
+		>>> t = np.linspace(0, 10, 5001)
+		>>> w = sweep_poly(t, p)
+		
+		Plot it:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.subplot(2, 1, 1)
+		>>> plt.plot(t, w)
+		>>> plt.title("Sweep Poly\nwith frequency " +
+		...           "$f(t) = 0.025t^3 - 0.36t^2 + 1.25t + 2$")
+		>>> plt.subplot(2, 1, 2)
+		>>> plt.plot(t, p(t), 'r', label='f(t)')
+		>>> plt.legend()
+		>>> plt.xlabel('t')
+		>>> plt.tight_layout()
+		>>> plt.show()
 	**/
 	static public function sweep_poly(t:Dynamic, poly:Dynamic, ?phi:Dynamic):Dynamic;
 	/**
@@ -8536,68 +9570,7 @@ package scipy.signal;
 		    The filtered signal.
 	**/
 	static public function symiirorder2(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
-		
-		Examples
-		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
-	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		Return second-order sections from transfer function representation
 		
@@ -8747,6 +9720,9 @@ package scipy.signal;
 	/**
 		Return a triangular window.
 		
+		.. warning:: scipy.signal.triang is deprecated,
+		             use scipy.signal.windows.triang instead.
+		
 		Parameters
 		----------
 		M : int
@@ -8791,9 +9767,12 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function triang(M:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function triang(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a Tukey window, also known as a tapered cosine window.
+		
+		.. warning:: scipy.signal.tukey is deprecated,
+		             use scipy.signal.windows.tukey instead.
 		
 		Parameters
 		----------
@@ -8849,7 +9828,7 @@ package scipy.signal;
 		>>> plt.ylabel("Normalized magnitude [dB]")
 		>>> plt.xlabel("Normalized frequency [cycles per sample]")
 	**/
-	static public function tukey(M:Dynamic, ?alpha:Dynamic, ?sym:Dynamic):Dynamic;
+	static public function tukey(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Determine unique roots and their multiplicities from a list of roots.
 		
@@ -9115,10 +10094,12 @@ package scipy.signal;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
 		    tuple, is set to 256, and if window is array_like, is set to the
@@ -9164,8 +10145,8 @@ package scipy.signal;
 		Notes
 		-----
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements. For the default 'hann' window an overlap
-		of 50% is a reasonable trade off between accurately estimating the
+		and on your requirements. For the default Hann window an overlap of
+		50% is a reasonable trade off between accurately estimating the
 		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
@@ -9293,7 +10274,7 @@ package scipy.signal;
 		*Algorithms*
 		
 		The current algorithms are designed specifically for use with digital
-		filters. (The output coefficents are not correct for analog filters.)
+		filters. (The output coefficients are not correct for analog filters.)
 		
 		The steps in the ``pairing='nearest'`` and ``pairing='keep_odd'``
 		algorithms are mostly shared. The ``nearest`` algorithm attempts to

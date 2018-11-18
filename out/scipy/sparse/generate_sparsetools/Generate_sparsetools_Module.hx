@@ -24,7 +24,7 @@ package scipy.sparse.generate_sparsetools;
 		
 		Returns
 		-------
-		i_types : list [(j, I_typenum, None, I_type, None), ...] 
+		i_types : list [(j, I_typenum, None, I_type, None), ...]
 		     Pairing of index type numbers and the corresponding C++ types,
 		     and an unique index `j`. This is for routines that are parameterized
 		     only by I but not by T.

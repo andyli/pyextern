@@ -14,17 +14,91 @@ package torch.cuda.comm;
 	**/
 	static public function _accumulate(iterable:Dynamic, ?fn:Dynamic):Dynamic;
 	/**
-		Flatten tensors into a single contiguous 1D buffer
+		Flatten dense tensors into a contiguous 1D buffer. Assume tensors are of
+		same dense type.
+		
+		Since inputs are dense, the resulting tensor will be a concatenated 1D
+		buffer. Element-wise operation on this buffer will be equivalent to
+		operating individually.
+		
+		Arguments:
+		    tensors (Iterable[Tensor]): dense tensors to flatten.
+		
+		Returns:
+		    A contiguous 1D buffer containing input tensors.
 	**/
-	static public function _flatten_tensors(tensors:Dynamic):Dynamic;
+	static public function _flatten_dense_tensors(tensors:Dynamic):Dynamic;
 	/**
-		Groups tensors into lists of up to size_limit bytes
+		Flatten sparse tensors into two contiguous 1D buffers, one of indices and
+		one of values. Assume tensors are of same sparse type.
+		
+		Arguments:
+		    tensors (Iterable[Tensor]): sparse tensors to flatten.
+		
+		Returns:
+		    A tuple of two contiguous 1D buffers, one containing input tensors'
+		    indices and the other containing the values.
+	**/
+	static public function _flatten_sparse_tensors(tensors:Dynamic):Dynamic;
+	/**
+		Assume that tensors are of same order as ordered_tensors within their
+		types, e.g., from _take_tensors. Reorder them to be of same order as
+		ordered_tensors.
+		
+		Arguments:
+		    tensors (Iterable[Tensor]): tensors to be reordered. They should be of
+		      the same order as ordered_tensors within their own types.
+		    ordered_tensors (Iterable[Tensor]): tensors whose order will be the
+		      reference.
+		
+		Returns:
+		    Ordered tuple of tensors with contents from tensors and order of
+		    ordered_tensors.
+	**/
+	static public function _reorder_tensors_as(tensors:Dynamic, ordered_tensors:Dynamic):Dynamic;
+	/**
+		Group tensors into chunks. This generator yields a chunk at each time,
+		each containing tensors of same type up to certain byte limit in total size.
+		
+		Args:
+		    tensors (Sequence): A sequence of tensors to be separated into chunks.
+		    size_limit (int): The limit of each chunk in bytes.
+		
+		Yields:
+		    Blocks of tensors of same type and within size_limit. The yielded
+		    tensors are only ordered as the original sequence within its types.
 	**/
 	static public function _take_tensors(tensors:Dynamic, size_limit:Dynamic):Dynamic;
 	/**
-		View a flat buffer using the sizes of tensors
+		View a flat buffer using the sizes of tensors. Assume that tensors are of
+		same dense type, and that flat is given by _flatten_dense_tensors.
+		
+		Arguments:
+		    flat (Tensor): flattened dense tensors to unflatten.
+		    tensors (Iterable[Tensor]): dense tensors whose sizes will be used to
+		      unflatten flat.
+		
+		Returns:
+		    Unflattened dense tensors with sizes same as tensors and values from
+		    flat.
 	**/
-	static public function _unflatten_tensors(flat:Dynamic, tensors:Dynamic):Dynamic;
+	static public function _unflatten_dense_tensors(flat:Dynamic, tensors:Dynamic):Dynamic;
+	/**
+		View flat buffer (containing indices and values) using the sizes of
+		tensors. Assume that tensors are of same sparse type, and that flat is given
+		by _flatten_sparse_tensors.
+		
+		Arguments:
+		    flat (tuple(Tensor, Tensor)): flattened indices and values of sparse
+		      tensors to unflatten.
+		    tensors (Iterable[Tensor]): sparse tensors whose sizes will be used to
+		      unflatten flat.
+		
+		Returns:
+		    Unflattened sparse tensors with sizes same as tensors and values from
+		    flat.
+	**/
+	static public function _unflatten_sparse_tensors(flat:Dynamic, tensors:Dynamic):Dynamic;
 	/**
 		Broadcasts a tensor to a number of GPUs.
 		
@@ -41,7 +115,6 @@ package torch.cuda.comm;
 	static public function broadcast(tensor:Dynamic, devices:Dynamic):Dynamic;
 	/**
 		Broadcasts a sequence tensors to the specified GPUs.
-		
 		Small tensors are first coalesced into a buffer to reduce the number
 		of synchronizations.
 		
@@ -120,7 +193,7 @@ package torch.cuda.comm;
 		    dim (int, optional): A dimension along which to chunk the tensor.
 		
 		Returns:
-		    A tuple containing chunks of the ``tensor``, spread accross given
+		    A tuple containing chunks of the ``tensor``, spread across given
 		    ``devices``.
 	**/
 	static public function scatter(tensor:Dynamic, devices:Dynamic, ?chunk_sizes:Dynamic, ?dim:Dynamic, ?streams:Dynamic):Dynamic;

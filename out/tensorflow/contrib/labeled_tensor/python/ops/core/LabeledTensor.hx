@@ -4,7 +4,7 @@ package tensorflow.contrib.labeled_tensor.python.ops.core;
 	public function __abs__():Dynamic;
 	public function __add__(other:Dynamic):Dynamic;
 	public function __and__(other:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -43,7 +43,7 @@ package tensorflow.contrib.labeled_tensor.python.ops.core;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Construct a LabeledTenor.
+		Construct a LabeledTensor.
 		
 		Args:
 		  tensor: The underlying tensor containing the data.
@@ -56,7 +56,7 @@ package tensorflow.contrib.labeled_tensor.python.ops.core;
 	@:native("__init__")
 	public function ___init__(tensor:Dynamic, axes:Dynamic):Dynamic;
 	/**
-		Construct a LabeledTenor.
+		Construct a LabeledTensor.
 		
 		Args:
 		  tensor: The underlying tensor containing the data.
@@ -73,7 +73,7 @@ package tensorflow.contrib.labeled_tensor.python.ops.core;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __invert__():Dynamic;
 	/**
 		Return self<=value.
@@ -139,7 +139,7 @@ package tensorflow.contrib.labeled_tensor.python.ops.core;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -167,5 +167,6 @@ package tensorflow.contrib.labeled_tensor.python.ops.core;
 	**/
 	public function get_shape():Dynamic;
 	public var name : Dynamic;
+	public var shape : Dynamic;
 	public var tensor : Dynamic;
 }

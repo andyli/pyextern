@@ -2,11 +2,11 @@
 package matplotlib.dates;
 @:pythonImport("matplotlib.dates", "DateFormatter") extern class DateFormatter {
 	/**
-		Return the format for tick value `x` at position pos.
+		Return the format for tick value *x* at position pos.
 		``pos=None`` indicates an unspecified location.
 	**/
 	public function __call__(x:Dynamic, ?pos:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package matplotlib.dates;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -110,17 +110,20 @@ package matplotlib.dates;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    The _replace_common_substr function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
 		Helper function for replacing substrings sub1 and sub2
-		located at the same indexes in strings s1 and s2 respectively,
-		with the string replacement.  It is expected that sub1 and sub2
-		have the same length.  Returns the pair s1, s2 after the
-		substitutions.
+		        located at the same indexes in strings s1 and s2 respectively,
+		        with the string replacement.  It is expected that sub1 and sub2
+		        have the same length.  Returns the pair s1, s2 after the
+		        substitutions.
 	**/
 	public function _replace_common_substr(s1:Dynamic, s2:Dynamic, sub1:Dynamic, sub2:Dynamic, replacement:Dynamic):Dynamic;
 	static public var axis : Dynamic;
@@ -160,9 +163,12 @@ package matplotlib.dates;
 	public function set_tzinfo(tz:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
-		Refer to documentation for datetime.strftime.
+		.. deprecated:: 3.0
+		    The strftime function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
 		
-		*fmt* is a :func:`strftime` format string.
+		Refer to documentation for :meth:`datetime.datetime.strftime`
+		
+		*fmt* is a :meth:`datetime.datetime.strftime` format string.
 		
 		Warning: For years before 1900, depending upon the current
 		locale it is possible that the year displayed with %x might
@@ -171,15 +177,18 @@ package matplotlib.dates;
 	**/
 	public function strftime(dt:Dynamic, ?fmt:Dynamic):Dynamic;
 	/**
+		.. deprecated:: 3.0
+		    The strftime_pre_1900 function was deprecated in Matplotlib 3.0 and will be removed in 3.2.
+		
 		Call time.strftime for years before 1900 by rolling
-		forward a multiple of 28 years.
+		        forward a multiple of 28 years.
 		
-		*fmt* is a :func:`strftime` format string.
+		        *fmt* is a :func:`strftime` format string.
 		
-		Dalke: I hope I did this math right.  Every 28 years the
-		calendar repeats, except through century leap years excepting
-		the 400 year leap years.  But only if you're using the Gregorian
-		calendar.
+		        Dalke: I hope I did this math right.  Every 28 years the
+		        calendar repeats, except through century leap years excepting
+		        the 400 year leap years.  But only if you're using the Gregorian
+		        calendar.
 	**/
 	public function strftime_pre_1900(dt:Dynamic, ?fmt:Dynamic):Dynamic;
 }

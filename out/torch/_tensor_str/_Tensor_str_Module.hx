@@ -2,7 +2,6 @@
 package torch._tensor_str;
 @:pythonImport("torch._tensor_str") extern class _Tensor_str_Module {
 	static public var PRINT_OPTS : Dynamic;
-	static public var SCALE_FORMAT : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,14 +9,16 @@ package torch._tensor_str;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
-	static public function __repr_row(row:Dynamic, indent:Dynamic, fmt:Dynamic, scale:Dynamic, sz:Dynamic, ?truncate:Dynamic):Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _matrix_str(self:Dynamic, ?indent:Dynamic, ?formatter:Dynamic, ?force_truncate:Dynamic):Dynamic;
-	static public function _number_format(tensor:Dynamic, ?min_sz:Dynamic):Dynamic;
-	static public function _range(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _maybe_wrap_suffix(suffix:Dynamic, indent:Dynamic, tensor_str:Dynamic):Dynamic;
+	static public function _scalar_str(self:Dynamic, formatter:Dynamic):Dynamic;
 	static public function _str(self:Dynamic):Dynamic;
-	static public function _tensor_str(self:Dynamic):Dynamic;
-	static public function _vector_str(self:Dynamic):Dynamic;
+	static public function _tensor_str(self:Dynamic, indent:Dynamic, formatter:Dynamic, summarize:Dynamic):Dynamic;
+	static public function _vector_str(self:Dynamic, indent:Dynamic, formatter:Dynamic, summarize:Dynamic):Dynamic;
+	static public var float_info : Dynamic;
+	static public function get_summarized_data(self:Dynamic):Dynamic;
+	static public var inf : Dynamic;
+	static public var nan : Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		
@@ -30,20 +31,20 @@ package torch._tensor_str;
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Set options for printing. Items shamelessly taken from Numpy
+		Set options for printing. Items shamelessly taken from NumPy
 		
 		Args:
 		    precision: Number of digits of precision for floating point output
-		        (default 8).
+		        (default = 8).
 		    threshold: Total number of array elements which trigger summarization
-		        rather than full repr (default 1000).
+		        rather than full `repr` (default = 1000).
 		    edgeitems: Number of array items in summary at beginning and end of
-		        each dimension (default 3).
+		        each dimension (default = 3).
 		    linewidth: The number of characters per line for the purpose of
-		        inserting line breaks (default 80). Thresholded matricies will
+		        inserting line breaks (default = 80). Thresholded matrices will
 		        ignore this parameter.
 		    profile: Sane defaults for pretty printing. Can override with any of
-		        the above options. (default, short, full)
+		        the above options. (any one of `default`, `short`, `full`)
 	**/
 	static public function set_printoptions(?precision:Dynamic, ?threshold:Dynamic, ?edgeitems:Dynamic, ?linewidth:Dynamic, ?profile:Dynamic):Dynamic;
 }

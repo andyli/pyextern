@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package inspect;
 @:pythonImport("inspect", "Signature") extern class Signature {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package inspect;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -106,7 +106,7 @@ package inspect;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Private method. Don't use directly.
 	**/
@@ -158,13 +158,13 @@ package inspect;
 		and `kwargs` to the function's signature.  Raises `TypeError`
 		if the passed arguments can not be bound.
 	**/
-	public function bind(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function bind(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a BoundArguments object, that partially maps the
 		passed `args` and `kwargs` to the function's signature.
 		Raises `TypeError` if the passed arguments can not be bound.
 	**/
-	public function bind_partial(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function bind_partial(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Marker object for Signature.empty and Parameter.empty.
 	**/

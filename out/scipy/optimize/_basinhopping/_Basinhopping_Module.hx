@@ -16,25 +16,34 @@ package scipy.optimize._basinhopping;
 	/**
 		Find the global minimum of a function using the basin-hopping algorithm
 		
+		Basin-hopping is a two-phase method that combines a global stepping
+		algorithm with local minimization at each step.  Designed to mimic
+		the natural process of energy minimization of clusters of atoms, it works
+		well for similar problems with "funnel-like, but rugged" energy landscapes
+		[5]_.
+		
+		As the step-taking, step acceptance, and minimization methods are all
+		customizable, this function can also be used to implement other two-phase
+		methods.
+		
 		Parameters
 		----------
 		func : callable ``f(x, *args)``
 		    Function to be optimized.  ``args`` can be passed as an optional item
 		    in the dict ``minimizer_kwargs``
-		x0 : ndarray
+		x0 : array_like
 		    Initial guess.
 		niter : integer, optional
-		    The number of basin hopping iterations
+		    The number of basin-hopping iterations
 		T : float, optional
 		    The "temperature" parameter for the accept or reject criterion.  Higher
 		    "temperatures" mean that larger jumps in function value will be
 		    accepted.  For best results ``T`` should be comparable to the
-		    separation
-		    (in function value) between local minima.
+		    separation (in function value) between local minima.
 		stepsize : float, optional
-		    initial step size for use in the random displacement.
+		    Maximum step size for use in the random displacement.
 		minimizer_kwargs : dict, optional
-		    Extra keyword arguments to be passed to the minimizer
+		    Extra keyword arguments to be passed to the local minimizer
 		    ``scipy.optimize.minimize()`` Some important options could be:
 		
 		        method : str
@@ -44,9 +53,9 @@ package scipy.optimize._basinhopping;
 		            its derivatives (Jacobian, Hessian).
 		
 		take_step : callable ``take_step(x)``, optional
-		    Replace the default step taking routine with this routine.  The default
-		    step taking routine is a random displacement of the coordinates, but
-		    other step taking algorithms may be better for some systems.
+		    Replace the default step-taking routine with this routine.  The default
+		    step-taking routine is a random displacement of the coordinates, but
+		    other step-taking algorithms may be better for some systems.
 		    ``take_step`` can optionally have the attribute ``take_step.stepsize``.
 		    If this attribute exists, then ``basinhopping`` will adjust
 		    ``take_step.stepsize`` in order to try to optimize the global minimum
@@ -63,8 +72,8 @@ package scipy.optimize._basinhopping;
 		callback : callable, ``callback(x, f, accept)``, optional
 		    A callback function which will be called for all minima found.  ``x``
 		    and ``f`` are the coordinates and function value of the trial minimum,
-		    and ``accept`` is whether or not that minimum was accepted.  This can be
-		    used, for example, to save the lowest N minima found.  Also,
+		    and ``accept`` is whether or not that minimum was accepted.  This can
+		    be used, for example, to save the lowest N minima found.  Also,
 		    ``callback`` can be used to specify a user defined stop criterion by
 		    optionally returning True to stop the ``basinhopping`` routine.
 		interval : integer, optional
@@ -90,13 +99,13 @@ package scipy.optimize._basinhopping;
 		Returns
 		-------
 		res : OptimizeResult
-		    The optimization result represented as a ``OptimizeResult`` object.  Important
-		    attributes are: ``x`` the solution array, ``fun`` the value of the
-		    function at the solution, and ``message`` which describes the cause of
-		    the termination. The ``OptimzeResult`` object returned by the selected
-		    minimizer at the lowest minimum is also contained within this object
-		    and can be accessed through the ``lowest_optimization_result`` attribute.
-		    See `OptimizeResult` for a description of other attributes.
+		    The optimization result represented as a ``OptimizeResult`` object.
+		    Important attributes are: ``x`` the solution array, ``fun`` the value
+		    of the function at the solution, and ``message`` which describes the
+		    cause of the termination. The ``OptimizeResult`` object returned by the
+		    selected minimizer at the lowest minimum is also contained within this
+		    object and can be accessed through the ``lowest_optimization_result``
+		    attribute.  See `OptimizeResult` for a description of other attributes.
 		
 		See Also
 		--------
@@ -147,20 +156,27 @@ package scipy.optimize._basinhopping;
 		minimum.
 		
 		Choosing ``stepsize``:  This is a crucial parameter in ``basinhopping`` and
-		depends on the problem being solved.  Ideally it should be comparable to
-		the typical separation between local minima of the function being
-		optimized.  ``basinhopping`` will, by default, adjust ``stepsize`` to find
-		an optimal value, but this may take many iterations.  You will get quicker
-		results if you set a sensible value for ``stepsize``.
+		depends on the problem being solved.  The step is chosen uniformly in the
+		region from x0-stepsize to x0+stepsize, in each dimension.  Ideally it
+		should be comparable to the typical separation (in argument values) between
+		local minima of the function being optimized.  ``basinhopping`` will, by
+		default, adjust ``stepsize`` to find an optimal value, but this may take
+		many iterations.  You will get quicker results if you set a sensible
+		initial value for ``stepsize``.
 		
-		Choosing ``T``: The parameter ``T`` is the temperature used in the
-		metropolis criterion.  Basinhopping steps are accepted with probability
-		``1`` if ``func(xnew) < func(xold)``, or otherwise with probability::
+		Choosing ``T``: The parameter ``T`` is the "temperature" used in the
+		Metropolis criterion.  Basinhopping steps are always accepted if
+		``func(xnew) < func(xold)``.  Otherwise, they are accepted with
+		probability::
 		
 		    exp( -(func(xnew) - func(xold)) / T )
 		
 		So, for best results, ``T`` should to be comparable to the typical
-		difference in function values between local minima.
+		difference (in function values) between local minima.  (The height of
+		"walls" between local minima is irrelevant.)
+		
+		If ``T`` is 0, the algorithm becomes Monotonic Basin-Hopping, in which all
+		steps that increase energy are rejected.
 		
 		.. versionadded:: 0.12.0
 		
@@ -176,6 +192,10 @@ package scipy.optimize._basinhopping;
 		    1987, 84, 6611.
 		.. [4] Wales, D. J. and Scheraga, H. A., Global optimization of clusters,
 		    crystals, and biomolecules, Science, 1999, 285, 1368.
+		.. [5] Olson, B., Hashmi, I., Molloy, K., and Shehu1, A., Basin Hopping as
+		    a General and Versatile Optimization Framework for the Characterization
+		    of Biological Macromolecules, Advances in Artificial Intelligence,
+		    Volume 2012 (2012), Article ID 674832, :doi:`10.1155/2012/674832`
 		
 		Examples
 		--------
@@ -221,8 +241,8 @@ package scipy.optimize._basinhopping;
 		global minimum: x = [-0.1951, -0.1000], f(x0) = -1.0109
 		
 		
-		Here is an example using a custom step taking routine.  Imagine you want
-		the first coordinate to take larger steps then the rest of the coordinates.
+		Here is an example using a custom step-taking routine.  Imagine you want
+		the first coordinate to take larger steps than the rest of the coordinates.
 		This can be implemented like so:
 		
 		>>> class MyTakeStep(object):
@@ -325,6 +345,7 @@ package scipy.optimize._basinhopping;
 		-------
 		y : ndarray
 		    The corresponding cosine values.
+		    This is a scalar if `x` is a scalar.
 		
 		Notes
 		-----
@@ -380,6 +401,7 @@ package scipy.optimize._basinhopping;
 		-------
 		y : array_like
 		    The sine of each element of x.
+		    This is a scalar if `x` is a scalar.
 		
 		See Also
 		--------

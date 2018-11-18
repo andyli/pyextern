@@ -43,7 +43,7 @@ package pandas.plotting._tools;
 		    array of Axis objects are returned as numpy 1-d arrays.
 		    - for NxM subplots with N>1 and M>1 are returned as a 2d array.
 		
-		  If False, no squeezing at all is done: the returned axis object is always
+		  If False, no squeezing is done: the returned axis object is always
 		  a 2-d array containing Axis instances, even if it ends up being 1x1.
 		
 		subplot_kw : dict

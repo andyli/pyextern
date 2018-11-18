@@ -31,7 +31,7 @@ package tensorflow.contrib.rnn.python.ops.lstm_ops;
 		  wcf: A `Tensor`. Must have the same type as `x`.
 		  wco: A `Tensor`. Must have the same type as `x`.
 		  forget_bias: An optional `float`. Defaults to `1`.
-		  cell_clip: An optional `float`. Defaults to `3`.
+		  cell_clip: An optional `float`. Defaults to `-1` (no clipping).
 		  use_peephole: An optional `bool`. Defaults to `False`.
 		  name: A name for the operation (optional).
 		
@@ -66,7 +66,7 @@ package tensorflow.contrib.rnn.python.ops.lstm_ops;
 		
 		```python
 		xh = [x, h_prev]
-		[i, f, ci, o] = xh * w + b
+		[i, ci, f, o] = xh * w + b
 		f = f + forget_bias
 		
 		if not use_peephole:
@@ -100,8 +100,8 @@ package tensorflow.contrib.rnn.python.ops.lstm_ops;
 		  wco: A `Tensor`. Must have the same type as `x`.
 		    The weight matrix for output gate peephole connection.
 		  forget_bias: An optional `float`. Defaults to `1`. The forget gate bias.
-		  cell_clip: An optional `float`. Defaults to `3`.
-		    Value to clip the 'cs' value to.
+		  cell_clip: An optional `float`. Defaults to `-1` (no clipping).
+		    Value to clip the 'cs' value to. Disable by setting to negative value.
 		  use_peephole: An optional `bool`. Defaults to `False`.
 		    Whether to use peephole weights.
 		  name: A name for the operation (optional).

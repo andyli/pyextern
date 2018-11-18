@@ -10,17 +10,91 @@ package scipy.ndimage.interpolation;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _extend_mode_to_code(mode:Dynamic):Dynamic;
-	/**
-		Wrapper around _nd_image.geometric_transform to work around
-		endianness issues
-	**/
-	static public function _geometric_transform(input:Dynamic, mapping:Dynamic, coordinates:Dynamic, matrix:Dynamic, offset:Dynamic, output:Dynamic, order:Dynamic, mode:Dynamic, cval:Dynamic, extra_arguments:Dynamic, extra_keywords:Dynamic):Dynamic;
 	static public function _minmax(coor:Dynamic, minc:Dynamic, maxc:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Apply an affine transformation.
 		
+		Given an output image pixel index vector ``o``, the pixel value
+		is determined from the input image at position
+		``np.dot(matrix, o) + offset``.
+		
+		Parameters
+		----------
+		input : array_like
+		    The input array.
+		matrix : ndarray
+		    The inverse coordinate transformation matrix, mapping output
+		    coordinates to input coordinates. If ``ndim`` is the number of
+		    dimensions of ``input``, the given matrix must have one of the
+		    following shapes:
+		
+		        - ``(ndim, ndim)``: the linear transformation matrix for each
+		          output coordinate.
+		        - ``(ndim,)``: assume that the 2D transformation matrix is
+		          diagonal, with the diagonal specified by the given value. A more
+		          efficient algorithm is then used that exploits the separability
+		          of the problem.
+		        - ``(ndim + 1, ndim + 1)``: assume that the transformation is
+		          specified using homogeneous coordinates [1]_. In this case, any
+		          value passed to ``offset`` is ignored.
+		        - ``(ndim, ndim + 1)``: as above, but the bottom row of a
+		          homogeneous transformation matrix is always ``[0, 0, ..., 1]``,
+		          and may be omitted.
+		
+		offset : float or sequence, optional
+		    The offset into the array where the transform is applied. If a float,
+		    `offset` is the same for each axis. If a sequence, `offset` should
+		    contain one value for each axis.
+		output_shape : tuple of ints, optional
+		    Shape tuple.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
+		order : int, optional
+		    The order of the spline interpolation, default is 3.
+		    The order has to be in the range 0-5.
+		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
+		cval : scalar, optional
+		    Value to fill past edges of input if `mode` is 'constant'. Default
+		    is 0.0.
+		prefilter : bool, optional
+		    Determines if the input array is prefiltered with `spline_filter`
+		    before interpolation. The default is True, which will create a
+		    temporary `float64` array of filtered values if `order > 1`. If
+		    setting this to False, the output will be slightly blurred if
+		    `order > 1`, unless the input is prefiltered, i.e. it is the result
+		    of calling `spline_filter` on the original input.
+		
+		Returns
+		-------
+		affine_transform : ndarray
+		    The transformed input.
+		
+		Notes
+		-----
 		The given matrix and offset are used to find for each point in the
 		output the corresponding coordinates in the input by an affine
 		transformation. The value of the input at those coordinates is
@@ -28,59 +102,17 @@ package scipy.ndimage.interpolation;
 		outside the boundaries of the input are filled according to the given
 		mode.
 		
-		Given an output image pixel index vector ``o``, the pixel value
-		is determined from the input image at position ``np.dot(matrix,o) + offset``.
-		
-		A diagonal matrix can be specified by supplying a one-dimensional
-		array-like to the matrix parameter, in which case a more efficient
-		algorithm is applied.
-		
 		.. versionchanged:: 0.18.0
 		    Previously, the exact interpretation of the affine transformation
 		    depended on whether the matrix was supplied as a one-dimensional or
 		    two-dimensional array. If a one-dimensional array was supplied
 		    to the matrix parameter, the output pixel value at index ``o``
-		    was determined from the input image at position ``matrix * (o + offset)``.
+		    was determined from the input image at position
+		    ``matrix * (o + offset)``.
 		
-		Parameters
+		References
 		----------
-		input : ndarray
-		    The input array.
-		matrix : ndarray
-		    The matrix must be two-dimensional or can also be given as a
-		    one-dimensional sequence or array. In the latter case, it is assumed
-		    that the matrix is diagonal. A more efficient algorithms is then
-		    applied that exploits the separability of the problem.
-		offset : float or sequence, optional
-		    The offset into the array where the transform is applied. If a float,
-		    `offset` is the same for each axis. If a sequence, `offset` should
-		    contain one value for each axis.
-		output_shape : tuple of ints, optional
-		    Shape tuple.
-		output : ndarray or dtype, optional
-		    The array in which to place the output, or the dtype of the returned
-		    array.
-		order : int, optional
-		    The order of the spline interpolation, default is 3.
-		    The order has to be in the range 0-5.
-		mode : str, optional
-		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
-		    Default is 'constant'.
-		cval : scalar, optional
-		    Value used for points outside the boundaries of the input if
-		    ``mode='constant'``. Default is 0.0
-		prefilter : bool, optional
-		    The parameter prefilter determines if the input is pre-filtered with
-		    `spline_filter` before interpolation (necessary for spline
-		    interpolation of order > 1).  If False, it is assumed that the input is
-		    already filtered. Default is True.
-		
-		Returns
-		-------
-		affine_transform : ndarray or None
-		    The transformed input. If `output` is given as a parameter, None is
-		    returned.
+		.. [1] https://en.wikipedia.org/wiki/Homogeneous_coordinates
 	**/
 	static public function affine_transform(input:Dynamic, matrix:Dynamic, ?offset:Dynamic, ?output_shape:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -102,24 +134,45 @@ package scipy.ndimage.interpolation;
 		    of length equal to the input array rank.
 		output_shape : tuple of ints, optional
 		    Shape tuple.
-		output : ndarray or dtype, optional
-		    The array in which to place the output, or the dtype of the returned
-		    array.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		order : int, optional
 		    The order of the spline interpolation, default is 3.
 		    The order has to be in the range 0-5.
-		mode : str, optional
-		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
-		    Default is 'constant'.
+		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
-		    Value used for points outside the boundaries of the input if
-		    ``mode='constant'``. Default is 0.0
+		    Value to fill past edges of input if `mode` is 'constant'. Default
+		    is 0.0.
 		prefilter : bool, optional
-		    The parameter prefilter determines if the input is pre-filtered with
-		    `spline_filter` before interpolation (necessary for spline
-		    interpolation of order > 1).  If False, it is assumed that the input is
-		    already filtered. Default is True.
+		    Determines if the input array is prefiltered with `spline_filter`
+		    before interpolation. The default is True, which will create a
+		    temporary `float64` array of filtered values if `order > 1`. If
+		    setting this to False, the output will be slightly blurred if
+		    `order > 1`, unless the input is prefiltered, i.e. it is the result
+		    of calling `spline_filter` on the original input.
 		extra_arguments : tuple, optional
 		    Extra arguments passed to `mapping`.
 		extra_keywords : dict, optional
@@ -127,9 +180,8 @@ package scipy.ndimage.interpolation;
 		
 		Returns
 		-------
-		return_value : ndarray or None
-		    The filtered input. If `output` is given as a parameter, None is
-		    returned.
+		output : ndarray
+		    The filtered input.
 		
 		See Also
 		--------
@@ -143,9 +195,9 @@ package scipy.ndimage.interpolation;
 		
 		.. code:: c
 		
-		   int mapping(npy_intp *output_coordinates, double *input_coordinates, 
+		   int mapping(npy_intp *output_coordinates, double *input_coordinates,
 		               int output_rank, int input_rank, void *user_data)
-		   int mapping(intptr_t *output_coordinates, double *input_coordinates, 
+		   int mapping(intptr_t *output_coordinates, double *input_coordinates,
 		               int output_rank, int input_rank, void *user_data)
 		
 		The calling function iterates over the elements of the output array,
@@ -154,31 +206,45 @@ package scipy.ndimage.interpolation;
 		callback function must return the coordinates at which the input must
 		be interpolated in ``input_coordinates``. The rank of the input and
 		output arrays are given by ``input_rank`` and ``output_rank``
-		respectively.  ``user_data`` is the data pointer provided 
-		to `scipy.LowLevelCallable` as-is. 
+		respectively.  ``user_data`` is the data pointer provided
+		to `scipy.LowLevelCallable` as-is.
 		
-		The callback function must return an integer error status that is zero 
+		The callback function must return an integer error status that is zero
 		if something went wrong and one otherwise. If an error occurs, you should
 		normally set the python error status with an informative message
 		before returning, otherwise a default error message is set by the
 		calling function.
 		
-		In addition, some other low-level function pointer specifications 
+		In addition, some other low-level function pointer specifications
 		are accepted, but these are for backward compatibility only and should
 		not be used in new code.
 		
 		Examples
 		--------
-		>>> from scipy import ndimage
+		>>> import numpy as np
+		>>> from scipy.ndimage import geometric_transform
 		>>> a = np.arange(12.).reshape((4, 3))
 		>>> def shift_func(output_coords):
 		...     return (output_coords[0] - 0.5, output_coords[1] - 0.5)
 		...
-		>>> ndimage.geometric_transform(a, shift_func)
+		>>> geometric_transform(a, shift_func)
 		array([[ 0.   ,  0.   ,  0.   ],
 		       [ 0.   ,  1.362,  2.738],
 		       [ 0.   ,  4.812,  6.187],
 		       [ 0.   ,  8.263,  9.637]])
+		
+		>>> b = [1, 2, 3, 4, 5]
+		>>> def shift_func(output_coords):
+		...     return (output_coords[0] - 3,)
+		...
+		>>> geometric_transform(b, shift_func, mode='constant')
+		array([0, 0, 0, 1, 2])
+		>>> geometric_transform(b, shift_func, mode='nearest')
+		array([1, 1, 1, 1, 2])
+		>>> geometric_transform(b, shift_func, mode='reflect')
+		array([3, 2, 1, 1, 2])
+		>>> geometric_transform(b, shift_func, mode='wrap')
+		array([2, 3, 4, 1, 2])
 	**/
 	static public function geometric_transform(input:Dynamic, mapping:Dynamic, ?output_shape:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic, ?extra_arguments:Dynamic, ?extra_keywords:Dynamic):Dynamic;
 	/**
@@ -196,28 +262,49 @@ package scipy.ndimage.interpolation;
 		
 		Parameters
 		----------
-		input : ndarray
+		input : array_like
 		    The input array.
 		coordinates : array_like
 		    The coordinates at which `input` is evaluated.
-		output : ndarray or dtype, optional
-		    The array in which to place the output, or the dtype of the returned
-		    array.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		order : int, optional
 		    The order of the spline interpolation, default is 3.
 		    The order has to be in the range 0-5.
-		mode : str, optional
-		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
-		    Default is 'constant'.
+		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
-		    Value used for points outside the boundaries of the input if
-		    ``mode='constant'``. Default is 0.0
+		    Value to fill past edges of input if `mode` is 'constant'. Default
+		    is 0.0.
 		prefilter : bool, optional
-		    The parameter prefilter determines if the input is pre-filtered with
-		    `spline_filter` before interpolation (necessary for spline
-		    interpolation of order > 1).  If False, it is assumed that the input is
-		    already filtered. Default is True.
+		    Determines if the input array is prefiltered with `spline_filter`
+		    before interpolation. The default is True, which will create a
+		    temporary `float64` array of filtered values if `order > 1`. If
+		    setting this to False, the output will be slightly blurred if
+		    `order > 1`, unless the input is prefiltered, i.e. it is the result
+		    of calling `spline_filter` on the original input.
 		
 		Returns
 		-------
@@ -262,8 +349,7 @@ package scipy.ndimage.interpolation;
 		
 		Parameters
 		----------
-		input : ndarray
-		    The input array.
+		%(input)s
 		angle : float
 		    The rotation angle in degrees.
 		axes : tuple of 2 ints, optional
@@ -272,30 +358,18 @@ package scipy.ndimage.interpolation;
 		reshape : bool, optional
 		    If `reshape` is true, the output shape is adapted so that the input
 		    array is contained completely in the output. Default is True.
-		output : ndarray or dtype, optional
-		    The array in which to place the output, or the dtype of the returned
-		    array.
+		%(output)s
 		order : int, optional
 		    The order of the spline interpolation, default is 3.
 		    The order has to be in the range 0-5.
-		mode : str, optional
-		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
-		    Default is 'constant'.
-		cval : scalar, optional
-		    Value used for points outside the boundaries of the input if
-		    ``mode='constant'``. Default is 0.0
-		prefilter : bool, optional
-		    The parameter prefilter determines if the input is pre-filtered with
-		    `spline_filter` before interpolation (necessary for spline
-		    interpolation of order > 1).  If False, it is assumed that the input is
-		    already filtered. Default is True.
+		%(mode)s
+		%(cval)s
+		%(prefilter)s
 		
 		Returns
 		-------
-		rotate : ndarray or None
-		    The rotated input. If `output` is given as a parameter, None is
-		    returned.
+		rotate : ndarray
+		    The rotated input.
 	**/
 	static public function rotate(input:Dynamic, angle:Dynamic, ?axes:Dynamic, ?reshape:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic):Dynamic;
 	/**
@@ -307,35 +381,55 @@ package scipy.ndimage.interpolation;
 		
 		Parameters
 		----------
-		input : ndarray
+		input : array_like
 		    The input array.
-		shift : float or sequence, optional
+		shift : float or sequence
 		    The shift along the axes. If a float, `shift` is the same for each
 		    axis. If a sequence, `shift` should contain one value for each axis.
-		output : ndarray or dtype, optional
-		    The array in which to place the output, or the dtype of the returned
-		    array.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		order : int, optional
 		    The order of the spline interpolation, default is 3.
 		    The order has to be in the range 0-5.
-		mode : str, optional
-		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
-		    Default is 'constant'.
+		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
-		    Value used for points outside the boundaries of the input if
-		    ``mode='constant'``. Default is 0.0
+		    Value to fill past edges of input if `mode` is 'constant'. Default
+		    is 0.0.
 		prefilter : bool, optional
-		    The parameter prefilter determines if the input is pre-filtered with
-		    `spline_filter` before interpolation (necessary for spline
-		    interpolation of order > 1).  If False, it is assumed that the input is
-		    already filtered. Default is True.
+		    Determines if the input array is prefiltered with `spline_filter`
+		    before interpolation. The default is True, which will create a
+		    temporary `float64` array of filtered values if `order > 1`. If
+		    setting this to False, the output will be slightly blurred if
+		    `order > 1`, unless the input is prefiltered, i.e. it is the result
+		    of calling `spline_filter` on the original input.
 		
 		Returns
 		-------
-		shift : ndarray or None
-		    The shifted input. If `output` is given as a parameter, None is
-		    returned.
+		shift : ndarray
+		    The shifted input.
 	**/
 	static public function shift(input:Dynamic, shift:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic):Dynamic;
 	/**
@@ -357,7 +451,7 @@ package scipy.ndimage.interpolation;
 	**/
 	static public function spline_filter(input:Dynamic, ?order:Dynamic, ?output:Dynamic):Dynamic;
 	/**
-		Calculates a one-dimensional spline filter along the given axis.
+		Calculate a one-dimensional spline filter along the given axis.
 		
 		The lines of the array along the given axis are filtered by a
 		spline filter. The order of the spline must be >= 2 and <= 5.
@@ -377,11 +471,20 @@ package scipy.ndimage.interpolation;
 		
 		Returns
 		-------
-		spline_filter1d : ndarray or None
-		    The filtered input. If `output` is given as a parameter, None is
-		    returned.
+		spline_filter1d : ndarray
+		    The filtered input.
 	**/
 	static public function spline_filter1d(input:Dynamic, ?order:Dynamic, ?axis:Dynamic, ?output:Dynamic):Dynamic;
+	/**
+		Decorator factory to apply update_wrapper() to a wrapper function
+		
+		Returns a decorator that invokes update_wrapper() with the decorated
+		function as the wrapper argument and the arguments to wraps() as the
+		remaining arguments. Default arguments are as for update_wrapper().
+		This is a convenience function to simplify applying partial() to
+		update_wrapper().
+	**/
+	static public function wraps(wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
 	/**
 		Zoom an array.
 		
@@ -389,35 +492,75 @@ package scipy.ndimage.interpolation;
 		
 		Parameters
 		----------
-		input : ndarray
+		input : array_like
 		    The input array.
-		zoom : float or sequence, optional
+		zoom : float or sequence
 		    The zoom factor along the axes. If a float, `zoom` is the same for each
 		    axis. If a sequence, `zoom` should contain one value for each axis.
-		output : ndarray or dtype, optional
-		    The array in which to place the output, or the dtype of the returned
-		    array.
+		output : array or dtype, optional
+		    The array in which to place the output, or the dtype of the
+		    returned array. By default an array of the same dtype as input
+		    will be created.
 		order : int, optional
 		    The order of the spline interpolation, default is 3.
 		    The order has to be in the range 0-5.
-		mode : str, optional
-		    Points outside the boundaries of the input are filled according
-		    to the given mode ('constant', 'nearest', 'reflect', 'mirror' or 'wrap').
-		    Default is 'constant'.
+		mode : {'reflect', 'constant', 'nearest', 'mirror', 'wrap'}, optional
+		    The `mode` parameter determines how the input array is extended
+		    when the filter overlaps a border. Default is 'reflect'. Behavior
+		    for each valid value is as follows:
+		
+		    'reflect' (`d c b a | a b c d | d c b a`)
+		        The input is extended by reflecting about the edge of the last
+		        pixel.
+		
+		    'constant' (`k k k k | a b c d | k k k k`)
+		        The input is extended by filling all values beyond the edge with
+		        the same constant value, defined by the `cval` parameter.
+		
+		    'nearest' (`a a a a | a b c d | d d d d`)
+		        The input is extended by replicating the last pixel.
+		
+		    'mirror' (`d c b | a b c d | c b a`)
+		        The input is extended by reflecting about the center of the last
+		        pixel.
+		
+		    'wrap' (`a b c d | a b c d | a b c d`)
+		        The input is extended by wrapping around to the opposite edge.
 		cval : scalar, optional
-		    Value used for points outside the boundaries of the input if
-		    ``mode='constant'``. Default is 0.0
+		    Value to fill past edges of input if `mode` is 'constant'. Default
+		    is 0.0.
 		prefilter : bool, optional
-		    The parameter prefilter determines if the input is pre-filtered with
-		    `spline_filter` before interpolation (necessary for spline
-		    interpolation of order > 1).  If False, it is assumed that the input is
-		    already filtered. Default is True.
+		    Determines if the input array is prefiltered with `spline_filter`
+		    before interpolation. The default is True, which will create a
+		    temporary `float64` array of filtered values if `order > 1`. If
+		    setting this to False, the output will be slightly blurred if
+		    `order > 1`, unless the input is prefiltered, i.e. it is the result
+		    of calling `spline_filter` on the original input.
 		
 		Returns
 		-------
-		zoom : ndarray or None
-		    The zoomed input. If `output` is given as a parameter, None is
-		    returned.
+		zoom : ndarray
+		    The zoomed input.
+		
+		Examples
+		--------
+		>>> from scipy import ndimage, misc
+		>>> import matplotlib.pyplot as plt
+		
+		>>> fig = plt.figure()
+		>>> ax1 = fig.add_subplot(121)  # left side
+		>>> ax2 = fig.add_subplot(122)  # right side
+		>>> ascent = misc.ascent()
+		>>> result = ndimage.zoom(ascent, 3.0)
+		>>> ax1.imshow(ascent)
+		>>> ax2.imshow(result)
+		>>> plt.show()
+		
+		>>> print(ascent.shape)
+		(512, 512)
+		
+		>>> print(result.shape)
+		(1536, 1536)
 	**/
 	static public function zoom(input:Dynamic, zoom:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic):Dynamic;
 }

@@ -14,55 +14,6 @@ package numpy.matrixlib.defmatrix;
 	static public function _from_string(str:Dynamic, gdict:Dynamic, ldict:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Convert the input to an ndarray, but pass ndarray subclasses through.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes scalars, lists, lists of tuples, tuples, tuples of tuples,
-		    tuples of lists, and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or column-major
-		    (Fortran-style) memory representation.  Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray or an ndarray subclass
-		    Array interpretation of `a`.  If `a` is an ndarray or a subclass
-		    of ndarray, it is returned as-is and no copy is performed.
-		
-		See Also
-		--------
-		asarray : Similar function which always returns ndarrays.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and
-		                    Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asanyarray(a)
-		array([1, 2])
-		
-		Instances of `ndarray` subclasses are passed through as-is:
-		
-		>>> a = np.matrix([1, 2])
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asanyarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
-	/**
 		Interpret the input as a matrix.
 		
 		Unlike `matrix`, `asmatrix` does not make a copy if the input is already
@@ -93,76 +44,6 @@ package numpy.matrixlib.defmatrix;
 		        [3, 4]])
 	**/
 	static public function asmatrix(data:Dynamic, ?dtype:Dynamic):numpy.Matrix;
-	/**
-		Return the binary representation of the input number as a string.
-		
-		For negative numbers, if width is not given, a minus sign is added to the
-		front. If width is given, the two's complement of the number is
-		returned, with respect to that width.
-		
-		In a two's-complement system negative numbers are represented by the two's
-		complement of the absolute value. This is the most common method of
-		representing signed integers on computers [1]_. A N-bit two's-complement
-		system can represent every integer in the range
-		:math:`-2^{N-1}` to :math:`+2^{N-1}-1`.
-		
-		Parameters
-		----------
-		num : int
-		    Only an integer decimal number can be used.
-		width : int, optional
-		    The length of the returned string if `num` is positive, or the length
-		    of the two's complement if `num` is negative, provided that `width` is
-		    at least a sufficient number of bits for `num` to be represented in the
-		    designated form.
-		
-		    If the `width` value is insufficient, it will be ignored, and `num` will
-		    be returned in binary (`num` > 0) or two's complement (`num` < 0) form
-		    with its width equal to the minimum number of bits needed to represent
-		    the number in the designated form. This behavior is deprecated and will
-		    later raise an error.
-		
-		    .. deprecated:: 1.12.0
-		
-		Returns
-		-------
-		bin : str
-		    Binary representation of `num` or two's complement of `num`.
-		
-		See Also
-		--------
-		base_repr: Return a string representation of a number in the given base
-		           system.
-		bin: Python's built-in binary representation generator of an integer.
-		
-		Notes
-		-----
-		`binary_repr` is equivalent to using `base_repr` with base 2, but about 25x
-		faster.
-		
-		References
-		----------
-		.. [1] Wikipedia, "Two's complement",
-		    http://en.wikipedia.org/wiki/Two's_complement
-		
-		Examples
-		--------
-		>>> np.binary_repr(3)
-		'11'
-		>>> np.binary_repr(-3)
-		'-11'
-		>>> np.binary_repr(3, width=4)
-		'0011'
-		
-		The two's complement is returned when the input number is negative and
-		width is specified:
-		
-		>>> np.binary_repr(-3, width=3)
-		'101'
-		>>> np.binary_repr(-3, width=5)
-		'11101'
-	**/
-	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
 		Build a matrix object from a string, nested sequence, or array.
 		
@@ -216,7 +97,7 @@ package numpy.matrixlib.defmatrix;
 	**/
 	static public function bmat(obj:Dynamic, ?ldict:Dynamic, ?gdict:Dynamic):numpy.Matrix;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -226,7 +107,12 @@ package numpy.matrixlib.defmatrix;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -266,6 +152,8 @@ package numpy.matrixlib.defmatrix;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -290,33 +178,6 @@ package numpy.matrixlib.defmatrix;
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Return the identity array.
-		
-		The identity array is a square array with ones on
-		the main diagonal.
-		
-		Parameters
-		----------
-		n : int
-		    Number of rows (and columns) in `n` x `n` output.
-		dtype : data-type, optional
-		    Data-type of the output.  Defaults to ``float``.
-		
-		Returns
-		-------
-		out : ndarray
-		    `n` x `n` array with its main diagonal set to one,
-		    and all other elements 0.
-		
-		Examples
-		--------
-		>>> np.identity(3)
-		array([[ 1.,  0.,  0.],
-		       [ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.]])
-	**/
-	static public function identity(n:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
-	/**
 		Returns True if the type of `num` is a scalar type.
 		
 		Parameters
@@ -337,33 +198,19 @@ package numpy.matrixlib.defmatrix;
 		False
 		>>> np.isscalar(False)
 		True
+		>>> np.isscalar('numpy')
+		True
+		
+		NumPy supports PEP 3141 numbers:
+		
+		>>> from fractions import Fraction
+		>>> isscalar(Fraction(5, 17))
+		True
+		>>> from numbers import Number
+		>>> isscalar(Number())
+		True
 	**/
 	static public function isscalar(num:Dynamic):Bool;
-	/**
-		Returns True if first argument is a typecode lower/equal in type hierarchy.
-		
-		Parameters
-		----------
-		arg1, arg2 : dtype_like
-		    dtype or string representing a typecode.
-		
-		Returns
-		-------
-		out : bool
-		
-		See Also
-		--------
-		issubsctype, issubclass_
-		numpy.core.numerictypes : Overview of numpy type hierarchy.
-		
-		Examples
-		--------
-		>>> np.issubdtype('S1', str)
-		True
-		>>> np.issubdtype(np.float64, np.float32)
-		False
-	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Interpret the input as a matrix.
 		
@@ -403,18 +250,19 @@ package numpy.matrixlib.defmatrix;
 		of the same shape as M is returned. If ``n < 0``, the inverse
 		is computed and then raised to the ``abs(n)``.
 		
+		.. note:: Stacks of object matrices are not currently supported.
+		
 		Parameters
 		----------
-		M : ndarray or matrix object
-		    Matrix to be "powered."  Must be square, i.e. ``M.shape == (m, m)``,
-		    with `m` a positive integer.
+		a : (..., M, M) array_like
+		    Matrix to be "powered."
 		n : int
 		    The exponent can be any integer or long integer, positive,
 		    negative, or zero.
 		
 		Returns
 		-------
-		M**n : ndarray or matrix object
+		a**n : (..., M, M) ndarray or matrix object
 		    The return value is the same shape and type as `M`;
 		    if the exponent is positive or zero then the type of the
 		    elements is the same as those of `M`. If the exponent is
@@ -423,28 +271,20 @@ package numpy.matrixlib.defmatrix;
 		Raises
 		------
 		LinAlgError
-		    If the matrix is not numerically invertible.
-		
-		See Also
-		--------
-		matrix
-		    Provides an equivalent function as the exponentiation operator
-		    (``**``, not ``^``).
+		    For matrices that are not square or that (for negative powers) cannot
+		    be inverted numerically.
 		
 		Examples
 		--------
-		>>> from numpy import linalg as LA
+		>>> from numpy.linalg import matrix_power
 		>>> i = np.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit
-		>>> LA.matrix_power(i, 3) # should = -i
+		>>> matrix_power(i, 3) # should = -i
 		array([[ 0, -1],
 		       [ 1,  0]])
-		>>> LA.matrix_power(np.matrix(i), 3) # matrix arg returns matrix
-		matrix([[ 0, -1],
-		        [ 1,  0]])
-		>>> LA.matrix_power(i, 0)
+		>>> matrix_power(i, 0)
 		array([[1, 0],
 		       [0, 1]])
-		>>> LA.matrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements
+		>>> matrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements
 		array([[ 0.,  1.],
 		       [-1.,  0.]])
 		
@@ -458,12 +298,12 @@ package numpy.matrixlib.defmatrix;
 		       [ 1.,  0.,  0.,  0.],
 		       [ 0.,  0.,  0.,  1.],
 		       [ 0.,  0., -1.,  0.]])
-		>>> LA.matrix_power(q, 2) # = -np.eye(4)
+		>>> matrix_power(q, 2) # = -np.eye(4)
 		array([[-1.,  0.,  0.,  0.],
 		       [ 0., -1.,  0.,  0.],
 		       [ 0.,  0., -1.,  0.],
 		       [ 0.,  0.,  0., -1.]])
 	**/
-	static public function matrix_power(M:Dynamic, n:Dynamic):Dynamic;
+	static public function matrix_power(a:Dynamic, n:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

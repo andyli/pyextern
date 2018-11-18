@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_tools;
 @:pythonImport("matplotlib.backend_tools", "ToolBase") extern class ToolBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package matplotlib.backend_tools;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,11 +103,12 @@ package matplotlib.backend_tools;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var canvas : Dynamic;
 	static public var default_keymap : Dynamic;
 	static public var description : Dynamic;
 	/**
@@ -123,6 +124,15 @@ package matplotlib.backend_tools;
 		Tool Id
 	**/
 	public var name : Dynamic;
+	/**
+		Assign a figure to the tool
+		
+		Parameters
+		----------
+		figure: `Figure`
+	**/
+	public function set_figure(figure:Dynamic):Dynamic;
+	public var toolmanager : Dynamic;
 	/**
 		Called when this tool gets used
 		

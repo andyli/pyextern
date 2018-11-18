@@ -44,7 +44,7 @@ package theano.scan_module.scan_utils;
 		a list of inputs to the apply node corresponding to the scan op and
 		produces the list of inputs and outputs and the info dictionary where
 		the indicated outputs are eliminated. Note that eliminating an output
-		means removing its inputs from the inner funciton and from the
+		means removing its inputs from the inner function and from the
 		node inputs, and changing the dictionary.
 	**/
 	static public function compress_outs(op:Dynamic, not_required:Dynamic, inputs:Dynamic):Dynamic;
@@ -70,10 +70,6 @@ package theano.scan_module.scan_utils;
 		by adding uninitialized memory at the end of the tensor.
 	**/
 	static public function expand_empty(tensor_var:Dynamic, size:Dynamic):Dynamic;
-	/**
-		Goes up in the graph and returns True if a node in nodes is found.
-	**/
-	static public function find_up(l_node:Dynamic, f_node:Dynamic):Dynamic;
 	/**
 		Check all internal values of the graph that compute the variable ``out``
 		for occurrences of values identical with ``x``. If such occurrences are

@@ -5,7 +5,7 @@ package theano.compile.debugmode;
 		exception cause
 	**/
 	public var __cause__ : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		exception context
 	**/
@@ -49,18 +49,18 @@ package theano.compile.debugmode;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(r:Dynamic, v:Dynamic, ?client_node:Dynamic, ?hint:Dynamic, ?specific_hint:Dynamic):Dynamic;
+	public function ___init__(r:Dynamic, ?v:Dynamic, ?client_node:Dynamic, ?hint:Dynamic, ?specific_hint:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(r:Dynamic, v:Dynamic, ?client_node:Dynamic, ?hint:Dynamic, ?specific_hint:Dynamic):Void;
+	public function new(r:Dynamic, ?v:Dynamic, ?client_node:Dynamic, ?hint:Dynamic, ?specific_hint:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -112,7 +112,7 @@ package theano.compile.debugmode;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var __suppress_context__ : Dynamic;
 	public var __traceback__ : Dynamic;
 	/**

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.image;
 @:pythonImport("matplotlib.image", "AxesImage") extern class AxesImage {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -71,7 +71,7 @@ package matplotlib.image;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -122,13 +122,13 @@ package matplotlib.image;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		return True if the image is better to be drawn unsampled.
+		Return whether the image would be better drawn unsampled.
 	**/
 	public function _check_unsampled_image(renderer:Dynamic):Dynamic;
 	/**
@@ -136,8 +136,6 @@ package matplotlib.image;
 		with scale parameter.
 	**/
 	public function _draw_unsampled_image(renderer:Dynamic, gc:Dynamic):Dynamic;
-	static public var _interpd : Dynamic;
-	static public var _interpdr : Dynamic;
 	/**
 		Normalize, rescale and color the image `A` from the given
 		in_bbox (in data space), to the given out_bbox (in pixel
@@ -145,8 +143,8 @@ package matplotlib.image;
 		and magnified by the magnification factor.
 		
 		`A` may be a greyscale image (MxN) with a dtype of `float32`,
-		`float64`, `uint16` or `uint8`, or an RGBA image (MxNx4) with
-		a dtype of `float32`, `float64`, or `uint8`.
+		`float64`, `float128`, `uint16` or `uint8`, or an RGBA image (MxNx4)
+		with a dtype of `float32`, `float64`, `float128`, or `uint8`.
 		
 		If `unsampled` is True, the image will not be scaled, but an
 		appropriate affine transformation will be returned instead.
@@ -212,7 +210,7 @@ package matplotlib.image;
 	**/
 	public function check_update(checker:Dynamic):Dynamic;
 	/**
-		Test whether the mouse event occured within the image.
+		Test whether the mouse event occurred within the image.
 	**/
 	public function contains(mouseevent:Dynamic):Dynamic;
 	/**
@@ -225,6 +223,9 @@ package matplotlib.image;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
+	/**
+		Derived classes drawing method
+	**/
 	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
@@ -250,7 +251,7 @@ package matplotlib.image;
 	**/
 	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
-		return filter function to be used for agg filter
+		Return filter function to be used for agg filter.
 	**/
 	public function get_agg_filter():Dynamic;
 	/**
@@ -266,14 +267,6 @@ package matplotlib.image;
 		Return the array
 	**/
 	public function get_array():Dynamic;
-	/**
-		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-	**/
-	public function get_axes():Dynamic;
 	/**
 		Return a list of the child :class:`Artist`s this
 		:class:`Artist` contains.
@@ -312,22 +305,30 @@ package matplotlib.image;
 	**/
 	public function get_extent():Dynamic;
 	/**
-		Return the :class:`~matplotlib.figure.Figure` instance the
-		artist belongs to.
+		Return the `.Figure` instance the artist belongs to.
 	**/
 	public function get_figure():Dynamic;
 	/**
-		Return the filternorm setting
+		Return whether the resize filter normalizes the weights.
 	**/
 	public function get_filternorm():Dynamic;
 	/**
-		return the filterrad setting
+		Return the filterrad setting.
 	**/
 	public function get_filterrad():Dynamic;
 	/**
-		Returns the group id
+		Returns the group id.
 	**/
 	public function get_gid():Dynamic;
+	/**
+		Return boolean flag, ``True`` if artist is included in layout
+		calculations.
+		
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+	**/
+	public function get_in_layout():Dynamic;
 	/**
 		Return the interpolation method the image uses when resizing.
 		
@@ -342,15 +343,15 @@ package matplotlib.image;
 	public function get_label():Dynamic;
 	public function get_path_effects():Dynamic;
 	/**
-		Return the picker object used by this artist
+		Return the picker object used by this artist.
 	**/
 	public function get_picker():Dynamic;
 	/**
-		return True if the artist is to be rasterized
+		Return whether the artist is to be rasterized.
 	**/
 	public function get_rasterized():Dynamic;
 	/**
-		Return the image resample boolean
+		Return the image resample boolean.
 	**/
 	public function get_resample():Dynamic;
 	/**
@@ -364,17 +365,17 @@ package matplotlib.image;
 		-------
 		sketch_params : tuple or `None`
 		
-		A 3-tuple with the following elements:
+		    A 3-tuple with the following elements:
 		
-		  * `scale`: The amplitude of the wiggle perpendicular to the
-		    source line.
+		      * `scale`: The amplitude of the wiggle perpendicular to the
+		        source line.
 		
-		  * `length`: The length of the wiggle along the line.
+		      * `length`: The length of the wiggle along the line.
 		
-		  * `randomness`: The scale factor by which the length is
-		    shrunken or expanded.
+		      * `randomness`: The scale factor by which the length is
+		        shrunken or expanded.
 		
-		May return `None` if no sketch parameters were set.
+		    May return `None` if no sketch parameters were set.
 	**/
 	public function get_sketch_params():Dynamic;
 	/**
@@ -391,6 +392,21 @@ package matplotlib.image;
 	**/
 	public function get_snap():Dynamic;
 	/**
+		Like `Artist.get_window_extent`, but includes any clipping.
+		
+		Parameters
+		----------
+		renderer : `.RendererBase` instance
+		    renderer that will be used to draw the figures (i.e.
+		    ``fig.canvas.get_renderer()``)
+		
+		Returns
+		-------
+		bbox : `.BboxBase`
+		    containing the bounding box (in figure pixel co-ordinates).
+	**/
+	public function get_tightbbox(renderer:Dynamic):Dynamic;
+	/**
 		Return the :class:`~matplotlib.transforms.Transform`
 		instance used by this artist.
 	**/
@@ -402,7 +418,7 @@ package matplotlib.image;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
-		Returns the url
+		Returns the url.
 	**/
 	public function get_url():Dynamic;
 	/**
@@ -425,7 +441,7 @@ package matplotlib.image;
 	**/
 	public function get_window_extent(?renderer:Dynamic):Dynamic;
 	/**
-		Return the :class:`Artist`'s zorder.
+		Return the artist's zorder.
 	**/
 	public function get_zorder():Dynamic;
 	/**
@@ -433,12 +449,17 @@ package matplotlib.image;
 	**/
 	public function have_units():Dynamic;
 	/**
+		.. deprecated:: 2.2
+		    The hitlist function was deprecated in Matplotlib 2.2 and will be removed in 3.1.
+		
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
 	/**
-		Returns True if the artist is assigned to a
-		:class:`~matplotlib.figure.Figure`.
+		.. deprecated:: 2.2
+		    artist.figure is not None
+		
+		Returns whether the artist is assigned to a `.Figure`.
 	**/
 	public function is_figure_set():Dynamic;
 	/**
@@ -446,7 +467,6 @@ package matplotlib.image;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
-	static public var iterpnames : Dynamic;
 	public function make_image(renderer:Dynamic, ?magnification:Dynamic, ?unsampled:Dynamic):Dynamic;
 	public var mouseover : Dynamic;
 	/**
@@ -498,50 +518,57 @@ package matplotlib.image;
 	**/
 	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		set agg_filter fuction.
+		Set the agg filter.
+		
+		Parameters
+		----------
+		filter_func : callable
+		    A filter function, which takes a (m, n, 3) float array and a dpi
+		    value, and returns a (m, n, 3) array.
+		
+		    .. ACCEPTS: a filter function, which takes a (m, n, 3) float array
+		        and a dpi value, and returns a (m, n, 3) array
 	**/
 	public function set_agg_filter(filter_func:Dynamic):Dynamic;
 	/**
-		Set the alpha value used for blending - not supported on
-		all backends
+		Set the alpha value used for blending - not supported on all backends.
 		
-		ACCEPTS: float
+		Parameters
+		----------
+		alpha : float
 	**/
 	public function set_alpha(alpha:Dynamic):Dynamic;
 	/**
 		Set the artist's animation state.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_animated(b:Dynamic):Dynamic;
 	/**
-		Retained for backwards compatibility - use set_data instead
+		Retained for backwards compatibility - use set_data instead.
 		
-		ACCEPTS: numpy array A or PIL Image
+		Parameters
+		----------
+		A : array-like
 	**/
 	public function set_array(A:Dynamic):Dynamic;
-	/**
-		Set the :class:`~matplotlib.axes.Axes` instance in which the
-		artist resides, if any.
-		
-		This has been deprecated in mpl 1.5, please use the
-		axes property.  Will be removed in 1.7 or 2.0.
-		
-		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
-	**/
-	public function set_axes(axes:Dynamic):Dynamic;
 	/**
 		set the norm limits for image scaling; if *vmin* is a length2
 		sequence, interpret it as ``(vmin, vmax)`` which is used to
 		support setp
 		
-		ACCEPTS: a length 2 sequence of floats
+		ACCEPTS: a length 2 sequence of floats; may be overridden in methods
+		that have ``vmin`` and ``vmax`` kwargs.
 	**/
 	public function set_clim(?vmin:Dynamic, ?vmax:Dynamic):Dynamic;
 	/**
-		Set the artist's clip :class:`~matplotlib.transforms.Bbox`.
+		Set the artist's clip `.Bbox`.
 		
-		ACCEPTS: a :class:`matplotlib.transforms.Bbox` instance
+		Parameters
+		----------
+		clipbox : `.Bbox`
 	**/
 	public function set_clip_box(clipbox:Dynamic):Dynamic;
 	/**
@@ -550,34 +577,34 @@ package matplotlib.image;
 		When False artists will be visible out side of the axes which
 		can lead to unexpected results.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_clip_on(b:Dynamic):Dynamic;
 	/**
 		Set the artist's clip path, which may be:
 		
-		  * a :class:`~matplotlib.patches.Patch` (or subclass) instance
+		- a :class:`~matplotlib.patches.Patch` (or subclass) instance; or
+		- a :class:`~matplotlib.path.Path` instance, in which case a
+		  :class:`~matplotlib.transforms.Transform` instance, which will be
+		  applied to the path before using it for clipping, must be provided;
+		  or
+		- ``None``, to remove a previously set clipping path.
 		
-		  * a :class:`~matplotlib.path.Path` instance, in which case
-		     an optional :class:`~matplotlib.transforms.Transform`
-		     instance may be provided, which will be applied to the
-		     path before using it for clipping.
+		For efficiency, if the path happens to be an axis-aligned rectangle,
+		this method will set the clipping box to the corresponding rectangle
+		and set the clipping path to ``None``.
 		
-		  * *None*, to remove the clipping path
-		
-		For efficiency, if the path happens to be an axis-aligned
-		rectangle, this method will set the clipping box to the
-		corresponding rectangle and set the clipping path to *None*.
-		
-		ACCEPTS: [ (:class:`~matplotlib.path.Path`,
-		:class:`~matplotlib.transforms.Transform`) |
-		:class:`~matplotlib.patches.Patch` | None ]
+		ACCEPTS: [(`~matplotlib.path.Path`, `.Transform`) | `.Patch` | None]
 	**/
 	public function set_clip_path(path:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		set the colormap for luminance data
 		
-		ACCEPTS: a colormap or registered colormap name
+		Parameters
+		----------
+		cmap : colormap or registered colormap name
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
@@ -591,15 +618,19 @@ package matplotlib.image;
 		and *props* is a dictionary of properties you want returned
 		with the contains test.
 		
-		ACCEPTS: a callable function
+		Parameters
+		----------
+		picker : callable
 	**/
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
 		Set the image array.
 		
-		ACCEPTS: numpy/PIL Image A
-		
 		Note that this function does *not* update the normalization used.
+		
+		Parameters
+		----------
+		A : array-like
 	**/
 	public function set_data(A:Dynamic):Dynamic;
 	/**
@@ -612,32 +643,51 @@ package matplotlib.image;
 	**/
 	public function set_extent(extent:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.figure.Figure` instance the artist
-		belongs to.
+		Set the `.Figure` instance the artist belongs to.
 		
-		ACCEPTS: a :class:`matplotlib.figure.Figure` instance
+		Parameters
+		----------
+		fig : `.Figure`
 	**/
 	public function set_figure(fig:Dynamic):Dynamic;
 	/**
-		Set whether the resize filter norms the weights -- see
-		help for imshow
+		Set whether the resize filter normalizes the weights.
 		
-		ACCEPTS: 0 or 1
+		See help for `~.Axes.imshow`.
+		
+		Parameters
+		----------
+		filternorm : bool
 	**/
 	public function set_filternorm(filternorm:Dynamic):Dynamic;
 	/**
 		Set the resize filter radius only applicable to some
 		interpolation schemes -- see help for imshow
 		
-		ACCEPTS: positive float
+		Parameters
+		----------
+		filterrad : positive float
 	**/
 	public function set_filterrad(filterrad:Dynamic):Dynamic;
 	/**
-		Sets the (group) id for the artist
+		Sets the (group) id for the artist.
 		
-		ACCEPTS: an id string
+		Parameters
+		----------
+		gid : str
 	**/
 	public function set_gid(gid:Dynamic):Dynamic;
+	/**
+		Set if artist is to be included in layout calculations,
+		E.g. :doc:`/tutorials/intermediate/constrainedlayout_guide`,
+		`.Figure.tight_layout()`, and
+		``fig.savefig(fname, bbox_inches='tight')``.
+		
+		Parameters
+		----------
+		in_layout : bool
+	**/
+	public function set_in_layout(in_layout:Dynamic):Dynamic;
 	/**
 		Set the interpolation method the image uses when resizing.
 		
@@ -646,25 +696,34 @@ package matplotlib.image;
 		agg, ps and pdf backends and will fall back to 'nearest' mode
 		for other backends.
 		
-		ACCEPTS: ['nearest' | 'bilinear' | 'bicubic' | 'spline16' |
-		  'spline36' | 'hanning' | 'hamming' | 'hermite' | 'kaiser' |
-		  'quadric' | 'catrom' | 'gaussian' | 'bessel' | 'mitchell' |
-		  'sinc' | 'lanczos' | 'none' |]
+		Parameters
+		----------
+		s : {'nearest', 'bilinear', 'bicubic', 'spline16', 'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric', 'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos', 'none'}
 	**/
 	public function set_interpolation(s:Dynamic):Dynamic;
 	/**
 		Set the label to *s* for auto legend.
 		
-		ACCEPTS: string or anything printable with '%s' conversion.
+		Parameters
+		----------
+		s : object
+		    *s* will be converted to a string by calling `str`.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		set the normalization instance
+		Set the normalization instance.
+		
+		Parameters
+		----------
+		norm : `.Normalize`
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**
-		set path_effects, which should be a list of instances of
-		matplotlib.patheffect._Base class or its derivatives.
+		Set the path effects.
+		
+		Parameters
+		----------
+		path_effects : `.AbstractPathEffect`
 	**/
 	public function set_path_effects(path_effects:Dynamic):Dynamic;
 	/**
@@ -696,21 +755,27 @@ package matplotlib.image;
 		    artist, return *hit=True* and props is a dictionary of
 		    properties you want added to the PickEvent attributes.
 		
-		ACCEPTS: [None|float|boolean|callable]
+		Parameters
+		----------
+		picker : None or bool or float or callable
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
 		Force rasterized (bitmap) drawing in vector backend output.
 		
-		Defaults to None, which implies the backend's default behavior
+		Defaults to None, which implies the backend's default behavior.
 		
-		ACCEPTS: [True | False | None]
+		Parameters
+		----------
+		rasterized : bool or None
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Set whether or not image resampling is used
+		Set whether or not image resampling is used.
 		
-		ACCEPTS: True|False
+		Parameters
+		----------
+		v : bool
 	**/
 	public function set_resample(v:Dynamic):Dynamic;
 	/**
@@ -731,6 +796,8 @@ package matplotlib.image;
 		randomness : float, optional
 		    The scale factor by which the length is shrunken or
 		    expanded (default 16.0)
+		
+		    .. ACCEPTS: (scale: float, length: float, randomness: float)
 	**/
 	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
 	/**
@@ -744,32 +811,43 @@ package matplotlib.image;
 		    segments, round to the nearest pixel center
 		
 		Only supported by the Agg and MacOSX backends.
+		
+		Parameters
+		----------
+		snap : bool or None
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		Set the :class:`~matplotlib.transforms.Transform` instance
-		used by this artist.
+		Set the artist transform.
 		
-		ACCEPTS: :class:`~matplotlib.transforms.Transform` instance
+		Parameters
+		----------
+		t : `.Transform`
 	**/
 	public function set_transform(t:Dynamic):Dynamic;
 	/**
-		Sets the url for the artist
+		Sets the url for the artist.
 		
-		ACCEPTS: a url string
+		Parameters
+		----------
+		url : str
 	**/
 	public function set_url(url:Dynamic):Dynamic;
 	/**
-		Set the artist's visiblity.
+		Set the artist's visibility.
 		
-		ACCEPTS: [True | False]
+		Parameters
+		----------
+		b : bool
 	**/
 	public function set_visible(b:Dynamic):Dynamic;
 	/**
 		Set the zorder for the artist.  Artists with lower zorder
 		values are drawn first.
 		
-		ACCEPTS: any number
+		Parameters
+		----------
+		level : float
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
@@ -808,6 +886,9 @@ package matplotlib.image;
 		If *x* is an ndarray with 3 dimensions,
 		and the last dimension is either 3 or 4, then it will be
 		treated as an rgb or rgba array, and no mapping will be done.
+		The array can be uint8, or it can be floating point with
+		values in the 0-1 range; otherwise a ValueError will be raised.
+		If it is a masked array, the mask will be ignored.
 		If the last dimension is 3, the *alpha* kwarg (defaulting to 1)
 		will be used to fill in the transparency.  If the last dimension
 		is 4, the *alpha* kwarg is ignored; it does not
@@ -819,17 +900,11 @@ package matplotlib.image;
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
 		If norm is False, no normalization of the input data is
-		performed, and it is assumed to already be in the range (0-1).
-		
-		Note: this method assumes the input is well-behaved; it does
-		not check for anomalies such as *x* being a masked rgba
-		array, or being an integer type other than uint8, or being
-		a floating point rgba array with values outside the 0-1 range.
+		performed, and it is assumed to be in the range (0-1).
 	**/
 	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
-		Update the properties of this :class:`Artist` from the
-		dictionary *prop*.
+		Update this artist's properties from the dictionary *prop*.
 	**/
 	public function update(props:Dynamic):Dynamic;
 	/**

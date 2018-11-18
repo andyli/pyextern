@@ -8,7 +8,7 @@ package matplotlib.textpath;
 	static public var MOVETO : Dynamic;
 	static public var NUM_VERTICES_FOR_CODE : Dynamic;
 	static public var STOP : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns a shallow copy of the `Path`, which will share the
 		vertices and codes with the source `Path`.
@@ -55,28 +55,94 @@ package matplotlib.textpath;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Create a path from the text. No support for TeX yet. Note that
-		it simply is a path, not an artist. You need to use the
-		PathPatch (or other artists) to draw this path onto the
-		canvas.
+		Create a path from the text. Note that it simply is a path,
+		not an artist. You need to use the `~.PathPatch` (or other artists)
+		to draw this path onto the canvas.
 		
-		xy : position of the text.
-		s : text
-		size : font size
-		prop : font property
+		Parameters
+		----------
+		
+		xy : tuple or array of two float values
+		    Position of the text. For no offset, use ``xy=(0, 0)``.
+		
+		s : str
+		    The text to convert to a path.
+		
+		size : float, optional
+		    Font size in points. Defaults to the size specified via the font
+		    properties *prop*.
+		
+		prop : `matplotlib.font_manager.FontProperties`, optional
+		    Font property. If not provided, will use a default
+		    ``FontProperties`` with parameters from the
+		    :ref:`rcParams <matplotlib-rcparams>`.
+		
+		_interpolation_steps : integer, optional
+		    (Currently ignored)
+		
+		usetex : bool, optional
+		    Whether to use tex rendering. Defaults to ``False``.
+		
+		Examples
+		--------
+		
+		The following creates a path from the string "ABC" with Helvetica
+		font face; and another path from the latex fraction 1/2::
+		
+		    from matplotlib.textpath import TextPath
+		    from matplotlib.font_manager import FontProperties
+		
+		    fp = FontProperties(family="Helvetica", style="italic")
+		    path1 = TextPath((12,12), "ABC", size=12, prop=fp)
+		    path2 = TextPath((0,0), r"$\frac{1}{2}$", size=12, usetex=True)
+		
+		Also see :doc:`/gallery/text_labels_and_annotations/demo_text_path`.
 	**/
 	@:native("__init__")
 	public function ___init__(xy:Dynamic, s:Dynamic, ?size:Dynamic, ?prop:Dynamic, ?_interpolation_steps:Dynamic, ?usetex:Dynamic, ?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Create a path from the text. No support for TeX yet. Note that
-		it simply is a path, not an artist. You need to use the
-		PathPatch (or other artists) to draw this path onto the
-		canvas.
+		Create a path from the text. Note that it simply is a path,
+		not an artist. You need to use the `~.PathPatch` (or other artists)
+		to draw this path onto the canvas.
 		
-		xy : position of the text.
-		s : text
-		size : font size
-		prop : font property
+		Parameters
+		----------
+		
+		xy : tuple or array of two float values
+		    Position of the text. For no offset, use ``xy=(0, 0)``.
+		
+		s : str
+		    The text to convert to a path.
+		
+		size : float, optional
+		    Font size in points. Defaults to the size specified via the font
+		    properties *prop*.
+		
+		prop : `matplotlib.font_manager.FontProperties`, optional
+		    Font property. If not provided, will use a default
+		    ``FontProperties`` with parameters from the
+		    :ref:`rcParams <matplotlib-rcparams>`.
+		
+		_interpolation_steps : integer, optional
+		    (Currently ignored)
+		
+		usetex : bool, optional
+		    Whether to use tex rendering. Defaults to ``False``.
+		
+		Examples
+		--------
+		
+		The following creates a path from the string "ABC" with Helvetica
+		font face; and another path from the latex fraction 1/2::
+		
+		    from matplotlib.textpath import TextPath
+		    from matplotlib.font_manager import FontProperties
+		
+		    fp = FontProperties(family="Helvetica", style="italic")
+		    path1 = TextPath((12,12), "ABC", size=12, prop=fp)
+		    path2 = TextPath((0,0), r"$\frac{1}{2}$", size=12, usetex=True)
+		
+		Also see :doc:`/gallery/text_labels_and_annotations/demo_text_path`.
 	**/
 	public function new(xy:Dynamic, s:Dynamic, ?size:Dynamic, ?prop:Dynamic, ?_interpolation_steps:Dynamic, ?usetex:Dynamic, ?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
@@ -85,7 +151,7 @@ package matplotlib.textpath;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -137,7 +203,7 @@ package matplotlib.textpath;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -164,7 +230,6 @@ package matplotlib.textpath;
 		Return the cached path after updating it if necessary.
 	**/
 	public function _get_vertices():Dynamic;
-	static public var _hatch_dict : Dynamic;
 	/**
 		update the path if necessary.
 		
@@ -182,6 +247,10 @@ package matplotlib.textpath;
 	/**
 		Return an arc on the unit circle from angle
 		*theta1* to angle *theta2* (in degrees).
+		
+		*theta2* is unwrapped to produce the shortest arc within 360 degrees.
+		That is, if *theta2* > *theta1* + 360, the arc will be from *theta1* to
+		*theta2* - 360 and not a full circle plus some extra overlap.
 		
 		If *n* is provided, it is the number of spline segments to make.
 		If *n* is not provided, the number of spline segments is
@@ -247,7 +316,7 @@ package matplotlib.textpath;
 		This is the class from which it is strongly suggested users should derive
 		custom scalar types.
 	**/
-	static public function code_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function code_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return the codes
 	**/
@@ -321,8 +390,10 @@ package matplotlib.textpath;
 		:class:`~matplotlib.transforms.Bbox`.
 		
 		*filled*, when True, treats the path as if it was filled.
-		That is, if one path completely encloses the other,
-		:meth:`intersects_path` will return True.
+		That is, if the path completely encloses the bounding box,
+		:meth:`intersects_bbox` will return True.
+		
+		The bounding box is always considered filled.
 	**/
 	public function intersects_bbox(bbox:Dynamic, ?filled:Dynamic):Dynamic;
 	/**
@@ -368,7 +439,8 @@ package matplotlib.textpath;
 		    If True, perform simplification, to remove
 		     vertices that do not affect the appearance of the path.  If
 		     False, perform no simplification.  If None, use the
-		     should_simplify member variable.
+		     should_simplify member variable.  See also the rcParams
+		     path.simplify and path.simplify_threshold.
 		curves : {True, False}, optional
 		    If True, curve segments will be returned as curve
 		    segments.  If False, all curves will be converted to line
@@ -389,7 +461,7 @@ package matplotlib.textpath;
 		numsides x 2) numpy array of vertices.  Return object is a
 		:class:`Path`
 		
-		.. plot:: mpl_examples/api/histogram_path_demo.py
+		.. plot:: gallery/misc/histogram_path.py
 	**/
 	static public function make_compound_path_from_polys(XY:Dynamic):Dynamic;
 	/**
@@ -420,7 +492,7 @@ package matplotlib.textpath;
 		polygon/polyline is an Nx2 array of vertices.  In other words,
 		each polygon has no ``MOVETO`` instructions or curves.  This
 		is useful for displaying in backends that do not support
-		compound paths or Bezier curves, such as GDK.
+		compound paths or Bezier curves.
 		
 		If *width* and *height* are both non-zero then the lines will
 		be simplified so that vertices outside of (0, 0), (width,
@@ -468,21 +540,18 @@ package matplotlib.textpath;
 	**/
 	static public function unit_rectangle():Dynamic;
 	/**
-		Return a :class:`Path` for a unit regular
-		asterisk with the given numVertices and radius of 1.0,
-		centered at (0, 0).
+		Return a :class:`Path` for a unit regular asterisk with the given
+		numVertices and radius of 1.0, centered at (0, 0).
 	**/
 	static public function unit_regular_asterisk(numVertices:Dynamic):Dynamic;
 	/**
-		Return a :class:`Path` instance for a unit regular
-		polygon with the given *numVertices* and radius of 1.0,
-		centered at (0, 0).
+		Return a :class:`Path` instance for a unit regular polygon with the
+		given *numVertices* and radius of 1.0, centered at (0, 0).
 	**/
 	static public function unit_regular_polygon(numVertices:Dynamic):Dynamic;
 	/**
-		Return a :class:`Path` for a unit regular star
-		with the given numVertices and radius of 1.0, centered at (0,
-		0).
+		Return a :class:`Path` for a unit regular star with the given
+		numVertices and radius of 1.0, centered at (0, 0).
 	**/
 	static public function unit_regular_star(numVertices:Dynamic, ?innerCircle:Dynamic):Dynamic;
 	/**
@@ -492,6 +561,10 @@ package matplotlib.textpath;
 	/**
 		Return a wedge of the unit circle from angle
 		*theta1* to angle *theta2* (in degrees).
+		
+		*theta2* is unwrapped to produce the shortest wedge within 360 degrees.
+		That is, if *theta2* > *theta1* + 360, the wedge will be from *theta1*
+		to *theta2* - 360 and not a full circle plus some extra overlap.
 		
 		If *n* is provided, it is the number of spline segments to make.
 		If *n* is not provided, the number of spline segments is

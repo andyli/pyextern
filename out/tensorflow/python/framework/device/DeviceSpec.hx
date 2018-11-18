@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.framework.device;
 @:pythonImport("tensorflow.python.framework.device", "DeviceSpec") extern class DeviceSpec {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -16,7 +16,7 @@ package tensorflow.python.framework.device;
 	/**
 		Return self==value.
 	**/
-	public function __eq__(value:Dynamic):Dynamic;
+	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -68,7 +68,7 @@ package tensorflow.python.framework.device;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,12 +119,14 @@ package tensorflow.python.framework.device;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _clear():Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Construct a `DeviceSpec` from a string.
 		

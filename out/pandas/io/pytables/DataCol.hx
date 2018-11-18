@@ -8,7 +8,7 @@ package pandas.io.pytables;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -56,7 +56,7 @@ package pandas.io.pytables;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -113,7 +113,7 @@ package pandas.io.pytables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __unicode__():Dynamic;
 	/**
 		list of weak references to the object (if defined)
@@ -129,7 +129,7 @@ package pandas.io.pytables;
 		set the data from this selection (and convert to the correct dtype
 		if we can)
 	**/
-	public function convert(values:Dynamic, nan_rep:Dynamic, encoding:Dynamic):Dynamic;
+	public function convert(values:Dynamic, nan_rep:Dynamic, encoding:Dynamic, errors:Dynamic):Dynamic;
 	public function copy():Dynamic;
 	/**
 		return a new datacol with the block i 
@@ -149,7 +149,7 @@ package pandas.io.pytables;
 	public function get_atom_string(block:Dynamic, itemsize:Dynamic):Dynamic;
 	public function get_atom_timedelta64(block:Dynamic):Dynamic;
 	/**
-		get the data for this colummn 
+		get the data for this column 
 	**/
 	public function get_attr():Dynamic;
 	/**
@@ -164,7 +164,7 @@ package pandas.io.pytables;
 	public var is_indexed : Dynamic;
 	/**
 		maybe set a string col itemsize:
-		min_itemsize can be an interger or a dict with this columns name
+		min_itemsize can be an integer or a dict with this columns name
 		with an integer size 
 	**/
 	public function maybe_set_size(?min_itemsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -175,16 +175,16 @@ package pandas.io.pytables;
 	/**
 		create and setup my atom from the block b 
 	**/
-	public function set_atom(block:Dynamic, block_items:Dynamic, existing_col:Dynamic, min_itemsize:Dynamic, nan_rep:Dynamic, info:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_atom(block:Dynamic, block_items:Dynamic, existing_col:Dynamic, min_itemsize:Dynamic, nan_rep:Dynamic, info:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
 	public function set_atom_categorical(block:Dynamic, items:Dynamic, ?info:Dynamic, ?values:Dynamic):Dynamic;
 	public function set_atom_complex(block:Dynamic):Dynamic;
 	public function set_atom_data(block:Dynamic):Dynamic;
 	public function set_atom_datetime64(block:Dynamic, ?values:Dynamic):Dynamic;
 	public function set_atom_datetime64tz(block:Dynamic, info:Dynamic, ?values:Dynamic):Dynamic;
-	public function set_atom_string(block:Dynamic, block_items:Dynamic, existing_col:Dynamic, min_itemsize:Dynamic, nan_rep:Dynamic, encoding:Dynamic):Dynamic;
+	public function set_atom_string(block:Dynamic, block_items:Dynamic, existing_col:Dynamic, min_itemsize:Dynamic, nan_rep:Dynamic, encoding:Dynamic, errors:Dynamic):Dynamic;
 	public function set_atom_timedelta64(block:Dynamic, ?values:Dynamic):Dynamic;
 	/**
-		set the data for this colummn 
+		set the data for this column 
 	**/
 	public function set_attr():Dynamic;
 	/**

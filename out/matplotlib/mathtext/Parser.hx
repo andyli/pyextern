@@ -8,7 +8,7 @@ package matplotlib.mathtext;
 		the "current" state is always at the top of the stack.
 	**/
 	static public function State(font_output:Dynamic, font:Dynamic, font_class:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,7 +59,7 @@ package matplotlib.mathtext;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -110,7 +110,7 @@ package matplotlib.mathtext;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -127,6 +127,7 @@ package matplotlib.mathtext;
 	public function _genfrac(ldelim:Dynamic, rdelim:Dynamic, rule:Dynamic, style:Dynamic, num:Dynamic, den:Dynamic):Dynamic;
 	static public var _left_delim : Dynamic;
 	public function _make_space(percentage:Dynamic):Dynamic;
+	static public var _math_style_dict : Dynamic;
 	static public var _overunder_functions : Dynamic;
 	static public var _overunder_symbols : Dynamic;
 	static public var _punctuation_symbols : Dynamic;
@@ -141,6 +142,7 @@ package matplotlib.mathtext;
 	public function binom(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function c_over_c(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function customspace(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
+	public function dfrac(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function end_group(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function font(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;
 	public function frac(s:Dynamic, loc:Dynamic, toks:Dynamic):Dynamic;

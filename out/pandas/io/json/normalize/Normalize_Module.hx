@@ -57,6 +57,16 @@ package pandas.io.json.normalize;
 		Examples
 		--------
 		
+		>>> from pandas.io.json import json_normalize
+		>>> data = [{'id': 1, 'name': {'first': 'Coleen', 'last': 'Volk'}},
+		...         {'name': {'given': 'Mose', 'family': 'Regner'}},
+		...         {'id': 2, 'name': 'Faye Raker'}]
+		>>> json_normalize(data)
+		    id        name name.family name.first name.given name.last
+		0  1.0         NaN         NaN     Coleen        NaN      Volk
+		1  NaN         NaN      Regner        NaN       Mose       NaN
+		2  2.0  Faye Raker         NaN        NaN        NaN       NaN
+		
 		>>> data = [{'state': 'Florida',
 		...          'shortname': 'FL',
 		...          'info': {
@@ -72,7 +82,6 @@ package pandas.io.json.normalize;
 		...          },
 		...          'counties': [{'name': 'Summit', 'population': 1234},
 		...                       {'name': 'Cuyahoga', 'population': 1337}]}]
-		>>> from pandas.io.json import json_normalize
 		>>> result = json_normalize(data, 'counties', ['state', 'shortname',
 		...                                           ['info', 'governor']])
 		>>> result
@@ -82,6 +91,12 @@ package pandas.io.json.normalize;
 		2  Palm Beach       60000    Rick Scott  Florida        FL
 		3      Summit        1234   John Kasich     Ohio        OH
 		4    Cuyahoga        1337   John Kasich     Ohio        OH
+		
+		>>> data = {'A': [1, 2]}
+		>>> json_normalize(data, 'A', record_prefix='Prefix.')
+		    Prefix.0
+		0          1
+		1          2
 	**/
 	static public function json_normalize(data:Dynamic, ?record_path:Dynamic, ?meta:Dynamic, ?meta_prefix:Dynamic, ?record_prefix:Dynamic, ?errors:Dynamic, ?sep:Dynamic):pandas.DataFrame;
 	/**

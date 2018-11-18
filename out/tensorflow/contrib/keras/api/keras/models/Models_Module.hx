@@ -14,22 +14,28 @@ package tensorflow.contrib.keras.api.keras.models;
 		Loads a model saved via `save_model`.
 		
 		Arguments:
-		    filepath: String, path to the saved model.
+		    filepath: One of the following:
+		        - String, path to the saved model
+		        - `h5py.File` object from which to load the model
 		    custom_objects: Optional dictionary mapping names
 		        (strings) to custom classes or functions to be
 		        considered during deserialization.
+		    compile: Boolean, whether to compile the model
+		        after loading.
 		
 		Returns:
 		    A Keras model instance. If an optimizer was found
 		    as part of the saved model, the model is already
 		    compiled. Otherwise, the model is uncompiled and
-		    a warning will be displayed.
+		    a warning will be displayed. When `compile` is set
+		    to False, the compilation is omitted without any
+		    warning.
 		
 		Raises:
 		    ImportError: if h5py is not available.
 		    ValueError: In case of an invalid savefile.
 	**/
-	static public function load_model(filepath:Dynamic, ?custom_objects:Dynamic):Dynamic;
+	static public function load_model(filepath:Dynamic, ?custom_objects:Dynamic, ?compile:Dynamic):Dynamic;
 	/**
 		Instantiates a Keras model from its config.
 		
@@ -41,6 +47,9 @@ package tensorflow.contrib.keras.api.keras.models;
 		
 		Returns:
 		    A Keras model instance (uncompiled).
+		
+		Raises:
+		    TypeError: if `config` is not a dictionary.
 	**/
 	static public function model_from_config(config:Dynamic, ?custom_objects:Dynamic):Dynamic;
 	/**
@@ -73,7 +82,7 @@ package tensorflow.contrib.keras.api.keras.models;
 	**/
 	static public function model_from_yaml(yaml_string:Dynamic, ?custom_objects:Dynamic):Dynamic;
 	/**
-		Save a model to a HDF5 file.
+		Saves a model to a HDF5 file.
 		
 		The saved model contains:
 		    - the model's configuration (topology)
@@ -86,7 +95,9 @@ package tensorflow.contrib.keras.api.keras.models;
 		
 		Arguments:
 		    model: Keras model instance to be saved.
-		    filepath: String, path where to save the model.
+		    filepath: One of the following:
+		        - String, path where to save the model
+		        - `h5py.File` object where to save the model
 		    overwrite: Whether we should overwrite any existing
 		        model at the target location, or instead
 		        ask the user with a manual prompt.

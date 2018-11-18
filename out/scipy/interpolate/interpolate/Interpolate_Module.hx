@@ -82,7 +82,15 @@ package scipy.interpolate.interpolate;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -192,9 +200,9 @@ package scipy.interpolate.interpolate;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -295,7 +303,7 @@ package scipy.interpolate.interpolate;
 		
 		Returns
 		-------
-		val : int, ndarray
+		val : int, float, ndarray
 		    The total number of combinations.
 		
 		See Also
@@ -324,12 +332,22 @@ package scipy.interpolate.interpolate;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -467,8 +485,31 @@ package scipy.interpolate.interpolate;
 		
 		Returns
 		-------
-		lagrange : numpy.poly1d instance
+		lagrange : `numpy.poly1d` instance
 		    The Lagrange interpolating polynomial.
+		
+		Examples
+		--------
+		Interpolate :math:`f(x) = x^3` by 3 points.
+		
+		>>> from scipy.interpolate import lagrange
+		>>> x = np.array([0, 1, 2])
+		>>> y = x**3
+		>>> poly = lagrange(x, y)
+		
+		Since there are only 3 points, Lagrange polynomial has degree 2. Explicitly,
+		it is given by
+		
+		.. math::
+		
+		    \begin{aligned}
+		        L(x) &= 1\times \frac{x (x - 2)}{-1} + 8\times \frac{x (x-1)}{2} \\
+		             &= x (-2 + 3x)
+		    \end{aligned}
+		
+		>>> from numpy.polynomial.polynomial import Polynomial
+		>>> Polynomial(poly).coef
+		array([ 3., -2.,  0.])
 	**/
 	static public function lagrange(x:Dynamic, w:Dynamic):Dynamic;
 	/**
@@ -496,6 +537,15 @@ package scipy.interpolate.interpolate;
 		    be an iterable of pairs ``(order, value)`` which gives the values of
 		    derivatives of specified orders at the given edge of the interpolation
 		    interval.
+		    Alternatively, the following string aliases are recognized:
+		
+		    * ``"clamped"``: The first derivatives at the ends are zero. This is
+		       equivalent to ``bc_type=((1, 0.0), (1, 0.0))``.
+		    * ``"natural"``: The second derivatives at ends are zero. This is
+		      equivalent to ``bc_type=((2, 0.0), (2, 0.0))``.
+		    * ``"not-a-knot"`` (default): The first and second segments are the same
+		      polynomial. This is equivalent to having ``bc_type=None``.
+		
 		axis : int, optional
 		    Interpolation axis. Default is 0.
 		check_finite : bool, optional
@@ -533,8 +583,8 @@ package scipy.interpolate.interpolate;
 		
 		Here we use a 'natural' spline, with zero 2nd derivatives at edges:
 		
-		>>> l, r = [(2, 0)], [(2, 0)]
-		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))
+		>>> l, r = [(2, 0.0)], [(2, 0.0)]
+		>>> b_n = make_interp_spline(x, y, bc_type=(l, r))  # or, bc_type="natural"
 		>>> np.allclose(b_n(x), y)
 		True
 		>>> x0, x1 = x[0], x[-1]
@@ -615,10 +665,9 @@ package scipy.interpolate.interpolate;
 		Returns
 		-------
 		y : array_like
-		    If `a` is a matrix, y is a 1-D ndarray, otherwise y is an array of
-		    the same subtype as `a`. The shape of the returned array is
-		    ``(a.size,)``. Matrices are special cased for backward
-		    compatibility.
+		    y is an array of the same subtype as `a`, with shape ``(a.size,)``.
+		    Note that matrices are special cased for backward compatibility, if `a`
+		    is a matrix, then y is a 1-D ndarray.
 		
 		See Also
 		--------
@@ -688,6 +737,15 @@ package scipy.interpolate.interpolate;
 		corresponding elements in `v` were inserted before the indices, the
 		order of `a` would be preserved.
 		
+		Assuming that `a` is sorted:
+		
+		======  ============================
+		`side`  returned index `i` satisfies
+		======  ============================
+		left    ``a[i-1] < v <= a[i]``
+		right   ``a[i-1] <= v < a[i]``
+		======  ============================
+		
 		Parameters
 		----------
 		a : 1-D array_like
@@ -722,6 +780,10 @@ package scipy.interpolate.interpolate;
 		
 		As of NumPy 1.4.0 `searchsorted` works with real/complex arrays containing
 		`nan` values. The enhanced sort order is documented in `sort`.
+		
+		This function is a faster version of the builtin python `bisect.bisect_left`
+		(``side='left'``) and `bisect.bisect_right` (``side='right'``) functions,
+		which is also vectorized in the `v` argument.
 		
 		Examples
 		--------

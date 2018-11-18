@@ -11,7 +11,7 @@ package tensorflow.python.ops.variables;
 	**/
 	static public function PartitionedVariableIterator(partitioned_variable:Dynamic):Dynamic;
 	static public function _TensorConversionFunction(v:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?as_ref:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -66,6 +66,7 @@ package tensorflow.python.ops.variables;
 		    `partitions` is not a list.
 		  ValueError: If `variable_list` is empty, or the `Variable` shape
 		    information does not match `shape`, or `partitions` has invalid values.
+		  RuntimeError: If eager execution is enabled
 	**/
 	@:native("__init__")
 	public function ___init__(name:Dynamic, shape:Dynamic, dtype:Dynamic, variable_list:Dynamic, partitions:Dynamic):Dynamic;
@@ -88,6 +89,7 @@ package tensorflow.python.ops.variables;
 		    `partitions` is not a list.
 		  ValueError: If `variable_list` is empty, or the `Variable` shape
 		    information does not match `shape`, or `partitions` has invalid values.
+		  RuntimeError: If eager execution is enabled
 	**/
 	public function new(name:Dynamic, shape:Dynamic, dtype:Dynamic, variable_list:Dynamic, partitions:Dynamic):Void;
 	/**
@@ -96,7 +98,7 @@ package tensorflow.python.ops.variables;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return an iterable for accessing the underlying partition Variables.
 	**/
@@ -152,11 +154,12 @@ package tensorflow.python.ops.variables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _apply_assign_fn(assign_fn:Dynamic, value:Dynamic):Dynamic;
 	/**
 		Returns the overall concatenated value as a `Tensor`.
 		
@@ -182,8 +185,11 @@ package tensorflow.python.ops.variables;
 		  `Tensor` containing the concatenated value.
 	**/
 	public function as_tensor():Dynamic;
-	public function assign(value:Dynamic, ?use_locking:Dynamic):Dynamic;
+	public function assign(value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?read_value:Dynamic):Dynamic;
+	public function assign_add(value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?read_value:Dynamic):Dynamic;
+	public function assign_sub(value:Dynamic, ?use_locking:Dynamic, ?name:Dynamic, ?read_value:Dynamic):Dynamic;
 	public var dtype : Dynamic;
 	public function get_shape():Dynamic;
 	public var name : Dynamic;
+	public var shape : Dynamic;
 }

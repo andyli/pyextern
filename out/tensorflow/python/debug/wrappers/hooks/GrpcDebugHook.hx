@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.debug.wrappers.hooks;
 @:pythonImport("tensorflow.python.debug.wrappers.hooks", "GrpcDebugHook") extern class GrpcDebugHook {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -42,8 +42,8 @@ package tensorflow.python.debug.wrappers.hooks;
 		
 		Args:
 		  grpc_debug_server_addresses: (`list` of `str`) A list of the gRPC debug
-		    server addresses, in the format of <host:port>, without the "grpc://"
-		    prefix. For example: ["localhost:7000", "192.168.0.2:8000"]
+		    server addresses, in the format of <host:port>, with or without the
+		    "grpc://" prefix. For example: ["localhost:7000", "192.168.0.2:8000"]
 		  watch_fn: A function that allows for customizing which ops to watch at
 		    which specific steps. See doc of
 		    `dumping_wrapper.DumpingDebugWrapperSession.__init__` for details.
@@ -51,9 +51,6 @@ package tensorflow.python.debug.wrappers.hooks;
 		    wrapper session will be active. See doc of `BaseDebugWrapperSession` for
 		    more details.
 		  log_usage: (bool) Whether usage is to be logged.
-		
-		Raises:
-		  ValueError: if any debugger server addresses start with grpc://.
 	**/
 	@:native("__init__")
 	public function ___init__(grpc_debug_server_addresses:Dynamic, ?watch_fn:Dynamic, ?thread_name_filter:Dynamic, ?log_usage:Dynamic):Dynamic;
@@ -62,8 +59,8 @@ package tensorflow.python.debug.wrappers.hooks;
 		
 		Args:
 		  grpc_debug_server_addresses: (`list` of `str`) A list of the gRPC debug
-		    server addresses, in the format of <host:port>, without the "grpc://"
-		    prefix. For example: ["localhost:7000", "192.168.0.2:8000"]
+		    server addresses, in the format of <host:port>, with or without the
+		    "grpc://" prefix. For example: ["localhost:7000", "192.168.0.2:8000"]
 		  watch_fn: A function that allows for customizing which ops to watch at
 		    which specific steps. See doc of
 		    `dumping_wrapper.DumpingDebugWrapperSession.__init__` for details.
@@ -71,9 +68,6 @@ package tensorflow.python.debug.wrappers.hooks;
 		    wrapper session will be active. See doc of `BaseDebugWrapperSession` for
 		    more details.
 		  log_usage: (bool) Whether usage is to be logged.
-		
-		Raises:
-		  ValueError: if any debugger server addresses start with grpc://.
 	**/
 	public function new(grpc_debug_server_addresses:Dynamic, ?watch_fn:Dynamic, ?thread_name_filter:Dynamic, ?log_usage:Dynamic):Void;
 	/**
@@ -82,7 +76,7 @@ package tensorflow.python.debug.wrappers.hooks;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -133,11 +127,13 @@ package tensorflow.python.debug.wrappers.hooks;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Called when new TensorFlow session is created.
 		

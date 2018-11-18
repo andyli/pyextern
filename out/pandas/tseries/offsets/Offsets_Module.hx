@@ -10,24 +10,20 @@ package pandas.tseries.offsets;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _delta_to_nanoseconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _delta_to_tick(delta:Dynamic):Dynamic;
+	static public function _determine_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		wkday is the result of monthrange(year, month)
-		
-		If it's a saturday or sunday, increment first business day to reflect this
+		Generate busdaycalendar
 	**/
-	static public function _get_firstbday(wkday:Dynamic):Dynamic;
-	static public var _int_to_month : Dynamic;
-	static public var _int_to_weekday : Dynamic;
-	static public function _is_normalized(dt:Dynamic):Dynamic;
-	static public var _month_to_int : Dynamic;
+	static public function _get_calendar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _is_normalized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _tick_comp(op:Dynamic):Dynamic;
-	static public var _weekday_to_int : Dynamic;
-	static public function apply_index_wraps(func:Dynamic):Dynamic;
+	static public function _to_dt64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function apply_index_wraps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function apply_wraps(func:Dynamic):Dynamic;
-	static public function as_datetime(obj:Dynamic):Dynamic;
+	static public function as_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function as_timestamp(obj:Dynamic):Dynamic;
+	static public function delta_to_nanoseconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		This method was ported from the work done by GM Arts,
 		on top of the algorithm by Claus Tondering, which was
@@ -55,11 +51,11 @@ package pandas.tseries.offsets;
 		
 		More about the algorithm may be found at:
 		
-		http://users.chariot.net.au/~gmarts/eastalg.htm
+		`GM Arts: Easter Algorithms <http://www.gmarts.org/index.php?go=415>`_
 		
 		and
 		
-		http://www.tondering.dk/claus/calendar.html
+		`The Calendar FAQ: Easter <https://www.tondering.dk/claus/cal/easter.php>`_
 	**/
 	static public function easter(year:Dynamic, ?method:Dynamic):Dynamic;
 	/**
@@ -88,16 +84,98 @@ package pandas.tseries.offsets;
 		dates : generator object
 	**/
 	static public function generate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?offset:Dynamic, ?time_rule:Dynamic):Dynamic;
+	static public var prefix_mapping : Dynamic;
 	/**
-		Normalize datetime.datetime value to midnight. Returns datetime.date as a
-		datetime.datetime at midnight
+		Possibly increment or decrement the number of periods to shift
+		based on rollforward/rollbackward conventions.
+		
+		Parameters
+		----------
+		other : datetime or Timestamp
+		n : number of periods to increment, before adjusting for rolling
+		month : reference month giving the first month of the year
+		day_opt : 'start', 'end'
+		    'start': returns 1
+		    'end': returns last day of the month
 		
 		Returns
 		-------
-		normalized : datetime.datetime or Timestamp
+		n : int number of periods to increment
+		
+		Notes
+		-----
+		* Mirrors `roll_check` in shift_months
+		
+		Examples
+		-------
+		>>> month = 3
+		>>> day_opt = 'start'              # `other` will be compared to March 1
+		>>> other = datetime(2017, 2, 10)  # before March 1
+		>>> roll_yearday(other, 2, month, day_opt)
+		1
+		>>> roll_yearday(other, -7, month, day_opt)
+		-7
+		>>>
+		>>> other = Timestamp('2014-03-15', tz='US/Eastern')  # after March 1
+		>>> roll_yearday(other, 2, month, day_opt)
+		2
+		>>> roll_yearday(other, -7, month, day_opt)
+		-6
+		
+		>>> month = 6
+		>>> day_opt = 'end'                # `other` will be compared to June 30
+		>>> other = datetime(1999, 6, 29)  # before June 30
+		>>> roll_yearday(other, 5, month, day_opt)
+		4
+		>>> roll_yearday(other, -7, month, day_opt)
+		-7
+		>>>
+		>>> other = Timestamp(2072, 8, 24, 6, 17, 18)  # after June 30
+		>>> roll_yearday(other, 5, month, day_opt)
+		5
+		>>> roll_yearday(other, -7, month, day_opt)
+		-6
 	**/
-	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var prefix_mapping : Dynamic;
+	static public function roll_yearday(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Increment the datetime `other` by the given number of days, retaining
+		the time-portion of the datetime.  For tz-naive datetimes this is
+		equivalent to adding a timedelta.  For tz-aware datetimes it is similar to
+		dateutil's relativedelta.__add__, but handles pytz tzinfo objects.
+		
+		Parameters
+		----------
+		other : datetime or Timestamp
+		days : int
+		
+		Returns
+		-------
+		shifted: datetime or Timestamp
+	**/
+	static public function shift_day(other:Dynamic, days:Dynamic):Dynamic;
+	/**
+		Given a datetime (or Timestamp) `stamp`, an integer `months` and an
+		option `day_opt`, return a new datetimelike that many months later,
+		with day determined by `day_opt` using relativedelta semantics.
+		
+		Scalar analogue of shift_months
+		
+		Parameters
+		----------
+		stamp : datetime or Timestamp
+		months : int
+		day_opt : None, 'start', 'end', or an integer
+		    None: returned datetimelike has the same day as the input, or the
+		          last day of the month if the new month is too short
+		    'start': returned datetimelike has day=1
+		    'end': returned datetimelike has day on the last day of the month
+		    int: returned datetimelike has day equal to day_opt
+		
+		Returns
+		-------
+		shifted : datetime or Timestamp (same as input `stamp`)
+	**/
+	static public function shift_month(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Convert argument to datetime.
 		
@@ -105,7 +183,7 @@ package pandas.tseries.offsets;
 		----------
 		arg : integer, float, string, datetime, list, tuple, 1-d array, Series
 		
-		    .. versionadded: 0.18.1
+		    .. versionadded:: 0.18.1
 		
 		       or DataFrame/dict-like
 		
@@ -131,7 +209,7 @@ package pandas.tseries.offsets;
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
-		    .. versionadded: 0.16.1
+		    .. versionadded:: 0.16.1
 		
 		utc : boolean, default None
 		    Return UTC DatetimeIndex if True (converting any tz-aware
@@ -169,7 +247,13 @@ package pandas.tseries.offsets;
 		    - If Timestamp convertible, origin is set to Timestamp identified by
 		      origin.
 		
-		    .. versionadded: 0.20.0
+		    .. versionadded:: 0.20.0
+		cache : boolean, default False
+		    If True, use a cache of unique, converted dates to apply the datetime
+		    conversion. May produce sigificant speed-up when parsing duplicate date
+		    strings, especially ones with timezone offsets.
+		
+		    .. versionadded:: 0.23.0
 		
 		Returns
 		-------
@@ -182,11 +266,11 @@ package pandas.tseries.offsets;
 		
 		    In case when it is not possible to return designated types (e.g. when
 		    any element of input is before Timestamp.min or after Timestamp.max)
-		    return will have datetime.datetime type (or correspoding array/Series).
+		    return will have datetime.datetime type (or corresponding
+		    array/Series).
 		
 		Examples
 		--------
-		
 		Assembling a datetime from multiple columns of a DataFrame. The keys can be
 		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
 		'ms', 'us', 'ns']) or plurals of the same
@@ -248,6 +332,11 @@ package pandas.tseries.offsets;
 		0    1960-01-02
 		1    1960-01-03
 		2    1960-01-04
+		
+		See also
+		--------
+		pandas.DataFrame.astype : Cast argument to a specified dtype.
+		pandas.to_timedelta : Convert argument to timedelta.
 	**/
-	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic):Dynamic;
+	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic, ?origin:Dynamic, ?cache:Dynamic):Dynamic;
 }

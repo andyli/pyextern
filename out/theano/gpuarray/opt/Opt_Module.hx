@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gpuarray.opt;
 @:pythonImport("theano.gpuarray.opt") extern class Opt_Module {
+	static public var MATRIX_STRUCTURES_SOLVE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -35,7 +36,7 @@ package theano.gpuarray.opt;
 		
 		    maker(node, *inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		The `*inputs` parameters contains the new inputs for your op.  You
@@ -83,7 +84,28 @@ package theano.gpuarray.opt;
 	static public function as_gpuarray_variable(x:Dynamic, context_name:Dynamic):Dynamic;
 	static public function assert_no_cpu_op(fgraph:Dynamic):Dynamic;
 	static public var config : Dynamic;
+	static public var conv_metaopt : Dynamic;
+	/**
+		Copies the stack trace from one or more tensor variables to
+		one or more tensor variables and returns the destination variables.
+		
+		Parameters
+		----------
+		from_var
+		    Tensor variable or list of tensor variables to copy stack traces from.
+		to_var
+		    Tensor variable or list of tensor variables to copy stack traces to.
+		
+		Notes
+		-----
+		The stacktrace is assumed to be of the form of a list of lists
+		of tuples. Each tuple contains the filename, line number, function name
+		and so on. Each list of tuples contains the truples belonging to a
+		particular variable.
+	**/
+	static public function copy_stack_trace(from_var:Dynamic, to_var:Dynamic):Dynamic;
 	static public var cpu : Dynamic;
+	static public var cublas_available : Dynamic;
 	static public var cusolver_available : Dynamic;
 	static public var division : Dynamic;
 	static public function fct(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
@@ -100,9 +122,44 @@ package theano.gpuarray.opt;
 		    Name associated with the context we want (usually a string)
 	**/
 	static public function get_context(name:Dynamic):Dynamic;
-	static public function gpu_alloc(ctx:Dynamic, ?memset_0:Dynamic):Dynamic;
-	static public function gpu_alloc_empty(ctx:Dynamic, dtype:Dynamic):Dynamic;
-	static public function gpu_ca_reduce_cuda(scalar_op:Dynamic, ?axis:Dynamic, ?reduce_mask:Dynamic, ?dtype:Dynamic, ?acc_dtype:Dynamic, ?pre_scalar_op:Dynamic):Dynamic;
+	/**
+		This function compute the output shape of convolution operation.
+		
+		Parameters
+		----------
+		image_shape: tuple of int (symbolic or numeric) corresponding to the input
+		    image shape. Its four (or five) element must correspond respectively
+		    to: batch size, number of input channels, height and width (and
+		    possibly depth) of the image. None where undefined.
+		kernel_shape: tuple of int (symbolic or numeric) corresponding to the
+		    kernel shape. For a normal convolution, its four (for 2D convolution)
+		    or five (for 3D convolution) elements must correspond respectively to :
+		    number of output channels, number of input channels, height and width
+		    (and possibly depth) of the kernel.
+		    For an unshared 2D convolution, its six channels must correspond to :
+		    number of output channels, height and width of the output, number of
+		    input channels, height and width of the kernel.
+		    None where undefined.
+		border_mode: string, int (symbolic or numeric) or tuple of int (symbolic
+		    or numeric) or pairs of ints. If it is a string, it must be 'valid',
+		    'half' or 'full'. If it is a tuple, its two (or three) elements respectively
+		    correspond to the padding on height and width (and possibly depth)
+		    axis. For asymmetric padding, provide a pair of ints for each dimension.
+		subsample: tuple of int (symbolic or numeric). Its two or three elements
+		    espectively correspond to the subsampling on height and width (and
+		    possibly depth) axis.
+		filter_dilation: tuple of int (symbolic or numeric). Its two or three
+		    elements correspond respectively to the dilation on height and width axis.
+		Note - The shape of the convolution output does not depend on the 'unshared'
+		    or the 'num_groups' parameters.
+		
+		Returns
+		-------
+		output_shape: tuple of int corresponding to the output image shape. Its
+		    four element must correspond respectively to: batch size, number of
+		    output channels, height and width of the image. None where undefined.
+	**/
+	static public function get_conv_output_shape(image_shape:Dynamic, kernel_shape:Dynamic, border_mode:Dynamic, subsample:Dynamic, ?filter_dilation:Dynamic):Dynamic;
 	static public function gpu_contiguous(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_crossentropy_softmax_1hot_with_bias_dx(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_crossentropy_softmax_argmax_1hot_with_bias(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -110,7 +167,6 @@ package theano.gpuarray.opt;
 	static public function gpu_dot22(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_erfcinv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_erfinv(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function gpu_from_host(ctx:Dynamic):Dynamic;
 	static public function gpu_join(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		As part of specialization, we fuse two consecutive elemwise Ops of the
@@ -121,9 +177,24 @@ package theano.gpuarray.opt;
 		The number of dimensions is validated at call time by theano itself.
 	**/
 	static public function gpu_local_elemwise_fusion(node:Dynamic):Dynamic;
+	static public function gpu_log(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function gpu_neg(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var gpu_optimizer : Dynamic;
 	static public var gpu_optimizer2 : Dynamic;
 	static public function gpu_print_wrapper(op:Dynamic, cnda:Dynamic):Dynamic;
+	/**
+		This function performs the QR on GPU.
+		
+		Parameters
+		----------
+		complete : bool, optional
+		    If `False`, returns only r.
+		
+		Returns
+		-------
+		Q, R : matrices
+	**/
+	static public function gpu_qr(a:Dynamic, ?complete:Dynamic):Dynamic;
 	/**
 		Different interface to clone, that allows you to pass inputs.
 		Compared to clone, this method always replaces the inputs with
@@ -146,6 +217,26 @@ package theano.gpuarray.opt;
 	static public function gpu_sparse_block_gemv_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_sparse_block_outer(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_sparse_block_outer_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		This function performs the SVD on GPU.
+		
+		Parameters
+		----------
+		full_matrices : bool, optional
+		    If True (default), u and v have the shapes (M, M) and (N, N),
+		    respectively.
+		    Otherwise, the shapes are (M, K) and (K, N), respectively,
+		    where K = min(M, N).
+		compute_uv : bool, optional
+		    Whether or not to compute u and v in addition to s.
+		    True by default.
+		
+		Returns
+		-------
+		U, V,  D : matrices
+	**/
+	static public function gpu_svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic):Dynamic;
+	static public function gpu_true_div(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpugemm_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpugemm_no_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpugemmbatch_no_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -156,6 +247,17 @@ package theano.gpuarray.opt;
 		Infer the context name to use from the inputs given
 	**/
 	static public function infer_context_name(?vars:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Contextmanager that copies the stack trace from one or more variable nodes to all
+		variable nodes constructed in the body. new_nodes is the list of all the newly created
+		variable nodes inside an optimization that is managed by graph.nodes_constructed().
+		
+		Parameters
+		----------
+		from_var
+		    Variable node or a list of variable nodes to copy stack traces from.
+	**/
+	static public function inherit_stack_trace(from_var:Dynamic):Dynamic;
 	static public function inplace_gpu_elemwise_opt(fgraph:Dynamic):Dynamic;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
@@ -165,23 +267,46 @@ package theano.gpuarray.opt;
 	static public function local_abstract_batch_norm_inference_cudnn(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public function local_abstract_batch_norm_train_cudnn(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public function local_abstract_batch_norm_train_grad_cudnn(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public var local_abstractconv3d2d : Dynamic;
+	static public var local_abstractconv3d_alt : Dynamic;
+	static public var local_abstractconv3d_cudnn_alt : Dynamic;
 	static public var local_abstractconv3d_gemm : Dynamic;
+	static public var local_abstractconv3d_gemm_def : Dynamic;
+	static public var local_abstractconv3d_gemm_gradweights_alt : Dynamic;
 	static public var local_abstractconv3d_gradinputs_gemm : Dynamic;
+	static public var local_abstractconv3d_gradinputs_gemm_alt : Dynamic;
 	static public var local_abstractconv3d_gradweights_gemm : Dynamic;
 	static public var local_abstractconv_cudnn : Dynamic;
+	static public var local_abstractconv_cudnn_alt : Dynamic;
 	static public var local_abstractconv_gemm : Dynamic;
+	static public var local_abstractconv_gemm_alt : Dynamic;
+	static public var local_abstractconv_gemm_def : Dynamic;
+	static public var local_abstractconv_gemm_gradweights_alt : Dynamic;
 	static public var local_abstractconv_gi_cudnn : Dynamic;
 	static public var local_abstractconv_gradinputs_gemm : Dynamic;
+	static public var local_abstractconv_gradinputs_gemm_alt : Dynamic;
 	static public var local_abstractconv_gradweights_gemm : Dynamic;
 	static public var local_abstractconv_gw_cudnn : Dynamic;
 	static public var local_advincsub1_gpua_inplace : Dynamic;
 	static public var local_assert_no_cpu_op : Dynamic;
 	static public var local_conv_gpu_conv : Dynamic;
 	static public var local_cut_gpu_transfers : Dynamic;
+	static public var local_gpu_alloc_diag : Dynamic;
 	static public function local_gpu_average_pool_grad(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public function local_gpu_cholesky(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public var local_gpu_contiguous_gpu_contiguous : Dynamic;
+	static public var local_gpu_crossentropycategorical1hot : Dynamic;
+	static public var local_gpu_crossentropycategorical1hotgrad : Dynamic;
+	static public var local_gpu_ctc : Dynamic;
 	static public var local_gpu_downsample_factor_max_grad_grad : Dynamic;
 	static public var local_gpu_elemwise_careduce : Dynamic;
+	static public var local_gpu_extract_diag : Dynamic;
+	static public function local_gpu_magma_cholesky(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public var local_gpu_magma_eigh : Dynamic;
+	static public var local_gpu_magma_matrix_inverse : Dynamic;
+	static public var local_gpu_magma_qr : Dynamic;
+	static public var local_gpu_magma_qr_incomplete : Dynamic;
+	static public var local_gpu_magma_svd : Dynamic;
 	static public function local_gpu_max_pool_grad(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public var local_gpu_max_pool_rop : Dynamic;
 	static public var local_gpu_maxandargmax : Dynamic;
@@ -189,10 +314,12 @@ package theano.gpuarray.opt;
 	static public function local_gpu_pool(op:Dynamic, ctx_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
 	static public var local_gpu_solve : Dynamic;
 	static public var local_gpua_abstractconv : Dynamic;
-	static public var local_gpua_advanced_incsubtensor : Dynamic;
+	static public function local_gpua_advanced_boolean_incsubtensor(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public var local_gpua_advanced_boolean_subtensor : Dynamic;
+	static public function local_gpua_advanced_incsubtensor(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public var local_gpua_advanced_incsubtensor1 : Dynamic;
 	static public var local_gpua_advanced_subtensor : Dynamic;
 	static public var local_gpua_advanced_subtensor1 : Dynamic;
-	static public var local_gpua_alloc : Dynamic;
 	static public var local_gpua_alloc2 : Dynamic;
 	static public var local_gpua_alloc_empty : Dynamic;
 	static public var local_gpua_alloc_empty_to_zeros : Dynamic;
@@ -217,6 +344,7 @@ package theano.gpuarray.opt;
 	static public var local_gpua_gemmbatch_output_merge : Dynamic;
 	static public var local_gpua_gemv : Dynamic;
 	static public var local_gpua_ger : Dynamic;
+	static public var local_gpua_images2neibs : Dynamic;
 	static public var local_gpua_inc_subtensor : Dynamic;
 	static public var local_gpua_join : Dynamic;
 	static public var local_gpua_join_1 : Dynamic;
@@ -237,10 +365,18 @@ package theano.gpuarray.opt;
 	static public var local_gpua_split : Dynamic;
 	static public var local_gpua_subtensor : Dynamic;
 	static public function local_gpua_subtensor_graph(op:Dynamic, context_name:Dynamic, inputs:Dynamic, outputs:Dynamic):Dynamic;
+	static public var local_gpuaalloc : Dynamic;
 	static public var local_gpualloc_memset_0 : Dynamic;
+	static public var local_inplace_gpu_cholesky : Dynamic;
+	static public var local_inplace_gpu_magma_cholesky : Dynamic;
+	static public var local_inplace_gpu_magma_matrix_inverse : Dynamic;
+	static public var local_inplace_gpu_solve : Dynamic;
 	static public var local_inplace_sparseblockgemv : Dynamic;
 	static public var local_inplace_sparseblockouter : Dynamic;
 	static public function local_optimizer(tracks:Dynamic, ?inplace:Dynamic, ?requirements:Dynamic):Dynamic;
+	static public function log(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var matrix_ops_db : Dynamic;
+	static public var matrix_ops_db2 : Dynamic;
 	/**
 		Compute the maximum number of inputs that fit in a kernel call.
 	**/
@@ -248,7 +384,7 @@ package theano.gpuarray.opt;
 	/**
 		Do we want to move this computation to the GPU?
 		
-		Currently, we don't move complex and scalar int.
+		Currently, we don't move complex and scalar.
 		
 		Parameters
 		----------
@@ -256,6 +392,7 @@ package theano.gpuarray.opt;
 		       (it must have dtype and ndim parameter)
 	**/
 	static public function move_to_gpu(data:Dynamic):Dynamic;
+	static public function neg(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		OP(..., host_from_gpu(), ...) -> host_from_gpu(GpuOP(...))
 		
@@ -282,7 +419,7 @@ package theano.gpuarray.opt;
 		
 		    maker(node, *inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		The `*inputs` parameters contains the new inputs for your op.  You
@@ -390,16 +527,27 @@ package theano.gpuarray.opt;
 	**/
 	static public function shape_i(_var:Dynamic, i:Dynamic, ?fgraph:Dynamic):Dynamic;
 	/**
-		For add and mul, it can happen that we have too much input
-		That will make nvcc fail compilation of our current code.
-		We don't want node in the graph that can't execute
-		as this break DebugMode.
+		For some ops like add and mul, a large number of inputs can make nvcc fail
+		compilation of our current code. We don't want node in the graph that can't
+		execute as this break DebugMode.
 		
 		This should not happen for other GpuElemwise as their is only the fusion
 		that can generate op with too much input and it check for that.
+		
+		Parameters
+		----------
+		inputs: List of theano variables.
+		        List of inputs to node.
+		max_nb_inputs: int
+		               Maximum number of inputs the node can handle without
+		               compilation fail.
+		op : Theano operator instance.
+		     Operator that should be used to rebuild the computation graph with smaller
+		     number of inputs per node.
 	**/
-	static public function split_huge_add_or_mul(node:Dynamic):Dynamic;
+	static public function split_inputs(inputs:Dynamic, max_nb_inputs:Dynamic, op:Dynamic):Dynamic;
 	static public function tensor_to_gpu(x:Dynamic, context_name:Dynamic):Dynamic;
+	static public function true_div(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reshapes the output after pad_dims.
 		

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_mixed;
 @:pythonImport("matplotlib.backends.backend_mixed", "MixedModeRenderer") extern class MixedModeRenderer {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -38,38 +38,56 @@ package matplotlib.backends.backend_mixed;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		figure: The figure instance.
+		Parameters
+		----------
+		figure : `matplotlib.figure.Figure`
+		    The figure instance.
 		
-		width: The width of the canvas in logical units
+		width : scalar
+		    The width of the canvas in logical units
 		
-		height: The height of the canvas in logical units
+		height : scalar
+		    The height of the canvas in logical units
 		
-		dpi: The dpi of the canvas
+		dpi : scalar
+		    The dpi of the canvas
 		
-		vector_renderer: An instance of a subclass of RendererBase
-		that will be used for the vector drawing.
+		vector_renderer : `matplotlib.backend_bases.RendererBase`
+		    An instance of a subclass of
+		    `~matplotlib.backend_bases.RendererBase` that will be used for the
+		    vector drawing.
 		
-		raster_renderer_class: The renderer class to use for the
-		raster drawing.  If not provided, this will use the Agg
-		backend (which is currently the only viable option anyway.)
+		raster_renderer_class : `matplotlib.backend_bases.RendererBase`
+		    The renderer class to use for the raster drawing.  If not provided,
+		    this will use the Agg backend (which is currently the only viable
+		    option anyway.)
 	**/
 	@:native("__init__")
 	public function ___init__(figure:Dynamic, width:Dynamic, height:Dynamic, dpi:Dynamic, vector_renderer:Dynamic, ?raster_renderer_class:Dynamic, ?bbox_inches_restore:Dynamic):Dynamic;
 	/**
-		figure: The figure instance.
+		Parameters
+		----------
+		figure : `matplotlib.figure.Figure`
+		    The figure instance.
 		
-		width: The width of the canvas in logical units
+		width : scalar
+		    The width of the canvas in logical units
 		
-		height: The height of the canvas in logical units
+		height : scalar
+		    The height of the canvas in logical units
 		
-		dpi: The dpi of the canvas
+		dpi : scalar
+		    The dpi of the canvas
 		
-		vector_renderer: An instance of a subclass of RendererBase
-		that will be used for the vector drawing.
+		vector_renderer : `matplotlib.backend_bases.RendererBase`
+		    An instance of a subclass of
+		    `~matplotlib.backend_bases.RendererBase` that will be used for the
+		    vector drawing.
 		
-		raster_renderer_class: The renderer class to use for the
-		raster drawing.  If not provided, this will use the Agg
-		backend (which is currently the only viable option anyway.)
+		raster_renderer_class : `matplotlib.backend_bases.RendererBase`
+		    The renderer class to use for the raster drawing.  If not provided,
+		    this will use the Agg backend (which is currently the only viable
+		    option anyway.)
 	**/
 	public function new(figure:Dynamic, width:Dynamic, height:Dynamic, dpi:Dynamic, vector_renderer:Dynamic, ?raster_renderer_class:Dynamic, ?bbox_inches_restore:Dynamic):Void;
 	/**
@@ -78,7 +96,7 @@ package matplotlib.backends.backend_mixed;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -129,7 +147,7 @@ package matplotlib.backends.backend_mixed;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

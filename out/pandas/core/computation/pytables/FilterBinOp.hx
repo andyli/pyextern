@@ -21,7 +21,7 @@ package pandas.core.computation.pytables;
 		    The result of an evaluated expression.
 	**/
 	public function __call__(env:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -72,7 +72,7 @@ package pandas.core.computation.pytables;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -129,7 +129,7 @@ package pandas.core.computation.pytables;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Print a generic n-ary operator and its operands using infix
 		notation
@@ -192,11 +192,11 @@ package pandas.core.computation.pytables;
 		actual column in the table) 
 	**/
 	public var is_in_table : Dynamic;
+	public var is_scalar : Dynamic;
 	/**
 		return True if this is a valid field 
 	**/
 	public var is_valid : Dynamic;
-	public var isscalar : Dynamic;
 	/**
 		the kind of my field 
 	**/

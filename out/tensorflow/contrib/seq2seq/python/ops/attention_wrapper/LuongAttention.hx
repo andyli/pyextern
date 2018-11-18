@@ -7,7 +7,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		Args:
 		  query: Tensor of dtype matching `self.values` and shape
 		    `[batch_size, query_depth]`.
-		  previous_alignments: Tensor of dtype matching `self.values` and shape
+		  state: Tensor of dtype matching `self.values` and shape
 		    `[batch_size, alignments_size]`
 		    (`alignments_size` is memory's `max_time`).
 		
@@ -15,12 +15,9 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		  alignments: Tensor of dtype matching `self.values` and shape
 		    `[batch_size, alignments_size]` (`alignments_size` is memory's
 		    `max_time`).
-		
-		Raises:
-		  ValueError: If `key` and `query` depths do not match.
 	**/
-	public function __call__(query:Dynamic, previous_alignments:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __call__(query:Dynamic, state:Dynamic):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -63,21 +60,22 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		  num_units: The depth of the attention mechanism.
 		  memory: The memory to query; usually the output of an RNN encoder.  This
 		    tensor should be shaped `[batch_size, max_time, ...]`.
-		  memory_sequence_length (optional): Sequence lengths for the batch entries
+		  memory_sequence_length: (optional) Sequence lengths for the batch entries
 		    in memory.  If provided, the memory tensor rows are masked with zeros
 		    for values past the respective sequence lengths.
 		  scale: Python boolean.  Whether to scale the energy term.
 		  probability_fn: (optional) A `callable`.  Converts the score to
-		    probabilities.  The default is @{tf.nn.softmax}. Other options include
-		    @{tf.contrib.seq2seq.hardmax} and @{tf.contrib.sparsemax.sparsemax}.
+		    probabilities.  The default is `tf.nn.softmax`. Other options include
+		    `tf.contrib.seq2seq.hardmax` and `tf.contrib.sparsemax.sparsemax`.
 		    Its signature should be: `probabilities = probability_fn(score)`.
-		  score_mask_value: (optional): The mask value for score before passing into
+		  score_mask_value: (optional) The mask value for score before passing into
 		    `probability_fn`. The default is -inf. Only used if
 		    `memory_sequence_length` is not None.
+		  dtype: The data type for the memory layer of the attention mechanism.
 		  name: Name to use when creating ops.
 	**/
 	@:native("__init__")
-	public function ___init__(num_units:Dynamic, memory:Dynamic, ?memory_sequence_length:Dynamic, ?scale:Dynamic, ?probability_fn:Dynamic, ?score_mask_value:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(num_units:Dynamic, memory:Dynamic, ?memory_sequence_length:Dynamic, ?scale:Dynamic, ?probability_fn:Dynamic, ?score_mask_value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Construct the AttentionMechanism mechanism.
 		
@@ -85,27 +83,28 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		  num_units: The depth of the attention mechanism.
 		  memory: The memory to query; usually the output of an RNN encoder.  This
 		    tensor should be shaped `[batch_size, max_time, ...]`.
-		  memory_sequence_length (optional): Sequence lengths for the batch entries
+		  memory_sequence_length: (optional) Sequence lengths for the batch entries
 		    in memory.  If provided, the memory tensor rows are masked with zeros
 		    for values past the respective sequence lengths.
 		  scale: Python boolean.  Whether to scale the energy term.
 		  probability_fn: (optional) A `callable`.  Converts the score to
-		    probabilities.  The default is @{tf.nn.softmax}. Other options include
-		    @{tf.contrib.seq2seq.hardmax} and @{tf.contrib.sparsemax.sparsemax}.
+		    probabilities.  The default is `tf.nn.softmax`. Other options include
+		    `tf.contrib.seq2seq.hardmax` and `tf.contrib.sparsemax.sparsemax`.
 		    Its signature should be: `probabilities = probability_fn(score)`.
-		  score_mask_value: (optional): The mask value for score before passing into
+		  score_mask_value: (optional) The mask value for score before passing into
 		    `probability_fn`. The default is -inf. Only used if
 		    `memory_sequence_length` is not None.
+		  dtype: The data type for the memory layer of the attention mechanism.
 		  name: Name to use when creating ops.
 	**/
-	public function new(num_units:Dynamic, memory:Dynamic, ?memory_sequence_length:Dynamic, ?scale:Dynamic, ?probability_fn:Dynamic, ?score_mask_value:Dynamic, ?name:Dynamic):Void;
+	public function new(num_units:Dynamic, memory:Dynamic, ?memory_sequence_length:Dynamic, ?scale:Dynamic, ?probability_fn:Dynamic, ?score_mask_value:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -156,7 +155,7 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -180,8 +179,25 @@ package tensorflow.contrib.seq2seq.python.ops.attention_wrapper;
 		  (`alignments_size` is the values' `max_time`).
 	**/
 	public function initial_alignments(batch_size:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		Creates the initial state values for the `AttentionWrapper` class.
+		
+		This is important for AttentionMechanisms that use the previous alignment
+		to calculate the alignment at the next time step (e.g. monotonic attention).
+		
+		The default behavior is to return the same output as initial_alignments.
+		
+		Args:
+		  batch_size: `int32` scalar, the batch_size.
+		  dtype: The `dtype`.
+		
+		Returns:
+		  A structure of all-zero tensors with shapes as described by `state_size`.
+	**/
+	public function initial_state(batch_size:Dynamic, dtype:Dynamic):Dynamic;
 	public var keys : Dynamic;
 	public var memory_layer : Dynamic;
 	public var query_layer : Dynamic;
+	public var state_size : Dynamic;
 	public var values : Dynamic;
 }

@@ -13,10 +13,12 @@ package tensorflow.contrib.learn.python.learn.learn_io.numpy_io;
 	/**
 		Returns input function that would feed dict of numpy arrays into the model.
 		
-		This returns a function outputting `features` and `target` based on the dict
-		of numpy arrays. The dict `features` has the same keys as the `x`.
+		This returns a function outputting `features` and `targets` based on the dict
+		of numpy arrays. The dict `features` has the same keys as the `x`. The dict
+		`targets` has the same keys as the `y` if `y` is a dict.
 		
 		Example:
+		
 		```python
 		age = np.arange(4) * 1.0
 		height = np.arange(32, 36)
@@ -29,8 +31,9 @@ package tensorflow.contrib.learn.python.learn.learn_io.numpy_io;
 		```
 		
 		Args:
-		  x: dict of numpy array object.
-		  y: numpy array object. `None` if absent.
+		  x: numpy array object or dict of numpy array objects. If an array,
+		    the array will be treated as a single feature.
+		  y: numpy array object or dict of numpy array object. `None` if absent.
 		  batch_size: Integer, size of batches to return.
 		  num_epochs: Integer, number of epochs to iterate over data. If `None` will
 		    run forever.
@@ -42,17 +45,57 @@ package tensorflow.contrib.learn.python.learn.learn_io.numpy_io;
 		    such as in prediction and evaluation mode, `num_threads` should be 1.
 		
 		Returns:
-		  Function, that has signature of ()->(dict of `features`, `target`)
+		  Function, that has signature of ()->(dict of `features`, `targets`)
 		
 		Raises:
 		  ValueError: if the shape of `y` mismatches the shape of values in `x` (i.e.,
 		    values in `x` have same shape).
-		  TypeError: `x` is not a dict or `shuffle` is not bool.
+		  ValueError: if duplicate keys are in both `x` and `y` when `y` is a dict.
+		  ValueError: if x or y is an empty dict.
+		  TypeError: `x` is not a dict or array.
+		  ValueError: if 'shuffle' is not provided or a bool.
 	**/
 	static public function core_numpy_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
+	/**
+		Decorator for marking functions or methods deprecated.
+		
+		This decorator logs a deprecation warning whenever the decorated function is
+		called. It has the following format:
+		
+		  <function> (from <module>) is deprecated and will be removed after <date>.
+		  Instructions for updating:
+		  <instructions>
+		
+		If `date` is None, 'after <date>' is replaced with 'in a future version'.
+		<function> will include the class name if it is a method.
+		
+		It also edits the docstring of the function: ' (deprecated)' is appended
+		to the first line of the docstring and a deprecation notice is prepended
+		to the rest of the docstring.
+		
+		Args:
+		  date: String or None. The date the function is scheduled to be removed.
+		    Must be ISO 8601 (YYYY-MM-DD), or None.
+		  instructions: String. Instructions on how to update code using the
+		    deprecated function.
+		  warn_once: Boolean. Set to `True` to warn only the first time the decorated
+		    function is called. Otherwise, every call will log a warning.
+		
+		Returns:
+		  Decorated function or method.
+		
+		Raises:
+		  ValueError: If date is not None or in ISO 8601 format, or instructions are
+		    empty.
+	**/
+	static public function deprecated(date:Dynamic, instructions:Dynamic, ?warn_once:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		This input_fn diffs from the core version with default `shuffle`.
+		This input_fn diffs from the core version with default `shuffle`. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.estimator.inputs.numpy_input_fn.
 	**/
 	static public function numpy_input_fn(x:Dynamic, ?y:Dynamic, ?batch_size:Dynamic, ?num_epochs:Dynamic, ?shuffle:Dynamic, ?queue_capacity:Dynamic, ?num_threads:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

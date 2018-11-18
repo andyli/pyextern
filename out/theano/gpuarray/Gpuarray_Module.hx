@@ -72,10 +72,11 @@ package theano.gpuarray;
 		logger.info("Houston, we have a %s", "interesting problem", exc_info=1)
 	**/
 	static public function info(msg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function init_dev(dev:Dynamic, ?name:Dynamic):Dynamic;
+	static public function init_dev(dev:Dynamic, ?name:Dynamic, ?preallocate:Dynamic):Dynamic;
 	static public var optdb : Dynamic;
 	static public var print_function : Dynamic;
 	static public var pygpu_activated : Dynamic;
+	static public function pygpu_parse_version(version_string:Dynamic):Dynamic;
 	/**
 		Register a context by mapping it to a name.
 		
@@ -100,6 +101,7 @@ package theano.gpuarray;
 		fn : callable
 	**/
 	static public function register_transfer(fn:Dynamic):Dynamic;
+	static public var theano_gpu_is_already_active : Dynamic;
 	static public function transfer(x:Dynamic, target:Dynamic):Dynamic;
 	/**
 		Error and warning about CUDA should be displayed only when this
@@ -118,6 +120,9 @@ package theano.gpuarray;
 		    computations to the gpu.
 		move_shared_to_gpu
 		    If gpu init succeeded, put new shared variables on the gpu.
+		preallocate
+		    If specified, will use this value for preallocation instead of
+		    gpuarray.preallocate.
 	**/
-	static public function use(device:Dynamic, ?force:Dynamic, ?default_to_move_computation_to_gpu:Dynamic, ?move_shared_to_gpu:Dynamic):Dynamic;
+	static public function use(device:Dynamic, ?force:Dynamic, ?default_to_move_computation_to_gpu:Dynamic, ?move_shared_to_gpu:Dynamic, ?preallocate:Dynamic):Dynamic;
 }

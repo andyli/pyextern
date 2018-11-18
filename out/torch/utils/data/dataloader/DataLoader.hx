@@ -1,7 +1,8 @@
 /* This file is generated, do not edit! */
 package torch.utils.data.dataloader;
 @:pythonImport("torch.utils.data.dataloader", "DataLoader") extern class DataLoader {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _DataLoader__initialized : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +42,18 @@ package torch.utils.data.dataloader;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(dataset:Dynamic, ?batch_size:Dynamic, ?shuffle:Dynamic, ?sampler:Dynamic, ?num_workers:Dynamic, ?collate_fn:Dynamic, ?pin_memory:Dynamic, ?drop_last:Dynamic):Dynamic;
+	public function ___init__(dataset:Dynamic, ?batch_size:Dynamic, ?shuffle:Dynamic, ?sampler:Dynamic, ?batch_sampler:Dynamic, ?num_workers:Dynamic, ?collate_fn:Dynamic, ?pin_memory:Dynamic, ?drop_last:Dynamic, ?timeout:Dynamic, ?worker_init_fn:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(dataset:Dynamic, ?batch_size:Dynamic, ?shuffle:Dynamic, ?sampler:Dynamic, ?num_workers:Dynamic, ?collate_fn:Dynamic, ?pin_memory:Dynamic, ?drop_last:Dynamic):Void;
+	public function new(dataset:Dynamic, ?batch_size:Dynamic, ?shuffle:Dynamic, ?sampler:Dynamic, ?batch_sampler:Dynamic, ?num_workers:Dynamic, ?collate_fn:Dynamic, ?pin_memory:Dynamic, ?drop_last:Dynamic, ?timeout:Dynamic, ?worker_init_fn:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -87,7 +88,7 @@ package torch.utils.data.dataloader;
 	/**
 		Implement setattr(self, name, value).
 	**/
-	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setattr__(attr:Dynamic, val:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -105,7 +106,7 @@ package torch.utils.data.dataloader;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/

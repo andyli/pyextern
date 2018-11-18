@@ -9,14 +9,21 @@ package matplotlib.rcsetup;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _auto_backend_sentinel : Dynamic;
 	static public function _listify_validator(scalar_validator:Dynamic, ?allow_stringlist:Dynamic):Dynamic;
 	static public var _prop_aliases : Dynamic;
 	static public var _prop_validators : Dynamic;
 	static public var _seq_err_msg : Dynamic;
 	static public var _str_err_msg : Dynamic;
 	static public function _validate_alignment(s:Dynamic):Dynamic;
+	/**
+		A validator for all possible line styles, the named ones *and*
+		the on-off ink sequences.
+	**/
+	static public function _validate_linestyle(ls:Dynamic):Dynamic;
+	static public function _validate_named_linestyle(s:Dynamic):Dynamic;
+	static public function _validate_negative_linestyle(s:Dynamic):Dynamic;
 	static public function _validate_standard_backends(s:Dynamic):Dynamic;
-	static public var absolute_import : Dynamic;
 	static public var all_backends : Dynamic;
 	/**
 		Create a new `Cycler` object from a single positional argument,
@@ -58,54 +65,64 @@ package matplotlib.rcsetup;
 	**/
 	static public function ccycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Creates a :class:`cycler.Cycler` object much like :func:`cycler.cycler`,
+		Creates a `~cycler.Cycler` object much like :func:`cycler.cycler`,
 		but includes input validation.
 		
-		cycler(arg)
-		cycler(label, itr)
-		cycler(label1=itr1[, label2=itr2[, ...]])
+		Call signatures::
 		
-		Form 1 simply copies a given `Cycler` object.
+		  cycler(cycler)
+		  cycler(label=values[, label2=values2[, ...]])
+		  cycler(label, values)
 		
-		Form 2 creates a `Cycler` from a label and an iterable.
+		Form 1 copies a given `~cycler.Cycler` object.
 		
-		Form 3 composes a `Cycler` as an inner product of the
-		pairs of keyword arguments. In other words, all of the
-		iterables are cycled simultaneously, as if through zip().
+		Form 2 creates a `~cycler.Cycler` which cycles over one or more
+		properties simultaneously. If multiple properties are given, their
+		value lists must have the same length.
+		
+		Form 3 creates a `~cycler.Cycler` for a single property. This form
+		exists for compatibility with the original cycler. Its use is
+		discouraged in favor of the kwarg form, i.e. ``cycler(label=values)``.
 		
 		Parameters
 		----------
-		arg : Cycler
+		cycler : Cycler
 		    Copy constructor for Cycler.
 		
-		label : name
-		    The property key. Must be a valid `Artist` property.
+		label : str
+		    The property key. Must be a valid `.Artist` property.
 		    For example, 'color' or 'linestyle'. Aliases are allowed,
 		    such as 'c' for 'color' and 'lw' for 'linewidth'.
 		
-		itr : iterable
+		values : iterable
 		    Finite-length iterable of the property values. These values
 		    are validated and will raise a ValueError if invalid.
 		
 		Returns
 		-------
 		cycler : Cycler
-		    New :class:`cycler.Cycler` for the given properties
+		    A new :class:`~cycler.Cycler` for the given properties.
+		
+		Examples
+		--------
+		Creating a cycler for a single property:
+		
+		>>> c = cycler(color=['red', 'green', 'blue'])
+		
+		Creating a cycler for simultaneously cycling over multiple properties
+		(e.g. red circle, green plus, blue cross):
+		
+		>>> c = cycler(color=['red', 'green', 'blue'],
+		...            marker=['o', '+', 'x'])
 	**/
 	static public function cycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var defaultParams : Dynamic;
-	static public function deprecate_axes_colorcycle(value:Dynamic):Dynamic;
-	static public function deprecate_axes_hold(value:Dynamic):Dynamic;
-	static public function deprecate_savefig_extension(value:Dynamic):Dynamic;
-	static public function deprecate_svg_embed_char_paths(value:Dynamic):Dynamic;
-	static public function deprecate_svg_image_noscale(value:Dynamic):Dynamic;
-	static public var division : Dynamic;
 	static public var interactive_bk : Dynamic;
 	/**
-		Return whether `c` can be interpreted as an RGB(A) color.
-		    
+		Return whether *c* can be interpreted as an RGB(A) color.
 	**/
 	static public function is_color_like(c:Dynamic):Dynamic;
+	static public var ls_mapper : Dynamic;
 	static public var non_interactive_bk : Dynamic;
 	/**
 		Parse the given fontconfig *pattern* and return a dictionary
@@ -113,7 +130,6 @@ package matplotlib.rcsetup;
 		:class:`font_manager.FontProperties` object.
 	**/
 	static public function parse_fontconfig_pattern(pattern:Dynamic):Dynamic;
-	static public var print_function : Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		
@@ -125,7 +141,6 @@ package matplotlib.rcsetup;
 		sequence is empty.
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var unicode_literals : Dynamic;
 	static public function update_savefig_format(value:Dynamic):Dynamic;
 	static public function validate_animation_writer_path(p:Dynamic):Dynamic;
 	static public function validate_any(s:Dynamic):Dynamic;
@@ -159,7 +174,6 @@ package matplotlib.rcsetup;
 		return a list of colorspecs
 	**/
 	static public function validate_colorlist(s:Dynamic):Dynamic;
-	static public function validate_corner_mask(s:Dynamic):Dynamic;
 	/**
 		return a Cycler object from a string repr or the object itself
 	**/
@@ -186,6 +200,7 @@ package matplotlib.rcsetup;
 	static public function validate_font_properties(s:Dynamic):Dynamic;
 	static public function validate_fontset(s:Dynamic):Dynamic;
 	static public function validate_fontsize(s:Dynamic):Dynamic;
+	static public function validate_fontsize_None(s:Dynamic):Dynamic;
 	static public function validate_fontsizelist(s:Dynamic):Dynamic;
 	/**
 		confirm that this is a Postscript of PDF font type that we know how to
@@ -218,13 +233,38 @@ package matplotlib.rcsetup;
 	static public function validate_joinstyle(s:Dynamic):Dynamic;
 	static public function validate_joinstylelist(s:Dynamic):Dynamic;
 	static public function validate_legend_loc(s:Dynamic):Dynamic;
-	static public function validate_maskedarray(v:Dynamic):Dynamic;
+	/**
+		Validate the markevery property of a Line2D object.
+		
+		Parameters
+		----------
+		s : None, int, float, slice, length-2 tuple of ints,
+		    length-2 tuple of floats, list of ints
+		
+		Returns
+		-------
+		s : None, int, float, slice, length-2 tuple of ints,
+		    length-2 tuple of floats, list of ints
+	**/
+	static public function validate_markevery(s:Dynamic):Dynamic;
+	/**
+		Validate the markevery property of a Line2D object.
+		
+		Parameters
+		----------
+		s : None, int, float, slice, length-2 tuple of ints,
+		    length-2 tuple of floats, list of ints
+		
+		Returns
+		-------
+		s : None, int, float, slice, length-2 tuple of ints,
+		    length-2 tuple of floats, list of ints
+	**/
+	static public function validate_markeverylist(s:Dynamic):Dynamic;
 	static public function validate_mathtext_default(s:Dynamic):Dynamic;
 	static public function validate_movie_frame_fmt(s:Dynamic):Dynamic;
 	static public function validate_movie_html_fmt(s:Dynamic):Dynamic;
 	static public function validate_movie_writer(s:Dynamic):Dynamic;
-	static public function validate_negative_linestyle(s:Dynamic):Dynamic;
-	static public function validate_negative_linestyle_legacy(s:Dynamic):Dynamic;
 	static public function validate_orientation(s:Dynamic):Dynamic;
 	/**
 		If s is a path, return s, else False
@@ -236,6 +276,7 @@ package matplotlib.rcsetup;
 	static public function validate_qt4(s:Dynamic):Dynamic;
 	static public function validate_qt5(s:Dynamic):Dynamic;
 	static public function validate_sketch(s:Dynamic):Dynamic;
+	static public function validate_string(s:Dynamic):Dynamic;
 	/**
 		convert s to string or raise
 	**/
@@ -245,8 +286,8 @@ package matplotlib.rcsetup;
 	**/
 	static public function validate_stringlist(s:Dynamic):Dynamic;
 	static public function validate_svg_fonttype(s:Dynamic):Dynamic;
-	static public function validate_tkpythoninspect(s:Dynamic):Dynamic;
 	static public function validate_toolbar(s:Dynamic):Dynamic;
 	static public function validate_verbose(s:Dynamic):Dynamic;
+	static public function validate_webagg_address(s:Dynamic):Dynamic;
 	static public function validate_whiskers(s:Dynamic):Dynamic;
 }

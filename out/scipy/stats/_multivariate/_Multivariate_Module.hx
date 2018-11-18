@@ -184,9 +184,9 @@ package scipy.stats._multivariate;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -262,46 +262,48 @@ package scipy.stats._multivariate;
 		
 		Methods
 		-------
-		``rvs(n, p, loc=0, size=1, random_state=None)``
+		rvs(n, p, loc=0, size=1, random_state=None)
 		    Random variates.
-		``pmf(k, n, p, loc=0)``
+		pmf(k, n, p, loc=0)
 		    Probability mass function.
-		``logpmf(k, n, p, loc=0)``
+		logpmf(k, n, p, loc=0)
 		    Log of the probability mass function.
-		``cdf(k, n, p, loc=0)``
+		cdf(k, n, p, loc=0)
 		    Cumulative distribution function.
-		``logcdf(k, n, p, loc=0)``
+		logcdf(k, n, p, loc=0)
 		    Log of the cumulative distribution function.
-		``sf(k, n, p, loc=0)``
+		sf(k, n, p, loc=0)
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
-		``logsf(k, n, p, loc=0)``
+		logsf(k, n, p, loc=0)
 		    Log of the survival function.
-		``ppf(q, n, p, loc=0)``
+		ppf(q, n, p, loc=0)
 		    Percent point function (inverse of ``cdf`` --- percentiles).
-		``isf(q, n, p, loc=0)``
+		isf(q, n, p, loc=0)
 		    Inverse survival function (inverse of ``sf``).
-		``stats(n, p, loc=0, moments='mv')``
+		stats(n, p, loc=0, moments='mv')
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
-		``entropy(n, p, loc=0)``
+		entropy(n, p, loc=0)
 		    (Differential) entropy of the RV.
-		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
+		expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)
 		    Expected value of a function (of one argument) with respect to the distribution.
-		``median(n, p, loc=0)``
+		median(n, p, loc=0)
 		    Median of the distribution.
-		``mean(n, p, loc=0)``
+		mean(n, p, loc=0)
 		    Mean of the distribution.
-		``var(n, p, loc=0)``
+		var(n, p, loc=0)
 		    Variance of the distribution.
-		``std(n, p, loc=0)``
+		std(n, p, loc=0)
 		    Standard deviation of the distribution.
-		``interval(alpha, n, p, loc=0)``
+		interval(alpha, n, p, loc=0)
 		    Endpoints of the range that contains alpha percent of the distribution
 		
 		Notes
 		-----
-		The probability mass function for `binom` is::
+		The probability mass function for `binom` is:
 		
-		   binom.pmf(k) = choose(n, k) * p**k * (1-p)**(n-k)
+		.. math::
+		
+		   f(k) = \binom{n}{k} p^k (1-p)^{n-k}
 		
 		for ``k`` in ``{0, 1,..., n}``.
 		
@@ -506,7 +508,9 @@ package scipy.stats._multivariate;
 	**/
 	static public function entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Logarithm of the absolute value of the Gamma function for real inputs.
+		gammaln(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Logarithm of the absolute value of the Gamma function.
 		
 		Parameters
 		----------
@@ -529,14 +533,9 @@ package scipy.stats._multivariate;
 		for working in logspace on the real axis without having to deal with
 		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
 		
-		Note that `gammaln` currently accepts complex-valued inputs, but it is not
-		the same function as for real-valued inputs, and the branch is not
-		well-defined --- using `gammaln` with complex is deprecated and will be
-		disallowed in future Scipy versions.
-		
 		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gammaln(x:Dynamic):Dynamic;
+	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return available LAPACK function objects from names.
 		
@@ -555,12 +554,10 @@ package scipy.stats._multivariate;
 		dtype : str or dtype, optional
 		    Data-type specifier. Not used if `arrays` is non-empty.
 		
-		
 		Returns
 		-------
 		funcs : list
 		    List containing the found function(s).
-		
 		
 		Notes
 		-----
@@ -571,8 +568,37 @@ package scipy.stats._multivariate;
 		In LAPACK, the naming convention is that all functions start with a
 		type prefix, which depends on the type of the principal
 		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectevely, and
-		are stored in attribute `typecode` of the returned functions.
+		types {float32, float64, complex64, complex128} respectively, and
+		are stored in attribute ``typecode`` of the returned functions.
+		
+		Examples
+		--------
+		Suppose we would like to use '?lange' routine which computes the selected
+		norm of an array. We pass our array in order to get the correct 'lange'
+		flavor.
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_lange = LA.get_lapack_funcs('lange', (a,))
+		>>> x_lange.typecode
+		'd'
+		>>> x_lange = LA.get_lapack_funcs('lange',(a*1j,))
+		>>> x_lange.typecode
+		'z'
+		
+		Several LAPACK routines work best when its internal WORK array has
+		the optimal size (big enough for fast computation and small enough to
+		avoid waste of memory). This size is determined also by a dedicated query
+		to the function which is often wrapped as a standalone function and
+		commonly denoted as ``###_lwork``. Below is an example for ``?sysv``
+		
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(1000,1000)
+		>>> b = np.random.rand(1000,1)*1j
+		>>> # We pick up zsysv and zsysv_lwork due to b array
+		... xsysv, xlwork = LA.get_lapack_funcs(('sysv', 'sysv_lwork'), (a, b))
+		>>> opt_lwork, _ = xlwork(a.shape[0])  # returns a complex for 'z' prefix
+		>>> udut, ipiv, x, info = xsysv(a, b, lwork=int(opt_lwork.real))
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -1015,6 +1041,10 @@ package scipy.stats._multivariate;
 		    Probability density function.
 		``logpdf(x, mean=None, cov=1, allow_singular=False)``
 		    Log of the probability density function.
+		``cdf(x, mean=None, cov=1, allow_singular=False, maxpts=1000000*dim, abseps=1e-5, releps=1e-5)``
+		    Cumulative distribution function.
+		``logcdf(x, mean=None, cov=1, allow_singular=False, maxpts=1000000*dim, abseps=1e-5, releps=1e-5)``
+		    Log of the cumulative distribution function.
 		``rvs(mean=None, cov=1, size=1, random_state=None)``
 		    Draw random samples from a multivariate normal distribution.
 		``entropy()``
@@ -1148,6 +1178,7 @@ package scipy.stats._multivariate;
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var random_correlation : Dynamic;
 	static public function special_ortho_group(?dim:Dynamic, ?seed:Dynamic):Dynamic;
+	static public var unitary_group : Dynamic;
 	/**
 		A Wishart random variable.
 		

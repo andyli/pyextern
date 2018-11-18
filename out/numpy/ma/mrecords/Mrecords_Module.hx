@@ -14,12 +14,11 @@ package numpy.ma.mrecords;
 	/**
 		Private function validating the given `fill_value` for the given dtype.
 		
-		If fill_value is None, it is set to the default corresponding to the dtype
-		if this latter is standard (no fields). If the datatype is flexible (named
-		fields), fill_value is set to a tuple whose elements are the default fill
-		values corresponding to each field.
+		If fill_value is None, it is set to the default corresponding to the dtype.
 		
 		If fill_value is not None, its value is forced to the given dtype.
+		
+		The result is always a 0d array.
 	**/
 	static public function _check_fill_value(fill_value:Dynamic, ndtype:Dynamic):Dynamic;
 	/**
@@ -248,7 +247,7 @@ package numpy.ma.mrecords;
 		      fill_value=999999)
 		>>> ma.getmaskarray(a)
 		array([[False,  True],
-		       [False, False]], dtype=bool)
+		       [False, False]])
 		
 		Result when mask == ``nomask``
 		
@@ -262,7 +261,7 @@ package numpy.ma.mrecords;
 		      fill_value=999999)
 		>>> >ma.getmaskarray(b)
 		array([[False, False],
-		       [False, False]], dtype=bool)
+		       [False, False]])
 	**/
 	static public function getmaskarray(arr:Dynamic):Dynamic;
 	static public var masked : Dynamic;
@@ -319,7 +318,15 @@ package numpy.ma.mrecords;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----

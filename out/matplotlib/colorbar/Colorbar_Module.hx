@@ -9,8 +9,8 @@ package matplotlib.colorbar;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _log : Dynamic;
 	static public function _set_ticks_on_axis_warn(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
-	static public var absolute_import : Dynamic;
 	static public var colorbar_doc : Dynamic;
 	/**
 		Creates a colorbar on the given axes for the given mappable.
@@ -20,7 +20,6 @@ package matplotlib.colorbar;
 	**/
 	static public function colorbar_factory(cax:Dynamic, mappable:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var colormap_kw_doc : Dynamic;
-	static public var division : Dynamic;
 	/**
 		Resize and reposition parent axes, and return a child
 		axes suitable for a colorbar.
@@ -45,7 +44,7 @@ package matplotlib.colorbar;
 		*fraction*    0.15; fraction of original axes to use for colorbar
 		*pad*         0.05 if vertical, 0.15 if horizontal; fraction
 		              of original axes between colorbar and new image axes
-		*shrink*      1.0; fraction by which to shrink the colorbar
+		*shrink*      1.0; fraction by which to multiply the size of the colorbar
 		*aspect*      20; ratio of long to short dimensions
 		*anchor*      (0.0, 0.5) if vertical; (0.5, 1.0) if horizontal;
 		              the anchor point of the colorbar axes
@@ -94,7 +93,7 @@ package matplotlib.colorbar;
 		*fraction*    0.15; fraction of original axes to use for colorbar
 		*pad*         0.05 if vertical, 0.15 if horizontal; fraction
 		              of original axes between colorbar and new image axes
-		*shrink*      1.0; fraction by which to shrink the colorbar
+		*shrink*      1.0; fraction by which to multiply the size of the colorbar
 		*aspect*      20; ratio of long to short dimensions
 		*anchor*      (0.0, 0.5) if vertical; (0.5, 1.0) if horizontal;
 		              the anchor point of the colorbar axes
@@ -110,8 +109,6 @@ package matplotlib.colorbar;
 		Returns (cax, kw), the child axes and the reduced kw dictionary to be
 		passed when creating the colorbar instance.
 	**/
-	static public function make_axes_gridspec(parent:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function make_axes_gridspec(parent:Dynamic, ?fraction:Dynamic, ?shrink:Dynamic, ?aspect:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var make_axes_kw_doc : Dynamic;
-	static public var print_function : Dynamic;
-	static public var unicode_literals : Dynamic;
 }

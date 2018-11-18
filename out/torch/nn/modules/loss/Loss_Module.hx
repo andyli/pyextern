@@ -9,5 +9,4 @@ package torch.nn.modules.loss;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _assert_no_grad(variable:Dynamic):Dynamic;
 }

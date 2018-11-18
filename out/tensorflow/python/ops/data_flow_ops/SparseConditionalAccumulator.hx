@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.data_flow_ops;
 @:pythonImport("tensorflow.python.ops.data_flow_ops", "SparseConditionalAccumulator") extern class SparseConditionalAccumulator {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -47,7 +47,7 @@ package tensorflow.python.ops.data_flow_ops;
 		    classes
 	**/
 	@:native("__init__")
-	public function ___init__(dtype:Dynamic, ?shape:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(dtype:Dynamic, ?shape:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?reduction_type:Dynamic):Dynamic;
 	/**
 		Creates a new ConditionalAccumulator.
 		
@@ -57,14 +57,14 @@ package tensorflow.python.ops.data_flow_ops;
 		  accumulator_ref: A handle to the conditional accumulator, created by sub-
 		    classes
 	**/
-	public function new(dtype:Dynamic, ?shape:Dynamic, ?shared_name:Dynamic, ?name:Dynamic):Void;
+	public function new(dtype:Dynamic, ?shape:Dynamic, ?shared_name:Dynamic, ?name:Dynamic, ?reduction_type:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,11 +115,14 @@ package tensorflow.python.ops.data_flow_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
+	static public var _tf_deprecated_api_names : Dynamic;
 	/**
 		The underlying accumulator reference.
 	**/

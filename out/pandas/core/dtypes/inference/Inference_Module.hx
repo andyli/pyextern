@@ -32,6 +32,35 @@ package pandas.core.dtypes.inference;
 		False
 	**/
 	static public function _iterable_not_string(obj:Dynamic):Bool;
+	/**
+		Check if the object is array-like.
+		
+		For an object to be considered array-like, it must be list-like and
+		have a `dtype` attribute.
+		
+		Parameters
+		----------
+		obj : The object to check.
+		
+		Returns
+		-------
+		is_array_like : bool
+		    Whether `obj` has array-like properties.
+		
+		Examples
+		--------
+		>>> is_array_like(np.array([1, 2, 3]))
+		True
+		>>> is_array_like(pd.Series(["a", "b"]))
+		True
+		>>> is_array_like(pd.Index(["2016-01-01"]))
+		True
+		>>> is_array_like([1, 2, 3])
+		False
+		>>> is_array_like(("a", "b"))
+		False
+	**/
+	static public function is_array_like(obj:Dynamic):Bool;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_complex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_decimal(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -230,20 +259,37 @@ package pandas.core.dtypes.inference;
 	/**
 		Check if the object is a number.
 		
+		Returns True when the object is a number, and False if is not.
+		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : any type
+		    The object to check if is a number.
 		
 		Returns
 		-------
 		is_number : bool
 		    Whether `obj` is a number or not.
 		
+		See Also
+		--------
+		pandas.api.types.is_integer: checks a subgroup of numbers
+		
 		Examples
 		--------
-		>>> is_number(1)
+		>>> pd.api.types.is_number(1)
 		True
-		>>> is_number("foo")
+		>>> pd.api.types.is_number(7.15)
+		True
+		
+		Booleans are valid because they are int subclass.
+		
+		>>> pd.api.types.is_number(False)
+		True
+		
+		>>> pd.api.types.is_number("foo")
+		False
+		>>> pd.api.types.is_number("5")
 		False
 	**/
 	static public function is_number(obj:Dynamic):Bool;
@@ -300,6 +346,7 @@ package pandas.core.dtypes.inference;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -345,6 +392,7 @@ package pandas.core.dtypes.inference;
 		    Whether `obj` is a string or not.
 	**/
 	static public function is_string_like(obj:Dynamic):Bool;
+	static public function re_type(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_and_binary_types : Dynamic;
 	static public var string_types : Dynamic;
 }

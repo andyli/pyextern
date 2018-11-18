@@ -88,7 +88,7 @@ package scipy.sparse.extract;
 		       [4, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0]])
 		>>> tril(A, format='csc')
-		<3x5 sparse matrix of type '<type 'numpy.int32'>'
+		<3x5 sparse matrix of type '<class 'numpy.int32'>'
 		        with 4 stored elements in Compressed Sparse Column format>
 	**/
 	static public function tril(A:Dynamic, ?k:Dynamic, ?format:Dynamic):Dynamic;
@@ -142,7 +142,7 @@ package scipy.sparse.extract;
 		       [4, 5, 0, 6, 7],
 		       [0, 0, 8, 9, 0]])
 		>>> triu(A, format='csc')
-		<3x5 sparse matrix of type '<type 'numpy.int32'>'
+		<3x5 sparse matrix of type '<class 'numpy.int32'>'
 		        with 8 stored elements in Compressed Sparse Column format>
 	**/
 	static public function triu(A:Dynamic, ?k:Dynamic, ?format:Dynamic):Dynamic;

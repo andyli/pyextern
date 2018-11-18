@@ -1,18 +1,19 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.gen_ctc_ops;
 @:pythonImport("tensorflow.python.ops.gen_ctc_ops") extern class Gen_ctc_ops_Module {
-	static public function _InitOpDefLibrary():Dynamic;
+	static public function _InitOpDefLibrary(op_list_proto_bytes:Dynamic):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
-	static public var __ctc_beam_search_decoder_outputs : Dynamic;
-	static public var __ctc_greedy_decoder_outputs : Dynamic;
-	static public var __ctc_loss_outputs : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _ctc_beam_search_decoder_outputs : Dynamic;
+	static public var _ctc_greedy_decoder_outputs : Dynamic;
+	static public var _ctc_loss_outputs : Dynamic;
+	static public var _op_def_lib : Dynamic;
 	/**
 		Performs beam search decoding on the logits given in input.
 		
@@ -38,19 +39,17 @@ package tensorflow.python.ops.gen_ctc_ops;
 		Returns:
 		  A tuple of `Tensor` objects (decoded_indices, decoded_values, decoded_shape, log_probability).
 		
-		  decoded_indices: A list of `top_paths` `Tensor` objects with type `int64`. A list (length: top_paths) of indices matrices.  Matrix j,
-		    size `(total_decoded_outputs[j] x 2)`, has indices of a
-		    `SparseTensor<int64, 2>`.  The rows store: [batch, time].
-		  decoded_values: A list of `top_paths` `Tensor` objects with type `int64`. A list (length: top_paths) of values vectors.  Vector j,
-		    size `(length total_decoded_outputs[j])`, has the values of a
-		    `SparseTensor<int64, 2>`.  The vector stores the decoded classes for beam j.
-		  decoded_shape: A list of `top_paths` `Tensor` objects with type `int64`. A list (length: top_paths) of shape vector.  Vector j,
-		    size `(2)`, stores the shape of the decoded `SparseTensor[j]`.
-		    Its values are: `[batch_size, max_decoded_length[j]]`.
-		  log_probability: A `Tensor` of type `float32`. A matrix, shaped: `(batch_size x top_paths)`.  The
-		    sequence log-probabilities.
+		  decoded_indices: A list of `top_paths` `Tensor` objects with type `int64`.
+		  decoded_values: A list of `top_paths` `Tensor` objects with type `int64`.
+		  decoded_shape: A list of `top_paths` `Tensor` objects with type `int64`.
+		  log_probability: A `Tensor` of type `float32`.
 	**/
-	static public function _ctc_beam_search_decoder(inputs:Dynamic, sequence_length:Dynamic, beam_width:Dynamic, top_paths:Dynamic, ?merge_repeated:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ctc_beam_search_decoder(inputs:Dynamic, sequence_length:Dynamic, beam_width:Dynamic, top_paths:Dynamic, ?merge_repeated:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function ctc_beam_search_decoder
+	**/
+	static public function ctc_beam_search_decoder_eager_fallback(inputs:Dynamic, sequence_length:Dynamic, beam_width:Dynamic, top_paths:Dynamic, ?merge_repeated:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Performs greedy decoding on the logits given in inputs.
 		
@@ -76,16 +75,17 @@ package tensorflow.python.ops.gen_ctc_ops;
 		Returns:
 		  A tuple of `Tensor` objects (decoded_indices, decoded_values, decoded_shape, log_probability).
 		
-		  decoded_indices: A `Tensor` of type `int64`. Indices matrix, size `(total_decoded_outputs x 2)`,
-		    of a `SparseTensor<int64, 2>`.  The rows store: [batch, time].
-		  decoded_values: A `Tensor` of type `int64`. Values vector, size: `(total_decoded_outputs)`,
-		    of a `SparseTensor<int64, 2>`.  The vector stores the decoded classes.
-		  decoded_shape: A `Tensor` of type `int64`. Shape vector, size `(2)`, of the decoded SparseTensor.
-		    Values are: `[batch_size, max_decoded_length]`.
-		  log_probability: A `Tensor` of type `float32`. Matrix, size `(batch_size x 1)`, containing sequence
-		    log-probabilities.
+		  decoded_indices: A `Tensor` of type `int64`.
+		  decoded_values: A `Tensor` of type `int64`.
+		  decoded_shape: A `Tensor` of type `int64`.
+		  log_probability: A `Tensor` of type `float32`.
 	**/
-	static public function _ctc_greedy_decoder(inputs:Dynamic, sequence_length:Dynamic, ?merge_repeated:Dynamic, ?name:Dynamic):Dynamic;
+	static public function ctc_greedy_decoder(inputs:Dynamic, sequence_length:Dynamic, ?merge_repeated:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function ctc_greedy_decoder
+	**/
+	static public function ctc_greedy_decoder_eager_fallback(inputs:Dynamic, sequence_length:Dynamic, ?merge_repeated:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
 	/**
 		Calculates the CTC Loss (log probability) for each batch entry.  Also calculates
 		
@@ -112,17 +112,38 @@ package tensorflow.python.ops.gen_ctc_ops;
 		    individual labels.  This is a simplified version of CTC.
 		  ignore_longer_outputs_than_inputs: An optional `bool`. Defaults to `False`.
 		    Scalar. If set to true, during CTC
-		    calculation items have longer input sequences than output sequences
-		    are ignored by returning zero-gradient for those items.
+		    calculation, items that have longer output sequences than input sequences
+		    are skipped: they don't contribute to the loss term and have zero-gradient.
 		  name: A name for the operation (optional).
 		
 		Returns:
 		  A tuple of `Tensor` objects (loss, gradient).
 		
-		  loss: A `Tensor` of type `float32`. A vector (batch) containing log-probabilities.
-		  gradient: A `Tensor` of type `float32`. The gradient of `loss`.  3-D, shape:
-		    `(max_time x batch_size x num_classes)`.
+		  loss: A `Tensor` of type `float32`.
+		  gradient: A `Tensor` of type `float32`.
 	**/
-	static public function _ctc_loss(inputs:Dynamic, labels_indices:Dynamic, labels_values:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?name:Dynamic):Dynamic;
-	static public var _op_def_lib : Dynamic;
+	static public function ctc_loss(inputs:Dynamic, labels_indices:Dynamic, labels_values:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		This is the slowpath function for Eager mode.
+		This is for function ctc_loss
+	**/
+	static public function ctc_loss_eager_fallback(inputs:Dynamic, labels_indices:Dynamic, labels_values:Dynamic, sequence_length:Dynamic, ?preprocess_collapse_repeated:Dynamic, ?ctc_merge_repeated:Dynamic, ?ignore_longer_outputs_than_inputs:Dynamic, ?name:Dynamic, ?ctx:Dynamic):Dynamic;
+	/**
+		Decorator for marking endpoints deprecated.
+		
+		This decorator does not print deprecation messages.
+		TODO(annarev): eventually start printing deprecation warnings when
+		@deprecation_endpoints decorator is added.
+		
+		Args:
+		  *args: Deprecated endpoint names.
+		
+		Returns:
+		  A function that takes symbol as an argument and adds
+		  _tf_deprecated_api_names to that symbol.
+		  _tf_deprecated_api_names would be set to a list of deprecated
+		  endpoint names for the symbol.
+	**/
+	static public function deprecated_endpoints(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

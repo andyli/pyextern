@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy._lib._gcutils;
 @:pythonImport("scipy._lib._gcutils") extern class _Gcutils_Module {
+	static public var IS_PYPY : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -16,6 +17,8 @@ package scipy._lib._gcutils;
 		This is useful for checking that an object can be freed directly by
 		reference counting, without requiring gc to break reference cycles.
 		GC is disabled inside the context manager.
+		
+		This check is not available on PyPy.
 		
 		Parameters
 		----------

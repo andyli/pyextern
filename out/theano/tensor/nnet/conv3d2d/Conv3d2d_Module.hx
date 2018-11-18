@@ -35,8 +35,7 @@ package theano.tensor.nnet.conv3d2d;
 		Another way to define signals: (batch,  time, in channel, row, column)
 		Another way to define filters: (out channel,time,in channel, row, column)
 		
-		For the GPU, you can use this implementation or
-		:func:`conv3d_fft <theano.sandbox.cuda.fftconv.conv3d_fft>`.
+		For the GPU, use nnet.conv3d.
 		
 		See Also
 		--------
@@ -47,7 +46,7 @@ package theano.tensor.nnet.conv3d2d;
 	static public function conv3d(signals:Dynamic, filters:Dynamic, ?signals_shape:Dynamic, ?filters_shape:Dynamic, ?border_mode:Dynamic):Dynamic;
 	/**
 		Copies the stack trace from one or more tensor variables to
-		one or more tensor variables.
+		one or more tensor variables and returns the destination variables.
 		
 		Parameters
 		----------
@@ -76,22 +75,5 @@ package theano.tensor.nnet.conv3d2d;
 	static public function get_diagonal_subtensor_view(x:Dynamic, i0:Dynamic, i1:Dynamic):Dynamic;
 	static public function inc_diagonal_subtensor(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var local_inplace_DiagonalSubtensor : Dynamic;
-	/**
-		This function create optimizer that move some inputs to the GPU
-		for op that work on both CPU and GPU.
-		
-		The op object is created by calling op(), so good default value
-		are needed.
-		
-		We suppose the same op work with CPU and GPU inputs.
-		
-		Parameters
-		----------
-		op
-		    The op that support GPU inputs.
-		to_gpu
-		    A list of op inputs that are moved to the GPU.
-	**/
-	static public function make_gpu_optimizer(op:Dynamic, to_gpu:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

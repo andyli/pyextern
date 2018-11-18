@@ -10,5 +10,4 @@ package torch.sparse;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _sparse_tensor_classes : Dynamic;
 }

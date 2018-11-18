@@ -7,7 +7,7 @@ package matplotlib.backends.backend_webagg;
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
 	**/
-	static public function AllFiguresPage(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function AllFiguresPage(application:Dynamic, request:Dynamic, ?url_prefix:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Base class for HTTP request handlers.
 		
@@ -35,7 +35,7 @@ package matplotlib.backends.backend_webagg;
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
 	**/
-	static public function SingleFigurePage(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function SingleFigurePage(application:Dynamic, request:Dynamic, ?url_prefix:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Subclass this class to create a basic WebSocket handler.
 		
@@ -122,7 +122,7 @@ package matplotlib.backends.backend_webagg;
 		Call self as a function.
 	**/
 	public function __call__(request:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -173,7 +173,7 @@ package matplotlib.backends.backend_webagg;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -224,7 +224,7 @@ package matplotlib.backends.backend_webagg;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -262,7 +262,7 @@ package matplotlib.backends.backend_webagg;
 		:arg dict path_kwargs: keyword arguments for ``target_class`` HTTP method.
 	**/
 	public function get_handler_delegate(request:Dynamic, target_class:Dynamic, ?target_kwargs:Dynamic, ?path_args:Dynamic, ?path_kwargs:Dynamic):Dynamic;
-	static public function initialize(?url_prefix:Dynamic, ?port:Dynamic):Dynamic;
+	static public function initialize(?url_prefix:Dynamic, ?port:Dynamic, ?address:Dynamic):Dynamic;
 	static public var initialized : Dynamic;
 	/**
 		Starts an HTTP server for this application on the given port.

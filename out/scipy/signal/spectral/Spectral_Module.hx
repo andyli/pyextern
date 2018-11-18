@@ -15,7 +15,7 @@ package scipy.signal.spectral;
 		scipy.signal._spectral_helper
 		
 		This is a helper function that does the main FFT calculation for
-		`_spectral helper`. All input valdiation is performed there, and the
+		`_spectral helper`. All input validation is performed there, and the
 		data axis is assumed to be the last axis of x. It is not designed to
 		be called externally. The windows are not averaged over; the result
 		from each window is returned.
@@ -25,11 +25,6 @@ package scipy.signal.spectral;
 		result : ndarray
 		    Array of FFT data
 		
-		References
-		----------
-		.. [1] Stack Overflow, "Repeat NumPy array without replicating
-		       data?", http://stackoverflow.com/a/5568169
-		
 		Notes
 		-----
 		Adapted from matplotlib.mlab
@@ -37,6 +32,35 @@ package scipy.signal.spectral;
 		.. versionadded:: 0.16.0
 	**/
 	static public function _fft_helper(x:Dynamic, win:Dynamic, detrend_func:Dynamic, nperseg:Dynamic, noverlap:Dynamic, nfft:Dynamic, sides:Dynamic):Dynamic;
+	/**
+		_lombscargle(x, y, freqs)
+		
+		Computes the Lomb-Scargle periodogram.
+		
+		Parameters
+		----------
+		x : array_like
+		    Sample times.
+		y : array_like
+		    Measurement values (must be registered so the mean is zero).
+		freqs : array_like
+		    Angular frequencies for output periodogram.
+		
+		Returns
+		-------
+		pgram : array_like
+		    Lomb-Scargle periodogram.
+		
+		Raises
+		------
+		ValueError
+		    If the input arrays `x` and `y` do not have the same shape.
+		
+		See also
+		--------
+		lombscargle
+	**/
+	static public function _lombscargle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Calculate various forms of windowed FFTs for PSD, CSD, etc.
 		
@@ -56,10 +80,12 @@ package scipy.signal.spectral;
 		fs : float, optional
 		    Sampling frequency of the time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be `nperseg`.
-		    Defaults to 'hann'.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
 		    tuple, is set to 256, and if window is array_like, is set to the
@@ -113,14 +139,7 @@ package scipy.signal.spectral;
 		t : ndarray
 		    Array of times corresponding to each data segment
 		result : ndarray
-		    Array of output data, contents dependant on *mode* kwarg.
-		
-		References
-		----------
-		.. [1] Stack Overflow, "Rolling window for 1D arrays in Numpy?",
-		       http://stackoverflow.com/a/6811241
-		.. [2] Stack Overflow, "Using strides for an efficient moving
-		       average filter", http://stackoverflow.com/a/4947453
+		    Array of output data, contents dependent on *mode* kwarg.
 		
 		Notes
 		-----
@@ -170,9 +189,11 @@ package scipy.signal.spectral;
 		Parameters
 		----------
 		window : str or tuple or array_like
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be `nperseg`.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg.
 		nperseg : int
 		    Length of each segment.
 		noverlap : int
@@ -273,10 +294,12 @@ package scipy.signal.spectral;
 		    Sampling frequency of the `x` and `y` time series. Defaults
 		    to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be `nperseg`.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
 		    tuple, is set to 256, and if window is array_like, is set to the
@@ -314,8 +337,8 @@ package scipy.signal.spectral;
 		Notes
 		--------
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements. For the default 'hann' window an overlap
-		of 50% is a reasonable trade off between accurately estimating the
+		and on your requirements. For the default Hann window an overlap of
+		50% is a reasonable trade off between accurately estimating the
 		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
@@ -410,10 +433,12 @@ package scipy.signal.spectral;
 		    Sampling frequency of the `x` and `y` time series. Defaults
 		    to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
 		    tuple, is set to 256, and if window is array_like, is set to the
@@ -467,8 +492,8 @@ package scipy.signal.spectral;
 		zero-padded to match.
 		
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements. For the default 'hann' window an overlap
-		of 50% is a reasonable trade off between accurately estimating the
+		and on your requirements. For the default Hann window an overlap of
+		50% is a reasonable trade off between accurately estimating the
 		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		
@@ -574,8 +599,9 @@ package scipy.signal.spectral;
 		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
 		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
 		    deviation), `general_gaussian` (needs power, width), `slepian`
-		    (needs width), `chebwin` (needs attenuation), `exponential`
-		    (needs decay scale), `tukey` (needs taper fraction)
+		    (needs width), `dpss` (needs normalized half-bandwidth),
+		    `chebwin` (needs attenuation), `exponential` (needs decay scale),
+		    `tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -614,11 +640,13 @@ package scipy.signal.spectral;
 		fs : float, optional
 		    Sampling frequency of the time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be `nperseg`.
-		    Defaults to a Hann window. Must match the window used to
-		    generate the STFT for faithful inversion.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window. Must match the window used to generate the
+		    STFT for faithful inversion.
 		nperseg : int, optional
 		    Number of data points corresponding to each STFT segment. This
 		    parameter must be specified if the number of data points per
@@ -766,9 +794,14 @@ package scipy.signal.spectral;
 		extended by Scargle [2]_ to find, and test the significance of weak
 		periodic signals with uneven temporal sampling.
 		
-		The computed periodogram is unnormalized, it takes the value
-		``(A**2) * N/4`` for a harmonic signal with amplitude A for sufficiently
-		large N.
+		When *normalize* is False (default) the computed periodogram
+		is unnormalized, it takes the value ``(A**2) * N/4`` for a harmonic
+		signal with amplitude A for sufficiently large N.
+		
+		When *normalize* is True the computed periodogram is is normalized by
+		the residuals of the data around a constant reference model (at zero).
+		
+		Input arrays should be one-dimensional and will be cast to float64.
 		
 		Parameters
 		----------
@@ -778,6 +811,10 @@ package scipy.signal.spectral;
 		    Measurement values.
 		freqs : array_like
 		    Angular frequencies for output periodogram.
+		precenter : bool, optional
+		    Pre-center amplitudes by subtracting the mean.
+		normalize : bool, optional
+		    Compute normalized periodogram.
 		
 		Returns
 		-------
@@ -831,7 +868,6 @@ package scipy.signal.spectral;
 		>>> r = np.random.rand(nin)
 		>>> x = np.linspace(0.01, 10*np.pi, nin)
 		>>> x = x[r >= frac_points]
-		>>> normval = x.shape[0] # For normalization of the periodogram
 		 
 		Plot a sine wave for the selected times:
 		
@@ -844,24 +880,20 @@ package scipy.signal.spectral;
 		Calculate Lomb-Scargle periodogram:
 		
 		>>> import scipy.signal as signal
-		>>> pgram = signal.lombscargle(x, y, f)
+		>>> pgram = signal.lombscargle(x, y, f, normalize=True)
 		
 		Now make a plot of the input data:
 		
 		>>> plt.subplot(2, 1, 1)
-		<matplotlib.axes.AxesSubplot object at 0x102154f50>
 		>>> plt.plot(x, y, 'b+')
-		[<matplotlib.lines.Line2D object at 0x102154a10>]
 		
 		Then plot the normalized periodogram:
 		
 		>>> plt.subplot(2, 1, 2)
-		<matplotlib.axes.AxesSubplot object at 0x104b0a990>
-		>>> plt.plot(f, np.sqrt(4*(pgram/normval)))
-		[<matplotlib.lines.Line2D object at 0x104b2f910>]
+		>>> plt.plot(f, pgram)
 		>>> plt.show()
 	**/
-	static public function lombscargle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function lombscargle(x:Dynamic, y:Dynamic, freqs:Dynamic, ?precenter:Dynamic, ?normalize:Dynamic):Dynamic;
 	/**
 		Odd extension at the boundaries of an array
 		
@@ -907,10 +939,12 @@ package scipy.signal.spectral;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to 'boxcar'.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to 'boxcar'.
 		nfft : int, optional
 		    Length of the FFT used. If `None` the length of `x` will be
 		    used.
@@ -980,8 +1014,8 @@ package scipy.signal.spectral;
 		If we average the last half of the spectral density, to exclude the
 		peak, we can recover the noise power on the signal.
 		
-		>>> np.mean(Pxx_den[256:])
-		0.0018156616014838548
+		>>> np.mean(Pxx_den[25000:])
+		0.00099728892368242854
 		
 		Now compute and plot the power spectrum.
 		
@@ -1014,9 +1048,11 @@ package scipy.signal.spectral;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg.
 		    Defaults to a Tukey window with shape parameter of 0.25.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
@@ -1131,10 +1167,12 @@ package scipy.signal.spectral;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to 256.
 		noverlap : int, optional
@@ -1267,10 +1305,12 @@ package scipy.signal.spectral;
 		fs : float, optional
 		    Sampling frequency of the `x` time series. Defaults to 1.0.
 		window : str or tuple or array_like, optional
-		    Desired window to use. See `get_window` for a list of windows
-		    and required parameters. If `window` is array_like it will be
-		    used directly as the window and its length must be nperseg.
-		    Defaults to a Hann window.
+		    Desired window to use. If `window` is a string or tuple, it is
+		    passed to `get_window` to generate the window values, which are
+		    DFT-even by default. See `get_window` for a list of windows and
+		    required parameters. If `window` is array_like it will be used
+		    directly as the window and its length must be nperseg. Defaults
+		    to a Hann window.
 		nperseg : int, optional
 		    Length of each segment. Defaults to None, but if window is str or
 		    tuple, is set to 256, and if window is array_like, is set to the
@@ -1316,8 +1356,8 @@ package scipy.signal.spectral;
 		Notes
 		-----
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements. For the default 'hann' window an overlap
-		of 50% is a reasonable trade off between accurately estimating the
+		and on your requirements. For the default Hann window an overlap of
+		50% is a reasonable trade off between accurately estimating the
 		signal power, while not over counting any of the data. Narrower
 		windows may require a larger overlap.
 		

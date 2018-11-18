@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.cm;
 @:pythonImport("matplotlib.cm", "ScalarMappable") extern class ScalarMappable {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -68,7 +68,7 @@ package matplotlib.cm;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -119,7 +119,7 @@ package matplotlib.cm;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -162,7 +162,11 @@ package matplotlib.cm;
 	**/
 	public function get_cmap():Dynamic;
 	/**
-		Set the image array from numpy array *A*
+		Set the image array from numpy array *A*.
+		
+		Parameters
+		----------
+		A : ndarray
 	**/
 	public function set_array(A:Dynamic):Dynamic;
 	/**
@@ -170,17 +174,24 @@ package matplotlib.cm;
 		sequence, interpret it as ``(vmin, vmax)`` which is used to
 		support setp
 		
-		ACCEPTS: a length 2 sequence of floats
+		ACCEPTS: a length 2 sequence of floats; may be overridden in methods
+		that have ``vmin`` and ``vmax`` kwargs.
 	**/
 	public function set_clim(?vmin:Dynamic, ?vmax:Dynamic):Dynamic;
 	/**
 		set the colormap for luminance data
 		
-		ACCEPTS: a colormap or registered colormap name
+		Parameters
+		----------
+		cmap : colormap or registered colormap name
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
-		set the normalization instance
+		Set the normalization instance.
+		
+		Parameters
+		----------
+		norm : `.Normalize`
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
 	/**
@@ -195,6 +206,9 @@ package matplotlib.cm;
 		If *x* is an ndarray with 3 dimensions,
 		and the last dimension is either 3 or 4, then it will be
 		treated as an rgb or rgba array, and no mapping will be done.
+		The array can be uint8, or it can be floating point with
+		values in the 0-1 range; otherwise a ValueError will be raised.
+		If it is a masked array, the mask will be ignored.
 		If the last dimension is 3, the *alpha* kwarg (defaulting to 1)
 		will be used to fill in the transparency.  If the last dimension
 		is 4, the *alpha* kwarg is ignored; it does not
@@ -206,12 +220,7 @@ package matplotlib.cm;
 		the returned rgba array will be uint8 in the 0 to 255 range.
 		
 		If norm is False, no normalization of the input data is
-		performed, and it is assumed to already be in the range (0-1).
-		
-		Note: this method assumes the input is well-behaved; it does
-		not check for anomalies such as *x* being a masked rgba
-		array, or being an integer type other than uint8, or being
-		a floating point rgba array with values outside the 0-1 range.
+		performed, and it is assumed to be in the range (0-1).
 	**/
 	public function to_rgba(x:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic, ?norm:Dynamic):Dynamic;
 }

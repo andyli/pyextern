@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.training.device_setter;
 @:pythonImport("tensorflow.python.training.device_setter") extern class Device_setter_Module {
+	static public var STANDARD_PS_OPS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -57,7 +58,7 @@ package tensorflow.python.training.device_setter;
 		    than overriding them.
 		  cluster: `ClusterDef` proto or `ClusterSpec`.
 		  ps_ops: List of strings representing `Operation` types that need to be
-		    placed on `ps` devices.  If `None`, defaults to `["Variable"]`.
+		    placed on `ps` devices.  If `None`, defaults to `STANDARD_PS_OPS`.
 		  ps_strategy: A callable invoked for every ps `Operation` (i.e. matched by
 		    `ps_ops`), that takes the `Operation` and returns the ps task index to
 		    use.  If `None`, defaults to a round-robin strategy across all `ps`
@@ -71,4 +72,5 @@ package tensorflow.python.training.device_setter;
 		  or if `ps_strategy` is provided but not a callable.
 	**/
 	static public function replica_device_setter(?ps_tasks:Dynamic, ?ps_device:Dynamic, ?worker_device:Dynamic, ?merge_devices:Dynamic, ?cluster:Dynamic, ?ps_ops:Dynamic, ?ps_strategy:Dynamic):Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

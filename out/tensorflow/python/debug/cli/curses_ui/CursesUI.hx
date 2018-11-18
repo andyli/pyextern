@@ -17,6 +17,7 @@ package tensorflow.python.debug.cli.curses_ui;
 	static public var _FOREGROUND_COLORS : Dynamic;
 	static public var _INFO_TOAST_COLOR_PAIR : Dynamic;
 	static public var _KEY_MAP : Dynamic;
+	static public var _MOUSE_SCROLL_DELAY_MS : Dynamic;
 	static public var _NAVIGATION_BACK_COMMAND : Dynamic;
 	static public var _NAVIGATION_FORWARD_COMMAND : Dynamic;
 	static public var _NAVIGATION_WARNING_COLOR_PAIR : Dynamic;
@@ -25,7 +26,7 @@ package tensorflow.python.debug.cli.curses_ui;
 	static public var _STATUS_BAR_COLOR_PAIR : Dynamic;
 	static public var _UI_WAIT_COLOR_PAIR : Dynamic;
 	static public var _UI_WAIT_MESSAGE : Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -66,23 +67,27 @@ package tensorflow.python.debug.cli.curses_ui;
 		
 		Args:
 		  on_ui_exit: (Callable) Callback invoked when the UI exits.
+		  config: An instance of `cli_config.CLIConfig()` carrying user-facing
+		    configurations.
 	**/
 	@:native("__init__")
-	public function ___init__(?on_ui_exit:Dynamic):Dynamic;
+	public function ___init__(?on_ui_exit:Dynamic, ?config:Dynamic):Dynamic;
 	/**
 		Constructor of CursesUI.
 		
 		Args:
 		  on_ui_exit: (Callable) Callback invoked when the UI exits.
+		  config: An instance of `cli_config.CLIConfig()` carrying user-facing
+		    configurations.
 	**/
-	public function new(?on_ui_exit:Dynamic):Void;
+	public function new(?on_ui_exit:Dynamic, ?config:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -133,11 +138,12 @@ package tensorflow.python.debug.cli.curses_ui;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _addstr(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Analyze raw input to tab-completer.
 		
@@ -179,6 +185,10 @@ package tensorflow.python.debug.cli.curses_ui;
 		    current screen width.
 	**/
 	public function _compile_ui_status_summary():Dynamic;
+	/**
+		Command handler for the "config" command.
+	**/
+	public function _config_command_handler(args:Dynamic, ?screen_info:Dynamic):Dynamic;
 	/**
 		Dispatch user command.
 		
@@ -325,6 +335,19 @@ package tensorflow.python.debug.cli.curses_ui;
 	**/
 	public function _on_textbox_keypress(x:Dynamic):Dynamic;
 	/**
+		Pad the whitespace at the end of a line with the default color pair.
+		
+		Prevents spurious color pairs from appearing at the end of the lines in
+		certain text terimnals.
+		
+		Args:
+		  pad: The curses pad object to operate on.
+		  row: (`int`) row index.
+		  line_end_x: (`int`) column index of the end of the line (beginning of
+		    the whitespace).
+	**/
+	public function _pad_line_end_with_whitespace(pad:Dynamic, row:Dynamic, line_end_x:Dynamic):Dynamic;
+	/**
 		Parse a command string into prefix and arguments.
 		
 		Args:
@@ -339,6 +362,7 @@ package tensorflow.python.debug.cli.curses_ui;
 	**/
 	public function _parse_command(command:Dynamic):Dynamic;
 	public function _redraw_output():Dynamic;
+	public function _refresh_pad(pad:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Render a line in a text pad.
 		
@@ -545,6 +569,10 @@ package tensorflow.python.debug.cli.curses_ui;
 		  An exit token of arbitrary type. The token can be None.
 	**/
 	public function _ui_loop():Dynamic;
+	/**
+		Obtain the CLIConfig of this `BaseUI` instance.
+	**/
+	public var config : Dynamic;
 	public function get_help():Dynamic;
 	/**
 		A wrapper around CommandHandlerRegistry.register_command_handler().

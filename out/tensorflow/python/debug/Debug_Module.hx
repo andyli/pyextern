@@ -57,6 +57,22 @@ package tensorflow.python.debug;
 	**/
 	static public function has_inf_or_nan(datum:Dynamic, tensor:Dynamic):Dynamic;
 	/**
+		Load a tensor from an Event proto.
+		
+		Args:
+		  event: The Event proto, assumed to hold a tensor value in its
+		      summary.value[0] field.
+		
+		Returns:
+		  The tensor value loaded from the event file, as a `numpy.ndarray`, if
+		  representation of the tensor value by a `numpy.ndarray` is possible.
+		  For uninitialized Tensors, returns `None`. For Tensors of data types that
+		  cannot be represented as `numpy.ndarray` (e.g., `tf.resource`), return
+		  the `TensorProto` protobuf object without converting it to a
+		  `numpy.ndarray`.
+	**/
+	static public function load_tensor_from_event(event:Dynamic):Dynamic;
+	/**
 		Load a tensor from an event file.
 		
 		Assumes that the event file contains a `Event` protobuf and the `Event`
@@ -72,6 +88,28 @@ package tensorflow.python.debug;
 		  `None`.
 	**/
 	static public function load_tensor_from_event_file(event_file_path:Dynamic):Dynamic;
+	/**
+		Reconstruct original (non-debugger-decorated) partition GraphDef.
+		
+		This method strips the input `tf.GraphDef` of the Copy* and Debug*-type nodes
+		inserted by the debugger.
+		
+		The reconstructed partition graph is identical to the original (i.e.,
+		  non-debugger-decorated) partition graph except in the following respects:
+		    1) The exact names of the runtime-inserted internal nodes may differ.
+		       These include _Send, _Recv, _HostSend, _HostRecv, _Retval ops.
+		    2) As a consequence of 1, the nodes that receive input directly from such
+		       send- and recv-type ops will have different input names.
+		    3) The parallel_iteration attribute of while-loop Enter ops are set to 1.
+		
+		Args:
+		  debug_graph_def: The debugger-decorated `tf.GraphDef`, with the
+		    debugger-inserted Copy* and Debug* nodes.
+		
+		Returns:
+		  The reconstructed `tf.GraphDef` stripped of the debugger-inserted nodes.
+	**/
+	static public function reconstruct_non_debug_graph_def(debug_graph_def:Dynamic):Dynamic;
 	/**
 		Add debug watches to `RunOptions` for a TensorFlow graph.
 		
@@ -106,7 +144,7 @@ package tensorflow.python.debug;
 		    are set, the two filtering operations will occur in a logical `AND`
 		    relation. In other words, a node will be included if and only if it
 		    hits both whitelists.
-		  tensor_dtype_regex_whitelist: Regular-experssion whitelist for Tensor
+		  tensor_dtype_regex_whitelist: Regular-expression whitelist for Tensor
 		    data type, e.g., `"^int.*"`.
 		    This whitelist operates in logical `AND` relations to the two whitelists
 		    above.
@@ -115,8 +153,10 @@ package tensorflow.python.debug;
 		    throwing exceptions.
 		  global_step: (`int`) Optional global_step count for this debug tensor
 		    watch.
+		  reset_disk_byte_usage: (`bool`) whether to reset the tracked disk byte
+		    usage to zero (default: `False`).
 	**/
-	static public function watch_graph(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_whitelist:Dynamic, ?op_type_regex_whitelist:Dynamic, ?tensor_dtype_regex_whitelist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic):Dynamic;
+	static public function watch_graph(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_whitelist:Dynamic, ?op_type_regex_whitelist:Dynamic, ?tensor_dtype_regex_whitelist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic, ?reset_disk_byte_usage:Dynamic):Dynamic;
 	/**
 		Add debug tensor watches, blacklisting nodes and op types.
 		
@@ -147,7 +187,7 @@ package tensorflow.python.debug;
 		    relation. In other words, a node will be excluded if it hits either of
 		    the two blacklists; a node will be included if and only if it hits
 		    neither of the blacklists.
-		  tensor_dtype_regex_blacklist: Regular-experssion blacklist for Tensor
+		  tensor_dtype_regex_blacklist: Regular-expression blacklist for Tensor
 		    data type, e.g., `"^int.*"`.
 		    This blacklist operates in logical `OR` relations to the two whitelists
 		    above.
@@ -156,6 +196,8 @@ package tensorflow.python.debug;
 		    throwing exceptions.
 		  global_step: (`int`) Optional global_step count for this debug tensor
 		    watch.
+		  reset_disk_byte_usage: (`bool`) whether to reset the tracked disk byte
+		    usage to zero (default: `False`).
 	**/
-	static public function watch_graph_with_blacklists(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_blacklist:Dynamic, ?op_type_regex_blacklist:Dynamic, ?tensor_dtype_regex_blacklist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic):Dynamic;
+	static public function watch_graph_with_blacklists(run_options:Dynamic, graph:Dynamic, ?debug_ops:Dynamic, ?debug_urls:Dynamic, ?node_name_regex_blacklist:Dynamic, ?op_type_regex_blacklist:Dynamic, ?tensor_dtype_regex_blacklist:Dynamic, ?tolerate_debug_op_creation_failures:Dynamic, ?global_step:Dynamic, ?reset_disk_byte_usage:Dynamic):Dynamic;
 }

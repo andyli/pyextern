@@ -31,9 +31,9 @@ package scipy.optimize._lsq.least_squares;
 		x0 : array_like of shape (n,) or float
 		    Point at which to estimate the derivatives. Float will be converted
 		    to a 1-d array.
-		method : {'3-point', '2-point'}, optional
+		method : {'3-point', '2-point', 'cs'}, optional
 		    Finite difference method to use:
-		        - '2-point' - use the fist order accuracy forward or backward
+		        - '2-point' - use the first order accuracy forward or backward
 		                      difference.
 		        - '3-point' - use central difference in interior points and the
 		                      second order accuracy forward or backward difference
@@ -55,7 +55,8 @@ package scipy.optimize._lsq.least_squares;
 		    Lower and upper bounds on independent variables. Defaults to no bounds.
 		    Each bound must match the size of `x0` or be a scalar, in the latter
 		    case the bound will be the same for all variables. Use it to limit the
-		    range of function evaluation.
+		    range of function evaluation. Bounds checking is not implemented
+		    when `as_linear_operator` is True.
 		sparsity : {None, array_like, sparse matrix, 2-tuple}, optional
 		    Defines a sparsity structure of the Jacobian matrix. If the Jacobian
 		    matrix is known to have only few non-zero elements in each row, then
@@ -76,17 +77,29 @@ package scipy.optimize._lsq.least_squares;
 		
 		    Note, that sparse differencing makes sense only for large Jacobian
 		    matrices where each row contains few non-zero elements.
+		as_linear_operator : bool, optional
+		    When True the function returns an `scipy.sparse.linalg.LinearOperator`.
+		    Otherwise it returns a dense array or a sparse matrix depending on
+		    `sparsity`. The linear operator provides an efficient way of computing
+		    ``J.dot(p)`` for any vector ``p`` of shape (n,), but does not allow
+		    direct access to individual elements of the matrix. By default
+		    `as_linear_operator` is False.
 		args, kwargs : tuple and dict, optional
 		    Additional arguments passed to `fun`. Both empty by default.
 		    The calling signature is ``fun(x, *args, **kwargs)``.
 		
 		Returns
 		-------
-		J : ndarray or csr_matrix
-		    Finite difference approximation of the Jacobian matrix. If `sparsity`
-		    is None then ndarray with shape (m, n) is returned. Although if m=1 it
-		    is returned as a gradient with shape (n,). If `sparsity` is not None,
-		    csr_matrix with shape (m, n) is returned.
+		J : {ndarray, sparse matrix, LinearOperator}
+		    Finite difference approximation of the Jacobian matrix.
+		    If `as_linear_operator` is True returns a LinearOperator
+		    with shape (m, n). Otherwise it returns a dense array or sparse
+		    matrix depending on how `sparsity` is defined. If `sparsity`
+		    is None then a ndarray with shape (m, n) is returned. If
+		    `sparsity` is not None returns a csr_matrix with shape (m, n).
+		    For sparse matrices and linear operators it is always returned as
+		    a 2-dimensional structure, for ndarrays, if m=1 it is returned
+		    as a 1-dimensional gradient array with shape (n,).
 		
 		See Also
 		--------
@@ -151,7 +164,7 @@ package scipy.optimize._lsq.least_squares;
 		>>> approx_derivative(g, x0, bounds=(1.0, np.inf))
 		array([ 2.])
 	**/
-	static public function approx_derivative(fun:Dynamic, x0:Dynamic, ?method:Dynamic, ?rel_step:Dynamic, ?f0:Dynamic, ?bounds:Dynamic, ?sparsity:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
+	static public function approx_derivative(fun:Dynamic, x0:Dynamic, ?method:Dynamic, ?rel_step:Dynamic, ?f0:Dynamic, ?bounds:Dynamic, ?sparsity:Dynamic, ?as_linear_operator:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
 	static public function arctan(z:Dynamic, rho:Dynamic, cost_only:Dynamic):Dynamic;
 	static public function call_minpack(fun:Dynamic, x0:Dynamic, jac:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, diff_step:Dynamic):Dynamic;
 	static public function cauchy(z:Dynamic, rho:Dynamic, cost_only:Dynamic):Dynamic;
@@ -197,6 +210,33 @@ package scipy.optimize._lsq.least_squares;
 		Check if a point lies within bounds.
 	**/
 	static public function in_bounds(x:Dynamic, lb:Dynamic, ub:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function issparse(x:Dynamic):Dynamic;
 	/**
 		Solve a nonlinear least-squares problem with bounds on the variables.
@@ -527,7 +567,7 @@ package scipy.optimize._lsq.least_squares;
 		Examples
 		--------
 		In this example we find a minimum of the Rosenbrock function without bounds
-		on independed variables.
+		on independent variables.
 		
 		>>> def fun_rosenbrock(x):
 		...     return np.array([10 * (x[1] - x[0]**2), (1 - x[0])])
@@ -727,6 +767,9 @@ package scipy.optimize._lsq.least_squares;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gof.cc;
 @:pythonImport("theano.gof.cc", "CLinker") extern class CLinker {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compiles this linker's fgraph.
 		
@@ -71,7 +71,7 @@ package theano.gof.cc;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -122,7 +122,7 @@ package theano.gof.cc;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -143,17 +143,19 @@ package theano.gof.cc;
 		The signature has the following form:
 		{{{
 		    'CLinker.cmodule_key', compilation args, libraries,
-		    header_dirs, numpy ABI version, config md5,
+		    header_dirs, numpy ABI version, config hash,
 		    (op0, input_signature0, output_signature0),
 		    (op1, input_signature1, output_signature1),
 		    ...
 		    (opK, input_signatureK, output_signatureK),
 		}}}
 		
+		Note that config hash now uses sha256, and not md5.
+		
 		The signature is a tuple, some elements of which are sub-tuples.
 		
 		The outer tuple has a brief header, containing the compilation options
-		passed to the compiler, the libraries to link against, an md5 hash
+		passed to the compiler, the libraries to link against, a sha256 hash
 		of theano.config (for all config options where "in_c_key" is True).
 		It is followed by elements for every node in the topological ordering
 		of `self.fgraph`.
@@ -207,8 +209,8 @@ package theano.gof.cc;
 		Do the actual computation of cmodule_key in a static method
 		to allow it to be reused in scalar.Composite.__eq__.
 	**/
-	public function cmodule_key_(fgraph:Dynamic, no_recycling:Dynamic, ?compile_args:Dynamic, ?libraries:Dynamic, ?header_dirs:Dynamic, ?insert_config_md5:Dynamic, ?c_compiler:Dynamic):Dynamic;
-	public function cmodule_key_variables(inputs:Dynamic, outputs:Dynamic, no_recycling:Dynamic, ?compile_args:Dynamic, ?libraries:Dynamic, ?header_dirs:Dynamic, ?insert_config_md5:Dynamic, ?c_compiler:Dynamic):Dynamic;
+	public function cmodule_key_(fgraph:Dynamic, no_recycling:Dynamic, ?compile_args:Dynamic, ?libraries:Dynamic, ?header_dirs:Dynamic, ?insert_config_hash:Dynamic, ?c_compiler:Dynamic):Dynamic;
+	public function cmodule_key_variables(inputs:Dynamic, outputs:Dynamic, no_recycling:Dynamic, ?compile_args:Dynamic, ?libraries:Dynamic, ?header_dirs:Dynamic, ?insert_config_hash:Dynamic, ?c_compiler:Dynamic):Dynamic;
 	/**
 		Generates code for a struct that does the computation of the fgraph and
 		stores it in the struct_code field of the instance.

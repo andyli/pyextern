@@ -29,11 +29,16 @@ package tensorflow.core.protobuf.config_pb2;
 	/**
 		A ProtocolMessage
 	**/
-	static public function DeviceCountEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function DeviceCountEntry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Discards the unknown fields.
 	**/
 	public function DiscardUnknownFields(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var EXPERIMENTAL_FIELD_NUMBER : Dynamic;
+	/**
+		A ProtocolMessage
+	**/
+	public function Experimental(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Extension dict
 	**/
@@ -45,7 +50,7 @@ package tensorflow.core.protobuf.config_pb2;
 	/**
 		Creates new method instance from given serialized data.
 	**/
-	static public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function FromString(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var GPU_OPTIONS_FIELD_NUMBER : Dynamic;
 	static public var GRAPH_OPTIONS_FIELD_NUMBER : Dynamic;
 	/**
@@ -58,6 +63,7 @@ package tensorflow.core.protobuf.config_pb2;
 	public function HasField(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var INTER_OP_PARALLELISM_THREADS_FIELD_NUMBER : Dynamic;
 	static public var INTRA_OP_PARALLELISM_THREADS_FIELD_NUMBER : Dynamic;
+	static public var ISOLATE_SESSION_STATE_FIELD_NUMBER : Dynamic;
 	/**
 		Checks if all required fields of a protocol message are set.
 	**/
@@ -85,7 +91,7 @@ package tensorflow.core.protobuf.config_pb2;
 	/**
 		Registers an extension with the current message.
 	**/
-	static public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function RegisterExtension(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var SESSION_INTER_OP_THREAD_POOL_FIELD_NUMBER : Dynamic;
 	/**
 		Serializes the message to a string, even if it isn't initialized.
@@ -147,7 +153,7 @@ package tensorflow.core.protobuf.config_pb2;
 		use reflection.MakeClass() instead of manually instantiating the class in
 		order to create the appropriate class structure.
 	**/
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Makes a deep copy of the class.
 	**/
@@ -202,7 +208,7 @@ package tensorflow.core.protobuf.config_pb2;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -258,11 +264,13 @@ package tensorflow.core.protobuf.config_pb2;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Outputs a unicode representation of the message.
 	**/
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _extensions_by_name : Dynamic;
 	static public var _extensions_by_number : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 }

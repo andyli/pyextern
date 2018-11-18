@@ -11,9 +11,7 @@ package pandas.core.indexing;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _eps : Dynamic;
 	/**
 		infer the fill value for the nan/NaT from the provided
 		scalar/ndarray/list-like if we are a NaT, return the correct dtyped
@@ -48,11 +46,34 @@ package pandas.core.indexing;
 		to make sure we're always working with DataFrames.
 	**/
 	static public function _non_reducing_slice(slice_:Dynamic):Dynamic;
-	/**
-		return my values or the object if we are say an ndarray 
-	**/
-	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function check_bool_indexer(ax:Dynamic, key:Dynamic):Dynamic;
+	/**
+		Validate that value and indexer are the same length.
+		
+		An special-case is allowed for when the indexer is a boolean array
+		and the number of true values equals the length of ``value``. In
+		this case, no exception is raised.
+		
+		Parameters
+		----------
+		indexer : sequence
+		    The key for the setitem
+		value : array-like
+		    The value for the setitem
+		values : array-like
+		    The values being set into
+		
+		Returns
+		-------
+		None
+		
+		Raises
+		------
+		ValueError
+		    When the indexer is an ndarray or list and the lengths don't
+		    match.
+	**/
+	static public function check_setitem_lengths(indexer:Dynamic, value:Dynamic, values:Dynamic):Dynamic;
 	/**
 		create a filtered indexer that doesn't have any missing indexers 
 	**/
@@ -68,13 +89,7 @@ package pandas.core.indexing;
 	**/
 	static public function convert_to_index_sliceable(obj:Dynamic, key:Dynamic):Dynamic;
 	static public function get_indexers_list():Dynamic;
-	static public function is_bool_indexer(key:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		we have a full length slice 
-	**/
-	static public function is_full_slice(obj:Dynamic, l:Dynamic):Dynamic;
-	static public function is_index_slice(obj:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check whether the provided array or dtype is of an integer dtype.
@@ -177,10 +192,6 @@ package pandas.core.indexing;
 	static public function is_list_like_indexer(key:Dynamic):Dynamic;
 	static public function is_nested_tuple(tup:Dynamic, labels:Dynamic):Dynamic;
 	/**
-		we have a null slice 
-	**/
-	static public function is_null_slice(obj:Dynamic):Dynamic;
-	/**
 		Return True if given value is scalar.
 		
 		This includes:
@@ -193,6 +204,7 @@ package pandas.core.indexing;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -248,32 +260,107 @@ package pandas.core.indexing;
 	**/
 	static public function is_sparse(arr:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	/**
 		return the length of a single non-tuple indexer which could be a slice
 		    
 	**/
 	static public function length_of_indexer(indexer:Dynamic, ?target:Dynamic):Dynamic;
 	/**
-		if we have negative indicies, translate to postive here
-		if have indicies that are out-of-bounds, raise an IndexError
+		Attempt to convert indices into valid, positive indices.
+		
+		If we have negative indices, translate to positive here.
+		If we have indices that are out-of-bounds, raise an IndexError.
+		
+		Parameters
+		----------
+		indices : array-like
+		    The array of indices that we are to convert.
+		n : int
+		    The number of elements in the array that we are indexing.
+		
+		Returns
+		-------
+		valid_indices : array-like
+		    An array-like of positive indices that correspond to the ones
+		    that were passed in initially to this function.
+		
+		Raises
+		------
+		IndexError : one of the converted indices either exceeded the number
+		    of elements (specified by `n`) OR was still negative.
 	**/
 	static public function maybe_convert_indices(indices:Dynamic, n:Dynamic):Dynamic;
 	/**
@@ -282,4 +369,33 @@ package pandas.core.indexing;
 	static public function maybe_convert_ix(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
 	static public function need_slice(obj:Dynamic):Dynamic;
+	/**
+		Perform bounds-checking for an indexer.
+		
+		-1 is allowed for indicating missing values.
+		
+		Parameters
+		----------
+		indices : ndarray
+		n : int
+		    length of the array being indexed
+		
+		Raises
+		------
+		ValueError
+		
+		Examples
+		--------
+		>>> validate_indices([1, 2], 3)
+		# OK
+		>>> validate_indices([1, -2], 3)
+		ValueError
+		>>> validate_indices([1, 2, 3], 3)
+		IndexError
+		>>> validate_indices([-1, -1], 0)
+		# OK
+		>>> validate_indices([0, 1], 0)
+		IndexError
+	**/
+	static public function validate_indices(indices:Dynamic, n:Dynamic):Dynamic;
 }

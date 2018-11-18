@@ -17,6 +17,17 @@ package tensorflow.python.ops.image_grad;
 	**/
 	static public function _CropAndResizeGrad(op:Dynamic, grad:Dynamic):Dynamic;
 	/**
+		The derivatives for bicubic resizing.
+		
+		Args:
+		  op: The ResizeBicubic op.
+		  grad: The tensor representing the gradient w.r.t. the output.
+		
+		Returns:
+		  The gradients w.r.t. the input.
+	**/
+	static public function _ResizeBicubicGrad(op:Dynamic, grad:Dynamic):Dynamic;
+	/**
 		The derivatives for bilinear resizing.
 		
 		Args:

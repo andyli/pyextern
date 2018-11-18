@@ -8,7 +8,7 @@ package pandas.core.internals;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -46,21 +46,31 @@ package pandas.core.internals;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initialize a non-consolidatable block.
+		
+		'ndim' may be inferred from 'placement'.
+		
+		This will call continue to call __init__ for the other base
+		classes mixed in with this Mixin.
 	**/
 	@:native("__init__")
-	public function ___init__(values:Dynamic, placement:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(values:Dynamic, placement:Dynamic, ?ndim:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initialize a non-consolidatable block.
+		
+		'ndim' may be inferred from 'placement'.
+		
+		This will call continue to call __init__ for the other base
+		classes mixed in with this Mixin.
 	**/
-	public function new(values:Dynamic, placement:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(values:Dynamic, placement:Dynamic, ?ndim:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -99,7 +109,7 @@ package pandas.core.internals;
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -119,7 +129,7 @@ package pandas.core.internals;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -131,107 +141,122 @@ package pandas.core.internals;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
-		Coerce to the new type (if copy=True, return a new copy)
-		raise on an except if raise == True
+		Coerce to the new type
+		
+		Parameters
+		----------
+		dtype : str, dtype convertible
+		copy : boolean, default False
+		    copy if indicated
+		errors : str, {'raise', 'ignore'}, default 'ignore'
+		    - ``raise`` : allow exceptions to be raised
+		    - ``ignore`` : suppress exceptions. On error return original object
+		
+		Returns
+		-------
+		Block
 	**/
-	public function _astype(dtype:Dynamic, ?copy:Dynamic, ?errors:Dynamic, ?values:Dynamic, ?klass:Dynamic, ?mgr:Dynamic):Dynamic;
+	public function _astype(dtype:Dynamic, ?copy:Dynamic, ?errors:Dynamic, ?values:Dynamic, ?klass:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _box_to_block_values : Dynamic;
 	static public var _can_consolidate : Dynamic;
+	/**
+		require the same dtype as ourselves 
+	**/
 	public function _can_hold_element(element:Dynamic):Dynamic;
 	static public var _can_hold_na : Dynamic;
+	/**
+		ndim inference and validation.
+		
+		Infers ndim from 'values' if not provided to __init__.
+		Validates that values.ndim and ndim are consistent if and only if
+		the class variable '_validate_ndim' is True.
+		
+		Parameters
+		----------
+		values : array-like
+		ndim : int or None
+		
+		Returns
+		-------
+		ndim : int
+		
+		Raises
+		------
+		ValueError : the number of dimensions do not match
+	**/
+	public function _check_ndim(values:Dynamic, ndim:Dynamic):Int;
+	/**
+		Concatenate an object/categorical array of arrays, each of which is a
+		single dtype
+		
+		Parameters
+		----------
+		to_concat : array of arrays
+		axis : int
+		    Axis to provide concatenation in the current implementation this is
+		    always 0, e.g. we only have 1D categoricals
+		
+		Returns
+		-------
+		Categorical
+		    A single array, preserving the combined dtypes
+	**/
+	static public function _concatenator(to_concat:Dynamic, ?axis:Dynamic):Dynamic;
 	public var _consolidate_key : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
 		delete unwanted __dir__ for this object 
 	**/
 	public function _dir_deletions():Dynamic;
-	static public var _downcast_dtype : Dynamic;
 	static public var _ftype : Dynamic;
 	/**
-		Represents a categorical variable in classic R / S-plus fashion
+		The array-like that can hold the underlying values.
 		
-		`Categoricals` can only take on only a limited, and usually fixed, number
-		of possible values (`categories`). In contrast to statistical categorical
-		variables, a `Categorical` might have an order, but numerical operations
-		(additions, divisions, ...) are not possible.
-		
-		All values of the `Categorical` are either in `categories` or `np.nan`.
-		Assigning values outside of `categories` will raise a `ValueError`. Order
-		is defined by the order of the `categories`, not lexical order of the
-		values.
-		
-		Parameters
-		----------
-		values : list-like
-		    The values of the categorical. If categories are given, values not in
-		    categories will be replaced with NaN.
-		categories : Index-like (unique), optional
-		    The unique categories for this categorical. If not given, the
-		    categories are assumed to be the unique values of values.
-		ordered : boolean, (default False)
-		    Whether or not this categorical is treated as a ordered categorical.
-		    If not given, the resulting categorical will not be ordered.
-		
-		Attributes
-		----------
-		categories : Index
-		    The categories of this categorical
-		codes : ndarray
-		    The codes (integer positions, which point to the categories) of this
-		    categorical, read only.
-		ordered : boolean
-		    Whether or not this Categorical is ordered.
-		
-		Raises
-		------
-		ValueError
-		    If the categories do not validate.
-		TypeError
-		    If an explicit ``ordered=True`` is given but no `categories` and the
-		    `values` are not sortable.
-		
-		
-		Examples
-		--------
-		>>> from pandas import Categorical
-		>>> Categorical([1, 2, 3, 1, 2, 3])
-		[1, 2, 3, 1, 2, 3]
-		Categories (3, int64): [1 < 2 < 3]
-		
-		>>> Categorical(['a', 'b', 'c', 'a', 'b', 'c'])
-		[a, b, c, a, b, c]
-		Categories (3, object): [a < b < c]
-		
-		>>> a = Categorical(['a','b','c','a','b','c'], ['c', 'b', 'a'],
-		                    ordered=True)
-		>>> a.min()
-		'c'
+		None for 'Block', overridden by subclasses that don't
+		use an ndarray.
 	**/
-	static public function _holder(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?fastpath:Dynamic):Dynamic;
+	public var _holder : Dynamic;
 	/**
 		interpolate using scipy wrappers 
 	**/
-	public function _interpolate(?method:Dynamic, ?index:Dynamic, ?values:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _interpolate(?method:Dynamic, ?index:Dynamic, ?values:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?limit_area:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		fillna but using the interpolate machinery 
 	**/
 	public function _interpolate_with_fill(?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?coerce:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic):Dynamic;
 	public var _is_single_block : Dynamic;
+	/**
+		Unbox to an extension array.
+		
+		This will unbox an ExtensionArray stored in an Index or Series.
+		ExtensionArrays pass through. No dtype coercion is done.
+		
+		Parameters
+		----------
+		values : Index, Series, ExtensionArray
+		
+		Returns
+		-------
+		ExtensionArray
+	**/
+	public function _maybe_coerce_values(values:Dynamic):Dynamic;
 	public function _maybe_downcast(blocks:Dynamic, ?downcast:Dynamic):Dynamic;
 	public var _mgr_locs : Dynamic;
 	public var _na_value : Dynamic;
 	/**
 		no-op on a non-ObjectBlock 
 	**/
-	public function _replace_single(to_replace:Dynamic, value:Dynamic, ?inplace:Dynamic, ?filter:Dynamic, ?regex:Dynamic, ?convert:Dynamic, ?mgr:Dynamic):Dynamic;
+	public function _replace_single(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
@@ -240,7 +265,6 @@ package pandas.core.internals;
 		return a slice of my values 
 	**/
 	public function _slice(slicer:Dynamic):Dynamic;
-	public function _try_cast(element:Dynamic):Dynamic;
 	public function _try_cast_result(result:Dynamic, ?dtype:Dynamic):Dynamic;
 	public function _try_coerce_and_cast_result(result:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
@@ -251,11 +275,24 @@ package pandas.core.internals;
 		reverse of try_coerce_args 
 	**/
 	public function _try_coerce_result(result:Dynamic):Dynamic;
-	public function _try_fill(value:Dynamic):Dynamic;
 	/**
-		return a version to operate on as the input 
+		Return a list of unstacked blocks of self
+		
+		Parameters
+		----------
+		unstacker_func : callable
+		    Partially applied unstacker.
+		new_columns : Index
+		    All columns of the unstacked BlockManager.
+		
+		Returns
+		-------
+		blocks : list of Block
+		    New blocks of unstacked values.
+		mask : array_like of bool
+		    The mask of columns of `blocks` we should keep.
 	**/
-	public function _try_operate(values:Dynamic):Dynamic;
+	public function _unstack(unstacker_func:Dynamic, new_columns:Dynamic):Dynamic;
 	static public var _validate_ndim : Dynamic;
 	static public var _verify_integrity : Dynamic;
 	/**
@@ -270,10 +307,30 @@ package pandas.core.internals;
 	public var array_dtype : Dynamic;
 	public function astype(dtype:Dynamic, ?copy:Dynamic, ?errors:Dynamic, ?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		attempt to coerce any object types to better types return a copy of
-		the block (if copy = True) by definition we ARE an ObjectBlock!!!!!
+		coerce the current block to a dtype compat for other
+		we will return a block, possibly object, and not raise
 		
-		can return multiple blocks!
+		we can also safely try to coerce to the same dtype
+		and will receive the same block
+	**/
+	public function coerce_to_target_dtype(other:Dynamic):Dynamic;
+	/**
+		Concatenate list of single blocks of the same type.
+		
+		Note that this CategoricalBlock._concat_same_type *may* not
+		return a CategoricalBlock. When the categories in `to_concat`
+		differ, this will return an object ndarray.
+		
+		If / when we decide we don't like that behavior:
+		
+		1. Change Categorical._concat_same_type to use union_categoricals
+		2. Delete this method.
+	**/
+	public function concat_same_type(to_concat:Dynamic, ?placement:Dynamic):Dynamic;
+	/**
+		attempt to coerce any object types to better types return a copy
+		of the block (if copy = True) by definition we are not an ObjectBlock
+		here!
 	**/
 	public function convert(?copy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -301,15 +358,17 @@ package pandas.core.internals;
 		----------
 		func  : how to combine self, other
 		other : a ndarray/object
-		raise_on_error : if True, raise when I can't perform the function,
-		    False by default (and just return the data that we had coming in)
+		errors : str, {'raise', 'ignore'}, default 'raise'
+		    - ``raise`` : allow exceptions to be raised
+		    - ``ignore`` : suppress exceptions. On error return original object
+		
 		try_cast : try casting the results to the input type
 		
 		Returns
 		-------
 		a new block, the result of the func
 	**/
-	public function eval(func:Dynamic, other:Dynamic, ?raise_on_error:Dynamic, ?try_cast:Dynamic, ?mgr:Dynamic):Dynamic;
+	public function eval(func:Dynamic, other:Dynamic, ?errors:Dynamic, ?try_cast:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		return an outside world format, currently just the ndarray 
 	**/
@@ -320,8 +379,11 @@ package pandas.core.internals;
 		ObjectBlock and try again
 	**/
 	public function fillna(value:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic):Dynamic;
+	/**
+		Return the internal values used by the DataFrame/SeriesFormatter
+	**/
+	public function formatting_values():Dynamic;
 	public var ftype : Dynamic;
-	public function get(item:Dynamic):Dynamic;
 	/**
 		need to to_dense myself (and always return a ndim sized object) 
 	**/
@@ -339,11 +401,7 @@ package pandas.core.internals;
 	**/
 	public function internal_values(?dtype:Dynamic):Dynamic;
 	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		we can be a bool if we have only bool values but are of type
-		object
-	**/
-	public var is_bool : Dynamic;
+	static public var is_bool : Dynamic;
 	static public var is_categorical : Dynamic;
 	/**
 		validate that we have a astypeable to categorical,
@@ -357,6 +415,7 @@ package pandas.core.internals;
 	public var is_datelike : Dynamic;
 	static public var is_datetime : Dynamic;
 	static public var is_datetimetz : Dynamic;
+	static public var is_extension : Dynamic;
 	static public var is_float : Dynamic;
 	static public var is_integer : Dynamic;
 	static public var is_numeric : Dynamic;
@@ -364,23 +423,22 @@ package pandas.core.internals;
 	static public var is_sparse : Dynamic;
 	static public var is_timedelta : Dynamic;
 	/**
-		I am never a view 
+		Extension arrays are never treated as views.
 	**/
 	public var is_view : Dynamic;
-	public var itemsize : Dynamic;
 	/**
 		Create a new block, with type inference propagate any values that are
 		not specified
 	**/
-	public function make_block(values:Dynamic, ?placement:Dynamic, ?ndim:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function make_block(values:Dynamic, ?placement:Dynamic, ?ndim:Dynamic):Dynamic;
 	/**
 		Wrap given values in a block of same type as self. 
 	**/
-	public function make_block_same_class(values:Dynamic, ?placement:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function make_block_same_class(values:Dynamic, ?placement:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Create a ScalarBlock
 	**/
-	public function make_block_scalar(values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function make_block_scalar(values:Dynamic):Dynamic;
 	public function merge(other:Dynamic):Dynamic;
 	public var mgr_locs : Dynamic;
 	public var ndim : Dynamic;
@@ -399,7 +457,7 @@ package pandas.core.internals;
 		
 		Returns
 		-------
-		a new block(s), the result of the putmask
+		a new block, the result of the putmask
 	**/
 	public function putmask(mask:Dynamic, _new:Dynamic, ?align:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
@@ -416,10 +474,6 @@ package pandas.core.internals;
 		tuple of (axis, block)
 	**/
 	public function quantile(qs:Dynamic, ?interpolation:Dynamic, ?axis:Dynamic, ?mgr:Dynamic):Dynamic;
-	/**
-		Reindex using pre-computed indexer information
-	**/
-	public function reindex_axis(indexer:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?fill_value:Dynamic, ?limit:Dynamic, ?mask_info:Dynamic):Dynamic;
 	/**
 		replace the to_replace value with value, possible to create new
 		blocks here this is just a call to putmask. regex is not used here.
@@ -439,11 +493,27 @@ package pandas.core.internals;
 	public function reshape_nd(labels:Dynamic, shape:Dynamic, ref_items:Dynamic, ?mgr:Dynamic):Dynamic;
 	public function set(locs:Dynamic, values:Dynamic, ?check:Dynamic):Dynamic;
 	/**
-		set the value inplace; return a new block (of a possibly different
-		dtype)
+		Set the value inplace, returning a same-typed block.
 		
-		indexer is a direct slice/positional indexer; value must be a
-		compatible shape
+		This differs from Block.setitem by not allowing setitem to change
+		the dtype of the Block.
+		
+		Parameters
+		----------
+		indexer : tuple, list-like, array-like, slice
+		    The subset of self.values to set
+		value : object
+		    The value being set
+		mgr : BlockPlacement, optional
+		
+		Returns
+		-------
+		Block
+		
+		Notes
+		-----
+		`indexer` is a direct slice/positional indexer. `value` must
+		be a compatible shape.
 	**/
 	public function setitem(indexer:Dynamic, value:Dynamic, ?mgr:Dynamic):Dynamic;
 	public var shape : Dynamic;
@@ -453,7 +523,23 @@ package pandas.core.internals;
 	public function shift(periods:Dynamic, ?axis:Dynamic, ?mgr:Dynamic):Dynamic;
 	public function should_store(value:Dynamic):Dynamic;
 	/**
-		Take values according to indexer and return them as a block.bb
+		split the block per-column, and apply the callable f
+		per-column, return a new block for each. Handle
+		masking which will not change a block unless needed.
+		
+		Parameters
+		----------
+		mask : 2-d boolean mask
+		f : callable accepting (1d-mask, 1d values, indexer)
+		inplace : boolean
+		
+		Returns
+		-------
+		list of blocks
+	**/
+	public function split_and_operate(mask:Dynamic, f:Dynamic, inplace:Dynamic):Dynamic;
+	/**
+		Take values according to indexer and return them as a block.
 	**/
 	public function take_nd(indexer:Dynamic, ?axis:Dynamic, ?new_mgr_locs:Dynamic, ?fill_tuple:Dynamic):Dynamic;
 	public function to_dense():Dynamic;
@@ -461,10 +547,6 @@ package pandas.core.internals;
 		convert to our native types format, slicing if desired 
 	**/
 	public function to_native_types(?slicer:Dynamic, ?na_rep:Dynamic, ?quoting:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		return myself as an object block 
-	**/
-	public function to_object_block(mgr:Dynamic):Dynamic;
 	public var values : Dynamic;
 	/**
 		evaluate the block; return result block(s) from the result
@@ -474,8 +556,10 @@ package pandas.core.internals;
 		other : a ndarray/object
 		cond  : the condition to respect
 		align : boolean, perform alignment on other/cond
-		raise_on_error : if True, raise when I can't perform the function,
-		    False by default (and just return the data that we had coming in)
+		errors : str, {'raise', 'ignore'}, default 'raise'
+		    - ``raise`` : allow exceptions to be raised
+		    - ``ignore`` : suppress exceptions. On error return original object
+		
 		axis : int
 		transpose : boolean
 		    Set to True if self is stored with axes reversed
@@ -484,5 +568,5 @@ package pandas.core.internals;
 		-------
 		a new block(s), the result of the func
 	**/
-	public function where(other:Dynamic, cond:Dynamic, ?align:Dynamic, ?raise_on_error:Dynamic, ?try_cast:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
+	public function where(other:Dynamic, cond:Dynamic, ?align:Dynamic, ?errors:Dynamic, ?try_cast:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
 }

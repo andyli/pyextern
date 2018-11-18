@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.sparse.data;
 @:pythonImport("scipy.sparse.data", "_minmax_mixin") extern class _Minmax_mixin {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package scipy.sparse.data;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package scipy.sparse.data;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -113,7 +113,7 @@ package scipy.sparse.data;
 	public function _min_or_max(axis:Dynamic, out:Dynamic, min_or_max:Dynamic):Dynamic;
 	public function _min_or_max_axis(axis:Dynamic, min_or_max:Dynamic):Dynamic;
 	/**
-		Return indices of minimum elements along an axis.
+		Return indices of maximum elements along an axis.
 		
 		Implicit zero elements are also taken into account. If there are
 		several maximum values, the index of the first occurrence is returned.

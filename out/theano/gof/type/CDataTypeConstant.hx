@@ -63,7 +63,7 @@ package theano.gof.type;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -129,16 +129,18 @@ package theano.gof.type;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public function append_construction_observer(observer:Dynamic):Dynamic;
 	/**
 		We clone this object, but we don't clone the data to lower memory
 		requirement. We suppose that the data will never change.
 	**/
 	public function clone():Dynamic;
+	static public var construction_observers : Dynamic;
 	public function equals(other:Dynamic):Dynamic;
 	/**
 		Evaluates this variable.
@@ -182,7 +184,9 @@ package theano.gof.type;
 	**/
 	public function get_parents():Dynamic;
 	public function merge_signature():Dynamic;
+	static public function notify_construction_observers(instance:Dynamic):Dynamic;
 	public var owner : Dynamic;
+	static public function remove_construction_observer(observer:Dynamic):Dynamic;
 	public function signature():Dynamic;
 	/**
 		read-only data access method

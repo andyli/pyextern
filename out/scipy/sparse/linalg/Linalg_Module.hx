@@ -24,6 +24,12 @@ package scipy.sparse.linalg;
 		
 		See the LinearOperator documentation for additional information.
 		
+		Notes
+		-----
+		If 'A' has no .dtype attribute, the data type is determined by calling
+		:func:`LinearOperator.matvec()` - set the .dtype attribute to prevent this
+		call upon the linear operator creation.
+		
 		Examples
 		--------
 		>>> from scipy.sparse.linalg import aslinearoperator
@@ -58,9 +64,15 @@ package scipy.sparse.linalg;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -72,17 +84,8 @@ package scipy.sparse.linalg;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function bicg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function bicg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Use BIConjugate Gradient STABilized iteration to solve ``Ax = b``.
 		
@@ -107,9 +110,15 @@ package scipy.sparse.linalg;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -121,17 +130,8 @@ package scipy.sparse.linalg;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function bicgstab(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function bicgstab(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Use Conjugate Gradient iteration to solve ``Ax = b``.
 		
@@ -157,9 +157,15 @@ package scipy.sparse.linalg;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -171,17 +177,8 @@ package scipy.sparse.linalg;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function cg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function cg(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Use Conjugate Gradient Squared iteration to solve ``Ax = b``.
 		
@@ -206,9 +203,15 @@ package scipy.sparse.linalg;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -220,17 +223,8 @@ package scipy.sparse.linalg;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 	**/
-	static public function cgs(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function cgs(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Find k eigenvalues and eigenvectors of the square matrix A.
@@ -584,6 +578,24 @@ package scipy.sparse.linalg;
 		       "A New Scaling and Squaring Algorithm for the Matrix Exponential."
 		       SIAM Journal on Matrix Analysis and Applications.
 		       31 (3). pp. 970-989. ISSN 1095-7162
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import expm
+		>>> A = csc_matrix([[1, 0, 0], [0, 2, 0], [0, 0, 3]])
+		>>> A.todense()
+		matrix([[1, 0, 0],
+		        [0, 2, 0],
+		        [0, 0, 3]], dtype=int64)
+		>>> Aexp = expm(A)
+		>>> Aexp
+		<3x3 sparse matrix of type '<class 'numpy.float64'>'
+		    with 3 stored elements in Compressed Sparse Column format>
+		>>> Aexp.todense()
+		matrix([[  2.71828183,   0.        ,   0.        ],
+		        [  0.        ,   7.3890561 ,   0.        ],
+		        [  0.        ,   0.        ,  20.08553692]])
 	**/
 	static public function expm(A:Dynamic):Dynamic;
 	/**
@@ -644,6 +656,28 @@ package scipy.sparse.linalg;
 		       Acta Numerica,
 		       19. 159-208. ISSN 0962-4929
 		       http://eprints.ma.man.ac.uk/1451/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import expm, expm_multiply
+		>>> A = csc_matrix([[1, 0], [0, 1]])
+		>>> A.todense()
+		matrix([[1, 0],
+		        [0, 1]], dtype=int64)
+		>>> B = np.array([np.exp(-1.), np.exp(-2.)])
+		>>> B
+		array([ 0.36787944,  0.13533528])
+		>>> expm_multiply(A, B, start=1, stop=2, num=3, endpoint=True)
+		array([[ 1.        ,  0.36787944],
+		       [ 1.64872127,  0.60653066],
+		       [ 2.71828183,  1.        ]])
+		>>> expm(A).dot(B)                  # Verify 1st timestep
+		array([ 1.        ,  0.36787944])
+		>>> expm(1.5*A).dot(B)              # Verify 2nd timestep
+		array([ 1.64872127,  0.60653066])
+		>>> expm(2*A).dot(B)                # Verify 3rd timestep
+		array([ 2.71828183,  1.        ])
 	**/
 	static public function expm_multiply(A:Dynamic, B:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic):Dynamic;
 	/**
@@ -673,6 +707,82 @@ package scipy.sparse.linalg;
 	**/
 	static public function factorized(A:Dynamic):haxe.Constraints.Function;
 	/**
+		Solve a matrix equation using flexible GCROT(m,k) algorithm.
+		
+		Parameters
+		----------
+		A : {sparse matrix, dense matrix, LinearOperator}
+		    The real or complex N-by-N matrix of the linear system.
+		b : {array, matrix}
+		    Right hand side of the linear system. Has shape (N,) or (N,1).
+		x0  : {array, matrix}
+		    Starting guess for the solution.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is `tol`.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
+		maxiter : int, optional
+		    Maximum number of iterations.  Iteration will stop after maxiter
+		    steps even if the specified tolerance has not been achieved.
+		M : {sparse matrix, dense matrix, LinearOperator}, optional
+		    Preconditioner for A.  The preconditioner should approximate the
+		    inverse of A. gcrotmk is a 'flexible' algorithm and the preconditioner
+		    can vary from iteration to iteration. Effective preconditioning
+		    dramatically improves the rate of convergence, which implies that
+		    fewer iterations are needed to reach a given error tolerance.
+		callback : function, optional
+		    User-supplied function to call after each iteration.  It is called
+		    as callback(xk), where xk is the current solution vector.
+		m : int, optional
+		    Number of inner FGMRES iterations per each outer iteration.
+		    Default: 20
+		k : int, optional
+		    Number of vectors to carry between inner FGMRES iterations.
+		    According to [2]_, good values are around m.
+		    Default: m
+		CU : list of tuples, optional
+		    List of tuples ``(c, u)`` which contain the columns of the matrices
+		    C and U in the GCROT(m,k) algorithm. For details, see [2]_.
+		    The list given and vectors contained in it are modified in-place.
+		    If not given, start from empty matrices. The ``c`` elements in the
+		    tuples can be ``None``, in which case the vectors are recomputed
+		    via ``c = A u`` on start and orthogonalized as described in [3]_.
+		discard_C : bool, optional
+		    Discard the C-vectors at the end. Useful if recycling Krylov subspaces
+		    for different linear systems.
+		truncate : {'oldest', 'smallest'}, optional
+		    Truncation scheme to use. Drop: oldest vectors, or vectors with
+		    smallest singular values using the scheme discussed in [1,2].
+		    See [2]_ for detailed comparison.
+		    Default: 'oldest'
+		
+		Returns
+		-------
+		x : array or matrix
+		    The solution found.
+		info : int
+		    Provides convergence information:
+		
+		    * 0  : successful exit
+		    * >0 : convergence to tolerance not achieved, number of iterations
+		
+		References
+		----------
+		.. [1] E. de Sturler, ''Truncation strategies for optimal Krylov subspace
+		       methods'', SIAM J. Numer. Anal. 36, 864 (1999).
+		.. [2] J.E. Hicken and D.W. Zingg, ''A simplified and flexible variant
+		       of GCROT for solving nonsymmetric linear systems'',
+		       SIAM J. Sci. Comput. 32, 172 (2010).
+		.. [3] M.L. Parks, E. de Sturler, G. Mackey, D.D. Johnson, S. Maiti,
+		       ''Recycling Krylov subspaces for sequences of linear systems'',
+		       SIAM J. Sci. Comput. 28, 1651 (2006).
+	**/
+	static public function gcrotmk(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?m:Dynamic, ?k:Dynamic, ?CU:Dynamic, ?discard_C:Dynamic, ?truncate:Dynamic, ?atol:Dynamic):Dynamic;
+	/**
 		Use Generalized Minimal RESidual iteration to solve ``Ax = b``.
 		
 		Parameters
@@ -696,9 +806,15 @@ package scipy.sparse.linalg;
 		----------------
 		x0 : {array, matrix}
 		    Starting guess for the solution (a vector of zeros by default).
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		restart : int, optional
 		    Number of iterations between restarts. Larger values increase
 		    iteration cost, but may be necessary for convergence.
@@ -707,15 +823,6 @@ package scipy.sparse.linalg;
 		    Maximum number of iterations (restart cycles).  Iteration will stop
 		    after maxiter steps even if the specified tolerance has not been
 		    achieved.
-		xtype : {'f','d','F','D'}
-		    This parameter is DEPRECATED --- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 		M : {sparse matrix, dense matrix, LinearOperator}
 		    Inverse of the preconditioner of A.  M should approximate the
 		    inverse of A and be easy to solve for (see Notes).  Effective
@@ -743,8 +850,20 @@ package scipy.sparse.linalg;
 		  import scipy.sparse.linalg as spla
 		  M_x = lambda x: spla.spsolve(P, x)
 		  M = spla.LinearOperator((n, n), M_x)
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import gmres
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> b = np.array([2, 4, -1], dtype=float)
+		>>> x, exitCode = gmres(A, b)
+		>>> print(exitCode)            # 0 indicates successful convergence
+		0
+		>>> np.allclose(A.dot(x), b)
+		True
 	**/
-	static public function gmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?restart:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?restrt:Dynamic):Dynamic;
+	static public function gmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?restart:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?restrt:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Compute the inverse of a sparse matrix
 		
@@ -764,6 +883,22 @@ package scipy.sparse.linalg;
 		to be non-sparse, it will likely be faster to convert `A` to dense and use
 		scipy.linalg.inv.
 		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import inv
+		>>> A = csc_matrix([[1., 0.], [1., 2.]])
+		>>> Ainv = inv(A)
+		>>> Ainv
+		<2x2 sparse matrix of type '<class 'numpy.float64'>'
+		    with 3 stored elements in Compressed Sparse Column format>
+		>>> A.dot(Ainv)
+		<2x2 sparse matrix of type '<class 'numpy.float64'>'
+		    with 2 stored elements in Compressed Sparse Column format>
+		>>> A.dot(Ainv).todense()
+		matrix([[ 1.,  0.],
+		        [ 0.,  1.]])
+		
 		.. versionadded:: 0.12.0
 	**/
 	static public function inv(A:Dynamic):Dynamic;
@@ -782,9 +917,14 @@ package scipy.sparse.linalg;
 		    Right hand side of the linear system. Has shape (N,) or (N,1).
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float, optional
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is `tol`.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : int, optional
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -815,6 +955,9 @@ package scipy.sparse.linalg;
 		store_outer_Av : bool, optional
 		    Whether LGMRES should store also A*v in addition to vectors `v`
 		    in the `outer_v` list. Default is True.
+		prepend_outer_v : bool, optional 
+		    Whether to put outer_v augmentation vectors before Krylov iterates.
+		    In standard LGMRES, prepend_outer_v=False.
 		
 		Returns
 		-------
@@ -845,12 +988,25 @@ package scipy.sparse.linalg;
 		
 		References
 		----------
-		.. [1] A.H. Baker and E.R. Jessup and T. Manteuffel,
-		         SIAM J. Matrix Anal. Appl. 26, 962 (2005).
-		.. [2] A.H. Baker, PhD thesis, University of Colorado (2003).
-		         http://amath.colorado.edu/activities/thesis/allisonb/Thesis.ps
+		.. [1] A.H. Baker and E.R. Jessup and T. Manteuffel, "A Technique for
+		         Accelerating the Convergence of Restarted GMRES", SIAM J. Matrix
+		         Anal. Appl. 26, 962 (2005).
+		.. [2] A.H. Baker, "On Improving the Performance of the Linear Solver
+		         restarted GMRES", PhD thesis, University of Colorado (2003).
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lgmres
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> b = np.array([2, 4, -1], dtype=float)
+		>>> x, exitCode = lgmres(A, b)
+		>>> print(exitCode)            # 0 indicates successful convergence
+		0
+		>>> np.allclose(A.dot(x), b)
+		True
 	**/
-	static public function lgmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?inner_m:Dynamic, ?outer_k:Dynamic, ?outer_v:Dynamic, ?store_outer_Av:Dynamic):Dynamic;
+	static public function lgmres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?inner_m:Dynamic, ?outer_k:Dynamic, ?outer_v:Dynamic, ?store_outer_Av:Dynamic, ?prepend_outer_v:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Locally Optimal Block Preconditioned Conjugate Gradient Method (LOBPCG)
 		
@@ -915,7 +1071,7 @@ package scipy.sparse.linalg;
 		array([[   1.,    0.,    0., ...,    0.,    0.,    0.],
 		       [   0.,    2.,    0., ...,    0.,    0.,    0.],
 		       [   0.,    0.,    3., ...,    0.,    0.,    0.],
-		       ..., 
+		       ...,
 		       [   0.,    0.,    0., ...,   98.,    0.,    0.],
 		       [   0.,    0.,    0., ...,    0.,   99.,    0.],
 		       [   0.,    0.,    0., ...,    0.,    0.,  100.]])
@@ -1002,7 +1158,7 @@ package scipy.sparse.linalg;
 		       in hypre and PETSc.  http://arxiv.org/abs/0705.2626
 		
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
-		       http://www-math.cudenver.edu/~aknyazev/software/BLOPEX/
+		       https://bitbucket.org/joseroman/blopex
 	**/
 	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Array<Dynamic>;
 	/**
@@ -1062,7 +1218,10 @@ package scipy.sparse.linalg;
 		    needed.
 		show : bool, optional
 		    Print iterations logs if ``show=True``.
+		x0 : array_like, shape (n,), optional
+		    Initial guess of x, if None zeros are used.
 		
+		    .. versionadded:: 1.0.0
 		Returns
 		-------
 		x : ndarray of float
@@ -1070,7 +1229,8 @@ package scipy.sparse.linalg;
 		istop : int
 		    istop gives the reason for stopping::
 		
-		      istop   = 0 means x=0 is a solution.
+		      istop   = 0 means x=0 is a solution.  If x0 was given, then x=x0 is a
+		                  solution.
 		              = 1 means x is an approximate solution to A*x = B,
 		                  according to atol and btol.
 		              = 2 means x approximately solves the least-squares problem
@@ -1108,8 +1268,61 @@ package scipy.sparse.linalg;
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
 		       http://arxiv.org/abs/1006.0758
 		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lsmr
+		>>> A = csc_matrix([[1., 0.], [1., 1.], [0., 1.]], dtype=float)
+		
+		The first example has the trivial solution `[0, 0]`
+		
+		>>> b = np.array([0., 0., 0.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		0
+		>>> x
+		array([ 0.,  0.])
+		
+		The stopping code `istop=0` returned indicates that a vector of zeros was
+		found as a solution. The returned solution `x` indeed contains `[0., 0.]`.
+		The next example has a non-trivial solution:
+		
+		>>> b = np.array([1., 0., -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		1
+		>>> x
+		array([ 1., -1.])
+		>>> itn
+		1
+		>>> normr
+		4.440892098500627e-16
+		
+		As indicated by `istop=1`, `lsmr` found a solution obeying the tolerance
+		limits. The given solution `[1., -1.]` obviously solves the equation. The
+		remaining return values include information about the number of iterations
+		(`itn=1`) and the remaining difference of left and right side of the solved
+		equation.
+		The final example demonstrates the behavior in the case where there is no
+		solution for the equation:
+		
+		>>> b = np.array([1., 0.01, -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		2
+		>>> x
+		array([ 1.00333333, -0.99666667])
+		>>> A.dot(x)-b
+		array([ 0.00333333, -0.00333333,  0.00333333])
+		>>> normr
+		0.005773502691896255
+		
+		`istop` indicates that the system is inconsistent and thus `x` is rather an
+		approximate solution to the corresponding least-squares problem. `normr`
+		contains the minimal distance that was found.
 	**/
-	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic):Dynamic;
+	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		Find the least-squares solution to a large, sparse, linear system
 		of equations.
@@ -1159,6 +1372,10 @@ package scipy.sparse.linalg;
 		    Display an iteration log.
 		calc_var : bool, optional
 		    Whether to estimate diagonals of ``(A'A + damp^2*I)^{-1}``.
+		x0 : array_like, shape (n,), optional
+		    Initial guess of x, if None zeros are used.
+		
+		    .. versionadded:: 1.0.0
 		
 		Returns
 		-------
@@ -1261,8 +1478,62 @@ package scipy.sparse.linalg;
 		       squares problems", ACM TOMS 8(2), 195-209.
 		.. [3] M. A. Saunders (1995).  "Solution of sparse rectangular
 		       systems using LSQR and CRAIG", BIT 35, 588-604.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lsqr
+		>>> A = csc_matrix([[1., 0.], [1., 1.], [0., 1.]], dtype=float)
+		
+		The first example has the trivial solution `[0, 0]`
+		
+		>>> b = np.array([0., 0., 0.], dtype=float)
+		>>> x, istop, itn, normr = lsqr(A, b)[:4]
+		The exact solution is  x = 0
+		>>> istop
+		0
+		>>> x
+		array([ 0.,  0.])
+		
+		The stopping code `istop=0` returned indicates that a vector of zeros was
+		found as a solution. The returned solution `x` indeed contains `[0., 0.]`.
+		The next example has a non-trivial solution:
+		
+		>>> b = np.array([1., 0., -1.], dtype=float)
+		>>> x, istop, itn, r1norm = lsqr(A, b)[:4]
+		>>> istop
+		1
+		>>> x
+		array([ 1., -1.])
+		>>> itn
+		1
+		>>> r1norm
+		4.440892098500627e-16
+		
+		As indicated by `istop=1`, `lsqr` found a solution obeying the tolerance
+		limits. The given solution `[1., -1.]` obviously solves the equation. The
+		remaining return values include information about the number of iterations
+		(`itn=1`) and the remaining difference of left and right side of the solved
+		equation.
+		The final example demonstrates the behavior in the case where there is no
+		solution for the equation:
+		
+		>>> b = np.array([1., 0.01, -1.], dtype=float)
+		>>> x, istop, itn, r1norm = lsqr(A, b)[:4]
+		>>> istop
+		2
+		>>> x
+		array([ 1.00333333, -0.99666667])
+		>>> A.dot(x)-b
+		array([ 0.00333333, -0.00333333,  0.00333333])
+		>>> r1norm
+		0.005773502691896255
+		
+		`istop` indicates that the system is inconsistent and thus `x` is rather an
+		approximate solution to the corresponding least-squares problem. `r1norm`
+		contains the norm of the minimal residual that was found.
 	**/
-	static public function lsqr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?iter_lim:Dynamic, ?show:Dynamic, ?calc_var:Dynamic):Dynamic;
+	static public function lsqr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?iter_lim:Dynamic, ?show:Dynamic, ?calc_var:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		Use MINimum RESidual iteration to solve Ax=b
 		
@@ -1270,7 +1541,6 @@ package scipy.sparse.linalg;
 		the Conjugate Gradient method, A can be indefinite or singular.
 		
 		If shift != 0 then the method solves (A - shift*I)x = b
-		
 		
 		Parameters
 		----------
@@ -1294,8 +1564,8 @@ package scipy.sparse.linalg;
 		x0  : {array, matrix}
 		    Starting guess for the solution.
 		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		    Tolerance to achieve. The algorithm terminates when the relative
+		    residual is below `tol`.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -1307,33 +1577,18 @@ package scipy.sparse.linalg;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is deprecated -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
-		
-		
-		
-		Notes
-		-----
-		THIS FUNCTION IS EXPERIMENTAL AND SUBJECT TO CHANGE!
 		
 		References
 		----------
 		Solution of sparse indefinite systems of linear equations,
 		    C. C. Paige and M. A. Saunders (1975),
 		    SIAM J. Numer. Anal. 12(4), pp. 617-629.
-		    http://www.stanford.edu/group/SOL/software/minres.html
+		    https://web.stanford.edu/group/SOL/software/minres/
 		
 		This file is a translation of the following MATLAB implementation:
-		    http://www.stanford.edu/group/SOL/software/minres/matlab/
+		    https://web.stanford.edu/group/SOL/software/minres/minres-matlab.zip
 	**/
-	static public function minres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?shift:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?show:Dynamic, ?check:Dynamic):Dynamic;
+	static public function minres(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?shift:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M:Dynamic, ?callback:Dynamic, ?show:Dynamic, ?check:Dynamic):Dynamic;
 	/**
 		Norm of a sparse matrix
 		
@@ -1476,6 +1731,20 @@ package scipy.sparse.linalg;
 		.. [2] Awad H. Al-Mohy and Nicholas J. Higham (2009),
 		       "A new scaling and squaring algorithm for the matrix exponential."
 		       SIAM J. Matrix Anal. Appl. Vol. 31, No. 3, pp. 970-989.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import onenormest
+		>>> A = csc_matrix([[1., 0., 0.], [5., 8., 2.], [0., -1., 0.]], dtype=float)
+		>>> A.todense()
+		matrix([[ 1.,  0.,  0.],
+		        [ 5.,  8.,  2.],
+		        [ 0., -1.,  0.]])
+		>>> onenormest(A)
+		9.0
+		>>> np.linalg.norm(A.todense(), ord=1)
+		9.0
 	**/
 	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	static public var print_function : Dynamic;
@@ -1505,9 +1774,15 @@ package scipy.sparse.linalg;
 		----------------
 		x0  : {array, matrix}
 		    Starting guess for the solution.
-		tol : float
-		    Tolerance to achieve. The algorithm terminates when either the relative
-		    or the absolute residual is below `tol`.
+		tol, atol : float, optional
+		    Tolerances for convergence, ``norm(residual) <= max(tol*norm(b), atol)``.
+		    The default for ``atol`` is ``'legacy'``, which emulates
+		    a different legacy behavior.
+		
+		    .. warning::
+		
+		       The default value for `atol` will be changed in a future release.
+		       For future compatibility, specify `atol` explicitly.
 		maxiter : integer
 		    Maximum number of iterations.  Iteration will stop after maxiter
 		    steps even if the specified tolerance has not been achieved.
@@ -1520,21 +1795,24 @@ package scipy.sparse.linalg;
 		callback : function
 		    User-supplied function to call after each iteration.  It is called
 		    as callback(xk), where xk is the current solution vector.
-		xtype : {'f','d','F','D'}
-		    This parameter is DEPRECATED -- avoid using it.
-		
-		    The type of the result.  If None, then it will be determined from
-		    A.dtype.char and b.  If A does not have a typecode method then it
-		    will compute A.matvec(x0) to get a typecode.   To save the extra
-		    computation when A does not have a typecode attribute use xtype=0
-		    for the same type as b or use xtype='f','d','F',or 'D'.
-		    This parameter has been superseded by LinearOperator.
 		
 		See Also
 		--------
 		LinearOperator
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import qmr
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> b = np.array([2, 4, -1], dtype=float)
+		>>> x, exitCode = qmr(A, b)
+		>>> print(exitCode)            # 0 indicates successful convergence
+		0
+		>>> np.allclose(A.dot(x), b)
+		True
 	**/
-	static public function qmr(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?xtype:Dynamic, ?M1:Dynamic, ?M2:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function qmr(A:Dynamic, b:Dynamic, ?x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?M1:Dynamic, ?M2:Dynamic, ?callback:Dynamic, ?atol:Dynamic):Dynamic;
 	/**
 		Compute an incomplete LU decomposition for a sparse, square matrix.
 		
@@ -1574,6 +1852,20 @@ package scipy.sparse.linalg;
 		increase `fill_factor` AND decrease `drop_tol`.
 		
 		This function uses the SuperLU library.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import spilu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = spilu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
 	static public function spilu(A:Dynamic, ?drop_tol:Dynamic, ?fill_factor:Dynamic, ?drop_rule:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
@@ -1595,8 +1887,6 @@ package scipy.sparse.linalg;
 		diag_pivot_thresh : float, optional
 		    Threshold used for a diagonal entry to be an acceptable pivot.
 		    See SuperLU user's guide for details [1]_
-		drop_tol : float, optional
-		    (deprecated) No effect.
 		relax : int, optional
 		    Expert option for customizing the degree of relaxing supernodes.
 		    See SuperLU user's guide for details [1]_
@@ -1626,8 +1916,22 @@ package scipy.sparse.linalg;
 		References
 		----------
 		.. [1] SuperLU http://crd.lbl.gov/~xiaoye/SuperLU/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import splu
+		>>> A = csc_matrix([[1., 0., 0.], [5., 0., 2.], [0., -1., 0.]], dtype=float)
+		>>> B = splu(A)
+		>>> x = np.array([1., 2., 3.], dtype=float)
+		>>> B.solve(x)
+		array([ 1. , -3. , -1.5])
+		>>> A.dot(B.solve(x))
+		array([ 1.,  2.,  3.])
+		>>> B.solve(A.dot(x))
+		array([ 1.,  2.,  3.])
 	**/
-	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?drop_tol:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
+	static public function splu(A:Dynamic, ?permc_spec:Dynamic, ?diag_pivot_thresh:Dynamic, ?relax:Dynamic, ?panel_size:Dynamic, ?options:Dynamic):Dynamic;
 	/**
 		Solve the sparse linear system Ax=b, where b may be a vector or a matrix.
 		
@@ -1664,6 +1968,16 @@ package scipy.sparse.linalg;
 		resulting X is dense, the construction of this sparse result will be
 		relatively expensive.  In that case, consider converting A to a dense
 		matrix and using scipy.linalg.solve or its variants.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import spsolve
+		>>> A = csc_matrix([[3, 2, 0], [1, -1, 0], [0, 5, 1]], dtype=float)
+		>>> B = csc_matrix([[2, 0], [-1, 0], [2, 0]], dtype=float)
+		>>> x = spsolve(A, B)
+		>>> np.allclose(A.dot(x).todense(), B.todense())
+		True
 	**/
 	static public function spsolve(A:Dynamic, b:Dynamic, ?permc_spec:Dynamic, ?use_umfpack:Dynamic):Dynamic;
 	/**
@@ -1685,6 +1999,8 @@ package scipy.sparse.linalg;
 		overwrite_b : bool, optional
 		    Allow overwriting data in `b`.
 		    Enabling gives a performance gain. Default is False.
+		    If `overwrite_b` is True, it should be ensured that
+		    `b` has an appropriate dtype to be able to store the result.
 		
 		Returns
 		-------
@@ -1701,6 +2017,16 @@ package scipy.sparse.linalg;
 		Notes
 		-----
 		.. versionadded:: 0.19.0
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse.linalg import spsolve_triangular
+		>>> A = csr_matrix([[3, 0, 0], [1, -1, 0], [2, 0, 1]], dtype=float)
+		>>> B = np.array([[2, 0], [-1, 0], [2, 0]], dtype=float)
+		>>> x = spsolve_triangular(A, B)
+		>>> np.allclose(A.dot(x), B)
+		True
 	**/
 	static public function spsolve_triangular(A:Dynamic, b:Dynamic, ?lower:Dynamic, ?overwrite_A:Dynamic, ?overwrite_b:Dynamic):Dynamic;
 	/**
@@ -1766,70 +2092,20 @@ package scipy.sparse.linalg;
 		-----
 		This is a naive implementation using ARPACK as an eigensolver
 		on A.H * A or A * A.H, depending on which one is more efficient.
-	**/
-	static public function svds(A:Dynamic, ?k:Dynamic, ?ncv:Dynamic, ?tol:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?maxiter:Dynamic, ?return_singular_vectors:Dynamic):Dynamic;
-	/**
-		Run tests for module using nose.
-		
-		Parameters
-		----------
-		label : {'fast', 'full', '', attribute identifier}, optional
-		    Identifies the tests to run. This can be a string to pass to
-		    the nosetests executable with the '-A' option, or one of several
-		    special values.  Special values are:
-		    * 'fast' - the default - which corresponds to the ``nosetests -A``
-		      option of 'not slow'.
-		    * 'full' - fast (as above) and slow tests as in the
-		      'no -A' option to nosetests - this is the same as ''.
-		    * None or '' - run all tests.
-		    attribute_identifier - string passed directly to nosetests as '-A'.
-		verbose : int, optional
-		    Verbosity value for test outputs, in the range 1-10. Default is 1.
-		extra_argv : list, optional
-		    List with any extra arguments to pass to nosetests.
-		doctests : bool, optional
-		    If True, run doctests in module. Default is False.
-		coverage : bool, optional
-		    If True, report coverage of NumPy code. Default is False.
-		    (This requires the `coverage module:
-		     <http://nedbatchelder.com/code/modules/coverage.html>`_).
-		raise_warnings : None, str or sequence of warnings, optional
-		    This specifies which warnings to configure as 'raise' instead
-		    of being shown once during the test execution.  Valid strings are:
-		
-		      - "develop" : equals ``(Warning,)``
-		      - "release" : equals ``()``, don't raise on any warnings.
-		
-		    The default is to use the class initialization value.
-		
-		Returns
-		-------
-		result : object
-		    Returns the result of running the tests as a
-		    ``nose.result.TextTestResult`` object.
-		
-		Notes
-		-----
-		Each NumPy module exposes `test` in its namespace to run all tests for it.
-		For example, to run all tests for numpy.lib:
-		
-		>>> np.lib.test() #doctest: +SKIP
 		
 		Examples
 		--------
-		>>> result = np.lib.test() #doctest: +SKIP
-		Running unit tests for numpy.lib
-		...
-		Ran 976 tests in 3.933s
-		
-		OK
-		
-		>>> result.errors #doctest: +SKIP
-		[]
-		>>> result.knownfail #doctest: +SKIP
-		[]
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import svds, eigs
+		>>> A = csc_matrix([[1, 0, 0], [5, 0, 2], [0, -1, 0], [0, 0, 3]], dtype=float)
+		>>> u, s, vt = svds(A, k=2)
+		>>> s
+		array([ 2.75193379,  5.6059665 ])
+		>>> np.sqrt(eigs(A.dot(A.T), k=2)[0]).real
+		array([ 5.6059665 ,  2.75193379])
 	**/
-	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	static public function svds(A:Dynamic, ?k:Dynamic, ?ncv:Dynamic, ?tol:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?maxiter:Dynamic, ?return_singular_vectors:Dynamic):Dynamic;
+	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?tests:Dynamic):Dynamic;
 	/**
 		Select default sparse direct solver to be used.
 		
@@ -1838,6 +2114,10 @@ package scipy.sparse.linalg;
 		useUmfpack : bool, optional
 		    Use UMFPACK over SuperLU. Has effect only if scikits.umfpack is
 		    installed. Default: True
+		assumeSortedIndices : bool, optional
+		    Allow UMFPACK to skip the step of sorting indices for a CSR/CSC matrix.
+		    Has effect only if useUmfpack is True and scikits.umfpack is installed.
+		    Default: False
 		
 		Notes
 		-----

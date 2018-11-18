@@ -20,6 +20,10 @@ package scipy.signal.fir_filter_design;
 		    preferably a fast length for FFT/IFFT.
 	**/
 	static public function _dhtm(mag:Dynamic):Dynamic;
+	/**
+		Utility for replacing the argument 'nyq' (with default 1) with 'fs'.
+	**/
+	static public function _get_fs(fs:Dynamic, nyq:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		ceil(x)
@@ -140,8 +144,12 @@ package scipy.signal.fir_filter_design;
 		    the least squares problem. `weight` has to be half the size of
 		    `bands`.
 		nyq : float, optional
+		    *Deprecated.  Use `fs` instead.*
 		    Nyquist frequency. Each frequency in `bands` must be between 0
-		    and `nyq` (inclusive).
+		    and `nyq` (inclusive).  Default is 1.
+		fs : float, optional
+		    The sampling frequency of the signal. Each frequency in `bands`
+		    must be between 0 and ``fs/2`` (inclusive).  Default is 2.
 		
 		Returns
 		-------
@@ -192,21 +200,23 @@ package scipy.signal.fir_filter_design;
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		>>> fig, axs = plt.subplots(2)
-		>>> nyq = 5.  # Hz
+		>>> fs = 10.0  # Hz
 		>>> desired = (0, 0, 1, 1, 0, 0)
 		>>> for bi, bands in enumerate(((0, 1, 2, 3, 4, 5), (0, 1, 2, 4, 4.5, 5))):
-		...     fir_firls = signal.firls(73, bands, desired, nyq=nyq)
-		...     fir_remez = signal.remez(73, bands, desired[::2], Hz=2 * nyq)
-		...     fir_firwin2 = signal.firwin2(73, bands, desired, nyq=nyq)
+		...     fir_firls = signal.firls(73, bands, desired, fs=fs)
+		...     fir_remez = signal.remez(73, bands, desired[::2], fs=fs)
+		...     fir_firwin2 = signal.firwin2(73, bands, desired, fs=fs)
 		...     hs = list()
 		...     ax = axs[bi]
 		...     for fir in (fir_firls, fir_remez, fir_firwin2):
 		...         freq, response = signal.freqz(fir)
-		...         hs.append(ax.semilogy(nyq*freq/(np.pi), np.abs(response))[0])
-		...     for band, gains in zip(zip(bands[::2], bands[1::2]), zip(desired[::2], desired[1::2])):
+		...         hs.append(ax.semilogy(0.5*fs*freq/np.pi, np.abs(response))[0])
+		...     for band, gains in zip(zip(bands[::2], bands[1::2]),
+		...                            zip(desired[::2], desired[1::2])):
 		...         ax.semilogy(band, np.maximum(gains, 1e-7), 'k--', linewidth=2)
 		...     if bi == 0:
-		...         ax.legend(hs, ('firls', 'remez', 'firwin2'), loc='lower center', frameon=False)
+		...         ax.legend(hs, ('firls', 'remez', 'firwin2'),
+		...                   loc='lower center', frameon=False)
 		...     else:
 		...         ax.set_xlabel('Frequency (Hz)')
 		...     ax.grid(True)
@@ -215,7 +225,7 @@ package scipy.signal.fir_filter_design;
 		>>> fig.tight_layout()
 		>>> plt.show()
 	**/
-	static public function firls(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?nyq:Dynamic):Dynamic;
+	static public function firls(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?nyq:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		FIR filter design using the window method.
 		
@@ -223,9 +233,9 @@ package scipy.signal.fir_filter_design;
 		filter.  The filter will have linear phase; it will be Type I if
 		`numtaps` is odd and Type II if `numtaps` is even.
 		
-		Type II filters always have zero response at the Nyquist rate, so a
+		Type II filters always have zero response at the Nyquist frequency, so a
 		ValueError exception is raised if firwin is called with `numtaps` even and
-		having a passband whose right end is at the Nyquist rate.
+		having a passband whose right end is at the Nyquist frequency.
 		
 		Parameters
 		----------
@@ -257,13 +267,17 @@ package scipy.signal.fir_filter_design;
 		
 		    - 0 (DC) if the first passband starts at 0 (i.e. pass_zero
 		      is True)
-		    - `nyq` (the Nyquist rate) if the first passband ends at
+		    - `nyq` (the Nyquist frequency) if the first passband ends at
 		      `nyq` (i.e the filter is a single band highpass filter);
 		      center of first passband otherwise
 		
 		nyq : float, optional
-		    Nyquist frequency.  Each frequency in `cutoff` must be between 0
-		    and `nyq`.
+		    *Deprecated.  Use `fs` instead.*  This is the Nyquist frequency.
+		    Each frequency in `cutoff` must be between 0 and `nyq`. Default
+		    is 1.
+		fs : float, optional
+		    The sampling frequency of the signal.  Each frequency in `cutoff`
+		    must be between 0 and ``fs/2``.  Default is 2.
 		
 		Returns
 		-------
@@ -274,11 +288,11 @@ package scipy.signal.fir_filter_design;
 		------
 		ValueError
 		    If any value in `cutoff` is less than or equal to 0 or greater
-		    than or equal to `nyq`, if the values in `cutoff` are not strictly
+		    than or equal to ``fs/2``, if the values in `cutoff` are not strictly
 		    monotonically increasing, or if `numtaps` is even but a passband
 		    includes the Nyquist frequency.
 		
-		See also
+		See Also
 		--------
 		firwin2
 		firls
@@ -327,7 +341,7 @@ package scipy.signal.fir_filter_design;
 		>>> signal.firwin(numtaps, [f1, f2, f3, f4], pass_zero=False)
 		array([ 0.04890915,  0.91284326,  0.04890915])
 	**/
-	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic):Dynamic;
+	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		FIR filter design using the window method.
 		
@@ -342,11 +356,10 @@ package scipy.signal.fir_filter_design;
 		    `nfreqs`.
 		freq : array_like, 1D
 		    The frequency sampling points. Typically 0.0 to 1.0 with 1.0 being
-		    Nyquist.  The Nyquist frequency can be redefined with the argument
-		    `nyq`.
+		    Nyquist.  The Nyquist frequency is half `fs`.
 		    The values in `freq` must be nondecreasing.  A value can be repeated
 		    once to implement a discontinuity.  The first value in `freq` must
-		    be 0, and the last value must be `nyq`.
+		    be 0, and the last value must be ``fs/2``.
 		gain : array_like
 		    The filter gains at the frequency sampling points. Certain
 		    constraints to gain values, depending on the filter type, are applied,
@@ -362,11 +375,14 @@ package scipy.signal.fir_filter_design;
 		    `scipy.signal.get_window` for the complete list of possible values.
 		    If None, no window function is applied.
 		nyq : float, optional
-		    Nyquist frequency.  Each frequency in `freq` must be between 0 and
-		    `nyq` (inclusive).
+		    *Deprecated.  Use `fs` instead.*  This is the Nyquist frequency.
+		    Each frequency in `freq` must be between 0 and `nyq`.  Default is 1.
 		antisymmetric : bool, optional
 		    Whether resulting impulse response is symmetric/antisymmetric.
 		    See Notes for more details.
+		fs : float, optional
+		    The sampling frequency of the signal.  Each frequency in `cutoff`
+		    must be between 0 and ``fs/2``.  Default is 2.
 		
 		Returns
 		-------
@@ -426,7 +442,7 @@ package scipy.signal.fir_filter_design;
 		>>> print(taps[72:78])
 		[-0.02286961 -0.06362756  0.57310236  0.57310236 -0.06362756 -0.02286961]
 	**/
-	static public function firwin2(numtaps:Dynamic, freq:Dynamic, gain:Dynamic, ?nfreqs:Dynamic, ?window:Dynamic, ?nyq:Dynamic, ?antisymmetric:Dynamic):Dynamic;
+	static public function firwin2(numtaps:Dynamic, freq:Dynamic, gain:Dynamic, ?nfreqs:Dynamic, ?window:Dynamic, ?nyq:Dynamic, ?antisymmetric:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Construct a Hankel matrix.
 		
@@ -450,7 +466,7 @@ package scipy.signal.fir_filter_design;
 		A : (len(c), len(r)) ndarray
 		    The Hankel matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
 		
-		See also
+		See Also
 		--------
 		toeplitz : Toeplitz matrix
 		circulant : circulant matrix
@@ -645,7 +661,8 @@ package scipy.signal.fir_filter_design;
 		    The number of taps in the FIR filter.
 		width : float
 		    The desired width of the transition region between passband and
-		    stopband (or, in general, at any discontinuity) for the filter.
+		    stopband (or, in general, at any discontinuity) for the filter,
+		    expressed as a fraction of the Nyquist frequency.
 		
 		Returns
 		-------
@@ -655,6 +672,18 @@ package scipy.signal.fir_filter_design;
 		See Also
 		--------
 		kaiserord, kaiser_beta
+		
+		Examples
+		--------
+		Suppose we want to design a FIR filter using the Kaiser window method
+		that will have 211 taps and a transition width of 9 Hz for a signal that
+		is sampled at 480 Hz.  Expressed as a fraction of the Nyquist frequency,
+		the width is 9/(0.5*480) = 0.0375.  The approximate attenuation (in dB)
+		is computed as follows:
+		
+		>>> from scipy.signal import kaiser_atten
+		>>> kaiser_atten(211, 0.0375)
+		64.48099630593983
 	**/
 	static public function kaiser_atten(numtaps:Dynamic, width:Dynamic):Float;
 	/**
@@ -674,26 +703,49 @@ package scipy.signal.fir_filter_design;
 		References
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
+		
+		Examples
+		--------
+		Suppose we want to design a lowpass filter, with 65 dB attenuation
+		in the stop band.  The Kaiser window parameter to be used in the
+		window method is computed by `kaiser_beta(65)`:
+		
+		>>> from scipy.signal import kaiser_beta
+		>>> kaiser_beta(65)
+		6.20426
 	**/
 	static public function kaiser_beta(a:Dynamic):Float;
 	/**
-		Design a Kaiser window to limit ripple and width of transition region.
+		Determine the filter window parameters for the Kaiser window method.
+		
+		The parameters returned by this function are generally used to create
+		a finite impulse response filter using the window method, with either
+		`firwin` or `firwin2`.
 		
 		Parameters
 		----------
 		ripple : float
-		    Positive number specifying maximum ripple in passband (dB) and minimum
-		    ripple in stopband.
+		    Upper bound for the deviation (in dB) of the magnitude of the
+		    filter's frequency response from that of the desired filter (not
+		    including frequencies in any transition intervals).  That is, if w
+		    is the frequency expressed as a fraction of the Nyquist frequency,
+		    A(w) is the actual frequency response of the filter and D(w) is the
+		    desired frequency response, the design requirement is that::
+		
+		        abs(A(w) - D(w))) < 10**(-ripple/20)
+		
+		    for 0 <= w <= 1 and w not in a transition interval.
 		width : float
-		    Width of transition region (normalized so that 1 corresponds to pi
-		    radians / sample).
+		    Width of transition region, normalized so that 1 corresponds to pi
+		    radians / sample.  That is, the frequency is expressed as a fraction
+		    of the Nyquist frequency.
 		
 		Returns
 		-------
 		numtaps : int
-		    The length of the kaiser window.
+		    The length of the Kaiser window.
 		beta : float
-		    The beta parameter for the kaiser window.
+		    The beta parameter for the Kaiser window.
 		
 		See Also
 		--------
@@ -712,6 +764,73 @@ package scipy.signal.fir_filter_design;
 		References
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
+		
+		Examples
+		--------
+		We will use the Kaiser window method to design a lowpass FIR filter
+		for a signal that is sampled at 1000 Hz.
+		
+		We want at least 65 dB rejection in the stop band, and in the pass
+		band the gain should vary no more than 0.5%.
+		
+		We want a cutoff frequency of 175 Hz, with a transition between the
+		pass band and the stop band of 24 Hz.  That is, in the band [0, 163],
+		the gain varies no more than 0.5%, and in the band [187, 500], the
+		signal is attenuated by at least 65 dB.
+		
+		>>> from scipy.signal import kaiserord, firwin, freqz
+		>>> import matplotlib.pyplot as plt
+		>>> fs = 1000.0
+		>>> cutoff = 175
+		>>> width = 24
+		
+		The Kaiser method accepts just a single parameter to control the pass
+		band ripple and the stop band rejection, so we use the more restrictive
+		of the two.  In this case, the pass band ripple is 0.005, or 46.02 dB,
+		so we will use 65 dB as the design parameter.
+		
+		Use `kaiserord` to determine the length of the filter and the
+		parameter for the Kaiser window.
+		
+		>>> numtaps, beta = kaiserord(65, width/(0.5*fs))
+		>>> numtaps
+		167
+		>>> beta
+		6.20426
+		
+		Use `firwin` to create the FIR filter.
+		
+		>>> taps = firwin(numtaps, cutoff, window=('kaiser', beta),
+		...               scale=False, nyq=0.5*fs)
+		
+		Compute the frequency response of the filter.  ``w`` is the array of
+		frequencies, and ``h`` is the corresponding complex array of frequency
+		responses.
+		
+		>>> w, h = freqz(taps, worN=8000)
+		>>> w *= 0.5*fs/np.pi  # Convert w to Hz.
+		
+		Compute the deviation of the magnitude of the filter's response from
+		that of the ideal lowpass filter.  Values in the transition region are
+		set to ``nan``, so they won't appear in the plot.
+		
+		>>> ideal = w < cutoff  # The "ideal" frequency response.
+		>>> deviation = np.abs(np.abs(h) - ideal)
+		>>> deviation[(w > cutoff - 0.5*width) & (w < cutoff + 0.5*width)] = np.nan
+		
+		Plot the deviation.  A close look at the left end of the stop band shows
+		that the requirement for 65 dB attenuation is violated in the first lobe
+		by about 0.125 dB.  This is not unusual for the Kaiser window method.
+		
+		>>> plt.plot(w, 20*np.log10(np.abs(deviation)))
+		>>> plt.xlim(0, 0.5*fs)
+		>>> plt.ylim(-90, -60)
+		>>> plt.grid(alpha=0.25)
+		>>> plt.axhline(-65, color='r', ls='--', alpha=0.3)
+		>>> plt.xlabel('Frequency (Hz)')
+		>>> plt.ylabel('Deviation from ideal (dB)')
+		>>> plt.title('Lowpass Filter Frequency Response')
+		>>> plt.show()
 	**/
 	static public function kaiserord(ripple:Dynamic, width:Dynamic):Int;
 	/**
@@ -833,7 +952,7 @@ package scipy.signal.fir_filter_design;
 		       doi: 10.1109/ICASSP.1999.756179
 		.. [2] X. Chen and T. W. Parks, "Design of optimal minimum phase FIR
 		       filters by direct factorization," Signal Processing,
-		       vol. 10, no. 4, pp. 369–383, Jun. 1986.
+		       vol. 10, no. 4, pp. 369-383, Jun. 1986.
 		.. [3] T. Saramaki, "Finite Impulse Response Filter Design," in
 		       Handbook for Digital Signal Processing, chapter 4,
 		       New York: Wiley-Interscience, 1993.
@@ -903,9 +1022,9 @@ package scipy.signal.fir_filter_design;
 		    The desired number of taps in the filter. The number of taps is
 		    the number of terms in the filter, or the filter order plus one.
 		bands : array_like
-		    A monotonic sequence containing the band edges in Hz.
+		    A monotonic sequence containing the band edges.
 		    All elements must be non-negative and less than half the sampling
-		    frequency as given by `Hz`.
+		    frequency as given by `fs`.
 		desired : array_like
 		    A sequence half the size of bands containing the desired gain
 		    in each of the specified bands.
@@ -913,6 +1032,7 @@ package scipy.signal.fir_filter_design;
 		    A relative weighting to give to each band region. The length of
 		    `weight` has to be half the length of `bands`.
 		Hz : scalar, optional
+		    *Deprecated.  Use `fs` instead.*
 		    The sampling frequency in Hz. Default is 1.
 		type : {'bandpass', 'differentiator', 'hilbert'}, optional
 		    The type of filter:
@@ -930,6 +1050,8 @@ package scipy.signal.fir_filter_design;
 		grid_density : int, optional
 		    Grid density. The dense grid used in `remez` is of size
 		    ``(numtaps + 1) * grid_density``. Default is 16.
+		fs : float, optional
+		    The sampling frequency of the signal.  Default is 1.
 		
 		Returns
 		-------
@@ -956,23 +1078,24 @@ package scipy.signal.fir_filter_design;
 		
 		Examples
 		--------
-		We want to construct a filter with a passband at 0.2-0.4 Hz, and
-		stop bands at 0-0.1 Hz and 0.45-0.5 Hz. Note that this means that the
-		behavior in the frequency ranges between those bands is unspecified and
-		may overshoot.
+		For a signal sampled at 100 Hz, we want to construct a filter with a
+		passband at 20-40 Hz, and stop bands at 0-10 Hz and 45-50 Hz. Note that
+		this means that the behavior in the frequency ranges between those bands
+		is unspecified and may overshoot.
 		
 		>>> from scipy import signal
-		>>> bpass = signal.remez(72, [0, 0.1, 0.2, 0.4, 0.45, 0.5], [0, 1, 0])
+		>>> fs = 100
+		>>> bpass = signal.remez(72, [0, 10, 20, 40, 45, 50], [0, 1, 0], fs=fs)
 		>>> freq, response = signal.freqz(bpass)
-		>>> ampl = np.abs(response)
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig = plt.figure()
-		>>> ax1 = fig.add_subplot(111)
-		>>> ax1.semilogy(freq/(2*np.pi), ampl, 'b-')  # freq in Hz
+		>>> plt.semilogy(0.5*fs*freq/np.pi, np.abs(response), 'b-')
+		>>> plt.grid(alpha=0.25)
+		>>> plt.xlabel('Frequency (Hz)')
+		>>> plt.ylabel('Gain')
 		>>> plt.show()
 	**/
-	static public function remez(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?Hz:Dynamic, ?type:Dynamic, ?maxiter:Dynamic, ?grid_density:Dynamic):Dynamic;
+	static public function remez(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?Hz:Dynamic, ?type:Dynamic, ?maxiter:Dynamic, ?grid_density:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
 		Return the sinc function.
 		
@@ -1071,10 +1194,11 @@ package scipy.signal.fir_filter_design;
 		A : (len(c), len(r)) ndarray
 		    The Toeplitz matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
 		
-		See also
+		See Also
 		--------
 		circulant : circulant matrix
 		hankel : Hankel matrix
+		solve_toeplitz : Solve a Toeplitz system.
 		
 		Notes
 		-----

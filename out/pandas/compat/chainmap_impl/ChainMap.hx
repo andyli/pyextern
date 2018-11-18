@@ -17,7 +17,7 @@ package pandas.compat.chainmap_impl;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		New ChainMap or subclass with a new copy of maps[0] and refs to
@@ -75,7 +75,7 @@ package pandas.compat.chainmap_impl;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -192,7 +192,7 @@ package pandas.compat.chainmap_impl;
 		If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 		In either case, this is followed by: for k, v in F.items(): D[k] = v
 	**/
-	public function update(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function update(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		D.values() -> an object providing a view on D's values
 	**/

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.categorical;
 @:pythonImport("seaborn.categorical", "_CategoricalScatterPlotter") extern class _CategoricalScatterPlotter {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +52,7 @@ package seaborn.categorical;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package seaborn.categorical;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -120,6 +120,7 @@ package seaborn.categorical;
 		Add descriptive labels to an Axes object.
 	**/
 	public function annotate_axes(ax:Dynamic):Dynamic;
+	static public var default_palette : Dynamic;
 	/**
 		Get a list of colors for the main component of the plots.
 	**/

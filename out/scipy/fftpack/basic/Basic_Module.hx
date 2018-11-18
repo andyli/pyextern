@@ -83,8 +83,6 @@ package scipy.fftpack.basic;
 		
 		        y(j) = sum[k=0..n-1] x[k] * exp(-sqrt(-1)*j*k* 2*pi/n), j = 0..n-1
 		
-		    Note that ``y(-j) = y(n-j).conjugate()``.
-		
 		See Also
 		--------
 		ifft : Inverse FFT
@@ -100,10 +98,6 @@ package scipy.fftpack.basic;
 		To rearrange the fft output so that the zero-frequency component is
 		centered, like [-4, -3, -2, -1,  0,  1,  2,  3], use `fftshift`.
 		
-		For `n` even, ``A[n/2]`` contains the sum of the positive and
-		negative-frequency terms.  For `n` even and `x` real, ``A[n/2]`` will
-		always be real.
-		
 		Both single and double precision routines are implemented.  Half precision
 		inputs will be converted to single precision.  Non floating-point inputs
 		will be converted to double precision.  Long-double precision inputs are
@@ -111,6 +105,9 @@ package scipy.fftpack.basic;
 		
 		This function is most efficient when `n` is a power of two, and least
 		efficient when `n` is prime.
+		
+		Note that if ``x`` is real-valued then ``A[j] == A[n-j].conjugate()``.
+		If ``x`` is real-valued and ``n`` is even then ``A[n/2]`` is real.
 		
 		If the data type of `x` is real, a "real FFT" algorithm is automatically
 		used, which roughly halves the computation time.  To increase efficiency
@@ -147,7 +144,6 @@ package scipy.fftpack.basic;
 		     x[k_1,..,k_d] * prod[i=1..d] exp(-sqrt(-1)*2*pi/n_i * j_i * k_i)
 		
 		where d = len(x.shape) and n = x.shape.
-		Note that ``y[..., -j_i, ...] = y[..., n_i-j_i, ...].conjugate()``.
 		
 		Parameters
 		----------
@@ -177,6 +173,9 @@ package scipy.fftpack.basic;
 		
 		Notes
 		-----
+		If ``x`` is real-valued, then
+		``y[..., j_i, ...] == y[..., n_i-j_i, ...].conjugate()``.
+		
 		Both single and double precision routines are implemented.  Half precision
 		inputs will be converted to single precision.  Non floating-point inputs
 		will be converted to double precision.  Long-double precision inputs are
@@ -232,6 +231,14 @@ package scipy.fftpack.basic;
 		
 		If the data type of `x` is real, a "real IFFT" algorithm is automatically
 		used, which roughly halves the computation time.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import fft, ifft
+		>>> import numpy as np
+		>>> x = np.arange(5)
+		>>> np.allclose(ifft(fft(x)), x, atol=1e-15)  # within numerical accuracy.
+		True
 	**/
 	static public function ifft(x:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
@@ -263,6 +270,14 @@ package scipy.fftpack.basic;
 		See Also
 		--------
 		fftn : for detailed information.
+		
+		Examples
+		--------
+		>>> from scipy.fftpack import fftn, ifftn
+		>>> import numpy as np
+		>>> y = (-np.arange(16), 8 - np.arange(16), np.arange(16))
+		>>> np.allclose(y, ifftn(fftn(y)))
+		True
 	**/
 	static public function ifftn(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
@@ -293,7 +308,7 @@ package scipy.fftpack.basic;
 		
 		See Also
 		--------
-		rfft, ifft
+		rfft, ifft, numpy.fft.irfft
 		
 		Notes
 		-----
@@ -316,6 +331,9 @@ package scipy.fftpack.basic;
 		c.c. denotes complex conjugate of preceding expression.
 		
 		For details on input parameters, see `rfft`.
+		
+		To process (conjugate-symmetric) frequency-domain data with a complex
+		datatype, consider using the related function `numpy.fft.irfft`.
 	**/
 	static public function irfft(x:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	static public function istype(arr:Dynamic, typeclass:Dynamic):Dynamic;
@@ -351,11 +369,9 @@ package scipy.fftpack.basic;
 		      y(j) = sum[k=0..n-1] x[k] * exp(-sqrt(-1)*j*k*2*pi/n)
 		      j = 0..n-1
 		
-		    Note that ``y(-j) == y(n-j).conjugate()``.
-		
 		See Also
 		--------
-		fft, irfft, scipy.fftpack.basic
+		fft, irfft, numpy.fft.rfft
 		
 		Notes
 		-----
@@ -365,6 +381,9 @@ package scipy.fftpack.basic;
 		inputs will be converted to single precision.  Non floating-point inputs
 		will be converted to double precision.  Long-double precision inputs are
 		not supported.
+		
+		To get an output with a complex datatype, consider using the related
+		function `numpy.fft.rfft`.
 		
 		Examples
 		--------
@@ -425,14 +444,15 @@ package scipy.fftpack.basic;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -442,17 +462,16 @@ package scipy.fftpack.basic;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package torch.storage;
 @:pythonImport("torch.storage", "_StorageBase") extern class _StorageBase {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__():Dynamic;
 	public function __deepcopy__(memo:Dynamic):Dynamic;
 	/**
@@ -54,7 +54,7 @@ package torch.storage;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -93,7 +93,7 @@ package torch.storage;
 		__sizeof__() -> int
 		size of object in memory, in bytes
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return str(self).
 	**/
@@ -106,7 +106,7 @@ package torch.storage;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -139,11 +139,13 @@ package torch.storage;
 		
 		Args:
 		    device (int): The destination GPU id. Defaults to the current device.
-		    async (bool): If True and the source is in pinned memory, the copy will
-		                  be asynchronous with respect to the host. Otherwise, the
-		                  argument has no effect.
+		    non_blocking (bool): If ``True`` and the source is in pinned memory,
+		        the copy will be asynchronous with respect to the host. Otherwise,
+		        the argument has no effect.
+		    **kwargs: For compatibility, may contain the key ``async`` in place of
+		        the ``non_blocking`` argument.
 	**/
-	public function cuda(?device:Dynamic, ?async:Dynamic):Dynamic;
+	public function cuda(?device:Dynamic, ?non_blocking:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Casts this storage to double type
 	**/
@@ -189,17 +191,20 @@ package torch.storage;
 	**/
 	public function tolist():Dynamic;
 	/**
-		Casts this object to the specified type.
+		Returns the type if `dtype` is not provided, else casts this object to
+		the specified type.
 		
 		If this is already of the correct type, no copy is performed and the
 		original object is returned.
 		
 		Args:
-		    new_type (type or string): The desired type
-		    async (bool): If True, and the source is in pinned memory and
-		                  destination is on the GPU or vice versa, the copy is
-		                  performed asynchronously with respect to the host.
-		                  Otherwise, the argument has no effect.
+		    dtype (type or string): The desired type
+		    non_blocking (bool): If ``True``, and the source is in pinned memory
+		        and destination is on the GPU or vice versa, the copy is performed
+		        asynchronously with respect to the host. Otherwise, the argument
+		        has no effect.
+		    **kwargs: For compatibility, may contain the key ``async`` in place of
+		        the ``non_blocking`` argument. The ``async`` arg is deprecated.
 	**/
-	public function type(?new_type:Dynamic, ?async:Dynamic):Dynamic;
+	public function type(?dtype:Dynamic, ?non_blocking:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

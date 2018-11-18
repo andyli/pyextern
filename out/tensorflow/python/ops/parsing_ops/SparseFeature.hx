@@ -5,7 +5,7 @@ package tensorflow.python.ops.parsing_ops;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package tensorflow.python.ops.parsing_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -97,7 +97,7 @@ package tensorflow.python.ops.parsing_ops;
 	/**
 		Create new instance of SparseFeature(index_key, value_key, dtype, size, already_sorted)
 	**/
-	static public function __new__(_cls:Dynamic, index_key:Dynamic, value_key:Dynamic, dtype:Dynamic, size:Dynamic, ?already_sorted:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, index_key:Dynamic, value_key:Dynamic, dtype:Dynamic, size:Dynamic, ?already_sorted:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -136,7 +136,7 @@ package tensorflow.python.ops.parsing_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -149,8 +149,10 @@ package tensorflow.python.ops.parsing_ops;
 	/**
 		Return a new SparseFeature object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Alias for field number 4
 	**/

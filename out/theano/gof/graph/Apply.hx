@@ -54,7 +54,7 @@ package theano.gof.graph;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -106,7 +106,7 @@ package theano.gof.graph;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -134,7 +134,7 @@ package theano.gof.graph;
 		strict : bool
 		    If True, the type fields of all the inputs must be equal
 		    to the current ones (or compatible, for instance Tensor /
-		    CudaNdarray of the same dtype and broadcastable patterns,
+		    GpuArray of the same dtype and broadcastable patterns,
 		    in which case they will be converted into current Type), and
 		    returned outputs are guaranteed to have the same types as
 		    self.outputs.  If False, then there's no guarantee that the

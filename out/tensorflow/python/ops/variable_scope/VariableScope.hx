@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.variable_scope;
 @:pythonImport("tensorflow.python.ops.variable_scope", "VariableScope") extern class VariableScope {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -41,18 +41,18 @@ package tensorflow.python.ops.variable_scope;
 		Creates a new VariableScope with the given properties.
 	**/
 	@:native("__init__")
-	public function ___init__(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic):Dynamic;
+	public function ___init__(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic):Dynamic;
 	/**
 		Creates a new VariableScope with the given properties.
 	**/
-	public function new(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic):Void;
+	public function new(reuse:Dynamic, ?name:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?custom_getter:Dynamic, ?name_scope:Dynamic, ?dtype:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package tensorflow.python.ops.variable_scope;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -111,8 +111,11 @@ package tensorflow.python.ops.variable_scope;
 	/**
 		Gets an existing variable with this name or create a new one.
 	**/
-	public function _get_partitioned_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic):Dynamic;
+	public function _get_partitioned_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?constraint:Dynamic):Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	public var caching_device : Dynamic;
+	public var constraint : Dynamic;
 	public var custom_getter : Dynamic;
 	public var dtype : Dynamic;
 	/**
@@ -122,12 +125,16 @@ package tensorflow.python.ops.variable_scope;
 	/**
 		Gets an existing variable with this name or create a new one.
 	**/
-	public function get_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic):Dynamic;
+	public function get_variable(var_store:Dynamic, name:Dynamic, ?shape:Dynamic, ?dtype:Dynamic, ?initializer:Dynamic, ?regularizer:Dynamic, ?reuse:Dynamic, ?trainable:Dynamic, ?collections:Dynamic, ?caching_device:Dynamic, ?partitioner:Dynamic, ?validate_shape:Dynamic, ?use_resource:Dynamic, ?custom_getter:Dynamic, ?constraint:Dynamic, ?synchronization:Dynamic, ?aggregation:Dynamic):Dynamic;
 	/**
 		Get this scope's global variables.
 	**/
 	public function global_variables():Dynamic;
 	public var initializer : Dynamic;
+	/**
+		Get this scope's local variables.
+	**/
+	public function local_variables():Dynamic;
 	public var name : Dynamic;
 	public var original_name_scope : Dynamic;
 	public var partitioner : Dynamic;

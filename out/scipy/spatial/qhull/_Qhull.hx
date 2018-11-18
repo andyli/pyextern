@@ -1,8 +1,7 @@
 /* This file is generated, do not edit! */
 package scipy.spatial.qhull;
 @:pythonImport("scipy.spatial.qhull", "_Qhull") extern class _Qhull {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __del__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -52,7 +51,7 @@ package scipy.spatial.qhull;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -100,7 +99,7 @@ package scipy.spatial.qhull;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function add_points(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function check_active(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

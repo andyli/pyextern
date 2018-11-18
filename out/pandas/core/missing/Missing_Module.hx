@@ -83,8 +83,23 @@ package pandas.core.missing;
 	**/
 	static public function _from_derivatives(xi:Dynamic, yi:Dynamic, x:Dynamic, ?order:Dynamic, ?der:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	/**
-		Get idx of values that won't be filled b/c they exceed the limits.
+		Get indexers of values that won't be filled
+		because they exceed the limits.
 		
+		Parameters
+		----------
+		invalid : boolean ndarray
+		fw_limit : int or None
+		    forward limit to index
+		bw_limit : int or None
+		    backward limit to index
+		
+		Returns
+		-------
+		set of indexers
+		
+		Notes
+		-----
 		This is equivalent to the more readable, but slower
 		
 		.. code-block:: python
@@ -120,6 +135,22 @@ package pandas.core.missing;
 	static public function clean_interp_method(method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function clean_reindex_fill_method(method:Dynamic):Dynamic;
 	/**
+		Fill nulls caused by division by zero, casting to a diffferent dtype
+		if necessary.
+		
+		Parameters
+		----------
+		op : function (operator.add, operator.div, ...)
+		left : object (Index for non-reversed ops)
+		right : object (Index fof reversed ops)
+		result : ndarray
+		
+		Returns
+		-------
+		result : ndarray
+	**/
+	static public function dispatch_missing(op:Dynamic, left:Dynamic, right:Dynamic, result:Dynamic):numpy.Ndarray;
+	/**
 		if this is a reversed op, then flip x,y
 		
 		if we have an integer value (or array in y)
@@ -136,16 +167,23 @@ package pandas.core.missing;
 		Parameters
 		----------
 		arr : scalar or array
+		pandas_dtype : bool, default False
+		    whether to infer dtype including pandas extension types.
+		    If False, array belongs to pandas extension types
+		    is inferred as object
 		
 		Returns
 		-------
-		tuple (numpy-compat dtype, array)
+		tuple (numpy-compat/pandas-compat dtype, array)
 		
 		Notes
 		-----
-		These infer to numpy dtypes exactly
-		with the exception that mixed / object dtypes
+		if pandas_dtype=False. these infer to numpy dtypes
+		exactly with the exception that mixed / object dtypes
 		are not coerced by stringifying or conversion
+		
+		if pandas_dtype=True. datetime64tz-aware/categorical
+		types will retain there character.
 		
 		Examples
 		--------
@@ -155,7 +193,7 @@ package pandas.core.missing;
 		>>> infer_dtype_from_array([1, '1'])
 		(numpy.object_, [1, '1'])
 	**/
-	static public function infer_dtype_from_array(arr:Dynamic):Dynamic;
+	static public function infer_dtype_from_array(arr:Dynamic, ?pandas_dtype:Dynamic):Dynamic;
 	/**
 		Logic for the 1-d interpolation.  The result should be 1-d, inputs
 		xvalues and yvalues will each be 1-d arrays of the same length.
@@ -163,7 +201,7 @@ package pandas.core.missing;
 		Bounds_error is currently hardcoded to False since non-scipy ones don't
 		take it as an argumnet.
 	**/
-	static public function interpolate_1d(xvalues:Dynamic, yvalues:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function interpolate_1d(xvalues:Dynamic, yvalues:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?limit_area:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		perform an actual interpolation of values, values will be make 2-d if
 		needed fills inplace, returns the result
@@ -349,32 +387,116 @@ package pandas.core.missing;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	/**
 		Return a masking array of same size/shape as arr
 		with entries equaling any member of values_to_mask set to True
 	**/
 	static public function mask_missing(arr:Dynamic, values_to_mask:Dynamic):Dynamic;
+	/**
+		Set results of 0 / 0 or 0 // 0 to np.nan, regardless of the dtypes
+		of the numerator or the denominator.
+		
+		Parameters
+		----------
+		x : ndarray
+		y : ndarray
+		result : ndarray
+		copy : bool (default False)
+		    Whether to always create a new array or try to fill in the existing
+		    array if possible.
+		
+		Returns
+		-------
+		filled_result : ndarray
+		
+		Examples
+		--------
+		>>> x = np.array([1, 0, -1], dtype=np.int64)
+		>>> y = 0       # int 0; numpy behavior is different with float
+		>>> result = x / y
+		>>> result      # raw numpy result does not fill division by zero
+		array([0, 0, 0])
+		>>> mask_zero_div_zero(x, y, result)
+		array([ inf,  nan, -inf])
+	**/
+	static public function mask_zero_div_zero(x:Dynamic, y:Dynamic, result:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Check whether the array or dtype should be converted to int64.
 		

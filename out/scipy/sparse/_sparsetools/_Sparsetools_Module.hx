@@ -75,6 +75,7 @@ package scipy.sparse._sparsetools;
 	static public function csr_sum_duplicates(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function csr_tobsr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function csr_tocsc(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function csr_todense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function dia_matvec(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function expandptr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_csr_submatrix(args:haxe.extern.Rest<Dynamic>):Dynamic;

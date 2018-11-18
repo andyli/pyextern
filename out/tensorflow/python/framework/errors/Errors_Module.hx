@@ -26,8 +26,10 @@ package tensorflow.python.framework.errors;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	static public function error_code_from_exception_type(cls:Dynamic):Dynamic;
 	static public function exception_type_from_error_code(error_code:Dynamic):Dynamic;
-	static public function raise_exception_on_not_ok_status():Dynamic;
+	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

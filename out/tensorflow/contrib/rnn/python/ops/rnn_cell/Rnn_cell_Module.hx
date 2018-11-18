@@ -11,6 +11,24 @@ package tensorflow.contrib.rnn.python.ops.rnn_cell;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Convolution.
+		
+		Args:
+		  args: a Tensor or a list of Tensors of dimension 3D, 4D or 5D,
+		  batch x n, Tensors.
+		  filter_size: int tuple of filter height and width.
+		  num_features: int, number of features.
+		  bias: Whether to use biases in the convolution layer.
+		  bias_start: starting value to initialize the bias; 0 by default.
+		
+		Returns:
+		  A 3D, 4D, or 5D Tensor with shape [batch ... num_features]
+		
+		Raises:
+		  ValueError: if some of the arguments has unspecified or wrong shape.
+	**/
+	static public function _conv(args:Dynamic, filter_size:Dynamic, num_features:Dynamic, bias:Dynamic, ?bias_start:Dynamic):Dynamic;
+	/**
 		Get a sharded variable concatenated into one tensor.
 	**/
 	static public function _get_concat_variable(name:Dynamic, shape:Dynamic, dtype:Dynamic, num_shards:Dynamic):Dynamic;
@@ -18,25 +36,7 @@ package tensorflow.contrib.rnn.python.ops.rnn_cell;
 		Get a list of sharded variables with the given dtype.
 	**/
 	static public function _get_sharded_variable(name:Dynamic, shape:Dynamic, dtype:Dynamic, num_shards:Dynamic):Dynamic;
-	/**
-		Linear map: sum_i(args[i] * W[i]), where W[i] is a variable.
-		
-		Args:
-		  args: a 2D Tensor or a list of 2D, batch x n, Tensors.
-		  output_size: int, second dimension of W[i].
-		  bias: boolean, whether to add a bias term or not.
-		  bias_initializer: starting value to initialize the bias
-		    (default is all zeros).
-		  kernel_initializer: starting value to initialize the weight.
-		
-		Returns:
-		  A 2D Tensor with shape [batch x output_size] equal to
-		  sum_i(args[i] * W[i]), where W[i]s are newly created matrices.
-		
-		Raises:
-		  ValueError: if some of the arguments has unspecified or wrong shape.
-	**/
-	static public function _linear(args:Dynamic, output_size:Dynamic, bias:Dynamic, ?bias_initializer:Dynamic, ?kernel_initializer:Dynamic):Dynamic;
+	static public function _norm(g:Dynamic, b:Dynamic, inp:Dynamic, scope:Dynamic):Dynamic;
 	/**
 		Returns an exponential distribution initializer.
 		

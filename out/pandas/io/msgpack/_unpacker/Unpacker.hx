@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.msgpack._unpacker;
 @:pythonImport("pandas.io.msgpack._unpacker", "Unpacker") extern class Unpacker {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -51,7 +51,7 @@ package pandas.io.msgpack._unpacker;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -75,7 +75,7 @@ package pandas.io.msgpack._unpacker;
 	public function __next__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
 	/**
-		helper for pickle
+		Unpacker.__reduce_cython__(self)
 	**/
 	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -90,6 +90,10 @@ package pandas.io.msgpack._unpacker;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Unpacker.__setstate_cython__(self, __pyx_state)
+	**/
+	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -107,7 +111,7 @@ package pandas.io.msgpack._unpacker;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Unpacker.feed(self, next_bytes)
 		Append `next_bytes` to internal buffer.

@@ -6,19 +6,21 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are summed as follows:
 		
-		  Dimension(m)    + Dimension(n)    == Dimension(m + n)
-		  Dimension(m)    + Dimension(None) == Dimension(None)
-		  Dimension(None) + Dimension(n)    == Dimension(None)
-		  Dimension(None) + Dimension(None) == Dimension(None)
+		```python
+		tf.Dimension(m)    + tf.Dimension(n)    == tf.Dimension(m + n)
+		tf.Dimension(m)    + tf.Dimension(None) == tf.Dimension(None)
+		tf.Dimension(None) + tf.Dimension(n)    == tf.Dimension(None)
+		tf.Dimension(None) + tf.Dimension(None) == tf.Dimension(None)
+		```
 		
 		Args:
-		  other: Another Dimension.
+		  other: Another Dimension, or a value accepted by `as_dimension`.
 		
 		Returns:
 		  A Dimension whose value is the sum of `self` and `other`.
 	**/
 	public function __add__(other:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -54,13 +56,15 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are divided as follows:
 		
-		  Dimension(m)    // Dimension(n)    == Dimension(m // n)
-		  Dimension(m)    // Dimension(None) == Dimension(None)
-		  Dimension(None) // Dimension(n)    == Dimension(None)
-		  Dimension(None) // Dimension(None) == Dimension(None)
+		```python
+		tf.Dimension(m)    // tf.Dimension(n)    == tf.Dimension(m // n)
+		tf.Dimension(m)    // tf.Dimension(None) == tf.Dimension(None)
+		tf.Dimension(None) // tf.Dimension(n)    == tf.Dimension(None)
+		tf.Dimension(None) // tf.Dimension(None) == tf.Dimension(None)
+		```
 		
 		Args:
-		  other: Another `Dimension`.
+		  other: Another Dimension, or a value accepted by `as_dimension`.
 		
 		Returns:
 		  A `Dimension` whose value is the integer quotient of `self` and `other`.
@@ -75,10 +79,12 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are compared as follows:
 		
-		  Dimension(m)    >= Dimension(n)    == m >= n
-		  Dimension(m)    >= Dimension(None) == None
-		  Dimension(None) >= Dimension(n)    == None
-		  Dimension(None) >= Dimension(None) == None
+		```python
+		(tf.Dimension(m)    >= tf.Dimension(n))    == (m >= n)
+		(tf.Dimension(m)    >= tf.Dimension(None)) == None
+		(tf.Dimension(None) >= tf.Dimension(n))    == None
+		(tf.Dimension(None) >= tf.Dimension(None)) == None
+		```
 		
 		Args:
 		  other: Another Dimension.
@@ -97,10 +103,12 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are compared as follows:
 		
-		  Dimension(m)    > Dimension(n)    == m > n
-		  Dimension(m)    > Dimension(None) == None
-		  Dimension(None) > Dimension(n)    == None
-		  Dimension(None) > Dimension(None) == None
+		```python
+		(tf.Dimension(m)    > tf.Dimension(n))    == (m > n)
+		(tf.Dimension(m)    > tf.Dimension(None)) == None
+		(tf.Dimension(None) > tf.Dimension(n))    == None
+		(tf.Dimension(None) > tf.Dimension(None)) == None
+		```
 		
 		Args:
 		  other: Another Dimension.
@@ -127,17 +135,19 @@ package tensorflow.python.framework.tensor_shape;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __int__():Dynamic;
 	/**
 		Returns True if `self` is known to be less than or equal to `other`.
 		
 		Dimensions are compared as follows:
 		
-		  Dimension(m)    <= Dimension(n)    == m <= n
-		  Dimension(m)    <= Dimension(None) == None
-		  Dimension(None) <= Dimension(n)    == None
-		  Dimension(None) <= Dimension(None) == None
+		```python
+		(tf.Dimension(m)    <= tf.Dimension(n))    == (m <= n)
+		(tf.Dimension(m)    <= tf.Dimension(None)) == None
+		(tf.Dimension(None) <= tf.Dimension(n))    == None
+		(tf.Dimension(None) <= tf.Dimension(None)) == None
+		```
 		
 		Args:
 		  other: Another Dimension.
@@ -147,15 +157,18 @@ package tensorflow.python.framework.tensor_shape;
 		  None.
 	**/
 	public function __le__(other:Dynamic):Dynamic;
+	public function __long__():Dynamic;
 	/**
 		Returns True if `self` is known to be less than `other`.
 		
 		Dimensions are compared as follows:
 		
-		  Dimension(m)    < Dimension(n)    == m < n
-		  Dimension(m)    < Dimension(None) == None
-		  Dimension(None) < Dimension(n)    == None
-		  Dimension(None) < Dimension(None) == None
+		```python
+		(tf.Dimension(m)    < tf.Dimension(n))    == (m < n)
+		(tf.Dimension(m)    < tf.Dimension(None)) == None
+		(tf.Dimension(None) < tf.Dimension(n))    == None
+		(tf.Dimension(None) < tf.Dimension(None)) == None
+		```
 		
 		Args:
 		  other: Another Dimension.
@@ -166,17 +179,19 @@ package tensorflow.python.framework.tensor_shape;
 	**/
 	public function __lt__(other:Dynamic):Dynamic;
 	/**
-		Returns `self` modulo `other.
+		Returns `self` modulo `other`.
 		
-		Dimension moduli are computed  as follows:
+		Dimension moduli are computed as follows:
 		
-		  Dimension(m)    % Dimension(n)     == Dimension(m % n)
-		  Dimension(m)    % Dimension(None)  == Dimension(None)
-		  Dimension(None) % Dimension(n)     == Dimension(None)
-		  Dimension(None) %  Dimension(None) == Dimension(None)
+		```python
+		tf.Dimension(m)    % tf.Dimension(n)    == tf.Dimension(m % n)
+		tf.Dimension(m)    % tf.Dimension(None) == tf.Dimension(None)
+		tf.Dimension(None) % tf.Dimension(n)    == tf.Dimension(None)
+		tf.Dimension(None) % tf.Dimension(None) == tf.Dimension(None)
+		```
 		
 		Args:
-		  other: Another Dimension.
+		  other: Another Dimension, or a value accepted by `as_dimension`.
 		
 		Returns:
 		  A Dimension whose value is `self` modulo `other`.
@@ -188,15 +203,15 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are summed as follows:
 		
-		```
-		  Dimension(m)    * Dimension(n)    == Dimension(m * n)
-		  Dimension(m)    * Dimension(None) == Dimension(None)
-		  Dimension(None) * Dimension(n)    == Dimension(None)
-		  Dimension(None) * Dimension(None) == Dimension(None)
+		```python
+		tf.Dimension(m)    * tf.Dimension(n)    == tf.Dimension(m * n)
+		tf.Dimension(m)    * tf.Dimension(None) == tf.Dimension(None)
+		tf.Dimension(None) * tf.Dimension(n)    == tf.Dimension(None)
+		tf.Dimension(None) * tf.Dimension(None) == tf.Dimension(None)
 		```
 		
 		Args:
-		  other: Another Dimension.
+		  other: Another Dimension, or a value accepted by `as_dimension`.
 		
 		Returns:
 		  A Dimension whose value is the product of `self` and `other`.
@@ -211,9 +226,19 @@ package tensorflow.python.framework.tensor_shape;
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Returns the sum of `other` and `self`.
+		
+		Args:
+		  other: Another Dimension, or a value accepted by `as_dimension`.
+		
+		Returns:
+		  A Dimension whose value is the sum of `self` and `other`.
+	**/
+	public function __radd__(other:Dynamic):Dynamic;
+	/**
 		helper for pickle
 	**/
-	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __reduce__():Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -222,6 +247,46 @@ package tensorflow.python.framework.tensor_shape;
 		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
+	/**
+		Returns the quotient of `other` and `self` rounded down.
+		
+		Args:
+		  other: Another Dimension, or a value accepted by `as_dimension`.
+		
+		Returns:
+		  A `Dimension` whose value is the integer quotient of `self` and `other`.
+	**/
+	public function __rfloordiv__(other:Dynamic):Dynamic;
+	/**
+		Returns `other` modulo `self`.
+		
+		Args:
+		  other: Another Dimension, or a value accepted by `as_dimension`.
+		
+		Returns:
+		  A Dimension whose value is `other` modulo `self`.
+	**/
+	public function __rmod__(other:Dynamic):Dynamic;
+	/**
+		Returns the product of `self` and `other`.
+		
+		Args:
+		  other: Another Dimension, or a value accepted by `as_dimension`.
+		
+		Returns:
+		  A Dimension whose value is the product of `self` and `other`.
+	**/
+	public function __rmul__(other:Dynamic):Dynamic;
+	/**
+		Returns the subtraction of `self` from `other`.
+		
+		Args:
+		  other: Another Dimension, or a value accepted by `as_dimension`.
+		
+		Returns:
+		  A Dimension whose value is the subtraction of `self` from `other`.
+	**/
+	public function __rsub__(other:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -240,16 +305,18 @@ package tensorflow.python.framework.tensor_shape;
 		
 		Dimensions are subtracted as follows:
 		
-		  Dimension(m)    - Dimension(n)    == Dimension(m - n)
-		  Dimension(m)    - Dimension(None) == Dimension(None)
-		  Dimension(None) - Dimension(n)    == Dimension(None)
-		  Dimension(None) - Dimension(None) == Dimension(None)
+		```python
+		tf.Dimension(m)    - tf.Dimension(n)    == tf.Dimension(m - n)
+		tf.Dimension(m)    - tf.Dimension(None) == tf.Dimension(None)
+		tf.Dimension(None) - tf.Dimension(n)    == tf.Dimension(None)
+		tf.Dimension(None) - tf.Dimension(None) == tf.Dimension(None)
+		```
 		
 		Args:
-		  other: Another Dimension.
+		  other: Another Dimension, or a value accepted by `as_dimension`.
 		
 		Returns:
-		  A Dimension whose value is the subtraction of sum of `other` from `self`.
+		  A Dimension whose value is the subtraction of `other` from `self`.
 	**/
 	public function __sub__(other:Dynamic):Dynamic;
 	/**
@@ -260,11 +327,13 @@ package tensorflow.python.framework.tensor_shape;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Raises an exception if `other` is not compatible with this Dimension.
 		
@@ -295,11 +364,11 @@ package tensorflow.python.framework.tensor_shape;
 		Dimensions are combined as follows:
 		
 		```python
-		    Dimension(n)   .merge_with(Dimension(n))    == Dimension(n)
-		    Dimension(n)   .merge_with(Dimension(None)) == Dimension(n)
-		    Dimension(None).merge_with(Dimension(n))    == Dimension(n)
-		    Dimension(None).merge_with(Dimension(None)) == Dimension(None)
-		    Dimension(n)   .merge_with(Dimension(m)) raises ValueError for n != m
+		tf.Dimension(n)   .merge_with(tf.Dimension(n))    == tf.Dimension(n)
+		tf.Dimension(n)   .merge_with(tf.Dimension(None)) == tf.Dimension(n)
+		tf.Dimension(None).merge_with(tf.Dimension(n))    == tf.Dimension(n)
+		tf.Dimension(None).merge_with(tf.Dimension(None)) == tf.Dimension(None)
+		tf.Dimension(n)   .merge_with(tf.Dimension(m))  # raises ValueError for n != m
 		```
 		
 		Args:

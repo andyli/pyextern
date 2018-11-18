@@ -52,7 +52,7 @@ package scipy.integrate.quadrature;
 		axis : int, optional
 		    Specifies the axis to cumulate.  Default is -1 (last axis).
 		initial : scalar, optional
-		    If given, uses this value as the first value in the returned result.
+		    If given, insert this value at the beginning of the returned result.
 		    Typically this value should be 0.  Default is None, which means no
 		    value at ``x[0]`` is returned and `res` has one element less than `y`
 		    along the axis of integration.
@@ -135,7 +135,9 @@ package scipy.integrate.quadrature;
 	**/
 	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Float;
 	/**
-		Logarithm of the absolute value of the Gamma function for real inputs.
+		gammaln(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True[, signature, extobj])
+		
+		Logarithm of the absolute value of the Gamma function.
 		
 		Parameters
 		----------
@@ -158,14 +160,9 @@ package scipy.integrate.quadrature;
 		for working in logspace on the real axis without having to deal with
 		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
 		
-		Note that `gammaln` currently accepts complex-valued inputs, but it is not
-		the same function as for real-valued inputs, and the branch is not
-		well-defined --- using `gammaln` with complex is deprecated and will be
-		disallowed in future Scipy versions.
-		
 		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gammaln(x:Dynamic):Dynamic;
+	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return weights and error coefficient for Newton-Cotes integration.
 		
@@ -287,6 +284,30 @@ package scipy.integrate.quadrature;
 		cumtrapz : cumulative integration for sampled data
 		ode : ODE integrators
 		odeint : ODE integrators
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> x = np.arange(10, 14.25, 0.25)
+		>>> y = np.arange(3, 12)
+		
+		>>> integrate.romb(y)
+		56.0
+		
+		>>> y = np.sin(np.power(x, 2.5))
+		>>> integrate.romb(y)
+		-0.742561336672229
+		
+		>>> integrate.romb(y, show=True)
+		Richardson Extrapolation Table for Romberg Integration       
+		====================================================================
+		-0.81576 
+		4.63862  6.45674 
+		-1.10581 -3.02062 -3.65245 
+		-2.57379 -3.06311 -3.06595 -3.05664 
+		-1.34093 -0.92997 -0.78776 -0.75160 -0.74256 
+		====================================================================
+		-0.742561336672229
 	**/
 	static public function romb(y:Dynamic, ?dx:Dynamic, ?axis:Dynamic, ?show:Dynamic):Dynamic;
 	/**
@@ -452,6 +473,24 @@ package scipy.integrate.quadrature;
 		exact if the function is a polynomial of order 3 or less.  If
 		the samples are not equally spaced, then the result is exact only
 		if the function is a polynomial of order 2 or less.
+		
+		Examples
+		--------
+		>>> from scipy import integrate
+		>>> x = np.arange(0, 10)
+		>>> y = np.arange(0, 10)
+		
+		>>> integrate.simps(y, x)
+		40.5
+		
+		>>> y = np.power(x, 3)
+		>>> integrate.simps(y, x)
+		1642.5
+		>>> integrate.quad(lambda x: x**3, 0, 9)[0]
+		1640.25
+		
+		>>> integrate.simps(y, x, even='first')
+		1644.5
 	**/
 	static public function simps(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic, ?even:Dynamic):Dynamic;
 	/**

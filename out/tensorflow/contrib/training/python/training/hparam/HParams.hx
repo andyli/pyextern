@@ -1,7 +1,9 @@
 /* This file is generated, do not edit! */
 package tensorflow.contrib.training.python.training.hparam;
 @:pythonImport("tensorflow.contrib.training.python.training.hparam", "HParams") extern class HParams {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _HAS_DYNAMIC_ATTRIBUTES : Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __contains__(key:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -122,7 +124,7 @@ package tensorflow.contrib.training.python.training.hparam;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -173,7 +175,7 @@ package tensorflow.contrib.training.python.training.hparam;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -200,19 +202,6 @@ package tensorflow.contrib.training.python.training.hparam;
 	**/
 	public function _init_from_proto(hparam_def:Dynamic):Dynamic;
 	/**
-		Override hyperparameter values, parsing new values from a dictionary.
-		
-		Args:
-		  values_map: Dictionary of name:value pairs.
-		
-		Returns:
-		  The `HParams` instance.
-		
-		Raises:
-		  ValueError: If `values_map` cannot be parsed.
-	**/
-	public function _set_from_map(values_map:Dynamic):Dynamic;
-	/**
 		Adds {name, value} pair to hyperparameters.
 		
 		Args:
@@ -224,8 +213,32 @@ package tensorflow.contrib.training.python.training.hparam;
 		  ValueError: if one of the arguments is invalid.
 	**/
 	public function add_hparam(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Removes the hyperparameter with key 'name'.
+		
+		Args:
+		  name: Name of the hyperparameter.
+	**/
+	public function del_hparam(name:Dynamic):Dynamic;
 	static public function from_proto(hparam_def:Dynamic, ?import_scope:Dynamic):Dynamic;
+	/**
+		Returns the value of `key` if it exists, else `default`.
+	**/
+	public function get(key:Dynamic, ?_default:Dynamic):Dynamic;
 	public function get_model_structure():Dynamic;
+	/**
+		Override hyperparameter values, parsing new values from a dictionary.
+		
+		Args:
+		  values_dict: Dictionary of name:value pairs.
+		
+		Returns:
+		  The `HParams` instance.
+		
+		Raises:
+		  ValueError: If `values_dict` cannot be parsed.
+	**/
+	public function override_from_dict(values_dict:Dynamic):Dynamic;
 	/**
 		Override hyperparameter values, parsing new values from a string.
 		
@@ -255,14 +268,45 @@ package tensorflow.contrib.training.python.training.hparam;
 		  ValueError: If `values_json` cannot be parsed.
 	**/
 	public function parse_json(values_json:Dynamic):Dynamic;
+	/**
+		DEPRECATED. Use override_from_dict. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use `override_from_dict`.
+	**/
+	public function set_from_map(values_map:Dynamic):Dynamic;
+	/**
+		Set the value of an existing hyperparameter.
+		
+		This function verifies that the type of the value matches the type of the
+		existing hyperparameter.
+		
+		Args:
+		  name: Name of the hyperparameter.
+		  value: New value of the hyperparameter.
+		
+		Raises:
+		  ValueError: If there is a type mismatch.
+	**/
+	public function set_hparam(name:Dynamic, value:Dynamic):Dynamic;
 	public function set_model_structure(model_structure:Dynamic):Dynamic;
 	/**
 		Serializes the hyperparameters into JSON.
 		
+		Args:
+		  indent: If a non-negative integer, JSON array elements and object members
+		    will be pretty-printed with that indent level. An indent level of 0, or
+		    negative, will only insert newlines. `None` (the default) selects the
+		    most compact representation.
+		  separators: Optional `(item_separator, key_separator)` tuple. Default is
+		    `(', ', ': ')`.
+		  sort_keys: If `True`, the output dictionaries will be sorted by key.
+		
 		Returns:
 		  A JSON string.
 	**/
-	public function to_json():Dynamic;
+	public function to_json(?indent:Dynamic, ?separators:Dynamic, ?sort_keys:Dynamic):Dynamic;
 	/**
 		Converts a `HParams` object to a `HParamDef` protocol buffer.
 		

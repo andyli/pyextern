@@ -10,6 +10,29 @@ package pandas.io.sas.sasreader;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Attempt to convert a path-like object to a string.
+		
+		Parameters
+		----------
+		filepath_or_buffer : object to be converted
+		
+		Returns
+		-------
+		str_filepath_or_buffer : maybe a string version of the object
+		
+		Notes
+		-----
+		Objects supporting the fspath protocol (python 3.6+) are coerced
+		according to its __fspath__ method.
+		
+		For backwards compatibility with older pythons, pathlib.Path and
+		py.path objects are specially coerced.
+		
+		Any other object is passed through unchanged, which includes bytes,
+		strings, buffers, or anything else that's not even path-like.
+	**/
+	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
+	/**
 		Read SAS files stored as either XPORT or SAS7BDAT format files.
 		
 		Parameters

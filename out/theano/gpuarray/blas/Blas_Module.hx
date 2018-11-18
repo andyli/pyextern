@@ -52,11 +52,12 @@ package theano.gpuarray.blas;
 		    If `x` cannot be converted to a TensorType Variable.
 	**/
 	static public function as_tensor_variable(x:Dynamic, ?name:Dynamic, ?ndim:Dynamic):Dynamic;
-	static public var config : Dynamic;
+	static public function bool_t(?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function gpu_contiguous(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpu_dot22(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpuablas_opt_inplace(fgraph:Dynamic):Dynamic;
+	static public function gpuarray_helper_inc_dir():Dynamic;
 	static public function gpugemm_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpugemm_no_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function gpugemmbatch_inplace(?inputs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -83,7 +84,7 @@ package theano.gpuarray.blas;
 		
 		    maker(node, inputs)
 		
-		The `node` argument you recieve is the original apply node that
+		The `node` argument you receive is the original apply node that
 		contains your op.  You should use it to grab relevant properties
 		for your op so that the new version performs the same computation.
 		You should also switch the op to work inplace.  The `*inputs`
@@ -110,6 +111,7 @@ package theano.gpuarray.blas;
 	static public function inplace_allocempty(op:Dynamic, idx:Dynamic):Dynamic;
 	static public var integer_types : Dynamic;
 	static public var local_inplace_gpuagemm : Dynamic;
+	static public var local_inplace_gpuagemmbatch : Dynamic;
 	static public var local_inplace_gpuagemv : Dynamic;
 	static public var local_inplace_gpuager : Dynamic;
 	static public var optdb : Dynamic;

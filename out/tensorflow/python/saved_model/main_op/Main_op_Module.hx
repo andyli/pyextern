@@ -9,7 +9,8 @@ package tensorflow.python.saved_model.main_op;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _allowed_symbols : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
 	/**
 		Returns a main op to init variables and tables.
 		
@@ -34,4 +35,5 @@ package tensorflow.python.saved_model.main_op;
 		  The set of ops to be run as part of the main op upon the load operation.
 	**/
 	static public function main_op_with_restore(restore_op_name:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 }

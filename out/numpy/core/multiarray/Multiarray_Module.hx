@@ -82,7 +82,8 @@ package numpy.core.multiarray;
 		step : number, optional
 		    Spacing between values.  For any output `out`, this is the distance
 		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
+		    step size is 1.  If `step` is specified as a position argument,
+		    `start` must also be given.
 		dtype : dtype
 		    The type of the output array.  If `dtype` is not given, infer the data
 		    type from the other input arguments.
@@ -168,7 +169,15 @@ package numpy.core.multiarray;
 		
 		See Also
 		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, full, full_like
+		empty_like : Return an empty array with shape and type of input.
+		ones_like : Return an array of ones with shape and type of input.
+		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
+		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -276,7 +285,7 @@ package numpy.core.multiarray;
 		The input array needs to be of integer dtype, otherwise a
 		TypeError is raised:
 		
-		>>> np.bincount(np.arange(5, dtype=np.float))
+		>>> np.bincount(np.arange(5, dtype=float))
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
 		TypeError: array cannot be safely cast to required type
@@ -444,7 +453,7 @@ package numpy.core.multiarray;
 	static public function busday_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function c_einsum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		can_cast(from, totype, casting = 'safe')
+		can_cast(from_, to, casting='safe')
 		
 		Returns True if cast between data types can occur according to the
 		casting rule.  If from is a scalar or array scalar, also returns
@@ -453,9 +462,9 @@ package numpy.core.multiarray;
 		
 		Parameters
 		----------
-		from : dtype, dtype specifier, scalar, or array
+		from_ : dtype, dtype specifier, scalar, or array
 		    Data type, scalar, or array to cast from.
-		totype : dtype or dtype specifier
+		to : dtype or dtype specifier
 		    Data type to cast to.
 		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
 		    Controls what kind of data casting may occur.
@@ -490,9 +499,9 @@ package numpy.core.multiarray;
 		
 		>>> np.can_cast(np.int32, np.int64)
 		True
-		>>> np.can_cast(np.float64, np.complex)
+		>>> np.can_cast(np.float64, complex)
 		True
-		>>> np.can_cast(np.complex, np.float)
+		>>> np.can_cast(complex, float)
 		False
 		
 		>>> np.can_cast('i8', 'f8')
@@ -551,7 +560,7 @@ package numpy.core.multiarray;
 	static public function can_cast(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function compare_chararrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -561,7 +570,12 @@ package numpy.core.multiarray;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -601,6 +615,8 @@ package numpy.core.multiarray;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -624,7 +640,7 @@ package numpy.core.multiarray;
 	**/
 	static public function concatenate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		copyto(dst, src, casting='same_kind', where=None)
+		copyto(dst, src, casting='same_kind', where=True)
 		
 		Copies values from one array to another, broadcasting as necessary.
 		
@@ -660,20 +676,118 @@ package numpy.core.multiarray;
 	static public function correlate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function correlate2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function count_nonzero(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		datetime_as_string(arr, unit=None, timezone='naive', casting='same_kind')
+		
+		Convert an array of datetimes into an array of strings.
+		
+		Parameters
+		----------
+		arr : array_like of datetime64
+		    The array of UTC timestamps to format.
+		unit : str
+		    One of None, 'auto', or a :ref:`datetime unit <arrays.dtypes.dateunits>`.
+		timezone : {'naive', 'UTC', 'local'} or tzinfo
+		    Timezone information to use when displaying the datetime. If 'UTC', end
+		    with a Z to indicate UTC time. If 'local', convert to the local timezone
+		    first, and suffix with a +-#### timezone offset. If a tzinfo object,
+		    then do as with 'local', but use the specified timezone.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}
+		    Casting to allow when changing between datetime units.
+		
+		Returns
+		-------
+		str_arr : ndarray
+		    An array of strings the same shape as `arr`.
+		
+		Examples
+		--------
+		>>> d = np.arange('2002-10-27T04:30', 4*60, 60, dtype='M8[m]')
+		>>> d
+		array(['2002-10-27T04:30', '2002-10-27T05:30', '2002-10-27T06:30',
+		       '2002-10-27T07:30'], dtype='datetime64[m]')
+		
+		Setting the timezone to UTC shows the same information, but with a Z suffix
+		
+		>>> np.datetime_as_string(d, timezone='UTC')
+		array(['2002-10-27T04:30Z', '2002-10-27T05:30Z', '2002-10-27T06:30Z',
+		       '2002-10-27T07:30Z'], dtype='<U35')
+		
+		Note that we picked datetimes that cross a DST boundary. Passing in a
+		``pytz`` timezone object will print the appropriate offset
+		
+		>>> np.datetime_as_string(d, timezone=pytz.timezone('US/Eastern'))
+		array(['2002-10-27T00:30-0400', '2002-10-27T01:30-0400',
+		       '2002-10-27T01:30-0500', '2002-10-27T02:30-0500'], dtype='<U39')
+		
+		Passing in a unit will change the precision
+		
+		>>> np.datetime_as_string(d, unit='h')
+		array(['2002-10-27T04', '2002-10-27T05', '2002-10-27T06', '2002-10-27T07'],
+		      dtype='<U32')
+		>>> np.datetime_as_string(d, unit='s')
+		array(['2002-10-27T04:30:00', '2002-10-27T05:30:00', '2002-10-27T06:30:00',
+		       '2002-10-27T07:30:00'], dtype='<U38')
+		
+		'casting' can be used to specify whether precision can be changed
+		
+		>>> np.datetime_as_string(d, unit='h', casting='safe')
+		TypeError: Cannot create a datetime string as units 'h' from a NumPy
+		datetime with units 'm' according to the rule 'safe'
+	**/
 	static public function datetime_as_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		datetime_data(dtype, /)
+		
+		Get information about the step size of a date or time type.
+		
+		The returned tuple can be passed as the second argument of `datetime64` and
+		`timedelta64`.
+		
+		Parameters
+		----------
+		dtype : dtype
+		    The dtype object, which must be a `datetime64` or `timedelta64` type.
+		
+		Returns
+		-------
+		unit : str
+		    The :ref:`datetime unit <arrays.dtypes.dateunits>` on which this dtype
+		    is based.
+		count : int
+		    The number of base units in a step.
+		
+		Examples
+		--------
+		>>> dt_25s = np.dtype('timedelta64[25s]')
+		>>> np.datetime_data(dt_25s)
+		('s', 25)
+		>>> np.array(10, dt_25s).astype('timedelta64[s]')
+		array(250, dtype='timedelta64[s]')
+		
+		The result can be used to construct a datetime that uses the same units
+		as a timedelta::
+		
+		>>> np.datetime64('2010', np.datetime_data(dt_25s))
+		numpy.datetime64('2010-01-01T00:00:00','25s')
+	**/
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		digitize(x, bins, right=False)
 		
 		Return the indices of the bins to which each value in input array belongs.
 		
-		Each index ``i`` returned is such that ``bins[i-1] <= x < bins[i]`` if
-		`bins` is monotonically increasing, or ``bins[i-1] > x >= bins[i]`` if
-		`bins` is monotonically decreasing. If values in `x` are beyond the
-		bounds of `bins`, 0 or ``len(bins)`` is returned as appropriate. If right
-		is True, then the right bin is closed so that the index ``i`` is such
-		that ``bins[i-1] < x <= bins[i]`` or ``bins[i-1] >= x > bins[i]`` if `bins`
-		is monotonically increasing or decreasing, respectively.
+		=========  =============  ============================
+		`right`    order of bins  returned index `i` satisfies
+		=========  =============  ============================
+		``False``  increasing     ``bins[i-1] <= x < bins[i]``
+		``True``   increasing     ``bins[i-1] < x <= bins[i]``
+		``False``  decreasing     ``bins[i-1] > x >= bins[i]``
+		``True``   decreasing     ``bins[i-1] >= x > bins[i]``
+		=========  =============  ============================
+		
+		If values in `x` are beyond the bounds of `bins`, 0 or ``len(bins)`` is
+		returned as appropriate.
 		
 		Parameters
 		----------
@@ -691,7 +805,7 @@ package numpy.core.multiarray;
 		
 		Returns
 		-------
-		out : ndarray of ints
+		indices : ndarray of ints
 		    Output array of indices, of same shape as `x`.
 		
 		Raises
@@ -717,6 +831,15 @@ package numpy.core.multiarray;
 		that a binary search is used to bin the values, which scales much better
 		for larger number of bins than the previous linear search. It also removes
 		the requirement for the input array to be 1-dimensional.
+		
+		For monotonically _increasing_ `bins`, the following are equivalent::
+		
+		    np.digitize(x, bins, right=True)
+		    np.searchsorted(bins, x, side='left')
+		
+		Note that as the order of the arguments are reversed, the side must be too.
+		The `searchsorted` call is marginally faster, as it does not do any
+		monotonicity checks. Perhaps more importantly, it supports all dtypes.
 		
 		Examples
 		--------
@@ -744,12 +867,22 @@ package numpy.core.multiarray;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -814,6 +947,8 @@ package numpy.core.multiarray;
 		499128
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function dragon4_positional(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function dragon4_scientific(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		empty(shape, dtype=float, order='C')
 		
@@ -822,10 +957,11 @@ package numpy.core.multiarray;
 		Parameters
 		----------
 		shape : int or tuple of int
-		    Shape of the empty array
+		    Shape of the empty array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
+		    Desired output data-type for the array, e.g, `numpy.int8`. Default is
+		    `numpy.float64`.
+		order : {'C', 'F'}, optional, default: 'C'
 		    Whether to store multi-dimensional data in row-major
 		    (C-style) or column-major (Fortran-style) order in
 		    memory.
@@ -838,7 +974,11 @@ package numpy.core.multiarray;
 		
 		See Also
 		--------
-		empty_like, zeros, ones
+		empty_like : Return an empty array with shape and type of input.
+		ones : Return a new array setting values to one.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Notes
 		-----
@@ -859,24 +999,24 @@ package numpy.core.multiarray;
 	**/
 	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		empty_like(a, dtype=None, order='K', subok=True)
+		empty_like(prototype, dtype=None, order='K', subok=True)
 		
 		Return a new array with the same shape and type as a given array.
 		
 		Parameters
 		----------
-		a : array_like
-		    The shape and data-type of `a` define these same attributes of the
-		    returned array.
+		prototype : array_like
+		    The shape and data-type of `prototype` define these same attributes
+		    of the returned array.
 		dtype : data-type, optional
 		    Overrides the data type of the result.
 		
 		    .. versionadded:: 1.6.0
 		order : {'C', 'F', 'A', or 'K'}, optional
 		    Overrides the memory layout of the result. 'C' means C-order,
-		    'F' means F-order, 'A' means 'F' if ``a`` is Fortran contiguous,
-		    'C' otherwise. 'K' means match the layout of ``a`` as closely
-		    as possible.
+		    'F' means F-order, 'A' means 'F' if ``prototype`` is Fortran
+		    contiguous, 'C' otherwise. 'K' means match the layout of ``prototype``
+		    as closely as possible.
 		
 		    .. versionadded:: 1.6.0
 		subok : bool, optional.
@@ -888,15 +1028,14 @@ package numpy.core.multiarray;
 		-------
 		out : ndarray
 		    Array of uninitialized (arbitrary) data with the same
-		    shape and type as `a`.
+		    shape and type as `prototype`.
 		
 		See Also
 		--------
 		ones_like : Return an array of ones with shape and type of input.
 		zeros_like : Return an array of zeros with shape and type of input.
+		full_like : Return a new array with shape of input filled with value.
 		empty : Return a new uninitialized array.
-		ones : Return a new array setting values to one.
-		zeros : Return a new array setting values to zero.
 		
 		Notes
 		-----
@@ -951,6 +1090,11 @@ package numpy.core.multiarray;
 		>>> np.frombuffer(s, dtype='S1', count=5, offset=6)
 		array(['w', 'o', 'r', 'l', 'd'],
 		      dtype='|S1')
+		
+		>>> np.frombuffer(b'\x01\x02', dtype=np.uint8)
+		array([1, 2], dtype=uint8)
+		>>> np.frombuffer(b'\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
+		array([1, 2, 3], dtype=uint8)
 	**/
 	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1054,14 +1198,14 @@ package numpy.core.multiarray;
 		Examples
 		--------
 		>>> iterable = (x*x for x in range(5))
-		>>> np.fromiter(iterable, np.float)
+		>>> np.fromiter(iterable, float)
 		array([  0.,   1.,   4.,   9.,  16.])
 	**/
 	static public function fromiter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		fromstring(string, dtype=float, count=-1, sep='')
 		
-		A new 1-D array initialized from raw binary or text data in a string.
+		A new 1-D array initialized from text data in a string.
 		
 		Parameters
 		----------
@@ -1075,11 +1219,13 @@ package numpy.core.multiarray;
 		    negative (the default), the count will be determined from the
 		    length of the data.
 		sep : str, optional
-		    If not provided or, equivalently, the empty string, the data will
-		    be interpreted as binary data; otherwise, as ASCII text with
-		    decimal numbers.  Also in this latter case, this argument is
-		    interpreted as the string separating numbers in the data; extra
-		    whitespace between elements is also ignored.
+		    The string separating numbers in the data; extra whitespace between
+		    elements is also ignored.
+		
+		    .. deprecated:: 1.14
+		        If this argument is not provided, `fromstring` falls back on the
+		        behaviour of `frombuffer` after encoding unicode string inputs as
+		        either utf-8 (python 3), or the default encoding (python 2).
 		
 		Returns
 		-------
@@ -1098,14 +1244,10 @@ package numpy.core.multiarray;
 		
 		Examples
 		--------
-		>>> np.fromstring('\x01\x02', dtype=np.uint8)
-		array([1, 2], dtype=uint8)
 		>>> np.fromstring('1 2', dtype=int, sep=' ')
 		array([1, 2])
 		>>> np.fromstring('1, 2', dtype=int, sep=',')
 		array([1, 2])
-		>>> np.fromstring('\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
-		array([1, 2, 3], dtype=uint8)
 	**/
 	static public function fromstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1236,7 +1378,7 @@ package numpy.core.multiarray;
 	/**
 		lexsort(keys, axis=-1)
 		
-		Perform an indirect sort using a sequence of keys.
+		Perform an indirect stable sort using a sequence of keys.
 		
 		Given multiple sorting keys, which can be interpreted as columns in a
 		spreadsheet, lexsort returns an array of integer indices that describes
@@ -1510,6 +1652,64 @@ package numpy.core.multiarray;
 		dtype('float64')
 	**/
 	static public function min_scalar_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Create nditers for use in nested loops
+		
+		Create a tuple of `nditer` objects which iterate in nested loops over
+		different axes of the op argument. The first iterator is used in the
+		outermost loop, the last in the innermost loop. Advancing one will change
+		the subsequent iterators to point at its new element.
+		
+		Parameters
+		----------
+		op : ndarray or sequence of array_like
+		    The array(s) to iterate over.
+		
+		axes : list of list of int
+		    Each item is used as an "op_axes" argument to an nditer
+		
+		flags, op_flags, op_dtypes, order, casting, buffersize (optional)
+		    See `nditer` parameters of the same name
+		
+		Returns
+		-------
+		iters : tuple of nditer
+		    An nditer for each item in `axes`, outermost first
+		
+		See Also
+		--------
+		nditer
+		
+		Examples
+		--------
+		
+		Basic usage. Note how y is the "flattened" version of
+		[a[:, 0, :], a[:, 1, 0], a[:, 2, :]] since we specified
+		the first iter's axes as [1]
+		
+		>>> a = np.arange(12).reshape(2, 3, 2)
+		>>> i, j = np.nested_iters(a, [[1], [0, 2]], flags=["multi_index"])
+		>>> for x in i:
+		...      print(i.multi_index)
+		...      for y in j:
+		...          print('', j.multi_index, y)
+		
+		(0,)
+		 (0, 0) 0
+		 (0, 1) 1
+		 (1, 0) 6
+		 (1, 1) 7
+		(1,)
+		 (0, 0) 2
+		 (0, 1) 3
+		 (1, 0) 8
+		 (1, 1) 9
+		(2,)
+		 (0, 0) 4
+		 (0, 1) 5
+		 (1, 0) 10
+		 (1, 1) 11
+	**/
 	static public function nested_iters(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		normalize_axis_index(axis, ndim, msg_prefix=None)
@@ -1611,7 +1811,7 @@ package numpy.core.multiarray;
 		kind to which both ``type1`` and ``type2`` may be safely cast.
 		The returned data type is always in native byte order.
 		
-		This function is symmetric and associative.
+		This function is symmetric, but rarely associative.
 		
 		Parameters
 		----------
@@ -1652,6 +1852,14 @@ package numpy.core.multiarray;
 		
 		>>> np.promote_types('i4', 'S8')
 		dtype('S11')
+		
+		An example of a non-associative case:
+		
+		>>> p = np.promote_types
+		>>> p('S', p('i1', 'u1'))
+		dtype('S6')
+		>>> p(p('S', 'i1'), 'u1')
+		dtype('S4')
 	**/
 	static public function promote_types(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1831,6 +2039,7 @@ package numpy.core.multiarray;
 	**/
 	static public function scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function set_datetimeparse_function(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function set_legacy_print_mode(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		set_numeric_ops(op1=func1, op2=func2, ...)
 		
@@ -1943,7 +2152,8 @@ package numpy.core.multiarray;
 		myarray : ndarray, uint8 type
 		   Input array.
 		axis : int, optional
-		   Unpacks along this axis.
+		    The dimension over which bit-unpacking is done.
+		    ``None`` implies unpacking the flattened array.
 		
 		Returns
 		-------
@@ -2127,7 +2337,7 @@ package numpy.core.multiarray;
 		>>> ix
 		array([[False, False, False],
 		       [ True,  True, False],
-		       [False,  True, False]], dtype=bool)
+		       [False,  True, False]])
 		>>> np.where(ix)
 		(array([1, 1, 2]), array([0, 1, 1]))
 	**/
@@ -2139,14 +2349,15 @@ package numpy.core.multiarray;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -2156,17 +2367,16 @@ package numpy.core.multiarray;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

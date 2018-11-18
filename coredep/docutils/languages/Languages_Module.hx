@@ -24,8 +24,11 @@ package docutils.languages;
 		
 		Example:
 		
+		>>> from docutils.utils import normalize_language_tag
 		>>> normalize_language_tag('de_AT-1901')
 		['de-at-1901', 'de-at', 'de-1901', 'de']
+		>>> normalize_language_tag('de-CH-x_altquot')
+		['de-ch-x-altquot', 'de-ch', 'de-x-altquot', 'de']
 	**/
 	static public function normalize_language_tag(tag:Dynamic):Dynamic;
 }

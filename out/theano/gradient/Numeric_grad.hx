@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package theano.gradient;
 @:pythonImport("theano.gradient", "numeric_grad") extern class Numeric_grad {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -40,36 +40,44 @@ package theano.gradient;
 	/**
 		Return the gradient of f at pt.
 		
-		:param f: a differentiable function such that f(*pt) is a scalar
-		:param pt: an ndarray, a list of ndarrays or tuple of ndarrays
-		:param out_type: dtype of output, if complex (i.e. 'complex32' or
-		'complex64')
 		This function computes the gradient by a one-sided finite
 		differences of a fixed step size (eps).
 		
-		It is assumed that f(...) will return a scalar.
-		It is assumed that all f's inputs are numpy.ndarray objects.
-		
-		:param eps: the stepsize for the finite differencing.  None means
-		  input dtype-dependent. See `type_eps`.
+		Parameters
+		----------
+		f : a differentiable function such that f(*pt) is a scalar
+		    The function to compute the gradient of.
+		    It is assumed that f(...) will return a scalar.
+		    It is assumed that all f's inputs are numpy.ndarray objects.
+		pt : an ndarray, a list of ndarrays or tuple of ndarrays
+		    The point where to evaluate the gradient
+		out_type: float
+		    dtype of output, if complex (i.e. 'complex32' or 'complex64')
+		eps : float, optional
+		    The stepsize for the finite differencing.  None means
+		    input dtype-dependent. See `type_eps`.
 	**/
 	@:native("__init__")
 	public function ___init__(f:Dynamic, pt:Dynamic, ?eps:Dynamic, ?out_type:Dynamic):Dynamic;
 	/**
 		Return the gradient of f at pt.
 		
-		:param f: a differentiable function such that f(*pt) is a scalar
-		:param pt: an ndarray, a list of ndarrays or tuple of ndarrays
-		:param out_type: dtype of output, if complex (i.e. 'complex32' or
-		'complex64')
 		This function computes the gradient by a one-sided finite
 		differences of a fixed step size (eps).
 		
-		It is assumed that f(...) will return a scalar.
-		It is assumed that all f's inputs are numpy.ndarray objects.
-		
-		:param eps: the stepsize for the finite differencing.  None means
-		  input dtype-dependent. See `type_eps`.
+		Parameters
+		----------
+		f : a differentiable function such that f(*pt) is a scalar
+		    The function to compute the gradient of.
+		    It is assumed that f(...) will return a scalar.
+		    It is assumed that all f's inputs are numpy.ndarray objects.
+		pt : an ndarray, a list of ndarrays or tuple of ndarrays
+		    The point where to evaluate the gradient
+		out_type: float
+		    dtype of output, if complex (i.e. 'complex32' or 'complex64')
+		eps : float, optional
+		    The stepsize for the finite differencing.  None means
+		    input dtype-dependent. See `type_eps`.
 	**/
 	public function new(f:Dynamic, pt:Dynamic, ?eps:Dynamic, ?out_type:Dynamic):Void;
 	/**
@@ -78,7 +86,7 @@ package theano.gradient;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -129,7 +137,7 @@ package theano.gradient;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -142,6 +150,7 @@ package theano.gradient;
 		
 		Formulas used:
 		    abs_err = abs(a - b)
+		
 		    rel_err = abs_err / max(abs(a) + abs(b), 1e-8)
 		
 		The denominator is clipped at 1e-8 to avoid dividing by 0 when a and b

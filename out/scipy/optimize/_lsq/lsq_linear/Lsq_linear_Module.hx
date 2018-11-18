@@ -21,6 +21,33 @@ package scipy.optimize._lsq.lsq_linear;
 		Check if a point lies within bounds.
 	**/
 	static public function in_bounds(x:Dynamic, lb:Dynamic, ub:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function issparse(x:Dynamic):Dynamic;
 	/**
 		Iterative solver for least-squares problems.
@@ -79,7 +106,10 @@ package scipy.optimize._lsq.lsq_linear;
 		    needed.
 		show : bool, optional
 		    Print iterations logs if ``show=True``.
+		x0 : array_like, shape (n,), optional
+		    Initial guess of x, if None zeros are used.
 		
+		    .. versionadded:: 1.0.0
 		Returns
 		-------
 		x : ndarray of float
@@ -87,7 +117,8 @@ package scipy.optimize._lsq.lsq_linear;
 		istop : int
 		    istop gives the reason for stopping::
 		
-		      istop   = 0 means x=0 is a solution.
+		      istop   = 0 means x=0 is a solution.  If x0 was given, then x=x0 is a
+		                  solution.
 		              = 1 means x is an approximate solution to A*x = B,
 		                  according to atol and btol.
 		              = 2 means x approximately solves the least-squares problem
@@ -125,8 +156,61 @@ package scipy.optimize._lsq.lsq_linear;
 		       SIAM J. Sci. Comput., vol. 33, pp. 2950-2971, 2011.
 		       http://arxiv.org/abs/1006.0758
 		.. [2] LSMR Software, http://web.stanford.edu/group/SOL/software/lsmr/
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csc_matrix
+		>>> from scipy.sparse.linalg import lsmr
+		>>> A = csc_matrix([[1., 0.], [1., 1.], [0., 1.]], dtype=float)
+		
+		The first example has the trivial solution `[0, 0]`
+		
+		>>> b = np.array([0., 0., 0.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		0
+		>>> x
+		array([ 0.,  0.])
+		
+		The stopping code `istop=0` returned indicates that a vector of zeros was
+		found as a solution. The returned solution `x` indeed contains `[0., 0.]`.
+		The next example has a non-trivial solution:
+		
+		>>> b = np.array([1., 0., -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		1
+		>>> x
+		array([ 1., -1.])
+		>>> itn
+		1
+		>>> normr
+		4.440892098500627e-16
+		
+		As indicated by `istop=1`, `lsmr` found a solution obeying the tolerance
+		limits. The given solution `[1., -1.]` obviously solves the equation. The
+		remaining return values include information about the number of iterations
+		(`itn=1`) and the remaining difference of left and right side of the solved
+		equation.
+		The final example demonstrates the behavior in the case where there is no
+		solution for the equation:
+		
+		>>> b = np.array([1., 0.01, -1.], dtype=float)
+		>>> x, istop, itn, normr = lsmr(A, b)[:4]
+		>>> istop
+		2
+		>>> x
+		array([ 1.00333333, -0.99666667])
+		>>> A.dot(x)-b
+		array([ 0.00333333, -0.00333333,  0.00333333])
+		>>> normr
+		0.005773502691896255
+		
+		`istop` indicates that the system is inconsistent and thus `x` is rather an
+		approximate solution to the corresponding least-squares problem. `normr`
+		contains the minimal distance that was found.
 	**/
-	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic):Dynamic;
+	static public function lsmr(A:Dynamic, b:Dynamic, ?damp:Dynamic, ?atol:Dynamic, ?btol:Dynamic, ?conlim:Dynamic, ?maxiter:Dynamic, ?show:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		Solve a linear least-squares problem with bounds on the variables.
 		
@@ -310,89 +394,6 @@ package scipy.optimize._lsq.lsq_linear;
 	**/
 	static public function lsq_linear(A:Dynamic, b:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?tol:Dynamic, ?lsq_solver:Dynamic, ?lsmr_tol:Dynamic, ?max_iter:Dynamic, ?verbose:Dynamic):Float;
 	/**
-		Return the least-squares solution to a linear matrix equation.
-		
-		Solves the equation `a x = b` by computing a vector `x` that
-		minimizes the Euclidean 2-norm `|| b - a x ||^2`.  The equation may
-		be under-, well-, or over- determined (i.e., the number of
-		linearly independent rows of `a` can be less than, equal to, or
-		greater than its number of linearly independent columns).  If `a`
-		is square and of full rank, then `x` (but for round-off error) is
-		the "exact" solution of the equation.
-		
-		Parameters
-		----------
-		a : (M, N) array_like
-		    "Coefficient" matrix.
-		b : {(M,), (M, K)} array_like
-		    Ordinate or "dependent variable" values. If `b` is two-dimensional,
-		    the least-squares solution is calculated for each of the `K` columns
-		    of `b`.
-		rcond : float, optional
-		    Cut-off ratio for small singular values of `a`.
-		    For the purposes of rank determination, singular values are treated
-		    as zero if they are smaller than `rcond` times the largest singular
-		    value of `a`.
-		
-		Returns
-		-------
-		x : {(N,), (N, K)} ndarray
-		    Least-squares solution. If `b` is two-dimensional,
-		    the solutions are in the `K` columns of `x`.
-		residuals : {(), (1,), (K,)} ndarray
-		    Sums of residuals; squared Euclidean 2-norm for each column in
-		    ``b - a*x``.
-		    If the rank of `a` is < N or M <= N, this is an empty array.
-		    If `b` is 1-dimensional, this is a (1,) shape array.
-		    Otherwise the shape is (K,).
-		rank : int
-		    Rank of matrix `a`.
-		s : (min(M, N),) ndarray
-		    Singular values of `a`.
-		
-		Raises
-		------
-		LinAlgError
-		    If computation does not converge.
-		
-		Notes
-		-----
-		If `b` is a matrix, then all array results are returned as matrices.
-		
-		Examples
-		--------
-		Fit a line, ``y = mx + c``, through some noisy data-points:
-		
-		>>> x = np.array([0, 1, 2, 3])
-		>>> y = np.array([-1, 0.2, 0.9, 2.1])
-		
-		By examining the coefficients, we see that the line should have a
-		gradient of roughly 1 and cut the y-axis at, more or less, -1.
-		
-		We can rewrite the line equation as ``y = Ap``, where ``A = [[x 1]]``
-		and ``p = [[m], [c]]``.  Now use `lstsq` to solve for `p`:
-		
-		>>> A = np.vstack([x, np.ones(len(x))]).T
-		>>> A
-		array([[ 0.,  1.],
-		       [ 1.,  1.],
-		       [ 2.,  1.],
-		       [ 3.,  1.]])
-		
-		>>> m, c = np.linalg.lstsq(A, y)[0]
-		>>> print(m, c)
-		1.0 -0.95
-		
-		Plot the data along with the fitted line:
-		
-		>>> import matplotlib.pyplot as plt
-		>>> plt.plot(x, y, 'o', label='Original data', markersize=10)
-		>>> plt.plot(x, m*x + c, 'r', label='Fitted line')
-		>>> plt.legend()
-		>>> plt.show()
-	**/
-	static public function lstsq(a:Dynamic, b:Dynamic, ?rcond:Dynamic):Dynamic;
-	/**
 		Matrix or vector norm.
 		
 		This function is able to return one of eight different matrix norms,
@@ -412,6 +413,9 @@ package scipy.optimize._lsq.lsq_linear;
 		    axes that hold 2-D matrices, and the matrix norms of these matrices
 		    are computed.  If `axis` is None then either a vector norm (when `x`
 		    is 1-D) or a matrix norm (when `x` is 2-D) is returned.
+		
+		    .. versionadded:: 1.8.0
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are normed over are left in the
 		    result as dimensions with size one.  With this option the result will

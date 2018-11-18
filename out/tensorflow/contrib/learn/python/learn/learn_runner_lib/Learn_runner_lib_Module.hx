@@ -11,7 +11,11 @@ package tensorflow.contrib.learn.python.learn.learn_runner_lib;
 	static public var __spec__ : Dynamic;
 	static public var _allowed_symbols : Dynamic;
 	/**
-		Make and run an experiment.
+		Make and run an experiment. (deprecated)
+		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.estimator.train_and_evaluate.
 		
 		It creates an Experiment by calling `experiment_fn`. Then it calls the
 		function named as `schedule` of the Experiment.
@@ -73,12 +77,12 @@ package tensorflow.contrib.learn.python.learn.learn_runner_lib;
 		    to create the `Estimator` (passed as `model_dir` to its constructor). It
 		    must return an `Experiment`. For this case, `run_config` and `hparams`
 		    must be None.
-		    2) It accpets two arguments `run_config` and `hparams`, which should be
+		    2) It accepts two arguments `run_config` and `hparams`, which should be
 		    used to create the `Estimator` (`run_config` passed as `config` to its
-		    constructor; `hparams` used as the hyper-paremeters of the model).
+		    constructor; `hparams` used as the hyper-parameters of the model).
 		    It must return an `Experiment`. For this case, `output_dir` must be None.
 		  output_dir: Base output directory [Deprecated].
-		  schedule: The name of the  method in the `Experiment` to run.
+		  schedule: The name of the method in the `Experiment` to run.
 		  run_config: `RunConfig` instance. The `run_config.model_dir` must be
 		    non-empty. If `run_config` is set, `output_dir` must be None.
 		  hparams: `HParams` instance. The default hyper-parameters, which will be
@@ -96,10 +100,11 @@ package tensorflow.contrib.learn.python.learn.learn_runner_lib;
 	**/
 	static public function run(experiment_fn:Dynamic, ?output_dir:Dynamic, ?schedule:Dynamic, ?run_config:Dynamic, ?hparams:Dynamic):Dynamic;
 	/**
-		Tune an experiment with hyper-parameters. (experimental)
+		Tune an experiment with hyper-parameters. (deprecated)
 		
-		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
-		
+		THIS FUNCTION IS DEPRECATED. It will be removed in a future version.
+		Instructions for updating:
+		Use tf.estimator.train_and_evaluate.
 		
 		It iterates trials by running the Experiment for each trial with the
 		corresponding hyper-parameters. For each trial, it retrieves the

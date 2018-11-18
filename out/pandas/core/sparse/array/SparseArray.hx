@@ -82,30 +82,24 @@ package pandas.core.sparse.array;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __complex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
-		a.__copy__([order])
+		a.__copy__()
 		
-		Return a copy of the array.
+		Used if :func:`copy.copy` is called on an array. Returns a copy of the array.
 		
-		Parameters
-		----------
-		order : {'C', 'F', 'A'}, optional
-		    If order is 'C' (False) then the result is contiguous (default).
-		    If order is 'Fortran' (True) then the result has fortran order.
-		    If order is 'Any' (None) then the result has fortran order
-		    only if the array already is in fortran order.
+		Equivalent to ``a.copy(order='K')``.
 	**/
 	public function __copy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		a.__deepcopy__() -> Deep copy of array.
+		a.__deepcopy__(memo, /) -> Deep copy of array.
 		
-		Used if copy.deepcopy is called on an array.
+		Used if :func:`copy.deepcopy` is called on an array.
 	**/
 	public function __deepcopy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -151,10 +145,7 @@ package pandas.core.sparse.array;
 	public function __gt__(other:Dynamic):Dynamic;
 	static public var __hash__ : Dynamic;
 	public function __iadd__(other:Dynamic):Dynamic;
-	/**
-		Return self&=value.
-	**/
-	public function __iand__(value:Dynamic):Dynamic;
+	public function __iand__(other:Dynamic):Dynamic;
 	public function __ifloordiv__(other:Dynamic):Dynamic;
 	/**
 		Return self<<=value.
@@ -164,10 +155,7 @@ package pandas.core.sparse.array;
 		Return self@=value.
 	**/
 	public function __imatmul__(value:Dynamic):Dynamic;
-	/**
-		Return self%=value.
-	**/
-	public function __imod__(value:Dynamic):Dynamic;
+	public function __imod__(other:Dynamic):Dynamic;
 	public function __imul__(other:Dynamic):Dynamic;
 	/**
 		Return self converted to an integer, if self is suitable for use as an index into a list.
@@ -188,7 +176,7 @@ package pandas.core.sparse.array;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		int(self)
 	**/
@@ -197,10 +185,7 @@ package pandas.core.sparse.array;
 		~self
 	**/
 	public function __invert__():Dynamic;
-	/**
-		Return self|=value.
-	**/
-	public function __ior__(value:Dynamic):Dynamic;
+	public function __ior__(other:Dynamic):Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;
 	/**
 		Return self>>=value.
@@ -212,10 +197,7 @@ package pandas.core.sparse.array;
 	**/
 	public function __iter__():Dynamic;
 	public function __itruediv__(other:Dynamic):Dynamic;
-	/**
-		Return self^=value.
-	**/
-	public function __ixor__(value:Dynamic):Dynamic;
+	public function __ixor__(other:Dynamic):Dynamic;
 	public function __le__(other:Dynamic):Dynamic;
 	/**
 		Return len(self).
@@ -307,7 +289,7 @@ package pandas.core.sparse.array;
 	**/
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -327,7 +309,7 @@ package pandas.core.sparse.array;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __truediv__(other:Dynamic):Dynamic;
 	/**
 		Return a string representation for a particular object.
@@ -341,12 +323,14 @@ package pandas.core.sparse.array;
 	**/
 	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -364,29 +348,29 @@ package pandas.core.sparse.array;
 	static public var _typ : Dynamic;
 	public var _valid_sp_values : Dynamic;
 	/**
-		a.all(axis=None, out=None, keepdims=False)
+		Tests whether all elements evaluate True
 		
-		Returns True if all elements evaluate to True.
-		
-		Refer to `numpy.all` for full documentation.
+		Returns
+		-------
+		all : bool
 		
 		See Also
 		--------
-		numpy.all : equivalent function
+		numpy.all
 	**/
-	public function all(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function all(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Bool;
 	/**
-		a.any(axis=None, out=None, keepdims=False)
+		Tests whether at least one of elements evaluate True
 		
-		Returns True if any of the elements of `a` evaluate to True.
-		
-		Refer to `numpy.any` for full documentation.
+		Returns
+		-------
+		any : bool
 		
 		See Also
 		--------
-		numpy.any : equivalent function
+		numpy.any
 	**/
-	public function any(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function any(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Bool;
 	/**
 		a.argmax(axis=None, out=None)
 		
@@ -522,7 +506,7 @@ package pandas.core.sparse.array;
 	**/
 	public var base : Dynamic;
 	/**
-		a.byteswap(inplace)
+		a.byteswap(inplace=False)
 		
 		Swap the bytes of the array elements
 		
@@ -545,7 +529,7 @@ package pandas.core.sparse.array;
 		>>> A = np.array([1, 256, 8755], dtype=np.int16)
 		>>> map(hex, A)
 		['0x1', '0x100', '0x2233']
-		>>> A.byteswap(True)
+		>>> A.byteswap(inplace=True)
 		array([  256,     1, 13090], dtype=int16)
 		>>> map(hex, A)
 		['0x100', '0x1', '0x3322']
@@ -923,8 +907,13 @@ package pandas.core.sparse.array;
 		    array raises a RuntimeError exception.
 		ALIGNED (A)
 		    The data and all elements are aligned appropriately for the hardware.
+		WRITEBACKIFCOPY (X)
+		    This array is a copy of some other array. The C-API function
+		    PyArray_ResolveWritebackIfCopy must be called before deallocating
+		    to the base array will be updated with the contents of this array.
 		UPDATEIFCOPY (U)
-		    This array is a copy of some other array. When this array is
+		    (Deprecated, use WRITEBACKIFCOPY) This array is a copy of some other array.
+		    When this array is
 		    deallocated, the base array will be updated with the contents of
 		    this array.
 		FNC
@@ -944,13 +933,14 @@ package pandas.core.sparse.array;
 		or by using lowercased attribute names (as in ``a.flags.writeable``). Short flag
 		names are only supported in dictionary access.
 		
-		Only the UPDATEIFCOPY, WRITEABLE, and ALIGNED flags can be changed by
-		the user, via direct assignment to the attribute or dictionary entry,
-		or by calling `ndarray.setflags`.
+		Only the WRITEBACKIFCOPY, UPDATEIFCOPY, WRITEABLE, and ALIGNED flags can be
+		changed by the user, via direct assignment to the attribute or dictionary
+		entry, or by calling `ndarray.setflags`.
 		
 		The array flags cannot be set arbitrarily:
 		
 		- UPDATEIFCOPY can only be set ``False``.
+		- WRITEBACKIFCOPY can only be set ``False``.
 		- ALIGNED can only be set ``True`` if the data is truly aligned.
 		- WRITEABLE can only be set ``True`` if the array owns its own memory
 		  or the ultimate owner of the memory exposes a writeable buffer
@@ -1210,7 +1200,7 @@ package pandas.core.sparse.array;
 	public var itemsize : Dynamic;
 	public var kind : Dynamic;
 	/**
-		a.max(axis=None, out=None)
+		a.max(axis=None, out=None, keepdims=False)
 		
 		Return the maximum along a given axis.
 		
@@ -1229,6 +1219,29 @@ package pandas.core.sparse.array;
 		mean : float
 	**/
 	public function mean(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
+	/**
+		Memory usage of the values
+		
+		Parameters
+		----------
+		deep : bool
+		    Introspect the data deeply, interrogate
+		    `object` dtypes for system-level memory consumption
+		
+		Returns
+		-------
+		bytes used
+		
+		Notes
+		-----
+		Memory usage does not include memory consumed by elements that
+		are not components of the array if deep=False or if used on PyPy
+		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+	**/
+	public function memory_usage(?deep:Dynamic):Dynamic;
 	/**
 		a.min(axis=None, out=None, keepdims=False)
 		
@@ -1325,7 +1338,7 @@ package pandas.core.sparse.array;
 	/**
 		a.partition(kth, axis=-1, kind='introselect', order=None)
 		
-		Rearranges the elements in the array in such a way that value of the
+		Rearranges the elements in the array in such a way that the value of the
 		element in kth position is in the position it would be in a sorted array.
 		All elements smaller than the kth element are moved before this element and
 		all equal or greater are moved behind it. The ordering of the elements in
@@ -1339,7 +1352,7 @@ package pandas.core.sparse.array;
 		    Element index to partition by. The kth element value will be in its
 		    final sorted position and all smaller elements will be moved before it
 		    and all equal or greater elements behind it.
-		    The order all elements in the partitions is undefined.
+		    The order of all elements in the partitions is undefined.
 		    If provided with a sequence of kth it will partition all elements
 		    indexed by kth of them into their sorted position at once.
 		axis : int, optional
@@ -1349,8 +1362,8 @@ package pandas.core.sparse.array;
 		    Selection algorithm. Default is 'introselect'.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
-		    which fields to compare first, second, etc.  A single field can
-		    be specified as a string, and not all fields need be specified,
+		    which fields to compare first, second, etc. A single field can
+		    be specified as a string, and not all fields need to be specified,
 		    but unspecified fields will still be used, in the order in which
 		    they come up in the dtype, to break ties.
 		
@@ -1388,7 +1401,7 @@ package pandas.core.sparse.array;
 	**/
 	public function prod(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		a.ptp(axis=None, out=None)
+		a.ptp(axis=None, out=None, keepdims=False)
 		
 		Peak to peak (maximum - minimum) value along a given axis.
 		
@@ -1463,6 +1476,13 @@ package pandas.core.sparse.array;
 		See Also
 		--------
 		numpy.reshape : equivalent function
+		
+		Notes
+		-----
+		Unlike the free function `numpy.reshape`, this method on `ndarray` allows
+		the elements of the shape parameter to be passed in as separate arguments.
+		For example, ``a.reshape(10, 11)`` is equivalent to
+		``a.reshape((10, 11))``.
 	**/
 	public function reshape(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1629,16 +1649,17 @@ package pandas.core.sparse.array;
 	/**
 		a.setflags(write=None, align=None, uic=None)
 		
-		Set array flags WRITEABLE, ALIGNED, and UPDATEIFCOPY, respectively.
+		Set array flags WRITEABLE, ALIGNED, (WRITEBACKIFCOPY and UPDATEIFCOPY),
+		respectively.
 		
 		These Boolean-valued flags affect how numpy interprets the memory
 		area used by `a` (see Notes below). The ALIGNED flag can only
 		be set to True if the data is actually aligned according to the type.
-		The UPDATEIFCOPY flag can never be set to True. The flag WRITEABLE
-		can only be set to True if the array owns its own memory, or the
-		ultimate owner of the memory exposes a writeable buffer interface,
-		or is a string. (The exception for string is made so that unpickling
-		can be done without copying memory.)
+		The WRITEBACKIFCOPY and (deprecated) UPDATEIFCOPY flags can never be set
+		to True. The flag WRITEABLE can only be set to True if the array owns its
+		own memory, or the ultimate owner of the memory exposes a writeable buffer
+		interface, or is a string. (The exception for string is made so that
+		unpickling can be done without copying memory.)
 		
 		Parameters
 		----------
@@ -1652,20 +1673,22 @@ package pandas.core.sparse.array;
 		Notes
 		-----
 		Array flags provide information about how the memory area used
-		for the array is to be interpreted. There are 6 Boolean flags
-		in use, only three of which can be changed by the user:
-		UPDATEIFCOPY, WRITEABLE, and ALIGNED.
+		for the array is to be interpreted. There are 7 Boolean flags
+		in use, only four of which can be changed by the user:
+		WRITEBACKIFCOPY, UPDATEIFCOPY, WRITEABLE, and ALIGNED.
 		
 		WRITEABLE (W) the data area can be written to;
 		
 		ALIGNED (A) the data and strides are aligned appropriately for the hardware
 		(as determined by the compiler);
 		
-		UPDATEIFCOPY (U) this array is a copy of some other array (referenced
-		by .base). When this array is deallocated, the base array will be
-		updated with the contents of this array.
+		UPDATEIFCOPY (U) (deprecated), replaced by WRITEBACKIFCOPY;
 		
-		All flags can be accessed using their first (upper case) letter as well
+		WRITEBACKIFCOPY (X) this array is a copy of some other array (referenced
+		by .base). When the C-API function PyArray_ResolveWritebackIfCopy is
+		called, the base array will be updated with the contents of this array.
+		
+		All flags can be accessed using the single (upper case) letter as well
 		as the full name.
 		
 		Examples
@@ -1680,6 +1703,7 @@ package pandas.core.sparse.array;
 		  OWNDATA : True
 		  WRITEABLE : True
 		  ALIGNED : True
+		  WRITEBACKIFCOPY : False
 		  UPDATEIFCOPY : False
 		>>> y.setflags(write=0, align=0)
 		>>> y.flags
@@ -1688,20 +1712,23 @@ package pandas.core.sparse.array;
 		  OWNDATA : True
 		  WRITEABLE : False
 		  ALIGNED : False
+		  WRITEBACKIFCOPY : False
 		  UPDATEIFCOPY : False
 		>>> y.setflags(uic=1)
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
-		ValueError: cannot set UPDATEIFCOPY flag to True
+		ValueError: cannot set WRITEBACKIFCOPY flag to True
 	**/
 	public function setflags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Tuple of array dimensions.
 		
-		Notes
-		-----
-		May be used to "reshape" the array, as long as this would not
-		require a change in the total number of elements
+		The shape property is usually used to get the current shape of an array,
+		but may also be used to reshape the array in-place by assigning a tuple of
+		array dimensions to it.  As with `numpy.reshape`, one of the new shape
+		dimensions can be -1, in which case its value is inferred from the size of
+		the array and the remaining dimensions. Reshaping an array in-place will
+		fail if a copy is required.
 		
 		Examples
 		--------
@@ -1720,13 +1747,30 @@ package pandas.core.sparse.array;
 		Traceback (most recent call last):
 		  File "<stdin>", line 1, in <module>
 		ValueError: total size of new array must be unchanged
+		>>> np.zeros((4,2))[::2].shape = (-1,)
+		Traceback (most recent call last):
+		  File "<stdin>", line 1, in <module>
+		AttributeError: incompatible shape for a non-contiguous array
+		
+		See Also
+		--------
+		numpy.reshape : similar function
+		ndarray.reshape : similar method
 	**/
 	public var shape : Dynamic;
 	/**
 		Number of elements in the array.
 		
-		Equivalent to ``np.prod(a.shape)``, i.e., the product of the array's
+		Equal to ``np.prod(a.shape)``, i.e., the product of the array's
 		dimensions.
+		
+		Notes
+		-----
+		`a.size` returns a standard arbitrary precision Python integer. This 
+		may not be the case with other methods of obtaining the same value
+		(like the suggested ``np.prod(a.shape)``, which returns an instance
+		of ``np.int_``), and may be relevant if the value is used further in
+		calculations that may overflow a fixed size integer type.
 		
 		Examples
 		--------
@@ -1747,7 +1791,7 @@ package pandas.core.sparse.array;
 		axis : int, optional
 		    Axis along which to sort. Default is -1, which means sort along the
 		    last axis.
-		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
+		kind : {'quicksort', 'mergesort', 'heapsort', 'stable'}, optional
 		    Sorting algorithm. Default is 'quicksort'.
 		order : str or list of str, optional
 		    When `a` is an array with fields defined, this argument specifies
@@ -1928,8 +1972,8 @@ package pandas.core.sparse.array;
 		Parameters
 		----------
 		fill: float, default None
-		    DEPRECATED: this argument will be removed in a future version
-		    because it is not respected by this function.
+		    .. deprecated:: 0.20.0
+		       This argument is not respected by this function.
 		
 		Returns
 		-------
@@ -2001,6 +2045,11 @@ package pandas.core.sparse.array;
 		machines with different endianness. Some of these problems can be overcome
 		by outputting the data as text files, at the expense of speed and file
 		size.
+		
+		When fid is a file object, array contents are directly written to the
+		file, bypassing the file object's ``write`` method. As a result, tofile
+		cannot be used with files objects supporting compression (e.g., GzipFile)
+		or file-like objects that do not support ``fileno()`` (e.g., BytesIO).
 	**/
 	public function tofile(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

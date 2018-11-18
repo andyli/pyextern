@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.animation;
 @:pythonImport("matplotlib.animation", "MovieWriterRegistry") extern class MovieWriterRegistry {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -53,7 +53,7 @@ package matplotlib.animation;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,7 +104,7 @@ package matplotlib.animation;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -129,13 +129,22 @@ package matplotlib.animation;
 		Get a list of available MovieWriters.
 	**/
 	public function list():Dynamic;
+	/**
+		Decorator for registering a class under a name.
+		
+		Example use::
+		
+		    @registry.register(name)
+		    class Foo:
+		        pass
+	**/
 	public function register(name:Dynamic):Dynamic;
 	/**
 		Reset the available state of all registered writers
 	**/
 	public function reset_available_writers():Dynamic;
 	/**
-		Sets a flag to re-setup the writers
+		Sets a flag to re-setup the writers.
 	**/
 	public function set_dirty():Dynamic;
 }

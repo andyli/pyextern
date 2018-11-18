@@ -10,4 +10,6 @@ package torch.version;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
+	static public var cuda : Dynamic;
+	static public var debug : Dynamic;
 }

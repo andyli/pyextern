@@ -77,9 +77,9 @@ package scipy.io.mmio;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -122,7 +122,7 @@ package scipy.io.mmio;
 	static public function ascontiguousarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function asstr(s:Dynamic):Dynamic;
 	/**
-		can_cast(from, totype, casting = 'safe')
+		can_cast(from_, to, casting='safe')
 		
 		Returns True if cast between data types can occur according to the
 		casting rule.  If from is a scalar or array scalar, also returns
@@ -131,9 +131,9 @@ package scipy.io.mmio;
 		
 		Parameters
 		----------
-		from : dtype, dtype specifier, scalar, or array
+		from_ : dtype, dtype specifier, scalar, or array
 		    Data type, scalar, or array to cast from.
-		totype : dtype or dtype specifier
+		to : dtype or dtype specifier
 		    Data type to cast to.
 		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
 		    Controls what kind of data casting may occur.
@@ -168,9 +168,9 @@ package scipy.io.mmio;
 		
 		>>> np.can_cast(np.int32, np.int64)
 		True
-		>>> np.can_cast(np.float64, np.complex)
+		>>> np.can_cast(np.float64, complex)
 		True
-		>>> np.can_cast(np.complex, np.float)
+		>>> np.can_cast(complex, float)
 		False
 		
 		>>> np.can_cast('i8', 'f8')
@@ -228,7 +228,7 @@ package scipy.io.mmio;
 	**/
 	static public function can_cast(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		concatenate((a1, a2, ...), axis=0)
+		concatenate((a1, a2, ...), axis=0, out=None)
 		
 		Join a sequence of arrays along an existing axis.
 		
@@ -238,7 +238,12 @@ package scipy.io.mmio;
 		    The arrays must have the same shape, except in the dimension
 		    corresponding to `axis` (the first, by default).
 		axis : int, optional
-		    The axis along which the arrays will be joined.  Default is 0.
+		    The axis along which the arrays will be joined.  If axis is None,
+		    arrays are flattened before use.  Default is 0.
+		out : ndarray, optional
+		    If provided, the destination to place the result. The shape must be
+		    correct, matching that of what concatenate would have returned if no
+		    out argument were specified.
 		
 		Returns
 		-------
@@ -278,6 +283,8 @@ package scipy.io.mmio;
 		>>> np.concatenate((a, b.T), axis=1)
 		array([[1, 2, 5],
 		       [3, 4, 6]])
+		>>> np.concatenate((a, b), axis=None)
+		array([1, 2, 3, 4, 5, 6])
 		
 		This function will not preserve masking of MaskedArray inputs.
 		
@@ -328,6 +335,7 @@ package scipy.io.mmio;
 		-------
 		y : ndarray
 		    The complex conjugate of `x`, with same dtype as `y`.
+		    This is a scalar if `x` is a scalar.
 		
 		Examples
 		--------
@@ -417,7 +425,7 @@ package scipy.io.mmio;
 	/**
 		fromstring(string, dtype=float, count=-1, sep='')
 		
-		A new 1-D array initialized from raw binary or text data in a string.
+		A new 1-D array initialized from text data in a string.
 		
 		Parameters
 		----------
@@ -431,11 +439,13 @@ package scipy.io.mmio;
 		    negative (the default), the count will be determined from the
 		    length of the data.
 		sep : str, optional
-		    If not provided or, equivalently, the empty string, the data will
-		    be interpreted as binary data; otherwise, as ASCII text with
-		    decimal numbers.  Also in this latter case, this argument is
-		    interpreted as the string separating numbers in the data; extra
-		    whitespace between elements is also ignored.
+		    The string separating numbers in the data; extra whitespace between
+		    elements is also ignored.
+		
+		    .. deprecated:: 1.14
+		        If this argument is not provided, `fromstring` falls back on the
+		        behaviour of `frombuffer` after encoding unicode string inputs as
+		        either utf-8 (python 3), or the default encoding (python 2).
 		
 		Returns
 		-------
@@ -454,14 +464,10 @@ package scipy.io.mmio;
 		
 		Examples
 		--------
-		>>> np.fromstring('\x01\x02', dtype=np.uint8)
-		array([1, 2], dtype=uint8)
 		>>> np.fromstring('1 2', dtype=int, sep=' ')
 		array([1, 2])
 		>>> np.fromstring('1, 2', dtype=int, sep=',')
 		array([1, 2])
-		>>> np.fromstring('\x01\x02\x03\x04\x05', dtype=np.uint8, count=3)
-		array([1, 2, 3], dtype=uint8)
 	**/
 	static public function fromstring(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -495,6 +501,33 @@ package scipy.io.mmio;
 		1.0
 	**/
 	static public function imag(val:Dynamic):Dynamic;
+	/**
+		Is x of a sparse matrix type?
+		
+		Parameters
+		----------
+		x
+		    object to check for being a sparse matrix
+		
+		Returns
+		-------
+		bool
+		    True if x is a sparse matrix, False otherwise
+		
+		Notes
+		-----
+		issparse and isspmatrix are aliases for the same function.
+		
+		Examples
+		--------
+		>>> from scipy.sparse import csr_matrix, isspmatrix
+		>>> isspmatrix(csr_matrix([[5]]))
+		True
+		
+		>>> from scipy.sparse import isspmatrix
+		>>> isspmatrix(5)
+		False
+	**/
 	static public function isspmatrix(x:Dynamic):Dynamic;
 	/**
 		Return size and storage parameters from Matrix Market file-like 'source'.
@@ -568,9 +601,10 @@ package scipy.io.mmio;
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: C
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -579,14 +613,18 @@ package scipy.io.mmio;
 		
 		See Also
 		--------
-		zeros, ones_like
+		ones_like : Return an array of ones with shape and type of input.
+		empty : Return a new uninitialized array.
+		zeros : Return a new array setting values to zero.
+		full : Return a new array of given shape filled with value.
+		
 		
 		Examples
 		--------
 		>>> np.ones(5)
 		array([ 1.,  1.,  1.,  1.,  1.])
 		
-		>>> np.ones((5,), dtype=np.int)
+		>>> np.ones((5,), dtype=int)
 		array([1, 1, 1, 1, 1])
 		
 		>>> np.ones((2, 1))
@@ -643,20 +681,21 @@ package scipy.io.mmio;
 		    If the filename ends in ``.gz``, the file is automatically saved in
 		    compressed gzip format.  `loadtxt` understands gzipped files
 		    transparently.
-		X : array_like
+		X : 1D or 2D array_like
 		    Data to be saved to a text file.
 		fmt : str or sequence of strs, optional
 		    A single format (%10.5f), a sequence of formats, or a
 		    multi-format string, e.g. 'Iteration %d -- %10.5f', in which
 		    case `delimiter` is ignored. For complex `X`, the legal options
 		    for `fmt` are:
-		        a) a single specifier, `fmt='%.4e'`, resulting in numbers formatted
-		            like `' (%s+%sj)' % (fmt, fmt)`
-		        b) a full string specifying every real and imaginary part, e.g.
-		            `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
-		        c) a list of specifiers, one per column - in this case, the real
-		            and imaginary part must have separate specifiers,
-		            e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
+		
+		    * a single specifier, `fmt='%.4e'`, resulting in numbers formatted
+		      like `' (%s+%sj)' % (fmt, fmt)`
+		    * a full string specifying every real and imaginary part, e.g.
+		      `' %.4e %+.4ej %.4e %+.4ej %.4e %+.4ej'` for 3 columns
+		    * a list of specifiers, one per column - in this case, the real
+		      and imaginary part must have separate specifiers,
+		      e.g. `['%.3e + %.3ej', '(%.15e%+.15ej)']` for 2 columns
 		delimiter : str, optional
 		    String or character separating columns.
 		newline : str, optional
@@ -677,6 +716,13 @@ package scipy.io.mmio;
 		    ``numpy.loadtxt``.
 		
 		    .. versionadded:: 1.7.0
+		encoding : {None, str}, optional
+		    Encoding used to encode the outputfile. Does not apply to output
+		    streams. If the encoding is something other than 'bytes' or 'latin1'
+		    you will not be able to load the file in NumPy versions < 1.14. Default
+		    is 'latin1'.
+		
+		    .. versionadded:: 1.14.0
 		
 		
 		See Also
@@ -744,28 +790,30 @@ package scipy.io.mmio;
 		>>> np.savetxt('test.out', (x,y,z))   # x,y,z equal sized 1D arrays
 		>>> np.savetxt('test.out', x, fmt='%1.4e')   # use exponential notation
 	**/
-	static public function savetxt(fname:Dynamic, X:Dynamic, ?fmt:Dynamic, ?delimiter:Dynamic, ?newline:Dynamic, ?header:Dynamic, ?footer:Dynamic, ?comments:Dynamic):Dynamic;
+	static public function savetxt(fname:Dynamic, X:Dynamic, ?fmt:Dynamic, ?delimiter:Dynamic, ?newline:Dynamic, ?header:Dynamic, ?footer:Dynamic, ?comments:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		
-		Take a sequence of arrays and stack them vertically to make a single
-		array. Rebuild arrays divided by `vsplit`.
+		This is equivalent to concatenation along the first axis after 1-D arrays
+		of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds arrays divided by
+		`vsplit`.
 		
-		This function continues to be supported for backward compatibility, but
-		you should prefer ``np.concatenate`` or ``np.stack``. The ``np.stack``
-		function was added in NumPy 1.10.
+		This function makes most sense for arrays with up to 3 dimensions. For
+		instance, for pixel-data with a height (first axis), width (second axis),
+		and r/g/b channels (third axis). The functions `concatenate`, `stack` and
+		`block` provide more general stacking and concatenation operations.
 		
 		Parameters
 		----------
 		tup : sequence of ndarrays
-		    Tuple containing arrays to be stacked. The arrays must have the same
-		    shape along all but the first axis.
+		    The arrays must have the same shape along all but the first axis.
+		    1-D arrays must have the same length.
 		
 		Returns
 		-------
 		stacked : ndarray
-		    The array formed by stacking the given arrays.
+		    The array formed by stacking the given arrays, will be at least 2-D.
 		
 		See Also
 		--------
@@ -775,11 +823,6 @@ package scipy.io.mmio;
 		concatenate : Join a sequence of arrays along an existing axis.
 		vsplit : Split array into a list of multiple sub-arrays vertically.
 		block : Assemble arrays from blocks.
-		
-		Notes
-		-----
-		Equivalent to ``np.concatenate(tup, axis=0)`` if `tup` contains arrays that
-		are at least 2-dimensional.
 		
 		Examples
 		--------
@@ -807,14 +850,15 @@ package scipy.io.mmio;
 		
 		Parameters
 		----------
-		shape : int or sequence of ints
+		shape : int or tuple of ints
 		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
 		dtype : data-type, optional
 		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
 		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
+		order : {'C', 'F'}, optional, default: 'C'
+		    Whether to store multi-dimensional data in row-major
+		    (C-style) or column-major (Fortran-style) order in
+		    memory.
 		
 		Returns
 		-------
@@ -824,17 +868,16 @@ package scipy.io.mmio;
 		See Also
 		--------
 		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
 		empty : Return a new uninitialized array.
+		ones : Return a new array setting values to one.
+		full : Return a new array of given shape filled with value.
 		
 		Examples
 		--------
 		>>> np.zeros(5)
 		array([ 0.,  0.,  0.,  0.,  0.])
 		
-		>>> np.zeros((5,), dtype=np.int)
+		>>> np.zeros((5,), dtype=int)
 		array([0, 0, 0, 0, 0])
 		
 		>>> np.zeros((2, 1))

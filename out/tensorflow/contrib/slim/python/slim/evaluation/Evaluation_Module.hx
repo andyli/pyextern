@@ -33,7 +33,7 @@ package tensorflow.contrib.slim.python.slim.evaluation;
 		
 		This behavior gives control to callers on what to do if checkpoints do not
 		come fast enough or stop being generated.  For example, if callers have a way
-		to detect that the training has stopped and know that no new new checkpoints
+		to detect that the training has stopped and know that no new checkpoints
 		will be generated, they can provide a `timeout_fn` that returns `True` when
 		the training has stopped.  If they know that the training is still going on
 		they return `False` instead.
@@ -77,11 +77,13 @@ package tensorflow.contrib.slim.python.slim.evaluation;
 		    slim.variables.GetVariablesToRestore() is used.
 		  session_config: An instance of `tf.ConfigProto` that will be used to
 		    configure the `Session`. If left as `None`, the default will be used.
+		  hooks: A list of additional `SessionRunHook` objects to pass during the
+		    evaluation.
 		
 		Returns:
 		  The value of `final_op` or `None` if `final_op` is `None`.
 	**/
-	static public function evaluate_once(master:Dynamic, checkpoint_path:Dynamic, logdir:Dynamic, ?num_evals:Dynamic, ?initial_op:Dynamic, ?initial_op_feed_dict:Dynamic, ?eval_op:Dynamic, ?eval_op_feed_dict:Dynamic, ?final_op:Dynamic, ?final_op_feed_dict:Dynamic, ?summary_op:Dynamic, ?summary_op_feed_dict:Dynamic, ?variables_to_restore:Dynamic, ?session_config:Dynamic):Dynamic;
+	static public function evaluate_once(master:Dynamic, checkpoint_path:Dynamic, logdir:Dynamic, ?num_evals:Dynamic, ?initial_op:Dynamic, ?initial_op_feed_dict:Dynamic, ?eval_op:Dynamic, ?eval_op_feed_dict:Dynamic, ?final_op:Dynamic, ?final_op_feed_dict:Dynamic, ?summary_op:Dynamic, ?summary_op_feed_dict:Dynamic, ?variables_to_restore:Dynamic, ?session_config:Dynamic, ?hooks:Dynamic):Dynamic;
 	/**
 		Runs TF-Slim's Evaluation Loop.
 		
@@ -113,13 +115,16 @@ package tensorflow.contrib.slim.python.slim.evaluation;
 		    configure the `Session`. If left as `None`, the default will be used.
 		  timeout: The maximum amount of time to wait between checkpoints. If left as
 		    `None`, then the process will wait indefinitely.
-		  hooks: A list of additional SessionRunHook objects to pass during
+		  timeout_fn: Optional function to call after a timeout.  If the function
+		    returns True, then it means that no new checkpoints will be generated and
+		    the iterator will exit.  The function is called with no arguments.
+		  hooks: A list of additional `SessionRunHook` objects to pass during
 		    repeated evaluations.
 		
 		Returns:
 		  The value of `final_op` or `None` if `final_op` is `None`.
 	**/
-	static public function evaluation_loop(master:Dynamic, checkpoint_dir:Dynamic, logdir:Dynamic, ?num_evals:Dynamic, ?initial_op:Dynamic, ?initial_op_feed_dict:Dynamic, ?init_fn:Dynamic, ?eval_op:Dynamic, ?eval_op_feed_dict:Dynamic, ?final_op:Dynamic, ?final_op_feed_dict:Dynamic, ?summary_op:Dynamic, ?summary_op_feed_dict:Dynamic, ?variables_to_restore:Dynamic, ?eval_interval_secs:Dynamic, ?max_number_of_evaluations:Dynamic, ?session_config:Dynamic, ?timeout:Dynamic, ?hooks:Dynamic):Dynamic;
+	static public function evaluation_loop(master:Dynamic, checkpoint_dir:Dynamic, logdir:Dynamic, ?num_evals:Dynamic, ?initial_op:Dynamic, ?initial_op_feed_dict:Dynamic, ?init_fn:Dynamic, ?eval_op:Dynamic, ?eval_op_feed_dict:Dynamic, ?final_op:Dynamic, ?final_op_feed_dict:Dynamic, ?summary_op:Dynamic, ?summary_op_feed_dict:Dynamic, ?variables_to_restore:Dynamic, ?eval_interval_secs:Dynamic, ?max_number_of_evaluations:Dynamic, ?session_config:Dynamic, ?timeout:Dynamic, ?timeout_fn:Dynamic, ?hooks:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Waits until a new checkpoint file is found.

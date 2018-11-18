@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package tensorflow.python.ops.tensor_array_ops;
 @:pythonImport("tensorflow.python.ops.tensor_array_ops", "TensorArray") extern class TensorArray {
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -60,16 +60,16 @@ package tensorflow.python.ops.tensor_array_ops;
 		    This is used when creating the TensorArray handle.  If this value is
 		    set, handle should be None.
 		  handle: (optional) A `Tensor` handle to an existing TensorArray.  If this
-		    is set, tensor_array_name should be None.
+		    is set, tensor_array_name should be None. Only supported in graph mode.
 		  flow: (optional) A float `Tensor` scalar coming from an existing
-		    `TensorArray.flow`.
+		    `TensorArray.flow`. Only supported in graph mode.
 		  infer_shape: (optional, default: True) If True, shape inference
 		    is enabled.  In this case, all elements must have the same shape.
 		  element_shape: (optional, default: None) A `TensorShape` object specifying
 		    the shape constraints of each of the elements of the TensorArray.
 		    Need not be fully defined.
 		  colocate_with_first_write_call: If `True`, the TensorArray will be
-		    colocated on the same device as the the Tensor used on its first write
+		    colocated on the same device as the Tensor used on its first write
 		    (write operations include `write`, `unstack`, and `split`).  If `False`,
 		    the TensorArray will be placed on the device determined by the
 		    device context available during its initialization.
@@ -104,16 +104,16 @@ package tensorflow.python.ops.tensor_array_ops;
 		    This is used when creating the TensorArray handle.  If this value is
 		    set, handle should be None.
 		  handle: (optional) A `Tensor` handle to an existing TensorArray.  If this
-		    is set, tensor_array_name should be None.
+		    is set, tensor_array_name should be None. Only supported in graph mode.
 		  flow: (optional) A float `Tensor` scalar coming from an existing
-		    `TensorArray.flow`.
+		    `TensorArray.flow`. Only supported in graph mode.
 		  infer_shape: (optional, default: True) If True, shape inference
 		    is enabled.  In this case, all elements must have the same shape.
 		  element_shape: (optional, default: None) A `TensorShape` object specifying
 		    the shape constraints of each of the elements of the TensorArray.
 		    Need not be fully defined.
 		  colocate_with_first_write_call: If `True`, the TensorArray will be
-		    colocated on the same device as the the Tensor used on its first write
+		    colocated on the same device as the Tensor used on its first write
 		    (write operations include `write`, `unstack`, and `split`).  If `False`,
 		    the TensorArray will be placed on the device determined by the
 		    device context available during its initialization.
@@ -130,7 +130,7 @@ package tensorflow.python.ops.tensor_array_ops;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -181,35 +181,17 @@ package tensorflow.python.ops.tensor_array_ops;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Colocate operations with an internal colocation group or `value`.
-		
-		Args:
-		  value: `Tensor`, the tensor to try to colocate with.
-		
-		Yields:
-		  Does not yield anything, but the new context is a colocation context.
-		
-		If no internal colocation group is set, colocate with `value` and set
-		the internal colocation group to be value.
-	**/
-	public function _maybe_colocate_with(value:Dynamic):Dynamic;
-	/**
-		Changes the element shape of the array given a shape to merge with.
-		
-		Args:
-		  shape: A `TensorShape` object to merge with.
-		
-		Raises:
-		  ValueError: if the provided shape is incompatible with the current
-		      element shape of the `TensorArray`.
-	**/
-	public function _merge_element_shape(shape:Dynamic):Dynamic;
+	public var _colocate_with : Dynamic;
+	public var _colocate_with_first_write_call : Dynamic;
+	public var _element_shape : Dynamic;
+	public var _infer_shape : Dynamic;
+	static public var _tf_api_names : Dynamic;
+	static public var _tf_api_names_v1 : Dynamic;
 	/**
 		Close the current TensorArray.
 		
@@ -249,7 +231,8 @@ package tensorflow.python.ops.tensor_array_ops;
 		  name: A name for the operation (optional).
 		
 		Returns:
-		  The in the `TensorArray` selected by `indices`, packed into one tensor.
+		  The tensors in the `TensorArray` selected by `indices`, packed into one
+		  tensor.
 	**/
 	public function gather(indices:Dynamic, ?name:Dynamic):Dynamic;
 	public function grad(source:Dynamic, ?flow:Dynamic, ?name:Dynamic):Dynamic;

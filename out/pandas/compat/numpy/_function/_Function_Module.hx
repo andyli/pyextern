@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.compat.numpy._function;
 @:pythonImport("pandas.compat.numpy.function") extern class _Function_Module {
+	static public var ALLANY_DEFAULTS : Dynamic;
 	static public var ARGMINMAX_DEFAULTS : Dynamic;
 	static public var ARGSORT_DEFAULTS : Dynamic;
 	static public var ARGSORT_DEFAULTS_KIND : Dynamic;
@@ -29,6 +30,8 @@ package pandas.compat.numpy._function;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function process_skipna(skipna:Dynamic, args:Dynamic):Dynamic;
+	static public function validate_all(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	static public function validate_any(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_argmax(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	/**
 		If 'Series.argmax' is called via the 'numpy' library,

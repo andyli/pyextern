@@ -132,8 +132,8 @@ package tensorflow.contrib.learn.python.learn.estimators.rnn_common;
 	/**
 		Selects the nth set of activations for each n in `sequence_length`.
 		
-		Reuturns a `Tensor` of shape `[batch_size, k]`. If `sequence_length` is not
-		`None`, then `output[i, :] = activations[i, sequence_length[i], :]`. If
+		Returns a `Tensor` of shape `[batch_size, k]`. If `sequence_length` is not
+		`None`, then `output[i, :] = activations[i, sequence_length[i] - 1, :]`. If
 		`sequence_length` is `None`, then `output[i, :] = activations[i, -1, :]`.
 		
 		Args:

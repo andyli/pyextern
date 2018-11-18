@@ -2,6 +2,7 @@
 package tensorflow.python.ops.distributions.kullback_leibler;
 @:pythonImport("tensorflow.python.ops.distributions.kullback_leibler") extern class Kullback_leibler_Module {
 	static public var _DIVERGENCES : Dynamic;
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -15,6 +16,33 @@ package tensorflow.python.ops.distributions.kullback_leibler;
 	**/
 	static public function _registered_kl(type_a:Dynamic, type_b:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Computes the (Shannon) cross entropy.
+		
+		Denote two distributions by `P` (`ref`) and `Q` (`other`). Assuming `P, Q`
+		are absolutely continuous with respect to one another and permit densities
+		`p(x) dr(x)` and `q(x) dr(x)`, (Shanon) cross entropy is defined as:
+		
+		```none
+		H[P, Q] = E_p[-log q(X)] = -int_F p(x) log q(x) dr(x)
+		```
+		
+		where `F` denotes the support of the random variable `X ~ P`.
+		
+		Args:
+		  ref: `tfd.Distribution` instance.
+		  other: `tfd.Distribution` instance.
+		  allow_nan_stats: Python `bool`, default `True`. When `True`,
+		    statistics (e.g., mean, mode, variance) use the value "`NaN`" to
+		    indicate the result is undefined. When `False`, an exception is raised
+		    if one or more of the statistic's batch members are undefined.
+		  name: Python `str` prepended to names of ops created by this function.
+		
+		Returns:
+		  cross_entropy: `ref.dtype` `Tensor` with shape `[B1, ..., Bn]`
+		    representing `n` different calculations of (Shanon) cross entropy.
+	**/
+	static public function cross_entropy(ref:Dynamic, other:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Get the KL-divergence KL(distribution_a || distribution_b).
@@ -52,4 +80,5 @@ package tensorflow.python.ops.distributions.kullback_leibler;
 	**/
 	static public function kl_divergence(distribution_a:Dynamic, distribution_b:Dynamic, ?allow_nan_stats:Dynamic, ?name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function tf_export(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

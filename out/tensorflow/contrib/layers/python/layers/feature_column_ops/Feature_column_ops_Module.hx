@@ -13,7 +13,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 	static public var __spec__ : Dynamic;
 	static public function _add_variable_collection(weight_collections:Dynamic):Dynamic;
 	/**
-		Recursively cecks `feature_columns` for `_FORBIDDEN_SEQUENCE_COLUMNS`.
+		Recursively checks `feature_columns` for `_FORBIDDEN_SEQUENCE_COLUMNS`.
 	**/
 	static public function _check_forbidden_sequence_columns(feature_columns:Dynamic):Dynamic;
 	/**
@@ -55,7 +55,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 	/**
 		Implementation of `input_from(_sequence)_feature_columns`.
 	**/
-	static public function _input_from_feature_columns(columns_to_tensors:Dynamic, feature_columns:Dynamic, weight_collections:Dynamic, trainable:Dynamic, scope:Dynamic, output_rank:Dynamic, default_name:Dynamic):Dynamic;
+	static public function _input_from_feature_columns(columns_to_tensors:Dynamic, feature_columns:Dynamic, weight_collections:Dynamic, trainable:Dynamic, scope:Dynamic, output_rank:Dynamic, default_name:Dynamic, ?cols_to_outs:Dynamic):Dynamic;
 	static public function _log_variable(variable:Dynamic):Dynamic;
 	/**
 		Reshape the input tensor by the following rule.
@@ -156,6 +156,8 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 		  trainable: If `True` also add variables to the graph collection
 		    `GraphKeys.TRAINABLE_VARIABLES` (see tf.Variable).
 		  scope: Optional scope for variable_scope.
+		  cols_to_outs: Optional dict from feature column to output tensor,
+		    which is concatenated into the returned tensor.
 		
 		Returns:
 		  A Tensor which can be consumed by hidden layers in the neural network.
@@ -163,7 +165,7 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 		Raises:
 		  ValueError: if FeatureColumn cannot be consumed by a neural network.
 	**/
-	static public function input_from_feature_columns(columns_to_tensors:Dynamic, feature_columns:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic):Dynamic;
+	static public function input_from_feature_columns(columns_to_tensors:Dynamic, feature_columns:Dynamic, ?weight_collections:Dynamic, ?trainable:Dynamic, ?scope:Dynamic, ?cols_to_outs:Dynamic):Dynamic;
 	/**
 		A restricted linear prediction builder based on FeatureColumns.
 		
@@ -260,11 +262,12 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 		    the serialized proto.
 		
 		Returns:
-		  A tuple consisting of:
-		  context_features: a dict mapping `FeatureColumns` from
-		    `context_feature_columns` to their parsed `Tensors`/`SparseTensor`s.
-		  sequence_features: a dict mapping `FeatureColumns` from
-		    `sequence_feature_columns` to their parsed `Tensors`/`SparseTensor`s.
+		  A tuple consisting of (context_features, sequence_features)
+		
+		  *  context_features: a dict mapping `FeatureColumns` from
+		      `context_feature_columns` to their parsed `Tensors`/`SparseTensor`s.
+		  *  sequence_features: a dict mapping `FeatureColumns` from
+		      `sequence_feature_columns` to their parsed `Tensors`/`SparseTensor`s.
 	**/
 	static public function parse_feature_columns_from_sequence_examples(serialized:Dynamic, context_feature_columns:Dynamic, sequence_feature_columns:Dynamic, ?name:Dynamic, ?example_name:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -272,7 +275,6 @@ package tensorflow.contrib.layers.python.layers.feature_column_ops;
 		Builds inputs for sequence models from `FeatureColumn`s. (experimental)
 		
 		THIS FUNCTION IS EXPERIMENTAL. It may change or be removed at any time, and without warning.
-		
 		
 		See documentation for `input_from_feature_columns`. The following types of
 		`FeatureColumn` are permitted in `feature_columns`: `_OneHotColumn`,

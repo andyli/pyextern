@@ -5,7 +5,7 @@ package torch.nn.utils.rnn;
 		Return self+value.
 	**/
 	public function __add__(value:Dynamic):Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return key in self.
 	**/
@@ -68,7 +68,7 @@ package torch.nn.utils.rnn;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -97,7 +97,7 @@ package torch.nn.utils.rnn;
 	/**
 		Create new instance of PackedSequence(data, batch_sizes)
 	**/
-	static public function __new__(_cls:Dynamic, data:Dynamic, batch_sizes:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -136,7 +136,7 @@ package torch.nn.utils.rnn;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a new OrderedDict which maps field names to their values.
 	**/
@@ -149,23 +149,79 @@ package torch.nn.utils.rnn;
 	/**
 		Return a new PackedSequence object replacing specified fields with new values
 	**/
-	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _replace(_self:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		Alias for field number 1
 	**/
 	public var batch_sizes : Dynamic;
 	/**
+		Returns copy with `self.data` cast to byte type
+	**/
+	public function byte():Dynamic;
+	/**
+		Returns copy with `self.data` cast to char type
+	**/
+	public function char():Dynamic;
+	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
 	public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns a CPU copy if `self.data` not already on the CPU
+	**/
+	public function cpu():Dynamic;
+	/**
+		Returns a GPU copy if `self.data` not already on the GPU
+	**/
+	public function cuda(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alias for field number 0
 	**/
 	public var data : Dynamic;
 	/**
+		Returns copy with `self.data` cast to double type
+	**/
+	public function double():Dynamic;
+	/**
+		Returns copy with `self.data` cast to float type
+	**/
+	public function float():Dynamic;
+	/**
+		Returns copy with `self.data` cast to half type
+	**/
+	public function half():Dynamic;
+	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
 	**/
 	public function index(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns copy with `self.data` cast to int type
+	**/
+	public function int():Dynamic;
+	/**
+		Returns true if `self.data` stored on a gpu
+	**/
+	public var is_cuda : Dynamic;
+	/**
+		Returns copy with `self.data` cast to long type
+	**/
+	public function long():Dynamic;
+	/**
+		Returns copy with `self.data` cast to short type
+	**/
+	public function short():Dynamic;
+	/**
+		Performs dtype and/or device conversion on `self.data`.
+		
+		It has similar signature as :meth:`torch.Tensor.to`.
+		
+		.. note::
+		
+		    If the ``self.data`` Tensor already has the correct :class:`torch.dtype`
+		    and :class:`torch.device`, then ``self`` is returned.
+		    Otherwise, returns a copy with the desired configuration.
+	**/
+	public function to(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

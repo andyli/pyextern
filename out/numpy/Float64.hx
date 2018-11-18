@@ -18,7 +18,7 @@ package numpy;
 	**/
 	public function __and__(value:Dynamic):Dynamic;
 	/**
-		sc.__array__(|type) return 0-dim array
+		sc.__array__(dtype) return 0-dim array from scalar with specified dtype
 	**/
 	public function __array__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -41,7 +41,7 @@ package numpy;
 		self != 0
 	**/
 	public function __bool__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __copy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __deepcopy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -92,7 +92,7 @@ package numpy;
 		'unknown', 'IEEE, big-endian' or 'IEEE, little-endian' best describes the
 		format of floating point numbers used by the C type named by typestr.
 	**/
-	static public function __getformat__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __getformat__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self[key].
 	**/
@@ -121,7 +121,7 @@ package numpy;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		int(self)
 	**/
@@ -260,7 +260,7 @@ package numpy;
 		Override the automatic determination of C-level floating point type.
 		This affects how floats are converted to and from binary strings.
 	**/
-	static public function __setformat__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __setformat__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __setstate__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		__sizeof__() -> int
@@ -283,7 +283,7 @@ package numpy;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self/value.
 	**/
@@ -569,7 +569,7 @@ package numpy;
 		>>> float.fromhex('-0x1p-1074')
 		-5e-324
 	**/
-	static public function fromhex(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function fromhex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		

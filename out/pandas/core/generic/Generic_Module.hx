@@ -9,39 +9,86 @@ package pandas.core.generic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		convert rhs to meet lhs dims if input is list, tuple or np.ndarray 
+	**/
+	static public function _align_method_FRAME(left:Dynamic, right:Dynamic, axis:Dynamic):Dynamic;
+	static public var _all_doc : Dynamic;
+	static public var _all_examples : Dynamic;
+	static public var _all_see_also : Dynamic;
+	static public var _any_desc : Dynamic;
+	static public var _any_examples : Dynamic;
+	static public var _any_see_also : Dynamic;
 	static public var _bool_doc : Dynamic;
 	static public var _cnum_doc : Dynamic;
+	static public var _cummax_examples : Dynamic;
+	static public var _cummin_examples : Dynamic;
+	static public var _cumprod_examples : Dynamic;
+	static public var _cumsum_examples : Dynamic;
 	/**
 		Return a tuple of the doc parms.
 	**/
 	static public function _doc_parms(cls:Dynamic):Dynamic;
+	/**
+		Ensure that we have an index from some index-like object
+		
+		Parameters
+		----------
+		index : sequence
+		    An Index or other sequence
+		copy : bool
+		
+		Returns
+		-------
+		index : Index or MultiIndex
+		
+		Examples
+		--------
+		>>> _ensure_index(['a', 'b'])
+		Index(['a', 'b'], dtype='object')
+		
+		>>> _ensure_index([('a', 'a'),  ('b', 'c')])
+		Index([('a', 'a'), ('b', 'c')], dtype='object')
+		
+		>>> _ensure_index([['a', 'a'], ['b', 'c']])
+		MultiIndex(levels=[['a'], ['b', 'c']],
+		           labels=[[0, 0], [0, 1]])
+		
+		See Also
+		--------
+		_ensure_index_from_sequences
+	**/
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _make_cum_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, accum_func_name:Dynamic, mask_a:Dynamic, mask_b:Dynamic):Dynamic;
-	static public function _make_logical_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
+	static public function _make_cum_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, accum_func_name:Dynamic, mask_a:Dynamic, mask_b:Dynamic, examples:Dynamic):Dynamic;
+	static public function _make_logical_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic, examples:Dynamic, see_also:Dynamic):Dynamic;
+	static public function _make_min_count_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic, examples:Dynamic):Dynamic;
 	static public function _make_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
 	static public function _make_stat_function_ddof(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
-	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
+	static public var _min_count_stub : Dynamic;
 	static public var _name : Dynamic;
 	static public var _num_ddof_doc : Dynamic;
 	static public var _num_doc : Dynamic;
+	static public var _prod_examples : Dynamic;
 	static public var _shared_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
-	static public function _single_replace(self:Dynamic, to_replace:Dynamic, method:Dynamic, inplace:Dynamic, limit:Dynamic):Dynamic;
 	/**
-		return my values or the object if we are say an ndarray 
+		Replaces values in a Series using the fill method specified when no
+		replacement value is given in the replace method
 	**/
-	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _single_replace(self:Dynamic, to_replace:Dynamic, method:Dynamic, inplace:Dynamic, limit:Dynamic):Dynamic;
+	static public var _sum_examples : Dynamic;
 	/**
-		Decorator to deprecate a keyword argument of a function
+		Decorator to deprecate a keyword argument of a function.
 		
 		Parameters
 		----------
 		old_arg_name : str
 		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of preferred argument in function
+		new_arg_name : str or None
+		    Name of preferred argument in function. Use None to raise warning that
+		    ``old_arg_name`` keyword is deprecated.
 		mapping : dict or callable
 		    If mapping is present, use it to translate old arguments to
 		    new arguments. A callable must do its own value checking;
@@ -57,12 +104,15 @@ package pandas.core.generic;
 		...
 		>>> f(columns='should work ok')
 		should work ok
+		
 		>>> f(cols='should raise warning')
 		FutureWarning: cols is deprecated, use columns instead
 		  warnings.warn(msg, FutureWarning)
 		should raise warning
+		
 		>>> f(cols='should error', columns="can't pass do both")
 		TypeError: Can only specify 'cols' or 'columns', not both
+		
 		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
 		... def f(new=False):
 		...     print('yes!' if new else 'no!')
@@ -71,6 +121,25 @@ package pandas.core.generic;
 		FutureWarning: old='yes' is deprecated, use new=True instead
 		  warnings.warn(msg, FutureWarning)
 		yes!
+		
+		
+		To raise a warning that a keyword will be removed entirely in the future
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name=None)
+		... def f(cols='', another_param=''):
+		...     print(cols)
+		...
+		>>> f(cols='should raise warning')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
+		>>> f(another_param='should not raise warning')
+		should not raise warning
+		
+		>>> f(cols='should raise warning', another_param='')
+		FutureWarning: the 'cols' keyword is deprecated and will be removed in a
+		future version please takes steps to stop use of 'cols'
+		should raise warning
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	/**
@@ -136,6 +205,33 @@ package pandas.core.generic;
 		True
 	**/
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like or dtype is of the Categorical dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is
+		          of the Categorical dtype.
+		
+		Examples
+		--------
+		>>> is_categorical_dtype(object)
+		False
+		>>> is_categorical_dtype(CategoricalDtype())
+		True
+		>>> is_categorical_dtype([1, 2, 3])
+		False
+		>>> is_categorical_dtype(pd.Categorical([1, 2, 3]))
+		True
+		>>> is_categorical_dtype(pd.CategoricalIndex([1, 2, 3]))
+		True
+	**/
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Check whether an array-like or dtype is of the datetime64 dtype.
 		
@@ -215,6 +311,24 @@ package pandas.core.generic;
 		False
 	**/
 	static public function is_dict_like(obj:Dynamic):Bool;
+	/**
+		Return True if hash(obj) will succeed, False otherwise.
+		
+		Some types will pass a test against collections.Hashable but fail when they
+		are actually hashed with hash().
+		
+		Distinguish between these and other types by trying the call to hash() and
+		seeing if they raise TypeError.
+		
+		Examples
+		--------
+		>>> a = ([],)
+		>>> isinstance(a, collections.Hashable)
+		True
+		>>> is_hashable(a)
+		False
+	**/
+	static public function is_hashable(obj:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check if the object is list-like.
@@ -250,20 +364,37 @@ package pandas.core.generic;
 	/**
 		Check if the object is a number.
 		
+		Returns True when the object is a number, and False if is not.
+		
 		Parameters
 		----------
-		obj : The object to check.
+		obj : any type
+		    The object to check if is a number.
 		
 		Returns
 		-------
 		is_number : bool
 		    Whether `obj` is a number or not.
 		
+		See Also
+		--------
+		pandas.api.types.is_integer: checks a subgroup of numbers
+		
 		Examples
 		--------
-		>>> is_number(1)
+		>>> pd.api.types.is_number(1)
 		True
-		>>> is_number("foo")
+		>>> pd.api.types.is_number(7.15)
+		True
+		
+		Booleans are valid because they are int subclass.
+		
+		>>> pd.api.types.is_number(False)
+		True
+		
+		>>> pd.api.types.is_number("foo")
+		False
+		>>> pd.api.types.is_number("5")
 		False
 	**/
 	static public function is_number(obj:Dynamic):Bool;
@@ -304,6 +435,55 @@ package pandas.core.generic;
 	**/
 	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
+		Check whether an array-like or dtype is of the object dtype.
+		
+		Parameters
+		----------
+		arr_or_dtype : array-like
+		    The array-like or dtype to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like or dtype is of the object dtype.
+		
+		Examples
+		--------
+		>>> is_object_dtype(object)
+		True
+		>>> is_object_dtype(int)
+		False
+		>>> is_object_dtype(np.array([], dtype=object))
+		True
+		>>> is_object_dtype(np.array([], dtype=int))
+		False
+		>>> is_object_dtype([1, 2, 3])
+		False
+	**/
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Check whether an array-like is a periodical array-like or PeriodIndex.
+		
+		Parameters
+		----------
+		arr : array-like
+		    The array-like to check.
+		
+		Returns
+		-------
+		boolean : Whether or not the array-like is a periodical
+		          array-like or PeriodIndex instance.
+		
+		Examples
+		--------
+		>>> is_period_arraylike([1, 2, 3])
+		False
+		>>> is_period_arraylike(pd.Index([1, 2, 3]))
+		False
+		>>> is_period_arraylike(pd.PeriodIndex(["2017-01-01"], freq="D"))
+		True
+	**/
+	static public function is_period_arraylike(arr:Dynamic):Dynamic;
+	/**
 		Check if the object can be compiled into a regex pattern instance.
 		
 		Parameters
@@ -336,6 +516,7 @@ package pandas.core.generic;
 		- Period
 		- instances of decimal.Decimal
 		- Interval
+		- DateOffset
 	**/
 	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -361,28 +542,85 @@ package pandas.core.generic;
 		False
 		>>> is_timedelta64_dtype(pd.Series([], dtype="timedelta64[ns]"))
 		True
+		>>> is_timedelta64_dtype('0 days')
+		False
 	**/
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function isidentifier(s:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		Detect missing values for an array-like object.
+		
+		This function takes a scalar or array-like object and indictates
+		whether values are missing (``NaN`` in numeric arrays, ``None`` or ``NaN``
+		in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		obj : scalar or array-like
+		    Object to check for null or missing values.
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is missing.
 		
-		See also
+		See Also
 		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		notna : boolean inverse of pandas.isna.
+		Series.isna : Detetct missing values in a Series.
+		DataFrame.isna : Detect missing values in a DataFrame.
+		Index.isna : Detect missing values in an Index.
+		
+		Examples
+		--------
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.isna('dog')
+		False
+		
+		>>> pd.isna(np.nan)
+		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.isna(array)
+		array([[False,  True, False],
+		       [False, False,  True]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                           "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.isna(index)
+		array([False, False,  True, False])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.isna(df)
+		       0      1      2
+		0  False  False  False
+		1  False   True  False
+		
+		>>> pd.isna(df[1])
+		0    False
+		1     True
+		Name: 1, dtype: bool
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function isna(obj:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
@@ -406,58 +644,79 @@ package pandas.core.generic;
 	**/
 	static public function maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
 	/**
-		Check whether the array or dtype should be converted to int64.
+		Detect non-missing values for an array-like object.
 		
-		An array-like or dtype "needs" such a conversion if the array-like
-		or dtype is of a datetime-like dtype
+		This function takes a scalar or array-like object and indictates
+		whether values are valid (not missing, which is ``NaN`` in numeric
+		arrays, ``None`` or ``NaN`` in object arrays, ``NaT`` in datetimelike).
 		
 		Parameters
 		----------
-		arr_or_dtype : array-like
-		    The array or dtype to check.
+		obj : array-like or object value
+		    Object to check for *not* null or *non*-missing values.
 		
 		Returns
 		-------
-		boolean : Whether or not the array or dtype should be converted to int64.
+		bool or array-like of bool
+		    For scalar input, returns a scalar boolean.
+		    For array input, returns an array of boolean indicating whether each
+		    corresponding element is valid.
+		
+		See Also
+		--------
+		isna : boolean inverse of pandas.notna.
+		Series.notna : Detetct valid values in a Series.
+		DataFrame.notna : Detect valid values in a DataFrame.
+		Index.notna : Detect valid values in an Index.
 		
 		Examples
 		--------
-		>>> needs_i8_conversion(str)
-		False
-		>>> needs_i8_conversion(np.int64)
-		False
-		>>> needs_i8_conversion(np.datetime64)
+		Scalar arguments (including strings) result in a scalar boolean.
+		
+		>>> pd.notna('dog')
 		True
-		>>> needs_i8_conversion(np.array(['a', 'b']))
+		
+		>>> pd.notna(np.nan)
 		False
-		>>> needs_i8_conversion(pd.Series([1, 2]))
-		False
-		>>> needs_i8_conversion(pd.Series([], dtype="timedelta64[ns]"))
-		True
-		>>> needs_i8_conversion(pd.DatetimeIndex([1, 2, 3], tz="US/Eastern"))
-		True
+		
+		ndarrays result in an ndarray of booleans.
+		
+		>>> array = np.array([[1, np.nan, 3], [4, 5, np.nan]])
+		>>> array
+		array([[ 1., nan,  3.],
+		       [ 4.,  5., nan]])
+		>>> pd.notna(array)
+		array([[ True, False,  True],
+		       [ True,  True, False]])
+		
+		For indexes, an ndarray of booleans is returned.
+		
+		>>> index = pd.DatetimeIndex(["2017-07-05", "2017-07-06", None,
+		...                          "2017-07-08"])
+		>>> index
+		DatetimeIndex(['2017-07-05', '2017-07-06', 'NaT', '2017-07-08'],
+		              dtype='datetime64[ns]', freq=None)
+		>>> pd.notna(index)
+		array([ True,  True, False,  True])
+		
+		For Series and DataFrame, the same type is returned, containing booleans.
+		
+		>>> df = pd.DataFrame([['ant', 'bee', 'cat'], ['dog', None, 'fly']])
+		>>> df
+		     0     1    2
+		0  ant   bee  cat
+		1  dog  None  fly
+		>>> pd.notna(df)
+		      0      1     2
+		0  True   True  True
+		1  True  False  True
+		
+		>>> pd.notna(df[1])
+		0     True
+		1    False
+		Name: 1, dtype: bool
 	**/
-	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
-		
-		See also
-		--------
-		pandas.isnull : boolean inverse of pandas.notnull
-	**/
-	static public function notnull(obj:Dynamic):Dynamic;
+	static public function notna(obj:Dynamic):Dynamic;
 	/**
 		Converts input into a pandas only dtype object or a numpy dtype object.
 		
@@ -545,7 +804,30 @@ package pandas.core.generic;
 	**/
 	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 	/**
+		Convert bytes and non-string into Python 3 str
+	**/
+	static public function to_str(s:Dynamic):Dynamic;
+	/**
 		Ensures that argument passed in arg_name is of type bool. 
 	**/
 	static public function validate_bool_kwarg(value:Dynamic, arg_name:Dynamic):Dynamic;
+	/**
+		Validate the keyword arguments to 'fillna'.
+		
+		This checks that exactly one of 'value' and 'method' is specified.
+		If 'method' is specified, this validates that it's a valid method.
+		
+		Parameters
+		----------
+		value, method : object
+		    The 'value' and 'method' keyword arguments for 'fillna'.
+		validate_scalar_dict_value : bool, default True
+		    Whether to validate that 'value' is a scalar or dict. Specifically,
+		    validate that it is not a list or tuple.
+		
+		Returns
+		-------
+		value, method : object
+	**/
+	static public function validate_fillna_kwargs(value:Dynamic, method:Dynamic, ?validate_scalar_dict_value:Dynamic):Dynamic;
 }

@@ -15,7 +15,7 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		implementations defined by the registering ABC be callable (not
 		even via super()).
 	**/
-	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -59,29 +59,39 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		Examples:
 		
 		```python
-		# Create the Y = g(X) = X transform which operates on vector events.
-		identity = Identity(event_ndims=1)
+		# Create the Y = g(X) = X transform.
+		identity = Identity()
 		
-		# Create the Y = g(X) = exp(X) transform which operates on matrices.
-		exp = Exp(event_ndims=2)
+		# Create the Y = g(X) = exp(X) transform.
+		exp = Exp()
 		```
 		
 		See `Bijector` subclass docstring for more details and specific examples.
 		
 		Args:
-		  event_ndims: number of dimensions associated with event coordinates.
 		  graph_parents: Python list of graph prerequisites of this `Bijector`.
-		  is_constant_jacobian: Python `bool` indicating that the Jacobian is not a
-		    function of the input.
+		  is_constant_jacobian: Python `bool` indicating that the Jacobian matrix is
+		    not a function of the input.
 		  validate_args: Python `bool`, default `False`. Whether to validate input
 		    with asserts. If `validate_args` is `False`, and the inputs are invalid,
 		    correct behavior is not guaranteed.
 		  dtype: `tf.dtype` supported by this `Bijector`. `None` means dtype is not
 		    enforced.
+		  forward_min_event_ndims: Python `integer` indicating the minimum number of
+		    dimensions `forward` operates on.
+		  inverse_min_event_ndims: Python `integer` indicating the minimum number of
+		    dimensions `inverse` operates on. Will be set to
+		    `forward_min_event_ndims` by default, if no value is provided.
 		  name: The name to give Ops created by the initializer.
+		
+		Raises:
+		  ValueError:  If neither `forward_min_event_ndims` and
+		    `inverse_min_event_ndims` are specified, or if either of them is
+		    negative.
+		  ValueError:  If a member of `graph_parents` is not a `Tensor`.
 	**/
 	@:native("__init__")
-	public function ___init__(?event_ndims:Dynamic, ?graph_parents:Dynamic, ?is_constant_jacobian:Dynamic, ?validate_args:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Dynamic;
+	public function ___init__(?graph_parents:Dynamic, ?is_constant_jacobian:Dynamic, ?validate_args:Dynamic, ?dtype:Dynamic, ?forward_min_event_ndims:Dynamic, ?inverse_min_event_ndims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		Constructs Bijector.
 		
@@ -90,35 +100,45 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		Examples:
 		
 		```python
-		# Create the Y = g(X) = X transform which operates on vector events.
-		identity = Identity(event_ndims=1)
+		# Create the Y = g(X) = X transform.
+		identity = Identity()
 		
-		# Create the Y = g(X) = exp(X) transform which operates on matrices.
-		exp = Exp(event_ndims=2)
+		# Create the Y = g(X) = exp(X) transform.
+		exp = Exp()
 		```
 		
 		See `Bijector` subclass docstring for more details and specific examples.
 		
 		Args:
-		  event_ndims: number of dimensions associated with event coordinates.
 		  graph_parents: Python list of graph prerequisites of this `Bijector`.
-		  is_constant_jacobian: Python `bool` indicating that the Jacobian is not a
-		    function of the input.
+		  is_constant_jacobian: Python `bool` indicating that the Jacobian matrix is
+		    not a function of the input.
 		  validate_args: Python `bool`, default `False`. Whether to validate input
 		    with asserts. If `validate_args` is `False`, and the inputs are invalid,
 		    correct behavior is not guaranteed.
 		  dtype: `tf.dtype` supported by this `Bijector`. `None` means dtype is not
 		    enforced.
+		  forward_min_event_ndims: Python `integer` indicating the minimum number of
+		    dimensions `forward` operates on.
+		  inverse_min_event_ndims: Python `integer` indicating the minimum number of
+		    dimensions `inverse` operates on. Will be set to
+		    `forward_min_event_ndims` by default, if no value is provided.
 		  name: The name to give Ops created by the initializer.
+		
+		Raises:
+		  ValueError:  If neither `forward_min_event_ndims` and
+		    `inverse_min_event_ndims` are specified, or if either of them is
+		    negative.
+		  ValueError:  If a member of `graph_parents` is not a `Tensor`.
 	**/
-	public function new(?event_ndims:Dynamic, ?graph_parents:Dynamic, ?is_constant_jacobian:Dynamic, ?validate_args:Dynamic, ?dtype:Dynamic, ?name:Dynamic):Void;
+	public function new(?graph_parents:Dynamic, ?is_constant_jacobian:Dynamic, ?validate_args:Dynamic, ?dtype:Dynamic, ?forward_min_event_ndims:Dynamic, ?inverse_min_event_ndims:Dynamic, ?name:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -169,7 +189,7 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -183,13 +203,13 @@ package tensorflow.python.ops.distributions.bijector_impl;
 	**/
 	public function _cache(mapping:Dynamic):Dynamic;
 	public function _call_forward(x:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function _call_forward_log_det_jacobian(x:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_forward_log_det_jacobian(x:Dynamic, event_ndims:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _call_inverse(y:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function _call_inverse_log_det_jacobian(y:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _call_inverse_log_det_jacobian(y:Dynamic, event_ndims:Dynamic, name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a 1D `int32` tensor: `range(rank(sample))[-event_ndims:]`.
+		Check whether event_ndims is atleast min_event_ndims.
 	**/
-	public function _event_dims_tensor(sample:Dynamic):Dynamic;
+	public function _check_valid_event_ndims(min_event_ndims:Dynamic, event_ndims:Dynamic):Dynamic;
 	/**
 		Subclass implementation for `forward` public function.
 	**/
@@ -203,9 +223,25 @@ package tensorflow.python.ops.distributions.bijector_impl;
 	**/
 	public function _forward_event_shape_tensor(input_shape:Dynamic):Dynamic;
 	/**
-		Subclass implementation of `forward_log_det_jacobian`.
+		Subclass implementation of `forward_log_det_jacobian` public function.
+		
+		In particular, this method differs from the public function, in that it
+		does not take `event_ndims`. Thus, this implements the minimal Jacobian
+		determinant calculation (i.e. over `forward_min_event_ndims`).
+		
+		Args:
+		  x: `Tensor`. The input to the "forward_log_det_jacobian" evaluation.
+		
+		Returns:
+		  forward_log_det_jacobian: `Tensor`, if this bijector is injective.
+		    If not injective, returns the k-tuple containing jacobians for the
+		    unique `k` points `(x1, ..., xk)` such that `g(xi) = y`.
 	**/
 	public function _forward_log_det_jacobian(x:Dynamic):Dynamic;
+	/**
+		Compute the reduction dimensions given event_ndims.
+	**/
+	public function _get_event_reduce_dims(min_event_ndims:Dynamic, event_ndims:Dynamic):Dynamic;
 	/**
 		Subclass implementation for `inverse` public function.
 	**/
@@ -220,8 +256,33 @@ package tensorflow.python.ops.distributions.bijector_impl;
 	public function _inverse_event_shape_tensor(output_shape:Dynamic):Dynamic;
 	/**
 		Subclass implementation of `inverse_log_det_jacobian` public function.
+		
+		In particular, this method differs from the public function, in that it
+		does not take `event_ndims`. Thus, this implements the minimal Jacobian
+		determinant calculation (i.e. over `inverse_min_event_ndims`).
+		
+		Args:
+		  y: `Tensor`. The input to the "inverse_log_det_jacobian" evaluation.
+		Returns:
+		  inverse_log_det_jacobian: `Tensor`, if this bijector is injective.
+		    If not injective, returns the k-tuple containing jacobians for the
+		    unique `k` points `(x1, ..., xk)` such that `g(xi) = y`.
 	**/
 	public function _inverse_log_det_jacobian(y:Dynamic):Dynamic;
+	/**
+		Returns true iff the forward map `g` is injective (one-to-one function).
+		
+		**WARNING** This hidden property and its behavior are subject to change.
+		
+		Note:  Non-injective maps `g` are supported, provided their domain `D` can
+		be partitioned into `k` disjoint subsets, `Union{D1, ..., Dk}`, such that,
+		ignoring sets of measure zero, the restriction of `g` to each subset is a
+		differentiable bijection onto `g(D)`.
+		
+		Returns:
+		  is_injective: Python `bool`.
+	**/
+	public var _is_injective : Dynamic;
 	/**
 		Helper which retrieves mapping info from forward/inverse dicts.
 	**/
@@ -231,17 +292,21 @@ package tensorflow.python.ops.distributions.bijector_impl;
 	**/
 	public function _maybe_assert_dtype(x:Dynamic):Dynamic;
 	/**
+		Helper which returns tries to return an integer static value.
+	**/
+	public function _maybe_get_static_event_ndims(event_ndims:Dynamic):Dynamic;
+	/**
 		Helper function to standardize op scope.
 	**/
 	public function _name_scope(?name:Dynamic, ?values:Dynamic):Dynamic;
 	/**
+		Reduce jacobian over event_ndims - min_event_ndims.
+	**/
+	public function _reduce_jacobian_det_over_event(y:Dynamic, ildj:Dynamic, min_event_ndims:Dynamic, event_ndims:Dynamic):Dynamic;
+	/**
 		dtype of `Tensor`s transformable by this distribution.
 	**/
 	public var dtype : Dynamic;
-	/**
-		Returns then number of event dimensions this bijector operates on.
-	**/
-	public var event_ndims : Dynamic;
 	/**
 		Returns the forward `Bijector` evaluation, i.e., X = g(Y).
 		
@@ -289,19 +354,30 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		Returns both the forward_log_det_jacobian.
 		
 		Args:
-		  x: `Tensor`. The input to the "forward" Jacobian evaluation.
+		  x: `Tensor`. The input to the "forward" Jacobian determinant evaluation.
+		  event_ndims: Number of dimensions in the probabilistic events being
+		    transformed. Must be greater than or equal to
+		    `self.forward_min_event_ndims`. The result is summed over the final
+		    dimensions to produce a scalar Jacobian determinant for each event,
+		    i.e. it has shape `x.shape.ndims - event_ndims` dimensions.
 		  name: The name to give this op.
 		
 		Returns:
-		  `Tensor`.
+		  `Tensor`, if this bijector is injective.
+		    If not injective this is not implemented.
 		
 		Raises:
 		  TypeError: if `self.dtype` is specified and `y.dtype` is not
 		    `self.dtype`.
 		  NotImplementedError: if neither `_forward_log_det_jacobian`
-		    nor {`_inverse`, `_inverse_log_det_jacobian`} are implemented.
+		    nor {`_inverse`, `_inverse_log_det_jacobian`} are implemented, or
+		    this is a non-injective bijector.
 	**/
-	public function forward_log_det_jacobian(x:Dynamic, ?name:Dynamic):Dynamic;
+	public function forward_log_det_jacobian(x:Dynamic, event_ndims:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Returns the minimal number of dimensions bijector.forward operates on.
+	**/
+	public var forward_min_event_ndims : Dynamic;
 	/**
 		Returns this `Bijector`'s graph_parents as a Python list.
 	**/
@@ -314,7 +390,9 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		  name: The name to give this op.
 		
 		Returns:
-		  `Tensor`.
+		  `Tensor`, if this bijector is injective.
+		    If not injective, returns the k-tuple containing the unique
+		    `k` points `(x1, ..., xk)` such that `g(xi) = y`.
 		
 		Raises:
 		  TypeError: if `self.dtype` is specified and `y.dtype` is not
@@ -354,25 +432,39 @@ package tensorflow.python.ops.distributions.bijector_impl;
 		
 		Mathematically, returns: `log(det(dX/dY))(Y)`. (Recall that: `X=g^{-1}(Y)`.)
 		
-		Note that `forward_log_det_jacobian` is the negative of this function.
+		Note that `forward_log_det_jacobian` is the negative of this function,
+		evaluated at `g^{-1}(y)`.
 		
 		Args:
-		  y: `Tensor`. The input to the "inverse" Jacobian evaluation.
+		  y: `Tensor`. The input to the "inverse" Jacobian determinant evaluation.
+		  event_ndims: Number of dimensions in the probabilistic events being
+		    transformed. Must be greater than or equal to
+		    `self.inverse_min_event_ndims`. The result is summed over the final
+		    dimensions to produce a scalar Jacobian determinant for each event,
+		    i.e. it has shape `y.shape.ndims - event_ndims` dimensions.
 		  name: The name to give this op.
 		
 		Returns:
-		  `Tensor`.
+		  `Tensor`, if this bijector is injective.
+		    If not injective, returns the tuple of local log det
+		    Jacobians, `log(det(Dg_i^{-1}(y)))`, where `g_i` is the restriction
+		    of `g` to the `ith` partition `Di`.
 		
 		Raises:
 		  TypeError: if `self.dtype` is specified and `y.dtype` is not
 		    `self.dtype`.
 		  NotImplementedError: if `_inverse_log_det_jacobian` is not implemented.
 	**/
-	public function inverse_log_det_jacobian(y:Dynamic, ?name:Dynamic):Dynamic;
+	public function inverse_log_det_jacobian(y:Dynamic, event_ndims:Dynamic, ?name:Dynamic):Dynamic;
 	/**
-		Returns true iff the Jacobian is not a function of x.
+		Returns the minimal number of dimensions bijector.inverse operates on.
+	**/
+	public var inverse_min_event_ndims : Dynamic;
+	/**
+		Returns true iff the Jacobian matrix is not a function of x.
 		
-		Note: Jacobian is either constant for both forward and inverse or neither.
+		Note: Jacobian matrix is either constant for both forward and inverse or
+		neither.
 		
 		Returns:
 		  is_constant_jacobian: Python `bool`.

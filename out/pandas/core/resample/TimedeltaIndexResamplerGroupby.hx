@@ -1,9 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.core.resample;
 @:pythonImport("pandas.core.resample", "TimedeltaIndexResamplerGroupby") extern class TimedeltaIndexResamplerGroupby {
-	public function __abs__():Dynamic;
-	public function __add__(other:Dynamic):Dynamic;
-	public function __array__():Dynamic;
 	/**
 		Return a string representation for a particular object.
 		
@@ -11,7 +8,7 @@ package pandas.core.resample;
 		Yields a bytestring in both py2/py3.
 	**/
 	public function __bytes__():Dynamic;
-	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -23,21 +20,32 @@ package pandas.core.resample;
 	**/
 	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
-	public function __eq__(other:Dynamic):Dynamic;
-	public function __floordiv__(other:Dynamic):Dynamic;
+	/**
+		Return self==value.
+	**/
+	public function __eq__(value:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __ge__(other:Dynamic):Dynamic;
+	/**
+		Return self>=value.
+	**/
+	public function __ge__(value:Dynamic):Dynamic;
 	public function __getattr__(attr:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	public function __getitem__(key:Dynamic):Dynamic;
-	public function __gt__(other:Dynamic):Dynamic;
-	static public var __hash__ : Dynamic;
+	/**
+		Return self>value.
+	**/
+	public function __gt__(value:Dynamic):Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
@@ -53,8 +61,7 @@ package pandas.core.resample;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __inv__():Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Groupby iterator
 		
@@ -64,19 +71,24 @@ package pandas.core.resample;
 		for each group
 	**/
 	public function __iter__():Dynamic;
-	public function __le__(other:Dynamic):Dynamic;
+	/**
+		Return self<=value.
+	**/
+	public function __le__(value:Dynamic):Dynamic;
 	public function __len__():Dynamic;
-	public function __lt__(other:Dynamic):Dynamic;
+	/**
+		Return self<value.
+	**/
+	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
-	public function __mul__(other:Dynamic):Dynamic;
-	public function __ne__(other:Dynamic):Dynamic;
-	public function __neg__():Dynamic;
+	/**
+		Return self!=value.
+	**/
+	public function __ne__(value:Dynamic):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function __pos__():Dynamic;
-	public function __radd__(other:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -91,17 +103,12 @@ package pandas.core.resample;
 		Yields Bytestring in Py2, Unicode String in py3.
 	**/
 	public function __repr__():Dynamic;
-	public function __rfloordiv__(other:Dynamic):Dynamic;
-	public function __rmul__(other:Dynamic):Dynamic;
-	public function __rsub__(other:Dynamic):Dynamic;
-	public function __rtruediv__(other:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
-	public function __setattr__(attr:Dynamic, value:Dynamic):Dynamic;
-	public function __setitem__(attr:Dynamic, value:Dynamic):Dynamic;
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		Generates the total memory usage for a object that returns
+		Generates the total memory usage for an object that returns
 		either a value or Series of values
 	**/
 	public function __sizeof__():Dynamic;
@@ -112,7 +119,6 @@ package pandas.core.resample;
 		Yields Bytestring in Py2, Unicode String in py3.
 	**/
 	public function __str__():Dynamic;
-	public function __sub__(other:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -121,8 +127,7 @@ package pandas.core.resample;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __truediv__(other:Dynamic):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		provide a nice str repr of our rolling object 
 	**/
@@ -131,6 +136,7 @@ package pandas.core.resample;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _accessors : Dynamic;
 	/**
 		adjust our binner when upsampling 
 	**/
@@ -204,21 +210,18 @@ package pandas.core.resample;
 		ascending : bool, default True
 		    If False, number in reverse, from length of group - 1 to 0.
 		
-		Note
-		----
+		Notes
+		-----
 		this is currently implementing sort=False
 		(though the default is sort=True) for groupby in general
 	**/
 	public function _cumcount_array(?ascending:Dynamic):Dynamic;
-	public function _cython_agg_general(how:Dynamic, ?alt:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	public function _cython_agg_general(how:Dynamic, ?alt:Dynamic, ?numeric_only:Dynamic, ?min_count:Dynamic):Dynamic;
 	static public var _cython_table : Dynamic;
-	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
-	public function _deprecated(op:Dynamic):Dynamic;
-	static public var _deprecated_invalids : Dynamic;
-	static public var _deprecated_valid_patterns : Dynamic;
-	static public var _deprecated_valids : Dynamic;
+	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _deprecations : Dynamic;
 	/**
-		add addtional __dir__ for this object 
+		add additional __dir__ for this object 
 	**/
 	public function _dir_additions():Dynamic;
 	/**
@@ -276,10 +279,6 @@ package pandas.core.resample;
 		performing the original function call on the grouped object
 	**/
 	public function _groupby_and_aggregate(f:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Take boolean mask of index to be returned from apply, if as_index=True
-	**/
-	public function _index_with_as_index(b:Dynamic):Dynamic;
 	static public var _internal_names : Dynamic;
 	static public var _internal_names_set : Dynamic;
 	/**
@@ -292,10 +291,8 @@ package pandas.core.resample;
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public function _iterate_slices():Dynamic;
-	public function _make_deprecated_binop():Dynamic;
-	public function _make_deprecated_unary(name:Dynamic):Dynamic;
 	public function _make_wrapper(name:Dynamic):Dynamic;
-	static public var _obj_with_exclusions : Dynamic;
+	public var _obj_with_exclusions : Dynamic;
 	public function _python_agg_general(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _python_apply_general(f:Dynamic):Dynamic;
 	public var _resampler_for_grouping : Dynamic;
@@ -308,7 +305,7 @@ package pandas.core.resample;
 		each group regardless of whether a group selection was previously set.
 	**/
 	public function _reset_group_selection():Dynamic;
-	static public var _selected_obj : Dynamic;
+	public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	/**
@@ -325,6 +322,8 @@ package pandas.core.resample;
 	/**
 		Create group based selection. Used when selection is not passed
 		directly but instead via a grouper.
+		
+		NOTE: this should be paired with a call to _reset_group_selection
 	**/
 	public function _set_group_selection():Dynamic;
 	public function _set_result_index_ordered(result:Dynamic):Dynamic;
@@ -332,6 +331,18 @@ package pandas.core.resample;
 		return a new object with the replacement attributes 
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Parameters:
+		-----------
+		func_nm: str
+		    The name of the aggregation function being performed
+		
+		Returns:
+		--------
+		bool
+		    Whether transform should attempt to cast the result of aggregation
+	**/
+	public function _transform_should_cast(func_nm:Dynamic):Dynamic;
 	/**
 		if arg is a string, then try to operate on it:
 		- try to find a function (or attribute) on ourselves
@@ -362,36 +373,39 @@ package pandas.core.resample;
 	**/
 	public function _wrap_result(result:Dynamic):Dynamic;
 	/**
-		Aggregate using callable, string, dict, or list of string/callables
+		Aggregate using one or more operations over the specified axis.
 		
 		
 		
 		Parameters
 		----------
-		func : callable, string, dictionary, or list of string/callables
+		func : function, string, dictionary, or list of string/functions
 		    Function to use for aggregating the data. If a function, must either
 		    work when passed a DataFrame or when passed to DataFrame.apply. For
 		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
 		
-		    Accepted Combinations are:
+		    Accepted combinations are:
 		
-		    - string function name
-		    - function
-		    - list of functions
-		    - dict of column names -> functions (or list of functions)
+		    - string function name.
+		    - function.
+		    - list of functions.
+		    - dict of column names -> functions (or list of functions).
 		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
 		
-		agg is an alias for aggregate. Use it.
+		*args
+		    Positional arguments to pass to `func`.
+		**kwargs
+		    Keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		aggregated : DataFrame
+		
+		Notes
+		-----
+		`agg` is an alias for `aggregate`. Use the alias.
+		
+		A passed user-defined-function will be passed a Series for evaluation.
 		
 		
 		Examples
@@ -437,36 +451,39 @@ package pandas.core.resample;
 	**/
 	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Aggregate using callable, string, dict, or list of string/callables
+		Aggregate using one or more operations over the specified axis.
 		
 		
 		
 		Parameters
 		----------
-		func : callable, string, dictionary, or list of string/callables
+		func : function, string, dictionary, or list of string/functions
 		    Function to use for aggregating the data. If a function, must either
 		    work when passed a DataFrame or when passed to DataFrame.apply. For
 		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
 		
-		    Accepted Combinations are:
+		    Accepted combinations are:
 		
-		    - string function name
-		    - function
-		    - list of functions
-		    - dict of column names -> functions (or list of functions)
+		    - string function name.
+		    - function.
+		    - list of functions.
+		    - dict of column names -> functions (or list of functions).
 		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
 		
-		agg is an alias for aggregate. Use it.
+		*args
+		    Positional arguments to pass to `func`.
+		**kwargs
+		    Keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		aggregated : DataFrame
+		
+		Notes
+		-----
+		`agg` is an alias for `aggregate`. Use the alias.
+		
+		A passed user-defined-function will be passed a Series for evaluation.
 		
 		
 		Examples
@@ -512,36 +529,39 @@ package pandas.core.resample;
 	**/
 	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Aggregate using callable, string, dict, or list of string/callables
+		Aggregate using one or more operations over the specified axis.
 		
 		
 		
 		Parameters
 		----------
-		func : callable, string, dictionary, or list of string/callables
+		func : function, string, dictionary, or list of string/functions
 		    Function to use for aggregating the data. If a function, must either
 		    work when passed a DataFrame or when passed to DataFrame.apply. For
 		    a DataFrame, can pass a dict, if the keys are DataFrame column names.
 		
-		    Accepted Combinations are:
+		    Accepted combinations are:
 		
-		    - string function name
-		    - function
-		    - list of functions
-		    - dict of column names -> functions (or list of functions)
+		    - string function name.
+		    - function.
+		    - list of functions.
+		    - dict of column names -> functions (or list of functions).
 		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
 		
-		agg is an alias for aggregate. Use it.
+		*args
+		    Positional arguments to pass to `func`.
+		**kwargs
+		    Keyword arguments to pass to `func`.
 		
 		Returns
 		-------
 		aggregated : DataFrame
+		
+		Notes
+		-----
+		`agg` is an alias for `aggregate`. Use the alias.
+		
+		A passed user-defined-function will be passed a Series for evaluation.
 		
 		
 		Examples
@@ -606,31 +626,205 @@ package pandas.core.resample;
 	public function asfreq(?fill_value:Dynamic):Dynamic;
 	public var ax : Dynamic;
 	/**
-		Backward fill the values
+		Backward fill the new missing values in the resampled data.
+		
+		In statistics, imputation is the process of replacing missing data with
+		substituted values [1]_. When resampling data, missing values may
+		appear (e.g., when the resampling frequency is higher than the original
+		frequency). The backward fill will replace NaN values that appeared in
+		the resampled data with the next value in the original sequence.
+		Missing values that existed in the orginal data will not be modified.
 		
 		Parameters
 		----------
 		limit : integer, optional
-		    limit of how many values to fill
+		    Limit of how many values to fill.
+		
+		Returns
+		-------
+		Series, DataFrame
+		    An upsampled Series or DataFrame with backward filled NaN values.
 		
 		See Also
 		--------
-		Series.fillna
-		DataFrame.fillna
+		bfill : Alias of backfill.
+		fillna : Fill NaN values using the specified method, which can be
+		    'backfill'.
+		nearest : Fill NaN values with nearest neighbor starting from center.
+		pad : Forward fill NaN values.
+		pandas.Series.fillna : Fill NaN values in the Series using the
+		    specified method, which can be 'backfill'.
+		pandas.DataFrame.fillna : Fill NaN values in the DataFrame using the
+		    specified method, which can be 'backfill'.
+		
+		References
+		----------
+		.. [1] https://en.wikipedia.org/wiki/Imputation_(statistics)
+		
+		Examples
+		--------
+		
+		Resampling a Series:
+		
+		>>> s = pd.Series([1, 2, 3],
+		...               index=pd.date_range('20180101', periods=3, freq='h'))
+		>>> s
+		2018-01-01 00:00:00    1
+		2018-01-01 01:00:00    2
+		2018-01-01 02:00:00    3
+		Freq: H, dtype: int64
+		
+		>>> s.resample('30min').backfill()
+		2018-01-01 00:00:00    1
+		2018-01-01 00:30:00    2
+		2018-01-01 01:00:00    2
+		2018-01-01 01:30:00    3
+		2018-01-01 02:00:00    3
+		Freq: 30T, dtype: int64
+		
+		>>> s.resample('15min').backfill(limit=2)
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:15:00    NaN
+		2018-01-01 00:30:00    2.0
+		2018-01-01 00:45:00    2.0
+		2018-01-01 01:00:00    2.0
+		2018-01-01 01:15:00    NaN
+		2018-01-01 01:30:00    3.0
+		2018-01-01 01:45:00    3.0
+		2018-01-01 02:00:00    3.0
+		Freq: 15T, dtype: float64
+		
+		Resampling a DataFrame that has missing values:
+		
+		>>> df = pd.DataFrame({'a': [2, np.nan, 6], 'b': [1, 3, 5]},
+		...                   index=pd.date_range('20180101', periods=3,
+		...                                       freq='h'))
+		>>> df
+		                       a  b
+		2018-01-01 00:00:00  2.0  1
+		2018-01-01 01:00:00  NaN  3
+		2018-01-01 02:00:00  6.0  5
+		
+		>>> df.resample('30min').backfill()
+		                       a  b
+		2018-01-01 00:00:00  2.0  1
+		2018-01-01 00:30:00  NaN  3
+		2018-01-01 01:00:00  NaN  3
+		2018-01-01 01:30:00  6.0  5
+		2018-01-01 02:00:00  6.0  5
+		
+		>>> df.resample('15min').backfill(limit=2)
+		                       a    b
+		2018-01-01 00:00:00  2.0  1.0
+		2018-01-01 00:15:00  NaN  NaN
+		2018-01-01 00:30:00  NaN  3.0
+		2018-01-01 00:45:00  NaN  3.0
+		2018-01-01 01:00:00  NaN  3.0
+		2018-01-01 01:15:00  NaN  NaN
+		2018-01-01 01:30:00  6.0  5.0
+		2018-01-01 01:45:00  6.0  5.0
+		2018-01-01 02:00:00  6.0  5.0
 	**/
 	public function backfill(?limit:Dynamic):Dynamic;
 	/**
-		Backward fill the values
+		Backward fill the new missing values in the resampled data.
+		
+		In statistics, imputation is the process of replacing missing data with
+		substituted values [1]_. When resampling data, missing values may
+		appear (e.g., when the resampling frequency is higher than the original
+		frequency). The backward fill will replace NaN values that appeared in
+		the resampled data with the next value in the original sequence.
+		Missing values that existed in the orginal data will not be modified.
 		
 		Parameters
 		----------
 		limit : integer, optional
-		    limit of how many values to fill
+		    Limit of how many values to fill.
+		
+		Returns
+		-------
+		Series, DataFrame
+		    An upsampled Series or DataFrame with backward filled NaN values.
 		
 		See Also
 		--------
-		Series.fillna
-		DataFrame.fillna
+		bfill : Alias of backfill.
+		fillna : Fill NaN values using the specified method, which can be
+		    'backfill'.
+		nearest : Fill NaN values with nearest neighbor starting from center.
+		pad : Forward fill NaN values.
+		pandas.Series.fillna : Fill NaN values in the Series using the
+		    specified method, which can be 'backfill'.
+		pandas.DataFrame.fillna : Fill NaN values in the DataFrame using the
+		    specified method, which can be 'backfill'.
+		
+		References
+		----------
+		.. [1] https://en.wikipedia.org/wiki/Imputation_(statistics)
+		
+		Examples
+		--------
+		
+		Resampling a Series:
+		
+		>>> s = pd.Series([1, 2, 3],
+		...               index=pd.date_range('20180101', periods=3, freq='h'))
+		>>> s
+		2018-01-01 00:00:00    1
+		2018-01-01 01:00:00    2
+		2018-01-01 02:00:00    3
+		Freq: H, dtype: int64
+		
+		>>> s.resample('30min').backfill()
+		2018-01-01 00:00:00    1
+		2018-01-01 00:30:00    2
+		2018-01-01 01:00:00    2
+		2018-01-01 01:30:00    3
+		2018-01-01 02:00:00    3
+		Freq: 30T, dtype: int64
+		
+		>>> s.resample('15min').backfill(limit=2)
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:15:00    NaN
+		2018-01-01 00:30:00    2.0
+		2018-01-01 00:45:00    2.0
+		2018-01-01 01:00:00    2.0
+		2018-01-01 01:15:00    NaN
+		2018-01-01 01:30:00    3.0
+		2018-01-01 01:45:00    3.0
+		2018-01-01 02:00:00    3.0
+		Freq: 15T, dtype: float64
+		
+		Resampling a DataFrame that has missing values:
+		
+		>>> df = pd.DataFrame({'a': [2, np.nan, 6], 'b': [1, 3, 5]},
+		...                   index=pd.date_range('20180101', periods=3,
+		...                                       freq='h'))
+		>>> df
+		                       a  b
+		2018-01-01 00:00:00  2.0  1
+		2018-01-01 01:00:00  NaN  3
+		2018-01-01 02:00:00  6.0  5
+		
+		>>> df.resample('30min').backfill()
+		                       a  b
+		2018-01-01 00:00:00  2.0  1
+		2018-01-01 00:30:00  NaN  3
+		2018-01-01 01:00:00  NaN  3
+		2018-01-01 01:30:00  6.0  5
+		2018-01-01 02:00:00  6.0  5
+		
+		>>> df.resample('15min').backfill(limit=2)
+		                       a    b
+		2018-01-01 00:00:00  2.0  1.0
+		2018-01-01 00:15:00  NaN  NaN
+		2018-01-01 00:30:00  NaN  3.0
+		2018-01-01 00:45:00  NaN  3.0
+		2018-01-01 01:00:00  NaN  3.0
+		2018-01-01 01:15:00  NaN  NaN
+		2018-01-01 01:30:00  6.0  5.0
+		2018-01-01 01:45:00  6.0  5.0
+		2018-01-01 02:00:00  6.0  5.0
 	**/
 	public function bfill(?limit:Dynamic):Dynamic;
 	/**
@@ -651,6 +845,10 @@ package pandas.core.resample;
 		limit : integer, optional
 		    limit of how many values to fill
 		
+		Returns
+		-------
+		an upsampled Series
+		
 		See Also
 		--------
 		Series.fillna
@@ -658,18 +856,161 @@ package pandas.core.resample;
 	**/
 	public function ffill(?limit:Dynamic):Dynamic;
 	/**
-		Fill missing values
+		Fill missing values introduced by upsampling.
+		
+		In statistics, imputation is the process of replacing missing data with
+		substituted values [1]_. When resampling data, missing values may
+		appear (e.g., when the resampling frequency is higher than the original
+		frequency).
+		
+		Missing values that existed in the orginal data will
+		not be modified.
 		
 		Parameters
 		----------
-		method : str, method of resampling ('ffill', 'bfill')
+		method : {'pad', 'backfill', 'ffill', 'bfill', 'nearest'}
+		    Method to use for filling holes in resampled data
+		
+		    * 'pad' or 'ffill': use previous valid observation to fill gap
+		      (forward fill).
+		    * 'backfill' or 'bfill': use next valid observation to fill gap.
+		    * 'nearest': use nearest valid observation to fill gap.
+		
 		limit : integer, optional
-		    limit of how many values to fill
+		    Limit of how many consecutive missing values to fill.
+		
+		Returns
+		-------
+		Series or DataFrame
+		    An upsampled Series or DataFrame with missing values filled.
 		
 		See Also
 		--------
-		Series.fillna
-		DataFrame.fillna
+		backfill : Backward fill NaN values in the resampled data.
+		pad : Forward fill NaN values in the resampled data.
+		nearest : Fill NaN values in the resampled data
+		    with nearest neighbor starting from center.
+		interpolate : Fill NaN values using interpolation.
+		pandas.Series.fillna : Fill NaN values in the Series using the
+		    specified method, which can be 'bfill' and 'ffill'.
+		pandas.DataFrame.fillna : Fill NaN values in the DataFrame using the
+		    specified method, which can be 'bfill' and 'ffill'.
+		
+		Examples
+		--------
+		Resampling a Series:
+		
+		>>> s = pd.Series([1, 2, 3],
+		...               index=pd.date_range('20180101', periods=3, freq='h'))
+		>>> s
+		2018-01-01 00:00:00    1
+		2018-01-01 01:00:00    2
+		2018-01-01 02:00:00    3
+		Freq: H, dtype: int64
+		
+		Without filling the missing values you get:
+		
+		>>> s.resample("30min").asfreq()
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:30:00    NaN
+		2018-01-01 01:00:00    2.0
+		2018-01-01 01:30:00    NaN
+		2018-01-01 02:00:00    3.0
+		Freq: 30T, dtype: float64
+		
+		>>> s.resample('30min').fillna("backfill")
+		2018-01-01 00:00:00    1
+		2018-01-01 00:30:00    2
+		2018-01-01 01:00:00    2
+		2018-01-01 01:30:00    3
+		2018-01-01 02:00:00    3
+		Freq: 30T, dtype: int64
+		
+		>>> s.resample('15min').fillna("backfill", limit=2)
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:15:00    NaN
+		2018-01-01 00:30:00    2.0
+		2018-01-01 00:45:00    2.0
+		2018-01-01 01:00:00    2.0
+		2018-01-01 01:15:00    NaN
+		2018-01-01 01:30:00    3.0
+		2018-01-01 01:45:00    3.0
+		2018-01-01 02:00:00    3.0
+		Freq: 15T, dtype: float64
+		
+		>>> s.resample('30min').fillna("pad")
+		2018-01-01 00:00:00    1
+		2018-01-01 00:30:00    1
+		2018-01-01 01:00:00    2
+		2018-01-01 01:30:00    2
+		2018-01-01 02:00:00    3
+		Freq: 30T, dtype: int64
+		
+		>>> s.resample('30min').fillna("nearest")
+		2018-01-01 00:00:00    1
+		2018-01-01 00:30:00    2
+		2018-01-01 01:00:00    2
+		2018-01-01 01:30:00    3
+		2018-01-01 02:00:00    3
+		Freq: 30T, dtype: int64
+		
+		Missing values present before the upsampling are not affected.
+		
+		>>> sm = pd.Series([1, None, 3],
+		...               index=pd.date_range('20180101', periods=3, freq='h'))
+		>>> sm
+		2018-01-01 00:00:00    1.0
+		2018-01-01 01:00:00    NaN
+		2018-01-01 02:00:00    3.0
+		Freq: H, dtype: float64
+		
+		>>> sm.resample('30min').fillna('backfill')
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:30:00    NaN
+		2018-01-01 01:00:00    NaN
+		2018-01-01 01:30:00    3.0
+		2018-01-01 02:00:00    3.0
+		Freq: 30T, dtype: float64
+		
+		>>> sm.resample('30min').fillna('pad')
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:30:00    1.0
+		2018-01-01 01:00:00    NaN
+		2018-01-01 01:30:00    NaN
+		2018-01-01 02:00:00    3.0
+		Freq: 30T, dtype: float64
+		
+		>>> sm.resample('30min').fillna('nearest')
+		2018-01-01 00:00:00    1.0
+		2018-01-01 00:30:00    NaN
+		2018-01-01 01:00:00    NaN
+		2018-01-01 01:30:00    3.0
+		2018-01-01 02:00:00    3.0
+		Freq: 30T, dtype: float64
+		
+		DataFrame resampling is done column-wise. All the same options are
+		available.
+		
+		>>> df = pd.DataFrame({'a': [2, np.nan, 6], 'b': [1, 3, 5]},
+		...                   index=pd.date_range('20180101', periods=3,
+		...                                       freq='h'))
+		>>> df
+		                       a  b
+		2018-01-01 00:00:00  2.0  1
+		2018-01-01 01:00:00  NaN  3
+		2018-01-01 02:00:00  6.0  5
+		
+		>>> df.resample('30min').fillna("bfill")
+		                       a  b
+		2018-01-01 00:00:00  2.0  1
+		2018-01-01 00:30:00  NaN  3
+		2018-01-01 01:00:00  NaN  3
+		2018-01-01 01:30:00  6.0  5
+		2018-01-01 02:00:00  6.0  5
+		
+		References
+		----------
+		.. [1] https://en.wikipedia.org/wiki/Imputation_(statistics)
 	**/
 	public function fillna(method:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
@@ -759,11 +1100,15 @@ package pandas.core.resample;
 		limit : int, default None.
 		    Maximum number of consecutive NaNs to fill. Must be greater than 0.
 		limit_direction : {'forward', 'backward', 'both'}, default 'forward'
+		limit_area : {'inside', 'outside'}, default None
+		    * None: (default) no fill restriction
+		    * 'inside' Only fill NaNs surrounded by valid values (interpolate).
+		    * 'outside' Only fill NaNs outside valid values (extrapolate).
+		
 		    If limit is specified, consecutive NaNs will be filled in this
 		    direction.
 		
-		    .. versionadded:: 0.17.0
-		
+		    .. versionadded:: 0.21.0
 		inplace : bool, default False
 		    Update the NDFrame in place if possible.
 		downcast : optional, 'infer' or None, defaults to None
@@ -791,7 +1136,7 @@ package pandas.core.resample;
 		3    3
 		dtype: float64
 	**/
-	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?limit_area:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute last of group values
 		
@@ -848,7 +1193,27 @@ package pandas.core.resample;
 		pandas.Panel.groupby
 	**/
 	public function min(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
+	/**
+		Fill values with nearest neighbor starting from center
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		    .. versionadded:: 0.21.0
+		
+		Returns
+		-------
+		an upsampled Series
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+	**/
+	public function nearest(?limit:Dynamic):Dynamic;
 	public var ngroups : Dynamic;
 	/**
 		Returns number of unique elements in the group 
@@ -875,6 +1240,10 @@ package pandas.core.resample;
 		limit : integer, optional
 		    limit of how many values to fill
 		
+		Returns
+		-------
+		an upsampled Series
+		
 		See Also
 		--------
 		Series.fillna
@@ -882,9 +1251,79 @@ package pandas.core.resample;
 	**/
 	public function pad(?limit:Dynamic):Dynamic;
 	/**
+		Apply a function ``func`` with arguments to this Resampler object and return
+		the function's result.
+		
+		.. versionadded:: 0.23.0
+		
+		Use ``.pipe`` when you want to improve readability by chaining together
+		functions that expect Series, DataFrames, GroupBy or Resampler objects.
+		Instead of writing
+		
+		>>> h(g(f(df.groupby('group')), arg1=a), arg2=b, arg3=c)
+		
+		You can write
+		
+		>>> (df.groupby('group')
+		...    .pipe(f)
+		...    .pipe(g, arg1=a)
+		...    .pipe(h, arg2=b, arg3=c))
+		
+		which is much more readable.
+		
+		Parameters
+		----------
+		func : callable or tuple of (callable, string)
+		    Function to apply to this Resampler object or, alternatively,
+		    a ``(callable, data_keyword)`` tuple where ``data_keyword`` is a
+		    string indicating the keyword of ``callable`` that expects the
+		    Resampler object.
+		args : iterable, optional
+		       positional arguments passed into ``func``.
+		kwargs : dict, optional
+		         a dictionary of keyword arguments passed into ``func``.
+		
+		Returns
+		-------
+		object : the return type of ``func``.
+		
+		Notes
+		-----
+		See more `here
+		<http://pandas.pydata.org/pandas-docs/stable/groupby.html#piping-function-calls>`_
+		
+		Examples
+		--------
+		
+		>>> df = pd.DataFrame({'A': [1, 2, 3, 4]},
+		...                   index=pd.date_range('2012-08-02', periods=4))
+		>>> df
+		            A
+		2012-08-02  1
+		2012-08-03  2
+		2012-08-04  3
+		2012-08-05  4
+		
+		To get the difference between each 2-day period's maximum and minimum value in
+		one pass, you can do
+		
+		>>> df.resample('2D').pipe(lambda x: x.max() - x.min())
+		            A
+		2012-08-02  1
+		2012-08-04  1
+		
+		See Also
+		--------
+		pandas.Series.pipe : Apply a function with arguments to a series
+		pandas.DataFrame.pipe: Apply a function with arguments to a dataframe
+		apply : Apply function to each group instead of to the
+		    full Resampler object.
+	**/
+	public function pipe(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Class implementing the .plot attribute for groupby objects
 	**/
-	public function plot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public var plot : Dynamic;
 	/**
 		Compute prod of group values
 		
@@ -894,7 +1333,7 @@ package pandas.core.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function prod(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function prod(?_method:Dynamic, ?min_count:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute standard error of the mean of groups, excluding missing values
 		
@@ -922,7 +1361,7 @@ package pandas.core.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function size(?_method:Dynamic):Dynamic;
+	public function size():Dynamic;
 	/**
 		Compute standard deviation of groups, excluding missing values
 		
@@ -941,7 +1380,7 @@ package pandas.core.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function sum(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function sum(?_method:Dynamic, ?min_count:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call function producing a like-indexed Series on each group and return
 		a Series with the transformed values

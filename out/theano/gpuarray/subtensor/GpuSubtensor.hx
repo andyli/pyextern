@@ -25,7 +25,7 @@ package theano.gpuarray.subtensor;
 		                          eval_points=eval_points)
 	**/
 	public function R_op(inputs:Dynamic, eval_points:Dynamic):Dynamic;
-	public function _HideC__hide():Dynamic;
+	static public function _HideC__hide(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Optional: return some or all output[s] of `make_node`.
 		
@@ -104,7 +104,7 @@ package theano.gpuarray.subtensor;
 		The default implementation does nothing. It may be
 		overridden to extend subclasses.
 	**/
-	static public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -157,7 +157,7 @@ package theano.gpuarray.subtensor;
 		NotImplemented, the normal algorithm is used.  Otherwise, it
 		overrides the normal algorithm (and the outcome is cached).
 	**/
-	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
@@ -198,11 +198,11 @@ package theano.gpuarray.subtensor;
 		
 		Notes
 		-----
-		We alse use config.traceback.limit for the maximum number of stack level
+		We also use config.traceback.limit for the maximum number of stack level
 		we look.
 	**/
-	public function add_tag_trace(?user_line:Dynamic):Dynamic;
-	public function c_cleanup_code_struct():Dynamic;
+	static public function add_tag_trace(thing:Dynamic, ?user_line:Dynamic):Dynamic;
+	static public function c_cleanup_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Required: return the C implementation of an Op.
 		
@@ -257,18 +257,18 @@ package theano.gpuarray.subtensor;
 	**/
 	public function c_code_cache_version():Dynamic;
 	public function c_code_cache_version_apply(node:Dynamic):Dynamic;
-	public function c_code_cleanup():Dynamic;
-	public function c_compile_args():Dynamic;
-	public function c_header_dirs():Dynamic;
-	public function c_headers():Dynamic;
-	public function c_init_code():Dynamic;
-	public function c_init_code_apply():Dynamic;
-	public function c_init_code_struct():Dynamic;
-	public function c_lib_dirs():Dynamic;
-	public function c_libraries():Dynamic;
-	public function c_no_compile_args():Dynamic;
+	static public function c_code_cleanup(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_header_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_headers(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_init_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_lib_dirs(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_libraries(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_no_compile_args(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Optional: Return utility code for use by a `Variable` or `Op` to be
+		Optional: Return utility code (a string, or a list of strings) for use by a `Variable` or `Op` to be
 		included at global scope prior to the rest of the code for this class.
 		
 		QUESTION: How many times will this support code be emitted for a graph
@@ -280,8 +280,8 @@ package theano.gpuarray.subtensor;
 		    Subclass does not implement this method.
 	**/
 	public function c_support_code():Dynamic;
-	public function c_support_code_apply():Dynamic;
-	public function c_support_code_struct():Dynamic;
+	static public function c_support_code_apply(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function c_support_code_struct(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var check_input : Dynamic;
 	/**
 		Parameters
@@ -295,7 +295,7 @@ package theano.gpuarray.subtensor;
 		    idxs, with the slices flattened out into a list.
 		    If cond is true for an entry, does not flatten it.
 	**/
-	public function collapse(cond:Dynamic):Dynamic;
+	static public function collapse(idxs:Dynamic, cond:Dynamic):Dynamic;
 	public function connection_pattern(node:Dynamic):Dynamic;
 	/**
 		Change references to Variables into references to Types.
@@ -306,12 +306,12 @@ package theano.gpuarray.subtensor;
 		TODO: WRITEME: This method also accepts "entry" already being a Type;
 		    when would that happen?
 	**/
-	public function convert(?slice_ok:Dynamic):Dynamic;
+	static public function convert(entry:Dynamic, ?slice_ok:Dynamic):Dynamic;
 	static public var debug : Dynamic;
 	/**
 		Returns a dictionary of default arguments to helper_c_code.
 	**/
-	public function default_helper_c_code_args():Dynamic;
+	static public function default_helper_c_code_args():Dynamic;
 	static public var default_output : Dynamic;
 	/**
 		This allows each op to determine if it wants to be constant
@@ -322,7 +322,6 @@ package theano.gpuarray.subtensor;
 	**/
 	public function do_constant_folding(node:Dynamic):Dynamic;
 	static public var e_indextype : Dynamic;
-	static public var e_invalid : Dynamic;
 	static public var e_subslice : Dynamic;
 	/**
 		Return the idx_list with constant inputs replaced by their
@@ -354,15 +353,16 @@ package theano.gpuarray.subtensor;
 		NotScalarConstantError: v
 	**/
 	public function get_constant_idx(inputs:Dynamic, ?allow_partial:Dynamic, ?only_process_constants:Dynamic, ?elemwise:Dynamic):Dynamic;
+	public function get_params(node:Dynamic):Dynamic;
 	public function grad(inputs:Dynamic, grads:Dynamic):Dynamic;
 	/**
 		The parameters c_prefix are there to allow reusing this
-		function on PyArray and CudaNdarray object.
+		function on PyArray and GpuArray object.
 		
 		This fct take as input the x.
 	**/
-	public function helper_c_code(name:Dynamic, inputs:Dynamic, outputs:Dynamic, sub:Dynamic, idx_list:Dynamic, view_ndim:Dynamic, ?c_prefix:Dynamic, ?strides_mul:Dynamic):Dynamic;
-	public function helper_c_code_cache_version():Dynamic;
+	static public function helper_c_code(node:Dynamic, name:Dynamic, inputs:Dynamic, outputs:Dynamic, sub:Dynamic, idx_list:Dynamic, view_ndim:Dynamic, ?c_prefix:Dynamic, ?strides_mul:Dynamic):Dynamic;
+	static public function helper_c_code_cache_version():Dynamic;
 	public function infer_shape(node:Dynamic, shapes:Dynamic):Dynamic;
 	/**
 		Like make_thunk, but will only try to make a C thunk.
@@ -419,7 +419,7 @@ package theano.gpuarray.subtensor;
 		fail and we try again 'py', prepare_node will be called twice.
 	**/
 	public function make_thunk(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, no_recycling:Dynamic, ?impl:Dynamic):Dynamic;
-	public function my_as_scalar():Dynamic;
+	static public function my_as_scalar(a:Dynamic):Dynamic;
 	/**
 		Required: Calculate the function on the inputs and put the variables in
 		the output storage. Return None.
@@ -458,10 +458,10 @@ package theano.gpuarray.subtensor;
 		This can modify the node inplace and should return nothing.
 		
 		It can be called multiple time with different impl. It is the
-		op responsability to don't re-prepare the node when it isn't
+		op responsibility to don't re-prepare the node when it isn't
 		good to do so.
 	**/
 	public function prepare_node(node:Dynamic, storage_map:Dynamic, compute_map:Dynamic, impl:Dynamic):Dynamic;
-	public function str_from_slice():Dynamic;
+	static public function str_from_slice(entry:Dynamic):Dynamic;
 	static public var view_map : Dynamic;
 }

@@ -65,7 +65,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		alpha : float, optional
 		    Initial guess for the Jacobian is (-1/alpha).
@@ -177,9 +177,9 @@ package scipy.optimize.nonlin;
 		
 		Contrary to `asanyarray`, ndarray subclasses are not passed through:
 		
-		>>> issubclass(np.matrix, np.ndarray)
+		>>> issubclass(np.recarray, np.ndarray)
 		True
-		>>> a = np.matrix([[1, 2]])
+		>>> a = np.array([(1.0, 2), (3.0, 4)], dtype='f4,i4').view(np.recarray)
 		>>> np.asarray(a) is a
 		False
 		>>> np.asanyarray(a) is a
@@ -200,7 +200,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		alpha : float, optional
 		    Initial guess for the Jacobian is ``(-1/alpha)``.
@@ -292,7 +292,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		alpha : float, optional
 		    Initial guess for the Jacobian is ``(-1/alpha)``.
@@ -388,7 +388,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		alpha : float, optional
 		    Initial guess for the Jacobian is (-1/alpha).
@@ -436,12 +436,22 @@ package scipy.optimize.nonlin;
 	/**
 		dot(a, b, out=None)
 		
-		Dot product of two arrays.
+		Dot product of two arrays. Specifically,
 		
-		For 2-D arrays it is equivalent to matrix multiplication, and for 1-D
-		arrays to inner product of vectors (without complex conjugation). For
-		N dimensions it is a sum product over the last axis of `a` and
-		the second-to-last of `b`::
+		- If both `a` and `b` are 1-D arrays, it is inner product of vectors
+		  (without complex conjugation).
+		
+		- If both `a` and `b` are 2-D arrays, it is matrix multiplication,
+		  but using :func:`matmul` or ``a @ b`` is preferred.
+		
+		- If either `a` or `b` is 0-D (scalar), it is equivalent to :func:`multiply`
+		  and using ``numpy.multiply(a, b)`` or ``a * b`` is preferred.
+		
+		- If `a` is an N-D array and `b` is a 1-D array, it is a sum product over
+		  the last axis of `a` and `b`.
+		
+		- If `a` is an N-D array and `b` is an M-D array (where ``M>=2``), it is a
+		  sum product over the last axis of `a` and the second-to-last axis of `b`::
 		
 		    dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])
 		
@@ -521,7 +531,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		alpha : float, optional
 		    Initial Jacobian approximation is (-1/alpha).
@@ -615,6 +625,17 @@ package scipy.optimize.nonlin;
 		types {float32, float64, complex64, complex128} respectively.
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
+		
+		Examples
+		--------
+		>>> import scipy.linalg as LA
+		>>> a = np.random.rand(3,2)
+		>>> x_gemv = LA.get_blas_funcs('gemv', (a,))
+		>>> x_gemv.typecode
+		'd'
+		>>> x_gemv = LA.get_blas_funcs('gemv',(a*1j,))
+		>>> x_gemv.typecode
+		'z'
 	**/
 	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
@@ -668,7 +689,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		alpha : float, optional
 		    The Jacobian approximation is (-1/alpha).
@@ -723,7 +744,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		rdiff : float, optional
 		    Relative step size to use in numerical differentiation.
@@ -834,7 +855,7 @@ package scipy.optimize.nonlin;
 		F : function(x) -> f
 		    Function whose root to find; should take and return an array-like
 		    object.
-		x0 : array_like
+		xin : array_like
 		    Initial guess for the solution
 		jacobian : Jacobian
 		    A Jacobian approximation: `Jacobian` object or something that
@@ -903,7 +924,7 @@ package scipy.optimize.nonlin;
 		----------
 		.. [KIM] C. T. Kelley, "Iterative Methods for Linear and Nonlinear
 		   Equations". Society for Industrial and Applied Mathematics. (1995)
-		   http://www.siam.org/books/kelley/
+		   http://www.siam.org/books/kelley/fr16/index.php
 	**/
 	static public function nonlin_solve(F:Dynamic, x0:Dynamic, ?jacobian:Dynamic, ?iter:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?full_output:Dynamic, ?raise_exception:Dynamic):Dynamic;
 	/**
@@ -1212,8 +1233,8 @@ package scipy.optimize.nonlin;
 		assume_a : str, optional
 		    Valid entries are explained above.
 		transposed: bool, optional
-		    If True, depending on the data type ``a^T x = b`` or ``a^H x = b`` is
-		    solved (only taken into account for ``'gen'``).
+		    If True, ``a^T x = b`` for real matrices, raises `NotImplementedError`
+		    for complex matrices (only for True).
 		
 		Returns
 		-------
@@ -1226,8 +1247,10 @@ package scipy.optimize.nonlin;
 		    If size mismatches detected or input a is not square.
 		LinAlgError
 		    If the matrix is singular.
-		RuntimeWarning
+		LinAlgWarning
 		    If an ill-conditioned input a is detected.
+		NotImplementedError
+		    If transposed is True and input a is a complex matrix.
 		
 		Examples
 		--------
@@ -1250,28 +1273,28 @@ package scipy.optimize.nonlin;
 		numpy.dot() behavior and the returned result is still 1D array.
 		
 		The generic, symmetric, hermitian and positive definite solutions are
-		obtained via calling ?GESVX, ?SYSVX, ?HESVX, and ?POSVX routines of
+		obtained via calling ?GESV, ?SYSV, ?HESV, and ?POSV routines of
 		LAPACK respectively.
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic, ?assume_a:Dynamic, ?transposed:Dynamic):Dynamic;
 	/**
 		Singular Value Decomposition.
 		
-		Factorizes the matrix a into two unitary matrices U and Vh, and
-		a 1-D array s of singular values (real, non-negative) such that
-		``a == U*S*Vh``, where S is a suitably shaped matrix of zeros with
-		main diagonal s.
+		Factorizes the matrix `a` into two unitary matrices ``U`` and ``Vh``, and
+		a 1-D array ``s`` of singular values (real, non-negative) such that
+		``a == U @ S @ Vh``, where ``S`` is a suitably shaped matrix of zeros with
+		main diagonal ``s``.
 		
 		Parameters
 		----------
 		a : (M, N) array_like
 		    Matrix to decompose.
 		full_matrices : bool, optional
-		    If True, `U` and `Vh` are of shape ``(M,M)``, ``(N,N)``.
-		    If False, the shapes are ``(M,K)`` and ``(K,N)``, where
-		    ``K = min(M,N)``.
+		    If True (default), `U` and `Vh` are of shape ``(M, M)``, ``(N, N)``.
+		    If False, the shapes are ``(M, K)`` and ``(K, N)``, where
+		    ``K = min(M, N)``.
 		compute_uv : bool, optional
-		    Whether to compute also `U` and `Vh` in addition to `s`.
+		    Whether to compute also ``U`` and ``Vh`` in addition to ``s``.
 		    Default is True.
 		overwrite_a : bool, optional
 		    Whether to overwrite `a`; may improve performance.
@@ -1292,15 +1315,15 @@ package scipy.optimize.nonlin;
 		-------
 		U : ndarray
 		    Unitary matrix having left singular vectors as columns.
-		    Of shape ``(M,M)`` or ``(M,K)``, depending on `full_matrices`.
+		    Of shape ``(M, M)`` or ``(M, K)``, depending on `full_matrices`.
 		s : ndarray
 		    The singular values, sorted in non-increasing order.
 		    Of shape (K,), with ``K = min(M, N)``.
 		Vh : ndarray
 		    Unitary matrix having right singular vectors as rows.
-		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
+		    Of shape ``(N, N)`` or ``(K, N)`` depending on `full_matrices`.
 		
-		For ``compute_uv=False``, only `s` is returned.
+		For ``compute_uv=False``, only ``s`` is returned.
 		
 		Raises
 		------
@@ -1315,15 +1338,28 @@ package scipy.optimize.nonlin;
 		Examples
 		--------
 		>>> from scipy import linalg
-		>>> a = np.random.randn(9, 6) + 1.j*np.random.randn(9, 6)
+		>>> m, n = 9, 6
+		>>> a = np.random.randn(m, n) + 1.j*np.random.randn(m, n)
 		>>> U, s, Vh = linalg.svd(a)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 9), (6, 6), (6,))
+		>>> U.shape,  s.shape, Vh.shape
+		((9, 9), (6,), (6, 6))
+		
+		Reconstruct the original matrix from the decomposition:
+		
+		>>> sigma = np.zeros((m, n))
+		>>> for i in range(min(m, n)):
+		...     sigma[i, i] = s[i]
+		>>> a1 = np.dot(U, np.dot(sigma, Vh))
+		>>> np.allclose(a, a1)
+		True
+		
+		Alternatively, use ``full_matrices=False`` (notice that the shape of
+		``U`` is then ``(m, n)`` instead of ``(m, m)``):
 		
 		>>> U, s, Vh = linalg.svd(a, full_matrices=False)
-		>>> U.shape, Vh.shape, s.shape
-		((9, 6), (6, 6), (6,))
-		>>> S = linalg.diagsvd(s, 6, 6)
+		>>> U.shape, s.shape, Vh.shape
+		((9, 6), (6,), (6, 6))
+		>>> S = np.diag(s)
 		>>> np.allclose(a, np.dot(U, np.dot(S, Vh)))
 		True
 		
