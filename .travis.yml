@@ -40,5 +40,8 @@ install:
   - haxe build.hxml
 
 script:
+  # Test the existing externs in the repo
   - haxe test.hxml
+  # Test newly generated externs
   - python Main.py $GENLIBS $OUTDIR
+  - haxe test.hxml
