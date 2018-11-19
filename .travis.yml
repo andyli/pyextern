@@ -8,6 +8,7 @@ env:
   - REQUIREMENTS="--file requirements.txt"           OUTDIR=coredep GENLIBS=docutils,pkgutil,inspect,importlib
   - REQUIREMENTS="--file requirements-externs.txt"   OUTDIR=out     GENLIBS=docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow,theano,keras
   - REQUIREMENTS="docutils==0.14 pytorch-cpu==0.4.1" OUTDIR=out     GENLIBS=torch
+  - REQUIREMENTS="docutils==0.14 pyqt==5.6.0"        OUTDIR=out     GENLIBS=PyQt5
 
 sudo: required
 dist: trusty
