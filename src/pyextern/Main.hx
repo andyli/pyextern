@@ -5,6 +5,7 @@ import sys.FileSystem.*;
 import sys.io.File.*;
 import haxe.io.*;
 import haxe.macro.Expr;
+import pyextern.Utils.*;
 using StringTools;
 using Lambda;
 
@@ -112,18 +113,6 @@ class Main {
 
 		var proc:Processor = getProcessor(moduleName);
 		proc.processModule(module, moduleName, this);
-	}
-
-	static function upperCaseFirstLetter(str:String):String {
-		var re_letter = ~/[A-Za-z]/;
-		if (!re_letter.match(str)) throw "no letter in " + str;
-		return re_letter.matchedLeft() + re_letter.matched(0).toUpperCase() + re_letter.matchedRight();
-	}
-
-	static function lowerCaseFirstLetter(str:String):String {
-		var re_letter = ~/[A-Za-z]/;
-		if (!re_letter.match(str)) throw "no letter in " + str;
-		return re_letter.matchedLeft() + re_letter.matched(0).toLowerCase() + re_letter.matchedRight();
 	}
 
 	static function hxName(name:String):String {

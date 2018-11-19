@@ -6,7 +6,7 @@ class Test {
             case null:
                 "docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn,tensorflow,torch,theano,keras".split(",");
             case libs:
-                libs.split(",");
+                libs.split(",").map(pyextern.Utils.lowerCaseFirstLetter);
         };
     macro static function importPackages() {
         for (p in packages) {
