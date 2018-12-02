@@ -8,7 +8,7 @@ import inspect.*;
 using Lambda;
 using StringTools;
 
-@process_modules("PyQt5")
+@process_modules("PyQt5", "PySide2")
 class Process_pyqt5 extends Processor {
 	static function removeBrackets(str:String, open:String, close:String):String {
 		var result = "";
