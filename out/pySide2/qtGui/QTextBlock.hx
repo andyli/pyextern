@@ -1,0 +1,141 @@
+/* This file is generated, do not edit! */
+package pySide2.qtGui;
+@:pythonImport("PySide2.QtGui", "QTextBlock") extern class QTextBlock {
+	public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __copy__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Implement delattr(self, name).
+	**/
+	public function __delattr__(name:Dynamic):Dynamic;
+	static public var __dict__ : Dynamic;
+	/**
+		__dir__() -> list
+		default dir() implementation
+	**/
+	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
+	public function __eq__(value:Dynamic):Dynamic;
+	/**
+		default object formatter
+	**/
+	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self>=value.
+	**/
+	public function __ge__(value:Dynamic):Dynamic;
+	/**
+		Return getattr(self, name).
+	**/
+	public function __getattribute__(name:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
+	public function __gt__(value:Dynamic):Dynamic;
+	static public var __hash__ : Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	@:native("__init__")
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
+		This method is called when a class is subclassed.
+		
+		The default implementation does nothing. It may be
+		overridden to extend subclasses.
+	**/
+	public function __init_subclass__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Implement iter(self).
+	**/
+	public function __iter__():Dynamic;
+	/**
+		Return self<=value.
+	**/
+	public function __le__(value:Dynamic):Dynamic;
+	/**
+		Return self<value.
+	**/
+	public function __lt__(value:Dynamic):Dynamic;
+	/**
+		Return self!=value.
+	**/
+	public function __ne__(value:Dynamic):Dynamic;
+	/**
+		Create and return a new object.  See help(type) for accurate signature.
+	**/
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		helper for pickle
+	**/
+	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		helper for pickle
+	**/
+	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return repr(self).
+	**/
+	public function __repr__():Dynamic;
+	/**
+		Implement setattr(self, name, value).
+	**/
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		__sizeof__() -> int
+		size of object in memory, in bytes
+	**/
+	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return str(self).
+	**/
+	public function __str__():Dynamic;
+	/**
+		Abstract classes can override this to customize issubclass().
+		
+		This is invoked early on by abc.ABCMeta.__subclasscheck__().
+		It should return True, False or NotImplemented.  If it returns
+		NotImplemented, the normal algorithm is used.  Otherwise, it
+		overrides the normal algorithm (and the outcome is cached).
+	**/
+	public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function begin(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function blockFormat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function blockFormatIndex(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function blockNumber(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function charFormat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function charFormatIndex(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function clearLayout(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function contains(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function document(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function end(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function firstLineNumber(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function fragmentIndex(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isValid(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function isVisible(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function iterator(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function layout(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function length(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function lineCount(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function next(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function position(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function previous(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function revision(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function setLineCount(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function setRevision(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function setUserData(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function setUserState(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function setVisible(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function text(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function textDirection(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function textFormats(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function textList(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function userData(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function userState(args:haxe.extern.Rest<Dynamic>):Dynamic;
+}
