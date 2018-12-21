@@ -22,7 +22,7 @@ class Main {
 	public function write(outPath:String):Void {
 		// setup typedefs of $name => ${name}_Module
 		function collide(m:String):TypeDefinition->Bool {
-			var real_td = getTd(m, "", false);
+			var real_td = getTd(null, m, "", false);
 			if (real_td == null) return function(_) return true;
 			var pack = real_td.pack.join(".").toLowerCase();
 			var hxName = real_td.name.substr(0, -"_Module".length).toLowerCase();
@@ -35,9 +35,9 @@ class Main {
 		];
 
 		for (m in canTypedef) {
-			var real_td = getTd(m, "");
+			var real_td = getTd(null, m, "");
 			try {
-				var td = getTd(m, real_td.name.substr(0, -"_Module".length));
+				var td = getTd(null, m, real_td.name.substr(0, -"_Module".length));
 				td.meta = [];
 				td.isExtern = false;
 				td.kind = TDAlias(TPath({
@@ -126,7 +126,18 @@ class Main {
 		return name;
 	}
 
-	public function getTd(module:String, fullname:String, create:Bool = true):TypeDefinition {
+	public function getBase(pyobj:Dynamic):Dynamic {
+		var bases:python.Tuple.Tuple<Dynamic> = pyobj.__bases__;
+		var bases = bases.toArray().filter(function(b) {
+			return filterModules(b.__module__) && b.__name__ != "QObject";
+		});
+		if (bases.length > 1) {
+			trace('${pyobj.__name__} has multple bases: ${bases.map(function(b) return b.__name__)}');
+		}
+		return bases[0];
+	}
+
+	public function getTd(pyObj:Dynamic, module:String, fullname:String, create:Bool = true):TypeDefinition {
 		var pack = [
 			for (p in module.split(".")) {
 				p = lowerCaseFirstLetter(p);
@@ -180,6 +191,17 @@ class Main {
 					}
 				}
 
+				var superCls = if (pyObj != null) {
+					var base = getBase(pyObj);
+					if (base == null) {
+						null;
+					} else {
+						getTd(base, base.__module__, base.__name__);
+					}
+				} else {
+					null;
+				}
+
 				tds[hxFullName] = {
 					pack : pack,
 					name : hxName,
@@ -191,7 +213,10 @@ class Main {
 					}],
 					params : [],
 					isExtern : true,
-					kind : TDClass(),
+					kind : TDClass(superCls == null ? null : {
+						pack: superCls.pack,
+						name: superCls.name
+					}),
 					fields : []
 				};
 			case td:

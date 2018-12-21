@@ -189,7 +189,7 @@ class Processor {
 				main.processModule(memObj, mName);
 			} else if (Inspect.isclass(memObj)) {
 				if (memObj.__module__ == moduleName && memObj.__name__ == memName) {
-					var td = main.getTd(memObj.__module__, memObj.__name__);
+					var td = main.getTd(memObj, memObj.__module__, memObj.__name__);
 					var members = try {
 						(Inspect.getmembers(memObj):Array<Tuple2<String,Dynamic>>);
 					} catch (e:Dynamic){
@@ -199,6 +199,15 @@ class Processor {
 					for (clsMem in members) {
 						var clsMemName = clsMem._1;
 						var clsMemObj = clsMem._2;
+
+
+						if (unwantedMemberNames.indexOf(clsMemName) >= 0) continue;
+
+						var base = main.getBase(memObj);
+						var inherited = clsMemObj == Reflect.field(base, clsMemName);
+						if (inherited) {
+							continue;
+						}
 
 						if (isMethod(clsMemObj)) {
 							var sig = try {
@@ -341,9 +350,9 @@ class Processor {
 				} else {
 					// a typedef
 					try {
-						var td = main.getTd(moduleName, memName);
+						var td = main.getTd(null, moduleName, memName);
 						if (main.filterModules(memObj.__module__)) { //TODO
-							var real_td = main.getTd(memObj.__module__, memObj.__name__);
+							var real_td = main.getTd(memObj, memObj.__module__, memObj.__name__);
 							if (td.pack.join(".") == real_td.pack.join(".") && td.name == real_td.name) {
 								throw "typedef of itself?";
 							}
@@ -357,9 +366,11 @@ class Processor {
 					} catch (e:Dynamic) {}
 				}
 			} else { // is a module member but is not a mobule/class
-				var td = main.getTd(moduleName, "");
+				var td = main.getTd(null, moduleName, "");
 
 				if (!re_ident.match(memName)) throw memName;
+
+				if (unwantedMemberNames.indexOf(memName) >= 0) continue;
 
 				if (isMethod(memObj)) {
 					var sig = try {
@@ -515,4 +526,6 @@ class Processor {
 				Some(null);
 		}
 	}
+
+	public var unwantedMemberNames = ["__weakref__", "__init_subclass__", "__subclasshook__"];
 }
