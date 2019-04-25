@@ -13,12 +13,10 @@ env:
 
 sudo: required
 dist: xenial
+services:
+  - xvfb
 
 install:
-  # xvfb
-  # https://docs.travis-ci.com/user/gui-and-headless-browsers/
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
   # required by pyplot
   - sudo apt-get install libsm6 -y
   # use conda since pip install requires building libs which takes too much time
