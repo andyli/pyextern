@@ -1,0 +1,3 @@
+/* This file is generated, do not edit! */
+package selenium.webdriver.common.actions.pointer_actions;
+typedef MouseButton = selenium.webdriver.common.actions.mouse_button.MouseButton;
