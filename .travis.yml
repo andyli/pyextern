@@ -11,7 +11,7 @@ env:
   - REQUIREMENTS="--file requirements-qt.txt"      OUTDIR=out     GENLIBS=PyQt5,PySide2
 
 sudo: required
-dist: trusty
+dist: xenial
 
 install:
   # xvfb
