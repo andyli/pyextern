@@ -339,11 +339,12 @@ class Processor {
 						}
 					}
 				} else {
+					// trace('${memName} is a typedef');
 					// a typedef
 					try {
-						var td = main.getTd(moduleName, memName);
 						if (main.filterModules(memObj.__module__)) { //TODO
 							var real_td = main.getTd(memObj.__module__, memObj.__name__);
+							var td = main.getTd(moduleName, memName);
 							if (td.pack.join(".") == real_td.pack.join(".") && td.name == real_td.name) {
 								throw "typedef of itself?";
 							}
@@ -354,7 +355,11 @@ class Processor {
 								name: real_td.name
 							}));
 						}
-					} catch (e:Dynamic) {}
+					} catch (e:Dynamic) {
+						#if debug
+						trace('Can\'t create typedef for ${memName}: ${e}');
+						#end
+					}
 				}
 			} else { // is a module member but is not a mobule/class
 				var td = main.getTd(moduleName, "");

@@ -176,7 +176,7 @@ class Main {
 					if (td.kind.match(TDAlias(_))) {
 						tds.remove(hxFullName_conflict);
 					} else {
-						throw 'arghhh: $hxFullName_conflict $hxFullName';
+						throw 'Cannot create $hxFullName because there is already $hxFullName_conflict ';
 					}
 				}
 
